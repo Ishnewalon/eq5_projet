@@ -2,8 +2,8 @@ import React from "react";
 
 export class RegisterGS extends React.Component {
     render() {
-        return <div className="container">
-            <form className="well form-horizontal" action=" " method="post" id="contact_form">
+        return <div className="container" >
+            <form className="login-form" action=" " method="post" id="contact_form">
                 <fieldset>
 
                     <legend>
@@ -105,15 +105,12 @@ export class RegisterGS extends React.Component {
                     </div>
 
 
-                    <div className="alert alert-success" role="alert" id="success_message">Success <i
-                        className="glyphicon glyphicon-thumbs-up" /> Success!.
-                    </div>
                     <div className="form-group">
                         <label className="col-md-4 control-label" />
                         <div
                             className="col-md-4">
                             <button type="submit"
-                                className="btn btn-warning">S'inscrire
+                                className="btn btn-primary btn-ghost">S'inscrire
                                 <span className="glyphicon glyphicon-send" />
 
                             </button>
