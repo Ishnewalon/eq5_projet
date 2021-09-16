@@ -1,14 +1,105 @@
 @import "~bootstrap";
+
+:root {
+    --color-dark: #192024;
+
+    --color-bg-dark: #343C49;
+    --color-primary-titles: #253650;
+    --color-primary-hover: #304c7b;
+    --color-primary: #4f657d;
+    --color-light: #f1eeeb;
+    --color-text-secondary: #322E2C;
+
+    --color-rgb-primary: 79, 101, 125;
+    --color-rgb-secondary: 224, 137, 44;
+    --color-primary-bg-dark: #e0892c;
+    --color-primary-bg-dark-hover: #dc7718;
+
+    --color-primary-bg: var(--color-light);
+    --font-family-primary: 'Montserrat', sans-serif;
+}
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    font-family: var(--font-family-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--color-light);
+    text-decoration-color: var(--color-primary-titles) !important;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.text-white {
+    color: var(--color-light);
+}
+
+.text-primary {
+    color: var(--color-primary-hover) !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--color-primary-titles);
+}
+
+/********
+Custom BS
+*********/
+.link, .btn-link {
+    font-weight: bold;
+    color: var(--color-primary) !important;
+}
+
+.link:hover, .btn-link:hover {
+    color: var(--color-primary-hover) !important;
+}
+
+.btn-primary {
+    background: var(--color-primary) !important;
+    border: var(--color-primary) !important;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+    background: var(--color-primary-hover) !important;
+    /*box-shadow: var(--color-primary)!important;*/
+    border-color: rgba(var(--color-rgb-primary), 0.8) !important;
+    box-shadow: 0 1px 1px rgba(var(--color-rgb-primary), 0.075) inset, 0 0 8px rgba(var(--color-rgb-primary), 0.6) !important;
+    outline: 0 none !important;
+}
+
+/*********************
+Adapt color to bg-dark
+**********************/
+.bg-dark {
+    background-color: var(--color-bg-dark) !important;
+}
+
+.bg-dark > h1, .bg-dark > h2, .bg-dark > h2, .bg-dark > h3, .bg-dark > h4, .bg-dark > h5, .bg-dark > h6 {
+    color: var(--color-light) !important;
+}
+
+.bg-dark > .link, .bg-dark > .btn-link {
+    font-weight: bold;
+    color: var(--color-primary-bg-dark) !important;
+}
+
+.bg-dark > .link:hover, .bg-dark > .btn-link:hover {
+    color: var(--color-primary-bg-dark-hover) !important;
+}
+
+.bg-dark > .btn-primary {
+    color: var(--color-text-secondary);
+    background: var(--color-primary-bg-dark) !important;
+    border: var(--color-primary-bg-dark) !important;
+}
+
+.bg-dark > .btn-primary:hover, .bg-dark > .btn-primary:focus, .bg-dark > .btn-primary:active {
+    background: var(--color-primary-bg-dark-hover) !important;
+    /*box-shadow: var(--color-primary)!important;*/
+    border-color: rgba(var(--color-rgb-primary), 0.8) !important;
+    box-shadow: 0 1px 1px rgba(var(--color-rgb-secondary), 0.075) inset, 0 0 8px rgba(var(--color-rgb-secondary), 0.6) !important;
+    outline: 0 none !important;
 }
