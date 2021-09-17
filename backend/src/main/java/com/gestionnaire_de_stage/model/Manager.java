@@ -1,9 +1,12 @@
 package com.gestionnaire_de_stage.model;
 
+import lombok.Data;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Gestionnaire extends User {
+@Data
+public class Manager extends User {
 
 }

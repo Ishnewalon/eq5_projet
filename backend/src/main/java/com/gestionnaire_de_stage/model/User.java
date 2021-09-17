@@ -1,17 +1,24 @@
 package com.gestionnaire_de_stage.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
+@Data
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class User {
+public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
-    private String nom;
-    private String prenom;
-    private String couriel;
+    private String name;
+
+    private String firstName;
+
+    private String email;
+
     private String numTel;
-    private String mdp;
+
+    private String password;
 }
