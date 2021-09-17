@@ -1,29 +1,53 @@
 import './Register.css'
 import React, {Component} from "react";
 
+const Step = {
+    CHOICE: "choice",
+    CEGEP: "cegep",
+    GENERAL: "general",
+    MONITOR: "monitor",
+    STUDENT: "student",
+    PASSWORD: "password",
+}
+
 export class Register extends Component {
+
     state = {
-        step: 1,
-        email: '',
-        password: '',
-        last_name: '',
-        first_name: '',
-        phone: '',
-        companyName: '',
-        address: '',
-        codePostal: '',
-        city: '',
+        cegep: {
+            active: true,
+            matricule: ''
+        },
+        step: Step.CHOICE,
+        lastStep: [],
+        generalInfo: {
+            email: '',
+            password: '',
+            last_name: '',
+            first_name: '',
+            phone: '',
+        },
+        monitor: {
+            companyName: '',
+            address: '',
+            codePostal: '',
+            city: '',
+        },
+
+
     }
     prevStep = () => {
-        const {step} = this.state;
-        if (step !== 1) {
-            this.setState({step: step - 1});
-        }
+        const {lastStep} = this.state;
+        this.setState({step: lastStep[lastStep.length-1]});
+        lastStep.pop()
     }
 
-    nextStep = () => {
+    nextStep = (val) => {
+        const {lastStep} = this.state;
         const {step} = this.state;
-        this.setState({step: step + 1});
+        lastStep.push(step)
+        this.setState({lastStep: lastStep});
+        this.setState({step: val});
+
     }
     handleChange = input => e => {
         this.setState({[input]: e.target.value});
@@ -40,24 +64,35 @@ export class Register extends Component {
             phone,
             companyName,
             address,
-            codePostal
+            codePostal,
+            matricule
         } = this.state;
-        const values = {email, password, first_name, last_name,phone}
+        const values = {email, password, first_name, last_name, phone}
         const valMoniteur = {companyName, city, address, codePostal}
         const valPwd = {password}
+        const mat = {matricule}
         let show = null;
+
         switch (step) {
-            case 1:
+            case Step.CEGEP:
+                show = <Cegep prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange} values={mat}/>
+                break;
+            case Step.CHOICE:
+                // show = <InformationGeneral nextStep={this.nextStep} handleChange={this.handleChange}
+                //                            values={values}/>
+                show = <Choice prevStep={this.prevStep} nextStep={this.nextStep}/>
+                break;
+            case Step.GENERAL:
                 show = <InformationGeneral nextStep={this.nextStep} handleChange={this.handleChange}
                                            values={values}/>
                 break;
-            case 2:
+            case Step.MONITOR:
                 show = <Moniteur prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
                                  values={valMoniteur}/>
                 break;
-            case 3:
+            case Step.PASSWORD:
                 show = <PwdPart prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
-                            values={valPwd}/>
+                                values={valPwd}/>
                 break;
             default:
                 break;
@@ -94,9 +129,8 @@ export class Register extends Component {
 
 const InformationGeneral = ({nextStep, handleChange, values}) => {
 
-    const Continue = e => {
-        e.preventDefault();
-        nextStep();
+    const Continue = (val) => {
+        nextStep(val);
     }
 
     return (<div>
@@ -135,7 +169,9 @@ const InformationGeneral = ({nextStep, handleChange, values}) => {
             <div className="form-group text-center">
                 <label/>
                 <div>
-                    <button className="btn btn-primary" type={"button"} onClick={Continue}>Suivant</button>
+                    <button className="btn btn-primary" type={"button"} onClick={() => {
+                        Continue(Step.PASSWORD)
+                    }}>Suivant</button>
                 </div>
             </div>
         </div>
@@ -207,29 +243,29 @@ const PwdPart = ({prevStep, nextStep, handleChange, values}) => {
         nextStep();
     }
     return (<div>
-                <div className="form-group row">
-                    <div className="col-md-12">
-                        <label>Mot de passe</label>
-                        <div className="input-group">
-                            <input name="pwd" placeholder="Votre mot de passe" className="form-control" type="password"
-                                   value={values.password} onChange={handleChange('password')}/>
-                        </div>
+            <div className="form-group row">
+                <div className="col-md-12">
+                    <label>Mot de passe</label>
+                    <div className="input-group">
+                        <input name="pwd" placeholder="Votre mot de passe" className="form-control" type="password"
+                               value={values.password} onChange={handleChange('password')}/>
                     </div>
+                </div>
 
-                    {/*TODO REVOIR LA CONFIRMATION DU MDP*/}
-                    {/*<div className="col-md-6">*/}
-                    {/*    <label>Confirmez votre mot de passe</label>*/}
-                    {/*    <div className="input-group">*/}
-                    {/*        <input name="pwd2" placeholder="Confirmez votre mot de passe" className="form-control" type="text"*/}
-                    {/*               value={values.pwd2} onChange={handleChange('pwd2')}/>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    <div className="form-group text-center">
-                        <label/>
-                        <div>
-                            <button className="btn btn-primary" type={"button"} onClick={Previous}>Precedent</button>
-                            <button className="btn btn-primary" type={"button"} onClick={Continue}>Suivant</button>
-                        </div>
+                {/*TODO REVOIR LA CONFIRMATION DU MDP*/}
+                {/*<div className="col-md-6">*/}
+                {/*    <label>Confirmez votre mot de passe</label>*/}
+                {/*    <div className="input-group">*/}
+                {/*        <input name="pwd2" placeholder="Confirmez votre mot de passe" className="form-control" type="text"*/}
+                {/*               value={values.pwd2} onChange={handleChange('pwd2')}/>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+                <div className="form-group text-center">
+                    <label/>
+                    <div>
+                        <button className="btn btn-primary" type={"button"} onClick={Previous}>Precedent</button>
+                        <button className="btn btn-primary" type={"button"} onClick={Continue}>Suivant</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -268,3 +304,30 @@ const Cegep = ({prevStep,nextStep, handleChange, values}) => {
         </div>
     )
 }
+const Choice = ({nextStep}) => {
+
+    const Continue = (value) => {
+        console.log(value)
+        nextStep(value);
+
+    }
+
+    return (<div>
+            <div className="form-group text-center">
+                <label/>
+                <div>
+                    <button className="btn btn-primary" type={"button"} onClick={() => {
+                        Continue(Step.CEGEP)
+                    }}>Membre du cegep
+                    </button>
+                    <button className="btn btn-primary" type={"button"} onClick={() => {
+                        Continue(Step.MONITOR)
+                    }}>Companie
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
