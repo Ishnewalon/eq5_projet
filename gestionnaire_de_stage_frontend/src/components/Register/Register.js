@@ -236,11 +236,14 @@ const PwdPart = ({prevStep, nextStep, handleChange, values}) => {
     )
 }
 
-const Cegep = ({nextStep, handleChange, values}) => {
+const Cegep = ({prevStep,nextStep, handleChange, values}) => {
 
-    const Continue = e => {
-        e.preventDefault();
-        nextStep();
+    const Previous = e => {
+        e.preventDefault()
+        prevStep();
+    }
+    const Continue = val => {
+        nextStep(val);
     }
 
     return (<div>
@@ -256,7 +259,10 @@ const Cegep = ({nextStep, handleChange, values}) => {
             <div className="form-group text-center">
                 <label/>
                 <div>
-                    <button className="btn btn-primary" type={"button"} onClick={Continue}>Suivant</button>
+                    <button className="btn btn-primary" type={"button"} onClick={Previous}>Precedent</button>
+                    <button className="btn btn-primary" type={"button"} onClick={() => {
+                        Continue(Step.GENERAL)
+                    }}>Suivant</button>
                 </div>
             </div>
         </div>
