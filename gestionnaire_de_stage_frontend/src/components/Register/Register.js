@@ -291,7 +291,7 @@ const Cegep = ({prevStep, nextStep, handleChange, values}) => {
 
     return (<div>
             <div className="form-group row">
-                <div className="col-md-6">
+                <div className="col-md-12">
                     <label>Matricule</label>
                     <div className="input-group">
                         <input name="matricule" placeholder="Matricule" className="form-control" type="text"
