@@ -37,7 +37,7 @@ export class Register extends Component {
     }
     prevStep = () => {
         const {lastStep} = this.state;
-        this.setState({step: lastStep[lastStep.length-1]});
+        this.setState({step: lastStep[lastStep.length - 1]});
         lastStep.pop()
     }
 
@@ -74,21 +74,20 @@ export class Register extends Component {
         let show = null;
 
         switch (step) {
-            case Step.CEGEP:
-                show = <Cegep prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange} values={mat}/>
-                break;
             case Step.CHOICE:
-                // show = <InformationGeneral nextStep={this.nextStep} handleChange={this.handleChange}
-                //                            values={values}/>
                 show = <Choice prevStep={this.prevStep} nextStep={this.nextStep}/>
                 break;
-            case Step.GENERAL:
-                show = <InformationGeneral nextStep={this.nextStep} handleChange={this.handleChange}
-                                           values={values}/>
+            case Step.CEGEP:
+                show = <Cegep prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
+                              values={mat}/>
                 break;
             case Step.MONITOR:
                 show = <Moniteur prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
                                  values={valMoniteur}/>
+                break;
+            case Step.GENERAL:
+                show = <InformationGeneral prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
+                                           values={values}/>
                 break;
             case Step.PASSWORD:
                 show = <PwdPart prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
@@ -115,6 +114,7 @@ export class Register extends Component {
 
                         <legend>
                             <center><h2>Inscription</h2></center>
+                            <center><h3>{step}</h3></center>
                         </legend>
                         <br/>
                         {show}
@@ -127,8 +127,12 @@ export class Register extends Component {
     }
 }
 
-const InformationGeneral = ({nextStep, handleChange, values}) => {
+const InformationGeneral = ({prevStep,nextStep, handleChange, values}) => {
 
+    const Previous = e => {
+        e.preventDefault();
+        prevStep();
+    }
     const Continue = (val) => {
         nextStep(val);
     }
@@ -169,9 +173,11 @@ const InformationGeneral = ({nextStep, handleChange, values}) => {
             <div className="form-group text-center">
                 <label/>
                 <div>
+                    <button className="btn btn-primary" type={"button"} onClick={Previous}>Precedent</button>
                     <button className="btn btn-primary" type={"button"} onClick={() => {
                         Continue(Step.PASSWORD)
-                    }}>Suivant</button>
+                    }}>Suivant
+                    </button>
                 </div>
             </div>
         </div>
@@ -183,9 +189,8 @@ const Moniteur = ({prevStep, nextStep, handleChange, values}) => {
         e.preventDefault();
         prevStep();
     }
-    const Continue = e => {
-        e.preventDefault();
-        nextStep();
+    const Continue = val => {
+        nextStep(val);
     }
 
     return (<div>
@@ -225,7 +230,9 @@ const Moniteur = ({prevStep, nextStep, handleChange, values}) => {
                 <label/>
                 <div>
                     <button className="btn btn-primary" type={"button"} onClick={Previous}>Precedent</button>
-                    <button className="btn btn-primary" type={"button"} onClick={Continue}>Suivant</button>
+                    <button className="btn btn-primary" type={"button"} onClick={() => {
+                        Continue(Step.GENERAL)
+                    }}>Suivant</button>
                 </div>
             </div>
         </div>
@@ -272,7 +279,7 @@ const PwdPart = ({prevStep, nextStep, handleChange, values}) => {
     )
 }
 
-const Cegep = ({prevStep,nextStep, handleChange, values}) => {
+const Cegep = ({prevStep, nextStep, handleChange, values}) => {
 
     const Previous = e => {
         e.preventDefault()
@@ -298,7 +305,8 @@ const Cegep = ({prevStep,nextStep, handleChange, values}) => {
                     <button className="btn btn-primary" type={"button"} onClick={Previous}>Precedent</button>
                     <button className="btn btn-primary" type={"button"} onClick={() => {
                         Continue(Step.GENERAL)
-                    }}>Suivant</button>
+                    }}>Suivant
+                    </button>
                 </div>
             </div>
         </div>
