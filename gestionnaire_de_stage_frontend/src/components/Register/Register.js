@@ -1,13 +1,15 @@
 import './Register.css'
 import React, {Component} from "react";
 
-const {step} = this.state;
-const {email, tel, password, nom, prenom} = this.state;
-const values = {email, tel, password, nom, prenom}
-
 export class Register extends Component {
-
-
+    state = {
+        step: 1,
+        email: '',
+        username: '',
+        password: '',
+        nom: '',
+        prenom: '',
+    }
     prevStep = () => {
         const {step} = this.state;
         this.setState({step: step - 1});
@@ -22,7 +24,10 @@ export class Register extends Component {
     }
 
     render() {
-        return <div>{step}
+        const {step} = this.state;
+        const {email, username, password, firstName, lastName, country, levelOfEducation} = this.state;
+        const values = {email, username, password, firstName, lastName, country, levelOfEducation}
+        return <div>{step}{email}
             <InformationGeneral nextStep={this.nextStep} prevStep={this.prevStep} handleChange={this.handleChange}
                                 values={values}/>
         </div>;
@@ -174,11 +179,8 @@ const InformationGeneral = ({prevStep, nextStep, handleChange, values}) => {
                 <div className="form-group text-center">
                     <label/>
                     <div>
-                        <button type="submit"
-                                className="btn btn-primary">Étape suivante
-                        </button>
-                        <button type={"button"} onClick={Previous}>prev</button>
-                        <button type={"button"} onClick={Continue}>next</button>
+                        <button className="btn btn-primary" type={"button"} onClick={Previous}>prev</button>
+                        <button className="btn btn-primary" type={"button"} onClick={Continue}>next</button>
                     </div>
                 </div>
             </fieldset>
