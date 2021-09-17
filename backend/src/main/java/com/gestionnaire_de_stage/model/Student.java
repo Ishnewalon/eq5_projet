@@ -1,7 +1,10 @@
 package com.gestionnaire_de_stage.model;
 
+import lombok.Data;
+
 import javax.persistence.Entity;
 
+@Data
 @Entity
 public class Student extends User{
 
