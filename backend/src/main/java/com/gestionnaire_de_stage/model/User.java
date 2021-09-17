@@ -9,9 +9,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
-    private String nom;
-    private String prenom;
-    private String couriel;
+    private String name;
+
+    private String firstName;
+
+    private String email;
+
     private String numTel;
-    private String mdp;
+
+    private String password;
 }

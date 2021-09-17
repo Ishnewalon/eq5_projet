@@ -4,6 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Gestionnaire extends User {
+public class Manager extends User {
 
 }
