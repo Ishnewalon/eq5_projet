@@ -60,5 +60,10 @@ public class StudentServiceTest {
         repository.saveAll(Arrays.asList(student1, student2, student3));
     }
 
+    @Test
+    public void getAllStudents(){
+        int actual = repository.findAll().size();
 
+        assertEquals(actual, 3);
+    }
 }
