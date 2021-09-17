@@ -39,4 +39,9 @@ class GestionnaireDeStageApplicationAuthenticationTests {
     public void contextLoads(){
         assertTrue(Arrays.asList(environment.getActiveProfiles()).contains("dev"));
     }
+
+    @Test
+    public void managerLoginTest(){
+    }
+
 }

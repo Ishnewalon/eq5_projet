@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class User {
+public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
