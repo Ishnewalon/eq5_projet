@@ -5,13 +5,37 @@ import com.gestionnaire_de_stage.repository.MonitorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class MonitorService {
+public class MonitorService implements ICrudService<Monitor, Long> {
 
     @Autowired
     private MonitorRepository monitorRepository;
 
-    public Monitor signup(Monitor monitor) {
-        return monitorRepository.save(monitor);
+
+    @Override
+    public Monitor create(Monitor monitor) {
+        return null;
+    }
+
+    @Override
+    public Monitor getOneByID(Long aLong) {
+        return null;
+    }
+
+    @Override
+    public List<Monitor> getAll() {
+        return null;
+    }
+
+    @Override
+    public Monitor update(Monitor monitor, Long aLong) {
+        return null;
+    }
+
+    @Override
+    public boolean deleteByID(Long aLong) {
+        return false;
     }
 }

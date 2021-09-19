@@ -59,13 +59,13 @@ public class MonitorServiceTest {
     }
 
     @Test
-    public void testSignup(){
-        Monitor monitor4 = new Monitor();
-        monitor4.setFirstName("Test");
+    public void testCreate(){
+        Monitor monitor = new Monitor();
+        monitor.setName("toto");
 
-        Monitor actual = monitorService.signup(monitor4);
+        Monitor actual = monitorService.create(monitor);
 
-        assertNotNull(monitorService.signup(monitor4));
+        assertNotNull(actual);
     }
 
 }
