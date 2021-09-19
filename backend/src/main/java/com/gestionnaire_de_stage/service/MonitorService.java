@@ -5,7 +5,9 @@ import com.gestionnaire_de_stage.repository.MonitorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ValidationException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MonitorService implements ICrudService<Monitor, Long> {
@@ -15,27 +17,41 @@ public class MonitorService implements ICrudService<Monitor, Long> {
 
 
     @Override
-    public Monitor create(Monitor monitor) {
-        return null;
+    public Optional<Monitor> create(Monitor monitor) throws ValidationException{
+        if (monitor != null) {
+            return Optional.of(monitorRepository.save(monitor));
+        }
+        return Optional.empty();
     }
 
     @Override
-    public Monitor getOneByID(Long aLong) {
-        return null;
+    public Optional<Monitor> getOneByID(Long aLong) {
+        if (aLong != null && monitorRepository.existsById(aLong)) {
+            return Optional.of(monitorRepository.getById(aLong));
+        }
+        return Optional.empty();
     }
 
     @Override
     public List<Monitor> getAll() {
-        return null;
+        return monitorRepository.findAll();
     }
 
     @Override
-    public Monitor update(Monitor monitor, Long aLong) {
-        return null;
+    public Optional<Monitor> update(Monitor monitor, Long aLong) throws ValidationException {
+        if (aLong != null && monitorRepository.existsById(aLong) && monitor != null) {
+            monitor.setId(aLong);
+            return Optional.of(monitorRepository.save(monitor));
+        }
+        return Optional.empty();
     }
 
     @Override
     public boolean deleteByID(Long aLong) {
+        if (aLong != null && monitorRepository.existsById(aLong)) {
+            monitorRepository.deleteById(aLong);
+            return true;
+        }
         return false;
     }
 }

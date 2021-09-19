@@ -11,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @DataJpaTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -31,6 +33,7 @@ public class MonitorServiceTest {
         monitor1.setEmail("stepotato@gmail.com");
         monitor1.setNumTel("5145555112");
         monitor1.setDepartment("Informatique");
+        monitor1.setPassword("testPassword");
 
         Monitor monitor2 = new Monitor();
         monitor2.setId(2L);
@@ -39,6 +42,7 @@ public class MonitorServiceTest {
         monitor2.setEmail("ouste@gmail.com");
         monitor2.setNumTel("5145555112");
         monitor2.setDepartment("Informatique");
+        monitor2.setPassword("testPassword");
 
         Monitor monitor3 = new Monitor();
         monitor3.setId(3L);
@@ -47,6 +51,7 @@ public class MonitorServiceTest {
         monitor3.setEmail("dudesame@gmail.com");
         monitor3.setNumTel("5145555112");
         monitor3.setDepartment("Informatique");
+        monitor3.setPassword("testPassword");
 
         monitorRepository.saveAll(Arrays.asList(monitor1, monitor2, monitor3));
     }
@@ -59,13 +64,92 @@ public class MonitorServiceTest {
     }
 
     @Test
-    public void testCreate(){
+    public void testCreate_withValidMonitor(){
         Monitor monitor = new Monitor();
         monitor.setName("toto");
+        monitor.setFirstName("titi");
+        monitor.setEmail("toto@gmail.com");
+        monitor.setPassword("testPassword");
 
-        Monitor actual = monitorService.create(monitor);
+        Optional<Monitor> actual = monitorService.create(monitor);
 
-        assertNotNull(actual);
+        assertTrue(actual.isPresent());
     }
+
+    @Test
+    public void testCreate_withNullMonitor(){
+        Optional<Monitor> actual = monitorService.create(null);
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    public void testGetByID_withValidID(){
+        Long validID = 1L;
+
+        Optional<Monitor> actual = monitorService.getOneByID(validID);
+
+        assertTrue(actual.isPresent());
+    }
+
+    @Test
+    public void testGetByID_withNullID(){
+        Optional<Monitor> actual = monitorService.getOneByID(null);
+
+        assertTrue(actual.isEmpty ());
+    }
+
+    @Test
+    public void testGetAll() {
+        int expectedLength = 3;
+
+        List<Monitor> monitorList = monitorService.getAll();
+
+        assertEquals(expectedLength, monitorList.size());
+    }
+
+    @Test
+    public void testUpdate_withValidEntries() {
+        Monitor monitor = new Monitor();
+        monitor.setName("toto");
+        monitor.setFirstName("titi");
+        monitor.setEmail("toto@gmail.com");
+        monitor.setPassword("testPassword");
+        Long validID = 2L;
+
+        Optional<Monitor> actual = monitorService.update(monitor, validID);
+
+        assertTrue(actual.isPresent());
+    }
+
+    @Test
+    public void testUpdate_withNullEntries() {
+        Monitor monitor = new Monitor();
+        monitor.setName("toto");
+        monitor.setFirstName("titi");
+        monitor.setEmail("toto@gmail.com");
+        monitor.setPassword("testPassword");
+
+        Optional<Monitor> actual = monitorService.update(monitor, null);
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    public void testDelete_withValidID() {
+        Long validID = 1L;
+
+        boolean actual = monitorService.deleteByID(validID);
+
+        assertTrue(actual);
+    }
+
+    @Test
+    public void testDelete_withNullID() {
+        boolean actual = monitorService.deleteByID(null);
+
+        assertFalse(actual);
+    }
+
 
 }

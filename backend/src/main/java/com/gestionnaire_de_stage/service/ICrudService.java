@@ -1,16 +1,18 @@
 package com.gestionnaire_de_stage.service;
 
+import javax.xml.bind.ValidationException;
 import java.util.List;
+import java.util.Optional;
 
 public interface ICrudService <T, K> {
 
-    T create(T t);
+    Optional<T> create(T t) throws Exception;
 
-    T getOneByID(K k);
+    Optional<T> getOneByID(K k);
 
     List<T> getAll();
 
-    T update(T t, K k);
+    Optional<T> update(T t, K k) throws Exception;;
 
     boolean deleteByID(K k);
 }
