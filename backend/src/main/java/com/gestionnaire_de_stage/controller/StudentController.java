@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -49,8 +50,12 @@ public class StudentController {
         return errors;
     }
 
-    //@GetMapping("/student/{email}/{password}")
-    //public Student login(@PathVariable String email, String password) {
-        //Student student = studentRepository.findStudent
-    //}
+    @GetMapping("/student/{email}/{password}")
+    public ResponseEntity<?> login(@PathVariable String email, String password) {
+        Optional<Student> student = studentService.getOneByEmailAndPassword(email, password);
+        if (student.isPresent()) {
+            return ResponseEntity.ok(student.get());
+        }
+        return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
+    }
 }
