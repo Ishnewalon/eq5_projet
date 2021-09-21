@@ -189,11 +189,11 @@ public class MonitorServiceTest {
 
         assertTrue(actual.isPresent());
     }
-/*
+
     @Test
     public void testGetOneByEmailAndPassword_withNullEntries() {
-        Optional<Student> actual = studentService.getOneByEmailAndPassword(null, null);
+        Optional<Monitor> actual = monitorService.getOneByEmailAndPassword(null, null);
 
         assertTrue(actual.isEmpty());
-    }*/
+    }
 }
