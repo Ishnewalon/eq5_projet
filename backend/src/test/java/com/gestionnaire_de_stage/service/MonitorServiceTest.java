@@ -179,7 +179,7 @@ public class MonitorServiceTest {
 
         assertFalse(actual);
     }
-/*
+
     @Test
     public void testGetOneByEmailAndPassword_withValidEntries() {
         String email = "stepotato@gmail.com";
@@ -189,7 +189,7 @@ public class MonitorServiceTest {
 
         assertTrue(actual.isPresent());
     }
-
+/*
     @Test
     public void testGetOneByEmailAndPassword_withNullEntries() {
         Optional<Student> actual = studentService.getOneByEmailAndPassword(null, null);
