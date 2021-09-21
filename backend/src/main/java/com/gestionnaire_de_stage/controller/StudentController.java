@@ -50,7 +50,7 @@ public class StudentController {
         return errors;
     }
 
-    @GetMapping("/student/{email}/{password}")
+    @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, String password) {
         Optional<Student> student = studentService.getOneByEmailAndPassword(email, password);
         if (student.isPresent()) {
