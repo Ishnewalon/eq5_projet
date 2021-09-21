@@ -172,20 +172,20 @@ public class MonitorServiceTest {
 
         assertTrue(actual);
     }
-    /*
+
     @Test
     public void testExistsByEmailAndPassword_withNullEntries() {
-        boolean actual = studentRepository.existsByEmailAndPassword(null, null);
+        boolean actual = monitorRepository.existsByEmailAndPassword(null, null);
 
         assertFalse(actual);
     }
-
+/*
     @Test
     public void testGetOneByEmailAndPassword_withValidEntries() {
-        String email = "jscotty@gmail.com";
-        String password = "rockrocks";
+        String email = "stepotato@gmail.com";
+        String password = "testPassword";
 
-        Optional<Student> actual = studentService.getOneByEmailAndPassword(email, password);
+        Optional<Monitor> actual = monitorService.getOneByEmailAndPassword(email, password);
 
         assertTrue(actual.isPresent());
     }
