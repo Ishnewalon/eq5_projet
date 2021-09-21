@@ -37,6 +37,7 @@ public class StudentServiceTest {
         student1.setCity("LaSalle");
         student1.setDepartment("Informatique");
         student1.setPostalCode("H5N 9F2");
+        student1.setMatricule("6473943");
 
         Student student2 = new Student();
         student2.setId(2L);
@@ -49,6 +50,7 @@ public class StudentServiceTest {
         student2.setCity("Verdun");
         student2.setDepartment("Comptabilite");
         student2.setPostalCode("K1F R5V");
+        student2.setMatricule("372824");
 
         Student student3 = new Student();
         student3.setId(3L);
@@ -61,6 +63,7 @@ public class StudentServiceTest {
         student3.setCity("LaSalle");
         student3.setDepartment("Science Humaine");
         student3.setPostalCode("H3J 1D8");
+        student3.setMatricule("1749305");
 
         studentRepository.saveAll(Arrays.asList(student1,student2,student3));
     }
@@ -80,9 +83,9 @@ public class StudentServiceTest {
         student.setEmail("cant@outlook.com");
         student.setPassword("cantPass");
         student.setDepartment("info");
+        student.setMatricule("4673943");
 
         Optional<Student> actual = studentService.create(student);
-
         assertTrue(actual.isPresent());
     }
 
