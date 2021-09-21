@@ -10,6 +10,9 @@ import javax.validation.constraints.NotNull;
 public class Student extends User{
 
     @NotNull
+    private String matricule;
+
+    @NotNull
     private String department;
 
     private String address;
