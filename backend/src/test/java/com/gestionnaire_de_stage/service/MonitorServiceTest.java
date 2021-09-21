@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.model.Monitor;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.MonitorRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -150,6 +151,49 @@ public class MonitorServiceTest {
 
         assertFalse(actual);
     }
+//////////////////
+    @Test
+    public void testfindStudentByEmailAndPassword() {
+        String email = "stepotato@gmail.com";
+        String password = "testPassword";
 
+        Monitor monitor = monitorRepository.findMonitorByEmailAndPassword(email, password);
+        String actual = monitor.getFirstName();
 
+        assertEquals(actual, "Steph");
+    }
+
+   /* @Test
+    public void testExistsByEmailAndPassword_withValidEntries() {
+        String email = "jscotty@gmail.com";
+        String password = "rockrocks";
+
+        boolean actual = studentRepository.existsByEmailAndPassword(email, password);
+
+        assertTrue(actual);
+    }
+
+    @Test
+    public void testExistsByEmailAndPassword_withNullEntries() {
+        boolean actual = studentRepository.existsByEmailAndPassword(null, null);
+
+        assertFalse(actual);
+    }
+
+    @Test
+    public void testGetOneByEmailAndPassword_withValidEntries() {
+        String email = "jscotty@gmail.com";
+        String password = "rockrocks";
+
+        Optional<Student> actual = studentService.getOneByEmailAndPassword(email, password);
+
+        assertTrue(actual.isPresent());
+    }
+
+    @Test
+    public void testGetOneByEmailAndPassword_withNullEntries() {
+        Optional<Student> actual = studentService.getOneByEmailAndPassword(null, null);
+
+        assertTrue(actual.isEmpty());
+    }*/
 }

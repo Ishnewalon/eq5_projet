@@ -1,0 +1,56 @@
+package com.gestionnaire_de_stage.controller;
+
+import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.model.Student;
+import com.gestionnaire_de_stage.repository.StudentRepository;
+import com.gestionnaire_de_stage.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@CrossOrigin
+@RequestMapping("/student")
+public class StudentController {
+
+    @Autowired
+    StudentService studentService;
+
+    @Autowired
+    StudentRepository studentRepository;
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(@Valid @RequestBody Student student) {
+        if (student.getEmail() != null && studentRepository.existsByEmail(student.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: Ce courriel existe deja!"));
+        }
+
+        return ResponseEntity.ok(studentService.create(student));
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleInvalidRequests(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
+    }
+
+    //@GetMapping("/student/{email}/{password}")
+    //public Student login(@PathVariable String email, String password) {
+        //Student student = studentRepository.findStudent
+    //}
+}

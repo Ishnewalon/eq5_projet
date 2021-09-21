@@ -162,4 +162,50 @@ public class StudentServiceTest {
 
         assertFalse(actual);
     }
+
+    @Test
+    public void testfindStudentByEmailAndPassword() {
+       String email = "jscotty@gmail.com";
+       String password = "rockrocks";
+
+       Student student = studentRepository.findStudentByEmailAndPassword(email, password);
+       String actual = student.getFirstName();
+
+       assertEquals(actual, "Jordan");
+    }
+
+    @Test
+    public void testExistsByEmailAndPassword_withValidEntries() {
+        String email = "jscotty@gmail.com";
+        String password = "rockrocks";
+
+        boolean actual = studentRepository.existsByEmailAndPassword(email, password);
+
+        assertTrue(actual);
+    }
+
+    @Test
+    public void testExistsByEmailAndPassword_withNullEntries() {
+        boolean actual = studentRepository.existsByEmailAndPassword(null, null);
+
+        assertFalse(actual);
+    }
+
+    @Test
+    public void testGetOneByEmailAndPassword_withValidEntries() {
+        String email = "jscotty@gmail.com";
+        String password = "rockrocks";
+
+        Optional<Student> actual = studentService.getOneByEmailAndPassword(email, password);
+
+        assertTrue(actual.isPresent());
+    }
+
+    @Test
+    public void testGetOneByEmailAndPassword_withNullEntries() {
+        Optional<Student> actual = studentService.getOneByEmailAndPassword(null, null);
+
+        assertTrue(actual.isEmpty());
+    }
+
 }

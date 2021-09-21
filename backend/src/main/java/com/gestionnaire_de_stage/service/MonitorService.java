@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.model.Monitor;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.MonitorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,14 @@ public class MonitorService implements ICrudService<Monitor, Long> {
         if (aLong != null && monitorRepository.existsById(aLong) && monitor != null) {
             monitor.setId(aLong);
             return Optional.of(monitorRepository.save(monitor));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Monitor> getOneByEmailAndPassword(String email, String password) {
+        if (monitorRepository.existsByEmailAndPassword(email, password)) {
+            return Optional.of(monitorRepository.findMonitorByEmailAndPassword(email, password));
         }
         return Optional.empty();
     }

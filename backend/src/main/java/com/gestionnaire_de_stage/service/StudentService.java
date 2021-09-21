@@ -46,6 +46,14 @@ public class StudentService implements ICrudService<Student, Long> {
     }
 
     @Override
+    public Optional<Student> getOneByEmailAndPassword(String email, String password) {
+        if (studentRepository.existsByEmailAndPassword(email, password)) {
+            return Optional.of(studentRepository.findStudentByEmailAndPassword(email, password));
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public boolean deleteByID(Long aLong) {
         if (aLong != null && studentRepository.existsById(aLong)) {
             studentRepository.deleteById(aLong);
