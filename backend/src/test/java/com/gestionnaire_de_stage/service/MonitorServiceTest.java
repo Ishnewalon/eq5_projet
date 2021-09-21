@@ -25,7 +25,7 @@ public class MonitorServiceTest {
     private MonitorService monitorService;
 
     @BeforeAll
-    public void insertData(){
+    public void insertData() {
         Monitor monitor1 = new Monitor();
         monitor1.setId(1L);
         monitor1.setFirstName("Steph");
@@ -57,14 +57,14 @@ public class MonitorServiceTest {
     }
 
     @Test
-    public void testFindAll(){
+    public void testFindAll() {
         int actual = monitorRepository.findAll().size();
 
         assertEquals(3, actual);
     }
 
     @Test
-    public void testCreate_withValidMonitor(){
+    public void testCreate_withValidMonitor() {
         Monitor monitor = new Monitor();
         monitor.setName("toto");
         monitor.setFirstName("titi");
@@ -77,14 +77,14 @@ public class MonitorServiceTest {
     }
 
     @Test
-    public void testCreate_withNullMonitor(){
+    public void testCreate_withNullMonitor() {
         Optional<Monitor> actual = monitorService.create(null);
 
         assertTrue(actual.isEmpty());
     }
 
     @Test
-    public void testGetByID_withValidID(){
+    public void testGetByID_withValidID() {
         Long validID = 1L;
 
         Optional<Monitor> actual = monitorService.getOneByID(validID);
@@ -93,7 +93,7 @@ public class MonitorServiceTest {
     }
 
     @Test
-    public void testGetByID_withNullID(){
+    public void testGetByID_withNullID() {
         Optional<Monitor> actual = monitorService.getOneByID(null);
 
         assertTrue(actual.isEmpty ());

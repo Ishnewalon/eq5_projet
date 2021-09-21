@@ -8,7 +8,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.List;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,10 +19,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class StudentServiceTest {
 
     @Autowired
-    StudentRepository repository;
+    StudentRepository studentRepository;
+
+    @Autowired
+    StudentService studentService;
 
     @BeforeAll
-    public void insertData(){
+    public void insertData() {
         Student student1 = new Student();
         student1.setId(1L);
         student1.setName("Scott");
@@ -39,7 +44,7 @@ public class StudentServiceTest {
         student2.setFirstName("Paul");
         student2.setEmail("pertFaul@gmail.com");
         student2.setNumTel("514-765-8357");
-        student2.setPassword("kald32");
+        student2.setPassword("kald329345");
         student2.setAddress("961 Lifew");
         student2.setCity("Verdun");
         student2.setDepartment("Comptabilite");
@@ -51,19 +56,110 @@ public class StudentServiceTest {
         student3.setFirstName("Emily");
         student3.setEmail("treme@gmail.com");
         student3.setNumTel("514-924-7854");
-        student3.setPassword("tough");
+        student3.setPassword("tough8475");
         student3.setAddress("8542 Schevchenko");
         student3.setCity("LaSalle");
         student3.setDepartment("Science Humaine");
         student3.setPostalCode("H3J 1D8");
 
-        repository.saveAll(Arrays.asList(student1, student2, student3));
+        studentRepository.saveAll(Arrays.asList(student1,student2,student3));
     }
 
     @Test
-    public void getAllStudents(){
-        int actual = repository.findAll().size();
+    public void testFindAll() {
+        int actual = studentRepository.findAll().size();
 
         assertEquals(actual, 3);
+    }
+
+    @Test
+    public void testCreate_withValidStudent() {
+        Student student = new Student();
+        student.setName("Candle");
+        student.setFirstName("Tea");
+        student.setEmail("cant@outlook.com");
+        student.setPassword("cantPass");
+        student.setDepartment("info");
+
+        Optional<Student> actual = studentService.create(student);
+
+        assertTrue(actual.isPresent());
+    }
+
+    @Test
+    public void testCreate_withNullStudent() {
+        Optional<Student> actual = studentService.create(null);
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    public void testGetByID_withValidID() {
+        Long validID = 1L;
+
+        Optional<Student> actual = studentService.getOneByID(validID);
+
+        assertTrue(actual.isPresent());
+    }
+
+    @Test
+    public void testGetByID_withNullID() {
+        Optional<Student> actual = studentService.getOneByID(null);
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    public void testGetAll() {
+        int expectedLength = 3;
+
+        List<Student> studentList = studentService.getAll();
+
+        assertEquals(expectedLength, studentList.size());
+    }
+
+    @Test
+    public void testUpdate_withValidEntries(){
+        Student student = new Student();
+        student.setName("Candle");
+        student.setFirstName("Tea");
+        student.setEmail("cant@outlook.com");
+        student.setPassword("cantPass");
+        student.setDepartment("info");
+        Long validID = 2L;
+
+        Optional<Student> actual = studentService.update(student, validID);
+
+        assertTrue(actual.isPresent());
+    }
+
+    @Test
+    public void testUpdate_withNullEntries() {
+        Student student = new Student();
+        student.setName("Candle");
+        student.setFirstName("Tea");
+        student.setEmail("cant@outlook.com");
+        student.setPassword("cantPass");
+        student.setDepartment("info");
+
+        Optional<Student> actual = studentService.update(student, null);
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    public void testDelete_withValidID() {
+        Long validId = 1L;
+
+        boolean actual = studentService.deleteByID(validId);
+
+        assertTrue(actual);
+    }
+
+    @Test
+    public void testDelete_withNullID() {
+        boolean actual = studentService.deleteByID(null);
+
+        assertFalse(actual);
     }
 }

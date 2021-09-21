@@ -17,7 +17,7 @@ public class MonitorService implements ICrudService<Monitor, Long> {
 
 
     @Override
-    public Optional<Monitor> create(Monitor monitor) throws ValidationException{
+    public Optional<Monitor> create(Monitor monitor) throws ValidationException {
         if (monitor != null) {
             return Optional.of(monitorRepository.save(monitor));
         }
