@@ -1,7 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.model.Monitor;
-import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.MonitorRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
