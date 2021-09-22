@@ -3,7 +3,8 @@ import {Step} from "../Register";
 // eslint-disable-next-line
 const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 const regexPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-export const step_InformationGeneral = ({prevStep, nextStep, handleChange, values}) => {
+
+function InformationGeneral({prevStep, nextStep, handleChange, values}) {
 
     const Previous = e => {
         e.preventDefault();
@@ -97,3 +98,5 @@ export const step_InformationGeneral = ({prevStep, nextStep, handleChange, value
         </div>
     )
 }
+
+export default InformationGeneral;

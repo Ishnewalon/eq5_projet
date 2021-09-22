@@ -2,7 +2,7 @@ import {Step} from "../Register";
 
 const regexCodePostal = /^([A-Za-z]\s?[0-9]){3}$/;
 
-export const step_Monitor = ({prevStep, nextStep, handleChange, values}) => {
+function Monitor({prevStep, nextStep, handleChange, values}) {
 
     const Previous = e => {
         e.preventDefault();
@@ -91,3 +91,5 @@ export const step_Monitor = ({prevStep, nextStep, handleChange, values}) => {
         </div>
     )
 }
+
+export default Monitor;

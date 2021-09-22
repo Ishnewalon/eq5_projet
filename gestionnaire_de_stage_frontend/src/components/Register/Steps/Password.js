@@ -1,4 +1,4 @@
-export const step_Password = ({prevStep, nextStep, handleChange, values}) => {
+function Password({prevStep, nextStep, handleChange, values}) {
 
     const Previous = e => {
         e.preventDefault();
@@ -37,3 +37,5 @@ export const step_Password = ({prevStep, nextStep, handleChange, values}) => {
         </div>
     )
 }
+
+export default Password;
