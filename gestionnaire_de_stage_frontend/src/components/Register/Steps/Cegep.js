@@ -1,6 +1,6 @@
 import {Step} from "../Register";
 
-export const Step_Cegep = ({prevStep, nextStep, handleChange, matricule}) => {
+export const step_Cegep = ({prevStep, nextStep, handleChange, matricule}) => {
 
     const Previous = e => {
         e.preventDefault()

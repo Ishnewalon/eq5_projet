@@ -1,10 +1,10 @@
 import './Register.css'
 import React, {Component} from "react";
-import {Step_InformationGeneral} from "./Steps/InformationGeneral";
-import {Step_Monitor} from "./Steps/Monitor";
-import {Step_Choice} from "./Steps/Choices";
-import {Step_Cegep} from "./Steps/Cegep";
-import {Step_Password} from "./Steps/Password";
+import {step_InformationGeneral} from "./Steps/InformationGeneral";
+import {step_Monitor} from "./Steps/Monitor";
+import {step_Choice} from "./Steps/Choices";
+import {step_Cegep} from "./Steps/Cegep";
+import {step_Password} from "./Steps/Password";
 
 export const Step = {
     CHOICE: "choice",
@@ -15,9 +15,7 @@ export const Step = {
     PASSWORD: "password",
 }
 
-
 export class Register extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -73,23 +71,23 @@ export class Register extends Component {
 
         switch (step) {
             case Step.CHOICE:
-                show = <Step_Choice prevStep={this.prevStep} nextStep={this.nextStep}/>
+                show = <step_Choice prevStep={this.prevStep} nextStep={this.nextStep}/>
                 break;
             case Step.CEGEP:
-                show = <Step_Cegep prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
+                show = <step_Cegep prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
                                    matricule={matricule}/>
                 break;
             case Step.MONITOR:
-                show = <Step_Monitor prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
+                show = <step_Monitor prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
                                      values={valMonitor}/>
                 break;
             case Step.GENERAL:
-                show = <Step_InformationGeneral prevStep={this.prevStep} nextStep={this.nextStep}
+                show = <step_InformationGeneral prevStep={this.prevStep} nextStep={this.nextStep}
                                                 handleChange={this.handleChange}
                                                 values={valGeneral}/>
                 break;
             case Step.PASSWORD:
-                show = <Step_Password prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
+                show = <step_Password prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
                                       values={valPassword}/>
                 break;
         }
@@ -118,7 +116,5 @@ export class Register extends Component {
                 </form>
             </div>
         </div>;
-
-
     }
 }

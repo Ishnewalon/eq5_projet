@@ -1,6 +1,6 @@
 import {Step} from "../Register";
 
-export const Step_Choice = ({nextStep}) => {
+export const step_Choice = ({nextStep}) => {
 
     const Continue = (value) => {
         console.log(value)
