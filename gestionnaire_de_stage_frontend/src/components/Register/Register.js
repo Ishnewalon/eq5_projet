@@ -5,6 +5,7 @@ import InformationGeneral from "./Steps/InformationGeneral";
 import Monitor from "./Steps/Monitor";
 import Choice from "./Steps/Choices";
 import Cegep from "./Steps/Cegep";
+import {MonitorModel, Student, Supervisor} from "../../models/User";
 
 const header = new Headers()
 header.append('content-type', 'application/json')
@@ -32,7 +33,6 @@ export class Register extends Component {
             step: Step.CHOICE,
             previousStep: [],
             userType: null,
-            active: true,
             matricule: '',
             email: '',
             password: '',
@@ -47,7 +47,7 @@ export class Register extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    async getData() {
+    async getData(user) {
         const response = await fetch("http://localhost:4000/posts", {
             method: 'POST',
             mode: 'cors', // no-cors, *cors, same-origin
@@ -56,7 +56,7 @@ export class Register extends Component {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(this.state)
+            body: JSON.stringify(user)
         });
         const data = await response.json();
 
@@ -86,7 +86,21 @@ export class Register extends Component {
         this.setState({[input]: e.target.value});
     }
     finish = () => {
-        this.getData().then()
+        const {
+            email, password, first_name, last_name, phone, companyName, address, codePostal, city, matricule
+        } = this.state;
+        let user = null
+        if (this.state.userType === UserType.STUDENT) {
+            user = new Student(email, password, last_name, first_name, phone, matricule);
+        }
+        if (this.state.userType === UserType.SUPERVISOR) {
+            user = new Supervisor(email, password, last_name, first_name, phone, matricule);
+        }
+        if (this.state.userType === UserType.MONITOR) {
+            user = new MonitorModel(email, password, last_name, first_name, phone, companyName, address, city, codePostal);
+        }
+
+        this.getData(user).then()
     }
 
     render() {
