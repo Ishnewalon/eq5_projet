@@ -2,6 +2,16 @@ package com.gestionnaire_de_stage.repository;
 
 import com.gestionnaire_de_stage.model.Manager;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import java.util.Optional;
+
+@Repository
 public interface ManagerRepository extends JpaRepository<Manager, Long> {
+    Optional<Manager> findManagerByEmailAndPassword(@NotBlank @Email String email,@NotBlank String password);
 }

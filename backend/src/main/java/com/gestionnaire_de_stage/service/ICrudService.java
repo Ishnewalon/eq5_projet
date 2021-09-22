@@ -1,7 +1,5 @@
 package com.gestionnaire_de_stage.service;
 
-import javax.swing.text.html.Option;
-import javax.xml.bind.ValidationException;
 import java.util.List;
 import java.util.Optional;
 

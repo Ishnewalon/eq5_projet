@@ -7,14 +7,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@DataJpaTest
+import static org.junit.jupiter.api.Assertions.*;
+
+@DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = JpaRepository.class))
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MonitorServiceTest {
 
