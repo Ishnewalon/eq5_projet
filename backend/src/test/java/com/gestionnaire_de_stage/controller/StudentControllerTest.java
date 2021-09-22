@@ -99,6 +99,21 @@ public class StudentControllerTest {
         assertThat(actualStudent.getName()).isEqualTo("Brawl");
     }
 
+    @Test
+    public void testStudentLogin_withNullEntries() throws Exception {
+        String email = null;
+        String password = null;
+        when(studentService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.empty());
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/null/null")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+    //    var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+     //   assertThat(actualStudent.getName()).isEqualTo("Brawl");
+    }
+
     private Student studentLogin() {
         Student student = new Student();
         student.setId(1L);
