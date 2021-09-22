@@ -35,13 +35,9 @@ public class StudentController {
                     .body(new ResponseMessage("Erreur: Ce courriel existe deja!"));
         }
         Optional<Student> opt = studentService.create(student);
-        if (opt.isEmpty()) {
-            System.out.println("It is empty");
-        }
         Student student1 = opt.get();
 
         return new ResponseEntity<>(student1, HttpStatus.CREATED);
-       // return ResponseEntity.ok(studentService.create(student));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -57,7 +53,7 @@ public class StudentController {
     }
 
     @GetMapping("/{email}/{password}")
-    public ResponseEntity<?> login(@PathVariable String email, String password) {
+    public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
         Optional<Student> student = studentService.getOneByEmailAndPassword(email, password);
         if (student.isPresent()) {
             return ResponseEntity.ok(student.get());

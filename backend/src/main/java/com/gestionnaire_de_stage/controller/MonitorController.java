@@ -52,7 +52,11 @@ public class MonitorController {
     }
 
     @GetMapping("/{email}/{password}")
+<<<<<<< HEAD
     public ResponseEntity<?> login(@PathVariable String email,@PathVariable String password) {
+=======
+    public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
+>>>>>>> 8e6b066110e33c54842e5c2cb40f754e9ab18d72
         Optional<Monitor> monitor = monitorService.getOneByEmailAndPassword(email, password);
         if (monitor.isPresent()) {
             return ResponseEntity.ok(monitor.get());
