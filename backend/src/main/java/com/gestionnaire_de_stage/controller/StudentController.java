@@ -53,7 +53,7 @@ public class StudentController {
     }
 
     @GetMapping("/{email}/{password}")
-    public ResponseEntity<?> login(@PathVariable String email, String password) {
+    public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
         Optional<Student> student = studentService.getOneByEmailAndPassword(email, password);
         if (student.isPresent()) {
             return ResponseEntity.ok(student.get());

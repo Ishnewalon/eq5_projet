@@ -82,4 +82,37 @@ public class StudentControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         //assertThat(actualStudent).isEqualTo(null);
     }
+
+    @Test
+    public void testStudentLogin_withValidEntries() throws Exception {
+        Student student = studentLogin();
+        String email = "clip@gmail.com";
+        String password = "thiswilldo";
+        when(studentService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(student));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/clip@gmail.com/thiswilldo")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualStudent.getName()).isEqualTo("Brawl");
+    }
+
+    private Student studentLogin() {
+        Student student = new Student();
+        student.setId(1L);
+        student.setName("Brawl");
+        student.setFirstName("Spaghetta");
+        student.setNumTel("514-546-2375");
+        student.setEmail("clip@gmail.com");
+        student.setPassword("thiswilldo");
+        student.setAddress("758 George");
+        student.setCity("LaSalle");
+        student.setDepartment("Informatique");
+        student.setPostalCode("H5N 9F2");
+        student.setMatricule("1740934");
+
+        return student;
+    }
 }
