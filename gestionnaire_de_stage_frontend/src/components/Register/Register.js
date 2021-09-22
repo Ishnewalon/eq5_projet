@@ -9,43 +9,47 @@ const Step = {
     STUDENT: "student",
     PASSWORD: "password",
 }
+const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+const regexPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
 export class Register extends Component {
 
-    state = {
-        cegep: {
-            active: true,
-            matricule: ''
-        },
-        step: Step.CHOICE,
-        lastStep: [],
-        generalInfo: {
-            email: '',
-            password: '',
-            last_name: '',
-            first_name: '',
-            phone: '',
-        },
-        monitor: {
-            companyName: '',
-            address: '',
-            codePostal: '',
-            city: '',
-        },
-
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            step: Step.CHOICE,
+            previousStep: [],
+            cegep: {
+                active: true,
+                matricule: ''
+            },
+            generalInfo: {
+                email: '',
+                password: '',
+                last_name: '',
+                first_name: '',
+                phone: '',
+            },
+            monitor: {
+                companyName: '',
+                address: '',
+                codePostal: '',
+                city: '',
+            },
+        }
     }
+
     prevStep = () => {
-        const {lastStep} = this.state;
-        this.setState({step: lastStep[lastStep.length - 1]});
-        lastStep.pop()
+        const {previousStep} = this.state;
+        this.setState({step: previousStep[previousStep.length - 1]});
+        previousStep.pop()
     }
 
     nextStep = (val) => {
-        const {lastStep} = this.state;
+        const {previousStep} = this.state;
         const {step} = this.state;
-        lastStep.push(step)
-        this.setState({lastStep: lastStep});
+        previousStep.push(step)
+        this.setState({lastStep: previousStep});
         this.setState({step: val});
 
     }
@@ -67,10 +71,9 @@ export class Register extends Component {
             codePostal,
             matricule
         } = this.state;
-        const values = {email, password, first_name, last_name, phone}
+        const values = {email, first_name, last_name, phone}
         const valMoniteur = {companyName, city, address, codePostal}
         const valPwd = {password}
-        const mat = {matricule}
         let show = null;
 
         switch (step) {
@@ -79,14 +82,15 @@ export class Register extends Component {
                 break;
             case Step.CEGEP:
                 show = <Cegep prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
-                              values={mat}/>
+                              matricule={matricule}/>
                 break;
             case Step.MONITOR:
                 show = <Moniteur prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
                                  values={valMoniteur}/>
                 break;
             case Step.GENERAL:
-                show = <InformationGeneral prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
+                show = <InformationGeneral prevStep={this.prevStep} nextStep={this.nextStep}
+                                           handleChange={this.handleChange}
                                            values={values}/>
                 break;
             case Step.PASSWORD:
@@ -111,7 +115,6 @@ export class Register extends Component {
             <div className="form-container">
                 <form className="bg-dark px-3 py-4 rounded shadow-lg mt-5" id="contact_form">
                     <fieldset>
-
                         <legend>
                             <center><h2>Inscription</h2></center>
                             <center><h3>{step}</h3></center>
@@ -127,7 +130,7 @@ export class Register extends Component {
     }
 }
 
-const InformationGeneral = ({prevStep,nextStep, handleChange, values}) => {
+const InformationGeneral = ({prevStep, nextStep, handleChange, values}) => {
 
     const Previous = e => {
         e.preventDefault();
@@ -135,6 +138,46 @@ const InformationGeneral = ({prevStep,nextStep, handleChange, values}) => {
     }
     const Continue = (val) => {
         nextStep(val);
+    }
+
+
+    function verification() {
+        if (!values.first_name) {
+            alert("firstname empty")
+            return false
+        }
+        if (!values.last_name) {
+            alert("lastname empty")
+            return false
+        }
+        if (!values.email) {
+            alert("email empty")
+            return false
+        }
+        if (!values.phone) {
+            alert("phone empty")
+            return false
+        }
+
+        if (!values.first_name.match(/^[a-zA-Z]+$/)) {
+            alert("firstname invalid")
+            return false;
+        }
+        if (!values.last_name.match(/^[a-zA-Z]+$/)) {
+            alert("lastname invalid")
+            return false;
+        }
+        if (!regexEmail.test(values.email)) {
+            alert("email invalid")
+            return false;
+        }
+        if (!regexPhone.test(values.phone)) {
+            alert("phone invalid")
+            return false;
+        }
+
+
+        return true;
     }
 
     return (<div>
@@ -159,14 +202,14 @@ const InformationGeneral = ({prevStep,nextStep, handleChange, values}) => {
             <div className="form-group">
                 <label>E-Mail</label>
                 <div className="input-group">
-                    <input name="email" placeholder="Adresse E-mail" className="form-control" type="text"
+                    <input name="email" placeholder="Adresse E-mail" className="form-control" type="email"
                            value={values.email} onChange={handleChange("email")}/>
                 </div>
             </div>
             <div className="form-group">
                 <label>Téléphone</label>
                 <div className="input-group">
-                    <input name="contact_no" placeholder="000 000 000" className="form-control" type="text"
+                    <input name="contact_no" placeholder="000 000 000" className="form-control" type="tel"
                            value={values.phone} onChange={handleChange('phone')}/>
                 </div>
             </div>
@@ -175,7 +218,8 @@ const InformationGeneral = ({prevStep,nextStep, handleChange, values}) => {
                 <div>
                     <button className="btn btn-primary" type={"button"} onClick={Previous}>Precedent</button>
                     <button className="btn btn-primary" type={"button"} onClick={() => {
-                        Continue(Step.PASSWORD)
+                        if (verification())
+                            Continue(Step.PASSWORD)
                     }}>Suivant
                     </button>
                 </div>
@@ -232,7 +276,8 @@ const Moniteur = ({prevStep, nextStep, handleChange, values}) => {
                     <button className="btn btn-primary" type={"button"} onClick={Previous}>Precedent</button>
                     <button className="btn btn-primary" type={"button"} onClick={() => {
                         Continue(Step.GENERAL)
-                    }}>Suivant</button>
+                    }}>Suivant
+                    </button>
                 </div>
             </div>
         </div>
@@ -279,7 +324,7 @@ const PwdPart = ({prevStep, nextStep, handleChange, values}) => {
     )
 }
 
-const Cegep = ({prevStep, nextStep, handleChange, values}) => {
+const Cegep = ({prevStep, nextStep, handleChange, matricule}) => {
 
     const Previous = e => {
         e.preventDefault()
@@ -295,7 +340,7 @@ const Cegep = ({prevStep, nextStep, handleChange, values}) => {
                     <label>Matricule</label>
                     <div className="input-group">
                         <input name="matricule" placeholder="Matricule" className="form-control" type="text"
-                               value={values.matricule} onChange={handleChange('matricule')}/>
+                               value={matricule} onChange={handleChange('matricule')}/>
                     </div>
                 </div>
             </div>
@@ -317,7 +362,6 @@ const Choice = ({nextStep}) => {
     const Continue = (value) => {
         console.log(value)
         nextStep(value);
-
     }
 
     return (<div>
