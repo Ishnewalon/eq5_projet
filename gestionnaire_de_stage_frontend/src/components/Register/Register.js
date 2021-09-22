@@ -67,7 +67,6 @@ export class Register extends Component {
         } = this.state;
         const valGeneral = {email, first_name, last_name, phone}
         const valMonitor = {companyName, city, address, codePostal}
-        const valPassword = {password}
         let show = null;
 
         switch (step) {
@@ -88,8 +87,9 @@ export class Register extends Component {
                                            values={valGeneral}/>
                 break;
             case Step.PASSWORD:
-                show = <Password prevStep={this.prevStep} nextStep={this.nextStep} handleChange={this.handleChange}
-                                 values={valPassword}/>
+                show = <Password prevStep={this.prevStep} handleChange={this.handleChange}
+                                 values={this.state}/>
+
                 break;
             default:
                 break;

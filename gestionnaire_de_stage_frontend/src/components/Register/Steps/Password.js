@@ -1,13 +1,42 @@
-function Password({prevStep, nextStep, handleChange, values}) {
+const header = new Headers()
+header.append('content-type', 'application/json')
+
+async function getData(v) {
+    const response = await fetch("http://localhost:4000/posts", {
+        method: 'POST',
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(v)
+    });
+    const data = await response.json();
+
+    // store the data into our books variable
+    console.log(data)
+}
+
+function Password({prevStep, handleChange, values}) {
 
     const Previous = e => {
         e.preventDefault();
         prevStep();
     }
-    const Continue = e => {
-        e.preventDefault();
-        nextStep();
+
+    function Continue(e) {
+        e.preventDefault();//https://postman-echo.com/get?foo1=bar1&foo2=bar2
+        // fetch('https://localhost:4000',{
+        //     method: 'GET',
+        //     headers: {"Content-Type": "application/json"},
+        //     // body: JSON.stringify(values)
+        // }).then(() =>{
+        //       console.log("ajoute")
+        //  })
+        getData(values).then()
     }
+
     return (<div>
             <div className="form-group row">
                 <div className="col-md-12">
@@ -37,5 +66,6 @@ function Password({prevStep, nextStep, handleChange, values}) {
         </div>
     )
 }
+
 
 export default Password;
