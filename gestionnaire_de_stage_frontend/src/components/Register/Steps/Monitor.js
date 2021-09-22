@@ -1,14 +1,16 @@
-import {Step} from "../Register";
+import {Step, UserType} from "../Register";
 
 const regexCodePostal = /^([A-Za-z]\s?[0-9]){3}$/;
 
-function Monitor({prevStep, nextStep, handleChange, values}) {
+function Monitor({prevStep, nextStep, updateUserType, handleChange, values}) {
+
 
     const Previous = e => {
         e.preventDefault();
         prevStep();
     }
     const Continue = val => {
+        updateUserType(UserType.MONITOR);
         nextStep(val);
     }
 

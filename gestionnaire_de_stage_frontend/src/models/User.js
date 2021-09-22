@@ -1,4 +1,20 @@
-export class User {
+export class Monitor extends User, Location {
+    companyName = '';
+}
+
+export class Student extends User, Cegep, Location {
+    constructor() {
+        super();
+    }
+}
+
+export class Supervisor extends User, Cegep {
+    constructor() {
+        super();
+    }
+}
+
+class User {
 
     email = '';
     password = '';
@@ -6,18 +22,16 @@ export class User {
     first_name = '';
     phone = ''
 
-    localisation=null
 }
 
-class Monitor extends User{
-    companyName = '';
-}
 
-class Localisation {
-    address = '';
-    codePostal = '';
-    city = ''
-}
-class Cegep extends User{
+class Cegep {
     matricule = '';
+}
+
+class Location {
+    address = '';
+    city = '';
+    postalCode = '';
+
 }

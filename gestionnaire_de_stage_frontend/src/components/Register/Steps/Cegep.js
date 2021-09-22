@@ -1,12 +1,16 @@
-import {Step} from "../Register";
+import {Step, UserType} from "../Register";
 
-function Cegep({prevStep, nextStep, handleChange, matricule}) {
+function Cegep({prevStep, nextStep, updateUserType, handleChange, matricule}) {
 
     const Previous = e => {
         e.preventDefault()
         prevStep();
     }
     const Continue = val => {
+        if (matricule.length === 5)
+            updateUserType(UserType.SUPERVISOR)
+        if (matricule.length === 7)
+            updateUserType(UserType.STUDENT)
         nextStep(val);
     }
 
