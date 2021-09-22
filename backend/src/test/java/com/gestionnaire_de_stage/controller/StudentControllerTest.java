@@ -43,7 +43,7 @@ public class StudentControllerTest {
     private Student expected;
 
     @Test
-    public void studentSignUpTest() throws Exception {
+    public void testStudentSignUp_withValidEntries() throws Exception {
         Student student = new Student();
         student.setId(1L);
         student.setName("Brawl");
@@ -66,5 +66,20 @@ public class StudentControllerTest {
         var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(actualStudent).isEqualTo(student);
+    }
+
+    @Test
+    public void testStudentSignUp_withNullEntries() throws Exception {
+        Student student = null;
+
+        when(studentService.create(student)).thenReturn(Optional.empty());
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/student/signup")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(student))).andReturn();
+
+      //  var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), );
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        //assertThat(actualStudent).isEqualTo(null);
     }
 }
