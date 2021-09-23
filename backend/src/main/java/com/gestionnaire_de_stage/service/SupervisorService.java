@@ -38,6 +38,10 @@ public class SupervisorService implements ICrudService<Supervisor, Long> {
 
     @Override
     public Optional<Supervisor> update(Supervisor supervisor, Long aLong) throws ValidationException {
+        if (aLong != null && supervisorRepository.existsById(aLong) && supervisor != null) {
+            supervisor.setId(aLong);
+            return Optional.of(supervisorRepository.save(supervisor));
+        }
         return Optional.empty();
     }
 

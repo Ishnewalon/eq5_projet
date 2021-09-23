@@ -105,8 +105,39 @@ public class SupervisorServiceTest {
     @Test
     public void testGetAll() {
         int expectedLength = 3;
+
         List<Supervisor> supervisorList = supervisorService.getAll();
 
         assertEquals(expectedLength, supervisorList.size());
+    }
+
+    @Test
+    public void testUpdate_withValidEntries() {
+        Supervisor supervisor = new Supervisor();
+        supervisor.setName("Trap");
+        supervisor.setFirstName("Moose");
+        supervisor.setEmail("tram@gmail.com");
+        supervisor.setPassword("piecesofcheese");
+        supervisor.setDepartment("Batiment");
+        supervisor.setMatricule("02834");
+        Long validID = 2L;
+
+        Optional<Supervisor> actual = supervisorService.update(supervisor, validID);
+
+        assertTrue(actual.isPresent());
+    }
+
+    @Test
+    public void testUpdate_withNullEntries() {
+        Supervisor supervisor = new Supervisor();
+        supervisor.setName("Candle");
+        supervisor.setFirstName("Tea");
+        supervisor.setEmail("cant@outlook.com");
+        supervisor.setPassword("cantPass");
+        supervisor.setDepartment("info");
+
+        Optional<Supervisor> actual = supervisorService.update(supervisor, null);
+
+        assertTrue(actual.isEmpty());
     }
 }
