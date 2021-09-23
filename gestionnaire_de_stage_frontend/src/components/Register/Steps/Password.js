@@ -1,44 +1,53 @@
-function Password({prevStep, finish, handleChange, values}) {
+import {Component} from "react";
 
-    const Previous = e => {
+export default class Password extends Component {
+
+    constructor(props) {
+        super(props);
+        this.continue=this.continue.bind(this)
+        this.previous=this.previous.bind(this)
+    }
+    previous(e) {
         e.preventDefault();
-        prevStep();
+        this.props.prevStep();
     }
 
-    function Continue(e) {
+    continue(e) {
         e.preventDefault();
-        finish();
+        this.props.finish();
     }
 
-    return (<div>
-            <div className="form-group row">
-                <div className="col-md-12">
-                    <label>Mot de passe</label>
-                    <div className="input-group">
-                        <input name="pwd" placeholder="Votre mot de passe" className="form-control" type="password"
-                               value={values.password} onChange={handleChange('password')}/>
+    render() {
+        return (<div>
+                <div className="form-group row">
+                    <div className="col-md-12">
+                        <label>Mot de passe</label>
+                        <div className="input-group">
+                            <input name="pwd" placeholder="Votre mot de passe" className="form-control" type="password"
+                                   value={this.props.password} onChange={this.props.handleChange('password')}/>
+                        </div>
                     </div>
-                </div>
 
-                {/*TODO REVOIR LA CONFIRMATION DU MDP*/}
-                {/*<div className="col-md-6">*/}
-                {/*    <label>Confirmez votre mot de passe</label>*/}
-                {/*    <div className="input-group">*/}
-                {/*        <input name="pwd2" placeholder="Confirmez votre mot de passe" className="form-control" type="text"*/}
-                {/*               value={values.pwd2} onChange={handleChange('pwd2')}/>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-                <div className="form-group text-center">
-                    <label/>
-                    <div>
-                        <button className="btn btn-primary" type={"button"} onClick={Previous}>Precedent</button>
-                        <button className="btn btn-primary" type={"button"} onClick={Continue}>Suivant</button>
+                    {/*TODO REVOIR LA CONFIRMATION DU MDP*/}
+                    {/*<div className="col-md-6">*/}
+                    {/*    <label>Confirmez votre mot de passe</label>*/}
+                    {/*    <div className="input-group">*/}
+                    {/*        <input name="pwd2" placeholder="Confirmez votre mot de passe" className="form-control" type="text"*/}
+                    {/*               value={values.pwd2} onChange={handleChange('pwd2')}/>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    <div className="form-group text-center">
+                        <label/>
+                        <div>
+                            <button className="btn btn-primary" type={"button"}
+                                    onClick={this.previous}>Precedent
+                            </button>
+                            <button className="btn btn-primary" type={"button"} onClick={this.continue}>Suivant
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
-
-
-export default Password;

@@ -6,6 +6,7 @@ import Monitor from "./Steps/Monitor";
 import Choice from "./Steps/Choices";
 import Cegep from "./Steps/Cegep";
 import {MonitorModel, Student, Supervisor} from "../../models/User";
+import {getData} from "../../services/auth-service"
 
 const header = new Headers()
 header.append('content-type', 'application/json')
@@ -26,7 +27,7 @@ export const UserType = {
 
 }
 
-export class Register extends Component {
+export default class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -70,6 +71,7 @@ export class Register extends Component {
     handleChange = input => e => {
         this.setState({[input]: e.target.value});
     }
+
     finish = () => {
         const {
             email, password, first_name, last_name, phone, companyName, address, codePostal, city, matricule
@@ -118,7 +120,7 @@ export class Register extends Component {
                 break;
             case Step.PASSWORD:
                 show = <Password prevStep={this.prevStep} finish={this.finish} handleChange={this.handleChange}
-                                 values={this.state}/>
+                                 password={password}/>
 
                 break;
             default:

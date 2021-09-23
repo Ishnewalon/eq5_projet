@@ -1,4 +1,4 @@
-async function getData(user) {
+export async function getData(user) {
     const response = await fetch("http://localhost:4000/posts", {
         method: 'POST',
         mode: 'cors', // no-cors, *cors, same-origin

@@ -1,41 +1,44 @@
 import {Step, UserType} from "../Register";
+import {Component} from "react";
 
-function Cegep({prevStep, nextStep, updateUserType, handleChange, matricule}) {
+export default class Cegep extends Component {
 
-    const Previous = e => {
+    previous(e) {
         e.preventDefault()
-        prevStep();
-    }
-    const Continue = val => {
-        if (matricule.length === 5)
-            updateUserType(UserType.SUPERVISOR)
-        if (matricule.length === 7)
-            updateUserType(UserType.STUDENT)
-        nextStep(val);
+        this.props.prevStep();
     }
 
-    return (<div>
-            <div className="form-group row">
-                <div className="col-md-12">
-                    <label>Matricule</label>
-                    <div className="input-group">
-                        <input name="matricule" placeholder="Matricule" className="form-control" type="number"
-                               value={matricule} onChange={handleChange('matricule')}/>
+    continue(val) {
+        if (this.props.matricule.length === 5)
+            this.props.updateUserType(UserType.SUPERVISOR)
+        if (this.props.matricule.length === 7)
+            this.props.updateUserType(UserType.STUDENT)
+        this.props.nextStep(val);
+    }
+
+    render() {
+        return (<div>
+                <div className="form-group row">
+                    <div className="col-md-12">
+                        <label>Matricule</label>
+                        <div className="input-group">
+                            <input name="matricule" placeholder="Matricule" className="form-control" type="number"
+                                   value={this.props.matricule} onChange={this.props.handleChange('matricule')}/>
+                        </div>
+                    </div>
+                </div>
+                <div className="form-group text-center">
+                    <label/>
+                    <div>
+                        <button className="btn btn-primary" type={"button"} onClick={this.previous}>Precedent</button>
+                        <button className="btn btn-primary" type={"button"} onClick={() => {
+                            this.continue(Step.GENERAL)
+                        }}>Suivant
+                        </button>
                     </div>
                 </div>
             </div>
-            <div className="form-group text-center">
-                <label/>
-                <div>
-                    <button className="btn btn-primary" type={"button"} onClick={Previous}>Precedent</button>
-                    <button className="btn btn-primary" type={"button"} onClick={() => {
-                        Continue(Step.GENERAL)
-                    }}>Suivant
-                    </button>
-                </div>
-            </div>
-        </div>
-    )
+        )
+    }
 }
 
-export default Cegep;

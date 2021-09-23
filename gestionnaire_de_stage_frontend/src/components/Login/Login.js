@@ -3,9 +3,6 @@ import {Component} from "react";
 
 class Login extends Component {
 
-    Continue = (val) => {
-        nextStep(val);
-    }
 
 render(){
     return (<div>
@@ -14,7 +11,7 @@ render(){
                     <label>Matricule</label>
                     <div className="input-group">
                         <input name="matricule" placeholder="Matricule" className="form-control" type="text"
-                               value={values.matricule} onChange={handleChange('first_name')}/>
+                               value={this.props.values.matricule} onChange={this.props.handleChange('matricule')}/>
                     </div>
                 </div>
                 <div className="col-md-6">
@@ -22,7 +19,7 @@ render(){
                     <div>
                         <div className="input-group">
                             <input name="password" placeholder="Votre mot de passe" className="form-control" type="password"
-                                   value={values.password} onChange={handleChange('password')}/>
+                                   value={this.props.values.password} onChange={this.props.handleChange('password')}/>
                         </div>
                     </div>
                 </div>
@@ -32,8 +29,7 @@ render(){
                     <button className="btn btn-primary" type={"button"} >Connexion</button>
                 </div>
             </div>
-    )
+        )
+    }
 }
-}
-
 export default Login;
