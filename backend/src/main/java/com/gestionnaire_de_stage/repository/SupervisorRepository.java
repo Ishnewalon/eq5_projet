@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SupervisorRepository extends JpaRepository<Supervisor, Long> {
+
+    boolean existsByEmailAndPassword(String email, String password);
     Supervisor findSupervisorByEmailAndPassword(String email, String password);
 }

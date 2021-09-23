@@ -155,7 +155,7 @@ public class MonitorServiceTest {
     }
 
     @Test
-    public void testfindStudentByEmailAndPassword() {
+    public void testFindMonitorByEmailAndPassword() {
         String email = "stepotato@gmail.com";
         String password = "testPassword";
 

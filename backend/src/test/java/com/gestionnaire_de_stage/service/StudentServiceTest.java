@@ -170,7 +170,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testfindStudentByEmailAndPassword() {
+    public void testFindStudentByEmailAndPassword() {
        String email = "jscotty@gmail.com";
        String password = "rockrocks";
 

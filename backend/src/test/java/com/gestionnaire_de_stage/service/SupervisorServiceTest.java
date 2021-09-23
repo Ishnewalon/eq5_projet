@@ -159,7 +159,7 @@ public class SupervisorServiceTest {
     }
 
     @Test
-    public void testfindSupervisorByEmailAndPassword() {
+    public void testFindSupervisorByEmailAndPassword() {
         String email = "keyh@gmail.com";
         String password = "galaxy29";
 
@@ -167,5 +167,22 @@ public class SupervisorServiceTest {
         String actual = supervisor.getFirstName();
 
         assertEquals(actual, "Harold");
+    }
+
+    @Test
+    public void testExistsByEmailAndPassword_withValidEntries() {
+        String email = "keyh@gmail.com";
+        String password = "galaxy29";
+
+        boolean actual = supervisorRepository.existsByEmailAndPassword(email, password);
+
+        assertTrue(actual);
+    }
+
+    @Test
+    public void testExistsByEmailAndPassword_withNullEntries() {
+        boolean actual = supervisorRepository.existsByEmailAndPassword(null, null);
+
+        assertFalse(actual);
     }
 }
