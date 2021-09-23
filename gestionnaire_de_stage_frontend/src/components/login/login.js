@@ -14,7 +14,12 @@ export default class Login extends Component {
     handleChange = input => e => {
         this.setState({[input]: e.target.value});
     }
-
+    verification() {
+        if (this.state.matricule.length !== 7 || this.state.matricule.length !== 5) {
+            alert("Matricule invalide")
+            return false
+        }
+    }
 
     render() {
         return (<div>

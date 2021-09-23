@@ -17,35 +17,35 @@ export default class InformationGeneral extends Component {
 
     verification() {
         if (!this.props.values.first_name) {
-            alert("firstname empty")
+            alert("Le champs prénom est vide")
             return false
         }
         if (!this.props.values.last_name) {
-            alert("lastname empty")
+            alert("Le champs nom est vide")
             return false
         }
         if (!this.props.values.email) {
-            alert("email empty")
+            alert("Le champs courriel est vide")
             return false
         }
         if (!this.props.values.phone) {
-            alert("phone empty")
+            alert("Le champs numéro de téléphone est vide")
             return false
         }
         if (!this.props.values.first_name.match(/^[a-zA-Z]+$/)) {
-            alert("firstname invalid")
+            alert("Le champs prénom est invalide")
             return false;
         }
         if (!this.props.values.last_name.match(/^[a-zA-Z]+$/)) {
-            alert("lastname invalid")
+            alert("Le champs nom est invalide")
             return false;
         }
         if (!regexEmail.test(this.props.values.email)) {
-            alert("email invalid")
+            alert("Le champs courriel est invalide")
             return false;
         }
         if (!regexPhone.test(this.props.values.phone)) {
-            alert("phone invalid")
+            alert("Le champs numéro de téléphone est invalide")
             return false;
         }
         return true;
