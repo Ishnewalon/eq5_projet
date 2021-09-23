@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size;
 @Data
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@ToString(of = {"id", "name", "firstName", "email", "numTel", "password"})
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)

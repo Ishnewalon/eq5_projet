@@ -21,6 +21,8 @@ public class ManagerService implements ICrudService<Manager, Long> {
 
     @Override
     public Optional<Manager> getOneByID(Long id) {
+        if(id == null)
+            return Optional.empty();
         return managerRepository.findById(id);
     }
 

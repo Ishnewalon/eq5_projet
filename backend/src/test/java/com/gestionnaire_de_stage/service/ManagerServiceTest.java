@@ -69,8 +69,10 @@ public class ManagerServiceTest {
     @Test
     public void testCreate_withValidManager() {
         Optional<Manager> manager = Optional.empty();
+        Manager dummy = getDummyManager();
+        dummy.setId(1L);
         try {
-            manager = managerService.create(getDummyManager());
+            manager = managerService.create(dummy);
         } catch (Exception e) {
             fail(e);
         }
@@ -82,6 +84,8 @@ public class ManagerServiceTest {
         Long validID = 1L;
 
         Optional<Manager> actual = managerService.getOneByID(validID);
+
+        managerRepository.findAll().forEach(System.out::println);
 
         assertTrue(actual.isPresent());
     }
