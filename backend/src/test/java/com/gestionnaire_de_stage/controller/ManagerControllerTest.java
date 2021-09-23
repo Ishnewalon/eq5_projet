@@ -48,11 +48,6 @@ public class ManagerControllerTest {
         return manager;
     }
 
-    @BeforeAll
-    public void beforeAll(){
-        objectMapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
-    }
-
     @BeforeEach
     public void init(){
         managerRepository.save(getDummyManager());
