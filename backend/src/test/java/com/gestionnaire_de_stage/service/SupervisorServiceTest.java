@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import org.junit.jupiter.api.BeforeAll;
@@ -155,5 +156,16 @@ public class SupervisorServiceTest {
         boolean actual = supervisorService.deleteByID(null);
 
         assertFalse(actual);
+    }
+
+    @Test
+    public void testfindSupervisorByEmailAndPassword() {
+        String email = "keyh@gmail.com";
+        String password = "galaxy29";
+
+        Supervisor supervisor = supervisorRepository.findSupervisorByEmailAndPassword(email, password);
+        String actual = supervisor.getFirstName();
+
+        assertEquals(actual, "Harold");
     }
 }
