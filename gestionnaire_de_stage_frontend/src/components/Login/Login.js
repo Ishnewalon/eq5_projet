@@ -1,15 +1,13 @@
 import './Login.css'
+import {Component} from "react";
 
-function Login({prevStep, nextStep, handleChange, values}) {
+class Login extends Component {
 
-    const Continue = (val) => {
+    Continue = (val) => {
         nextStep(val);
     }
 
-    function verification() {
-
-    }
-
+render(){
     return (<div>
             <div className="form-group row">
                 <div className="col-md-6">
@@ -23,8 +21,8 @@ function Login({prevStep, nextStep, handleChange, values}) {
                     <label>Nom</label>
                     <div>
                         <div className="input-group">
-                            <input name="last_name" placeholder="Nom" className="form-control" type="text"
-                                   value={values.last_name} onChange={handleChange('last_name')}/>
+                            <input name="password" placeholder="Votre mot de passe" className="form-control" type="password"
+                                   value={values.password} onChange={handleChange('password')}/>
                         </div>
                     </div>
                 </div>
@@ -35,6 +33,7 @@ function Login({prevStep, nextStep, handleChange, values}) {
                 </div>
             </div>
     )
+}
 }
 
 export default Login;
