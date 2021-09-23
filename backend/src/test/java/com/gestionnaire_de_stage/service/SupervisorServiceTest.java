@@ -140,4 +140,20 @@ public class SupervisorServiceTest {
 
         assertTrue(actual.isEmpty());
     }
+
+    @Test
+    public void testDelete_withValidID() {
+        Long validId = 1L;
+
+        boolean actual = supervisorService.deleteByID(validId);
+
+        assertTrue(actual);
+    }
+
+    @Test
+    public void testDelete_withNullID() {
+        boolean actual = supervisorService.deleteByID(null);
+
+        assertFalse(actual);
+    }
 }

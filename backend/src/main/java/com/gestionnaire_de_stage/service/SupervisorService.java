@@ -52,6 +52,10 @@ public class SupervisorService implements ICrudService<Supervisor, Long> {
 
     @Override
     public boolean deleteByID(Long aLong) {
+        if (aLong != null && supervisorRepository.existsById(aLong)) {
+            supervisorRepository.deleteById(aLong);
+            return true;
+        }
         return false;
     }
 }
