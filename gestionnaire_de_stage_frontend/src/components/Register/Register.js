@@ -47,21 +47,6 @@ export class Register extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    async getData(user) {
-        const response = await fetch("http://localhost:4000/posts", {
-            method: 'POST',
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        });
-        const data = await response.json();
-
-        console.log(data)
-    }
 
     prevStep = () => {
         const {previousStep} = this.state;
@@ -100,7 +85,7 @@ export class Register extends Component {
             user = new MonitorModel(email, password, last_name, first_name, phone, companyName, address, city, codePostal);
         }
 
-        this.getData(user).then()
+        getData(user).then()
     }
 
     render() {

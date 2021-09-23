@@ -5,14 +5,15 @@ class User {
     first_name = '';
     phone = ''
 
-    constructor(email, password, last_name, first_name, phone) {
-        this.email = email;
-        this.password = password;
-        this.last_name = last_name;
-        this.first_name = first_name;
-        this.phone = phone;
+    constructor($email, $password, $last_name, $first_name, $phone) {
+        this.email = $email;
+        this.password = $password;
+        this.last_name = $last_name;
+        this.first_name = $first_name;
+        this.phone = $phone;
     }
 }
+
 export class MonitorModel extends User {
     companyName = '';
     address = '';
@@ -28,7 +29,7 @@ export class MonitorModel extends User {
     }
 }
 
-export class Student extends User{
+export class Student extends User {
     matricule = '';
 
     constructor($email, $password, $last_name, $first_name, $phone, $matricule) {
