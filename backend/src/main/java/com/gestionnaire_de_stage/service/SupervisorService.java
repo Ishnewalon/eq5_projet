@@ -25,6 +25,9 @@ public class SupervisorService implements ICrudService<Supervisor, Long> {
 
     @Override
     public Optional<Supervisor> getOneByID(Long aLong) {
+        if (aLong != null && supervisorRepository.existsById(aLong)) {
+            return Optional.of(supervisorRepository.getById(aLong));
+        }
         return Optional.empty();
     }
 

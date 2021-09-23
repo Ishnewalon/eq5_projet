@@ -85,4 +85,12 @@ public class SupervisorServiceTest {
 
         assertTrue(actual.isEmpty());
     }
+
+    @Test
+    public void testGetByID_withValidID() {
+        Long validID = 1L;
+        Optional<Supervisor> actual = supervisorService.getOneByID(validID);
+
+        assertTrue(actual.isPresent());
+    }
 }

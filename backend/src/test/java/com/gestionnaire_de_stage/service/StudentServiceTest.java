@@ -53,7 +53,7 @@ public class StudentServiceTest {
         student2.setCity("Verdun");
         student2.setDepartment("Comptabilite");
         student2.setPostalCode("K1F R5V");
-        student2.setMatricule("372824");
+        student2.setMatricule("3728243");
 
         Student student3 = new Student();
         student3.setId(3L);
