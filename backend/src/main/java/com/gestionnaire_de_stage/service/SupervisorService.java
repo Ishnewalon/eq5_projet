@@ -33,7 +33,7 @@ public class SupervisorService implements ICrudService<Supervisor, Long> {
 
     @Override
     public List<Supervisor> getAll() {
-        return null;
+        return supervisorRepository.findAll();
     }
 
     @Override

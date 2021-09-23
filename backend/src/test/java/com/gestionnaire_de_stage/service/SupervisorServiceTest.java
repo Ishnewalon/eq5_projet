@@ -12,6 +12,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -99,5 +100,13 @@ public class SupervisorServiceTest {
         Optional<Supervisor> actual = supervisorService.getOneByID(null);
 
         assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    public void testGetAll() {
+        int expectedLength = 3;
+        List<Supervisor> supervisorList = supervisorService.getAll();
+
+        assertEquals(expectedLength, supervisorList.size());
     }
 }
