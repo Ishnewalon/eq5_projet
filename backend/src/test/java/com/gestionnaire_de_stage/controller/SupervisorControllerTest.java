@@ -54,4 +54,19 @@ public class SupervisorControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(actualStudent).isEqualTo(supervisor);
     }
+
+    @Test
+    public void testSupervisorSignUp_withNullEntries() throws Exception {
+        Supervisor supervisor = null;
+
+        when(supervisorService.create(supervisor)).thenReturn(Optional.empty());
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/supervisor/signup")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(supervisor))).andReturn();
+
+        //  var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), );
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        //assertThat(actualStudent).isEqualTo(null);
+    }
 }
