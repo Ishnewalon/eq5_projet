@@ -5,6 +5,7 @@ class User {
     first_name = '';
     phone = ''
 
+
     constructor($email, $password, $last_name, $first_name, $phone) {
         this.email = $email;
         this.password = $password;
