@@ -1,6 +1,4 @@
-
-
-function Password({prevStep,finish, handleChange, values}) {
+function Password({prevStep, finish, handleChange, values}) {
 
     const Previous = e => {
         e.preventDefault();
