@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-//@WebMvcTest(MonitorController.class)
 @AutoConfigureMockMvc
 @SpringBootTest
 public class MonitorControllerTest {

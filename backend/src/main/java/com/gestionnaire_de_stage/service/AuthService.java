@@ -10,7 +10,6 @@ public class AuthService {
     @Autowired
     private ManagerService managerService;
 
-
     public Manager loginManager(String email, String password){
         return managerService.getOneByEmailAndPassword(email, password).orElseThrow(() -> new RuntimeException("manager credentials not found..."));
     }
