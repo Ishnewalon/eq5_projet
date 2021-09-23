@@ -93,4 +93,11 @@ public class SupervisorServiceTest {
 
         assertTrue(actual.isPresent());
     }
+
+    @Test
+    public void testGetByID_withNullID() {
+        Optional<Supervisor> actual = supervisorService.getOneByID(null);
+
+        assertTrue(actual.isEmpty());
+    }
 }
