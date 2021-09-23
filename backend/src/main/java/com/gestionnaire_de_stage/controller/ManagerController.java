@@ -19,4 +19,7 @@ public class ManagerController {
     public ResponseEntity<?> login(@PathVariable String email,@PathVariable String password){
         return ResponseEntity.of(Optional.of(authService.loginManager(email, password)));
     }
+
+
+
 }
