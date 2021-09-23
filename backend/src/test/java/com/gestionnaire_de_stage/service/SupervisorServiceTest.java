@@ -12,6 +12,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -62,5 +63,19 @@ public class SupervisorServiceTest {
         int actual = supervisorRepository.findAll().size();
 
         assertEquals(actual, 3);
+    }
+
+    @Test
+    public void testCreate_withValidSupervisor() {
+        Supervisor supervisor = new Supervisor();
+        supervisor.setName("Trap");
+        supervisor.setFirstName("Moose");
+        supervisor.setEmail("tram@gmail.com");
+        supervisor.setPassword("piecesofcheese");
+        supervisor.setDepartment("Batiment");
+        supervisor.setMatricule("02834");
+
+        Optional<Supervisor> actual = supervisorService.create(supervisor);
+        assertTrue(actual.isPresent());
     }
 }
