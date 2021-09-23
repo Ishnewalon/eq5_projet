@@ -2,10 +2,6 @@ import {Component} from "react";
 
 export default class Password extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     previous = (e) => {
         e.preventDefault();
         this.props.prevStep();

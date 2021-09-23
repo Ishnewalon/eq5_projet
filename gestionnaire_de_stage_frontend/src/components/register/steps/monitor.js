@@ -1,4 +1,4 @@
-import {Step, UserType} from "../Register";
+import {Step, UserType} from "../register";
 import {Component} from "react";
 
 const regexCodePostal = /^([A-Za-z]\s?[0-9]){3}$/;

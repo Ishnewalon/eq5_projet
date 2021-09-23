@@ -1,4 +1,4 @@
-import {Step} from "../Register";
+import {Step} from "../register";
 import {Component} from "react";
 
 export default class Choice extends Component {

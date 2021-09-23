@@ -1,11 +1,11 @@
-import './Register.css'
+import './register.css'
 import React, {Component} from "react";
-import Password from "./Steps/Password";
-import InformationGeneral from "./Steps/InformationGeneral";
-import Monitor from "./Steps/Monitor";
-import Choice from "./Steps/Choices";
-import Cegep from "./Steps/Cegep";
-import {MonitorModel, Student, Supervisor} from "../../models/User";
+import Password from "./steps/password";
+import InformationGeneral from "./steps/informationGeneral";
+import Monitor from "./steps/monitor";
+import Choice from "./steps/choices";
+import Cegep from "./steps/cegep";
+import {MonitorModel, Student, Supervisor} from "../../models/user";
 import {getData} from "../../services/auth-service"
 
 const header = new Headers()
