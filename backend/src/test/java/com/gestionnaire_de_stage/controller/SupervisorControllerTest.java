@@ -69,4 +69,49 @@ public class SupervisorControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         //assertThat(actualStudent).isEqualTo(null);
     }
+
+    @Test
+    public void testSupervisorLogin_withValidEntries() throws Exception {
+        Supervisor supervisor = supervisorLogin();
+        String email = "sinl@gmail.com";
+        String password = "weightofworld";
+        when(supervisorService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(supervisor));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/sinl@gmail.com/weightofworld")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        var actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Supervisor.class);
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualSupervisor.getName()).isEqualTo("Singh");
+    }
+
+    @Test
+    public void testSupervisorLogin_withNullEntries() throws Exception {
+        String email = null;
+        String password = null;
+        when(supervisorService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.empty());
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/null/null")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        //    var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        //   assertThat(actualStudent.getName()).isEqualTo("Brawl");
+    }
+
+    private Supervisor supervisorLogin() {
+        Supervisor supervisor = new Supervisor();
+        supervisor.setId(1L);
+        supervisor.setName("Singh");
+        supervisor.setFirstName("Lohse");
+        supervisor.setNumTel("514-845-3234");
+        supervisor.setEmail("sinl@gmail.com");
+        supervisor.setPassword("weightofworld");
+        supervisor.setDepartment("Informatique");
+        supervisor.setMatricule("07485");
+
+        return supervisor;
+    }
 }
