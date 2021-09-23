@@ -1,7 +1,7 @@
 import './Login.css'
 import {Component} from "react";
 
-class Login extends Component {
+export default class Login extends Component {
 
     constructor(props) {
         super(props);
@@ -11,10 +11,10 @@ class Login extends Component {
         }
     }
 
-    handleChange = (e) => {
-        e.preventDefault();
-
+    handleChange = input => e => {
+        this.setState({[input]: e.target.value});
     }
+
 
     render() {
         return (<div>
@@ -46,4 +46,3 @@ class Login extends Component {
     }
 }
 
-export default Login;

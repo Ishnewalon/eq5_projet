@@ -4,15 +4,14 @@ export default class Password extends Component {
 
     constructor(props) {
         super(props);
-        this.continue=this.continue.bind(this)
-        this.previous=this.previous.bind(this)
     }
-    previous(e) {
+
+    previous = (e) => {
         e.preventDefault();
         this.props.prevStep();
     }
 
-    continue(e) {
+    continue = (e) => {
         e.preventDefault();
         this.props.finish();
     }

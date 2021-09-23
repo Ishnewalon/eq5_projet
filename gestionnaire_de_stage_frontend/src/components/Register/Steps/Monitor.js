@@ -5,12 +5,12 @@ const regexCodePostal = /^([A-Za-z]\s?[0-9]){3}$/;
 
 export default class Monitor extends Component {
 
-    previous(e) {
+    previous = (e) => {
         e.preventDefault();
         this.props.prevStep();
     }
 
-    continue(val) {
+    continue = (val) => {
         this.props.updateUserType(UserType.MONITOR);
         this.props.nextStep(val);
     }

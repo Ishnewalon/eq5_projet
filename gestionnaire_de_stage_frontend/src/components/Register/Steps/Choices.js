@@ -23,7 +23,6 @@ export default class Choice extends Component {
     }
 
     continue(value) {
-        console.log(value)
         this.props.nextStep(value);
     }
 }

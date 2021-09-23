@@ -7,7 +7,7 @@ const regexPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
 export default class InformationGeneral extends Component {
 
-    previous = e => {
+    previous = (e) => {
         e.preventDefault();
         this.props.prevStep();
     }

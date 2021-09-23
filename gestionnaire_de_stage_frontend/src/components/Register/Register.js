@@ -65,7 +65,6 @@ export default class Register extends Component {
 
     updateUserType = (type) => {
         this.setState({userType: type})
-        console.log(this.state)
     }
 
     handleChange = input => e => {
