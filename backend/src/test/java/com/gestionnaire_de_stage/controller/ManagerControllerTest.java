@@ -1,13 +1,11 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.repository.ManagerRepository;
 import com.gestionnaire_de_stage.service.ManagerService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -37,6 +36,8 @@ public class ManagerControllerTest {
     @MockBean
     private ManagerRepository managerRepository;
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     private Manager getDummyManager() {
         Manager manager = new Manager();
         manager.setPassword("Test1234");
@@ -45,6 +46,11 @@ public class ManagerControllerTest {
         manager.setName("Kably");
         manager.setNumTel("5143643320");
         return manager;
+    }
+
+    @BeforeAll
+    public void beforeAll(){
+        objectMapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
     }
 
     @BeforeEach
@@ -64,7 +70,7 @@ public class ManagerControllerTest {
         String password = manager.getPassword();
         when(managerService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(manager));
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(String.format("/managers/%s/%s", email, password))
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(String.format("/manager/%s/%s", email, password))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -79,13 +85,17 @@ public class ManagerControllerTest {
         String password = null;
         when(managerService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.empty());
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(String.format("/managers/%s/%s", email, password))
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(String.format("/manager/%s/%s", email, password))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        Manager resultGetManagerLogin = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Manager.class);
-
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        Manager resultGetManagerLogin = null;
+        try {
+            resultGetManagerLogin = objectMapper.readValue(mvcResult.getResponse().getContentAsByteArray(), Manager.class);
+        }catch (Exception ignored){
+        }
+
         assertThat(resultGetManagerLogin).isEqualTo(null);
     }
 }

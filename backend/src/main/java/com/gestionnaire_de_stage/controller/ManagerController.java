@@ -22,7 +22,7 @@ public class ManagerController {
         try{
             manager = authService.loginManager(email, password);
         }catch (RuntimeException re){
-            status = HttpStatus.NOT_ACCEPTABLE;
+            status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(manager);
     }
