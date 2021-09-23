@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class Student extends User{
 
     @NotNull
-    @Size(min = 7, max = 7, message = "La matricule doit être de 7 chiffre")
+    @Size(min = 7, max = 7, message = "La matricule doit être de 7 chiffres")
     private String matricule;
 
     @NotNull

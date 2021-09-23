@@ -33,7 +33,7 @@ public class SupervisorController {
         if (supervisor.getEmail() != null && supervisorRepository.existsByEmail(supervisor.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Ce courriel existe deja!"));
+                    .body(new ResponseMessage("Erreur: Ce courriel existe déja!"));
         }
         Optional<Supervisor> opt = supervisorService.create(supervisor);
         Supervisor supervisor1 = opt.get();
@@ -59,6 +59,6 @@ public class SupervisorController {
         if (supervisor.isPresent()) {
             return ResponseEntity.ok(supervisor.get());
         }
-        return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalid"));
+        return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
     }
 }

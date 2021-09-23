@@ -95,7 +95,7 @@ public class ManagerServiceTest {
 
     @Test
     public void testGetAll() {
-        int expectedLength = 3;
+        int expectedLength = 1;
 
         List<Manager> monitorList = managerService.getAll();
 
@@ -149,15 +149,15 @@ public class ManagerServiceTest {
 
     @Test
     public void testFindMonitorByEmailAndPassword() {
-        String email = "stepotato@gmail.com";
-        String password = "testPassword";
+        String email = "oussamakably@gmail.com";
+        String password = "Test1234";
 
         Optional<Manager> manager = managerRepository.findManagerByEmailAndPassword(email, password);
         assertTrue(manager.isPresent());
         Manager m = null;
         try{
             m = manager.orElseThrow();
-            assertEquals(m.getFirstName(), "Steph");
+            assertEquals(m.getFirstName(), "Oussama");
         }catch (Exception e){
             fail(e);
         }
@@ -165,8 +165,8 @@ public class ManagerServiceTest {
 
     @Test
     public void testExistsByEmailAndPassword_withValidEntries() {
-        String email = "stepotato@gmail.com";
-        String password = "testPassword";
+        String email = "oussamakably@gmail.com";
+        String password = "Test1234";
 
         boolean actual = managerRepository.findManagerByEmailAndPassword(email, password).isPresent();
 
@@ -182,8 +182,8 @@ public class ManagerServiceTest {
 
     @Test
     public void testGetOneByEmailAndPassword_withValidEntries() {
-        String email = "stepotato@gmail.com";
-        String password = "testPassword";
+        String email = "oussamakably@gmail.com";
+        String password = "Test1234";
 
         Optional<Manager> actual = managerService.getOneByEmailAndPassword(email, password);
 

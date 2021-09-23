@@ -58,6 +58,6 @@ public class StudentController {
         if (student.isPresent()) {
             return ResponseEntity.ok(student.get());
         }
-        return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalid"));
+        return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
     }
 }
