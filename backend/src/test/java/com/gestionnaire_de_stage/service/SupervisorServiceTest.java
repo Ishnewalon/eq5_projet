@@ -185,4 +185,21 @@ public class SupervisorServiceTest {
 
         assertFalse(actual);
     }
+
+    @Test
+    public void testGetOneByEmailAndPassword_withValidEntries() {
+        String email = "keyh@gmail.com";
+        String password = "galaxy29";
+
+        Optional<Supervisor> actual = supervisorService.getOneByEmailAndPassword(email, password);
+
+        assertTrue(actual.isPresent());
+    }
+
+    @Test
+    public void testGetOneByEmailAndPassword_withNullEntries() {
+        Optional<Supervisor> actual = supervisorService.getOneByEmailAndPassword(null, null);
+
+        assertTrue(actual.isEmpty());
+    }
 }

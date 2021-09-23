@@ -47,6 +47,9 @@ public class SupervisorService implements ICrudService<Supervisor, Long> {
 
     @Override
     public Optional<Supervisor> getOneByEmailAndPassword(String email, String password) {
+        if (supervisorRepository.existsByEmailAndPassword(email, password)) {
+            return Optional.of(supervisorRepository.findSupervisorByEmailAndPassword(email, password));
+        }
         return Optional.empty();
     }
 
