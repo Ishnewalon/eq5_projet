@@ -78,4 +78,11 @@ public class SupervisorServiceTest {
         Optional<Supervisor> actual = supervisorService.create(supervisor);
         assertTrue(actual.isPresent());
     }
+
+    @Test
+    public void testCreate_withNullSupervisor() {
+        Optional<Supervisor> actual = supervisorService.create(null);
+
+        assertTrue(actual.isEmpty());
+    }
 }
