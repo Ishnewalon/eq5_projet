@@ -79,9 +79,13 @@ public class StudentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(student))).andReturn();
 
-      //  var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), );
+        Student actualStudent = null;
+        try {
+            actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+        } catch (Exception ignored) {}
+
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        //assertThat(actualStudent).isEqualTo(null);
+        assertThat(actualStudent).isEqualTo(null);
     }
 
     @Test
@@ -110,9 +114,15 @@ public class StudentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-    //    var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+        Student actualStudent = null;
+        try {
+            actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+        } catch (Exception ignored) {
+
+        }
+
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-     //   assertThat(actualStudent.getName()).isEqualTo("Brawl");
+        assertThat(actualStudent).isEqualTo(null);
     }
 
     private Student studentLogin() {
