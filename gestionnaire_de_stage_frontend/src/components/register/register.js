@@ -8,10 +8,6 @@ import Cegep from "./steps/cegep";
 import {MonitorModel, Student, Supervisor} from "../../models/user";
 import {signupMonitor, signupStudent, signupSupervisor} from "../../services/auth-service"
 
-const header = new Headers()
-header.append('content-type', 'application/json')
-
-
 export const Step = {
     CHOICE: "choice",
     CEGEP: "cegep",
@@ -31,6 +27,7 @@ export default class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            hideFields: true,
             step: Step.CHOICE,
             previousStep: [],
             userType: null,
@@ -89,8 +86,8 @@ export default class Register extends Component {
             signupMonitor(user).then()
         }
 
-        // getData(user).then()
     }
+
 
     render() {
         const {step} = this.state;
@@ -138,7 +135,11 @@ export default class Register extends Component {
                 break;
         }
         return <div>
-            <div>
+            <button className="btn btn-primary" onClick={() => {
+                this.setState({hideFields: !this.state.hideFields})
+            }}>Show/hide
+            </button>
+            <div hidden={this.state.hideFields}>
                 email:{email}<br/>
                 lastname:{lastName}<br/>
                 firstname:{firstName}<br/>

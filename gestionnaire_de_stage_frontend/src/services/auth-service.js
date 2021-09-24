@@ -6,24 +6,19 @@ const methods = {
     GET: 'GET'
 }
 const requestInit = (method, body) => {
-    return {
+    let value = {
         method: method,
         mode: 'cors', // no-cors, *cors, same-origin
         cache: 'no-cache',
         credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
+        }
     }
-}
+    if (method === methods.POST)
+        value['body'] = JSON.stringify(body)
 
-export async function getData(user) {
-    const response = await fetch("http://localhost:4000/posts", requestInit(methods.POST, user));
-    const data = await response.json();
-
-    console.log(data)
-    return data
+    return value
 }
 
 export async function signupMonitor(monitor) {
@@ -52,6 +47,15 @@ export async function signupStudent(student) {
     if (!(student instanceof Student) || !student)
         return;
     const response = await fetch(urlBackend + "/student/signup", requestInit(methods.POST, student));
+
+    const data = await response.json();
+
+    console.log(data)
+    return data
+}
+
+export async function signIn(userType, email, password) {
+    const response = await fetch(`${urlBackend}/${userType}/${email}/${password}`, requestInit(methods.GET, null));
 
     const data = await response.json();
 
