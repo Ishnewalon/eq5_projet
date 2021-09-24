@@ -20,13 +20,15 @@ export class MonitorModel extends User {
     address = '';
     city = '';
     postalCode = '';
+    department = ''
 
-    constructor($email, $password, $lastName, $firstName, $phone, $companyName, $address, $city, $postalCode) {
+    constructor($email, $password, $lastName, $firstName, $phone, $companyName, $address, $city, $postalCode, $department = 'informatique') {
         super($email, $password, $lastName, $firstName, $phone);
         this.companyName = $companyName;
         this.address = $address;
         this.city = $city;
         this.postalCode = $postalCode;
+        this.department = $department
     }
 }
 
