@@ -43,7 +43,7 @@ public class MonitorControllerTest {
         monitor.setEmail("potato@mail.com");
         monitor.setPassword("secretPasswordShhhh");
         monitor.setFirstName("toto");
-        monitor.setName("Le troisieme");
+        monitor.setLastName("tata");
         monitor.setDepartment("Informatique");
 
         when(monitorService.create(monitor)).thenReturn(Optional.of(monitor));
@@ -58,10 +58,10 @@ public class MonitorControllerTest {
     @Test
     public void monitorSignupTest_withNullEntries() throws Exception {
         when(monitorService.create(null)).thenReturn(Optional.empty());
+
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/monitor/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(null))).andReturn();
-
         int actual = mvcResult.getResponse().getStatus();
 
         assertEquals(HttpStatus.BAD_REQUEST.value(), actual);
@@ -72,12 +72,43 @@ public class MonitorControllerTest {
         Monitor monitor = new Monitor();
         monitor.setEmail("notAnEmail");
         monitor.setPassword("2short");
-
         when(monitorService.create(monitor)).thenReturn(Optional.of(monitor));
+
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/monitor/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(monitor))).andReturn();
+        int actual = mvcResult.getResponse().getStatus();
 
+        assertEquals(HttpStatus.BAD_REQUEST.value(), actual);
+    }
+    
+    @Test
+    public void monitorLoginTest_withValidEntries() throws Exception {
+        Monitor monitor = new Monitor();
+        monitor.setEmail("potato@mail.com");
+        monitor.setPassword("secretPasswordShhhh");
+        monitor.setFirstName("toto");
+        monitor.setLastName("tata");
+        monitor.setDepartment("Informatique");
+        String email = monitor.getEmail();
+        String password = monitor.getPassword();
+        when(monitorService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(monitor));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/monitor/potato@mail.com/secretPasswordShhhh")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+        Monitor actual = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Monitor.class);
+
+        assertEquals(monitor, actual);
+    }
+
+    @Test
+    public void monitorLoginTest_withNullEntries() throws Exception {
+        when(monitorService.getOneByEmailAndPassword(null, null)).thenReturn(Optional.empty());
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/monitor/null/null")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
         int actual = mvcResult.getResponse().getStatus();
 
         assertEquals(HttpStatus.BAD_REQUEST.value(), actual);
