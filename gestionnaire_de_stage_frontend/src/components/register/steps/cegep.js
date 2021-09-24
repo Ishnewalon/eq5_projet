@@ -3,12 +3,12 @@ import {Component} from "react";
 
 export default class Cegep extends Component {
 
-    previous(e) {
+    previous = (e) => {
         e.preventDefault()
         this.props.prevStep();
     }
 
-    continue(val) {
+    continue = (val) => {
         if (this.props.matricule.length === 5)
             this.props.updateUserType(UserType.SUPERVISOR)
         if (this.props.matricule.length === 7)

@@ -17,48 +17,31 @@ const requestInit = (method, body) => {
     }
     if (method === methods.POST)
         value['body'] = JSON.stringify(body)
-
     return value
 }
 
 export async function signupMonitor(monitor) {
     if (!(monitor instanceof MonitorModel) || !monitor)
         return;
-    const response = await fetch(urlBackend + "/monitor/signup", requestInit(methods.POST, monitor));
-
-    const data = await response.json();
-
-    console.log(data)
-    return data
+    const response = await fetch(`${urlBackend}/monitor/signup`, requestInit(methods.POST, monitor));
+    return await response.json()
 }
 
 export async function signupSupervisor(supervisor) {
     if (!(supervisor instanceof Supervisor) || !supervisor)
         return;
-    const response = await fetch(urlBackend + "/supervisor/signup", requestInit(methods.POST, supervisor));
-
-    const data = await response.json();
-
-    console.log(data)
-    return data
+    const response = await fetch(`${urlBackend}/supervisor/signup`, requestInit(methods.POST, supervisor));
+    return await response.json()
 }
 
 export async function signupStudent(student) {
     if (!(student instanceof Student) || !student)
         return;
-    const response = await fetch(urlBackend + "/student/signup", requestInit(methods.POST, student));
-
-    const data = await response.json();
-
-    console.log(data)
-    return data
+    const response = await fetch(`${urlBackend}/student/signup`, requestInit(methods.POST, student));
+    return await response.json()
 }
 
 export async function signIn(userType, email, password) {
-    const response = await fetch(`${urlBackend}/${userType}/${email}/${password}`, requestInit(methods.GET, null));
-
-    const data = await response.json();
-
-    console.log(data)
-    return data
+    const response = await fetch(`${urlBackend}/${userType}/${email}/${password}`, requestInit(methods.GET));
+    return await response.json()
 }

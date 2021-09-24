@@ -15,7 +15,7 @@ export default class Monitor extends Component {
         this.props.nextStep(val);
     }
 
-    verification() {
+    verification = () => {
         if (!this.props.values.companyName) {
             alert("companyName empty")
             return false

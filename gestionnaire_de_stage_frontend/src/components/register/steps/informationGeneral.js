@@ -1,5 +1,5 @@
-import { Step } from "../register";
-import { Component } from "react";
+import {Step} from "../register";
+import {Component} from "react";
 
 // eslint-disable-next-line
 const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -15,7 +15,7 @@ export default class InformationGeneral extends Component {
         this.props.nextStep(val);
     }
 
-    verification() {
+    verification = () => {
         if (!this.props.values.firstName) {
             alert("Le champs prénom est vide")
             return false
@@ -58,7 +58,7 @@ export default class InformationGeneral extends Component {
                     <label>Prenom</label>
                     <div className="input-group">
                         <input name="firstName" placeholder="Prenom" className="form-control" type="text"
-                            value={this.props.values.firstName} onChange={this.props.handleChange('firstName')} />
+                               value={this.props.values.firstName} onChange={this.props.handleChange('firstName')}/>
                     </div>
                 </div>
                 <div className="col-md-6">
@@ -66,7 +66,7 @@ export default class InformationGeneral extends Component {
                     <div>
                         <div className="input-group">
                             <input name="lastName" placeholder="Nom" className="form-control" type="text"
-                                value={this.props.values.lastName} onChange={this.props.handleChange('lastName')} />
+                                   value={this.props.values.lastName} onChange={this.props.handleChange('lastName')}/>
                         </div>
                     </div>
                 </div>
@@ -75,18 +75,18 @@ export default class InformationGeneral extends Component {
                 <label>E-Mail</label>
                 <div className="input-group">
                     <input name="email" placeholder="Adresse E-mail" className="form-control" type="email"
-                        value={this.props.values.email} onChange={this.props.handleChange("email")} />
+                           value={this.props.values.email} onChange={this.props.handleChange("email")}/>
                 </div>
             </div>
             <div className="form-group">
                 <label>Téléphone</label>
                 <div className="input-group">
                     <input name="contact_no" placeholder="000 000 000" className="form-control" type="tel"
-                        value={this.props.values.phone} onChange={this.props.handleChange('phone')} />
+                           value={this.props.values.phone} onChange={this.props.handleChange('phone')}/>
                 </div>
             </div>
             <div className="form-group text-center">
-                <label />
+                <label/>
                 <div>
                     <button className="btn btn-primary" type={"button"} onClick={this.previous}>Precedent</button>
                     <button className="btn btn-primary" type={"button"} onClick={() => {

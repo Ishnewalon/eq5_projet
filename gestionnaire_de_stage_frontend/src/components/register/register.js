@@ -75,15 +75,21 @@ export default class Register extends Component {
         let user = null
         if (this.state.userType === UserType.STUDENT) {
             user = new Student(email, password, lastName, firstName, phone, matricule);
-            signupStudent(user).then();
+            signupStudent(user).then(value => {
+                console.log(value)
+            });
         }
         if (this.state.userType === UserType.SUPERVISOR) {
             user = new Supervisor(email, password, lastName, firstName, phone, matricule);
-            signupSupervisor(user).then()
+            signupSupervisor(user).then(value => {
+                console.log(value)
+            })
         }
         if (this.state.userType === UserType.MONITOR) {
             user = new MonitorModel(email, password, lastName, firstName, phone, companyName, address, city, codePostal);
-            signupMonitor(user).then()
+            signupMonitor(user).then(value => {
+                console.log(value)
+            })
         }
 
     }

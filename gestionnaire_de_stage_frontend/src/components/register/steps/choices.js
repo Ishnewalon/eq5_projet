@@ -2,6 +2,9 @@ import {Step} from "../register";
 import {Component} from "react";
 
 export default class Choice extends Component {
+    continue = (value) => {
+        this.props.nextStep(value);
+    }
 
     render() {
         return (<div>
@@ -20,10 +23,6 @@ export default class Choice extends Component {
                 </div>
             </div>
         )
-    }
-
-    continue(value) {
-        this.props.nextStep(value);
     }
 }
 

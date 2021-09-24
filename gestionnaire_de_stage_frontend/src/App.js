@@ -7,7 +7,6 @@ function App() {
         <div className="container">
             <Register/>
             <Login/>
-            {/*<TemplateCustomBS/>*/}
         </div>
 
     );
