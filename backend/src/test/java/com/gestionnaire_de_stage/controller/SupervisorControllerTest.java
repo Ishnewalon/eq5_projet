@@ -7,7 +7,6 @@ import com.gestionnaire_de_stage.service.SupervisorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -36,7 +35,7 @@ public class SupervisorControllerTest {
     public void testSupervisorSignUp_withValidEntries() throws Exception {
         Supervisor supervisor = new Supervisor();
         supervisor.setId(1L);
-        supervisor.setName("Singh");
+        supervisor.setLastName("Singh");
         supervisor.setFirstName("Lohse");
         supervisor.setPhone("514-845-3234");
         supervisor.setEmail("sinl@gmail.com");
@@ -88,7 +87,7 @@ public class SupervisorControllerTest {
 
         var actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Supervisor.class);
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualSupervisor.getName()).isEqualTo("Singh");
+        assertThat(actualSupervisor.getLastName()).isEqualTo("Singh");
     }
 
     @Test
@@ -113,7 +112,7 @@ public class SupervisorControllerTest {
     private Supervisor supervisorLogin() {
         Supervisor supervisor = new Supervisor();
         supervisor.setId(1L);
-        supervisor.setName("Singh");
+        supervisor.setLastName("Singh");
         supervisor.setFirstName("Lohse");
         supervisor.setPhone("514-845-3234");
         supervisor.setEmail("sinl@gmail.com");

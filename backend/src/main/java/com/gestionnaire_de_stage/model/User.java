@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Data
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@ToString(of = {"id", "name", "firstName", "email", "phone", "password"})
+@ToString(of = {"id", "lastName", "firstName", "email", "phone", "password"})
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
@@ -19,7 +19,7 @@ public abstract class User {
 
     @NotBlank
     @Size(min = 2, max = 32, message = "Le nom doit contenir entre 2 et 32 charactere")
-    private String name;
+    private String lastName;
 
     @NotBlank
     @Size(min = 2, max = 32, message = "Le prénom doit contenir entre 2 et 32 charactere")

@@ -25,7 +25,7 @@ public class AuthServiceTest {
         manager.setPassword("Test1234");
         manager.setEmail("oussamakably@gmail.com");
         manager.setFirstName("Oussama");
-        manager.setName("Kably");
+        manager.setLastName("Kably");
         manager.setPhone("5143643320");
         return manager;
     }

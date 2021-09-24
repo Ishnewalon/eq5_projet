@@ -8,7 +8,6 @@ import com.gestionnaire_de_stage.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -47,7 +46,7 @@ public class StudentControllerTest {
     public void testStudentSignUp_withValidEntries() throws Exception {
         Student student = new Student();
         student.setId(1L);
-        student.setName("Brawl");
+        student.setLastName("Brawl");
         student.setFirstName("Spaghetta");
         student.setPhone("514-546-2375");
         student.setEmail("clip@gmail.com");
@@ -101,7 +100,7 @@ public class StudentControllerTest {
 
         var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualStudent.getName()).isEqualTo("Brawl");
+        assertThat(actualStudent.getLastName()).isEqualTo("Brawl");
     }
 
     @Test
@@ -128,7 +127,7 @@ public class StudentControllerTest {
     private Student studentLogin() {
         Student student = new Student();
         student.setId(1L);
-        student.setName("Brawl");
+        student.setLastName("Brawl");
         student.setFirstName("Spaghetta");
         student.setPhone("514-546-2375");
         student.setEmail("clip@gmail.com");
