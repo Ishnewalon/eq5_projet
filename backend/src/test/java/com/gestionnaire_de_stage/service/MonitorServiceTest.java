@@ -118,6 +118,7 @@ public class MonitorServiceTest {
         monitor.setFirstName("titi");
         monitor.setEmail("toto@gmail.com");
         monitor.setPassword("testPassword");
+        monitor.setDepartment("potato");
         Long validID = 2L;
 
         Optional<Monitor> actual = monitorService.update(monitor, validID);
