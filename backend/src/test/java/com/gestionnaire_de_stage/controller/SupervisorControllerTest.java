@@ -64,10 +64,15 @@ public class SupervisorControllerTest {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/supervisor/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(supervisor))).andReturn();
+        Student actualStudent = null;
+        try {
+            actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+        } catch (Exception ignored) {
 
-        //  var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), );
+        }
+
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        //assertThat(actualStudent).isEqualTo(null);
+        assertThat(actualStudent).isEqualTo(null);
     }
 
     @Test
@@ -95,10 +100,14 @@ public class SupervisorControllerTest {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/null/null")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
+        Student actualStudent = null;
+        try {
+            actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+        } catch (Exception ignored) {
 
-        //    var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+        }
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        //   assertThat(actualStudent.getName()).isEqualTo("Brawl");
+        assertThat(actualStudent).isEqualTo(null);
     }
 
     private Supervisor supervisorLogin() {
