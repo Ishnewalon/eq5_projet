@@ -1,6 +1,5 @@
 package com.gestionnaire_de_stage.controller;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.repository.ManagerRepository;
@@ -43,8 +42,8 @@ public class ManagerControllerTest {
         manager.setPassword("Test1234");
         manager.setEmail("oussamakably@gmail.com");
         manager.setFirstName("Oussama");
-        manager.setName("Kably");
-        manager.setNumTel("5143643320");
+        manager.setLastName("Kably");
+        manager.setPhone("5143643320");
         return manager;
     }
 
@@ -71,7 +70,7 @@ public class ManagerControllerTest {
 
         Manager resultGetManagerLogin = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Manager.class);
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(resultGetManagerLogin.getName()).isEqualTo("Kably");
+        assertThat(resultGetManagerLogin.getLastName()).isEqualTo("Kably");
     }
 
     @Test

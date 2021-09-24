@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class Supervisor extends User{
 
     @NotNull
-    @Size(min = 5, max = 5, message = "La matricule doit être de 5 chiffre")
+    @Size(min = 5, max = 5, message = "La matricule doit être de 5 chiffres")
     private String matricule;
 
     @NotNull

@@ -1,6 +1,5 @@
 package com.gestionnaire_de_stage.service;
 
-import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import org.junit.jupiter.api.BeforeAll;
@@ -32,7 +31,7 @@ public class SupervisorServiceTest {
     public void insertData() {
         Supervisor supervisor1 = new Supervisor();
         supervisor1.setId(1L);
-        supervisor1.setName("Keys");
+        supervisor1.setLastName("Keys");
         supervisor1.setFirstName("Harold");
         supervisor1.setEmail("keyh@gmail.com");
         supervisor1.setPassword("galaxy29");
@@ -41,7 +40,7 @@ public class SupervisorServiceTest {
 
         Supervisor supervisor2 = new Supervisor();
         supervisor2.setId(2L);
-        supervisor2.setName("Hole");
+        supervisor2.setLastName("Hole");
         supervisor2.setFirstName("Van");
         supervisor2.setEmail("holv@gmail.com");
         supervisor2.setPassword("digdigdig");
@@ -50,7 +49,7 @@ public class SupervisorServiceTest {
 
         Supervisor supervisor3 = new Supervisor();
         supervisor3.setId(3L);
-        supervisor3.setName("Olive");
+        supervisor3.setLastName("Olive");
         supervisor3.setFirstName("Peter");
         supervisor3.setEmail("olvp@gmail.com");
         supervisor3.setPassword("jobgobdob");
@@ -70,7 +69,7 @@ public class SupervisorServiceTest {
     @Test
     public void testCreate_withValidSupervisor() {
         Supervisor supervisor = new Supervisor();
-        supervisor.setName("Trap");
+        supervisor.setLastName("Trap");
         supervisor.setFirstName("Moose");
         supervisor.setEmail("tram@gmail.com");
         supervisor.setPassword("piecesofcheese");
@@ -115,7 +114,7 @@ public class SupervisorServiceTest {
     @Test
     public void testUpdate_withValidEntries() {
         Supervisor supervisor = new Supervisor();
-        supervisor.setName("Trap");
+        supervisor.setLastName("Trap");
         supervisor.setFirstName("Moose");
         supervisor.setEmail("tram@gmail.com");
         supervisor.setPassword("piecesofcheese");
@@ -131,7 +130,7 @@ public class SupervisorServiceTest {
     @Test
     public void testUpdate_withNullEntries() {
         Supervisor supervisor = new Supervisor();
-        supervisor.setName("Candle");
+        supervisor.setLastName("Candle");
         supervisor.setFirstName("Tea");
         supervisor.setEmail("cant@outlook.com");
         supervisor.setPassword("cantPass");

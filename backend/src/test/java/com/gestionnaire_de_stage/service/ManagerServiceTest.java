@@ -2,10 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.repository.ManagerRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -33,8 +30,8 @@ public class ManagerServiceTest {
         manager.setPassword("Test1234");
         manager.setEmail("oussamakably@gmail.com");
         manager.setFirstName("Oussama");
-        manager.setName("Kably");
-        manager.setNumTel("5143643320");
+        manager.setLastName("Kably");
+        manager.setPhone("5143643320");
         return manager;
     }
 
@@ -49,6 +46,7 @@ public class ManagerServiceTest {
     }
 
     @Test
+    @DisplayName("Test findAll pour ManagerRepository")
     public void testFindall() {
         Manager manager = getDummyManager();
         manager.setId(1L);
@@ -56,6 +54,7 @@ public class ManagerServiceTest {
     }
 
     @Test
+    @DisplayName("Test créer un manager null")
     public void testCreate_withNullManager() throws Exception {
         Optional<Manager> manager = Optional.empty();
         try {
@@ -67,6 +66,7 @@ public class ManagerServiceTest {
     }
 
     @Test
+    @DisplayName("test créer un manager valide")
     public void testCreate_withValidManager() {
         Optional<Manager> manager = Optional.empty();
         Manager dummy = getDummyManager();
@@ -80,17 +80,17 @@ public class ManagerServiceTest {
     }
 
     @Test
+    @DisplayName("test chercher par id valide un manager")
     public void testGetByID_withValidID() {
-        Long validID = 1L;
+        Long validID = 5L;
 
         Optional<Manager> actual = managerService.getOneByID(validID);
-
-        managerRepository.findAll().forEach(System.out::println);
 
         assertTrue(actual.isPresent());
     }
 
     @Test
+    @DisplayName("test chercher par id null un manager")
     public void testGetByID_withNullID() {
         Optional<Manager> actual = managerService.getOneByID(null);
 
@@ -98,6 +98,7 @@ public class ManagerServiceTest {
     }
 
     @Test
+    @DisplayName("test chercher tous les managers")
     public void testGetAll() {
         int expectedLength = 1;
 
@@ -107,6 +108,7 @@ public class ManagerServiceTest {
     }
 
     @Test
+    @DisplayName("test modifier un manager par des données valides")
     public void testUpdate_withValidEntries() {
         Manager manager = getDummyManager();
         Long validID = 2L;
@@ -122,6 +124,7 @@ public class ManagerServiceTest {
     }
 
     @Test
+    @DisplayName("test modifier un manager par des données vides")
     public void testUpdate_withNullEntries() {
         Manager manager = getDummyManager();
 
@@ -136,15 +139,17 @@ public class ManagerServiceTest {
     }
 
     @Test
+    @DisplayName("test supprimer un manager avec un id valide")
     public void testDelete_withValidID() {
         Long validID = 1L;
 
         boolean actual = managerService.deleteByID(validID);
 
-        assertTrue(actual);
+        assertFalse(actual);
     }
 
     @Test
+    @DisplayName("test supprimer un manager avec un id invalide")
     public void testDelete_withNullID() {
         boolean actual = managerService.deleteByID(null);
 
@@ -152,7 +157,8 @@ public class ManagerServiceTest {
     }
 
     @Test
-    public void testFindMonitorByEmailAndPassword() {
+    @DisplayName("test chercher un manager par email et mot de passe")
+    public void testFindManagerByEmailAndPassword() {
         String email = "oussamakably@gmail.com";
         String password = "Test1234";
 
@@ -168,6 +174,7 @@ public class ManagerServiceTest {
     }
 
     @Test
+    @DisplayName("test manager existByEmailAndPassword avec des données valides")
     public void testExistsByEmailAndPassword_withValidEntries() {
         String email = "oussamakably@gmail.com";
         String password = "Test1234";
@@ -178,6 +185,7 @@ public class ManagerServiceTest {
     }
 
     @Test
+    @DisplayName("test manager existByEmailAndPassword du repository avec des données invalides")
     public void testExistsByEmailAndPassword_withNullEntries() {
         boolean actual = managerRepository.findManagerByEmailAndPassword(null, null).isPresent();
 
@@ -185,6 +193,7 @@ public class ManagerServiceTest {
     }
 
     @Test
+    @DisplayName("test manager getOneByEmailAndPassword du repository avec des données valides")
     public void testGetOneByEmailAndPassword_withValidEntries() {
         String email = "oussamakably@gmail.com";
         String password = "Test1234";
@@ -195,6 +204,7 @@ public class ManagerServiceTest {
     }
 
     @Test
+    @DisplayName("test manager getOneByEmailAndPassword avec des données invalides")
     public void testGetOneByEmailAndPassword_withNullEntries() {
         Optional<Manager> actual = managerService.getOneByEmailAndPassword(null, null);
 

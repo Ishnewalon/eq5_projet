@@ -31,10 +31,10 @@ public class StudentServiceTest {
     public void insertData() {
         Student student1 = new Student();
         student1.setId(1L);
-        student1.setName("Scott");
+        student1.setLastName("Scott");
         student1.setFirstName("Jordan");
         student1.setEmail("jscotty@gmail.com");
-        student1.setNumTel("514-546-2375");
+        student1.setPhone("514-546-2375");
         student1.setPassword("rockrocks");
         student1.setAddress("758 George");
         student1.setCity("LaSalle");
@@ -44,10 +44,10 @@ public class StudentServiceTest {
 
         Student student2 = new Student();
         student2.setId(2L);
-        student2.setName("Jot");
+        student2.setLastName("Jot");
         student2.setFirstName("Paul");
         student2.setEmail("pertFaul@gmail.com");
-        student2.setNumTel("514-765-8357");
+        student2.setPhone("514-765-8357");
         student2.setPassword("kald329345");
         student2.setAddress("961 Lifew");
         student2.setCity("Verdun");
@@ -57,10 +57,10 @@ public class StudentServiceTest {
 
         Student student3 = new Student();
         student3.setId(3L);
-        student3.setName("Tremblay");
+        student3.setLastName("Tremblay");
         student3.setFirstName("Emily");
         student3.setEmail("treme@gmail.com");
-        student3.setNumTel("514-924-7854");
+        student3.setPhone("514-924-7854");
         student3.setPassword("tough8475");
         student3.setAddress("8542 Schevchenko");
         student3.setCity("LaSalle");
@@ -81,7 +81,7 @@ public class StudentServiceTest {
     @Test
     public void testCreate_withValidStudent() {
         Student student = new Student();
-        student.setName("Candle");
+        student.setLastName("Candle");
         student.setFirstName("Tea");
         student.setEmail("cant@outlook.com");
         student.setPassword("cantPass");
@@ -127,7 +127,7 @@ public class StudentServiceTest {
     @Test
     public void testUpdate_withValidEntries(){
         Student student = new Student();
-        student.setName("Candle");
+        student.setLastName("Candle");
         student.setFirstName("Tea");
         student.setEmail("cant@outlook.com");
         student.setPassword("cantPass");
@@ -142,7 +142,7 @@ public class StudentServiceTest {
     @Test
     public void testUpdate_withNullEntries() {
         Student student = new Student();
-        student.setName("Candle");
+        student.setLastName("Candle");
         student.setFirstName("Tea");
         student.setEmail("cant@outlook.com");
         student.setPassword("cantPass");

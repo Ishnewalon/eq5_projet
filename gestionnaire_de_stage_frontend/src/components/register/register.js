@@ -6,7 +6,7 @@ import Monitor from "./steps/monitor";
 import Choice from "./steps/choices";
 import Cegep from "./steps/cegep";
 import {MonitorModel, Student, Supervisor} from "../../models/user";
-import {getData} from "../../services/auth-service"
+import {signupMonitor, signupStudent, signupSupervisor} from "../../services/auth-service"
 
 const header = new Headers()
 header.append('content-type', 'application/json')
@@ -37,8 +37,8 @@ export default class Register extends Component {
             matricule: '',
             email: '',
             password: '',
-            last_name: '',
-            first_name: '',
+            lastName: '',
+            firstName: '',
             phone: '',
             companyName: '',
             address: '',
@@ -73,28 +73,40 @@ export default class Register extends Component {
 
     finish = () => {
         const {
-            email, password, first_name, last_name, phone, companyName, address, codePostal, city, matricule
+            email, password, firstName, lastName, phone, companyName, address, codePostal, city, matricule
         } = this.state;
         let user = null
         if (this.state.userType === UserType.STUDENT) {
-            user = new Student(email, password, last_name, first_name, phone, matricule);
+            user = new Student(email, password, lastName, firstName, phone, matricule);
+            signupStudent(user).then();
         }
         if (this.state.userType === UserType.SUPERVISOR) {
-            user = new Supervisor(email, password, last_name, first_name, phone, matricule);
+            user = new Supervisor(email, password, lastName, firstName, phone, matricule);
+            signupSupervisor(user).then()
         }
         if (this.state.userType === UserType.MONITOR) {
-            user = new MonitorModel(email, password, last_name, first_name, phone, companyName, address, city, codePostal);
+            user = new MonitorModel(email, password, lastName, firstName, phone, companyName, address, city, codePostal);
+            signupMonitor(user).then()
         }
 
-        getData(user).then()
+        // getData(user).then()
     }
 
     render() {
         const {step} = this.state;
         const {
-            email, password, first_name, last_name, city, phone, companyName, address, codePostal, matricule
+            email,
+            password,
+            firstName,
+            lastName,
+            city,
+            phone,
+            companyName,
+            address,
+            codePostal,
+            matricule
         } = this.state;
-        const valGeneral = {email, first_name, last_name, phone}
+        const valGeneral = {email, firstName, lastName, phone}
         const valMonitor = {companyName, city, address, codePostal}
         let show = null;
 
@@ -128,8 +140,8 @@ export default class Register extends Component {
         return <div>
             <div>
                 email:{email}<br/>
-                lastname:{last_name}<br/>
-                firstname:{first_name}<br/>
+                lastname:{lastName}<br/>
+                firstname:{firstName}<br/>
                 password:{password}<br/>
                 city:{city}<br/>
                 companyName:{companyName}<br/>
