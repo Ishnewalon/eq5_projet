@@ -34,7 +34,7 @@ public class MonitorServiceTest {
         monitor1.setFirstName("Steph");
         monitor1.setName("Kazuk");
         monitor1.setEmail("stepotato@gmail.com");
-        monitor1.setNumTel("5145555112");
+        monitor1.setPhone("5145555112");
         monitor1.setDepartment("Informatique");
         monitor1.setPassword("testPassword");
 
@@ -43,7 +43,7 @@ public class MonitorServiceTest {
         monitor2.setFirstName("Ouss");
         monitor2.setName("ama");
         monitor2.setEmail("ouste@gmail.com");
-        monitor2.setNumTel("5145555112");
+        monitor2.setPhone("5145555112");
         monitor2.setDepartment("Informatique");
         monitor2.setPassword("testPassword");
 
@@ -52,7 +52,7 @@ public class MonitorServiceTest {
         monitor3.setFirstName("same");
         monitor3.setName("dude");
         monitor3.setEmail("dudesame@gmail.com");
-        monitor3.setNumTel("5145555112");
+        monitor3.setPhone("5145555112");
         monitor3.setDepartment("Informatique");
         monitor3.setPassword("testPassword");
 

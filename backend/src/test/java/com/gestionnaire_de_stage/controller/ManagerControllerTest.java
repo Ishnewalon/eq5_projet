@@ -44,7 +44,7 @@ public class ManagerControllerTest {
         manager.setEmail("oussamakably@gmail.com");
         manager.setFirstName("Oussama");
         manager.setName("Kably");
-        manager.setNumTel("5143643320");
+        manager.setPhone("5143643320");
         return manager;
     }
 

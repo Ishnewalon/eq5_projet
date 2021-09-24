@@ -38,7 +38,7 @@ public class SupervisorControllerTest {
         supervisor.setId(1L);
         supervisor.setName("Singh");
         supervisor.setFirstName("Lohse");
-        supervisor.setNumTel("514-845-3234");
+        supervisor.setPhone("514-845-3234");
         supervisor.setEmail("sinl@gmail.com");
         supervisor.setPassword("weightofworld");
         supervisor.setDepartment("Informatique");
@@ -106,7 +106,7 @@ public class SupervisorControllerTest {
         supervisor.setId(1L);
         supervisor.setName("Singh");
         supervisor.setFirstName("Lohse");
-        supervisor.setNumTel("514-845-3234");
+        supervisor.setPhone("514-845-3234");
         supervisor.setEmail("sinl@gmail.com");
         supervisor.setPassword("weightofworld");
         supervisor.setDepartment("Informatique");

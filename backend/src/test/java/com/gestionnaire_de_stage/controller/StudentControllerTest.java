@@ -49,7 +49,7 @@ public class StudentControllerTest {
         student.setId(1L);
         student.setName("Brawl");
         student.setFirstName("Spaghetta");
-        student.setNumTel("514-546-2375");
+        student.setPhone("514-546-2375");
         student.setEmail("clip@gmail.com");
         student.setPassword("thiswilldo");
         student.setAddress("758 George");
@@ -120,7 +120,7 @@ public class StudentControllerTest {
         student.setId(1L);
         student.setName("Brawl");
         student.setFirstName("Spaghetta");
-        student.setNumTel("514-546-2375");
+        student.setPhone("514-546-2375");
         student.setEmail("clip@gmail.com");
         student.setPassword("thiswilldo");
         student.setAddress("758 George");

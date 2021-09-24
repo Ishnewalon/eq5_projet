@@ -34,7 +34,7 @@ public class StudentServiceTest {
         student1.setName("Scott");
         student1.setFirstName("Jordan");
         student1.setEmail("jscotty@gmail.com");
-        student1.setNumTel("514-546-2375");
+        student1.setPhone("514-546-2375");
         student1.setPassword("rockrocks");
         student1.setAddress("758 George");
         student1.setCity("LaSalle");
@@ -47,7 +47,7 @@ public class StudentServiceTest {
         student2.setName("Jot");
         student2.setFirstName("Paul");
         student2.setEmail("pertFaul@gmail.com");
-        student2.setNumTel("514-765-8357");
+        student2.setPhone("514-765-8357");
         student2.setPassword("kald329345");
         student2.setAddress("961 Lifew");
         student2.setCity("Verdun");
@@ -60,7 +60,7 @@ public class StudentServiceTest {
         student3.setName("Tremblay");
         student3.setFirstName("Emily");
         student3.setEmail("treme@gmail.com");
-        student3.setNumTel("514-924-7854");
+        student3.setPhone("514-924-7854");
         student3.setPassword("tough8475");
         student3.setAddress("8542 Schevchenko");
         student3.setCity("LaSalle");
