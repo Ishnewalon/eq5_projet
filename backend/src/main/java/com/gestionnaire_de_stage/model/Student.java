@@ -1,13 +1,17 @@
 package com.gestionnaire_de_stage.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
 @Entity
+@ToString(callSuper = true)
 public class Student extends User{
 
     @NotNull
@@ -22,4 +26,8 @@ public class Student extends User{
     private String city;
 
     private String postalCode;
+
+    private boolean curriculumValidated;
+
+    private String curriculumPath;
 }
