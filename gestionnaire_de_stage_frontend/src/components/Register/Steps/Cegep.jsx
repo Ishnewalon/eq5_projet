@@ -1,4 +1,4 @@
-import {Step, UserType} from "../register";
+import {Step, UserType} from "../Register";
 import {Component} from "react";
 
 export default class Cegep extends Component {
@@ -9,21 +9,24 @@ export default class Cegep extends Component {
     }
 
     continue = (val) => {
-        if (this.props.matricule.length === 5)
+        const {matricule} = this.props
+
+        if (matricule.length === 5)
             this.props.updateUserType(UserType.SUPERVISOR)
-        if (this.props.matricule.length === 7)
+        if (matricule.length === 7)
             this.props.updateUserType(UserType.STUDENT)
         this.props.nextStep(val);
     }
 
     render() {
+        const matricule = this.props.matricule
         return (<div>
                 <div className="form-group row">
                     <div className="col-md-12">
                         <label>Matricule</label>
                         <div className="input-group">
                             <input name="matricule" placeholder="Matricule" className="form-control" type="number"
-                                   value={this.props.matricule} onChange={this.props.handleChange('matricule')}/>
+                                   value={matricule} onChange={this.props.handleChange('matricule')}/>
                         </div>
                     </div>
                 </div>

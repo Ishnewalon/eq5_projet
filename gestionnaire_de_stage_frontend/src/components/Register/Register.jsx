@@ -1,11 +1,11 @@
-import './register.css'
+import './Register.css'
 import React, {Component} from "react";
-import Password from "./steps/password";
-import InformationGeneral from "./steps/informationGeneral";
-import Monitor from "./steps/monitor";
-import Choice from "./steps/choices";
-import Cegep from "./steps/cegep";
-import {MonitorModel, Student, Supervisor} from "../../models/user";
+import Password from "./Steps/Password";
+import InformationGeneral from "./Steps/InformationGeneral";
+import Monitor from "./Steps/Monitor";
+import Choice from "./Steps/Choices";
+import Cegep from "./Steps/Cegep";
+import {MonitorModel, Student, Supervisor} from "../../models/User";
 import {signupMonitor, signupStudent, signupSupervisor} from "../../services/auth-service"
 
 export const Step = {
@@ -24,6 +24,7 @@ export const UserType = {
 }
 
 export default class Register extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -43,6 +44,8 @@ export default class Register extends Component {
             city: '',
         }
         this.handleChange = this.handleChange.bind(this);
+        this.goHome = this.goHome.bind(this)
+
     }
 
 
@@ -68,6 +71,10 @@ export default class Register extends Component {
         this.setState({[input]: e.target.value});
     }
 
+    goHome = () => {
+        this.props.history.push('/')
+    }
+
     finish = () => {
         const {
             email, password, firstName, lastName, phone, companyName, address, codePostal, city, matricule
@@ -77,18 +84,21 @@ export default class Register extends Component {
             user = new Student(email, password, lastName, firstName, phone, matricule);
             signupStudent(user).then(value => {
                 console.log(value)
+                this.goHome()
             });
         }
         if (this.state.userType === UserType.SUPERVISOR) {
             user = new Supervisor(email, password, lastName, firstName, phone, matricule);
             signupSupervisor(user).then(value => {
                 console.log(value)
+                this.goHome()
             })
         }
         if (this.state.userType === UserType.MONITOR) {
             user = new MonitorModel(email, password, lastName, firstName, phone, companyName, address, city, codePostal);
             signupMonitor(user).then(value => {
                 console.log(value)
+                this.goHome()
             })
         }
 
@@ -140,7 +150,7 @@ export default class Register extends Component {
             default:
                 break;
         }
-        return <div>
+        return (<div>
             <button className="btn btn-primary" onClick={() => {
                 this.setState({hideFields: !this.state.hideFields})
             }}>Show/hide
@@ -167,7 +177,11 @@ export default class Register extends Component {
                         {show}
                     </fieldset>
                 </form>
+                <button className="btn btn-primary" onClick={() => {
+                    this.goHome()
+                }}>go home
+                </button>
             </div>
-        </div>;
+        </div>);
     }
 }

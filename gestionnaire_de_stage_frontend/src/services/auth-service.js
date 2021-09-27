@@ -1,4 +1,4 @@
-import {MonitorModel, Student, Supervisor} from "../models/user";
+import {MonitorModel, Student, Supervisor} from "../models/User";
 
 const urlBackend = 'http://localhost:8181'
 const methods = {
@@ -19,6 +19,7 @@ const requestInit = (method, body) => {
         value['body'] = JSON.stringify(body)
     return value
 }
+export let user;
 
 export async function signupMonitor(monitor) {
     if (!(monitor instanceof MonitorModel) || !monitor)
@@ -43,5 +44,7 @@ export async function signupStudent(student) {
 
 export async function signIn(userType, email, password) {
     const response = await fetch(`${urlBackend}/${userType}/${email}/${password}`, requestInit(methods.GET));
-    return await response.json()
+    return await response.json().then(
+        value => user = value
+    )
 }

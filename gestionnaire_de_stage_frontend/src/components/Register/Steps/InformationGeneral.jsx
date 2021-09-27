@@ -1,4 +1,4 @@
-import {Step} from "../register";
+import {Step} from "../Register";
 import {Component} from "react";
 
 // eslint-disable-next-line

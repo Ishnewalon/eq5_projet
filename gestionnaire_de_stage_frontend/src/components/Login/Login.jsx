@@ -1,7 +1,8 @@
-import './login.css'
+import './Login.css'
 import {Component} from "react";
-import {UserType} from "../register/register";
+import {UserType} from "../Register/Register";
 import {signIn} from "../../services/auth-service";
+
 
 export default class Login extends Component {
 
@@ -22,6 +23,7 @@ export default class Login extends Component {
         e.preventDefault()
         signIn(this.state.userType, this.state.email, this.state.password).then(value => {
             console.log(value)
+            this.props.history.push('/dashboard')
         })
     }
 
