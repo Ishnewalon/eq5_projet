@@ -22,7 +22,6 @@ export default class Choice extends Component {
                 </div>
             </div>
         </div>)
-
     }
 }
 

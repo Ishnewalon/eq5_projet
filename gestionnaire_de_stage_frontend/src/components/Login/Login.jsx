@@ -19,7 +19,7 @@ export default class Login extends Component {
         e.preventDefault()
         this.setState({[input]: e.target.value});
     }
-    clickyClick = (e) => {
+    connect = (e) => {
         e.preventDefault()
         signIn(this.state.userType, this.state.email, this.state.password).then(value => {
             console.log(value)
@@ -61,7 +61,7 @@ export default class Login extends Component {
                 </div>
                 <div className="form-group text-center">
                     <label/>
-                    <button className="btn btn-primary" type={"button"} onClick={this.clickyClick}>Connexion</button>
+                    <button className="btn btn-primary" type={"button"} onClick={this.connect}>Connexion</button>
                 </div>
             </div>
         )
