@@ -21,7 +21,6 @@ export default class Login extends Component {
     }
     connect = (e) => {
         e.preventDefault()
-        console.log(this.state.userType)
         signIn(this.state.userType, this.state.email, this.state.password).then(value => {
             console.log(value)
             this.props.history.push('/dashboard')
