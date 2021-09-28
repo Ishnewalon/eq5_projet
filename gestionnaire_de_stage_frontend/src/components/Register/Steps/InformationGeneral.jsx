@@ -32,11 +32,11 @@ export default class InformationGeneral extends Component {
             alert("Le champs numéro de téléphone est vide")
             return false
         }
-        if (!this.props.values.firstName.match(/^[a-zA-Z]+$/)) {
+        if (!this.props.values.firstName.match(/^[a-zA-Z\-\s]+$/)) {
             alert("Le champs prénom est invalide")
             return false;
         }
-        if (!this.props.values.lastName.match(/^[a-zA-Z]+$/)) {
+        if (!this.props.values.lastName.match(/^[a-zA-Z\-\s]+$/)) {
             alert("Le champs nom est invalide")
             return false;
         }
