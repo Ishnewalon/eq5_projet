@@ -17,10 +17,10 @@ export const Step = {
     PASSWORD: "password",
 }
 export const UserType = {
-    MONITOR: "monitor",
-    STUDENT: "student",
-    SUPERVISOR: "supervisor",
-
+    MONITOR: ["monitor","moniteur"],
+    STUDENT: ["student","etudiant"],
+    SUPERVISOR: ["supervisor","superviseur"],
+    MANAGER: ["manager","gestionnaire"]
 }
 
 export default class Register extends Component {

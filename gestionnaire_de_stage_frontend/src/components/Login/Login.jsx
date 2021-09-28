@@ -19,9 +19,9 @@ export default class Login extends Component {
         e.preventDefault()
         this.setState({[input]: e.target.value});
     }
-    clickyClick = (e) => {
+    connect = (e) => {
         e.preventDefault()
-        signIn(this.state.userType, this.state.email, this.state.password).then(value => {
+        signIn(this.state.userType[0], this.state.email, this.state.password).then(value => {
             console.log(value)
             this.props.history.push('/dashboard')
         })
@@ -34,9 +34,10 @@ export default class Login extends Component {
                     <div className="input-group">
                         <select className="form-control" name="choice" id="userTypes"
                                 onChange={this.handleChange('userType')}>
-                            <option defaultChecked={true} value={UserType.MONITOR}>{UserType.MONITOR}</option>
-                            <option value={UserType.SUPERVISOR}>{UserType.SUPERVISOR}</option>
-                            <option value={UserType.STUDENT}>{UserType.STUDENT}</option>
+                            <option defaultChecked={true} value={UserType.MONITOR}>{UserType.MONITOR[1]}</option>
+                            <option value={UserType.SUPERVISOR}>{UserType.SUPERVISOR[1]}</option>
+                            <option value={UserType.STUDENT}>{UserType.STUDENT[1]}</option>
+                            <option value={UserType.MANAGER}>{UserType.MANAGER[1]}</option>
                         </select>
                     </div>
                 </div>
@@ -61,7 +62,7 @@ export default class Login extends Component {
                 </div>
                 <div className="form-group text-center">
                     <label/>
-                    <button className="btn btn-primary" type={"button"} onClick={this.clickyClick}>Connexion</button>
+                    <button className="btn btn-primary" type={"button"} onClick={this.connect}>Connexion</button>
                 </div>
             </div>
         )
