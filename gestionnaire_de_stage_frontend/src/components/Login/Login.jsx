@@ -11,7 +11,7 @@ export default class Login extends Component {
         this.state = {
             email: '',
             password: '',
-            userType: UserType.MONITOR
+            userType: UserType.MONITOR[0]
         }
     }
 
@@ -21,7 +21,8 @@ export default class Login extends Component {
     }
     connect = (e) => {
         e.preventDefault()
-        signIn(this.state.userType[0], this.state.email, this.state.password).then(value => {
+        console.log(this.state.userType)
+        signIn(this.state.userType, this.state.email, this.state.password).then(value => {
             console.log(value)
             this.props.history.push('/dashboard')
         })
@@ -34,10 +35,10 @@ export default class Login extends Component {
                     <div className="input-group">
                         <select className="form-control" name="choice" id="userTypes"
                                 onChange={this.handleChange('userType')}>
-                            <option defaultChecked={true} value={UserType.MONITOR}>{UserType.MONITOR[1]}</option>
-                            <option value={UserType.SUPERVISOR}>{UserType.SUPERVISOR[1]}</option>
-                            <option value={UserType.STUDENT}>{UserType.STUDENT[1]}</option>
-                            <option value={UserType.MANAGER}>{UserType.MANAGER[1]}</option>
+                            <option defaultChecked={true} value={UserType.MONITOR[0]}>{UserType.MONITOR[1]}</option>
+                            <option value={UserType.SUPERVISOR[0]}>{UserType.SUPERVISOR[1]}</option>
+                            <option value={UserType.STUDENT[0]}>{UserType.STUDENT[1]}</option>
+                            <option value={UserType.MANAGER[0]}>{UserType.MANAGER[1]}</option>
                         </select>
                     </div>
                 </div>
