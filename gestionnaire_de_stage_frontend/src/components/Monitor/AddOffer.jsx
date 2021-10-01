@@ -69,6 +69,13 @@ export default class AddOffer extends Component {
                 <FieldAddress label="Adresse ou le stage se situe" address={this.state.address}
                               handleChange={this.handleChange}/>
             </div>
+            <div className="form-group">
+                <label>Salary</label>
+                <div className="input-group">
+                    <input name="description" placeholder="Description" className="form-control" type="number"
+                           value={this.state.salary} onChange={this.handleChange('salary')}/>
+                </div>
+            </div>
             <div className="form-group text-center">
                 <label/>
                 <div>
