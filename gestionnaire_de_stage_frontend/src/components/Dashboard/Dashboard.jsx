@@ -1,13 +1,17 @@
 import {Component} from "react";
-import {user} from "../../services/auth-service";
+import AuthService from "../../services/auth-service";
 
 export default class Dashboard extends Component {
+    constructor(props) {
+        super(props);
+        this.service = AuthService.getInstance()
+    }
 
     render() {
-        console.log(user)
+        console.log(this.service.user)
         return (<div>
             <p>Allo</p>
-            {JSON.stringify(user)}
+            {JSON.stringify(this.service.user)}
         </div>)
     }
 }
