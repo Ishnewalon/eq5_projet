@@ -1,7 +1,7 @@
 import './Login.css'
 import {Component} from "react";
 import {UserType} from "../Register/Register";
-import {signIn} from "../../services/auth-service";
+import AuthService from "../../services/auth-service";
 import {FieldPassword} from "../Fields/FieldPassword";
 
 
@@ -14,6 +14,7 @@ export default class Login extends Component {
             password: '',
             userType: UserType.MONITOR[0]
         }
+        this.service = AuthService.getInstance()
     }
 
     handleChange = input => e => {
@@ -22,8 +23,7 @@ export default class Login extends Component {
     }
     connect = (e) => {
         e.preventDefault()
-        signIn(this.state.userType, this.state.email, this.state.password).then(value => {
-            console.log(value)
+        this.service.signIn(this.state.userType, this.state.email, this.state.password).then(() => {
             this.props.history.push('/dashboard')
         })
     }

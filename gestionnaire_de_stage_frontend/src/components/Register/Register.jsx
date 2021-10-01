@@ -6,7 +6,7 @@ import StepMonitor from "./Steps/StepMonitor";
 import Choice from "./Steps/StepChoices";
 import StepCegep from "./Steps/StepCegep";
 import {MonitorModel, Student, Supervisor} from "../../models/User";
-import {signupMonitor, signupStudent, signupSupervisor} from "../../services/auth-service"
+import AuthService from "../../services/auth-service"
 
 export const Step = {
     CHOICE: "choice",
@@ -17,10 +17,10 @@ export const Step = {
     PASSWORD: "password",
 }
 export const UserType = {
-    MONITOR: ["monitor","moniteur"],
-    STUDENT: ["student","etudiant"],
-    SUPERVISOR: ["supervisor","superviseur"],
-    MANAGER: ["manager","gestionnaire"]
+    MONITOR: ["monitor", "moniteur"],
+    STUDENT: ["student", "etudiant"],
+    SUPERVISOR: ["supervisor", "superviseur"],
+    MANAGER: ["manager", "gestionnaire"]
 }
 
 export default class Register extends Component {
@@ -43,6 +43,7 @@ export default class Register extends Component {
             codePostal: '',
             city: '',
         }
+        this.service = AuthService.getInstance()
         this.handleChange = this.handleChange.bind(this);
         this.goHome = this.goHome.bind(this)
 
@@ -72,7 +73,7 @@ export default class Register extends Component {
     }
 
     goHome = () => {
-        this.props.history.push('/')
+        // this.props.history.push('/')
     }
 
     finish = () => {
@@ -82,21 +83,21 @@ export default class Register extends Component {
         let user = null
         if (this.state.userType === UserType.STUDENT) {
             user = new Student(email, password, lastName, firstName, phone, matricule);
-            signupStudent(user).then(value => {
+            this.service.signupStudent(user).then(value => {
                 console.log(value)
                 this.goHome()
             });
         }
         if (this.state.userType === UserType.SUPERVISOR) {
             user = new Supervisor(email, password, lastName, firstName, phone, matricule);
-            signupSupervisor(user).then(value => {
+            this.service.signupSupervisor(user).then(value => {
                 console.log(value)
                 this.goHome()
             })
         }
         if (this.state.userType === UserType.MONITOR) {
             user = new MonitorModel(email, password, lastName, firstName, phone, companyName, address, city, codePostal);
-            signupMonitor(user).then(value => {
+            this.service.signupMonitor(user).then(value => {
                 console.log(value)
                 this.goHome()
             })
