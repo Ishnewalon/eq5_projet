@@ -7,7 +7,7 @@ export default class Choice extends Component {
     }
 
     render() {
-        return (<div>
+        return (<>
             <div className="form-group text-center">
                 <label/>
                 <div>
@@ -21,7 +21,7 @@ export default class Choice extends Component {
                     </button>
                 </div>
             </div>
-        </div>)
+        </>)
     }
 }
 

@@ -1,10 +1,10 @@
 import './Register.css'
 import React, {Component} from "react";
-import Password from "./Steps/Password";
-import InformationGeneral from "./Steps/InformationGeneral";
+import StepPassword from "./Steps/StepPassword";
+import StepInformationGeneral from "./Steps/StepInformationGeneral";
 import StepMonitor from "./Steps/StepMonitor";
-import Choice from "./Steps/Choices";
-import Cegep from "./Steps/Cegep";
+import Choice from "./Steps/StepChoices";
+import StepCegep from "./Steps/StepCegep";
 import {MonitorModel, Student, Supervisor} from "../../models/User";
 import {signupMonitor, signupStudent, signupSupervisor} from "../../services/auth-service"
 
@@ -128,9 +128,9 @@ export default class Register extends Component {
                 show = <Choice prevStep={this.prevStep} nextStep={this.nextStep}/>
                 break;
             case Step.CEGEP:
-                show = <Cegep prevStep={this.prevStep} nextStep={this.nextStep} updateUserType={this.updateUserType}
-                              handleChange={this.handleChange}
-                              matricule={matricule}/>
+                show = <StepCegep prevStep={this.prevStep} nextStep={this.nextStep} updateUserType={this.updateUserType}
+                                  handleChange={this.handleChange}
+                                  matricule={matricule}/>
                 break;
             case Step.MONITOR:
                 show = <StepMonitor prevStep={this.prevStep} nextStep={this.nextStep} updateUserType={this.updateUserType}
@@ -138,13 +138,13 @@ export default class Register extends Component {
                                     values={valMonitor}/>
                 break;
             case Step.GENERAL:
-                show = <InformationGeneral prevStep={this.prevStep} nextStep={this.nextStep}
-                                           handleChange={this.handleChange}
-                                           values={valGeneral}/>
+                show = <StepInformationGeneral prevStep={this.prevStep} nextStep={this.nextStep}
+                                               handleChange={this.handleChange}
+                                               values={valGeneral}/>
                 break;
             case Step.PASSWORD:
-                show = <Password prevStep={this.prevStep} finish={this.finish} handleChange={this.handleChange}
-                                 password={password}/>
+                show = <StepPassword prevStep={this.prevStep} finish={this.finish} handleChange={this.handleChange}
+                                     password={password}/>
 
                 break;
             default:

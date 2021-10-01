@@ -2,6 +2,7 @@ import './Login.css'
 import {Component} from "react";
 import {UserType} from "../Register/Register";
 import {signIn} from "../../services/auth-service";
+import {FieldPassword} from "../Fields/FieldPassword";
 
 
 export default class Login extends Component {
@@ -50,14 +51,8 @@ export default class Login extends Component {
                         </div>
                     </div>
                     <div className="col-md-6">
-                        <label>Password</label>
-                        <div>
-                            <div className="input-group">
-                                <input name="password" placeholder="Votre mot de passe" className="form-control"
-                                       type="password"
-                                       value={this.state.password} onChange={this.handleChange('password')}/>
-                            </div>
-                        </div>
+                        <FieldPassword password={this.state.password} label="Mot de passe"
+                                       placeholder="Votre mot de passe" handleChange={this.handleChange('password')}/>
                     </div>
                 </div>
                 <div className="form-group text-center">

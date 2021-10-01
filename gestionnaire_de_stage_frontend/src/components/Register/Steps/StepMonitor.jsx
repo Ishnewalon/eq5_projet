@@ -1,6 +1,6 @@
 import {Step, UserType} from "../Register";
 import {Component} from "react";
-import {FieldAddress} from "./FieldAddress";
+import {FieldAddress} from "../../Fields/FieldAddress";
 
 const regexCodePostal = /^([A-Za-z]\s?[0-9]){3}$/;
 

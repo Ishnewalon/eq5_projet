@@ -5,7 +5,7 @@ import {Component} from "react";
 const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 const regexPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
-export default class InformationGeneral extends Component {
+export default class StepInformationGeneral extends Component {
 
     previous = (e) => {
         e.preventDefault();

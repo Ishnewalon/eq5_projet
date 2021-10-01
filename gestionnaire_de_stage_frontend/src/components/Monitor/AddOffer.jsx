@@ -1,5 +1,5 @@
 import {Component} from "react";
-import {FieldAddress} from "../Register/Steps/FieldAddress";
+import {FieldAddress} from "../Fields/FieldAddress";
 
 export const DepartmentEnum = {
     info: 'informatique',
