@@ -41,7 +41,6 @@ public class ManagerService implements ICrudService<Manager, Long> {
         }
     }
 
-    @Override
     public Optional<Manager> getOneByEmailAndPassword(String email, String password) {
         return managerRepository.findManagerByEmailAndPassword(email, password);
     }

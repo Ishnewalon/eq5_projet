@@ -46,7 +46,6 @@ public class MonitorService implements ICrudService<Monitor, Long> {
         return Optional.empty();
     }
 
-    @Override
     public Optional<Monitor> getOneByEmailAndPassword(String email, String password) {
         if (monitorRepository.existsByEmailAndPassword(email, password)) {
             return Optional.of(monitorRepository.findMonitorByEmailAndPassword(email, password));
