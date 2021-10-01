@@ -4,6 +4,7 @@ import Login from "./components/Login/Login";
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import Dashboard from "./components/Dashboard/Dashboard";
 import TeleverserCv from "./components/TeleverserCv/TeleverserCv";
+import Monitor from "./components/Monitor/Monitor";
 
 function App() {
     return (
@@ -22,6 +23,9 @@ function App() {
                     <li>
                         <Link to="/televerser-cv">Deposer cv</Link>
                     </li>
+                    <li>
+                        <Link to="/monitor">Moniteur</Link>
+                    </li>
                 </ul>
             </nav>
             <div className="container">
@@ -30,6 +34,7 @@ function App() {
                     <Route path="/register" component={Register}/>
                     <Route path="/dashboard" component={Dashboard}/>
                     <Route path="/televerser-cv" component={TeleverserCv}/>
+                    <Route path="/monitor" component={Monitor}/>
                 </Switch>
             </div>
         </Router>

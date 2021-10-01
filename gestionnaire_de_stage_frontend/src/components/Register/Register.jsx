@@ -2,7 +2,7 @@ import './Register.css'
 import React, {Component} from "react";
 import Password from "./Steps/Password";
 import InformationGeneral from "./Steps/InformationGeneral";
-import Monitor from "./Steps/Monitor";
+import StepMonitor from "./Steps/StepMonitor";
 import Choice from "./Steps/Choices";
 import Cegep from "./Steps/Cegep";
 import {MonitorModel, Student, Supervisor} from "../../models/User";
@@ -133,9 +133,9 @@ export default class Register extends Component {
                               matricule={matricule}/>
                 break;
             case Step.MONITOR:
-                show = <Monitor prevStep={this.prevStep} nextStep={this.nextStep} updateUserType={this.updateUserType}
-                                handleChange={this.handleChange}
-                                values={valMonitor}/>
+                show = <StepMonitor prevStep={this.prevStep} nextStep={this.nextStep} updateUserType={this.updateUserType}
+                                    handleChange={this.handleChange}
+                                    values={valMonitor}/>
                 break;
             case Step.GENERAL:
                 show = <InformationGeneral prevStep={this.prevStep} nextStep={this.nextStep}
