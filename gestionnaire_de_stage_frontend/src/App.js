@@ -28,6 +28,9 @@ function App() {
                 <li>
                     <Link to="/dashboard">Dash</Link>
                 </li>
+                <li>
+                    <Link to="/monitor">Monitor</Link>
+                </li>
             </ul>
         </nav>
         <div className="container">
