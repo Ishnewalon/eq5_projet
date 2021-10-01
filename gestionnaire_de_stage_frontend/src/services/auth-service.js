@@ -1,7 +1,7 @@
 import {MonitorModel, Student, Supervisor} from "../models/User";
+import {methods, requestInit, urlBackend} from "./serviceUtils";
 
-export default class AuthService {
-    static instance = null
+class AuthService {
     user;
     _isAuthenticated = false;
 
@@ -53,33 +53,10 @@ export default class AuthService {
         if (this.user)
             return this.user.id
     }
-
-    static getInstance() {
-        if (!this.instance) {
-            this.instance = new AuthService()
-        }
-        return this.instance
-    }
 }
 
-export const urlBackend = 'http://localhost:8181'
-export const methods = {
-    POST: 'POST',
-    GET: 'GET'
-}
-export const requestInit = (method, body) => {
-    let value = {
-        method: method,
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }
-    if (method === methods.POST)
-        value['body'] = JSON.stringify(body)
-    return value
-}
+const authService = new AuthService();
+Object.freeze(authService);
 
+export default authService;
 

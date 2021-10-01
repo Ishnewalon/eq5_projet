@@ -4,7 +4,7 @@ import AuthService from "../../services/auth-service";
 export default class Dashboard extends Component {
     constructor(props) {
         super(props);
-        this.service = AuthService.getInstance()
+        this.service = AuthService
     }
 
     render() {

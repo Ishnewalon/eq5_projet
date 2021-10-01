@@ -4,7 +4,7 @@ import AuthService from "../../services/auth-service";
 
 class ProtectedRoute extends React.Component {
     render() {
-        const service = AuthService.getInstance();
+        const service = AuthService;
         let {component: Component, isAuthenticated, ...restOfProps} = this.props;
         console.log(isAuthenticated)
         return (

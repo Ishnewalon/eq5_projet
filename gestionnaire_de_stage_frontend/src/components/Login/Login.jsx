@@ -14,7 +14,7 @@ export default class Login extends Component {
             password: '',
             userType: UserType.MONITOR[0]
         }
-        this.service = AuthService.getInstance()
+        this.service = AuthService
     }
 
     handleChange = input => e => {

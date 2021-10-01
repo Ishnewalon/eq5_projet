@@ -43,7 +43,7 @@ export default class Register extends Component {
             codePostal: '',
             city: '',
         }
-        this.service = AuthService.getInstance()
+        this.service = AuthService
         this.handleChange = this.handleChange.bind(this);
         this.goHome = this.goHome.bind(this)
 

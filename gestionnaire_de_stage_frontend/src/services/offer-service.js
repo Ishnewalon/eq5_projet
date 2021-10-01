@@ -1,8 +1,7 @@
-import {methods, requestInit, urlBackend} from "./auth-service";
+import {methods, requestInit, urlBackend} from "./serviceUtils";
 import Offer from "../models/Offer";
 
-export default class OfferService {
-    static instance = null
+class OfferService {
 
     async createOffer(offer) {
         if (!(offer instanceof Offer) || !offer)
@@ -11,11 +10,8 @@ export default class OfferService {
         return await response.json()
     }
 
-    static getInstance() {
-        if (!this.instance) {
-            this.instance = new OfferService()
-        }
-        return this.instance
-    }
 }
+const offerService = new OfferService();
+Object.freeze(offerService);
 
+export default offerService;

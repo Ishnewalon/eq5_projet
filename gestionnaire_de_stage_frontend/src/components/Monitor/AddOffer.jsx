@@ -19,8 +19,8 @@ export default class AddOffer extends Component {
             salary: 0,
             creator_id: 0,
         }
-        this.service = OfferService.getInstance()
-        this.authService = AuthService.getInstance()
+        this.service = OfferService
+        this.authService = AuthService
     }
 
     addStage = () => {
@@ -28,7 +28,7 @@ export default class AddOffer extends Component {
         const id = this.authService.getUserId()
 
         let offer = new Offer(title, department, description, address, salary, id)
-        this.service.createOffer(offer)
+        this.service.createOffer(offer).then()
     }
     handleChange = input => e => {
         this.setState({[input]: e.target.value});
