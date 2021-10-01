@@ -1,5 +1,8 @@
 import {Component} from "react";
 import {FieldAddress} from "../Fields/FieldAddress";
+import OfferService from "../../services/offer-service";
+import Offer from "../../models/Offer";
+import AuthService from "../../services/auth-service";
 
 export const DepartmentEnum = {
     info: 'informatique',
@@ -16,11 +19,16 @@ export default class AddOffer extends Component {
             salary: 0,
             creator_id: 0,
         }
+        this.service = OfferService.getInstance()
+        this.authService = AuthService.getInstance()
     }
 
     addStage = () => {
+        const {title, department, description, address, salary} = this.state
+        const id = this.authService.getUserId()
 
-
+        let offer = new Offer(title, department, description, address, salary, id)
+        this.service.createOffer(offer)
     }
     handleChange = input => e => {
         this.setState({[input]: e.target.value});
