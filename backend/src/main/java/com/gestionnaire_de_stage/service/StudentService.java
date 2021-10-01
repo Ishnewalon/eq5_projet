@@ -45,7 +45,6 @@ public class StudentService implements ICrudService<Student, Long> {
         return Optional.empty();
     }
 
-    @Override
     public Optional<Student> getOneByEmailAndPassword(String email, String password) {
         if (studentRepository.existsByEmailAndPassword(email, password)) {
             return Optional.of(studentRepository.findStudentByEmailAndPassword(email, password));

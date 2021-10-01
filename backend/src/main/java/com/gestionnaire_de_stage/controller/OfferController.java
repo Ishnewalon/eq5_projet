@@ -2,8 +2,10 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.service.ManagerService;
 import com.gestionnaire_de_stage.service.MonitorService;
 import com.gestionnaire_de_stage.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +23,14 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/offers")
+@CrossOrigin
 public class OfferController {
 
     @Autowired
     private MonitorService monitorService;
+
+    @Autowired
+    private ManagerService managerService;
 
     @Autowired
     private OfferService offerService;
@@ -59,6 +65,20 @@ public class OfferController {
         }else{
             Offer offer = offerService.mapToOffer(offerDTO);
             offer.setCreator(monitor.get());
+            Optional<Offer> optionalOffer = offerService.create(offer);
+            return new ResponseEntity<>(optionalOffer.isPresent(), HttpStatus.CREATED);
+        }
+    }
+
+    @PostMapping("/manager/add")
+    public ResponseEntity<?> addOfferManager(@Valid @RequestBody OfferDTO offerDTO){
+        Optional<Manager> manager = managerService.getOneByID(offerDTO.getCreator_id());
+
+        if(manager.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur: gestionnaire non existant!");
+        }else{
+            Offer offer = offerService.mapToOffer(offerDTO);
+            offer.setCreator(manager.get());
             Optional<Offer> optionalOffer = offerService.create(offer);
             return new ResponseEntity<>(optionalOffer.isPresent(), HttpStatus.CREATED);
         }
