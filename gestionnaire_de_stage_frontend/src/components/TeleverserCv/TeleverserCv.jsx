@@ -12,13 +12,13 @@ class TeleverserCv extends Component {
     render() {
 
         return (
-            <Dropzone onDrop={this.onDrop} >
-                {({getRootProps, getInputProps, isDragActive}) => (
+            <Dropzone onDrop={this.onDrop} accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                {({getRootProps, getInputProps, isDragActive, isDragReject}) => (
                     <div {...getRootProps()}>
                         <input {...getInputProps()}/>
-                        {isDragActive ? "Déposez votre C.V ici" : "Cliquer moi ou glisser votre C.V. ici"}
-
-
+                        {!isDragActive && "Cliquer moi ou glisser votre C.V. ici"}
+                        {isDragActive && !isDragReject && "Déposez votre C.V ici"}
+                        {isDragActive && isDragReject && "Ce format de fichier n'est pas accepté"}
                     </div>
                 )}
             </Dropzone>
