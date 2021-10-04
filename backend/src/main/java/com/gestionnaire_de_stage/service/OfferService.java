@@ -17,7 +17,6 @@ public class OfferService implements ICrudService<Offer, Long>{
     @Autowired
     private OfferRepository offerRepository;
 
-
     public Offer mapToOffer(OfferDTO offerDTO){
         Offer offer = new Offer();
         offer.setAddress(offerDTO.getAddress());
@@ -48,7 +47,7 @@ public class OfferService implements ICrudService<Offer, Long>{
     }
 
     @Override
-    public Optional<Offer> update(Offer offer, Long id) throws Exception {
+    public Optional<Offer> update(Offer offer, Long id) throws ValidationException {
         if (id != null && offerRepository.existsById(id) && offer != null) {
             offer.setId(id);
             return Optional.of(offerRepository.save(offer));

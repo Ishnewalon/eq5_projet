@@ -61,4 +61,11 @@ public class MonitorService implements ICrudService<Monitor, Long> {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "MonitorService{" +
+                "monitorRepository=" + monitorRepository +
+                '}';
+    }
 }
