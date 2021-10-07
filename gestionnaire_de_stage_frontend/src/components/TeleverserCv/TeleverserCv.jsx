@@ -1,5 +1,5 @@
 import './TeleverserCv.css'
-import React, {Component} from "react";
+import React, {useState}  from "react";
 import Dropzone from "react-dropzone";
 
 
@@ -12,9 +12,9 @@ class TeleverserCv extends Component {
     render() {
 
         return (
-            <div className="App">
+            <div>
                 <Dropzone
-                    onDrop={this.onDrop}
+                    onDrop={handleDrop}
                     accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                     minSize={1024}
                     maxSize={3072000}
@@ -38,25 +38,22 @@ class TeleverserCv extends Component {
                                 })}
                             >
                                 <input {...getInputProps()} />
-                                <span>{isDragActive ? "Déposez votre C.V ici" : "Cliquer moi ou glisser votre C.V. ici"}</span>
+                                <span>
+                                    {isDragActive ? "Déposez votre C.V ici" : "Cliquer moi ou glisser votre C.V. ici"}
+                                </span>
                             </div>
                         );
                     }}
                 </Dropzone>
+                <div className={"text-center"}>
+                    <b><h3>Fichiers:</h3></b>
+                    <ul>
+                        {fileNames.map(fileName => (
+                            <li key={fileName}>{fileName}</li>
+                        ))}
+                    </ul>
+                </div>
             </div>
         );
-    }
-        // return (
-        //     <Dropzone onDrop={this.onDrop} accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-        //         {({getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept }) => (
-        //             <div {...getRootProps()}>
-        //                 <input {...getInputProps()}/>
-        //                 {!isDragActive && "Cliquer moi ou glisser votre C.V. ici"}
-        //                 {isDragActive && isDragAccept && "Déposez votre C.V ici"}
-        //                 {isDragActive && isDragReject && "Ce format de fichier n'est pas accepté"}
-        //             </div>
-        //         )}
-        //     </Dropzone>
-        // );
+
 }
-export default TeleverserCv

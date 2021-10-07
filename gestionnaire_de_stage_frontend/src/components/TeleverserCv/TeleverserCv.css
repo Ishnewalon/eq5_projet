@@ -15,3 +15,6 @@
 .reject {
     border-color: #d83b01 !important;
 }
+li {
+    list-style-type: none;
+}
