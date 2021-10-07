@@ -12,9 +12,11 @@ import java.util.Optional;
 @Service
 public class MonitorService implements ICrudService<Monitor, Long> {
 
-    @Autowired
-    private MonitorRepository monitorRepository;
+    private final MonitorRepository monitorRepository;
 
+    public MonitorService(MonitorRepository monitorRepository){
+        this.monitorRepository = monitorRepository;
+    }
 
     @Override
     public Optional<Monitor> create(Monitor monitor) throws ValidationException {

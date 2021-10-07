@@ -12,8 +12,11 @@ import java.util.Optional;
 @Service
 public class ManagerService implements ICrudService<Manager, Long> {
 
-    @Autowired
-    private ManagerRepository managerRepository;
+    private final ManagerRepository managerRepository;
+
+    public ManagerService(ManagerRepository managerRepository){
+        this.managerRepository = managerRepository;
+    }
 
     @Override
     public Optional<Manager> create(Manager manager) throws ValidationException {

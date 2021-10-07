@@ -14,8 +14,11 @@ import java.util.Optional;
 @Service
 public class OfferService implements ICrudService<Offer, Long>{
 
-    @Autowired
-    private OfferRepository offerRepository;
+    private final OfferRepository offerRepository;
+
+    public OfferService(OfferRepository offerRepository){
+        this.offerRepository = offerRepository;
+    }
 
     public Offer mapToOffer(OfferDTO offerDTO){
         Offer offer = new Offer();
@@ -25,6 +28,17 @@ public class OfferService implements ICrudService<Offer, Long>{
         offer.setSalary(offerDTO.getSalary());
         offer.setTitle(offerDTO.getTitle());
         return offer;
+    }
+
+    public OfferDTO mapToOfferDTO(Offer o){
+        OfferDTO dto = new OfferDTO();
+        dto.setAddress(o.getAddress());
+        dto.setCreator_id(o.getCreator().getId());
+        dto.setDepartment(o.getDepartment());
+        dto.setTitle(o.getTitle());
+        dto.setDescription(o.getDescription());
+        dto.setSalary(o.getSalary());
+        return dto;
     }
 
     @Override
@@ -48,7 +62,7 @@ public class OfferService implements ICrudService<Offer, Long>{
 
     @Override
     public Optional<Offer> update(Offer offer, Long id) throws ValidationException {
-        if (id != null && offerRepository.existsById(id) && offer != null) {
+        if (id != null && offerRepository.existsById(id)) {
             offer.setId(id);
             return Optional.of(offerRepository.save(offer));
         }

@@ -26,14 +26,18 @@ import java.util.Optional;
 @CrossOrigin
 public class OfferController {
 
-    @Autowired
-    private MonitorService monitorService;
+    private final MonitorService monitorService;
 
-    @Autowired
-    private ManagerService managerService;
+    private final ManagerService managerService;
 
-    @Autowired
-    private OfferService offerService;
+    private final OfferService offerService;
+
+    public OfferController(MonitorService monitorService, ManagerService managerService, OfferService offerService){
+        this.offerService = offerService;
+        this.managerService = managerService;
+        this.monitorService = monitorService;
+    }
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
