@@ -1,4 +1,4 @@
-import {Component} from "react";
+import React, {Component} from "react";
 import {user} from "../../services/auth-service";
 
 export default class Dashboard extends Component {

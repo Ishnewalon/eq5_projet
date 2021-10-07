@@ -42,16 +42,18 @@ export default function TeleverserCv() {
                             </div>
                         );
                     }}
-                </Dropzone>
-                <div className={"text-center"}>
-                    <b><h3>Fichiers:</h3></b>
-                    <ul>
-                        {fileNames.map(fileName => (
-                            <li key={fileName}>{fileName}</li>
-                        ))}
-                    </ul>
-                </div>
+            </Dropzone>
+            <div className={"text-center"}>
+                <b><h3>Fichiers:</h3></b>
+                <ul>
+                    {fileNames.map(fileName => (
+                        <li key={fileName}>{fileName}</li>
+                    ))}
+                </ul>
             </div>
-        );
-
+            <div className={"text-center"}>
+                <button>Envoyer</button>
+            </div>
+        </div>
+    );
 }
