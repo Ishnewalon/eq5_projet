@@ -2,14 +2,12 @@ import './TeleverserCv.css'
 import React, {useState}  from "react";
 import Dropzone from "react-dropzone";
 
-
-class TeleverserCv extends Component {
-
-    onDrop = acceptedFiles => {
+export default function TeleverserCv() {
+    const [fileNames, setFileNames] = useState([]);
+    const handleDrop = acceptedFiles => {
+        setFileNames(acceptedFiles.map(file => file.name));
         console.log(acceptedFiles)
     }
-
-    render() {
 
         return (
             <div>
