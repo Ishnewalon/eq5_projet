@@ -5,15 +5,15 @@ import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.User;
 import com.gestionnaire_de_stage.repository.OfferRepository;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,12 +23,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
+@DataJpaTest
 public class OfferServiceTest {
 
     @InjectMocks
     private OfferService offerService;
 
     @Mock
+    @Autowired
     private OfferRepository offerRepository;
 
     private Monitor getDummyMonitor() {
@@ -75,7 +77,7 @@ public class OfferServiceTest {
         Offer offer3 = getDummyOffer(getDummyMonitor());
         offer3.setId(3L);
 
-        List<Offer> offers =offerRepository.saveAll(List.of(offer1, offer2, offer3));
+        List<Offer> offers = offerRepository.saveAll(List.of(offer1, offer2, offer3));
         offers.forEach(System.out::println);
     }
 

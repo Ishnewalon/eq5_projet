@@ -10,6 +10,4 @@ public class ResponseMessage {
     public ResponseMessage(String message) {
         this.message = message;
     }
-
-    public ResponseMessage(){}
 }

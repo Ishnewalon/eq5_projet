@@ -23,6 +23,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -249,5 +251,113 @@ public class OfferControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.get().getResponse().getStatus());
     }
 
+    @Test
+    public void testCreateMonitorOffer_withNullDepartment() throws Exception {
+        Monitor monitor = getDummyMonitor();
+        monitor.setId(1L);
+
+        OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(monitor));
+        offer.setDepartment(null);
+
+        MvcResult mvcResult;
+
+        mvcResult = mockMvc.perform(post("/offers/monitor/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Le departement est vide."));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    public void testCreateMonitorOffer_withNullTItle() throws Exception {
+        Monitor monitor = getDummyMonitor();
+        monitor.setId(1L);
+
+        OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(monitor));
+        offer.setTitle(null);
+
+        MvcResult mvcResult;
+
+        mvcResult = mockMvc.perform(post("/offers/monitor/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Le titre est vide."));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    public void testCreateMonitorOffer_withNullAddress() throws Exception {
+        Monitor monitor = getDummyMonitor();
+        monitor.setId(1L);
+
+        OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(monitor));
+        offer.setAddress(null);
+
+        MvcResult mvcResult;
+
+        mvcResult = mockMvc.perform(post("/offers/monitor/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("L'addresse est vide."));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    public void testCreateMonitorOffer_withNullDescription() throws Exception {
+        Monitor monitor = getDummyMonitor();
+        monitor.setId(1L);
+
+        OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(monitor));
+        offer.setDescription(null);
+
+        MvcResult mvcResult = null;
+
+        mvcResult = mockMvc.perform(post("/offers/monitor/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("La description est vide."));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    public void testCreateMonitorOffer_withInvalidSalary() throws Exception {
+        Monitor monitor = getDummyMonitor();
+        monitor.setId(1L);
+
+        OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(monitor));
+        offer.setSalary(-10);
+
+        MvcResult mvcResult;
+
+        mvcResult = mockMvc.perform(post("/offers/monitor/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Le salaire n'est pas positif."));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
+
+
+    @Test
+    public void testCreateMonitorOffer_withInvalidCreatorId() throws Exception {
+        Monitor monitor = getDummyMonitor();
+        monitor.setId(1L);
+
+        OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(monitor));
+        offer.setCreator_id(-1);
+
+        MvcResult mvcResult;
+
+        mvcResult = mockMvc.perform(post("/offers/monitor/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Le id de l'utilsateur n'est pas positif."));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
 
 }

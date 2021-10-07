@@ -9,29 +9,25 @@ import javax.validation.constraints.Size;
 
 @Data
 public class OfferDTO {
-    @NotBlank(message = "Le departement ne peut pas être vide.")
-    @Size(min = 2, message = "Le departement doit avoir au minimum 2 caractères.")
-    @NotNull(message = "Le departement est nécessaire.")
+    @NotBlank(message = "Le departement est vide.")
+    @Size(min = 2, message = "Le departement doit avoir au minimum 2 lettres.")
     private String department;
 
-    @NotBlank(message = "Le titre ne peut pas être vide.")
-    @Size(min = 2, message = "Le titre doit avoir au minimum 2 caractères.")
-    @NotNull(message = "Le titre est nécessaire.")
+    @NotBlank(message = "Le titre est vide.")
+    @Size(min = 2, message = "Le titre doit avoir au minimum 2 lettres.")
     private String title;
 
-    @NotBlank(message = "La description ne peut pas être vide.")
-    @Size(min = 2, message = "La description doit avoir au minimum 2 caractères.")
-    @NotNull(message = "La description est nécessaire.")
+    @NotBlank(message = "La description est vide.")
+    @Size(min = 2, message = "La description doit avoir au minimum 2 lettres.")
     private String description;
 
-    @Size(min = 2, message = "L'addresse doit avoir au minimum 2 caractères.")
-    @NotBlank(message = "L'addresse ne peut pas être vide.")
-    @NotNull(message = "L'addresse est nécessaire.")
+    @Size(min = 2, message = "L'addresse doit avoir au minimum 2 lettres.")
+    @NotBlank(message = "L'addresse est vide.")
     private String address;
 
-    @Min(value = 0, message = "Le salaire ne peut être négatif.")
+    @Min(value = 0, message = "Le salaire n'est pas positif.")
     private double salary;
 
-    @Min(value = 1, message = "Le id du créateur ne peut être négatif.")
+    @Min(value = 1, message = "Le id de l'utilsateur n'est pas positif.")
     private long creator_id;
 }
