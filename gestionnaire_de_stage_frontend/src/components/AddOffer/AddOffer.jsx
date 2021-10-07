@@ -3,11 +3,9 @@ import {FieldAddress} from "../Fields/FieldAddress";
 import OfferService from "../../services/offer-service";
 import Offer from "../../models/Offer";
 import AuthService from "../../services/auth-service";
+import {DepartmentEnum} from "../../enums/Departement";
 
-export const DepartmentEnum = {
-    info: 'informatique',
-    art: 'Art et Cinemas'
-};
+
 export default class AddOffer extends Component {
     constructor(props) {
         super(props);
@@ -23,12 +21,12 @@ export default class AddOffer extends Component {
         this.authService = AuthService
     }
 
-    addStage = () => {
+    addOffer = () => {
         const {title, department, description, address, salary} = this.state
         const id = this.authService.getUserId()
 
         let offer = new Offer(title, department, description, address, salary, id)
-        this.service.createOffer(offer).then()
+        this.props.addOffer(offer)
     }
     handleChange = input => e => {
         this.setState({[input]: e.target.value});
@@ -36,7 +34,7 @@ export default class AddOffer extends Component {
 
 
     render() {
-        return (<div>
+        return (<>
             <div className="form-group row">
                 <div className="col-md-6">
                     <label>Titre</label>
@@ -79,9 +77,10 @@ export default class AddOffer extends Component {
             <div className="form-group text-center">
                 <label/>
                 <div>
-                    <button className="btn btn-primary" type={"button"} onClick={this.addStage}>Ajouter</button>
+                    <button className="btn btn-primary" type={"button"} onClick={this.addOffer}>Ajouter</button>
                 </div>
             </div>
-        </div>);
+        </>);
     }
 }
+

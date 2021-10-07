@@ -1,5 +1,6 @@
-import {MonitorModel, Student, Supervisor} from "../models/User";
+import {ManagerModel, MonitorModel, Student, Supervisor} from "../models/User";
 import {methods, requestInit, urlBackend} from "./serviceUtils";
+import {UserType} from "../components/Register/Register";
 
 class AuthService {
     user;
@@ -7,6 +8,22 @@ class AuthService {
 
     isAuthenticated() {
         return this._isAuthenticated;
+    }
+
+    isMonitor() {
+        return this.user instanceof MonitorModel;
+    }
+
+    isManager() {
+        return this.user instanceof ManagerModel;
+    }
+
+    isStudent() {
+        return this.user instanceof Student;
+    }
+
+    isSupervisor() {
+        return this.user instanceof Student;
     }
 
     async signupMonitor(monitor) {
@@ -33,8 +50,21 @@ class AuthService {
     async signIn(userType, email, password) {
         const response = await fetch(`${urlBackend}/${userType}/${email}/${password}`, requestInit(methods.GET));
         return await response.json().then(
-            value => {
+            (value) => {
+                if (value.message){
+                    alert(value.message)
+                    return
+                }
                 this.user = value
+                if (userType === UserType.MONITOR[0]) {
+                    Object.setPrototypeOf(this.user, MonitorModel.prototype)
+                } else if (userType === UserType.STUDENT[0]) {
+                    Object.setPrototypeOf(this.user, Student.prototype)
+                } else if (userType === UserType.SUPERVISOR[0]) {
+                    Object.setPrototypeOf(this.user, Supervisor.prototype)
+                } else if (userType === UserType.MANAGER[0]) {
+                    Object.setPrototypeOf(this.user, ManagerModel.prototype)
+                }
                 this._isAuthenticated = true
                 console.log(value)
             },
@@ -56,7 +86,5 @@ class AuthService {
 }
 
 const authService = new AuthService();
-Object.freeze(authService);
-
 export default authService;
 

@@ -6,7 +6,6 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
-import Monitor from "./components/Monitor/Monitor";
 
 function App() {
 
@@ -28,9 +27,6 @@ function App() {
                 <li>
                     <Link to="/dashboard">Dash</Link>
                 </li>
-                <li>
-                    <Link to="/monitor">Monitor</Link>
-                </li>
             </ul>
         </nav>
         <div className="container">
@@ -43,7 +39,6 @@ function App() {
                 <ProtectedRoute exact path="/dashboard"
                                 component={Dashboard}/>
                 <Route exact path="/televerser-cv" component={TeleverserCv}/>
-                <Route path="/monitor" component={Monitor}/>
             </Switch>
         </div>
     </Router>
