@@ -51,7 +51,7 @@ class AuthService {
         const response = await fetch(`${urlBackend}/${userType}/${email}/${password}`, requestInit(methods.GET));
         return await response.json().then(
             (value) => {
-                if (value.message){
+                if (value.message) {
                     alert(value.message)
                     return
                 }
