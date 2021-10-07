@@ -22,6 +22,9 @@ function App() {
                     <li>
                         <Link to="/televerser-cv">Déposer cv</Link>
                     </li>
+                    <li>
+                        <Link to="/dashboard">Dashboard</Link>
+                    </li>
                 </ul>
             </nav>
             <div className="container">

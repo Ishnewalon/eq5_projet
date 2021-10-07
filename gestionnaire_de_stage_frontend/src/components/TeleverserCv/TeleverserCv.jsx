@@ -30,15 +30,20 @@ export default function TeleverserCv() {
                                 ? "reject"
                                 : "";
                         return (
-                            <div
-                                {...getRootProps({
-                                    className: `dropzone ${additionalClass}`
-                                })}
-                            >
-                                <input {...getInputProps()} />
-                                <span>
-                                    {isDragActive ? "Déposez votre C.V ici" : "Cliquer moi ou glisser votre C.V. ici"}
-                                </span>
+                            <div>
+                                <h2 className={"text-center"} >Les fichiers accetpés sont de type <i>.PDF</i> ou <i>.DOCX</i></h2>
+                                <div
+                                    {...getRootProps({
+                                        className: `dropzone ${additionalClass}`
+                                    })}
+                                >
+                                    <input {...getInputProps()} />
+                                    <span>
+                                        {!isDragActive && "Cliquez moi ou glissez votre C.V. ici"}
+                                        {isDragActive && isDragAccept && "Déposez votre C.V ici"}
+                                        {isDragActive && isDragReject && "Ce format de fichier n'est pas accepté"}
+                                    </span>
+                                </div>
                             </div>
                         );
                     }}
