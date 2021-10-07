@@ -17,10 +17,13 @@ function App() {
                         <Link to="/login">Se connecter</Link>
                     </li>
                     <li>
-                        <Link to="/register">Cree un compte</Link>
+                        <Link to="/register">Crée un compte</Link>
                     </li>
                     <li>
-                        <Link to="/televerser-cv">Deposer cv</Link>
+                        <Link to="/televerser-cv">Déposer cv</Link>
+                    </li>
+                    <li>
+                        <Link to="/dashboard">Dashboard</Link>
                     </li>
                 </ul>
             </nav>

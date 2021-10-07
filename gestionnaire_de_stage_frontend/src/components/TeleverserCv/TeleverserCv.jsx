@@ -1,20 +1,18 @@
 import './TeleverserCv.css'
-import React, {Component} from "react";
+import React, {useState}  from "react";
 import Dropzone from "react-dropzone";
 
-
-class TeleverserCv extends Component {
-
-    onDrop = acceptedFiles => {
+export default function TeleverserCv() {
+    const [fileNames, setFileNames] = useState([]);
+    const handleDrop = acceptedFiles => {
+        setFileNames(acceptedFiles.map(file => file.name));
         console.log(acceptedFiles)
     }
 
-    render() {
-
         return (
-            <div className="App">
+            <div>
                 <Dropzone
-                    onDrop={this.onDrop}
+                    onDrop={handleDrop}
                     accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                     minSize={1024}
                     maxSize={3072000}
@@ -32,31 +30,35 @@ class TeleverserCv extends Component {
                                 ? "reject"
                                 : "";
                         return (
-                            <div
-                                {...getRootProps({
-                                    className: `dropzone ${additionalClass}`
-                                })}
-                            >
-                                <input {...getInputProps()} />
-                                <span>{isDragActive ? "Déposez votre C.V ici" : "Cliquer moi ou glisser votre C.V. ici"}</span>
+                            <div>
+                                <h2 className={"text-center"} >Les fichiers accetpés sont de type <i>.PDF</i> ou <i>.DOCX</i></h2>
+                                <div
+                                    {...getRootProps({
+                                        className: `dropzone ${additionalClass}`
+                                    })}
+                                >
+                                    <input {...getInputProps()} />
+                                    <span>
+                                        {!isDragActive && "Cliquez moi ou glissez votre C.V. ici"}
+                                        {isDragActive && isDragAccept && "Déposez votre C.V ici"}
+                                        {isDragActive && isDragReject && "Ce format de fichier n'est pas accepté"}
+                                    </span>
+                                </div>
                             </div>
                         );
                     }}
-                </Dropzone>
+            </Dropzone>
+            <div className={"text-center"}>
+                <b><h3>Fichiers:</h3></b>
+                <ul>
+                    {fileNames.map(fileName => (
+                        <li key={fileName}>{fileName}</li>
+                    ))}
+                </ul>
             </div>
-        );
-    }
-        // return (
-        //     <Dropzone onDrop={this.onDrop} accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-        //         {({getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept }) => (
-        //             <div {...getRootProps()}>
-        //                 <input {...getInputProps()}/>
-        //                 {!isDragActive && "Cliquer moi ou glisser votre C.V. ici"}
-        //                 {isDragActive && isDragAccept && "Déposez votre C.V ici"}
-        //                 {isDragActive && isDragReject && "Ce format de fichier n'est pas accepté"}
-        //             </div>
-        //         )}
-        //     </Dropzone>
-        // );
+            <div className={"text-center"}>
+                <button>Envoyer</button>
+            </div>
+        </div>
+    );
 }
-export default TeleverserCv
