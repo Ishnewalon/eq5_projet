@@ -14,7 +14,9 @@ export default class Monitor extends Component {
 
     render() {
         return (
-            <AddOffer addOffer={this.addOffer}/>
+            <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+                <AddOffer addOffer={this.addOffer}/>
+            </div>
         )
     }
 }

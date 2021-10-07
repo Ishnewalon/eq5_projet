@@ -35,6 +35,7 @@ export default class AddOffer extends Component {
 
     render() {
         return (<>
+            <h2 className="text-center">Ajouter une offre de stage</h2>
             <div className="form-group row">
                 <div className="col-md-6">
                     <label>Titre</label>
@@ -68,7 +69,7 @@ export default class AddOffer extends Component {
                               handleChange={this.handleChange}/>
             </div>
             <div className="form-group">
-                <label>Salary</label>
+                <label>Salaire</label>
                 <div className="input-group">
                     <input name="description" placeholder="Description" className="form-control" type="number"
                            value={this.state.salary} onChange={this.handleChange('salary')}/>

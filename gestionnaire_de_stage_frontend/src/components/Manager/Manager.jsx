@@ -15,8 +15,11 @@ export default class Manager extends Component {
     }
 
     render() {
-        return (
-            <AddOffer addOffer={this.addOffer}/>
+        return (<>
+                <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+                    <AddOffer addOffer={this.addOffer}/>
+                </div>
+            </>
         )
     }
 }
