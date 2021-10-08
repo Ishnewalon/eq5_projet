@@ -31,7 +31,7 @@ export default function TeleverserCv() {
                                 : "";
                         return (
                             <div>
-                                <h2 className={"text-center"} >Les fichiers accetpés sont de type <i>.PDF</i> ou <i>.DOCX</i></h2>
+                                <h2 className={"text-center"} >Les fichiers accetpés sont de type <b>.PDF</b> ou <b>.DOCX</b></h2>
                                 <div
                                     {...getRootProps({
                                         className: `dropzone ${additionalClass}`
@@ -49,7 +49,7 @@ export default function TeleverserCv() {
                     }}
             </Dropzone>
             <div className={"text-center"}>
-                <b><h3>Fichiers:</h3></b>
+                <b><h3>Fichier téléversé:</h3></b>
                 <ul>
                     {fileNames.map(fileName => (
                         <li key={fileName}>{fileName}</li>
