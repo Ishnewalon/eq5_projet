@@ -23,8 +23,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -99,7 +97,6 @@ public class OfferControllerTest {
         return monitorRepository.saveAll(List.of(mon1, mon2, mon3));
     }
 
-
     @BeforeAll
     public void before(){
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
@@ -144,111 +141,92 @@ public class OfferControllerTest {
     }
 
     @Test
-    public void testMonitorOfferCreate_withValidEntries(){
+    public void testMonitorOfferCreate_withValidEntries() throws Exception{
         Monitor monitor = getDummyMonitor();
         monitor.setId(1L);
 
         OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(monitor));
 
-        AtomicReference<MvcResult> mvcResult = new AtomicReference<>(null);
-
-        assertDoesNotThrow(() -> mvcResult.set(mockMvc.perform(post("/offers/monitor/add")
+        MvcResult mvcResult = mockMvc.perform(post("/offers/monitor/add")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(offer))).andReturn()));
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
 
-        assertDoesNotThrow(() -> assertEquals(Boolean.TRUE.toString(), mvcResult.get().getResponse().getContentAsString()));
-
-        assertEquals(HttpStatus.CREATED.value(), mvcResult.get().getResponse().getStatus());
+        assertEquals(Boolean.TRUE.toString(), mvcResult.getResponse().getContentAsString());
+        assertEquals(HttpStatus.CREATED.value(), mvcResult.getResponse().getStatus());
     }
 
     @Test
-    public void testManagerOfferCreate_withValidEntries(){
+    public void testManagerOfferCreate_withValidEntries() throws Exception{
         Manager manager = getDummyManager();
         manager.setId(4L);
 
         OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(manager));
 
-        AtomicReference<MvcResult> mvcResult = new AtomicReference<>(null);
-
-        assertDoesNotThrow(() -> mvcResult.set(mockMvc.perform(post("/offers/manager/add")
+        MvcResult mvcResult = mockMvc.perform(post("/offers/manager/add")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(offer))).andReturn()));
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
 
-        assertDoesNotThrow(() -> assertEquals(Boolean.TRUE.toString(), mvcResult.get().getResponse().getContentAsString()));
-        assertEquals(HttpStatus.CREATED.value(), mvcResult.get().getResponse().getStatus());
+        assertEquals(Boolean.TRUE.toString(), mvcResult.getResponse().getContentAsString());
+        assertEquals(HttpStatus.CREATED.value(), mvcResult.getResponse().getStatus());
     }
 
 
     @Test
-    public void testMonitorOfferCreate_withNullEntries(){
+    public void testMonitorOfferCreate_withNullEntries() throws Exception{
+        MvcResult mvcResult = mockMvc.perform(post("/offers/monitor/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(null))).andReturn();
+
+        var responseString = mvcResult.getResponse().getContentAsString();
+
+        assertTrue(responseString.contains("body is missing"));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
+
+
+    @Test
+    public void testManagerOfferCreate_withNullEntries() throws Exception{
         OfferDTO offer = null;
 
-        AtomicReference<MvcResult> mvcResult = new AtomicReference<>(null);
-
-        assertDoesNotThrow(() -> mvcResult.set(mockMvc.perform(post("/offers/monitor/add")
+        MvcResult mvcResult = mockMvc.perform(post("/offers/manager/add")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(offer))).andReturn()));
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
 
-        assertDoesNotThrow(() -> {
-            var responseString = mvcResult.get().getResponse().getContentAsString();
-            assertTrue(responseString.contains("body is missing"));
-        });
+        var responseString = mvcResult.getResponse().getContentAsString();
 
-        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.get().getResponse().getStatus());
+        assertTrue(responseString.contains("body is missing"));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
     }
 
 
     @Test
-    public void testManagerOfferCreate_withNullEntries(){
-        OfferDTO offer = null;
-
-        AtomicReference<MvcResult> mvcResult = new AtomicReference<>(null);
-
-        assertDoesNotThrow(() -> mvcResult.set(mockMvc.perform(post("/offers/manager/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(offer))).andReturn()));
-
-        assertDoesNotThrow(() -> {
-            var responseString = mvcResult.get().getResponse().getContentAsString();
-            assertTrue(responseString.contains("body is missing"));
-        });
-
-        assertEquals( HttpStatus.BAD_REQUEST.value(), mvcResult.get().getResponse().getStatus());
-    }
-
-
-    @Test
-    public void testManagerOfferCreate_withNonExistentId(){
+    public void testManagerOfferCreate_withNonExistentId() throws Exception{
         Manager manager = getDummyManager();
         manager.setId(14L);
 
         OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(manager));
 
-        AtomicReference<MvcResult> mvcResult = new AtomicReference<>(null);
-
-        assertDoesNotThrow(() -> mvcResult.set(mockMvc.perform(post("/offers/manager/add")
+        MvcResult mvcResult = mockMvc.perform(post("/offers/manager/add")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(offer))).andReturn()));
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
 
-        assertDoesNotThrow(() -> assertEquals("Erreur: gestionnaire non existant!", mvcResult.get().getResponse().getContentAsString()));
-        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.get().getResponse().getStatus());
+        assertEquals("Erreur: gestionnaire non existant!", mvcResult.getResponse().getContentAsString());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
     }
 
     @Test
-    public void testMonitorrOfferCreate_withNonExistentId(){
+    public void testMonitorrOfferCreate_withNonExistentId() throws Exception{
         Monitor monitor = getDummyMonitor();
         monitor.setId(14L);
 
         OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(monitor));
 
-        AtomicReference<MvcResult> mvcResult = new AtomicReference<>(null);
-
-        assertDoesNotThrow(() -> mvcResult.set(mockMvc.perform(post("/offers/monitor/add")
+        MvcResult mvcResult = mockMvc.perform(post("/offers/monitor/add")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(offer))).andReturn()));
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
 
-        assertDoesNotThrow(() -> assertEquals("Erreur: moniteur non existant!", mvcResult.get().getResponse().getContentAsString()));
-        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.get().getResponse().getStatus());
+        assertEquals("Erreur: moniteur non existant!", mvcResult.getResponse().getContentAsString());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
     }
 
     @Test
@@ -259,9 +237,7 @@ public class OfferControllerTest {
         OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(monitor));
         offer.setDepartment(null);
 
-        MvcResult mvcResult;
-
-        mvcResult = mockMvc.perform(post("/offers/monitor/add")
+        MvcResult mvcResult = mockMvc.perform(post("/offers/monitor/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
 
@@ -277,9 +253,7 @@ public class OfferControllerTest {
         OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(monitor));
         offer.setTitle(null);
 
-        MvcResult mvcResult;
-
-        mvcResult = mockMvc.perform(post("/offers/monitor/add")
+        MvcResult mvcResult = mockMvc.perform(post("/offers/monitor/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
 
@@ -295,9 +269,7 @@ public class OfferControllerTest {
         OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(monitor));
         offer.setAddress(null);
 
-        MvcResult mvcResult;
-
-        mvcResult = mockMvc.perform(post("/offers/monitor/add")
+        MvcResult mvcResult = mockMvc.perform(post("/offers/monitor/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
 
@@ -313,9 +285,7 @@ public class OfferControllerTest {
         OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(monitor));
         offer.setDescription(null);
 
-        MvcResult mvcResult = null;
-
-        mvcResult = mockMvc.perform(post("/offers/monitor/add")
+        MvcResult mvcResult = mockMvc.perform(post("/offers/monitor/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
 
@@ -331,9 +301,7 @@ public class OfferControllerTest {
         OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(monitor));
         offer.setSalary(-10);
 
-        MvcResult mvcResult;
-
-        mvcResult = mockMvc.perform(post("/offers/monitor/add")
+        MvcResult mvcResult = mockMvc.perform(post("/offers/monitor/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
 
@@ -350,9 +318,7 @@ public class OfferControllerTest {
         OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(monitor));
         offer.setCreator_id(-1);
 
-        MvcResult mvcResult;
-
-        mvcResult = mockMvc.perform(post("/offers/monitor/add")
+        MvcResult mvcResult = mockMvc.perform(post("/offers/monitor/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
 
