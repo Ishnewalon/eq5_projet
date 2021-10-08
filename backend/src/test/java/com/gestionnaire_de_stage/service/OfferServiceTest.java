@@ -68,7 +68,7 @@ public class OfferServiceTest {
     public void testCreateOffer_withNullOffer(){
         Optional<Offer> optionalOffer = offerService.create(null);
 
-        assertTrue(optionalOffer.isPresent());
+        assertFalse(optionalOffer.isPresent());
     }
 
     private Offer getDummyOffer() {
