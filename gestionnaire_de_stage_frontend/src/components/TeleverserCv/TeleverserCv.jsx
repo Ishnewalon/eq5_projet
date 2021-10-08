@@ -20,6 +20,7 @@ export default function TeleverserCv() {
         <div>
             <Dropzone
                 onDrop={handleDrop}
+                accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 minSize={1024}
                 maxSize={3072000}
             >
@@ -46,7 +47,7 @@ export default function TeleverserCv() {
                             >
                                 <input {...getInputProps()} />
                                 <span>
-                                        {!isDragActive && "Cliquez moi ou glissez votre C.V. ici"}
+                                    {!isDragActive && "Cliquez moi ou glissez votre C.V. ici"}
                                     {isDragActive && isDragAccept && "Déposez votre C.V ici"}
                                     {isDragActive && isDragReject && "Ce format de fichier n'est pas accepté"}
                                     </span>
