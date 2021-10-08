@@ -6,6 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
+import ValiderCv from "./components/ValiderCv/ValiderCv";
 
 function App() {
 
@@ -27,6 +28,9 @@ function App() {
                 <li>
                     <Link to="/dashboard">Dash</Link>
                 </li>
+                <li>
+                    <Link to="/valide-cv">Valider cv</Link>
+                </li>
             </ul>
         </nav>
         <div className="container">
@@ -38,6 +42,8 @@ function App() {
                                   component={Register}/>
                 <ProtectedRoute exact path="/dashboard"
                                 component={Dashboard}/>
+                <Route exact path="/valide-cv"
+                                component={ValiderCv}/>
                 <Route exact path="/televerser-cv" component={TeleverserCv}/>
             </Switch>
         </div>
