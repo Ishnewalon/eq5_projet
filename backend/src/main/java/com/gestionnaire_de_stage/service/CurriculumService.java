@@ -48,6 +48,6 @@ public class CurriculumService {
     }
 
     public Stream<Curriculum> getAllCurriculumByValidity(boolean validity){
-        return curriculumRepository.findAllByValid(validity).stream();
+        return curriculumRepository.findAllByIsValid(validity).stream();
     }
 }

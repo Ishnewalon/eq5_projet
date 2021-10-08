@@ -21,8 +21,8 @@ public class CurriculumController {
         this.curriculumService = curriculumService;
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadCurriculum(@RequestParam MultipartFile file, @RequestParam Long studentId){
+    @PostMapping("/upload/{studentId}")
+    public ResponseEntity<ResponseMessage> uploadCurriculum(@RequestBody MultipartFile file, @PathVariable Long studentId){
         Optional<Curriculum> curriculum = null;
         try {
             curriculum = curriculumService.convertMultipartFileToCurriculum(file, studentId);

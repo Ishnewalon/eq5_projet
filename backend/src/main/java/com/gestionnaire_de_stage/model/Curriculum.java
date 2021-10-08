@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "curriculums")
+//@Table(name = "curriculums")
 public class Curriculum implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
@@ -20,7 +20,7 @@ public class Curriculum implements Serializable {
     @Lob
     private byte[] data;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     private Student student;
 
     private boolean isValid;

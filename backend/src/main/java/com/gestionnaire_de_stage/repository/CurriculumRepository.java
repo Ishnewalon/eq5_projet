@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface CurriculumRepository extends JpaRepository<Curriculum, Long> {
 
-    List<Curriculum> findAllByValid(boolean valid);
+    List<Curriculum> findAllByIsValid(boolean isValid);
 }
