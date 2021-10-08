@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @ToString(of = {"id", "lastName", "firstName", "email", "phone", "password"})
 public abstract class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @NotBlank
