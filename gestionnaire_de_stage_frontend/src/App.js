@@ -9,7 +9,6 @@ import Login from "./components/Login/Login";
 import React from "react";
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import TeleverserCv from "./components/TeleverserCv/TeleverserCv";
 
 function App() {
 

@@ -1,11 +1,10 @@
-import {methods, requestInit, urlBackend} from "./auth-service";
+import {urlBackend} from "./serviceUtils";
 
-
-export async function uploadFile(file,id) {
+export async function uploadFile(file, id) {
     let formData = new FormData();
     formData.append("file", file[0]);
 
-    const response = await fetch(`${urlBackend}/curriculum/upload?id=${id}` ,{
+    const response = await fetch(`${urlBackend}/curriculum/upload?id=${id}`, {
         mode: 'cors',
         method: "POST",
         body: formData
