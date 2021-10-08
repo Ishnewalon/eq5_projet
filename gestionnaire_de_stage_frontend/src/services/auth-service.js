@@ -1,11 +1,11 @@
 import {MonitorModel, Student, Supervisor} from "../models/User";
 
-const urlBackend = 'http://localhost:8181'
-const methods = {
+export const urlBackend = 'http://localhost:8181'
+export const methods = {
     POST: 'POST',
     GET: 'GET'
 }
-const requestInit = (method, body) => {
+export const requestInit = (method, body) => {
     let value = {
         method: method,
         mode: 'cors', // no-cors, *cors, same-origin
