@@ -1,9 +1,10 @@
 import {Step, UserType} from "../Register";
-import {Component} from "react";
+import React,{Component} from "react";
+import {FieldAddress} from "../../Fields/FieldAddress";
 
 const regexCodePostal = /^([A-Za-z]\s?[0-9]){3}$/;
 
-export default class Monitor extends Component {
+export default class StepMonitor extends Component {
 
     previous = (e) => {
         e.preventDefault();
@@ -70,12 +71,7 @@ export default class Monitor extends Component {
                 </div>
             </div>
             <div className="form-group">
-                <label>Adresse de la compagnie</label>
-                <div className="input-group">
-                    <input name="address" placeholder="Rue, boulevard, avenue.." className="form-control"
-                           type="text"
-                           value={this.props.values.address} onChange={this.props.handleChange("address")}/>
-                </div>
+                <FieldAddress label="Adresse de la compagnie" address={this.props.values.address} handleChange={this.props.handleChange}/>
             </div>
             <div className="form-group">
                 <label>Code Postale</label>

@@ -1,6 +1,7 @@
-import {Component} from "react";
+import React, {Component} from "react";
+import {FieldPassword} from "../../Fields/FieldPassword";
 
-export default class Password extends Component {
+export default class StepPassword extends Component {
 
     previous = (e) => {
         e.preventDefault();
@@ -16,11 +17,7 @@ export default class Password extends Component {
         return (<div>
                 <div className="form-group row">
                     <div className="col-md-12">
-                        <label>Mot de passe</label>
-                        <div className="input-group">
-                            <input name="pwd" placeholder="Votre mot de passe" className="form-control" type="password"
-                                   value={this.props.password} onChange={this.props.handleChange('password')}/>
-                        </div>
+                        <FieldPassword password={this.props.password} label="Mot de passe" placeholder="Votre mot de passe" handleChange={this.props.handleChange('password')}/>
                     </div>
 
                     {/*TODO REVOIR LA CONFIRMATION DU MDP*/}

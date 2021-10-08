@@ -1,7 +1,7 @@
 import {Step, UserType} from "../Register";
-import {Component} from "react";
+import React,{Component} from "react";
 
-export default class Cegep extends Component {
+export default class StepCegep extends Component {
 
     previous = (e) => {
         e.preventDefault()
