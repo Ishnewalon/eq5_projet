@@ -1,5 +1,6 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
 import Offer from "../models/Offer";
+import {swalErr, toast} from "../utility";
 
 class OfferService {
 
@@ -7,7 +8,16 @@ class OfferService {
         if (!(offer instanceof Offer) || !offer)
             return;
         const response = await fetch(`${urlBackend}/offers/${userType}/add`, requestInit(methods.POST, offer));
-        return await response.json()
+        return await response.json().then(value => {
+                if (value.message) {
+                    swalErr(value.message).fire({}).then()
+                    return
+                }
+                toast.fire({title: "Offre cree!"}).then()
+            },
+            err => {
+                swalErr(err).fire({}).then()
+            })
     }
 
     async createOfferMonitor(offer) {

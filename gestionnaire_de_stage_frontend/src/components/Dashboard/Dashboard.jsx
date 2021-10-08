@@ -2,6 +2,13 @@ import React, {Component} from "react";
 import AuthService from "../../services/auth-service";
 import Monitor from "../Monitor/Monitor";
 import Manager from "../Manager/Manager";
+import StudentView from "../StudentView";
+
+function SupervisorView() {
+    return (<div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+        <h2>Vous etes connecte!</h2>
+    </div>);
+}
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -11,11 +18,11 @@ export default class Dashboard extends Component {
 
     render() {
         return (<>
-            {JSON.stringify(this.service.user)}
+            {/*{JSON.stringify(this.service.user)}*/}
             {this.service.isMonitor() ? <Monitor/> : <></>}
             {this.service.isManager() ? <Manager/> : <></>}
-            {/*{this.service.isStudent() ? <Monitor/> : <></>}*/}
-            {/*{this.service.isSupervisor() ? <Monitor/> : <></>}*/}
+            {this.service.isStudent() ? <StudentView/> : <></>}
+            {this.service.isSupervisor() ? <SupervisorView/> : <></>}
         </>)
     }
 }
