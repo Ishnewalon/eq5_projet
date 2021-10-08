@@ -20,7 +20,6 @@ export default function TeleverserCv() {
         <div>
             <Dropzone
                 onDrop={handleDrop}
-                accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 minSize={1024}
                 maxSize={3072000}
             >

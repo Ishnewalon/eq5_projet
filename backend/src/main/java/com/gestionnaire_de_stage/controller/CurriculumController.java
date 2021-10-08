@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin
+@CrossOrigin()
 @RequestMapping("/curriculum")
 public class CurriculumController {
 
@@ -21,8 +21,8 @@ public class CurriculumController {
         this.curriculumService = curriculumService;
     }
 
-    @PostMapping("/upload/{studentId}")
-    public ResponseEntity<ResponseMessage> uploadCurriculum(@RequestBody MultipartFile file, @PathVariable Long studentId){
+    @PostMapping("/upload")
+    public ResponseEntity<ResponseMessage> uploadCurriculum(@RequestParam("file") MultipartFile file, @RequestParam("id") Long studentId){
         Optional<Curriculum> curriculum = null;
         try {
             curriculum = curriculumService.convertMultipartFileToCurriculum(file, studentId);

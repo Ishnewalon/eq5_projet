@@ -2,7 +2,14 @@ import {methods, requestInit, urlBackend} from "./auth-service";
 
 
 export async function uploadFile(file,id) {
-    const response = await fetch(`${urlBackend}/curriculum/upload/${id}`, requestInit(methods.POST, file));
+    let formData = new FormData();
+    formData.append("file", file[0]);
+
+    const response = await fetch(`${urlBackend}/curriculum/upload?id=${id}` ,{
+        mode: 'cors',
+        method: "POST",
+        body: formData
+    });
     return await response.json().then(
         success => {
             console.log(success)
