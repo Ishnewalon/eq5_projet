@@ -7,6 +7,6 @@ Avoir un minimum coverage de 80%
 Tester feature sur plus qu'une machine
 
 
-Point à changer (Sprint 1)
+Point à changer (Sprint 2)
 - Finir le sprint mercredi à minuit (avant la fin) pour faire vérification/validation le jeudi
-- Assigner une personne au code review à chaque daily (lorsqu'il y a des tâches en Code Review)
+- Faire du TDD après que l'API est terminé et confirmé.
