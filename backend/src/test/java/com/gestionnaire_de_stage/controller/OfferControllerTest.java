@@ -326,4 +326,100 @@ public class OfferControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
     }
 
+    @Test
+    public void testCreateManagerOffer_withNullDepartment() throws Exception {
+        Manager manager = getDummyManager();
+        manager.setId(1L);
+
+        OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(manager));
+        offer.setDepartment(null);
+
+        MvcResult mvcResult = mockMvc.perform(post("/offers/manager/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Le departement est vide."));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    public void testCreateManagerOffer_withNullTItle() throws Exception {
+        Manager manager = getDummyManager();
+        manager.setId(1L);
+
+        OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(manager));
+        offer.setTitle(null);
+
+        MvcResult mvcResult = mockMvc.perform(post("/offers/manager/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Le titre est vide."));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    public void testCreateManagerOffer_withNullAddress() throws Exception {
+        Manager manager = getDummyManager();
+        manager.setId(1L);
+
+        OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(manager));
+        offer.setAddress(null);
+
+        MvcResult mvcResult = mockMvc.perform(post("/offers/manager/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("L'addresse est vide."));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    public void testCreateManagerOffer_withNullDescription() throws Exception {
+        Manager manager = getDummyManager();
+        manager.setId(1L);
+
+        OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(manager));
+        offer.setDescription(null);
+
+        MvcResult mvcResult = mockMvc.perform(post("/offers/monitor/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("La description est vide."));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    public void testCreateManagerOffer_withInvalidSalary() throws Exception {
+        Manager manager = getDummyManager();
+        manager.setId(1L);
+
+        OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(manager));
+        offer.setSalary(-10);
+
+        MvcResult mvcResult = mockMvc.perform(post("/offers/monitor/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Le salaire n'est pas positif."));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    public void testCreateManagerOffer_withInvalidCreatorId() throws Exception {
+        Manager manager = getDummyManager();
+        manager.setId(1L);
+
+        OfferDTO offer = offerService.mapToOfferDTO(getDummyOffer(manager));
+        offer.setCreator_id(-1);
+
+        MvcResult mvcResult = mockMvc.perform(post("/offers/monitor/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Le id de l'utilsateur n'est pas positif."));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
+
 }
