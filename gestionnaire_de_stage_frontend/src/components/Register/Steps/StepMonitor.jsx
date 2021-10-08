@@ -18,31 +18,31 @@ export default class StepMonitor extends Component {
 
     verification = () => {
         if (!this.props.values.companyName) {
-            alert("companyName empty")
+            alert("Nom de compagnie est vide")
             return false
         }
         if (!this.props.values.city) {
-            alert("city empty")
+            alert("Nom de ville est vide")
             return false
         }
         if (!this.props.values.address) {
-            alert("address empty")
+            alert("L'adresse est vide")
             return false
         }
         if (!this.props.values.codePostal) {
-            alert("codePostal empty")
+            alert("Code postal est vide")
             return false
         }
         if (!this.props.values.companyName.match(/^[a-zA-Z0-9]+$/)) {
-            alert("companyName invalid")
+            alert("Nom de compagnie est invalide")
             return false;
         }
         if (!this.props.values.city.match(/^[a-zA-Z]+$/)) {
-            alert("city invalid")
+            alert("Nom de ville est invalide")
             return false;
         }
         if (!regexCodePostal.test(this.props.values.codePostal)) {
-            alert("codePostal invalid")
+            alert("Code postal est invalide")
             return false;
         }
         return true;

@@ -41,7 +41,8 @@ function App() {
                                   component={Register}/>
                 <ProtectedRoute exact path="/dashboard"
                                 component={Dashboard}/>
-                <Route exact path="/televerser-cv" component={TeleverserCv}/>
+                <Route exact path="/televerser-cv"
+                       component={TeleverserCv}/>
             </Switch>
         </div>
     </Router>
