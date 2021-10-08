@@ -12,9 +12,11 @@ import java.util.Optional;
 @Service
 public class MonitorService implements ICrudService<Monitor, Long> {
 
-    @Autowired
-    private MonitorRepository monitorRepository;
+    private final MonitorRepository monitorRepository;
 
+    public MonitorService(MonitorRepository monitorRepository){
+        this.monitorRepository = monitorRepository;
+    }
 
     @Override
     public Optional<Monitor> create(Monitor monitor) throws ValidationException {
@@ -46,7 +48,6 @@ public class MonitorService implements ICrudService<Monitor, Long> {
         return Optional.empty();
     }
 
-    @Override
     public Optional<Monitor> getOneByEmailAndPassword(String email, String password) {
         if (monitorRepository.existsByEmailAndPassword(email, password)) {
             return Optional.of(monitorRepository.findMonitorByEmailAndPassword(email, password));
@@ -61,5 +62,12 @@ public class MonitorService implements ICrudService<Monitor, Long> {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "MonitorService{" +
+                "monitorRepository=" + monitorRepository +
+                '}';
     }
 }

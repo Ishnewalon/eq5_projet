@@ -15,6 +15,12 @@ class User {
     }
 }
 
+
+export class ManagerModel extends User{
+
+}
+
+
 export class MonitorModel extends User {
     companyName = '';
     address = '';

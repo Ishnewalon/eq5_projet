@@ -1,47 +1,90 @@
-import {MonitorModel, Student, Supervisor} from "../models/user";
+import {ManagerModel, MonitorModel, Student, Supervisor} from "../models/User";
+import {methods, requestInit, urlBackend} from "./serviceUtils";
+import {UserType} from "../components/Register/Register";
 
-const urlBackend = 'http://localhost:8181'
-const methods = {
-    POST: 'POST',
-    GET: 'GET'
-}
-const requestInit = (method, body) => {
-    let value = {
-        method: method,
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json'
-        }
+class AuthService {
+    user;
+    _isAuthenticated = false;
+
+    isAuthenticated() {
+        return this._isAuthenticated;
     }
-    if (method === methods.POST)
-        value['body'] = JSON.stringify(body)
-    return value
+
+    isMonitor() {
+        return this.user instanceof MonitorModel;
+    }
+
+    isManager() {
+        return this.user instanceof ManagerModel;
+    }
+
+    isStudent() {
+        return this.user instanceof Student;
+    }
+
+    isSupervisor() {
+        return this.user instanceof Student;
+    }
+
+    async signupMonitor(monitor) {
+        if (!(monitor instanceof MonitorModel) || !monitor)
+            return;
+        const response = await fetch(`${urlBackend}/monitor/signup`, requestInit(methods.POST, monitor));
+        return await response.json()
+    }
+
+    async signupSupervisor(supervisor) {
+        if (!(supervisor instanceof Supervisor) || !supervisor)
+            return;
+        const response = await fetch(`${urlBackend}/supervisor/signup`, requestInit(methods.POST, supervisor));
+        return await response.json()
+    }
+
+    async signupStudent(student) {
+        if (!(student instanceof Student) || !student)
+            return;
+        const response = await fetch(`${urlBackend}/student/signup`, requestInit(methods.POST, student));
+        return await response.json()
+    }
+
+    async signIn(userType, email, password) {
+        const response = await fetch(`${urlBackend}/${userType}/${email}/${password}`, requestInit(methods.GET));
+        return await response.json().then(
+            (value) => {
+                if (value.message) {
+                    alert(value.message)
+                    return
+                }
+                this.user = value
+                if (userType === UserType.MONITOR[0]) {
+                    Object.setPrototypeOf(this.user, MonitorModel.prototype)
+                } else if (userType === UserType.STUDENT[0]) {
+                    Object.setPrototypeOf(this.user, Student.prototype)
+                } else if (userType === UserType.SUPERVISOR[0]) {
+                    Object.setPrototypeOf(this.user, Supervisor.prototype)
+                } else if (userType === UserType.MANAGER[0]) {
+                    Object.setPrototypeOf(this.user, ManagerModel.prototype)
+                }
+                this._isAuthenticated = true
+                console.log(value)
+            },
+            err => {
+                console.error(err)
+            }
+        )
+    }
+
+    logOut() {
+        this.user = null
+        this._isAuthenticated = false
+    }
+
+    getUserId() {
+        if (this.user)
+            return this.user.id
+    }
 }
 
-export async function signupMonitor(monitor) {
-    if (!(monitor instanceof MonitorModel) || !monitor)
-        return;
-    const response = await fetch(`${urlBackend}/monitor/signup`, requestInit(methods.POST, monitor));
-    return await response.json()
-}
+const authService = new AuthService();
+export default authService;
 
-export async function signupSupervisor(supervisor) {
-    if (!(supervisor instanceof Supervisor) || !supervisor)
-        return;
-    const response = await fetch(`${urlBackend}/supervisor/signup`, requestInit(methods.POST, supervisor));
-    return await response.json()
-}
-
-export async function signupStudent(student) {
-    if (!(student instanceof Student) || !student)
-        return;
-    const response = await fetch(`${urlBackend}/student/signup`, requestInit(methods.POST, student));
-    return await response.json()
-}
-
-export async function signIn(userType, email, password) {
-    const response = await fetch(`${urlBackend}/${userType}/${email}/${password}`, requestInit(methods.GET));
-    return await response.json()
-}

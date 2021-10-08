@@ -1,12 +1,12 @@
-import './register.css'
+import './Register.css'
 import React, {Component} from "react";
-import Password from "./steps/password";
-import InformationGeneral from "./steps/informationGeneral";
-import Monitor from "./steps/monitor";
-import Choice from "./steps/choices";
-import Cegep from "./steps/cegep";
-import {MonitorModel, Student, Supervisor} from "../../models/user";
-import {signupMonitor, signupStudent, signupSupervisor} from "../../services/auth-service"
+import StepPassword from "./Steps/StepPassword";
+import StepInformationGeneral from "./Steps/StepInformationGeneral";
+import StepMonitor from "./Steps/StepMonitor";
+import Choice from "./Steps/StepChoices";
+import StepCegep from "./Steps/StepCegep";
+import {MonitorModel, Student, Supervisor} from "../../models/User";
+import AuthService from "../../services/auth-service"
 
 export const Step = {
     CHOICE: "choice",
@@ -17,13 +17,14 @@ export const Step = {
     PASSWORD: "password",
 }
 export const UserType = {
-    MONITOR: "monitor",
-    STUDENT: "student",
-    SUPERVISOR: "supervisor",
-
+    MONITOR: ["monitor", "moniteur"],
+    STUDENT: ["student", "etudiant"],
+    SUPERVISOR: ["supervisor", "superviseur"],
+    MANAGER: ["manager", "gestionnaire"]
 }
 
 export default class Register extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -42,7 +43,7 @@ export default class Register extends Component {
             codePostal: '',
             city: '',
         }
-        this.handleChange = this.handleChange.bind(this);
+        this.service = AuthService
     }
 
 
@@ -75,20 +76,23 @@ export default class Register extends Component {
         let user = null
         if (this.state.userType === UserType.STUDENT) {
             user = new Student(email, password, lastName, firstName, phone, matricule);
-            signupStudent(user).then(value => {
+            this.service.signupStudent(user).then(value => {
                 console.log(value)
+                this.props.history.push("/login")
             });
         }
         if (this.state.userType === UserType.SUPERVISOR) {
             user = new Supervisor(email, password, lastName, firstName, phone, matricule);
-            signupSupervisor(user).then(value => {
+            this.service.signupSupervisor(user).then(value => {
                 console.log(value)
+                this.props.history.push("/login")
             })
         }
         if (this.state.userType === UserType.MONITOR) {
             user = new MonitorModel(email, password, lastName, firstName, phone, companyName, address, city, codePostal);
-            signupMonitor(user).then(value => {
+            this.service.signupMonitor(user).then(value => {
                 console.log(value)
+                this.props.history.push("/login")
             })
         }
 
@@ -118,44 +122,30 @@ export default class Register extends Component {
                 show = <Choice prevStep={this.prevStep} nextStep={this.nextStep}/>
                 break;
             case Step.CEGEP:
-                show = <Cegep prevStep={this.prevStep} nextStep={this.nextStep} updateUserType={this.updateUserType}
-                              handleChange={this.handleChange}
-                              matricule={matricule}/>
+                show = <StepCegep prevStep={this.prevStep} nextStep={this.nextStep} updateUserType={this.updateUserType}
+                                  handleChange={this.handleChange}
+                                  matricule={matricule}/>
                 break;
             case Step.MONITOR:
-                show = <Monitor prevStep={this.prevStep} nextStep={this.nextStep} updateUserType={this.updateUserType}
-                                handleChange={this.handleChange}
-                                values={valMonitor}/>
+                show =
+                    <StepMonitor prevStep={this.prevStep} nextStep={this.nextStep} updateUserType={this.updateUserType}
+                                 handleChange={this.handleChange}
+                                 values={valMonitor}/>
                 break;
             case Step.GENERAL:
-                show = <InformationGeneral prevStep={this.prevStep} nextStep={this.nextStep}
-                                           handleChange={this.handleChange}
-                                           values={valGeneral}/>
+                show = <StepInformationGeneral prevStep={this.prevStep} nextStep={this.nextStep}
+                                               handleChange={this.handleChange}
+                                               values={valGeneral}/>
                 break;
             case Step.PASSWORD:
-                show = <Password prevStep={this.prevStep} finish={this.finish} handleChange={this.handleChange}
-                                 password={password}/>
+                show = <StepPassword prevStep={this.prevStep} finish={this.finish} handleChange={this.handleChange}
+                                     password={password}/>
 
                 break;
             default:
                 break;
         }
-        return <div>
-            <button className="btn btn-primary" onClick={() => {
-                this.setState({hideFields: !this.state.hideFields})
-            }}>Show/hide
-            </button>
-            <div hidden={this.state.hideFields}>
-                email:{email}<br/>
-                lastname:{lastName}<br/>
-                firstname:{firstName}<br/>
-                password:{password}<br/>
-                city:{city}<br/>
-                companyName:{companyName}<br/>
-                phone:{phone}<br/>
-                address:{address}<br/>
-                codePostal:{codePostal}<br/>
-            </div>
+        return (<>
             <div className="form-container">
                 <form className="bg-dark px-3 py-4 rounded shadow-lg mt-5" id="contact_form">
                     <fieldset>
@@ -168,6 +158,6 @@ export default class Register extends Component {
                     </fieldset>
                 </form>
             </div>
-        </div>;
+        </>);
     }
 }

@@ -1,11 +1,11 @@
-import {Step} from "../register";
+import {Step} from "../Register";
 import {Component} from "react";
 
 // eslint-disable-next-line
 const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 const regexPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
-export default class InformationGeneral extends Component {
+export default class StepInformationGeneral extends Component {
 
     previous = (e) => {
         e.preventDefault();
@@ -32,11 +32,11 @@ export default class InformationGeneral extends Component {
             alert("Le champs numéro de téléphone est vide")
             return false
         }
-        if (!this.props.values.firstName.match(/^[a-zA-Z]+$/)) {
+        if (!this.props.values.firstName.match(/^[a-zA-Z\-\s]+$/)) {
             alert("Le champs prénom est invalide")
             return false;
         }
-        if (!this.props.values.lastName.match(/^[a-zA-Z]+$/)) {
+        if (!this.props.values.lastName.match(/^[a-zA-Z\-\s]+$/)) {
             alert("Le champs nom est invalide")
             return false;
         }

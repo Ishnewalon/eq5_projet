@@ -11,9 +11,7 @@ public interface ICrudService <T, K> {
 
     List<T> getAll();
 
-    Optional<T> update(T t, K k) throws Exception;;
-
-    Optional<T> getOneByEmailAndPassword(String email, String password);
+    Optional<T> update(T t, K k) throws Exception;
 
     boolean deleteByID(K k);
 }

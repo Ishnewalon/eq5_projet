@@ -6,20 +6,24 @@ import com.gestionnaire_de_stage.repository.ManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ValidationException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ManagerService implements ICrudService<Manager, Long> {
 
-    @Autowired
-    private ManagerRepository managerRepository;
+    private final ManagerRepository managerRepository;
+
+    public ManagerService(ManagerRepository managerRepository){
+        this.managerRepository = managerRepository;
+    }
 
     @Autowired
     private StudentService studentService;
 
     @Override
-    public Optional<Manager> create(Manager manager) throws Exception {
+    public Optional<Manager> create(Manager manager) throws ValidationException {
         return manager != null ? Optional.of(managerRepository.save(manager)) : Optional.empty();
     }
 
@@ -36,7 +40,7 @@ public class ManagerService implements ICrudService<Manager, Long> {
     }
 
     @Override
-    public Optional<Manager> update(Manager manager, Long id) throws Exception {
+    public Optional<Manager> update(Manager manager, Long id) throws ValidationException {
         if (id != null && manager != null) {
             manager.setId(id);
             return Optional.of(managerRepository.save(manager));
@@ -45,7 +49,6 @@ public class ManagerService implements ICrudService<Manager, Long> {
         }
     }
 
-    @Override
     public Optional<Manager> getOneByEmailAndPassword(String email, String password) {
         return managerRepository.findManagerByEmailAndPassword(email, password);
     }
