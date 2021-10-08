@@ -78,6 +78,7 @@ export default class Register extends Component {
             user = new Student(email, password, lastName, firstName, phone, matricule);
             this.service.signupStudent(user).then(value => {
                 console.log(value)
+
                 this.props.history.push("/login")
             });
         }
@@ -151,7 +152,7 @@ export default class Register extends Component {
                     <fieldset>
                         <legend>
                             <center><h2>Inscription</h2></center>
-                            <center><h3>{step}</h3></center>
+                            {/*<center><h3>{step}</h3></center>*/}
                         </legend>
                         <br/>
                         {show}

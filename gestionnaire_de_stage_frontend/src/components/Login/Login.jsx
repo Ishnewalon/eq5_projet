@@ -1,5 +1,5 @@
 import './Login.css'
-import {Component} from "react";
+import React, {Component} from "react";
 import {UserType} from "../Register/Register";
 import AuthService from "../../services/auth-service";
 import {FieldPassword} from "../Fields/FieldPassword";

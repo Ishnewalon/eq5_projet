@@ -1,6 +1,7 @@
 import {ManagerModel, MonitorModel, Student, Supervisor} from "../models/User";
 import {methods, requestInit, urlBackend} from "./serviceUtils";
 import {UserType} from "../components/Register/Register";
+import {swalErr, toast} from "../utility";
 
 class AuthService {
     user;
@@ -30,21 +31,40 @@ class AuthService {
         if (!(monitor instanceof MonitorModel) || !monitor)
             return;
         const response = await fetch(`${urlBackend}/monitor/signup`, requestInit(methods.POST, monitor));
-        return await response.json()
+        return await response.json().then(value => {
+            if (value.message) {
+                swalErr(value.message).fire({}).then()
+            } else {
+                toast.fire({}).then()
+            }
+        })
     }
 
     async signupSupervisor(supervisor) {
         if (!(supervisor instanceof Supervisor) || !supervisor)
             return;
         const response = await fetch(`${urlBackend}/supervisor/signup`, requestInit(methods.POST, supervisor));
-        return await response.json()
+        return await response.json().then(value => {
+            if (value.message) {
+                swalErr(value.message).fire({}).then()
+            } else {
+                toast.fire({}).then()
+            }
+        })
     }
 
     async signupStudent(student) {
         if (!(student instanceof Student) || !student)
             return;
         const response = await fetch(`${urlBackend}/student/signup`, requestInit(methods.POST, student));
-        return await response.json()
+        return await response.json().then(value => {
+            if (value.message) {
+                swalErr(value.message).fire({}).then()
+            } else {
+                toast.fire({}).then()
+            }
+
+        })
     }
 
     async signIn(userType, email, password) {
@@ -52,7 +72,7 @@ class AuthService {
         return await response.json().then(
             (value) => {
                 if (value.message) {
-                    alert(value.message)
+                    swalErr(value.message).fire({}).then()
                     return
                 }
                 this.user = value
@@ -69,7 +89,7 @@ class AuthService {
                 console.log(value)
             },
             err => {
-                console.error(err)
+                swalErr(err).fire({}).then()
             }
         )
     }

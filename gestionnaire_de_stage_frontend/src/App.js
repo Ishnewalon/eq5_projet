@@ -6,7 +6,13 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
+<<<<<<< HEAD
 import ValiderCv from "./components/pdf/ValiderCv";
+=======
+import React from "react";
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+>>>>>>> master
 
 function App() {
 

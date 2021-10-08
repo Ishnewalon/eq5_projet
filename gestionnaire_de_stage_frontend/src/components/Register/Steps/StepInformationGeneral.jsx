@@ -1,5 +1,5 @@
 import {Step} from "../Register";
-import {Component} from "react";
+import React,{Component} from "react";
 
 // eslint-disable-next-line
 const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
