@@ -1,5 +1,5 @@
 import './TeleverserCv.css'
-import React, {useState}  from "react";
+import React, {useState} from "react";
 import Dropzone from "react-dropzone";
 import {uploadFile} from "../../services/curriculum-service";
 
@@ -8,52 +8,53 @@ export default function TeleverserCv() {
     const handleDrop = acceptedFiles => {
         setFileNames(acceptedFiles.map(file => file.name));
         console.log(acceptedFiles)
-        uploadFile(acceptedFiles).then()
+        uploadFile(acceptedFiles, 1).then()
     }
 
     const goDashboard = () => {
-        this.props.history.push('/da shboard')
+        this.props.history.push('/dashboard')
     }
 
 
-        return (
-            <div>
-                <Dropzone
-                    onDrop={handleDrop}
-                    accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                    minSize={1024}
-                    maxSize={3072000}
-                >
-                    {({
-                          getRootProps,
-                          getInputProps,
-                          isDragActive,
-                          isDragAccept,
-                          isDragReject
-                      }) => {
-                        const additionalClass = isDragAccept
-                            ? "accept"
-                            : isDragReject
-                                ? "reject"
-                                : "";
-                        return (
-                            <div>
-                                <h2 className={"text-center"} >Les fichiers accetpés sont de type <i>.PDF</i> ou <i>.DOCX</i></h2>
-                                <div
-                                    {...getRootProps({
-                                        className: `dropzone ${additionalClass}`
-                                    })}
-                                >
-                                    <input {...getInputProps()} />
-                                    <span>
+    return (
+        <div>
+            <Dropzone
+                onDrop={handleDrop}
+                accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                minSize={1024}
+                maxSize={3072000}
+            >
+                {({
+                      getRootProps,
+                      getInputProps,
+                      isDragActive,
+                      isDragAccept,
+                      isDragReject
+                  }) => {
+                    const additionalClass = isDragAccept
+                        ? "accept"
+                        : isDragReject
+                            ? "reject"
+                            : "";
+                    return (
+                        <div>
+                            <h2 className={"text-center"}>Les fichiers accetpés sont de type <b>.PDF</b> ou <b>.DOCX</b>
+                            </h2>
+                            <div
+                                {...getRootProps({
+                                    className: `dropzone ${additionalClass}`
+                                })}
+                            >
+                                <input {...getInputProps()} />
+                                <span>
                                         {!isDragActive && "Cliquez moi ou glissez votre C.V. ici"}
-                                        {isDragActive && isDragAccept && "Déposez votre C.V ici"}
-                                        {isDragActive && isDragReject && "Ce format de fichier n'est pas accepté"}
+                                    {isDragActive && isDragAccept && "Déposez votre C.V ici"}
+                                    {isDragActive && isDragReject && "Ce format de fichier n'est pas accepté"}
                                     </span>
-                                </div>
                             </div>
-                        );
-                    }}
+                        </div>
+                    );
+                }}
             </Dropzone>
             <div className={"text-center"}>
                 <b><h3>Fichiers:</h3></b>
