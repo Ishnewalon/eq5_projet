@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.model.Manager;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.ManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class ManagerService implements ICrudService<Manager, Long> {
         this.managerRepository = managerRepository;
     }
 
+    @Autowired
+    private StudentService studentService;
+
     @Override
     public Optional<Manager> create(Manager manager) throws ValidationException {
         return manager != null ? Optional.of(managerRepository.save(manager)) : Optional.empty();
@@ -25,7 +29,7 @@ public class ManagerService implements ICrudService<Manager, Long> {
 
     @Override
     public Optional<Manager> getOneByID(Long id) {
-        if(id == null)
+        if (id == null)
             return Optional.empty();
         return managerRepository.findById(id);
     }
@@ -40,7 +44,7 @@ public class ManagerService implements ICrudService<Manager, Long> {
         if (id != null && manager != null) {
             manager.setId(id);
             return Optional.of(managerRepository.save(manager));
-        }else {
+        } else {
             return Optional.empty();
         }
     }
@@ -56,5 +60,18 @@ public class ManagerService implements ICrudService<Manager, Long> {
             return true;
         }
         return false;
+    }
+
+    public boolean validateCurriculum(boolean valid, long id) {
+        Student s = studentService.getOneByID(id).orElse(null);
+
+        if (s == null)
+            return false;
+
+        s.setCurriculumValidated(valid);
+
+        Optional<Student> resStudent = studentService.update(s, id);
+
+        return resStudent.isPresent() && resStudent.get().isCurriculumValidated() == valid;
     }
 }

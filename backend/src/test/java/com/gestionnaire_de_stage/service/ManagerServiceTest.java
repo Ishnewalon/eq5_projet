@@ -1,7 +1,9 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.model.Manager;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.ManagerRepository;
+import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -11,6 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,6 +28,11 @@ public class ManagerServiceTest {
     @Autowired
     private ManagerService managerService;
 
+    @Autowired
+    private StudentRepository studentRepository;
+
+    private long last_id;
+
     private Manager getDummyManager() {
         Manager manager = new Manager();
         manager.setPassword("Test1234");
@@ -35,9 +43,25 @@ public class ManagerServiceTest {
         return manager;
     }
 
+    private Student getDummyStudent() {
+        Student student = new Student();
+        student.setLastName("Scott");
+        student.setFirstName("Jordan");
+        student.setEmail("jscotty@gmail.com");
+        student.setPhone("514-546-2375");
+        student.setPassword("rockrocks");
+        student.setAddress("758 George");
+        student.setCity("LaSalle");
+        student.setDepartment("Informatique");
+        student.setPostalCode("H5N 9F2");
+        student.setMatricule("6473943");
+        return student;
+    }
+
+
     @BeforeEach
     public void init() {
-        managerRepository.save(getDummyManager());
+        last_id = managerRepository.save(getDummyManager()).getId();
     }
 
     @AfterEach
@@ -82,7 +106,7 @@ public class ManagerServiceTest {
     @Test
     @DisplayName("test chercher par id valide un manager")
     public void testGetByID_withValidID() {
-        Long validID = 5L;
+        Long validID = managerService.getAll().get(0).getId();
 
         Optional<Manager> actual = managerService.getOneByID(validID);
 
@@ -209,5 +233,30 @@ public class ManagerServiceTest {
         Optional<Manager> actual = managerService.getOneByEmailAndPassword(null, null);
 
         assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    @DisplayName("test manager validate curriculum valid data")
+    public void test_validateCurriculum_valid(){
+        AtomicReference<Student> student = new AtomicReference<>(getDummyStudent());
+
+        assertDoesNotThrow(() -> student.set(studentRepository.save(student.get())));
+
+        assertTrue(last_id > 0);
+        assertTrue(managerService.validateCurriculum(true, student.get().getId()));
+        assertNotNull(student);
+        assertNotNull(student.get());
+        assertTrue(student.get().isCurriculumValidated());
+    }
+
+    @Test
+    @SuppressWarnings("ConstantConditions")
+    @DisplayName("test manager validate curriculum invalid data")
+    public void test_validateCurriculum_invalid(){
+        assertThrows(Exception.class,() -> studentRepository.save(null));
+
+        assertTrue(last_id > 0);
+
+        assertFalse(managerService.validateCurriculum(true, 1));
     }
 }
