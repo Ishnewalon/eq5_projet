@@ -1,4 +1,4 @@
-import {Component} from "react";
+import React, {Component} from "react";
 import AddOffer from "../AddOffer/AddOffer";
 import OfferService from "../../services/offer-service";
 

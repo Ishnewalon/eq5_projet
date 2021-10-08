@@ -1,6 +1,7 @@
 import {ManagerModel, MonitorModel, Student, Supervisor} from "../models/User";
 import {methods, requestInit, urlBackend} from "./serviceUtils";
 import {UserType} from "../components/Register/Register";
+import {swalErr} from "../utility";
 
 class AuthService {
     user;
@@ -52,7 +53,7 @@ class AuthService {
         return await response.json().then(
             (value) => {
                 if (value.message) {
-                    alert(value.message)
+                    swalErr(value.message).fire({}).then()
                     return
                 }
                 this.user = value
@@ -69,7 +70,7 @@ class AuthService {
                 console.log(value)
             },
             err => {
-                console.error(err)
+                swalErr(err).fire({}).then()
             }
         )
     }

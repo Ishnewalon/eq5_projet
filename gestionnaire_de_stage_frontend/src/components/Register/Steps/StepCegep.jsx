@@ -1,5 +1,5 @@
 import {Step, UserType} from "../Register";
-import {Component} from "react";
+import React,{Component} from "react";
 
 export default class StepCegep extends Component {
 

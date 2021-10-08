@@ -1,4 +1,4 @@
-import {Component} from "react";
+import React, {Component} from "react";
 import {FieldPassword} from "../../Fields/FieldPassword";
 
 export default class StepPassword extends Component {

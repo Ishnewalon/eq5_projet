@@ -1,4 +1,4 @@
-import {Component} from "react";
+import React,{Component} from "react";
 import {FieldAddress} from "../Fields/FieldAddress";
 import OfferService from "../../services/offer-service";
 import Offer from "../../models/Offer";
