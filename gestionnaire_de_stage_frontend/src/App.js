@@ -6,7 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
-import ValiderCv from "./components/ValiderCv/ValiderCv";
+import ValiderCv from "./components/pdf/ValiderCv";
 
 function App() {
 
@@ -29,7 +29,7 @@ function App() {
                     <Link to="/dashboard">Dash</Link>
                 </li>
                 <li>
-                    <Link to="/valide-cv">Valider cv</Link>
+                    <Link to={"/valider-cv"}>Validez cv</Link>
                 </li>
             </ul>
         </nav>
