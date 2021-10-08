@@ -1,12 +1,29 @@
-import {MonitorModel, Student, Supervisor} from "../models/User";
+import {ManagerModel, MonitorModel, Student, Supervisor} from "../models/User";
+import {methods, requestInit, urlBackend} from "./serviceUtils";
+import {UserType} from "../components/Register/Register";
 
-export default class AuthService {
-    static instance = null
+class AuthService {
     user;
     _isAuthenticated = false;
 
     isAuthenticated() {
         return this._isAuthenticated;
+    }
+
+    isMonitor() {
+        return this.user instanceof MonitorModel;
+    }
+
+    isManager() {
+        return this.user instanceof ManagerModel;
+    }
+
+    isStudent() {
+        return this.user instanceof Student;
+    }
+
+    isSupervisor() {
+        return this.user instanceof Student;
     }
 
     async signupMonitor(monitor) {
@@ -33,8 +50,21 @@ export default class AuthService {
     async signIn(userType, email, password) {
         const response = await fetch(`${urlBackend}/${userType}/${email}/${password}`, requestInit(methods.GET));
         return await response.json().then(
-            value => {
+            (value) => {
+                if (value.message) {
+                    alert(value.message)
+                    return
+                }
                 this.user = value
+                if (userType === UserType.MONITOR[0]) {
+                    Object.setPrototypeOf(this.user, MonitorModel.prototype)
+                } else if (userType === UserType.STUDENT[0]) {
+                    Object.setPrototypeOf(this.user, Student.prototype)
+                } else if (userType === UserType.SUPERVISOR[0]) {
+                    Object.setPrototypeOf(this.user, Supervisor.prototype)
+                } else if (userType === UserType.MANAGER[0]) {
+                    Object.setPrototypeOf(this.user, ManagerModel.prototype)
+                }
                 this._isAuthenticated = true
                 console.log(value)
             },
@@ -49,32 +79,12 @@ export default class AuthService {
         this._isAuthenticated = false
     }
 
-    static getInstance() {
-        if (!this.instance) {
-            this.instance = new AuthService()
-        }
-        return this.instance
+    getUserId() {
+        if (this.user)
+            return this.user.id
     }
 }
 
-const urlBackend = 'http://localhost:8181'
-const methods = {
-    POST: 'POST',
-    GET: 'GET'
-}
-const requestInit = (method, body) => {
-    let value = {
-        method: method,
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }
-    if (method === methods.POST)
-        value['body'] = JSON.stringify(body)
-    return value
-}
-
+const authService = new AuthService();
+export default authService;
 
