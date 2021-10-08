@@ -2,14 +2,35 @@ package com.gestionnaire_de_stage.model;
 
 import lombok.Data;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
-@Embeddable
-public class Curriculum {
-    private String curriculumPath;
-    private boolean validated;
+@Entity
+//@Table(name = "curriculums")
+public class Curriculum implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    private Long id;
+
+    private String name;
+
+    private String type;
+
+    @Lob
+    private byte[] data;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private Student student;
+
+    private boolean isValid;
+
+    public Curriculum(){}
+
+    public Curriculum(String name, String type, byte[] data, Student student) {
+        this.name = name;
+        this.type = type;
+        this.data = data;
+        this.student = student;
+    }
 }
