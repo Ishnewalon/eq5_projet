@@ -9,7 +9,6 @@ import java.io.Serializable;
 @Entity
 @Table(name = "curriculums")
 public class Curriculum implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
@@ -23,4 +22,15 @@ public class Curriculum implements Serializable {
 
     @OneToOne(fetch = FetchType.LAZY)
     private Student student;
+
+    private boolean isValid;
+
+    public Curriculum(){}
+
+    public Curriculum(String name, String type, byte[] data, Student student) {
+        this.name = name;
+        this.type = type;
+        this.data = data;
+        this.student = student;
+    }
 }
