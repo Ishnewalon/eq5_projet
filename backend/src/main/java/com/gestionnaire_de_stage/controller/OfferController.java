@@ -8,7 +8,6 @@ import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.service.ManagerService;
 import com.gestionnaire_de_stage.service.MonitorService;
 import com.gestionnaire_de_stage.service.OfferService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -17,9 +16,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/offers")
@@ -32,7 +31,7 @@ public class OfferController {
 
     private final OfferService offerService;
 
-    public OfferController(MonitorService monitorService, ManagerService managerService, OfferService offerService){
+    public OfferController(MonitorService monitorService, ManagerService managerService, OfferService offerService) {
         this.offerService = offerService;
         this.managerService = managerService;
         this.monitorService = monitorService;
@@ -61,12 +60,12 @@ public class OfferController {
 
 
     @PostMapping("/monitor/add")
-    public ResponseEntity<?> addOfferMonitor(@Valid @RequestBody OfferDTO offerDTO){
+    public ResponseEntity<?> addOfferMonitor(@Valid @RequestBody OfferDTO offerDTO) {
         Optional<Monitor> monitor = monitorService.getOneByID(offerDTO.getCreator_id());
 
-        if(monitor.isEmpty()){
+        if (monitor.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur: moniteur non existant!");
-        }else{
+        } else {
             Offer offer = offerService.mapToOffer(offerDTO);
             offer.setCreator(monitor.get());
             Optional<Offer> optionalOffer = offerService.create(offer);
@@ -75,16 +74,33 @@ public class OfferController {
     }
 
     @PostMapping("/manager/add")
-    public ResponseEntity<?> addOfferManager(@Valid @RequestBody OfferDTO offerDTO){
+    public ResponseEntity<?> addOfferManager(@Valid @RequestBody OfferDTO offerDTO) {
         Optional<Manager> manager = managerService.getOneByID(offerDTO.getCreator_id());
 
-        if(manager.isEmpty()){
+        if (manager.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur: gestionnaire non existant!");
-        }else{
+        } else {
             Offer offer = offerService.mapToOffer(offerDTO);
             offer.setCreator(manager.get());
             Optional<Offer> optionalOffer = offerService.create(offer);
             return new ResponseEntity<>(optionalOffer.isPresent(), HttpStatus.CREATED);
+        }
+    }
+
+    @GetMapping("/{department}")
+    public ResponseEntity<?> getOffersByDepartment(@PathVariable String department) {
+        List<Offer> offers = offerService.getOffersByDepartment(department);
+        System.out.println(offers);
+        if (offers.size() == 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(offers);
+        } else {
+            List<OfferDTO> offerDTOS = new ArrayList<>();
+            for (Offer offer : offers) {
+                offerDTOS.add(offerService.mapToOfferDTO(offer));
+            }
+
+
+            return new ResponseEntity<>(offerDTOS, HttpStatus.OK);
         }
     }
 }

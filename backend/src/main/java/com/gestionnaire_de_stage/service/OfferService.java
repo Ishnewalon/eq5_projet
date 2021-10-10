@@ -7,6 +7,7 @@ import com.gestionnaire_de_stage.repository.OfferRepository;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,4 +47,7 @@ public class OfferService{
         return Optional.of(offerRepository.save(offer));
     }
 
+    public List<Offer> getOffersByDepartment(String department) {
+        return offerRepository.findAllByDepartment(department);
+    }
 }
