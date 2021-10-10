@@ -24,7 +24,7 @@ class AuthService {
     }
 
     isSupervisor() {
-        return this.user instanceof Student;
+        return this.user instanceof Supervisor;
     }
 
     async signupMonitor(monitor) {
@@ -35,7 +35,7 @@ class AuthService {
             if (value.message) {
                 swalErr(value.message).fire({}).then()
             } else {
-                toast.fire({}).then()
+                toast.fire({title:"Compte cree"}).then()
             }
         })
     }
@@ -48,7 +48,7 @@ class AuthService {
             if (value.message) {
                 swalErr(value.message).fire({}).then()
             } else {
-                toast.fire({}).then()
+                toast.fire({title:"Compte cree"}).then()
             }
         })
     }
@@ -61,7 +61,7 @@ class AuthService {
             if (value.message) {
                 swalErr(value.message).fire({}).then()
             } else {
-                toast.fire({}).then()
+                toast.fire({title:"Compte cree"}).then()
             }
 
         })
@@ -75,6 +75,7 @@ class AuthService {
                     swalErr(value.message).fire({}).then()
                     return
                 }
+
                 this.user = value
                 if (userType === UserType.MONITOR[0]) {
                     Object.setPrototypeOf(this.user, MonitorModel.prototype)
@@ -86,6 +87,7 @@ class AuthService {
                     Object.setPrototypeOf(this.user, ManagerModel.prototype)
                 }
                 this._isAuthenticated = true
+                toast.fire({title:"connection reussi!"}).then()
                 console.log(value)
             },
             err => {

@@ -20,7 +20,7 @@ export default class StepPassword extends Component {
                         <FieldPassword password={this.props.password} label="Mot de passe" placeholder="Votre mot de passe" handleChange={this.props.handleChange('password')}/>
                     </div>
 
-                    {/*TODO REVOIR LA CONFIRMATION DU MDP*/}
+                    {/* REVOIR LA CONFIRMATION DU MDP*/}
                     {/*<div className="col-md-6">*/}
                     {/*    <label>Confirmez votre mot de passe</label>*/}
                     {/*    <div className="input-group">*/}

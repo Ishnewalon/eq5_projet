@@ -47,7 +47,7 @@ export default class AddOffer extends Component {
                     </div>
                 </div>
                 <div className="col-md-6">
-                    <label>Departement</label>
+                    <label>Département</label>
                     <div className="input-group">
                         <select className="form-control" name="choice" id="userTypes"
                                 onChange={this.handleChange('department')}>

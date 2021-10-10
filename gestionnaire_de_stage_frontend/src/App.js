@@ -1,6 +1,5 @@
 import './App.css';
-import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
-import TeleverserCv from "./components/TeleverserCv/TeleverserCv";
+import {BrowserRouter as Router, Link, Switch} from "react-router-dom";
 import UnprotectedRoute from "./components/UnprotectedRoute/UnprotectedRoute";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Dashboard from "./components/Dashboard/Dashboard";
@@ -26,9 +25,6 @@ function App() {
                     <Link to="/register">Cree un compte</Link>
                 </li>
                 <li>
-                    <Link to="/televerser-cv">Deposer cv</Link>
-                </li>
-                <li>
                     <Link to="/dashboard">Dash</Link>
                 </li>
                 <li>
@@ -45,7 +41,6 @@ function App() {
                                   component={Register}/>
                 <ProtectedRoute exact path="/dashboard"
                                 component={Dashboard}/>
-                <Route exact path="/televerser-cv" component={TeleverserCv}/>
             </Switch>
         </div>
     </Router>
