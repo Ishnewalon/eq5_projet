@@ -11,14 +11,18 @@ import com.gestionnaire_de_stage.service.OfferService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.awt.*;
-import java.util.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/offers")
@@ -88,19 +92,13 @@ public class OfferController {
     }
 
     @GetMapping("/{department}")
-    public ResponseEntity<?> getOffersByDepartment(@PathVariable String department) {
+    public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) @Nullable String department) {
+        if (department == null || department.isEmpty() || department.isBlank())
+            return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Le departement n'est pas precise"));
+
         List<Offer> offers = offerService.getOffersByDepartment(department);
-        System.out.println(offers);
-        if (offers.size() == 0) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(offers);
-        } else {
-            List<OfferDTO> offerDTOS = new ArrayList<>();
-            for (Offer offer : offers) {
-                offerDTOS.add(offerService.mapToOfferDTO(offer));
-            }
+        List<OfferDTO> offerDTOS = offerService.mapArrayToOfferDTO(offers);
 
-
-            return new ResponseEntity<>(offerDTOS, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(offerDTOS, HttpStatus.OK);
     }
 }

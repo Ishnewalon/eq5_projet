@@ -3,7 +3,10 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.OfferDTO;
-import com.gestionnaire_de_stage.model.*;
+import com.gestionnaire_de_stage.model.Manager;
+import com.gestionnaire_de_stage.model.Monitor;
+import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.model.User;
 import com.gestionnaire_de_stage.repository.ManagerRepository;
 import com.gestionnaire_de_stage.repository.MonitorRepository;
 import com.gestionnaire_de_stage.repository.OfferRepository;
@@ -24,7 +27,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -425,22 +427,22 @@ public class OfferControllerTest {
     @Test
     public void testGetOffersByDepartment() throws Exception {
         String department = "myDepartment";
+        List<OfferDTO> myDummyOffers = new ArrayList<>();
         Manager manager = getDummyManager();
         manager.setId(1L);
 
         offerService.create(getDummyOffer(manager));
 
-        List<OfferDTO> myDummyOffers = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            Offer dummyOffer = getDummyOffer(manager);
+            var dummyOffer = getDummyOffer(manager);
             dummyOffer.setTitle(dummyOffer.getTitle() + i);
             dummyOffer.setDepartment(department);
             offerService.create(dummyOffer).ifPresent(value -> myDummyOffers.add(offerService.mapToOfferDTO(value)));
         }
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(String.format("/offers/%s", department))
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
         var offers = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<OfferDTO>>() {
         });
 
@@ -448,4 +450,29 @@ public class OfferControllerTest {
         assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
     }
 
+    @Test
+    public void testGetOffersByDepartmentWithNoOffer() throws Exception {
+        String department = "myDepartmentWithNoOffer";
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(String.format("/offers/%s", department))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+        var offers = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<OfferDTO>>() {
+        });
+
+        assertArrayEquals(new ArrayList<>().toArray(), offers.toArray());
+        assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    public void testGetOffersByDepartmentWithNoDepartment() throws Exception {
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/offers/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Erreur: Le departement n'est pas precise"));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
 }
