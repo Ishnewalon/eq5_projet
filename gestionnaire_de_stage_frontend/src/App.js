@@ -34,7 +34,6 @@ function App() {
         </nav>
         <div className="container">
             <Switch>
-                <ProtectedRoute exact path="/view-offers" component={ViewOffers} />
                 <UnprotectedRoute exact path="/login"
                                   component={Login}/>
                 <UnprotectedRoute exact path="/register"
