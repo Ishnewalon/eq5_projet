@@ -7,15 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,12 +29,11 @@ public class OfferServiceTest {
 
         Offer offer = offerService.mapToOffer(offerDto);
 
-        assertNull(offer.getId());
-        assertEquals(offerDto.getAddress(), offer.getAddress());
-        assertEquals(offerDto.getDepartment(), offer.getDepartment());
-        assertEquals(offerDto.getTitle(), offer.getTitle());
-        assertEquals(offerDto.getDescription(), offer.getDescription());
-        assertEquals(offerDto.getSalary(), offer.getSalary());
+        assertThat(offer.getId()).isNull();
+        assertThat(offerDto.getAddress()).isEqualTo(offer.getAddress());
+        assertThat(offerDto.getDepartment()).isEqualTo(offer.getDepartment());
+        assertThat(offerDto.getDescription()).isEqualTo(offer.getDescription());
+        assertThat(offerDto.getSalary()).isEqualTo(offer.getSalary());
     }
 
     @Test
@@ -47,11 +42,11 @@ public class OfferServiceTest {
 
         OfferDTO offerDto = offerService.mapToOfferDTO(offer);
 
-        assertEquals(offerDto.getAddress(), offer.getAddress());
-        assertEquals(offerDto.getDepartment(), offer.getDepartment());
-        assertEquals(offerDto.getTitle(), offer.getTitle());
-        assertEquals(offerDto.getDescription(), offer.getDescription());
-        assertEquals(offerDto.getSalary(), offer.getSalary());
+        assertThat(offerDto.getAddress()).isEqualTo(offer.getAddress());
+        assertThat(offerDto.getDepartment()).isEqualTo(offer.getDepartment());
+        assertThat(offerDto.getDescription()).isEqualTo(offer.getDescription());
+        assertThat(offerDto.getTitle()).isEqualTo(offer.getTitle());
+        assertThat(offerDto.getSalary()).isEqualTo(offer.getSalary());
     }
 
     @Test
@@ -63,8 +58,8 @@ public class OfferServiceTest {
 
         Optional<Offer> optionalOffer = offerService.create(offer);
 
-        assertTrue(optionalOffer.isPresent());
-        assertEquals(1L, optionalOffer.get().getId());
+        assertThat(optionalOffer.isPresent()).isTrue();
+        assertThat(optionalOffer.get().getId()).isEqualTo(1L);
     }
 
     @Test
@@ -75,29 +70,34 @@ public class OfferServiceTest {
     }
 
     @Test
-    public void testUpdateOffer_withNullOffer(){
-        // ARRANGE
-        Offer offer = null;
-        // ACT
+    public void testUpdateOffer_withNullId(){
+        Offer offer = new Offer();
+        when(offerRepository.existsById(any())).thenReturn(false);
+
         Optional<Offer> optionalOffer = offerService.update(offer);
-        // ASSERT
-        assertThat(optionalOffer.isEmpty()).isTrue();
+
+        assertThat(optionalOffer.isPresent()).isFalse();
+    }
+
+    @Test
+    public void testUpdateOffer_withNullOffer(){
+        Optional<Offer> optionalOffer = offerService.update(null);
+
+        assertThat(optionalOffer.isPresent()).isFalse();
     }
 
     @Test
     public void testUpdateOffer_withValidOffer(){
-        //ARRANGE
         Offer offer = getDummyOffer();
         when(offerRepository.existsById(any())).thenReturn(true);
         when(offerRepository.save(any())).thenReturn(offer);
 
-        //ACT
         Optional<Offer> optionalOffer = offerService.update(offer);
 
-        //ASSERT
         assertThat(optionalOffer.isPresent()).isTrue();
         assertThat(optionalOffer.get().getId()).isEqualTo(1L);
     }
+
 
 
     private Offer getDummyOffer() {

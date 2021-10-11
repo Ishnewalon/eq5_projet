@@ -60,7 +60,7 @@ public class OfferService {
 
 
     public Optional<Offer> update(Offer offer) {
-        if (offerRepository.existsById(offer.getId()))
+        if (offer != null && offerRepository.existsById(offer.getId()))
             return Optional.of(offerRepository.save(offer));
         return Optional.empty();
     }
