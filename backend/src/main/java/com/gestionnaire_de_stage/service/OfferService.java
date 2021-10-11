@@ -10,6 +10,7 @@ import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OfferService {
@@ -43,10 +44,7 @@ public class OfferService {
     }
 
     public List<OfferDTO> mapArrayToOfferDTO(List<Offer> offers) {
-        List<OfferDTO> offersDTO = new ArrayList<>();
-        for (Offer offer : offers) offersDTO.add(mapToOfferDTO(offer));
-
-        return offersDTO;
+        return offers.stream().map(this::mapToOfferDTO).collect(Collectors.toList());
     }
 
     public Optional<Offer> create(Offer offer) throws ValidationException {
