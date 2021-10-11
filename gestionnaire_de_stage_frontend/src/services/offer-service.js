@@ -29,7 +29,20 @@ class OfferService {
     }
 
     async getAllOffersByDepartment(department){
-        const response = await fetch(`${urlBackend}/offers/${department}`, requestInit(methods.GET))
+        const response = await fetch(`${urlBackend}/offers/${department}`, requestInit(methods.GET));
+        return await response.json();
+    }
+
+    async getAllOffers(){
+        const response = await fetch(`${urlBackend}/offers`, requestInit(methods.GET));
+        return await response.json();
+    }
+
+    async validateOffer(offer, id) {
+        const response = await fetch(`${urlBackend}/offers/validate/`, requestInit(methods.PUT, {
+            offer,
+            id
+        }));
         return await response.json();
     }
 }

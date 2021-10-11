@@ -14,12 +14,13 @@ export default class ViewOffers extends React.Component {
         };
         this.service = OfferService;
         this.service.getAllOffersByDepartment(this.state.department)
-                .then(v => this.setState({offers: v}))
+                .then(offers => this.setState({offers}))
                 .catch(e => {
                     this.setState({offers: []})
                     console.trace(e);
                 });
     }
+
 
     render() {
         return (
