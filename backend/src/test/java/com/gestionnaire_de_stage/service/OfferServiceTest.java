@@ -10,9 +10,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -70,6 +72,32 @@ public class OfferServiceTest {
 
         assertFalse(optionalOffer.isPresent());
     }
+
+    @Test
+    public void testUpdateOffer_withNullOffer(){
+        // ARRANGE
+        Offer offer = null;
+        // ACT
+        Optional<Offer> optionalOffer = offerService.update(offer);
+        // ASSERT
+        assertThat(optionalOffer.isEmpty()).isTrue();
+    }
+
+    @Test
+    public void testUpdateOffer_withValidOffer(){
+        //ARRANGE
+        Offer offer = getDummyOffer();
+        when(offerRepository.existsById(any())).thenReturn(true);
+        when(offerRepository.save(any())).thenReturn(offer);
+
+        //ACT
+        Optional<Offer> optionalOffer = offerService.update(offer);
+
+        //ASSERT
+        assertThat(optionalOffer.isPresent()).isTrue();
+        assertThat(optionalOffer.get().getId()).isEqualTo(1L);
+    }
+
 
     private Offer getDummyOffer() {
         Offer offer = new Offer();

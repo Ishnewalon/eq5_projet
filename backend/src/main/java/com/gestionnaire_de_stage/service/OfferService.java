@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.OfferRepository;
 import org.springframework.stereotype.Service;
 
@@ -55,5 +56,12 @@ public class OfferService {
 
     public List<Offer> getOffersByDepartment(String department) {
         return offerRepository.findAllByDepartment(department);
+    }
+
+
+    public Optional<Offer> update(Offer offer) {
+        if (offerRepository.existsById(offer.getId()))
+            return Optional.of(offerRepository.save(offer));
+        return Optional.empty();
     }
 }
