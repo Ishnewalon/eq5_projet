@@ -1,11 +1,11 @@
 import './App.css';
-import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
-import TeleverserCv from "./components/TeleverserCv/TeleverserCv";
+import {BrowserRouter as Router, Link, Switch} from "react-router-dom";
 import UnprotectedRoute from "./components/UnprotectedRoute/UnprotectedRoute";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
+import ViewOffers from "./components/ViewOffers/ViewOffers";
 import ValiderCv from "./components/pdf/ValiderCv";
 import React from "react";
 import 'bootstrap';
@@ -27,6 +27,9 @@ function App() {
                     <Link to="/register">Cree un compte</Link>
                 </li>
                 <li>
+                    <Link to="/dashboard">Dash</Link>
+                </li>
+                <li>
                     <Link to="/televerser-cv">Deposer cv</Link>
                 </li>
                 <li>
@@ -34,12 +37,12 @@ function App() {
                 </li>
                 <li>
                     <Link to={"/valider-cv"}>Validez cv</Link>
+                    <Link to="/view-offers">Voir offres</Link>
                 </li>
             </ul>
         </nav>
         <div className="container">
             <Switch>
-
                 <UnprotectedRoute exact path="/login"
                                   component={Login}/>
                 <UnprotectedRoute exact path="/register"

@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.model.Manager;
@@ -20,11 +21,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -84,7 +86,7 @@ public class OfferControllerTest {
         return offer;
     }
 
-    private List<Monitor> createMonitorDummies(){
+    private List<Monitor> createMonitorDummies() {
         Monitor mon1 = getDummyMonitor();
         mon1.setId(1L);
 
@@ -98,7 +100,7 @@ public class OfferControllerTest {
     }
 
     @BeforeAll
-    public void before(){
+    public void before() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 
         MockitoAnnotations.openMocks(this);
@@ -141,7 +143,7 @@ public class OfferControllerTest {
     }
 
     @Test
-    public void testMonitorOfferCreate_withValidEntries() throws Exception{
+    public void testMonitorOfferCreate_withValidEntries() throws Exception {
         Monitor monitor = getDummyMonitor();
         monitor.setId(1L);
 
@@ -156,7 +158,7 @@ public class OfferControllerTest {
     }
 
     @Test
-    public void testManagerOfferCreate_withValidEntries() throws Exception{
+    public void testManagerOfferCreate_withValidEntries() throws Exception {
         Manager manager = getDummyManager();
         manager.setId(4L);
 
@@ -172,7 +174,7 @@ public class OfferControllerTest {
 
 
     @Test
-    public void testMonitorOfferCreate_withNullEntries() throws Exception{
+    public void testMonitorOfferCreate_withNullEntries() throws Exception {
         MvcResult mvcResult = mockMvc.perform(post("/offers/monitor/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(null))).andReturn();
@@ -185,7 +187,7 @@ public class OfferControllerTest {
 
 
     @Test
-    public void testManagerOfferCreate_withNullEntries() throws Exception{
+    public void testManagerOfferCreate_withNullEntries() throws Exception {
         OfferDTO offer = null;
 
         MvcResult mvcResult = mockMvc.perform(post("/offers/manager/add")
@@ -200,7 +202,7 @@ public class OfferControllerTest {
 
 
     @Test
-    public void testManagerOfferCreate_withNonExistentId() throws Exception{
+    public void testManagerOfferCreate_withNonExistentId() throws Exception {
         Manager manager = getDummyManager();
         manager.setId(14L);
 
@@ -215,7 +217,7 @@ public class OfferControllerTest {
     }
 
     @Test
-    public void testMonitorrOfferCreate_withNonExistentId() throws Exception{
+    public void testMonitorrOfferCreate_withNonExistentId() throws Exception {
         Monitor monitor = getDummyMonitor();
         monitor.setId(14L);
 
@@ -422,4 +424,55 @@ public class OfferControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
     }
 
+    @Test
+    public void testGetOffersByDepartment() throws Exception {
+        String department = "myDepartment";
+        List<OfferDTO> myDummyOffers = new ArrayList<>();
+        Manager manager = getDummyManager();
+        manager.setId(1L);
+
+        offerService.create(getDummyOffer(manager));
+
+        for (int i = 0; i < 5; i++) {
+            var dummyOffer = getDummyOffer(manager);
+            dummyOffer.setTitle(dummyOffer.getTitle() + i);
+            dummyOffer.setDepartment(department);
+            offerService.create(dummyOffer).ifPresent(value -> myDummyOffers.add(offerService.mapToOfferDTO(value)));
+        }
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(String.format("/offers/%s", department))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+        var offers = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<OfferDTO>>() {
+        });
+
+        assertArrayEquals(myDummyOffers.toArray(), offers.toArray());
+        assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    public void testGetOffersByDepartmentWithNoOffer() throws Exception {
+        String department = "myDepartmentWithNoOffer";
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(String.format("/offers/%s", department))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+        var offers = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<OfferDTO>>() {
+        });
+
+        assertArrayEquals(new ArrayList<>().toArray(), offers.toArray());
+        assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    public void testGetOffersByDepartmentWithNoDepartment() throws Exception {
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/offers/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Erreur: Le departement n'est pas precise"));
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    }
 }

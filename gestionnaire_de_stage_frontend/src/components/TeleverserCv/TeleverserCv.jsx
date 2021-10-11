@@ -11,10 +11,6 @@ export default function TeleverserCv() {
         uploadFile(acceptedFiles, 1).then()
     }
 
-    const goDashboard = () => {
-        this.props.history.push('/dashboard')
-    }
-
 
     return (
         <div>
@@ -38,9 +34,9 @@ export default function TeleverserCv() {
                             : "";
                     return (
                         <div>
-                            <h2 className={"text-center"}>Les fichiers accetpés sont de type <b>.PDF</b> ou <b>.DOCX</b>
-                            </h2>
-                            <div
+                                <h2 className={"text-center"}>Les fichiers acceptés sont de type <b>.PDF</b> ou <b>.DOCX</b>
+                                </h2>
+                                <div
                                 {...getRootProps({
                                     className: `dropzone ${additionalClass}`
                                 })}
@@ -64,9 +60,9 @@ export default function TeleverserCv() {
                     ))}
                 </ul>
             </div>
-            <div className={"text-center"}>
-                <button>Envoyer</button>
-            </div>
+            {/*<div className={"text-center"}>*/}
+            {/*    <button>Envoyer</button>*/}
+            {/*</div>*/}
         </div>
     );
 }

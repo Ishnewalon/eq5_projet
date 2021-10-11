@@ -17,7 +17,7 @@ export default class Choice extends Component {
                     </button>
                     <button className="btn btn-primary" type={"button"} onClick={() => {
                         this.continue(Step.MONITOR)
-                    }}>Companie
+                    }}>Compagnie
                     </button>
                 </div>
             </div>
