@@ -103,7 +103,7 @@ public class OfferController {
     }
 
     @PutMapping("/validate")
-    public ResponseEntity<?> validateOffer(@Valid @RequestBody Offer offer) {
+    public ResponseEntity<?> validateOffer(@RequestBody Offer offer) {
         return null;
     }
 
