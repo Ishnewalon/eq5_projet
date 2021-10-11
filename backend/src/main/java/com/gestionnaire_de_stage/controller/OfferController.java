@@ -101,4 +101,10 @@ public class OfferController {
 
         return new ResponseEntity<>(offerDTOS, HttpStatus.OK);
     }
+
+    @PutMapping("/validate")
+    public ResponseEntity<?> validateOffer(@Valid @RequestBody Offer offer) {
+        return null;
+    }
+
 }
