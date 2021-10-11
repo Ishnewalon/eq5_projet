@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -70,7 +71,7 @@ public class OfferServiceTest {
     public void testCreateOffer_withNullOffer(){
         Optional<Offer> optionalOffer = offerService.create(null);
 
-        assertFalse(optionalOffer.isPresent());
+        assertThat(optionalOffer.isPresent()).isFalse();
     }
 
     @Test
