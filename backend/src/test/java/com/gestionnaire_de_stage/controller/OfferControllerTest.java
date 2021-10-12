@@ -40,23 +40,9 @@ public class OfferControllerTest {
 
     private Offer offer;
 
-/**
-    public void testUpdateOffer_withNullOffer() throws Exception{
-        when(offerService.update(offer)).thenReturn(Optional.of(offer));
-
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/validate")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
-
-        var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(actualStudent).isEqualTo(offer);
-    }
-**/
-
     @Test
     public void testUpdateOffer_withNullId() throws Exception{
-        Offer offer = getDummyOffer();
+        offer = getDummyOffer();
         offer.setId(null);
         when(offerService.update(offer)).thenReturn(Optional.empty());
 
@@ -70,7 +56,7 @@ public class OfferControllerTest {
 
     @Test
     public void testUpdateOffer_withEmptyOffer() throws Exception{
-        Offer offer = new Offer();
+        offer = new Offer();
         when(offerService.update(offer)).thenReturn(Optional.empty());
 
         MvcResult mvcResult = mockMvc.perform(put("/offers/validate")
@@ -79,6 +65,19 @@ public class OfferControllerTest {
 
         var actualOfferInString = mvcResult.getResponse().getContentAsString();
         assertThat(actualOfferInString).isEqualTo("Erreur : offre non existante!");
+    }
+
+    @Test
+    public void testUpdateOffer_withValidOffer() throws Exception {
+        offer = getDummyOffer();
+        when(offerService.update(any())).thenReturn(Optional.of(offer));
+
+        MvcResult mvcResult = mockMvc.perform(put("/offers/validate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(offer))).andReturn();
+
+        var actualOfferInString = mvcResult.getResponse().getContentAsString();
+        assertThat(new ObjectMapper().readValue(actualOfferInString, Offer.class)).isEqualTo(offer);
     }
 
 

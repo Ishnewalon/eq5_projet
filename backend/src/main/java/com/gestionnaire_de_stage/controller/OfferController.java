@@ -108,7 +108,7 @@ public class OfferController {
 
         if(optionalOffer.isEmpty())
             return ResponseEntity.badRequest().body("Erreur : offre non existante!");
-        return null;
+        return ResponseEntity.accepted().body(optionalOffer.get());
     }
 
 }
