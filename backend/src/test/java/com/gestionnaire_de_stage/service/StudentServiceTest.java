@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,9 +49,9 @@ public class StudentServiceTest {
 
     @Test
     public void testCreate_withNullStudent() {
-        Optional<Student> actual = studentService.create(null);
-
-        assertTrue(actual.isEmpty());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            studentService.create(null);
+        });
     }
 
     @Test
