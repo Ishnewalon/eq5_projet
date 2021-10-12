@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class StudentServiceTest {
@@ -24,14 +26,16 @@ public class StudentServiceTest {
     StudentRepository studentRepository;
 
     @Test
-    public void testFindAll() {
-        int actual = studentRepository.findAll().size();
+    public void testCreate_withValidStudent() throws Exception{
+        Student student = getStudent();
+        when(studentRepository.save(any())).thenReturn(student);
 
-        assertEquals(actual, 3);
+        Optional<Student> actual = studentService.create(student);
+
+        assertTrue(actual.isPresent());
     }
 
-    @Test
-    public void testCreate_withValidStudent() {
+    private Student getStudent() {
         Student student = new Student();
         student.setLastName("Candle");
         student.setFirstName("Tea");
@@ -39,9 +43,7 @@ public class StudentServiceTest {
         student.setPassword("cantPass");
         student.setDepartment("info");
         student.setMatricule("4673943");
-
-        Optional<Student> actual = studentService.create(student);
-        assertTrue(actual.isPresent());
+        return student;
     }
 
     @Test

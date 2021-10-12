@@ -12,8 +12,11 @@ import java.util.Optional;
 @Service
 public class StudentService implements ICrudService<Student, Long> {
 
-    @Autowired
     private StudentRepository studentRepository;
+
+    public void setStudentRepository(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     @Override
     public Optional<Student> create(Student student) throws ValidationException {
