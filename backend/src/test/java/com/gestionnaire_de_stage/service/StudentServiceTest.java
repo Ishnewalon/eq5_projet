@@ -39,6 +39,7 @@ public class StudentServiceTest {
 
     private Student getStudent() {
         Student student = new Student();
+        student.setId(1L);
         student.setLastName("Candle");
         student.setFirstName("Tea");
         student.setEmail("cant@outlook.com");
@@ -67,6 +68,9 @@ public class StudentServiceTest {
     @Test
     public void testGetByID_withValidID() {
         Long validID = 1L;
+        Student student = getStudent();
+        when(studentRepository.existsById(any())).thenReturn(true);
+        when(studentRepository.getById(any())).thenReturn(student);
 
         Optional<Student> actual = studentService.getOneByID(validID);
 
