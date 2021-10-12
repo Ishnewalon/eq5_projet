@@ -15,7 +15,7 @@ public class StudentService implements ICrudService<Student, Long> {
 
     private StudentRepository studentRepository;
 
-    public void setStudentRepository(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 
