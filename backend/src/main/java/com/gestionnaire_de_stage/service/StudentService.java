@@ -1,8 +1,9 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
@@ -19,11 +20,12 @@ public class StudentService implements ICrudService<Student, Long> {
     }
 
     @Override
-    public Optional<Student> create(Student student) throws ValidationException {
-        if (student != null) {
-            return Optional.of(studentRepository.save(student));
+    public Optional<Student> create(Student student) throws StudentAlreadyExistsException {
+        Assert.isTrue(student != null, "Student is null");
+        if (isNotValid(student)) {
+            throw new StudentAlreadyExistsException();
         }
-            return Optional.empty();
+        return Optional.of(studentRepository.save(student));
     }
 
     @Override
@@ -62,5 +64,9 @@ public class StudentService implements ICrudService<Student, Long> {
             return true;
         }
         return false;
+    }
+
+    private boolean isNotValid(Student student) {
+        return student.getEmail() != null && studentRepository.existsByEmail(student.getEmail());
     }
 }

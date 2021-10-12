@@ -34,9 +34,14 @@ public class StudentController {
                     .badRequest()
                     .body(new ResponseMessage("Erreur: Ce courriel existe deja!"));
         }
-        Optional<Student> opt = studentService.create(student);
-        Student student1 = opt.get();
-
+        Student student1 = null;
+        try {
+            Optional<Student> opt = studentService.create(student);
+            student1 = opt.get();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         return new ResponseEntity<>(student1, HttpStatus.CREATED);
     }
 
