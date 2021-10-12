@@ -79,9 +79,9 @@ public class StudentServiceTest {
 
     @Test
     public void testGetByID_withNullID() {
-        Optional<Student> actual = studentService.getOneByID(null);
-
-        assertTrue(actual.isEmpty());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            studentService.getOneByID(null);
+        });
     }
 
     @Test

@@ -21,7 +21,7 @@ public class StudentService implements ICrudService<Student, Long> {
 
     @Override
     public Optional<Student> create(Student student) throws StudentAlreadyExistsException {
-        Assert.isTrue(student != null, "Student is null");
+        Assert.isTrue(student != null, "Etudiant est null");
         if (isNotValid(student)) {
             throw new StudentAlreadyExistsException();
         }
@@ -30,7 +30,8 @@ public class StudentService implements ICrudService<Student, Long> {
 
     @Override
     public Optional<Student> getOneByID(Long aLong) {
-        if (aLong != null && studentRepository.existsById(aLong)) {
+        Assert.isTrue(aLong != null, "ID est null");
+        if (studentRepository.existsById(aLong)) {
             return Optional.of(studentRepository.getById(aLong));
         }
         return Optional.empty();
