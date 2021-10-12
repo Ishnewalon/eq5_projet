@@ -81,25 +81,6 @@ public class OfferControllerTest {
     }
 
 
-//    @Test
-//    public void testUpdateOffer_withNullOffer(){
-//        Optional<Offer> optionalOffer = offerService.update(null);
-//
-//        assertThat(optionalOffer.isPresent()).isFalse();
-//    }
-
-//    @Test
-//    public void testUpdateOffer_withValidOffer(){
-//        Offer offer = getDummyOffer();
-//        when(offerRepository.existsById(any())).thenReturn(true);
-//        when(offerRepository.save(any())).thenReturn(offer);
-//
-//        Optional<Offer> optionalOffer = offerService.update(offer);
-//
-//        assertThat(optionalOffer.isPresent()).isTrue();
-//        assertThat(optionalOffer.get().getId()).isEqualTo(1L);
-//    }
-
 
     private Offer getDummyOffer() {
         Offer offer = new Offer();
