@@ -63,4 +63,8 @@ public class OfferService {
             return Optional.of(offerRepository.save(offer));
         return Optional.empty();
     }
+
+    public List<Offer> getAll() {
+        return offerRepository.findAll();
+    }
 }

@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import AddOffer from "../AddOffer/AddOffer";
 import OfferService from "../../services/offer-service";
+import ReviewOffers from "../ReviewOffers/ReviewOffers";
+import ViewOffers from "../ViewOffers/ViewOffers";
 
 export default class Manager extends Component {
 
@@ -18,6 +20,8 @@ export default class Manager extends Component {
         return (<>
                 <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
                     <AddOffer addOffer={this.addOffer}/>
+                    <ViewOffers />
+                    <ReviewOffers />
                 </div>
             </>
         )

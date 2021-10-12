@@ -62,6 +62,11 @@ public class OfferController {
                 .body(new ResponseMessage(ex.getMessage()));
     }
 
+    @GetMapping
+    public List<Offer> getAllOffers(){
+        return offerService.getAll();
+    }
+
 
     @PostMapping("/monitor/add")
     public ResponseEntity<?> addOfferMonitor(@Valid @RequestBody OfferDTO offerDTO) {
@@ -92,7 +97,7 @@ public class OfferController {
     }
 
     @GetMapping("/{department}")
-    public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) @Nullable String department) {
+    public ResponseEntity<?> getOffersByDepartment(@PathVariable @Nullable String department) {
         if (department == null || department.isEmpty() || department.isBlank())
             return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Le departement n'est pas precise"));
 

@@ -1,19 +1,15 @@
 package com.gestionnaire_de_stage;
 
-import com.gestionnaire_de_stage.model.Manager;
-import com.gestionnaire_de_stage.model.Monitor;
-import com.gestionnaire_de_stage.model.Student;
-import com.gestionnaire_de_stage.model.Supervisor;
-import com.gestionnaire_de_stage.repository.ManagerRepository;
-import com.gestionnaire_de_stage.repository.MonitorRepository;
-import com.gestionnaire_de_stage.repository.StudentRepository;
-import com.gestionnaire_de_stage.repository.SupervisorRepository;
+import com.gestionnaire_de_stage.model.*;
+import com.gestionnaire_de_stage.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import java.util.List;
 
 @SpringBootApplication
 @ComponentScan("com.gestionnaire_de_stage.*")
@@ -23,18 +19,21 @@ public class GestionnaireDeStageApplication implements CommandLineRunner {
     private final MonitorRepository monitorRepository;
     private final StudentRepository studentRepository;
     private final SupervisorRepository supervisorRepository;
+    private final OfferRepository offerRepository;
 
     @Autowired(required = false)
     public GestionnaireDeStageApplication(
         ManagerRepository managerRepository,
         SupervisorRepository supervisorRepository,
         StudentRepository studentRepository,
-        MonitorRepository monitorRepository
+        MonitorRepository monitorRepository,
+        OfferRepository offerRepository
     ){
         this.managerRepository = managerRepository;
         this.monitorRepository = monitorRepository;
         this.studentRepository = studentRepository;
         this.supervisorRepository = supervisorRepository;
+        this.offerRepository = offerRepository;
     }
 
     public static void main(String[] args) {
@@ -56,7 +55,7 @@ public class GestionnaireDeStageApplication implements CommandLineRunner {
         student.setPhone("514-444-2222");
         student.setPassword("UnMotDePasse1");
         student.setMatricule("1231231");
-        student.setDepartment("Departement");
+        student.setDepartment("Informatique");
 
         studentRepository.save(student);
 
@@ -79,7 +78,7 @@ public class GestionnaireDeStageApplication implements CommandLineRunner {
         monitor.setPassword("UnMotDePasse1");
         monitor.setDepartment("Informatique");
 
-        monitorRepository.save(monitor);
+        monitor = monitorRepository.save(monitor);
 
         Supervisor supervisor = new Supervisor();
         supervisor.setId(4L);
@@ -92,5 +91,26 @@ public class GestionnaireDeStageApplication implements CommandLineRunner {
         supervisor.setMatricule("12331");
 
         supervisorRepository.save(supervisor);
+
+        Offer offer1 = new Offer();
+        offer1.setDepartment("Informatique");
+        offer1.setAddress("1101 Rue Sainte-Catherine O, Montréal, QC H3B 1H8");
+        offer1.setId(1L);
+        offer1.setDescription("Employé de Desjardins");
+        offer1.setSalary(16);
+        offer1.setTitle("Développeur Frontend");
+        offer1.setCreator(monitor);
+
+
+        Offer offer2 = new Offer();
+        offer2.setDepartment("Informatique");
+        offer2.setAddress("1253 Av. McGill College, Montréal, QC H3B 2Y5");
+        offer2.setId(2L);
+        offer2.setDescription("Employé de Google");
+        offer2.setSalary(87);
+        offer2.setTitle("Developpeur Backend");
+        offer2.setCreator(monitor);
+
+        offerRepository.saveAll(List.of(offer1, offer2));
     }
 }

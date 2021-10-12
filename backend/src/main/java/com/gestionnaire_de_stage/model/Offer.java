@@ -1,5 +1,8 @@
 package com.gestionnaire_de_stage.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,14 +14,16 @@ import java.util.Date;
 
 @Entity
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Offer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
+    @JsonProperty(value = "")
     @OneToOne
-    @NotNull(message = "creator cannot be null")
     private User creator;
 
     @NotBlank(message = "Le departement ne peut pas être vide.")
@@ -53,5 +58,4 @@ public class Offer {
     private double salary;
 
     private boolean valid;
-
 }

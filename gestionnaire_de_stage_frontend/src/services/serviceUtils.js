@@ -15,7 +15,7 @@ export const requestInit = (method, body) => {
             'Content-Type': 'application/json'
         }
     }
-    if (method === methods.POST)
+    if (method === methods.POST || method === methods.PUT)
         value['body'] = JSON.stringify(body)
     return value
 }
