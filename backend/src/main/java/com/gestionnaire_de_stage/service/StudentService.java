@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StudentService implements ICrudService<Student, Long> {
+public class StudentService {
 
     private StudentRepository studentRepository;
 
@@ -19,7 +20,6 @@ public class StudentService implements ICrudService<Student, Long> {
         this.studentRepository = studentRepository;
     }
 
-    @Override
     public Optional<Student> create(Student student) throws StudentAlreadyExistsException {
         Assert.isTrue(student != null, "Etudiant est null");
         if (isNotValid(student)) {
@@ -28,21 +28,18 @@ public class StudentService implements ICrudService<Student, Long> {
         return Optional.of(studentRepository.save(student));
     }
 
-    @Override
-    public Optional<Student> getOneByID(Long aLong) {
+    public Optional<Student> getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
-        if (studentRepository.existsById(aLong)) {
-            return Optional.of(studentRepository.getById(aLong));
+        if (!isIDValid(aLong)) {
+            throw new IdDoesNotExistException();
         }
-        return Optional.empty();
+        return Optional.of(studentRepository.getById(aLong));
     }
 
-    @Override
     public List<Student> getAll() {
         return studentRepository.findAll();
     }
 
-    @Override
     public Optional<Student> update(Student student, Long aLong) throws ValidationException {
         if (aLong != null && studentRepository.existsById(aLong) && student != null) {
             student.setId(aLong);
@@ -58,7 +55,6 @@ public class StudentService implements ICrudService<Student, Long> {
         return Optional.empty();
     }
 
-    @Override
     public boolean deleteByID(Long aLong) {
         if (aLong != null && studentRepository.existsById(aLong)) {
             studentRepository.deleteById(aLong);
@@ -69,5 +65,9 @@ public class StudentService implements ICrudService<Student, Long> {
 
     private boolean isNotValid(Student student) {
         return student.getEmail() != null && studentRepository.existsByEmail(student.getEmail());
+    }
+
+    private boolean isIDValid(Long id) {
+        return studentRepository.existsById(id);
     }
 }

@@ -63,7 +63,13 @@ public class ManagerService implements ICrudService<Manager, Long> {
     }
 
     public boolean validateCurriculum(boolean valid, long id) {
-        Student s = studentService.getOneByID(id).orElse(null);
+        Student s = null;
+        try {
+            s = studentService.getOneByID(id).orElse(null);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (s == null)
             return false;

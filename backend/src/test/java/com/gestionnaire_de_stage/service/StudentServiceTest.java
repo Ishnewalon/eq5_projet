@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
@@ -11,9 +12,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -66,7 +69,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testGetByID_withValidID() {
+    public void testGetByID_withValidID() throws Exception{
         Long validID = 1L;
         Student student = getStudent();
         when(studentRepository.existsById(any())).thenReturn(true);
@@ -85,14 +88,37 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testGetAll() {
-        int expectedLength = 3;
+    public void testGetByID_doesntExistID() {
+        Student student = getStudent();
+        when(studentRepository.existsById(any())).thenReturn(false);
 
-        List<Student> studentList = studentService.getAll();
-
-        assertEquals(expectedLength, studentList.size());
+        Assertions.assertThrows(IdDoesNotExistException.class, () -> {
+            studentService.getOneByID(student.getId());
+        });
     }
 
+    @Test
+    public void testGetAll() {
+        when(studentRepository.findAll()).thenReturn(getListOfStudents());
+
+        final List<Student> allStudents = studentService.getAll();
+
+        assertThat(allStudents.size()).isEqualTo(3);
+        assertThat(allStudents.get(0).getFirstName()).isEqualTo("Tea");
+    }
+
+    private List<Student> getListOfStudents() {
+        List<Student> studentList = new ArrayList<>();
+        Long idIterator = 1L;
+        for (int i = 0; i < 3; i++) {
+            Student student = getStudent();
+            student.setId(idIterator);
+            studentList.add(student);
+            idIterator++;
+        }
+        return studentList;
+    }
+/*
     @Test
     public void testUpdate_withValidEntries(){
         Student student = new Student();
@@ -182,5 +208,5 @@ public class StudentServiceTest {
 
         assertTrue(actual.isEmpty());
     }
-
+*/
 }
