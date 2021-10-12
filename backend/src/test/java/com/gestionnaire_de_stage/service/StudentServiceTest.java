@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.junit.jupiter.api.Assertions;
@@ -51,6 +52,15 @@ public class StudentServiceTest {
     public void testCreate_withNullStudent() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             studentService.create(null);
+        });
+    }
+
+    @Test
+    public void testCreate_alreadyExistsStudent() {
+        when(studentRepository.existsByEmail(any())).thenReturn(true);
+
+        Assertions.assertThrows(StudentAlreadyExistsException.class, () -> {
+            studentService.create(getStudent());
         });
     }
 
