@@ -13,22 +13,29 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan("com.gestionnaire_de_stage.*")
 public class GestionnaireDeStageApplication implements CommandLineRunner {
 
-    @Autowired
-    private ManagerRepository managerRepository;
+    private final ManagerRepository managerRepository;
+    private final MonitorRepository monitorRepository;
+    private final StudentRepository studentRepository;
+    private final SupervisorRepository supervisorRepository;
 
-    @Autowired
-    private MonitorRepository monitorRepository;
-
-    @Autowired
-    private StudentRepository studentRepository;
-
-    @Autowired
-    private SupervisorRepository supervisorRepository;
+    @Autowired(required = false)
+    public GestionnaireDeStageApplication(
+        ManagerRepository managerRepository,
+        SupervisorRepository supervisorRepository,
+        StudentRepository studentRepository,
+        MonitorRepository monitorRepository
+    ){
+        this.managerRepository = managerRepository;
+        this.monitorRepository = monitorRepository;
+        this.studentRepository = studentRepository;
+        this.supervisorRepository = supervisorRepository;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(GestionnaireDeStageApplication.class, args);

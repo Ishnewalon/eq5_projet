@@ -104,6 +104,10 @@ public class OfferController {
 
     @PutMapping("/validate")
     public ResponseEntity<?> validateOffer(@RequestBody Offer offer) {
+        Optional<Offer> optionalOffer = offerService.update(offer);
+
+        if(optionalOffer.isEmpty())
+            return ResponseEntity.badRequest().body("Erreur : offre non existante!");
         return null;
     }
 

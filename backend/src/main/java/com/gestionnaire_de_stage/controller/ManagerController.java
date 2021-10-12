@@ -5,7 +5,6 @@ import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.dto.ValidationCurriculum;
 import com.gestionnaire_de_stage.service.AuthService;
 import com.gestionnaire_de_stage.service.ManagerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -22,11 +21,15 @@ import java.util.Map;
 @CrossOrigin
 public class ManagerController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
 
-    @Autowired
-    private ManagerService managerService;
+    private final ManagerService managerService;
+
+    public ManagerController(AuthService authService, ManagerService managerService) {
+        this.authService = authService;
+        this.managerService = managerService;
+    }
+
 
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email,@PathVariable String password){

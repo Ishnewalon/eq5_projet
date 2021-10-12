@@ -58,7 +58,6 @@ public class OfferService {
         return offerRepository.findAllByDepartment(department);
     }
 
-
     public Optional<Offer> update(Offer offer) {
         if (offer != null && offerRepository.existsById(offer.getId()))
             return Optional.of(offerRepository.save(offer));

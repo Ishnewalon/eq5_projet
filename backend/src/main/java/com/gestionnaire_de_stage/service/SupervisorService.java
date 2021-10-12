@@ -2,7 +2,6 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
@@ -12,8 +11,11 @@ import java.util.Optional;
 @Service
 public class SupervisorService implements ICrudService<Supervisor, Long> {
 
-    @Autowired
-    SupervisorRepository supervisorRepository;
+    private final SupervisorRepository supervisorRepository;
+
+    public SupervisorService(SupervisorRepository supervisorRepository) {
+        this.supervisorRepository = supervisorRepository;
+    }
 
     @Override
     public Optional<Supervisor> create(Supervisor supervisor) throws ValidationException {

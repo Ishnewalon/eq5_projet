@@ -18,7 +18,7 @@ export default class ValidateOffer extends Component{
         this.service.validateOffer(offer)
             .then(v => {
                 if((!v instanceof Offer)) {
-                    swalErr(v);
+                    swalErr(v).fire({}).then();
                     return;
                 }
                 this.props.offer = v;

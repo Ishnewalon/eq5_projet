@@ -1,11 +1,9 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import com.gestionnaire_de_stage.service.SupervisorService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -22,11 +20,15 @@ import java.util.Optional;
 @RequestMapping("/supervisor")
 public class SupervisorController {
 
-    @Autowired
-    SupervisorService supervisorService;
+    private final SupervisorService supervisorService;
 
-    @Autowired
-    SupervisorRepository supervisorRepository;
+    private final SupervisorRepository supervisorRepository;
+
+    public SupervisorController(SupervisorService supervisorService, SupervisorRepository supervisorRepository) {
+        this.supervisorService = supervisorService;
+        this.supervisorRepository = supervisorRepository;
+    }
+
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody Supervisor supervisor) {
