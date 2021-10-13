@@ -133,6 +133,7 @@ public class StudentServiceTest {
     @Test
     public void testUpdate_withNullID() {
         Student student = getStudent();
+
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             studentService.update(student, null);
         });
@@ -145,6 +146,15 @@ public class StudentServiceTest {
         });
     }
 
+    @Test
+    public void testUpdate_doesntExistID() {
+        Student student = getStudent();
+        when(studentRepository.existsById(any())).thenReturn(false);
+
+        Assertions.assertThrows(IdDoesNotExistException.class, () -> {
+            studentService.update(student, student.getId());
+        });
+    }
 /*
     @Test
     public void testDelete_withValidID() {

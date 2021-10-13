@@ -43,11 +43,11 @@ public class StudentService {
     public Optional<Student> update(Student student, Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         Assert.isTrue(student != null, "L'étudiant est null");
-        if (studentRepository.existsById(aLong)) {
-            student.setId(aLong);
-            return Optional.of(studentRepository.save(student));
+        if (!isIDValid(aLong)) {
+            throw new IdDoesNotExistException();
         }
-        return Optional.empty();
+        student.setId(aLong);
+        return Optional.of(studentRepository.save(student));
     }
 
     public Optional<Student> getOneByEmailAndPassword(String email, String password) {
