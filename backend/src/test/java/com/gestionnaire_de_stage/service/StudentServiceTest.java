@@ -118,22 +118,18 @@ public class StudentServiceTest {
         }
         return studentList;
     }
-/*
-    @Test
-    public void testUpdate_withValidEntries(){
-        Student student = new Student();
-        student.setLastName("Candle");
-        student.setFirstName("Tea");
-        student.setEmail("cant@outlook.com");
-        student.setPassword("cantPass");
-        student.setDepartment("info");
-        Long validID = 2L;
 
-        Optional<Student> actual = studentService.update(student, validID);
+    @Test
+    public void testUpdate_withValidEntries() {
+        Student student = getStudent();
+        when(studentRepository.existsById(any())).thenReturn(true);
+        when(studentRepository.save(any())).thenReturn(student);
+
+        Optional<Student> actual = studentService.update(student, student.getId());
 
         assertTrue(actual.isPresent());
     }
-
+/*
     @Test
     public void testUpdate_withNullEntries() {
         Student student = new Student();
