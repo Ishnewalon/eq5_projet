@@ -42,7 +42,8 @@ public class StudentService {
 
     public Optional<Student> update(Student student, Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
-        if (studentRepository.existsById(aLong) && student != null) {
+        Assert.isTrue(student != null, "L'étudiant est null");
+        if (studentRepository.existsById(aLong)) {
             student.setId(aLong);
             return Optional.of(studentRepository.save(student));
         }

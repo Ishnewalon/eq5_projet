@@ -131,12 +131,20 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testUpdate_withNullID() throws Exception {
+    public void testUpdate_withNullID() {
         Student student = getStudent();
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             studentService.update(student, null);
         });
     }
+
+    @Test
+    public void testUpdate_withNullStudent() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            studentService.update(null, 1L);
+        });
+    }
+
 /*
     @Test
     public void testDelete_withValidID() {
