@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.ManagerRepository;
@@ -62,7 +63,7 @@ public class ManagerService implements ICrudService<Manager, Long> {
         return false;
     }
 
-    public boolean validateCurriculum(boolean valid, long id) {
+    public boolean validateCurriculum(boolean valid, long id) throws IdDoesNotExistException {
         Student s = null;
         try {
             s = studentService.getOneByID(id).orElse(null);

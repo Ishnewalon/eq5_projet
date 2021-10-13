@@ -40,8 +40,9 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Optional<Student> update(Student student, Long aLong) throws ValidationException {
-        if (aLong != null && studentRepository.existsById(aLong) && student != null) {
+    public Optional<Student> update(Student student, Long aLong) throws IdDoesNotExistException {
+        Assert.isTrue(aLong != null, "ID est null");
+        if (studentRepository.existsById(aLong) && student != null) {
             student.setId(aLong);
             return Optional.of(studentRepository.save(student));
         }

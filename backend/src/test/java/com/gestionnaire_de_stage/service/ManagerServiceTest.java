@@ -237,7 +237,7 @@ public class ManagerServiceTest {
 
     @Test
     @DisplayName("test manager validate curriculum valid data")
-    public void test_validateCurriculum_valid(){
+    public void test_validateCurriculum_valid() throws Exception {
         AtomicReference<Student> student = new AtomicReference<>(getDummyStudent());
 
         assertDoesNotThrow(() -> student.set(studentRepository.save(student.get())));
@@ -252,7 +252,7 @@ public class ManagerServiceTest {
     @Test
     @SuppressWarnings("ConstantConditions")
     @DisplayName("test manager validate curriculum invalid data")
-    public void test_validateCurriculum_invalid(){
+    public void test_validateCurriculum_invalid() throws Exception {
         assertThrows(Exception.class,() -> studentRepository.save(null));
 
         assertTrue(last_id > 0);

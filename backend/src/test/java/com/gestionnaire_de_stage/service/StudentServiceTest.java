@@ -120,7 +120,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testUpdate_withValidEntries() {
+    public void testUpdate_withValidEntries() throws Exception {
         Student student = getStudent();
         when(studentRepository.existsById(any())).thenReturn(true);
         when(studentRepository.save(any())).thenReturn(student);
@@ -129,21 +129,15 @@ public class StudentServiceTest {
 
         assertTrue(actual.isPresent());
     }
-/*
+
     @Test
-    public void testUpdate_withNullEntries() {
-        Student student = new Student();
-        student.setLastName("Candle");
-        student.setFirstName("Tea");
-        student.setEmail("cant@outlook.com");
-        student.setPassword("cantPass");
-        student.setDepartment("info");
-
-        Optional<Student> actual = studentService.update(student, null);
-
-        assertTrue(actual.isEmpty());
+    public void testUpdate_withNullID() throws Exception {
+        Student student = getStudent();
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            studentService.update(student, null);
+        });
     }
-
+/*
     @Test
     public void testDelete_withValidID() {
         Long validId = 1L;
