@@ -135,14 +135,14 @@ public class StudentServiceTest {
     public void testUpdate_withNullID() {
         Student student = getStudent();
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             studentService.update(student, null);
         });
     }
 
     @Test
     public void testUpdate_withNullStudent() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             studentService.update(null, 1L);
         });
     }
@@ -168,14 +168,14 @@ public class StudentServiceTest {
         verify(studentRepository, times(0)).deleteById(any());
     }
 
-/*
+
     @Test
     public void testDelete_withNullID() {
-        boolean actual = studentService.deleteByID(null);
-
-        assertFalse(actual);
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentService.deleteByID(null);
+        });
     }
-
+/*
     @Test
     public void testFindStudentByEmailAndPassword() {
        String email = "jscotty@gmail.com";

@@ -50,7 +50,8 @@ public class StudentService {
     }
 
     public boolean deleteByID(Long aLong) {
-        if (aLong != null && studentRepository.existsById(aLong)) {
+        Assert.isTrue(aLong != null, "ID est null");
+        if (studentRepository.existsById(aLong)) {
             studentRepository.deleteById(aLong);
             return true;
         }
