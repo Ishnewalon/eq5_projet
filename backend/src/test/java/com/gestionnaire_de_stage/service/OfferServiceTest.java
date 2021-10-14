@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +27,7 @@ public class OfferServiceTest {
     private OfferRepository offerRepository;
 
     @Test
-    public void testMapToOffer(){
+    public void testMapToOffer() {
         OfferDTO offerDto = getDummyDto();
 
         Offer offer = offerService.mapToOffer(offerDto);
@@ -39,7 +41,7 @@ public class OfferServiceTest {
     }
 
     @Test
-    public void testMapToOfferDto(){
+    public void testMapToOfferDto() {
         Offer offer = getDummyOffer();
 
         OfferDTO offerDto = offerService.mapToOfferDTO(offer);
@@ -52,7 +54,7 @@ public class OfferServiceTest {
     }
 
     @Test
-    public void testCreateOffer_withValidOffer(){
+    public void testCreateOffer_withValidOffer() {
         Offer offer = getDummyOffer();
         offer.setId(null);
 
@@ -65,11 +67,40 @@ public class OfferServiceTest {
     }
 
     @Test
-    public void testCreateOffer_withNullOffer(){
+    public void testCreateOffer_withNullOffer() {
         Optional<Offer> optionalOffer = offerService.create(null);
 
         assertFalse(optionalOffer.isPresent());
     }
+
+    @Test
+    public void testGetOffersByDepartmentWithNoOffer() {
+        String department = "myDepartmentWithNoOffer";
+
+        List<OfferDTO> offers = offerService.getOffersByDepartment(department);
+
+        assertEquals(0, offers.size());
+    }
+
+    @Test
+    public void testGetOffersByDepartment() {
+        when(offerRepository.findAllByDepartment(any(String.class))).thenReturn(getDummyArrayOffer());
+
+        List<OfferDTO> offers = offerService.getOffersByDepartment("Un departement");
+
+        assertArrayEquals(offerService.mapArrayToOfferDTO(getDummyArrayOffer()).toArray(), offers.toArray());
+    }
+
+    private List<Offer> getDummyArrayOffer() {
+        List<Offer> myList = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            Offer dummyOffer = getDummyOffer();
+            dummyOffer.setId((long) i);
+            myList.add(dummyOffer);
+        }
+        return myList;
+    }
+
 
     private Offer getDummyOffer() {
         Offer offer = new Offer();
@@ -82,7 +113,7 @@ public class OfferServiceTest {
         return offer;
     }
 
-    private OfferDTO getDummyDto(){
+    private OfferDTO getDummyDto() {
         OfferDTO offerDTO = new OfferDTO();
         offerDTO.setCreator_id(1L);
         offerDTO.setSalary(18.0d);

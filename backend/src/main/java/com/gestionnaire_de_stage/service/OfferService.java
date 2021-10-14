@@ -53,7 +53,7 @@ public class OfferService {
         return Optional.of(offerRepository.save(offer));
     }
 
-    public List<Offer> getOffersByDepartment(String department) {
-        return offerRepository.findAllByDepartment(department);
+    public List<OfferDTO> getOffersByDepartment(String department) {
+        return mapArrayToOfferDTO(offerRepository.findAllByDepartment(department));
     }
 }

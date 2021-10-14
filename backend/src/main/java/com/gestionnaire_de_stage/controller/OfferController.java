@@ -96,8 +96,7 @@ public class OfferController {
         if (department == null || department.isEmpty() || department.isBlank())
             return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Le departement n'est pas precise"));
 
-        List<Offer> offers = offerService.getOffersByDepartment(department);
-        List<OfferDTO> offerDTOS = offerService.mapArrayToOfferDTO(offers);
+        List<OfferDTO> offerDTOS = offerService.getOffersByDepartment(department);
 
         return new ResponseEntity<>(offerDTOS, HttpStatus.OK);
     }
