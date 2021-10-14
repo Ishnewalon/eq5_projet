@@ -49,13 +49,13 @@ public class StudentService {
         return Optional.of(studentRepository.save(student));
     }
 
-    public boolean deleteByID(Long aLong) {
+    public boolean deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
-        if (studentRepository.existsById(aLong)) {
-            studentRepository.deleteById(aLong);
-            return true;
+        if (!isIDValid(aLong)) {
+            throw new IdDoesNotExistException();
         }
-        return false;
+        studentRepository.deleteById(aLong);
+        return true;
     }
 
     public Optional<Student> getOneByEmailAndPassword(String email, String password) {

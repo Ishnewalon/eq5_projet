@@ -158,12 +158,12 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testDelete_withValidID() {
+    public void testDelete_withValidID() throws Exception{
         Long id = 1L;
         when(studentRepository.existsById(any())).thenReturn(true);
         doNothing().when(studentRepository).deleteById(any());
 
-       studentService.deleteByID(id);
+        studentService.deleteByID(id);
 
         verify(studentRepository, times(0)).deleteById(any());
     }
@@ -173,6 +173,16 @@ public class StudentServiceTest {
     public void testDelete_withNullID() {
         assertThrows(IllegalArgumentException.class, () -> {
             studentService.deleteByID(null);
+        });
+    }
+
+    @Test
+    public void testDelete_doesntExistID() {
+        Long id = 1L;
+        when(studentRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class, () -> {
+            studentService.deleteByID(id);
         });
     }
 /*
