@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.internal.stubbing.answers.DoesNothing;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class StudentServiceTest {
@@ -54,7 +55,7 @@ public class StudentServiceTest {
 
     @Test
     public void testCreate_withNullStudent() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             studentService.create(null);
         });
     }
@@ -63,7 +64,7 @@ public class StudentServiceTest {
     public void testCreate_alreadyExistsStudent() {
         when(studentRepository.existsByEmail(any())).thenReturn(true);
 
-        Assertions.assertThrows(StudentAlreadyExistsException.class, () -> {
+        assertThrows(StudentAlreadyExistsException.class, () -> {
             studentService.create(getStudent());
         });
     }
@@ -82,7 +83,7 @@ public class StudentServiceTest {
 
     @Test
     public void testGetByID_withNullID() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             studentService.getOneByID(null);
         });
     }
@@ -92,7 +93,7 @@ public class StudentServiceTest {
         Student student = getStudent();
         when(studentRepository.existsById(any())).thenReturn(false);
 
-        Assertions.assertThrows(IdDoesNotExistException.class, () -> {
+        assertThrows(IdDoesNotExistException.class, () -> {
             studentService.getOneByID(student.getId());
         });
     }
@@ -151,20 +152,23 @@ public class StudentServiceTest {
         Student student = getStudent();
         when(studentRepository.existsById(any())).thenReturn(false);
 
-        Assertions.assertThrows(IdDoesNotExistException.class, () -> {
+        assertThrows(IdDoesNotExistException.class, () -> {
             studentService.update(student, student.getId());
         });
     }
-/*
+
     @Test
     public void testDelete_withValidID() {
-        Long validId = 1L;
+        Long id = 1L;
+        when(studentRepository.existsById(any())).thenReturn(true);
+        doNothing().when(studentRepository).deleteById(any());
 
-        boolean actual = studentService.deleteByID(validId);
+       studentService.deleteByID(id);
 
-        assertTrue(actual);
+        verify(studentRepository, times(0)).deleteById(any());
     }
 
+/*
     @Test
     public void testDelete_withNullID() {
         boolean actual = studentService.deleteByID(null);

@@ -7,7 +7,6 @@ import com.gestionnaire_de_stage.repository.StudentRepository;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ValidationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,19 +49,19 @@ public class StudentService {
         return Optional.of(studentRepository.save(student));
     }
 
-    public Optional<Student> getOneByEmailAndPassword(String email, String password) {
-        if (studentRepository.existsByEmailAndPassword(email, password)) {
-            return Optional.of(studentRepository.findStudentByEmailAndPassword(email, password));
-        }
-        return Optional.empty();
-    }
-
     public boolean deleteByID(Long aLong) {
         if (aLong != null && studentRepository.existsById(aLong)) {
             studentRepository.deleteById(aLong);
             return true;
         }
         return false;
+    }
+
+    public Optional<Student> getOneByEmailAndPassword(String email, String password) {
+        if (studentRepository.existsByEmailAndPassword(email, password)) {
+            return Optional.of(studentRepository.findStudentByEmailAndPassword(email, password));
+        }
+        return Optional.empty();
     }
 
     private boolean isNotValid(Student student) {
