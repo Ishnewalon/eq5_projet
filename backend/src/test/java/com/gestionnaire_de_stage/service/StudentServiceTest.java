@@ -198,6 +198,15 @@ public class StudentServiceTest {
 
         assertTrue(actual.isPresent());
     }
+
+    @Test
+    public void testStudentByEmailAndPassword_withNullEmail() {
+        Student student = getStudent();
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentService.getOneByEmailAndPassword(null, student.getPassword());
+        });
+    }
 /*
     @Test
     public void testGetOneByEmailAndPassword_withNullEntries() {
