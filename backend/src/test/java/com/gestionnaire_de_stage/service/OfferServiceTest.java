@@ -74,6 +74,23 @@ public class OfferServiceTest {
     }
 
     @Test
+    public void testMapArrayToOfferDto() {
+        List<Offer> dummyArrayOffer = getDummyArrayOffer();
+
+
+        List<OfferDTO> arrayOfferDTOS = offerService.mapArrayToOfferDTO(dummyArrayOffer);
+
+
+        for (int i = 0; i < dummyArrayOffer.size(); i++) {
+            assertEquals(arrayOfferDTOS.get(i).getAddress(), dummyArrayOffer.get(i).getAddress());
+            assertEquals(arrayOfferDTOS.get(i).getDepartment(), dummyArrayOffer.get(i).getDepartment());
+            assertEquals(arrayOfferDTOS.get(i).getTitle(), dummyArrayOffer.get(i).getTitle());
+            assertEquals(arrayOfferDTOS.get(i).getDescription(), dummyArrayOffer.get(i).getDescription());
+            assertEquals(arrayOfferDTOS.get(i).getSalary(), dummyArrayOffer.get(i).getSalary());
+        }
+    }
+
+    @Test
     public void testGetOffersByDepartmentWithNoOffer() {
         String department = "myDepartmentWithNoOffer";
 
