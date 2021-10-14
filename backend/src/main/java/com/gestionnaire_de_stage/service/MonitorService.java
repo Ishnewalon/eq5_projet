@@ -1,16 +1,18 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.repository.MonitorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.validation.ValidationException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MonitorService implements ICrudService<Monitor, Long> {
+public class MonitorService {
 
     private final MonitorRepository monitorRepository;
 
@@ -18,34 +20,34 @@ public class MonitorService implements ICrudService<Monitor, Long> {
         this.monitorRepository = monitorRepository;
     }
 
-    @Override
-    public Optional<Monitor> create(Monitor monitor) throws ValidationException {
-        if (monitor != null) {
-            return Optional.of(monitorRepository.save(monitor));
+    public Monitor create(Monitor monitor) throws MonitorAlreadyExistsException {
+        Assert.isTrue(monitor != null, "Monitor est null");
+        if (emailAlreadyInUse(monitor)) {
+            throw new MonitorAlreadyExistsException();
         }
-        return Optional.empty();
+        return monitorRepository.save(monitor);
     }
 
-    @Override
-    public Optional<Monitor> getOneByID(Long aLong) {
-        if (aLong != null && monitorRepository.existsById(aLong)) {
-            return Optional.of(monitorRepository.getById(aLong));
+    public Monitor getOneByID(Long aLong) throws IdDoesNotExistException {
+        Assert.isTrue(aLong != null, "ID est null");
+        if (!monitorRepository.existsById(aLong)) {
+            throw new IdDoesNotExistException();
         }
-        return Optional.empty();
+        return monitorRepository.getById(aLong);
     }
 
-    @Override
     public List<Monitor> getAll() {
         return monitorRepository.findAll();
     }
 
-    @Override
-    public Optional<Monitor> update(Monitor monitor, Long aLong) throws ValidationException {
-        if (aLong != null && monitorRepository.existsById(aLong) && monitor != null) {
-            monitor.setId(aLong);
-            return Optional.of(monitorRepository.save(monitor));
+    public Monitor update(Monitor monitor, Long aLong) throws IdDoesNotExistException {
+        Assert.isTrue(aLong != null, "ID est null");
+        Assert.isTrue(monitor != null, "Monitor est null");
+        if (!monitorRepository.existsById(aLong)) {
+            throw new IdDoesNotExistException();
         }
-        return Optional.empty();
+        monitor.setId(aLong);
+        return monitorRepository.save(monitor);
     }
 
     public Optional<Monitor> getOneByEmailAndPassword(String email, String password) {
@@ -55,13 +57,12 @@ public class MonitorService implements ICrudService<Monitor, Long> {
         return Optional.empty();
     }
 
-    @Override
-    public boolean deleteByID(Long aLong) {
-        if (aLong != null && monitorRepository.existsById(aLong)) {
-            monitorRepository.deleteById(aLong);
-            return true;
+    public void deleteByID(Long aLong) throws IdDoesNotExistException {
+        Assert.isTrue(aLong != null, "ID est null");
+        if (!monitorRepository.existsById(aLong)) {
+            throw new IdDoesNotExistException();
         }
-        return false;
+        monitorRepository.deleteById(aLong);
     }
 
     @Override
@@ -69,5 +70,9 @@ public class MonitorService implements ICrudService<Monitor, Long> {
         return "MonitorService{" +
                 "monitorRepository=" + monitorRepository +
                 '}';
+    }
+
+    private boolean emailAlreadyInUse(Monitor monitor) {
+        return monitor.getEmail() != null && monitorRepository.existsByEmail(monitor.getEmail());
     }
 }
