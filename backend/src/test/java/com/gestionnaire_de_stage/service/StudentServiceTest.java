@@ -185,45 +185,20 @@ public class StudentServiceTest {
             studentService.deleteByID(id);
         });
     }
-/*
-    @Test
-    public void testFindStudentByEmailAndPassword() {
-       String email = "jscotty@gmail.com";
-       String password = "rockrocks";
-
-       Student student = studentRepository.findStudentByEmailAndPassword(email, password);
-       String actual = student.getFirstName();
-
-       assertEquals(actual, "Jordan");
-    }
 
     @Test
-    public void testExistsByEmailAndPassword_withValidEntries() {
-        String email = "jscotty@gmail.com";
-        String password = "rockrocks";
+    public void testStudentByEmailAndPassword_withValidEntries() {
+        Student student = getStudent();
+        when(studentRepository.existsByEmailAndPassword(student.getEmail(), student.getPassword()))
+                .thenReturn(true);
+        when(studentRepository.findStudentByEmailAndPassword(student.getEmail(), student.getPassword()))
+                .thenReturn(student);
 
-        boolean actual = studentRepository.existsByEmailAndPassword(email, password);
-
-        assertTrue(actual);
-    }
-
-    @Test
-    public void testExistsByEmailAndPassword_withNullEntries() {
-        boolean actual = studentRepository.existsByEmailAndPassword(null, null);
-
-        assertFalse(actual);
-    }
-
-    @Test
-    public void testGetOneByEmailAndPassword_withValidEntries() {
-        String email = "jscotty@gmail.com";
-        String password = "rockrocks";
-
-        Optional<Student> actual = studentService.getOneByEmailAndPassword(email, password);
+        Optional<Student> actual = studentService.getOneByEmailAndPassword(student.getEmail(), student.getPassword());
 
         assertTrue(actual.isPresent());
     }
-
+/*
     @Test
     public void testGetOneByEmailAndPassword_withNullEntries() {
         Optional<Student> actual = studentService.getOneByEmailAndPassword(null, null);
