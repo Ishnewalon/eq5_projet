@@ -207,6 +207,15 @@ public class StudentServiceTest {
             studentService.getOneByEmailAndPassword(null, student.getPassword());
         });
     }
+
+    @Test
+    public void testStudentByEmailAndPassword_withNullPassword() {
+        Student student = getStudent();
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentService.getOneByEmailAndPassword(student.getEmail(), null);
+        });
+    }
 /*
     @Test
     public void testGetOneByEmailAndPassword_withNullEntries() {

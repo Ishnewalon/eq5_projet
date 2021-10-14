@@ -60,6 +60,7 @@ public class StudentService {
 
     public Optional<Student> getOneByEmailAndPassword(String email, String password) {
         Assert.isTrue(email != null, "Le courriel est null");
+        Assert.isTrue(password != null, "Le mot de passe est null");
         if (studentRepository.existsByEmailAndPassword(email, password)) {
             return Optional.of(studentRepository.findStudentByEmailAndPassword(email, password));
         }
