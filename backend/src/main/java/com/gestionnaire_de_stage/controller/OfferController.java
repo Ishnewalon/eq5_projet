@@ -11,14 +11,11 @@ import com.gestionnaire_de_stage.service.OfferService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.lang.Nullable;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,8 +88,8 @@ public class OfferController {
         }
     }
 
-    @GetMapping("/{department}")
-    public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) @Nullable String department) {
+    @GetMapping({"/", "/{department}"})
+    public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {
         if (department == null || department.isEmpty() || department.isBlank())
             return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Le departement n'est pas precise"));
 

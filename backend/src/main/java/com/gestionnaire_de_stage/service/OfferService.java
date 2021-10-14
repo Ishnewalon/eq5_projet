@@ -7,7 +7,6 @@ import com.gestionnaire_de_stage.repository.OfferRepository;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
