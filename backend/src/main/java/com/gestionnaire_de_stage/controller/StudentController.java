@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import com.gestionnaire_de_stage.service.StudentService;
@@ -58,7 +59,7 @@ public class StudentController {
     }
 
     @GetMapping("/{email}/{password}")
-    public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
+    public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) throws EmailAndPasswordDoesNotExistException {
         Optional<Student> student = studentService.getOneByEmailAndPassword(email, password);
         if (student.isPresent()) {
             return ResponseEntity.ok(student.get());

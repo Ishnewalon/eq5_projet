@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Student;
@@ -187,7 +188,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testStudentByEmailAndPassword_withValidEntries() {
+    public void testStudentByEmailAndPassword_withValidEntries() throws EmailAndPasswordDoesNotExistException {
         Student student = getStudent();
         when(studentRepository.existsByEmailAndPassword(student.getEmail(), student.getPassword()))
                 .thenReturn(true);
@@ -216,12 +217,15 @@ public class StudentServiceTest {
             studentService.getOneByEmailAndPassword(student.getEmail(), null);
         });
     }
-/*
-    @Test
-    public void testGetOneByEmailAndPassword_withNullEntries() {
-        Optional<Student> actual = studentService.getOneByEmailAndPassword(null, null);
 
-        assertTrue(actual.isEmpty());
+    @Test
+    public void testStudentByEmailAndPassword_doesntExistEmailAndPassword() {
+        Student student = getStudent();
+        when(studentRepository.existsByEmailAndPassword(any(), any())).thenReturn(false);
+
+        assertThrows(EmailAndPasswordDoesNotExistException.class, () -> {
+            studentService.getOneByEmailAndPassword(student.getEmail(), student.getPassword());
+        });
     }
-*/
+
 }
