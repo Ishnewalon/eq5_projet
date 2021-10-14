@@ -165,7 +165,7 @@ public class StudentServiceTest {
 
         studentService.deleteByID(id);
 
-        verify(studentRepository, times(0)).deleteById(any());
+        verify(studentRepository, times(1)).deleteById(any());
     }
 
 
