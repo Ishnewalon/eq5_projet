@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Size;
 @Data
 @Entity
 @ToString(callSuper = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Student extends User{
 
     @NotNull

@@ -59,6 +59,11 @@ public class OfferController {
                 .body(new ResponseMessage(ex.getMessage()));
     }
 
+    @GetMapping
+    public List<Offer> getAllOffers(){
+        return offerService.getAll();
+    }
+
 
     @PostMapping("/monitor/add")
     public ResponseEntity<?> addOfferMonitor(@Valid @RequestBody OfferDTO offerDTO) {
@@ -88,7 +93,7 @@ public class OfferController {
         }
     }
 
-    @GetMapping({"/", "/{department}"})//TODO Handle exception
+    @GetMapping({"/", "/{department}"}) //TODO Handle exception
     public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {
         if (department == null || department.isEmpty() || department.isBlank())
             return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Le departement n'est pas precise"));
@@ -97,4 +102,14 @@ public class OfferController {
 
         return new ResponseEntity<>(offerDTOS, HttpStatus.OK);
     }
+
+    @PutMapping("/validate")
+    public ResponseEntity<?> validateOffer(@RequestBody Offer offer) {
+        Optional<Offer> optionalOffer = offerService.update(offer);
+
+        if(optionalOffer.isEmpty())
+            return ResponseEntity.badRequest().body("Erreur : offre non existante!");
+        return ResponseEntity.accepted().body(optionalOffer.get());
+    }
+
 }
