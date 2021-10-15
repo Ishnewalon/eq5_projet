@@ -1,7 +1,10 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.MonitorRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,9 +19,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.in;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class MonitorServiceTest {
@@ -54,118 +58,136 @@ public class MonitorServiceTest {
     }
 
     @Test
-    public void testGetByID_withValidID() {
+    public void testGetByID_withValidID() throws Exception {
         Long validID = 1L;
-        
+        Monitor monitor = getMonitor();
+        when(monitorRepository.existsById(any())).thenReturn(true);
+        when(monitorRepository.getById(any())).thenReturn(monitor);
 
-        //Optional<Monitor> actual = monitorService.getOneByID(validID);
+        Monitor actual = monitorService.getOneByID(validID);
 
-        //assertTrue(actual.isPresent());
+        assertThat(actual).isEqualTo(monitor);
     }
 
     @Test
     public void testGetByID_withNullID() {
-        //Optional<Monitor> actual = monitorService.getOneByID(null);
+        assertThrows(IllegalArgumentException.class, () ->
+                monitorService.getOneByID(null));
+    }
 
-        //assertTrue(actual.isEmpty ());
+    @Test
+    public void testGetByID_doesntExistID() {
+        Long invalidID = 5L;
+        when(monitorRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class, () -> {
+            monitorService.getOneByID(invalidID);
+        });
     }
 
     @Test
     public void testGetAll() {
-        int expectedLength = 3;
+        when(monitorRepository.findAll()).thenReturn(getListOfMonitors());
 
-        List<Monitor> monitorList = monitorService.getAll();
+        List<Monitor> actualList = monitorService.getAll();
 
-        assertEquals(expectedLength, monitorList.size());
+        assertThat(actualList.size()).isEqualTo(getListOfMonitors().size());
     }
 
     @Test
-    public void testUpdate_withValidEntries() {
-        Monitor monitor = new Monitor();
-        monitor.setLastName("toto");
-        monitor.setFirstName("titi");
-        monitor.setEmail("toto@gmail.com");
-        monitor.setPassword("testPassword");
-        monitor.setDepartment("potato");
-        Long validID = 2L;
+    public void testUpdate_withValidEntries() throws Exception {
+        Monitor monitor = getMonitor();
+        when(monitorRepository.existsById(any())).thenReturn(true);
+        when(monitorRepository.save(any())).thenReturn(monitor);
 
-        //Optional<Monitor> actual = monitorService.update(monitor, validID);
+        Monitor actual = monitorService.update(monitor, monitor.getId());
 
-        //assertTrue(actual.isPresent());
+        assertThat(actual).isEqualTo(monitor);
     }
 
     @Test
-    public void testUpdate_withNullEntries() {
-        Monitor monitor = new Monitor();
-        monitor.setLastName("toto");
-        monitor.setFirstName("titi");
-        monitor.setEmail("toto@gmail.com");
-        monitor.setPassword("testPassword");
-
-        //Optional<Monitor> actual = monitorService.update(monitor, null);
-
-        //assertTrue(actual.isEmpty());
+    public void testUpdate_withNullID() {
+        assertThrows(IllegalArgumentException.class, () ->
+                monitorService.update(getMonitor(), null));
     }
 
     @Test
-    public void testDelete_withValidID() {
+    public void testUpdate_withNullMonitor() {
+        assertThrows(IllegalArgumentException.class, () ->
+                monitorService.update(null, 1L));
+    }
+
+    @Test
+    public void testUpdate_doesntExistID() {
+        Monitor monitor = getMonitor();
+        when(monitorRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class, () ->
+                monitorService.update(monitor, monitor.getId()));
+    }
+
+    @Test
+    public void testDelete_withValidID() throws Exception {
         Long validID = 1L;
+        when(monitorRepository.existsById(any())).thenReturn(true);
+        doNothing().when(monitorRepository).deleteById(validID);
 
-        //boolean actual = monitorService.deleteByID(validID);
+        monitorService.deleteByID(validID);
 
-        //assertTrue(actual);
+        verify(monitorRepository, times(1)).deleteById(any());
     }
 
     @Test
     public void testDelete_withNullID() {
-        //boolean actual = monitorService.deleteByID(null);
-
-        //assertFalse(actual);
+        assertThrows(IllegalArgumentException.class, () ->
+                monitorService.deleteByID(null));
     }
 
     @Test
-    public void testFindMonitorByEmailAndPassword() {
-        String email = "stepotato@gmail.com";
-        String password = "testPassword";
+    public void testDelete_doesntExistID() {
+        Long invalidID = 5L;
+        when(monitorRepository.existsById(any())).thenReturn(false);
 
-        Monitor monitor = monitorRepository.findMonitorByEmailAndPassword(email, password);
-        String actual = monitor.getFirstName();
-
-        assertEquals(actual, "Steph");
+        assertThrows(IdDoesNotExistException.class, () ->
+                monitorService.deleteByID(invalidID));
     }
 
     @Test
-    public void testExistsByEmailAndPassword_withValidEntries() {
-        String email = "stepotato@gmail.com";
-        String password = "testPassword";
+    public void testGetOneByEmailAndPassword_withValidEntries() throws EmailAndPasswordDoesNotExistException {
+        Monitor monitor = getMonitor();
+        when(monitorRepository.existsByEmailAndPassword(monitor.getEmail(), monitor.getPassword()))
+                .thenReturn(true);
+        when(monitorRepository.findMonitorByEmailAndPassword(monitor.getEmail(), monitor.getPassword()))
+                .thenReturn(monitor);
 
-        boolean actual = monitorRepository.existsByEmailAndPassword(email, password);
+        Monitor actual = monitorService.getOneByEmailAndPassword(monitor.getEmail(), monitor.getPassword());
 
-        assertTrue(actual);
+        assertThat(actual).isEqualTo(monitor);
     }
 
     @Test
-    public void testExistsByEmailAndPassword_withNullEntries() {
-        boolean actual = monitorRepository.existsByEmailAndPassword(null, null);
+    public void testGetOneByEmailAndPassword_withNullEmail() {
+        Monitor monitor = getMonitor();
 
-        assertFalse(actual);
+        assertThrows(IllegalArgumentException.class, () ->
+                monitorService.getOneByEmailAndPassword(null, monitor.getPassword()));
     }
 
     @Test
-    public void testGetOneByEmailAndPassword_withValidEntries() {
-        String email = "stepotato@gmail.com";
-        String password = "testPassword";
+    public void testGetOneByEmailAndPassword_withNullPassword() {
+        Monitor monitor = getMonitor();
 
-        Optional<Monitor> actual = monitorService.getOneByEmailAndPassword(email, password);
-
-        assertTrue(actual.isPresent());
+        assertThrows(IllegalArgumentException.class, () ->
+                monitorService.getOneByEmailAndPassword(monitor.getEmail(), null));
     }
 
     @Test
-    public void testGetOneByEmailAndPassword_withNullEntries() {
-        Optional<Monitor> actual = monitorService.getOneByEmailAndPassword(null, null);
+    public void testGetOneByEmailAndPassword_doesntExistEmailAndPassword() {
+        Monitor monitor = getMonitor();
+        when(monitorRepository.existsByEmailAndPassword(any(), any())).thenReturn(false);
 
-        assertTrue(actual.isEmpty());
+        assertThrows(EmailAndPasswordDoesNotExistException.class, () ->
+                monitorService.getOneByEmailAndPassword(monitor.getEmail(), monitor.getPassword()));
     }
 
     private Monitor getMonitor() {

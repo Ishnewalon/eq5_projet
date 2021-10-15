@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
@@ -50,11 +51,13 @@ public class MonitorService {
         return monitorRepository.save(monitor);
     }
 
-    public Optional<Monitor> getOneByEmailAndPassword(String email, String password) {
-        if (monitorRepository.existsByEmailAndPassword(email, password)) {
-            return Optional.of(monitorRepository.findMonitorByEmailAndPassword(email, password));
+    public Monitor getOneByEmailAndPassword(String email, String password) throws EmailAndPasswordDoesNotExistException {
+        Assert.isTrue(email != null, "Le courriel est null");
+        Assert.isTrue(password != null, "Le mot de passe est null");
+        if (!monitorRepository.existsByEmailAndPassword(email, password)) {
+            throw new EmailAndPasswordDoesNotExistException();
         }
-        return Optional.empty();
+        return monitorRepository.findMonitorByEmailAndPassword(email, password);
     }
 
     public void deleteByID(Long aLong) throws IdDoesNotExistException {

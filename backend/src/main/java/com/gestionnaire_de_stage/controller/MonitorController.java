@@ -62,10 +62,13 @@ public class MonitorController {
 
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email,@PathVariable String password) {
-        Optional<Monitor> monitor = monitorService.getOneByEmailAndPassword(email, password);
+        /*Optional<Monitor> monitor = monitorService.getOneByEmailAndPassword(email, password);
         if (monitor.isPresent()) {
             return ResponseEntity.ok(monitor.get());
         }
         return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalid"));
+
+         */
+        return null;
     }
 }

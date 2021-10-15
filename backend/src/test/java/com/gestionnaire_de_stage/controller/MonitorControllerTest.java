@@ -92,7 +92,7 @@ public class MonitorControllerTest {
         monitor.setDepartment("Informatique");
         String email = monitor.getEmail();
         String password = monitor.getPassword();
-        when(monitorService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(monitor));
+        //when(monitorService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(monitor));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/monitor/potato@mail.com/secretPasswordShhhh")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -104,7 +104,7 @@ public class MonitorControllerTest {
 
     @Test
     public void monitorLoginTest_withNullEntries() throws Exception {
-        when(monitorService.getOneByEmailAndPassword(null, null)).thenReturn(Optional.empty());
+        //when(monitorService.getOneByEmailAndPassword(null, null)).thenReturn(Optional.empty());
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/monitor/null/null")
                 .contentType(MediaType.APPLICATION_JSON))
