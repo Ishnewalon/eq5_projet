@@ -3,6 +3,8 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.service.ManagerService;
+import com.gestionnaire_de_stage.service.MonitorService;
 import com.gestionnaire_de_stage.service.OfferService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -34,8 +36,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(OfferController.class)
 public class OfferControllerTest {
 
     @Autowired
@@ -43,6 +44,12 @@ public class OfferControllerTest {
 
     @MockBean
     private OfferService offerService;
+
+    @MockBean
+    private MonitorService monitorService;
+
+    @MockBean
+    private ManagerService managerService;
 
     private Offer offer;
 
