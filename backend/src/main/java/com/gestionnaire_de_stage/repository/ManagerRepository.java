@@ -8,7 +8,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Optional;
 
-@Repository
 public interface ManagerRepository extends JpaRepository<Manager, Long> {
     Optional<Manager> findManagerByEmailAndPassword(@NotBlank @Email String email,@NotBlank String password);
 }

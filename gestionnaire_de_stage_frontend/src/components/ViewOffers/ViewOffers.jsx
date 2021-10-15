@@ -24,6 +24,7 @@ export default class ViewOffers extends React.Component {
     render() {
         return (
             <div className='container'>
+                <h2 className="text-center">Offres de Stage</h2>
                 <ul>
                     {this.state.offers.map((offer, index) => <li key={index}><PreviewOffer offer={offer}/></li>)}
                 </ul>

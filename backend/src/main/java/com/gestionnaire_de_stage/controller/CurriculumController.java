@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequestMapping("/curriculum")
 public class CurriculumController {
 
-    private CurriculumService curriculumService;
+    private final CurriculumService curriculumService;
 
     public CurriculumController(CurriculumService curriculumService){
         this.curriculumService = curriculumService;
