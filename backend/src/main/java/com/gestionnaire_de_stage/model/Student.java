@@ -32,7 +32,4 @@ public class Student extends User {
     private boolean curriculumValidated;
 
     private String curriculumPath;
-
-    @ManyToMany
-    private Set<Offer> offerApplied;
 }

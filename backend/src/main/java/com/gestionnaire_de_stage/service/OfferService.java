@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.model.OfferApp;
 import com.gestionnaire_de_stage.repository.OfferRepository;
 import org.springframework.stereotype.Service;
 
@@ -46,4 +47,7 @@ public class OfferService{
         return Optional.of(offerRepository.save(offer));
     }
 
+    public Optional<Offer> findOfferById(Long idOffer) {
+        return offerRepository.findById(idOffer);
+    }
 }
