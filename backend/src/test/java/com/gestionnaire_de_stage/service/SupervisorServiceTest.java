@@ -1,12 +1,10 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
-import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,9 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -186,50 +182,45 @@ public class SupervisorServiceTest {
             supervisorService.deleteByID(id);
         });
     }
-/*
+
     @Test
-    public void testFindSupervisorByEmailAndPassword() {
-        String email = "keyh@gmail.com";
-        String password = "galaxy29";
+    public void testSupervisorByEmailAndPassword_withValidEntries() throws EmailAndPasswordDoesNotExistException {
+        Supervisor supervisor = getSupervisor();
+        when(supervisorRepository.existsByEmailAndPassword(supervisor.getEmail(), supervisor.getPassword()))
+                .thenReturn(true);
+        when(supervisorRepository.findSupervisorByEmailAndPassword(supervisor.getEmail(), supervisor.getPassword()))
+                .thenReturn(supervisor);
 
-        Supervisor supervisor = supervisorRepository.findSupervisorByEmailAndPassword(email, password);
-        String actual = supervisor.getFirstName();
+        Supervisor actual = supervisorService.getOneByEmailAndPassword(supervisor.getEmail(), supervisor.getPassword());
 
-        assertEquals(actual, "Harold");
+        assertThat(actual.getMatricule()).isEqualTo(supervisor.getMatricule());
     }
 
     @Test
-    public void testExistsByEmailAndPassword_withValidEntries() {
-        String email = "keyh@gmail.com";
-        String password = "galaxy29";
+    public void testSupervisorByEmailAndPassword_withNullEmail() {
+        Supervisor supervisor = getSupervisor();
 
-        boolean actual = supervisorRepository.existsByEmailAndPassword(email, password);
-
-        assertTrue(actual);
+        assertThrows(IllegalArgumentException.class, () -> {
+            supervisorService.getOneByEmailAndPassword(null, supervisor.getPassword());
+        });
     }
 
     @Test
-    public void testExistsByEmailAndPassword_withNullEntries() {
-        boolean actual = supervisorRepository.existsByEmailAndPassword(null, null);
+    public void testSupervisorByEmailAndPassword_withNullPassword() {
+        Supervisor supervisor = getSupervisor();
 
-        assertFalse(actual);
+        assertThrows(IllegalArgumentException.class, () -> {
+            supervisorService.getOneByEmailAndPassword(supervisor.getEmail(), null);
+        });
     }
 
     @Test
-    public void testGetOneByEmailAndPassword_withValidEntries() {
-        String email = "keyh@gmail.com";
-        String password = "galaxy29";
+    public void testSupervisorByEmailAndPassword_doesntExistEmailAndPassword() {
+        Supervisor supervisor = getSupervisor();
+        when(supervisorRepository.existsByEmailAndPassword(any(), any())).thenReturn(false);
 
-        Optional<Supervisor> actual = supervisorService.getOneByEmailAndPassword(email, password);
-
-        assertTrue(actual.isPresent());
+        assertThrows(EmailAndPasswordDoesNotExistException.class, () -> {
+            supervisorService.getOneByEmailAndPassword(supervisor.getEmail(), supervisor.getPassword());
+        });
     }
-
-    @Test
-    public void testGetOneByEmailAndPassword_withNullEntries() {
-        Optional<Supervisor> actual = supervisorService.getOneByEmailAndPassword(null, null);
-
-        assertTrue(actual.isEmpty());
-    }
-    */
 }

@@ -1,10 +1,11 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
-import io.jsonwebtoken.lang.Assert;
+import org.springframework.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,14 +61,14 @@ public class SupervisorService {
         supervisorRepository.deleteById(aLong);
     }
 
-    public Optional<Supervisor> getOneByEmailAndPassword(String email, String password) {
-        if (supervisorRepository.existsByEmailAndPassword(email, password)) {
-            return Optional.of(supervisorRepository.findSupervisorByEmailAndPassword(email, password));
+    public Supervisor getOneByEmailAndPassword(String email, String password) throws EmailAndPasswordDoesNotExistException {
+        Assert.isTrue(email != null, "Le courriel est null");
+        Assert.isTrue(password != null, "Le mot de passe est null");
+        if (!isEmailAndPasswordValid(email, password)) {
+            throw new EmailAndPasswordDoesNotExistException();
         }
-        return Optional.empty();
+        return supervisorRepository.findSupervisorByEmailAndPassword(email, password);
     }
-
-
 
     private boolean isNotValid(Supervisor supervisor) {
         return supervisor.getEmail() != null &&
@@ -76,5 +77,9 @@ public class SupervisorService {
 
     private boolean isIDValid(Long id) {
         return supervisorRepository.existsById(id);
+    }
+
+    private boolean isEmailAndPasswordValid(String email, String password) {
+        return supervisorRepository.existsByEmailAndPassword(email, password);
     }
 }
