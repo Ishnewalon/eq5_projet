@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import org.junit.jupiter.api.BeforeAll;
@@ -28,7 +29,7 @@ public class SupervisorServiceTest {
     SupervisorRepository supervisorRepository;
 
     @Test
-    public void testCreate_withValidSupervisor() {
+    public void testCreate_withValidSupervisor() throws SupervisorAlreadyExistsException {
         Supervisor supervisor = getSupervisor();
         when(supervisorRepository.save(any())).thenReturn(supervisor);
 
@@ -49,15 +50,22 @@ public class SupervisorServiceTest {
         return supervisor;
     }
 
-/*
-
     @Test
     public void testCreate_withNullSupervisor() {
-        Optional<Supervisor> actual = supervisorService.create(null);
-
-        assertTrue(actual.isEmpty());
+        assertThrows(IllegalArgumentException.class, () -> {
+            supervisorService.create(null);
+        });
     }
 
+    @Test
+    public void testCreate_alreadyExistsStudent() {
+        when(supervisorRepository.existsByEmail(any())).thenReturn(true);
+
+        assertThrows(SupervisorAlreadyExistsException.class, () -> {
+            supervisorService.create(getSupervisor());
+        });
+    }
+/*
     @Test
     public void testGetByID_withValidID() {
         Long validID = 1L;

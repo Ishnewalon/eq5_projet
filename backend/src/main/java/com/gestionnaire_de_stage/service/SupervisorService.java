@@ -1,7 +1,9 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
+import io.jsonwebtoken.lang.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +20,12 @@ public class SupervisorService {
         this.supervisorRepository = supervisorRepository;
     }
 
-    public Supervisor create(Supervisor supervisor) throws ValidationException {
-        if (supervisor != null) {
-            return supervisorRepository.save(supervisor);
+    public Supervisor create(Supervisor supervisor) throws SupervisorAlreadyExistsException {
+        Assert.isTrue(supervisor != null, "Superviseur est null");
+        if (isNotValid(supervisor)) {
+            throw new SupervisorAlreadyExistsException();
         }
-        return null;
+        return supervisorRepository.save(supervisor);
     }
 
 
@@ -59,5 +62,10 @@ public class SupervisorService {
             return true;
         }
         return false;
+    }
+
+    private boolean isNotValid(Supervisor supervisor) {
+        return supervisor.getEmail() != null &&
+                supervisorRepository.existsByEmail(supervisor.getEmail());
     }
 }

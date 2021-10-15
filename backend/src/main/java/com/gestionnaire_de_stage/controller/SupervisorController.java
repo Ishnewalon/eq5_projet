@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
@@ -29,7 +30,7 @@ public class SupervisorController {
     SupervisorRepository supervisorRepository;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@Valid @RequestBody Supervisor supervisor) {
+    public ResponseEntity<?> signup(@Valid @RequestBody Supervisor supervisor) throws SupervisorAlreadyExistsException {
         if (supervisor.getEmail() != null && supervisorRepository.existsByEmail(supervisor.getEmail())) {
             return ResponseEntity
                     .badRequest()
