@@ -36,7 +36,8 @@ public class MonitorController {
                     .body(new ResponseMessage("Erreur: Ce courriel existe deja!"));
         }
 
-        return ResponseEntity.ok(monitorService.create(monitor));
+        //return ResponseEntity.ok(monitorService.create(monitor));
+        return null;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
