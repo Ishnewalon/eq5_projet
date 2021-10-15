@@ -42,12 +42,14 @@ public class SupervisorService {
         return supervisorRepository.findAll();
     }
 
-    public Optional<Supervisor> update(Supervisor supervisor, Long aLong) throws ValidationException {
-        if (aLong != null && supervisorRepository.existsById(aLong) && supervisor != null) {
-            supervisor.setId(aLong);
-            return Optional.of(supervisorRepository.save(supervisor));
+    public Supervisor update(Supervisor supervisor, Long aLong) throws IdDoesNotExistException {
+        Assert.isTrue(aLong != null, "ID est null");
+        Assert.isTrue(supervisor != null, "Le superviseur est null");
+        if (!isIDValid(aLong)) {
+            throw new IdDoesNotExistException();
         }
-        return Optional.empty();
+        supervisor.setId(aLong);
+        return supervisorRepository.save(supervisor);
     }
 
     public Optional<Supervisor> getOneByEmailAndPassword(String email, String password) {

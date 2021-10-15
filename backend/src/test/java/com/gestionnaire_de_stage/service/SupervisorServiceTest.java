@@ -121,38 +121,43 @@ public class SupervisorServiceTest {
         return supervisorList;
     }
 
+    @Test
+    public void testUpdate_withValidEntries() throws IdDoesNotExistException {
+        Supervisor supervisor = getSupervisor();
+        when(supervisorRepository.existsById(any())).thenReturn(true);
+        when(supervisorRepository.save(any())).thenReturn(supervisor);
 
+       Supervisor actual = supervisorService.update(supervisor, supervisor.getId());
+
+        assertThat(actual.getMatricule()).isEqualTo(supervisor.getMatricule());
+    }
+
+    @Test
+    public void testUpdate_withNullID() {
+        Supervisor supervisor = getSupervisor();
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            supervisorService.update(supervisor, null);
+        });
+    }
+
+    @Test
+    public void testUpdate_withNullSupervisor() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            supervisorService.update(null, 1L);
+        });
+    }
+
+    @Test
+    public void testUpdate_doesntExistID() {
+        Supervisor supervisor = getSupervisor();
+        when(supervisorRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class, () -> {
+            supervisorService.update(supervisor, supervisor.getId());
+        });
+    }
     /*
-    @Test
-    public void testUpdate_withValidEntries() {
-        Supervisor supervisor = new Supervisor();
-        supervisor.setLastName("Trap");
-        supervisor.setFirstName("Moose");
-        supervisor.setEmail("tram@gmail.com");
-        supervisor.setPassword("piecesofcheese");
-        supervisor.setDepartment("Batiment");
-        supervisor.setMatricule("02834");
-        Long validID = 2L;
-
-        Optional<Supervisor> actual = supervisorService.update(supervisor, validID);
-
-        assertTrue(actual.isPresent());
-    }
-
-    @Test
-    public void testUpdate_withNullEntries() {
-        Supervisor supervisor = new Supervisor();
-        supervisor.setLastName("Candle");
-        supervisor.setFirstName("Tea");
-        supervisor.setEmail("cant@outlook.com");
-        supervisor.setPassword("cantPass");
-        supervisor.setDepartment("info");
-
-        Optional<Supervisor> actual = supervisorService.update(supervisor, null);
-
-        assertTrue(actual.isEmpty());
-    }
-
     @Test
     public void testDelete_withValidID() {
         Long validId = 1L;
