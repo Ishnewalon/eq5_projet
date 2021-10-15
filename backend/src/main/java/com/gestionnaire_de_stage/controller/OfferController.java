@@ -62,7 +62,7 @@ public class OfferController {
 
     @PostMapping("/monitor/add")
     public ResponseEntity<?> addOfferMonitor(@Valid @RequestBody OfferDTO offerDTO){
-        Optional<Monitor> monitor = monitorService.getOneByID(offerDTO.getCreator_id());
+        /*Monitor monitor = monitorService.getOneByID(offerDTO.getCreator_id());
 
         if(monitor.isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur: moniteur non existant!");
@@ -71,7 +71,8 @@ public class OfferController {
             offer.setCreator(monitor.get());
             Optional<Offer> optionalOffer = offerService.create(offer);
             return new ResponseEntity<>(optionalOffer.isPresent(), HttpStatus.CREATED);
-        }
+        }*/
+        return null;
     }
 
     @PostMapping("/manager/add")

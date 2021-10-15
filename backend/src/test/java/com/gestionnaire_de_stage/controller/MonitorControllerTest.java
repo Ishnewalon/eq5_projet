@@ -46,7 +46,7 @@ public class MonitorControllerTest {
         monitor.setLastName("tata");
         monitor.setDepartment("Informatique");
 
-        when(monitorService.create(monitor)).thenReturn(Optional.of(monitor));
+        //when(monitorService.create(monitor)).thenReturn(Optional.of(monitor));
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/monitor/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(monitor))).andReturn();
@@ -57,7 +57,7 @@ public class MonitorControllerTest {
 
     @Test
     public void monitorSignupTest_withNullEntries() throws Exception {
-        when(monitorService.create(null)).thenReturn(Optional.empty());
+        //when(monitorService.create(null)).thenReturn(Optional.empty());
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/monitor/signup")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -72,7 +72,7 @@ public class MonitorControllerTest {
         Monitor monitor = new Monitor();
         monitor.setEmail("notAnEmail");
         monitor.setPassword("2short");
-        when(monitorService.create(monitor)).thenReturn(Optional.of(monitor));
+        //when(monitorService.create(monitor)).thenReturn(Optional.of(monitor));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/monitor/signup")
                 .contentType(MediaType.APPLICATION_JSON)
