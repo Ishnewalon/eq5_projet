@@ -20,7 +20,11 @@ export default class Manager extends Component {
         return (<>
                 <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
                     <AddOffer addOffer={this.addOffer}/>
+                </div>
+                <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
                     <ViewOffers />
+                </div>
+                <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
                     <ReviewOffers />
                 </div>
             </>
