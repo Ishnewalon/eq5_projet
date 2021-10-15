@@ -52,6 +52,14 @@ public class SupervisorService {
         return supervisorRepository.save(supervisor);
     }
 
+    public void deleteByID(Long aLong) throws IdDoesNotExistException {
+        Assert.isTrue(aLong != null, "ID est null");
+        if (!isIDValid(aLong)) {
+            throw new IdDoesNotExistException();
+        }
+        supervisorRepository.deleteById(aLong);
+    }
+
     public Optional<Supervisor> getOneByEmailAndPassword(String email, String password) {
         if (supervisorRepository.existsByEmailAndPassword(email, password)) {
             return Optional.of(supervisorRepository.findSupervisorByEmailAndPassword(email, password));
@@ -59,13 +67,7 @@ public class SupervisorService {
         return Optional.empty();
     }
 
-    public boolean deleteByID(Long aLong) {
-        if (aLong != null && supervisorRepository.existsById(aLong)) {
-            supervisorRepository.deleteById(aLong);
-            return true;
-        }
-        return false;
-    }
+
 
     private boolean isNotValid(Supervisor supervisor) {
         return supervisor.getEmail() != null &&

@@ -21,7 +21,7 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class SupervisorServiceTest {
@@ -157,23 +157,36 @@ public class SupervisorServiceTest {
             supervisorService.update(supervisor, supervisor.getId());
         });
     }
-    /*
+
     @Test
-    public void testDelete_withValidID() {
+    public void testDelete_withValidID() throws IdDoesNotExistException {
         Long validId = 1L;
+        when(supervisorRepository.existsById(any())).thenReturn(true);
+        doNothing().when(supervisorRepository).deleteById(any());
 
-        boolean actual = supervisorService.deleteByID(validId);
+        supervisorService.deleteByID(validId);
 
-        assertTrue(actual);
+        verify(supervisorRepository, times(1)).deleteById(any());
     }
+
 
     @Test
     public void testDelete_withNullID() {
-        boolean actual = supervisorService.deleteByID(null);
-
-        assertFalse(actual);
+        assertThrows(IllegalArgumentException.class, () -> {
+            supervisorService.deleteByID(null);
+        });
     }
 
+    @Test
+    public void testDelete_doesntExistID() {
+        Long id = 1L;
+        when(supervisorRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class, () -> {
+            supervisorService.deleteByID(id);
+        });
+    }
+/*
     @Test
     public void testFindSupervisorByEmailAndPassword() {
         String email = "keyh@gmail.com";
