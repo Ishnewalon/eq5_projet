@@ -7,15 +7,11 @@ import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.User;
-import com.gestionnaire_de_stage.repository.ManagerRepository;
-import com.gestionnaire_de_stage.repository.MonitorRepository;
 import com.gestionnaire_de_stage.repository.OfferRepository;
 import com.gestionnaire_de_stage.service.OfferService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,9 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(OfferController.class)
 public class OfferControllerTest {
 
     @MockBean
@@ -47,12 +41,6 @@ public class OfferControllerTest {
 
     @MockBean
     private OfferService offerService;
-
-    @MockBean
-    private MonitorRepository monitorRepository;
-
-    @MockBean
-    private ManagerRepository managerRepository;
 
 
     @Test
@@ -353,7 +341,7 @@ public class OfferControllerTest {
     }
 
     @Test
-    public void testGetOffersByDepartmentWithNoOffer() throws Exception {
+    public void testGetOffersByDepartment_withNoOffer() throws Exception {
         String department = "myDepartmentWithNoOffer";
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(String.format("/offers/%s", department))
