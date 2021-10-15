@@ -2,7 +2,8 @@
 export const urlBackend = 'http://localhost:8181'
 export const methods = {
     POST: 'POST',
-    GET: 'GET'
+    GET: 'GET',
+    PUT: 'PUT'
 }
 export const requestInit = (method, body) => {
     let value = {
@@ -14,7 +15,7 @@ export const requestInit = (method, body) => {
             'Content-Type': 'application/json'
         }
     }
-    if (method === methods.POST)
+    if (method === methods.POST || method === methods.PUT)
         value['body'] = JSON.stringify(body)
     return value
 }

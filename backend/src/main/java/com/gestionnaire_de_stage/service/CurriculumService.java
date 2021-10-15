@@ -14,8 +14,8 @@ import java.util.stream.Stream;
 @Service
 public class CurriculumService {
 
-    private CurriculumRepository curriculumRepository;
-    private StudentService studentService;
+    private final CurriculumRepository curriculumRepository;
+    private final StudentService studentService;
 
     public CurriculumService(CurriculumRepository curriculumRepository, StudentService studentService) {
         this.curriculumRepository = curriculumRepository;

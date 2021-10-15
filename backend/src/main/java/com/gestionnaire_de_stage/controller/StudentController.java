@@ -5,7 +5,6 @@ import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import com.gestionnaire_de_stage.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -22,11 +21,14 @@ import java.util.Optional;
 @RequestMapping("/student")
 public class StudentController {
 
-    @Autowired
-    StudentService studentService;
+    private final StudentService studentService;
 
-    @Autowired
-    StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
+
+    public StudentController(StudentService studentService, StudentRepository studentRepository) {
+        this.studentService = studentService;
+        this.studentRepository = studentRepository;
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody Student student) {

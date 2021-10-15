@@ -1,20 +1,18 @@
-export default class Offer{
+export default class OfferDTO {
     title
     department
     description
     address
     salary
-    id
-    creator
+    creator_id
 
 
-    constructor($id, $title, $department, $description, $address, $salary, $creator) {
-        this.id = $id;
+    constructor($title, $department, $description, $address, $salary, $creator_id) {
         this.title = $title;
         this.department = $department;
         this.description = $description;
         this.address = $address;
         this.salary = $salary;
-        this.creator = $creator;
+        this.creator_id = $creator_id;
     }
 }
