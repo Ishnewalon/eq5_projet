@@ -3,7 +3,6 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.ManagerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
@@ -14,13 +13,13 @@ import java.util.Optional;
 public class ManagerService implements ICrudService<Manager, Long> {
 
     private final ManagerRepository managerRepository;
+    private final StudentService studentService;
 
-    public ManagerService(ManagerRepository managerRepository){
+    public ManagerService(ManagerRepository managerRepository, StudentService studentService){
         this.managerRepository = managerRepository;
+        this.studentService = studentService;
     }
 
-    @Autowired
-    private StudentService studentService;
 
     @Override
     public Optional<Manager> create(Manager manager) throws ValidationException {
