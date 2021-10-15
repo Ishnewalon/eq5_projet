@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -82,11 +83,11 @@ public class OfferServiceTest {
 
 
         for (int i = 0; i < dummyArrayOffer.size(); i++) {
-            assertEquals(arrayOfferDTOS.get(i).getAddress(), dummyArrayOffer.get(i).getAddress());
-            assertEquals(arrayOfferDTOS.get(i).getDepartment(), dummyArrayOffer.get(i).getDepartment());
-            assertEquals(arrayOfferDTOS.get(i).getTitle(), dummyArrayOffer.get(i).getTitle());
-            assertEquals(arrayOfferDTOS.get(i).getDescription(), dummyArrayOffer.get(i).getDescription());
-            assertEquals(arrayOfferDTOS.get(i).getSalary(), dummyArrayOffer.get(i).getSalary());
+            assertThat(arrayOfferDTOS.get(i).getAddress()).isEqualTo(dummyArrayOffer.get(i).getAddress());
+            assertThat(arrayOfferDTOS.get(i).getDepartment()).isEqualTo(dummyArrayOffer.get(i).getDepartment());
+            assertThat(arrayOfferDTOS.get(i).getTitle()).isEqualTo(dummyArrayOffer.get(i).getTitle());
+            assertThat(arrayOfferDTOS.get(i).getDescription()).isEqualTo(dummyArrayOffer.get(i).getDescription());
+            assertThat(arrayOfferDTOS.get(i).getSalary()).isEqualTo(dummyArrayOffer.get(i).getSalary());
         }
     }
 
@@ -96,23 +97,23 @@ public class OfferServiceTest {
 
         List<OfferDTO> offers = offerService.getOffersByDepartment(department);
 
-        assertEquals(0, offers.size());
+        assertThat(offers.size()).isEqualTo(0);
     }
 
     @Test
     public void testGetOffersByDepartment() {
-        when(offerRepository.findAllByDepartment(any(String.class))).thenReturn(getDummyArrayOffer());
+        when(offerRepository.findAllByDepartment(any())).thenReturn(getDummyArrayOffer());
 
         List<OfferDTO> offers = offerService.getOffersByDepartment("Un departement");
 
-        assertArrayEquals(offerService.mapArrayToOfferDTO(getDummyArrayOffer()).toArray(), offers.toArray());
+        assertThat(offerService.mapArrayToOfferDTO(getDummyArrayOffer())).isEqualTo(offers);
     }
 
     private List<Offer> getDummyArrayOffer() {
         List<Offer> myList = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (long i = 0; i < 3; i++) {
             Offer dummyOffer = getDummyOffer();
-            dummyOffer.setId((long) i);
+            dummyOffer.setId(i);
             myList.add(dummyOffer);
         }
         return myList;

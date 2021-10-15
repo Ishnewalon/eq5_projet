@@ -88,7 +88,7 @@ public class OfferController {
         }
     }
 
-    @GetMapping({"/", "/{department}"})
+    @GetMapping({"/", "/{department}"})//TODO Handle exception
     public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {
         if (department == null || department.isEmpty() || department.isBlank())
             return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Le departement n'est pas precise"));
