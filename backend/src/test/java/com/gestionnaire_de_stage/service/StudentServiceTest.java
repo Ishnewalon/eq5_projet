@@ -5,18 +5,14 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.internal.stubbing.answers.DoesNothing;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,9 +33,9 @@ public class StudentServiceTest {
         Student student = getStudent();
         when(studentRepository.save(any())).thenReturn(student);
 
-        Optional<Student> actual = studentService.create(student);
+        Student actual = studentService.create(student);
 
-        assertTrue(actual.isPresent());
+        assertThat(actual.getFirstName()).isEqualTo(student.getFirstName());
     }
 
     private Student getStudent() {
@@ -77,9 +73,9 @@ public class StudentServiceTest {
         when(studentRepository.existsById(any())).thenReturn(true);
         when(studentRepository.getById(any())).thenReturn(student);
 
-        Optional<Student> actual = studentService.getOneByID(validID);
+        Student actual = studentService.getOneByID(validID);
 
-        assertTrue(actual.isPresent());
+        assertThat(actual.getEmail()).isEqualTo(student.getEmail());
     }
 
     @Test
@@ -127,9 +123,9 @@ public class StudentServiceTest {
         when(studentRepository.existsById(any())).thenReturn(true);
         when(studentRepository.save(any())).thenReturn(student);
 
-        Optional<Student> actual = studentService.update(student, student.getId());
+        Student actual = studentService.update(student, student.getId());
 
-        assertTrue(actual.isPresent());
+        assertThat(actual.getEmail()).isEqualTo(student.getEmail());
     }
 
     @Test
@@ -195,9 +191,9 @@ public class StudentServiceTest {
         when(studentRepository.findStudentByEmailAndPassword(student.getEmail(), student.getPassword()))
                 .thenReturn(student);
 
-        Optional<Student> actual = studentService.getOneByEmailAndPassword(student.getEmail(), student.getPassword());
+        Student actual = studentService.getOneByEmailAndPassword(student.getEmail(), student.getPassword());
 
-        assertTrue(actual.isPresent());
+        assertThat(actual.getFirstName()).isEqualTo(student.getFirstName());
     }
 
     @Test

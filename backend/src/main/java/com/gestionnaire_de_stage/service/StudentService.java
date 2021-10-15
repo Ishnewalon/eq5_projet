@@ -14,58 +14,57 @@ import java.util.Optional;
 @Service
 public class StudentService {
 
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 
-    public Optional<Student> create(Student student) throws StudentAlreadyExistsException {
+    public Student create(Student student) throws StudentAlreadyExistsException {
         Assert.isTrue(student != null, "Etudiant est null");
         if (isNotValid(student)) {
             throw new StudentAlreadyExistsException();
         }
-        return Optional.of(studentRepository.save(student));
+        return studentRepository.save(student);
     }
 
-    public Optional<Student> getOneByID(Long aLong) throws IdDoesNotExistException {
+    public Student getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (!isIDValid(aLong)) {
             throw new IdDoesNotExistException();
         }
-        return Optional.of(studentRepository.getById(aLong));
+        return studentRepository.getById(aLong);
     }
 
     public List<Student> getAll() {
         return studentRepository.findAll();
     }
 
-    public Optional<Student> update(Student student, Long aLong) throws IdDoesNotExistException {
+    public Student update(Student student, Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         Assert.isTrue(student != null, "L'étudiant est null");
         if (!isIDValid(aLong)) {
             throw new IdDoesNotExistException();
         }
         student.setId(aLong);
-        return Optional.of(studentRepository.save(student));
+        return studentRepository.save(student);
     }
 
-    public boolean deleteByID(Long aLong) throws IdDoesNotExistException {
+    public void deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (!isIDValid(aLong)) {
             throw new IdDoesNotExistException();
         }
         studentRepository.deleteById(aLong);
-        return true;
     }
 
-    public Optional<Student> getOneByEmailAndPassword(String email, String password) throws EmailAndPasswordDoesNotExistException {
+    public Student getOneByEmailAndPassword(String email, String password) throws EmailAndPasswordDoesNotExistException {
         Assert.isTrue(email != null, "Le courriel est null");
         Assert.isTrue(password != null, "Le mot de passe est null");
         if (!isEmailAndPasswordValid(email, password)) {
             throw new EmailAndPasswordDoesNotExistException();
         }
-        return Optional.of(studentRepository.findStudentByEmailAndPassword(email, password));
+        return studentRepository.findStudentByEmailAndPassword(email, password);
     }
 
     private boolean isNotValid(Student student) {

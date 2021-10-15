@@ -66,7 +66,7 @@ public class ManagerService implements ICrudService<Manager, Long> {
     public boolean validateCurriculum(boolean valid, long id) throws IdDoesNotExistException {
         Student s = null;
         try {
-            s = studentService.getOneByID(id).orElse(null);
+  //          s = studentService.getOneByID(id).orElse(null);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -77,8 +77,8 @@ public class ManagerService implements ICrudService<Manager, Long> {
 
         s.setCurriculumValidated(valid);
 
-        Optional<Student> resStudent = studentService.update(s, id);
+        Student resStudent = studentService.update(s, id);
 
-        return resStudent.isPresent() && resStudent.get().isCurriculumValidated() == valid;
+        return resStudent != null && resStudent.isCurriculumValidated() == valid;
     }
 }

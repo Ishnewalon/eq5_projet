@@ -37,8 +37,7 @@ public class StudentController {
         }
         Student student1 = null;
         try {
-            Optional<Student> opt = studentService.create(student);
-            student1 = opt.get();
+            student1 = studentService.create(student);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -60,9 +59,9 @@ public class StudentController {
 
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) throws EmailAndPasswordDoesNotExistException {
-        Optional<Student> student = studentService.getOneByEmailAndPassword(email, password);
-        if (student.isPresent()) {
-            return ResponseEntity.ok(student.get());
+        Student student = studentService.getOneByEmailAndPassword(email, password);
+        if (student != null) {
+            return ResponseEntity.ok(student);
         }
         return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
     }
