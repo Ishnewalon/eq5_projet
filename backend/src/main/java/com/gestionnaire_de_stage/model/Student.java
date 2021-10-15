@@ -4,15 +4,17 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @ToString(callSuper = true)
-public class Student extends User{
+public class Student extends User {
 
     @NotNull
     @Size(min = 7, max = 7, message = "La matricule doit être de 7 chiffres")
@@ -30,4 +32,7 @@ public class Student extends User{
     private boolean curriculumValidated;
 
     private String curriculumPath;
+
+    @ManyToMany
+    private Set<Offer> offerApplied;
 }

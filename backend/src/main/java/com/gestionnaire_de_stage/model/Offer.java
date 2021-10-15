@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Data
@@ -52,4 +53,6 @@ public class Offer {
     @Min(value = 0, message = "Le salaire ne peut être négatif.")
     private double salary;
 
+    @ManyToMany
+    private Set<Student> candidates;
 }
