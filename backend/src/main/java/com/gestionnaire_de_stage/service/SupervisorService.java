@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
@@ -28,12 +29,12 @@ public class SupervisorService {
         return supervisorRepository.save(supervisor);
     }
 
-
-    public Optional<Supervisor> getOneByID(Long aLong) {
-        if (aLong != null && supervisorRepository.existsById(aLong)) {
-            return Optional.of(supervisorRepository.getById(aLong));
+    public Supervisor getOneByID(Long aLong)throws IdDoesNotExistException {
+        Assert.isTrue(aLong != null, "ID est null");
+        if (!isIDValid(aLong)) {
+            throw new IdDoesNotExistException();
         }
-        return Optional.empty();
+        return supervisorRepository.getById(aLong);
     }
 
 
@@ -67,5 +68,9 @@ public class SupervisorService {
     private boolean isNotValid(Supervisor supervisor) {
         return supervisor.getEmail() != null &&
                 supervisorRepository.existsByEmail(supervisor.getEmail());
+    }
+
+    private boolean isIDValid(Long id) {
+        return supervisorRepository.existsById(id);
     }
 }

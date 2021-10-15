@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
@@ -65,22 +66,36 @@ public class SupervisorServiceTest {
             supervisorService.create(getSupervisor());
         });
     }
-/*
-    @Test
-    public void testGetByID_withValidID() {
-        Long validID = 1L;
-        Optional<Supervisor> actual = supervisorService.getOneByID(validID);
 
-        assertTrue(actual.isPresent());
+    @Test
+    public void testGetByID_withValidID() throws IdDoesNotExistException {
+        Long validID = 1L;
+        Supervisor supervisor = getSupervisor();
+        when(supervisorRepository.existsById(any())).thenReturn(true);
+        when(supervisorRepository.getById(any())).thenReturn(supervisor);
+
+        Supervisor actual = supervisorService.getOneByID(validID);
+
+        assertThat(actual.getMatricule()).isEqualTo(supervisor.getMatricule());
     }
 
     @Test
     public void testGetByID_withNullID() {
-        Optional<Supervisor> actual = supervisorService.getOneByID(null);
-
-        assertTrue(actual.isEmpty());
+        assertThrows(IllegalArgumentException.class, () -> {
+            supervisorService.getOneByID(null);
+        });
     }
 
+    @Test
+    public void testGetByID_doesntExistID() {
+        Supervisor supervisor = getSupervisor();
+        when(supervisorRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class, () -> {
+            supervisorService.getOneByID(supervisor.getId());
+        });
+    }
+/*
     @Test
     public void testGetAll() {
         int expectedLength = 3;
