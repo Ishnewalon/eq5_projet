@@ -43,7 +43,7 @@ public class SupervisorControllerTest {
         supervisor.setDepartment("Informatique");
         supervisor.setMatricule("07485");
 
-        when(supervisorService.create(supervisor)).thenReturn(Optional.of(supervisor));
+       // when(supervisorService.create(supervisor)).thenReturn(Optional.of(supervisor));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/supervisor/signup")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -58,7 +58,7 @@ public class SupervisorControllerTest {
     public void testSupervisorSignUp_withNullEntries() throws Exception {
         Supervisor supervisor = null;
 
-        when(supervisorService.create(supervisor)).thenReturn(Optional.empty());
+       // when(supervisorService.create(supervisor)).thenReturn(Optional.empty());
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/supervisor/signup")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -79,7 +79,7 @@ public class SupervisorControllerTest {
         Supervisor supervisor = supervisorLogin();
         String email = "sinl@gmail.com";
         String password = "weightofworld";
-        when(supervisorService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(supervisor));
+     //   when(supervisorService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(supervisor));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/sinl@gmail.com/weightofworld")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -94,7 +94,7 @@ public class SupervisorControllerTest {
     public void testSupervisorLogin_withNullEntries() throws Exception {
         String email = null;
         String password = null;
-        when(supervisorService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.empty());
+       // when(supervisorService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.empty());
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/null/null")
                 .contentType(MediaType.APPLICATION_JSON))

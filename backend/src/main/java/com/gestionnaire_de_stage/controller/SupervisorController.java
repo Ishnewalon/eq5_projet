@@ -1,6 +1,8 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
+import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
@@ -29,14 +31,13 @@ public class SupervisorController {
     SupervisorRepository supervisorRepository;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@Valid @RequestBody Supervisor supervisor) {
+    public ResponseEntity<?> signup(@Valid @RequestBody Supervisor supervisor) throws SupervisorAlreadyExistsException {
         if (supervisor.getEmail() != null && supervisorRepository.existsByEmail(supervisor.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Erreur: Ce courriel existe déja!"));
         }
-        Optional<Supervisor> opt = supervisorService.create(supervisor);
-        Supervisor supervisor1 = opt.get();
+        Supervisor supervisor1 = supervisorService.create(supervisor);
 
         return new ResponseEntity<>(supervisor1, HttpStatus.CREATED);
     }
@@ -55,9 +56,14 @@ public class SupervisorController {
 
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
-        Optional<Supervisor> supervisor = supervisorService.getOneByEmailAndPassword(email, password);
-        if (supervisor.isPresent()) {
-            return ResponseEntity.ok(supervisor.get());
+        Supervisor supervisor = null;
+        try {
+            supervisor = supervisorService.getOneByEmailAndPassword(email, password);
+        } catch (EmailAndPasswordDoesNotExistException e) {
+            e.printStackTrace();
+        }
+        if (supervisor != null) {
+            return ResponseEntity.ok(supervisor);
         }
         return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
     }
