@@ -29,7 +29,6 @@ public class SupervisorController {
         this.supervisorRepository = supervisorRepository;
     }
 
-
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody Supervisor supervisor) {
         if (supervisor.getEmail() != null && supervisorRepository.existsByEmail(supervisor.getEmail())) {

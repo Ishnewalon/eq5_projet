@@ -30,7 +30,6 @@ public class ManagerController {
         this.managerService = managerService;
     }
 
-
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email,@PathVariable String password){
         HttpStatus status = HttpStatus.OK;

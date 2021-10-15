@@ -2,7 +2,6 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
@@ -14,7 +13,7 @@ public class StudentService implements ICrudService<Student, Long> {
 
     private final StudentRepository studentRepository;
 
-    public StudentService(StudentRepository studentRepository){
+    public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 
