@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.repository.MonitorRepository;
 import org.junit.jupiter.api.BeforeAll;
@@ -44,11 +45,18 @@ public class MonitorServiceTest {
                 monitorService.create(null));
     }
 
+    @Test
+    public void testCreate_alreadyExistsMonitor() {
+        when(monitorRepository.existsByEmail(any())).thenReturn(true);
 
+        assertThrows(MonitorAlreadyExistsException.class, () ->
+                monitorService.create(getMonitor()));
+    }
 
     @Test
     public void testGetByID_withValidID() {
         Long validID = 1L;
+        
 
         //Optional<Monitor> actual = monitorService.getOneByID(validID);
 
