@@ -10,20 +10,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SupervisorService implements ICrudService<Supervisor, Long> {
+public class SupervisorService {
 
-    @Autowired
-    SupervisorRepository supervisorRepository;
+    private final SupervisorRepository supervisorRepository;
 
-    @Override
-    public Optional<Supervisor> create(Supervisor supervisor) throws ValidationException {
-        if (supervisor != null) {
-            return Optional.of(supervisorRepository.save(supervisor));
-        }
-        return Optional.empty();
+    public SupervisorService(SupervisorRepository supervisorRepository) {
+        this.supervisorRepository = supervisorRepository;
     }
 
-    @Override
+    public Supervisor create(Supervisor supervisor) throws ValidationException {
+        if (supervisor != null) {
+            return supervisorRepository.save(supervisor);
+        }
+        return null;
+    }
+
+
     public Optional<Supervisor> getOneByID(Long aLong) {
         if (aLong != null && supervisorRepository.existsById(aLong)) {
             return Optional.of(supervisorRepository.getById(aLong));
@@ -31,12 +33,11 @@ public class SupervisorService implements ICrudService<Supervisor, Long> {
         return Optional.empty();
     }
 
-    @Override
+
     public List<Supervisor> getAll() {
         return supervisorRepository.findAll();
     }
 
-    @Override
     public Optional<Supervisor> update(Supervisor supervisor, Long aLong) throws ValidationException {
         if (aLong != null && supervisorRepository.existsById(aLong) && supervisor != null) {
             supervisor.setId(aLong);
@@ -52,7 +53,6 @@ public class SupervisorService implements ICrudService<Supervisor, Long> {
         return Optional.empty();
     }
 
-    @Override
     public boolean deleteByID(Long aLong) {
         if (aLong != null && supervisorRepository.existsById(aLong)) {
             supervisorRepository.deleteById(aLong);

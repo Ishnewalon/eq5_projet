@@ -35,8 +35,7 @@ public class SupervisorController {
                     .badRequest()
                     .body(new ResponseMessage("Erreur: Ce courriel existe déja!"));
         }
-        Optional<Supervisor> opt = supervisorService.create(supervisor);
-        Supervisor supervisor1 = opt.get();
+        Supervisor supervisor1 = supervisorService.create(supervisor);
 
         return new ResponseEntity<>(supervisor1, HttpStatus.CREATED);
     }
