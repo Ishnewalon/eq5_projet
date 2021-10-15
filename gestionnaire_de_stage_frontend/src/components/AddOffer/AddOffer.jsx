@@ -72,7 +72,7 @@ export default class AddOffer extends Component {
             <div className="form-group">
                 <label>Salaire</label>
                 <div className="input-group">
-                    <input name="description" placeholder="Description" className="form-control" type="number"
+                    <input name="description" placeholder="Salaire" className="form-control" type="number"
                            value={this.state.salary} onChange={this.handleChange('salary')}/>
                 </div>
             </div>
