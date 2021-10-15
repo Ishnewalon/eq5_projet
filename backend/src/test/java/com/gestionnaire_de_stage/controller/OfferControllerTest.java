@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.service.OfferService;
@@ -23,11 +24,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 @SpringBootTest
@@ -82,6 +86,18 @@ public class OfferControllerTest {
         assertThat(new ObjectMapper().readValue(actualOfferInString, Offer.class)).isEqualTo(offer);
     }
 
+    @Test
+    public void testGetOffers_withValidOffers() throws Exception {
+        List<Offer> list = getDummyListOffer();
+        when(offerService.getAll()).thenReturn(list);
+
+        MvcResult mvcResult = mockMvc.perform(get("/offers")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        var actualOffersInString = mvcResult.getResponse().getContentAsString();
+        assertThat(new ObjectMapper().readValue(actualOffersInString,
+                new TypeReference<List<Offer>>(){})).isEqualTo(list);
+    }
 
 
     private Offer getDummyOffer() {
@@ -93,6 +109,15 @@ public class OfferControllerTest {
         offer.setSalary(10);
         offer.setTitle("oeinoiendw");
         return offer;
+    }
+
+    private List<Offer> getDummyListOffer(){
+        List<Offer> list = new ArrayList<>();
+        Offer offer = getDummyOffer();
+        offer.setId(2L);
+        list.add(getDummyOffer());
+        list.add(offer);
+        return list;
     }
 
 }
