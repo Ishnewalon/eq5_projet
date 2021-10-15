@@ -10,10 +10,8 @@ import com.gestionnaire_de_stage.service.CurriculumService;
 import com.gestionnaire_de_stage.service.OfferAppService;
 import com.gestionnaire_de_stage.service.OfferService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,10 +25,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@SpringBootTest
-@AutoConfigureMockMvc
-//@WebMvcTest(OfferAppController.class)
+
+@WebMvcTest(OfferAppController.class)
 class OfferAppControllerTest {
 
     @Autowired
@@ -74,6 +70,7 @@ class OfferAppControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.ALREADY_REPORTED.value());
         assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: candidature deja envoye!");
     }
+
     @Test
     public void testStudentApplyToOfferWithOfferNonExistant() throws Exception {
         // Arrange
@@ -102,6 +99,7 @@ class OfferAppControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: curriculum inexistant");
     }
+
     @Test
     public void testStudentApplyToOfferWithDTOWithNoOfferId() throws Exception {
         // Arrange
@@ -116,6 +114,7 @@ class OfferAppControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le id de l'offre ne peut pas etre null");
     }
+
     @Test
     public void testStudentApplyToOfferWithDTOWithNoCurriculumId() throws Exception {
         // Arrange
@@ -130,6 +129,7 @@ class OfferAppControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le id du curriculum ne peut pas etre null");
     }
+
     private OfferAppDTO getDummyOfferAppDto() {
         OfferAppDTO offerAppDTO = new OfferAppDTO();
         offerAppDTO.setIdOffer(1L);
