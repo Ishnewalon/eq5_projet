@@ -27,6 +27,11 @@ class OfferService {
     async createOfferManager(offer) {
         return await this._createOffer(offer, "manager")
     }
+
+    async getAllOffersByDepartment(department){
+        const response = await fetch(`${urlBackend}/offers/${department}`, requestInit(methods.GET))
+        return await response.json();
+    }
 }
 
 const offerService = new OfferService();

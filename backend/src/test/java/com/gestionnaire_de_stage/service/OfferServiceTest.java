@@ -9,8 +9,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -25,7 +28,7 @@ public class OfferServiceTest {
     private OfferRepository offerRepository;
 
     @Test
-    public void testMapToOffer(){
+    public void testMapToOffer() {
         OfferDTO offerDto = getDummyDto();
 
         Offer offer = offerService.mapToOffer(offerDto);
@@ -39,7 +42,7 @@ public class OfferServiceTest {
     }
 
     @Test
-    public void testMapToOfferDto(){
+    public void testMapToOfferDto() {
         Offer offer = getDummyOffer();
 
         OfferDTO offerDto = offerService.mapToOfferDTO(offer);
@@ -52,7 +55,7 @@ public class OfferServiceTest {
     }
 
     @Test
-    public void testCreateOffer_withValidOffer(){
+    public void testCreateOffer_withValidOffer() {
         Offer offer = getDummyOffer();
         offer.setId(null);
 
@@ -65,11 +68,57 @@ public class OfferServiceTest {
     }
 
     @Test
-    public void testCreateOffer_withNullOffer(){
+    public void testCreateOffer_withNullOffer() {
         Optional<Offer> optionalOffer = offerService.create(null);
 
         assertFalse(optionalOffer.isPresent());
     }
+
+    @Test
+    public void testMapArrayToOfferDto() {
+        List<Offer> dummyArrayOffer = getDummyArrayOffer();
+
+
+        List<OfferDTO> arrayOfferDTOS = offerService.mapArrayToOfferDTO(dummyArrayOffer);
+
+
+        for (int i = 0; i < dummyArrayOffer.size(); i++) {
+            assertThat(arrayOfferDTOS.get(i).getAddress()).isEqualTo(dummyArrayOffer.get(i).getAddress());
+            assertThat(arrayOfferDTOS.get(i).getDepartment()).isEqualTo(dummyArrayOffer.get(i).getDepartment());
+            assertThat(arrayOfferDTOS.get(i).getTitle()).isEqualTo(dummyArrayOffer.get(i).getTitle());
+            assertThat(arrayOfferDTOS.get(i).getDescription()).isEqualTo(dummyArrayOffer.get(i).getDescription());
+            assertThat(arrayOfferDTOS.get(i).getSalary()).isEqualTo(dummyArrayOffer.get(i).getSalary());
+        }
+    }
+
+    @Test
+    public void testGetOffersByDepartment_withNoOffer() {
+        String department = "myDepartmentWithNoOffer";
+
+        List<OfferDTO> offers = offerService.getOffersByDepartment(department);
+
+        assertThat(offers.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testGetOffersByDepartment() {
+        when(offerRepository.findAllByDepartment(any())).thenReturn(getDummyArrayOffer());
+
+        List<OfferDTO> offers = offerService.getOffersByDepartment("Un departement");
+
+        assertThat(offerService.mapArrayToOfferDTO(getDummyArrayOffer())).isEqualTo(offers);
+    }
+
+    private List<Offer> getDummyArrayOffer() {
+        List<Offer> myList = new ArrayList<>();
+        for (long i = 0; i < 3; i++) {
+            Offer dummyOffer = getDummyOffer();
+            dummyOffer.setId(i);
+            myList.add(dummyOffer);
+        }
+        return myList;
+    }
+
 
     private Offer getDummyOffer() {
         Offer offer = new Offer();
@@ -82,7 +131,7 @@ public class OfferServiceTest {
         return offer;
     }
 
-    private OfferDTO getDummyDto(){
+    private OfferDTO getDummyDto() {
         OfferDTO offerDTO = new OfferDTO();
         offerDTO.setCreator_id(1L);
         offerDTO.setSalary(18.0d);
