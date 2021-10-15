@@ -92,7 +92,7 @@ public class OfferServiceTest {
     }
 
     @Test
-    public void testGetOffersByDepartmentWithNoOffer() {
+    public void testGetOffersByDepartment_withNoOffer() {
         String department = "myDepartmentWithNoOffer";
 
         List<OfferDTO> offers = offerService.getOffersByDepartment(department);

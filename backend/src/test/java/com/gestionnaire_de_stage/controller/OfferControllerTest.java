@@ -355,7 +355,7 @@ public class OfferControllerTest {
     }
 
     @Test
-    public void testGetOffersByDepartmentWithNoDepartment() throws Exception {
+    public void testGetOffersByDepartment_withNoDepartment() throws Exception {
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/offers/")
                         .contentType(MediaType.APPLICATION_JSON))
