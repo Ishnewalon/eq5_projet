@@ -5,7 +5,7 @@ export default class PreviewOffer extends Component{
 
     render() {
         const {offer} = this.props;
-        return <div className="shadow-lg rounded p-3">
+        return <div className="shadow-lg rounded-top p-3 mt-5 border-left border-right border-light">
                     <div className={'d-flex align-items-center flex-column'}>
                         <h2 className={'d-inline-block text-dark display-6 fst-italic'}><span className={"badge bg-secondary"}>{offer.title}</span></h2>
                         <div className={'row mb-0'}>

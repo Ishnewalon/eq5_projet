@@ -1,11 +1,11 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
-import Offer from "../models/Offer";
+import OfferDTO from "../models/OfferDTO";
 import {swalErr, toast} from "../utility";
 
 class OfferService {
 
     async _createOffer(offer, userType) {
-        if (!(offer instanceof Offer) || !offer)
+        if (!(offer instanceof OfferDTO) || !offer)
             return;
         const response = await fetch(`${urlBackend}/offers/${userType}/add`, requestInit(methods.POST, offer));
         return await response.json().then(value => {
@@ -13,7 +13,7 @@ class OfferService {
                     swalErr(value.message).fire({}).then()
                     return
                 }
-                toast.fire({title: "Offre cree!"}).then()
+                toast.fire({title: "Offre créé!"}).then()
             },
             err => {
                 swalErr(err).fire({}).then()
@@ -29,7 +29,17 @@ class OfferService {
     }
 
     async getAllOffersByDepartment(department){
-        const response = await fetch(`${urlBackend}/offers/${department}`, requestInit(methods.GET))
+        const response = await fetch(`${urlBackend}/offers/${department}`, requestInit(methods.GET));
+        return await response.json();
+    }
+
+    async getAllOffers(){
+        const response = await fetch(`${urlBackend}/offers`, requestInit(methods.GET));
+        return await response.json();
+    }
+
+    async validateOffer(offer) {
+        const response = await fetch(`${urlBackend}/offers/validate`, requestInit(methods.PUT, offer));
         return await response.json();
     }
 }

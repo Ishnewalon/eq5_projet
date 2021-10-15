@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Supervisor extends User{
 
     @NotNull
