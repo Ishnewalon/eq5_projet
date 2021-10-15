@@ -2,8 +2,10 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -95,16 +98,31 @@ public class SupervisorServiceTest {
             supervisorService.getOneByID(supervisor.getId());
         });
     }
-/*
+
     @Test
     public void testGetAll() {
-        int expectedLength = 3;
+        when(supervisorRepository.findAll()).thenReturn(getListOfSupervisors());
 
-        List<Supervisor> supervisorList = supervisorService.getAll();
+        final List<Supervisor> allSupervisors = supervisorService.getAll();
 
-        assertEquals(expectedLength, supervisorList.size());
+        assertThat(allSupervisors.size()).isEqualTo(3);
+        assertThat(allSupervisors.get(0).getFirstName()).isEqualTo("Harold");
     }
 
+    private List<Supervisor> getListOfSupervisors() {
+        List<Supervisor> supervisorList = new ArrayList<>();
+        Long idIterator = 1L;
+        for (int i = 0; i < 3; i++) {
+            Supervisor supervisor = getSupervisor();
+            supervisor.setId(idIterator);
+            supervisorList.add(supervisor);
+            idIterator++;
+        }
+        return supervisorList;
+    }
+
+
+    /*
     @Test
     public void testUpdate_withValidEntries() {
         Supervisor supervisor = new Supervisor();
