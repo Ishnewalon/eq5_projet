@@ -9,6 +9,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -98,7 +101,24 @@ public class OfferServiceTest {
         assertThat(optionalOffer.get().getId()).isEqualTo(1L);
     }
 
+    @Test
+    public void testGetAllOffers_withValidList(){
+        List<Offer> list = getDummyListOffer();
+        when(offerRepository.findAll()).thenReturn(list);
 
+        List<Offer> offerList = offerService.getAll();
+
+        assertThat(offerList).isEqualTo(list);
+    }
+
+    @Test
+    public void testGetAllOffers_withEmptyList(){
+        when(offerRepository.findAll()).thenReturn(Collections.emptyList());
+
+        List<Offer> offerList = offerService.getAll();
+
+        assertThat(offerList).isEqualTo(Collections.emptyList());
+    }
 
     private Offer getDummyOffer() {
         Offer offer = new Offer();
@@ -109,6 +129,15 @@ public class OfferServiceTest {
         offer.setSalary(10);
         offer.setTitle("oeinoiendw");
         return offer;
+    }
+
+    private List<Offer> getDummyListOffer(){
+        List<Offer> list = new ArrayList<>();
+        Offer offer = getDummyOffer();
+        offer.setId(2L);
+        list.add(getDummyOffer());
+        list.add(offer);
+        return list;
     }
 
     private OfferDTO getDummyDto(){
