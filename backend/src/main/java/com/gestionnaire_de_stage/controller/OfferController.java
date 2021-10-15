@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
@@ -67,16 +68,17 @@ public class OfferController {
 
     @PostMapping("/monitor/add")
     public ResponseEntity<?> addOfferMonitor(@Valid @RequestBody OfferDTO offerDTO) {
-        Optional<Monitor> monitor = monitorService.getOneByID(offerDTO.getCreator_id());
-
-        if (monitor.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur: moniteur non existant!");
-        } else {
-            Offer offer = offerService.mapToOffer(offerDTO);
-            offer.setCreator(monitor.get());
-            Optional<Offer> optionalOffer = offerService.create(offer);
-            return new ResponseEntity<>(optionalOffer.isPresent(), HttpStatus.CREATED);
+        Monitor monitor;
+        try {
+            monitor = monitorService.getOneByID(offerDTO.getCreator_id());
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erreur: moniteur non existant!");
         }
+
+        Offer offer = offerService.mapToOffer(offerDTO);
+        offer.setCreator(monitor);
+        Optional<Offer> optionalOffer = offerService.create(offer);
+        return new ResponseEntity<>(optionalOffer.isPresent(), HttpStatus.CREATED);
     }
 
     @PostMapping("/manager/add")
