@@ -65,13 +65,6 @@ public class MonitorService {
         monitorRepository.deleteById(aLong);
     }
 
-    @Override
-    public String toString() {
-        return "MonitorService{" +
-                "monitorRepository=" + monitorRepository +
-                '}';
-    }
-
     private boolean emailAlreadyInUse(Monitor monitor) {
         return monitor.getEmail() != null && monitorRepository.existsByEmail(monitor.getEmail());
     }

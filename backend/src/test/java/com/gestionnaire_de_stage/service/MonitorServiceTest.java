@@ -5,86 +5,46 @@ import com.gestionnaire_de_stage.repository.MonitorRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-@DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = JpaRepository.class))
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 public class MonitorServiceTest {
 
-    @Autowired
-    private MonitorRepository monitorRepository;
-
-    @Autowired
+    @InjectMocks
     private MonitorService monitorService;
 
-    @BeforeAll
-    public void insertData() {
-        Monitor monitor1 = new Monitor();
-        monitor1.setId(1L);
-        monitor1.setFirstName("Steph");
-        monitor1.setLastName("Kazuk");
-        monitor1.setEmail("stepotato@gmail.com");
-        monitor1.setPhone("5145555112");
-        monitor1.setDepartment("Informatique");
-        monitor1.setPassword("testPassword");
-
-        Monitor monitor2 = new Monitor();
-        monitor2.setId(2L);
-        monitor2.setFirstName("Ouss");
-        monitor2.setLastName("ama");
-        monitor2.setEmail("ouste@gmail.com");
-        monitor2.setPhone("5145555112");
-        monitor2.setDepartment("Informatique");
-        monitor2.setPassword("testPassword");
-
-        Monitor monitor3 = new Monitor();
-        monitor3.setId(3L);
-        monitor3.setFirstName("same");
-        monitor3.setLastName("dude");
-        monitor3.setEmail("dudesame@gmail.com");
-        monitor3.setPhone("5145555112");
-        monitor3.setDepartment("Informatique");
-        monitor3.setPassword("testPassword");
-
-        monitorRepository.saveAll(Arrays.asList(monitor1, monitor2, monitor3));
-    }
+    @Mock
+    private MonitorRepository monitorRepository;
 
     @Test
-    public void testFindAll() {
-        int actual = monitorRepository.findAll().size();
+    public void testCreate_withValidMonitor() throws Exception {
+        Monitor monitor = getMonitor();
+        when(monitorRepository.save(any())).thenReturn(monitor);
 
-        assertEquals(3, actual);
-    }
+        Monitor actual = monitorService.create(monitor);
 
-    @Test
-    public void testCreate_withValidMonitor() {
-        Monitor monitor = new Monitor();
-        monitor.setLastName("toto");
-        monitor.setFirstName("titi");
-        monitor.setEmail("toto@gmail.com");
-        monitor.setPassword("testPassword");
-
-        //Optional<Monitor> actual = monitorService.create(monitor);
-
-        //assertTrue(actual.isPresent());
+        assertThat(actual).isEqualTo(monitor);
     }
 
     @Test
     public void testCreate_withNullMonitor() {
-        //Optional<Monitor> actual = monitorService.create(null);
-
-        //assertTrue(actual.isEmpty());
+        assertThrows(IllegalArgumentException.class, () ->
+                monitorService.create(null));
     }
+
+
 
     @Test
     public void testGetByID_withValidID() {
@@ -198,5 +158,46 @@ public class MonitorServiceTest {
         Optional<Monitor> actual = monitorService.getOneByEmailAndPassword(null, null);
 
         assertTrue(actual.isEmpty());
+    }
+
+    private Monitor getMonitor() {
+        Monitor monitor = new Monitor();
+        monitor.setId(1L);
+        monitor.setLastName("toto");
+        monitor.setFirstName("titi");
+        monitor.setEmail("toto@gmail.com");
+        monitor.setPassword("testPassword");
+        return monitor;
+    }
+
+    private List<Monitor> getListOfMonitors() {
+        Monitor monitor1 = new Monitor();
+        monitor1.setId(1L);
+        monitor1.setFirstName("Steph");
+        monitor1.setLastName("Kazuk");
+        monitor1.setEmail("stepotato@gmail.com");
+        monitor1.setPhone("5145555112");
+        monitor1.setDepartment("Informatique");
+        monitor1.setPassword("testPassword");
+
+        Monitor monitor2 = new Monitor();
+        monitor2.setId(2L);
+        monitor2.setFirstName("Ouss");
+        monitor2.setLastName("ama");
+        monitor2.setEmail("ouste@gmail.com");
+        monitor2.setPhone("5145555112");
+        monitor2.setDepartment("Informatique");
+        monitor2.setPassword("testPassword");
+
+        Monitor monitor3 = new Monitor();
+        monitor3.setId(3L);
+        monitor3.setFirstName("same");
+        monitor3.setLastName("dude");
+        monitor3.setEmail("dudesame@gmail.com");
+        monitor3.setPhone("5145555112");
+        monitor3.setDepartment("Informatique");
+        monitor3.setPassword("testPassword");
+
+        return Arrays.asList(monitor1, monitor2, monitor3);
     }
 }
