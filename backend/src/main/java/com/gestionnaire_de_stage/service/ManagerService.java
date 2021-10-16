@@ -9,9 +9,7 @@ import com.gestionnaire_de_stage.repository.ManagerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.validation.ValidationException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ManagerService {
@@ -86,10 +84,9 @@ public class ManagerService {
     public boolean validateCurriculum(boolean valid, long id) throws IdDoesNotExistException {
         Student student = studentService.getOneByID(id);
         student.setCurriculumValidated(valid);
-
         student = studentService.update(student, id);
 
-        return student != null && student.isCurriculumValidated() == valid;
+        return true;
     }
 
 
