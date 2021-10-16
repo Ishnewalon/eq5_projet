@@ -53,16 +53,16 @@ public class ManagerService {
         return managerRepository.save(manager);
     }
 
-    public Optional<Manager> getOneByEmailAndPassword(String email, String password) {
-        return managerRepository.findManagerByEmailAndPassword(email, password);
+    public void deleteByID(Long aLong) throws IdDoesNotExistException {
+        Assert.isTrue(aLong != null, "ID est null");
+        if (!isIDValid(aLong)) {
+            throw new IdDoesNotExistException();
+        }
+        managerRepository.deleteById(aLong);
     }
 
-    public boolean deleteByID(Long id) {
-        if (id != null && managerRepository.existsById(id)) {
-            managerRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public Optional<Manager> getOneByEmailAndPassword(String email, String password) {
+        return managerRepository.findManagerByEmailAndPassword(email, password);
     }
 
     private boolean isNotValid(Manager manager) {

@@ -166,6 +166,34 @@ public class ManagerServiceTest {
             managerService.update(manager, manager.getId());
         });
     }
+
+    @Test
+    public void testDelete_withValidID() throws IdDoesNotExistException {
+        Long validID = 1L;
+        when(managerRepository.existsById(any())).thenReturn(true);
+        doNothing().when(managerRepository).deleteById(any());
+
+        managerService.deleteByID(validID);
+
+        verify(managerRepository, times(1)).deleteById(any());
+    }
+
+    @Test
+    public void testDelete_withNullID() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            managerService.deleteByID(null);
+        });
+    }
+
+    @Test
+    public void testDelete_doesntExistID() {
+        Long id = 1L;
+        when(managerRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class, () -> {
+            managerService.deleteByID(id);
+        });
+    }
  /*
     private Student getStudent() {
         Student student = new Student();
@@ -182,24 +210,6 @@ public class ManagerServiceTest {
         return student;
     }
 
-
-    @Test
-    @DisplayName("test supprimer un manager avec un id valide")
-    public void testDelete_withValidID() {
-        Long validID = 1L;
-
-        boolean actual = managerService.deleteByID(validID);
-
-        assertFalse(actual);
-    }
-
-    @Test
-    @DisplayName("test supprimer un manager avec un id invalide")
-    public void testDelete_withNullID() {
-        boolean actual = managerService.deleteByID(null);
-
-        assertFalse(actual);
-    }
 
     @Test
     @DisplayName("test chercher un manager par email et mot de passe")
