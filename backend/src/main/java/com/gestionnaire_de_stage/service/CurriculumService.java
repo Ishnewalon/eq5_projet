@@ -24,17 +24,22 @@ public class CurriculumService {
 
 
     public Optional<Curriculum> convertMultipartFileToCurriculum(MultipartFile file, Long studentId) throws IOException {
-        Optional<Student> student = studentService.getOneByID(studentId);
-        if (student.isPresent()){
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        try {
+            Student student = studentService.getOneByID(studentId);
+            if (student != null) {
+                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-            Curriculum curriculum = new Curriculum(
-                    fileName,
-                    file.getContentType(),
-                    file.getBytes(),
-                    student.get()
-            );
-            return Optional.of(curriculum);
+                Curriculum curriculum = new Curriculum(
+                        fileName,
+                        file.getContentType(),
+                        file.getBytes(),
+                        student
+                );
+                return Optional.of(curriculum);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
         return Optional.empty();
     }

@@ -62,7 +62,7 @@ public class ManagerControllerTest {
         Manager manager = getDummyManager();
         String email = manager.getEmail();
         String password = manager.getPassword();
-        when(managerService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(manager));
+    //    when(managerService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(manager));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(String.format("/manager/%s/%s", email, password))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -77,7 +77,7 @@ public class ManagerControllerTest {
     public void testManagerLogin_withNullEntries() throws Exception {
         String email = null;
         String password = null;
-        when(managerService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.empty());
+     //   when(managerService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.empty());
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(String.format("/manager/%s/%s", email, password))
                 .contentType(MediaType.APPLICATION_JSON))

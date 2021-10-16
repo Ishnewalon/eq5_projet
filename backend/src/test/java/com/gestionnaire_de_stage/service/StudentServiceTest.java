@@ -1,217 +1,227 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
-@DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = JpaRepository.class))
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 public class StudentServiceTest {
 
-    @Autowired
-    StudentRepository studentRepository;
-
-    @Autowired
+    @InjectMocks
     StudentService studentService;
 
-    @BeforeAll
-    public void insertData() {
-        Student student1 = new Student();
-        student1.setId(1L);
-        student1.setLastName("Scott");
-        student1.setFirstName("Jordan");
-        student1.setEmail("jscotty@gmail.com");
-        student1.setPhone("514-546-2375");
-        student1.setPassword("rockrocks");
-        student1.setAddress("758 George");
-        student1.setCity("LaSalle");
-        student1.setDepartment("Informatique");
-        student1.setPostalCode("H5N 9F2");
-        student1.setMatricule("6473943");
-
-        Student student2 = new Student();
-        student2.setId(2L);
-        student2.setLastName("Jot");
-        student2.setFirstName("Paul");
-        student2.setEmail("pertFaul@gmail.com");
-        student2.setPhone("514-765-8357");
-        student2.setPassword("kald329345");
-        student2.setAddress("961 Lifew");
-        student2.setCity("Verdun");
-        student2.setDepartment("Comptabilite");
-        student2.setPostalCode("K1F R5V");
-        student2.setMatricule("3728243");
-
-        Student student3 = new Student();
-        student3.setId(3L);
-        student3.setLastName("Tremblay");
-        student3.setFirstName("Emily");
-        student3.setEmail("treme@gmail.com");
-        student3.setPhone("514-924-7854");
-        student3.setPassword("tough8475");
-        student3.setAddress("8542 Schevchenko");
-        student3.setCity("LaSalle");
-        student3.setDepartment("Science Humaine");
-        student3.setPostalCode("H3J 1D8");
-        student3.setMatricule("1749305");
-
-        studentRepository.saveAll(Arrays.asList(student1,student2,student3));
-    }
+    @Mock
+    StudentRepository studentRepository;
 
     @Test
-    public void testFindAll() {
-        int actual = studentRepository.findAll().size();
+    public void testCreate_withValidStudent() throws Exception{
+        Student student = getStudent();
+        when(studentRepository.save(any())).thenReturn(student);
 
-        assertEquals(actual, 3);
+        Student actual = studentService.create(student);
+
+        assertThat(actual.getFirstName()).isEqualTo(student.getFirstName());
     }
 
-    @Test
-    public void testCreate_withValidStudent() {
+    private Student getStudent() {
         Student student = new Student();
+        student.setId(1L);
         student.setLastName("Candle");
         student.setFirstName("Tea");
         student.setEmail("cant@outlook.com");
         student.setPassword("cantPass");
         student.setDepartment("info");
         student.setMatricule("4673943");
-
-        Optional<Student> actual = studentService.create(student);
-        assertTrue(actual.isPresent());
+        return student;
     }
 
     @Test
     public void testCreate_withNullStudent() {
-        Optional<Student> actual = studentService.create(null);
-
-        assertTrue(actual.isEmpty());
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentService.create(null);
+        });
     }
 
     @Test
-    public void testGetByID_withValidID() {
+    public void testCreate_alreadyExistsStudent() {
+        when(studentRepository.existsByEmail(any())).thenReturn(true);
+
+        assertThrows(StudentAlreadyExistsException.class, () -> {
+            studentService.create(getStudent());
+        });
+    }
+
+    @Test
+    public void testGetByID_withValidID() throws Exception{
         Long validID = 1L;
+        Student student = getStudent();
+        when(studentRepository.existsById(any())).thenReturn(true);
+        when(studentRepository.getById(any())).thenReturn(student);
 
-        Optional<Student> actual = studentService.getOneByID(validID);
+        Student actual = studentService.getOneByID(validID);
 
-        assertTrue(actual.isPresent());
+        assertThat(actual.getEmail()).isEqualTo(student.getEmail());
     }
 
     @Test
     public void testGetByID_withNullID() {
-        Optional<Student> actual = studentService.getOneByID(null);
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentService.getOneByID(null);
+        });
+    }
 
-        assertTrue(actual.isEmpty());
+    @Test
+    public void testGetByID_doesntExistID() {
+        Student student = getStudent();
+        when(studentRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class, () -> {
+            studentService.getOneByID(student.getId());
+        });
     }
 
     @Test
     public void testGetAll() {
-        int expectedLength = 3;
+        when(studentRepository.findAll()).thenReturn(getListOfStudents());
 
-        List<Student> studentList = studentService.getAll();
+        final List<Student> allStudents = studentService.getAll();
 
-        assertEquals(expectedLength, studentList.size());
+        assertThat(allStudents.size()).isEqualTo(3);
+        assertThat(allStudents.get(0).getFirstName()).isEqualTo("Tea");
+    }
+
+    private List<Student> getListOfStudents() {
+        List<Student> studentList = new ArrayList<>();
+        Long idIterator = 1L;
+        for (int i = 0; i < 3; i++) {
+            Student student = getStudent();
+            student.setId(idIterator);
+            studentList.add(student);
+            idIterator++;
+        }
+        return studentList;
     }
 
     @Test
-    public void testUpdate_withValidEntries(){
-        Student student = new Student();
-        student.setLastName("Candle");
-        student.setFirstName("Tea");
-        student.setEmail("cant@outlook.com");
-        student.setPassword("cantPass");
-        student.setDepartment("info");
-        Long validID = 2L;
+    public void testUpdate_withValidEntries() throws Exception {
+        Student student = getStudent();
+        when(studentRepository.existsById(any())).thenReturn(true);
+        when(studentRepository.save(any())).thenReturn(student);
 
-        Optional<Student> actual = studentService.update(student, validID);
+        Student actual = studentService.update(student, student.getId());
 
-        assertTrue(actual.isPresent());
+        assertThat(actual.getEmail()).isEqualTo(student.getEmail());
     }
 
     @Test
-    public void testUpdate_withNullEntries() {
-        Student student = new Student();
-        student.setLastName("Candle");
-        student.setFirstName("Tea");
-        student.setEmail("cant@outlook.com");
-        student.setPassword("cantPass");
-        student.setDepartment("info");
+    public void testUpdate_withNullID() {
+        Student student = getStudent();
 
-        Optional<Student> actual = studentService.update(student, null);
-
-        assertTrue(actual.isEmpty());
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentService.update(student, null);
+        });
     }
 
     @Test
-    public void testDelete_withValidID() {
-        Long validId = 1L;
-
-        boolean actual = studentService.deleteByID(validId);
-
-        assertTrue(actual);
+    public void testUpdate_withNullStudent() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentService.update(null, 1L);
+        });
     }
+
+    @Test
+    public void testUpdate_doesntExistID() {
+        Student student = getStudent();
+        when(studentRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class, () -> {
+            studentService.update(student, student.getId());
+        });
+    }
+
+    @Test
+    public void testDelete_withValidID() throws Exception{
+        Long id = 1L;
+        when(studentRepository.existsById(any())).thenReturn(true);
+        doNothing().when(studentRepository).deleteById(any());
+
+        studentService.deleteByID(id);
+
+        verify(studentRepository, times(1)).deleteById(any());
+    }
+
 
     @Test
     public void testDelete_withNullID() {
-        boolean actual = studentService.deleteByID(null);
-
-        assertFalse(actual);
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentService.deleteByID(null);
+        });
     }
 
     @Test
-    public void testFindStudentByEmailAndPassword() {
-       String email = "jscotty@gmail.com";
-       String password = "rockrocks";
+    public void testDelete_doesntExistID() {
+        Long id = 1L;
+        when(studentRepository.existsById(any())).thenReturn(false);
 
-       Student student = studentRepository.findStudentByEmailAndPassword(email, password);
-       String actual = student.getFirstName();
-
-       assertEquals(actual, "Jordan");
+        assertThrows(IdDoesNotExistException.class, () -> {
+            studentService.deleteByID(id);
+        });
     }
 
     @Test
-    public void testExistsByEmailAndPassword_withValidEntries() {
-        String email = "jscotty@gmail.com";
-        String password = "rockrocks";
+    public void testStudentByEmailAndPassword_withValidEntries() throws EmailAndPasswordDoesNotExistException {
+        Student student = getStudent();
+        when(studentRepository.existsByEmailAndPassword(any(), any()))
+                .thenReturn(true);
+        when(studentRepository.findStudentByEmailAndPassword(any(), any()))
+                .thenReturn(student);
 
-        boolean actual = studentRepository.existsByEmailAndPassword(email, password);
+        Student actual = studentService.getOneByEmailAndPassword(student.getEmail(), student.getPassword());
 
-        assertTrue(actual);
+        assertThat(actual.getFirstName()).isEqualTo(student.getFirstName());
     }
 
     @Test
-    public void testExistsByEmailAndPassword_withNullEntries() {
-        boolean actual = studentRepository.existsByEmailAndPassword(null, null);
+    public void testStudentByEmailAndPassword_withNullEmail() {
+        Student student = getStudent();
 
-        assertFalse(actual);
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentService.getOneByEmailAndPassword(null, student.getPassword());
+        });
     }
 
     @Test
-    public void testGetOneByEmailAndPassword_withValidEntries() {
-        String email = "jscotty@gmail.com";
-        String password = "rockrocks";
+    public void testStudentByEmailAndPassword_withNullPassword() {
+        Student student = getStudent();
 
-        Optional<Student> actual = studentService.getOneByEmailAndPassword(email, password);
-
-        assertTrue(actual.isPresent());
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentService.getOneByEmailAndPassword(student.getEmail(), null);
+        });
     }
 
     @Test
-    public void testGetOneByEmailAndPassword_withNullEntries() {
-        Optional<Student> actual = studentService.getOneByEmailAndPassword(null, null);
+    public void testStudentByEmailAndPassword_doesntExistEmailAndPassword() {
+        Student student = getStudent();
+        when(studentRepository.existsByEmailAndPassword(any(), any())).thenReturn(false);
 
-        assertTrue(actual.isEmpty());
+        assertThrows(EmailAndPasswordDoesNotExistException.class, () -> {
+            studentService.getOneByEmailAndPassword(student.getEmail(), student.getPassword());
+        });
     }
 
 }

@@ -1,9 +1,9 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.dto.ValidationCurriculum;
-import com.gestionnaire_de_stage.service.AuthService;
 import com.gestionnaire_de_stage.service.ManagerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +21,9 @@ import java.util.Map;
 @CrossOrigin
 public class ManagerController {
 
-    private final AuthService authService;
-
     private final ManagerService managerService;
 
-    public ManagerController(AuthService authService, ManagerService managerService) {
-        this.authService = authService;
+    public ManagerController(ManagerService managerService) {
         this.managerService = managerService;
     }
 
@@ -35,15 +32,17 @@ public class ManagerController {
         HttpStatus status = HttpStatus.OK;
         Manager manager = null;
         try{
-            manager = authService.loginManager(email, password);
+            manager = managerService.getOneByEmailAndPassword(email, password);
         }catch (RuntimeException re){
             status = HttpStatus.BAD_REQUEST;
+        } catch (EmailAndPasswordDoesNotExistException e) {
+            e.printStackTrace();
         }
         return ResponseEntity.status(status).body(manager);
     }
 
     @PostMapping("/validate_curriculum")
-    public ResponseEntity<Boolean> validateCurriculum(@Valid @RequestBody ValidationCurriculum validationCurriculum){
+    public ResponseEntity<Boolean> validateCurriculum(@Valid @RequestBody ValidationCurriculum validationCurriculum) throws Exception {
         boolean validated =  managerService.validateCurriculum(validationCurriculum.isValid(), validationCurriculum.getId());
         return ResponseEntity.status(validated ? HttpStatus.OK : HttpStatus.BAD_REQUEST).body(validated);
     }

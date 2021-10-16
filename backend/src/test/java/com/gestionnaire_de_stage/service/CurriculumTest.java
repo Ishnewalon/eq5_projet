@@ -31,10 +31,10 @@ public class CurriculumTest {
     private StudentService studentService;
 
     @Test
-    public void testConvertMultipartFileToCurriculum_WithValidData() throws IOException {
+    public void testConvertMultipartFileToCurriculum_WithValidData() throws IOException, Exception {
         Student student = new Student();
         MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain","some xml".getBytes());
-        when(studentService.getOneByID(any())).thenReturn(Optional.of(student));
+       // when(studentService.getOneByID(any())).thenReturn(Optional.of(student));
 
         Optional<Curriculum> actual = curriculumService.convertMultipartFileToCurriculum(file, student.getId());
 
@@ -42,10 +42,10 @@ public class CurriculumTest {
     }
 
     @Test
-    public void testConvertMultipartFileToCurriculum_WithInvalidData() throws IOException {
+    public void testConvertMultipartFileToCurriculum_WithInvalidData() throws IOException, Exception {
         Student student = new Student();
         MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain","some xml".getBytes());
-        when(studentService.getOneByID(any())).thenReturn(Optional.empty());
+      //  when(studentService.getOneByID(any())).thenReturn(Optional.empty());
 
         Optional<Curriculum> actual = curriculumService.convertMultipartFileToCurriculum(file, student.getId());
 

@@ -57,7 +57,7 @@ public class StudentControllerTest {
         student.setPostalCode("H5N 9F2");
         student.setMatricule("1740934");
 
-        when(studentService.create(student)).thenReturn(Optional.of(student));
+    //    when(studentService.create(student)).thenReturn(Optional.of(student));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/student/signup")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -72,7 +72,7 @@ public class StudentControllerTest {
     public void testStudentSignUp_withNullEntries() throws Exception {
         Student student = null;
 
-        when(studentService.create(student)).thenReturn(Optional.empty());
+   //     when(studentService.create(student)).thenReturn(Optional.empty());
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/student/signup")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -92,7 +92,7 @@ public class StudentControllerTest {
         Student student = studentLogin();
         String email = "clip@gmail.com";
         String password = "thiswilldo";
-        when(studentService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(student));
+  //      when(studentService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(student));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/clip@gmail.com/thiswilldo")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -107,7 +107,7 @@ public class StudentControllerTest {
     public void testStudentLogin_withNullEntries() throws Exception {
         String email = null;
         String password = null;
-        when(studentService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.empty());
+   //     when(studentService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.empty());
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/null/null")
                 .contentType(MediaType.APPLICATION_JSON))

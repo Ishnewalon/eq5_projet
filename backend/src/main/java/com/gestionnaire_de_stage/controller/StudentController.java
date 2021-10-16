@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import com.gestionnaire_de_stage.service.StudentService;
@@ -36,9 +37,13 @@ public class StudentController {
                     .badRequest()
                     .body(new ResponseMessage("Erreur: Ce courriel existe deja!"));
         }
-        Optional<Student> opt = studentService.create(student);
-        Student student1 = opt.get();
-
+        Student student1 = null;
+        try {
+            student1 = studentService.create(student);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         return new ResponseEntity<>(student1, HttpStatus.CREATED);
     }
 
@@ -55,10 +60,10 @@ public class StudentController {
     }
 
     @GetMapping("/{email}/{password}")
-    public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
-        Optional<Student> student = studentService.getOneByEmailAndPassword(email, password);
-        if (student.isPresent()) {
-            return ResponseEntity.ok(student.get());
+    public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) throws EmailAndPasswordDoesNotExistException {
+        Student student = studentService.getOneByEmailAndPassword(email, password);
+        if (student != null) {
+            return ResponseEntity.ok(student);
         }
         return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
     }
