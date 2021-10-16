@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.service.CurriculumService;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class CurriculumController {
         Optional<Curriculum> curriculum;
         try {
             curriculum = curriculumService.convertMultipartFileToCurriculum(file, studentId);
-        } catch (IOException e) {
+        } catch (IOException | IdDoesNotExistException e) {
             return ResponseEntity.internalServerError().body(new ResponseMessage("IO ERROR: Check file integrity!"));
         }
 

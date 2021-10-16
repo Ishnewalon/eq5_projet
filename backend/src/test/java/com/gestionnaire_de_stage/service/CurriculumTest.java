@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
@@ -31,10 +32,10 @@ public class CurriculumTest {
     private StudentService studentService;
 
     @Test
-    public void testConvertMultipartFileToCurriculum_WithValidData() throws IOException, Exception {
+    public void testConvertMultipartFileToCurriculum_WithValidData() throws IOException, IdDoesNotExistException {
         Student student = new Student();
         MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain","some xml".getBytes());
-       // when(studentService.getOneByID(any())).thenReturn(Optional.of(student));
+        when(studentService.getOneByID(any())).thenReturn(student);
 
         Optional<Curriculum> actual = curriculumService.convertMultipartFileToCurriculum(file, student.getId());
 
@@ -42,10 +43,10 @@ public class CurriculumTest {
     }
 
     @Test
-    public void testConvertMultipartFileToCurriculum_WithInvalidData() throws IOException, Exception {
+    public void testConvertMultipartFileToCurriculum_WithInvalidData() throws IOException, IdDoesNotExistException {
         Student student = new Student();
         MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain","some xml".getBytes());
-      //  when(studentService.getOneByID(any())).thenReturn(Optional.empty());
+        when(studentService.getOneByID(any())).thenReturn(null);
 
         Optional<Curriculum> actual = curriculumService.convertMultipartFileToCurriculum(file, student.getId());
 

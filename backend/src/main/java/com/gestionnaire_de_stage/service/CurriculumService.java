@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
@@ -23,8 +24,7 @@ public class CurriculumService {
     }
 
 
-    public Optional<Curriculum> convertMultipartFileToCurriculum(MultipartFile file, Long studentId) throws IOException {
-        try {
+    public Optional<Curriculum> convertMultipartFileToCurriculum(MultipartFile file, Long studentId) throws IOException, IdDoesNotExistException {
             Student student = studentService.getOneByID(studentId);
             if (student != null) {
                 String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -37,10 +37,6 @@ public class CurriculumService {
                 );
                 return Optional.of(curriculum);
             }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
         return Optional.empty();
     }
 
