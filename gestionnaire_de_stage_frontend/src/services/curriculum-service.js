@@ -1,4 +1,4 @@
-import {urlBackend} from "./serviceUtils";
+import {methods, requestInit, urlBackend} from "./serviceUtils";
 
 export async function uploadFile(file, id) {
     let formData = new FormData();
@@ -15,4 +15,17 @@ export async function uploadFile(file, id) {
             // return success
         }
     )
+}
+
+export async function getAllStudents(){
+    const response = await fetch(`${urlBackend}/student`, requestInit(methods.GET));
+    return await response.json();
+}
+
+export async function validateCV(file){
+    const response = await fetch(`${urlBackend}/validate_curriculum`, requestInit(methods.POST, file));
+    return await response.json();
+}
+
+export default class CurriculumService {
 }
