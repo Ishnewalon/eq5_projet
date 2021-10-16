@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.ManagerAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
@@ -194,6 +195,47 @@ public class ManagerServiceTest {
             managerService.deleteByID(id);
         });
     }
+
+    @Test
+    public void testGetOneByEmailAndPassword_withValidEntries() throws EmailAndPasswordDoesNotExistException {
+        Manager manager = getManager();
+        when(managerRepository.existsByEmailAndPassword(any(), any()))
+                .thenReturn(true);
+        when(managerRepository.findManagerByEmailAndPassword(any(), any()))
+                .thenReturn(manager);
+
+        Manager actual = managerService.getOneByEmailAndPassword(manager.getEmail(), manager.getPassword());
+
+        assertThat(actual.getFirstName()).isEqualTo(manager.getFirstName());
+    }
+
+    @Test
+    public void testGetOneByEmailAndPassword_withNullEmail() {
+        Manager manager = getManager();
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            managerService.getOneByEmailAndPassword(null, manager.getPassword());
+        });
+    }
+
+    @Test
+    public void testGetOneByEmailAndPassword_withNullPassword() {
+        Manager manager = getManager();
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            managerService.getOneByEmailAndPassword(manager.getEmail(), null);
+        });
+    }
+
+    @Test
+    public void testGetOneByEmailAndPassword_doesntExistEmailAndPassword() {
+        Manager manager = getManager();
+        when(managerRepository.existsByEmailAndPassword(any(), any())).thenReturn(false);
+
+        assertThrows(EmailAndPasswordDoesNotExistException.class, () -> {
+            managerService.getOneByEmailAndPassword(manager.getEmail(), manager.getPassword());
+        });
+    }
  /*
     private Student getStudent() {
         Student student = new Student();
@@ -208,62 +250,6 @@ public class ManagerServiceTest {
         student.setPostalCode("H5N 9F2");
         student.setMatricule("6473943");
         return student;
-    }
-
-
-    @Test
-    @DisplayName("test chercher un manager par email et mot de passe")
-    public void testFindManagerByEmailAndPassword() {
-        String email = "oussamakably@gmail.com";
-        String password = "Test1234";
-
-        Optional<Manager> manager = managerRepository.findManagerByEmailAndPassword(email, password);
-        assertTrue(manager.isPresent());
-        Manager m = null;
-        try{
-            m = manager.orElseThrow();
-            assertEquals(m.getFirstName(), "Oussama");
-        }catch (Exception e){
-            fail(e);
-        }
-    }
-
-    @Test
-    @DisplayName("test manager existByEmailAndPassword avec des données valides")
-    public void testExistsByEmailAndPassword_withValidEntries() {
-        String email = "oussamakably@gmail.com";
-        String password = "Test1234";
-
-        boolean actual = managerRepository.findManagerByEmailAndPassword(email, password).isPresent();
-
-        assertTrue(actual);
-    }
-
-    @Test
-    @DisplayName("test manager existByEmailAndPassword du repository avec des données invalides")
-    public void testExistsByEmailAndPassword_withNullEntries() {
-        boolean actual = managerRepository.findManagerByEmailAndPassword(null, null).isPresent();
-
-        assertFalse(actual);
-    }
-
-    @Test
-    @DisplayName("test manager getOneByEmailAndPassword du repository avec des données valides")
-    public void testGetOneByEmailAndPassword_withValidEntries() {
-        String email = "oussamakably@gmail.com";
-        String password = "Test1234";
-
-        Optional<Manager> actual = managerService.getOneByEmailAndPassword(email, password);
-
-        assertTrue(actual.isPresent());
-    }
-
-    @Test
-    @DisplayName("test manager getOneByEmailAndPassword avec des données invalides")
-    public void testGetOneByEmailAndPassword_withNullEntries() {
-        Optional<Manager> actual = managerService.getOneByEmailAndPassword(null, null);
-
-        assertTrue(actual.isEmpty());
     }
 
     @Test

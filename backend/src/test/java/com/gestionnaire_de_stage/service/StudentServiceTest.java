@@ -186,9 +186,9 @@ public class StudentServiceTest {
     @Test
     public void testStudentByEmailAndPassword_withValidEntries() throws EmailAndPasswordDoesNotExistException {
         Student student = getStudent();
-        when(studentRepository.existsByEmailAndPassword(student.getEmail(), student.getPassword()))
+        when(studentRepository.existsByEmailAndPassword(any(), any()))
                 .thenReturn(true);
-        when(studentRepository.findStudentByEmailAndPassword(student.getEmail(), student.getPassword()))
+        when(studentRepository.findStudentByEmailAndPassword(any(), any()))
                 .thenReturn(student);
 
         Student actual = studentService.getOneByEmailAndPassword(student.getEmail(), student.getPassword());

@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.ManagerAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Manager;
@@ -61,7 +62,12 @@ public class ManagerService {
         managerRepository.deleteById(aLong);
     }
 
-    public Optional<Manager> getOneByEmailAndPassword(String email, String password) {
+    public Manager getOneByEmailAndPassword(String email, String password) throws EmailAndPasswordDoesNotExistException {
+        Assert.isTrue(email != null, "Le courriel est null");
+        Assert.isTrue(password != null, "Le mot de passe est null");
+        if (!isEmailAndPasswordValid(email, password)) {
+            throw new EmailAndPasswordDoesNotExistException();
+        }
         return managerRepository.findManagerByEmailAndPassword(email, password);
     }
 
@@ -71,6 +77,10 @@ public class ManagerService {
 
     private boolean isIDValid(Long id) {
         return managerRepository.existsById(id);
+    }
+
+    private boolean isEmailAndPasswordValid(String email, String password) {
+        return managerRepository.existsByEmailAndPassword(email, password);
     }
 
     public boolean validateCurriculum(boolean valid, long id) throws IdDoesNotExistException {

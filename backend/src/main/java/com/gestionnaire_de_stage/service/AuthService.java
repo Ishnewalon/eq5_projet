@@ -12,7 +12,7 @@ public class AuthService {
         this.managerService = managerService;
     }
 
-    public Manager loginManager(String email, String password){
+/*    public Manager loginManager(String email, String password){
         return managerService.getOneByEmailAndPassword(email, password).orElse(null);
-    }
+    }*/
 }

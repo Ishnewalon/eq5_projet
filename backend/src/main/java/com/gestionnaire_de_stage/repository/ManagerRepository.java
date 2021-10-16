@@ -9,6 +9,8 @@ import javax.validation.constraints.NotBlank;
 import java.util.Optional;
 
 public interface ManagerRepository extends JpaRepository<Manager, Long> {
-    Optional<Manager> findManagerByEmailAndPassword(@NotBlank @Email String email,@NotBlank String password);
+
+    Manager findManagerByEmailAndPassword(String email, String password);
     boolean existsByEmail(String email);
+    boolean existsByEmailAndPassword(String email, String password);
 }

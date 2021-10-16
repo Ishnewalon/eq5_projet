@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.dto.ValidationCurriculum;
 import com.gestionnaire_de_stage.service.AuthService;
@@ -35,9 +36,11 @@ public class ManagerController {
         HttpStatus status = HttpStatus.OK;
         Manager manager = null;
         try{
-            manager = authService.loginManager(email, password);
+            manager = managerService.getOneByEmailAndPassword(email, password);
         }catch (RuntimeException re){
             status = HttpStatus.BAD_REQUEST;
+        } catch (EmailAndPasswordDoesNotExistException e) {
+            e.printStackTrace();
         }
         return ResponseEntity.status(status).body(manager);
     }

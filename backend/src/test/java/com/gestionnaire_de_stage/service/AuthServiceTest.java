@@ -30,14 +30,14 @@ public class AuthServiceTest {
         return manager;
     }
 
-    @Test
+/*    @Test
     @Order(1)
     @DisplayName("Test login invalide pour Manager")
     public void test_managerLogin_invalid(){
         String email = "";
         String password = "";
         assertNull(authService.loginManager(email, password));
-    }
+    }*/
 
  /*   @Test
     @Order(2)
