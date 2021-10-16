@@ -1,7 +1,7 @@
 import './TeleverserCv.css'
 import React, {useState} from "react";
 import Dropzone from "react-dropzone";
-import {uploadFile} from "../../services/curriculum-service";
+import CurriculumService,{ uploadFile } from "../../services/curriculum-service";
 
 export default function TeleverserCv() {
     const [fileNames, setFileNames] = useState([]);
