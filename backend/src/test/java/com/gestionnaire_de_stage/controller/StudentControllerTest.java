@@ -1,6 +1,8 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import com.gestionnaire_de_stage.service.MonitorService;
@@ -16,10 +18,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -123,6 +128,22 @@ public class StudentControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(actualStudent).isEqualTo(null);
     }
+
+    // BON TEST !!!!!!!!!!!!!
+    @Test
+    public void testGetAllStudents() throws Exception {
+        List<Student> list = Arrays.asList(new Student(), new Student());
+        when(studentService.getAll()).thenReturn(Arrays.asList(new Student(), new Student()));
+
+        MvcResult mvcResult = mockMvc.perform(get("/student")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        var actual = mvcResult.getResponse().getContentAsString();
+        assertThat(new ObjectMapper().readValue(actual,
+                new TypeReference<List<Student>>(){})).isEqualTo(list);
+
+    }
+
 
     private Student studentLogin() {
         Student student = new Student();

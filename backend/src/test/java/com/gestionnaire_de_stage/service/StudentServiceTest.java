@@ -228,7 +228,7 @@ public class StudentServiceTest {
 
     @Test
     public void testGetAllStudents(){
-        when(studentRepository.findAll()).thenReturn(Arrays.asList(new Student(), new Student(), new Student()));
+        when(studentRepository.findAll()).thenReturn(getListOfStudents());
 
         List<Student> studentList = studentService.getAll();
 
