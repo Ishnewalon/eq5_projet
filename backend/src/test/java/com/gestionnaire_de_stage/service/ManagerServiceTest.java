@@ -13,16 +13,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,7 +32,7 @@ public class ManagerServiceTest {
     private ManagerRepository managerRepository;
 
     @Mock
-    private StudentRepository studentRepository;
+    private StudentService studentService;
 
     @Test
     public void testCreate_withValidManager() throws ManagerAlreadyExistsException {
@@ -237,8 +230,9 @@ public class ManagerServiceTest {
         });
     }
 
-  /*  private Student getStudent() {
+    private Student getStudent() {
         Student student = new Student();
+        student.setId(1L);
         student.setLastName("Scott");
         student.setFirstName("Jordan");
         student.setEmail("jscotty@gmail.com");
@@ -257,36 +251,21 @@ public class ManagerServiceTest {
         Student student = getStudent();
         Student student1 = getStudent();
         student1.setCurriculumValidated(true);
-        when(studentRepository.existsById(any())).thenReturn(true);
-        when(studentRepository.getById(any())).thenReturn(student);
-        when(studentRepository.save(any())).thenReturn(student1);
+        when(studentService.getOneByID(any())).thenReturn(student);
+        when(studentService.update(any(),any())).thenReturn(student1);
 
         boolean actual = managerService.validateCurriculum(true, student.getId());
 
         assertThat(actual).isTrue();
-    }*/
-
-/*    @Test
-    @DisplayName("test manager validate curriculum valid data")
-    public void test_validateCurriculum_valid() throws Exception {
-        AtomicReference<Student> student = new AtomicReference<>(getStudent());
-
-        assertDoesNotThrow(() -> student.set(studentRepository.save(student.get())));
-
-     //   assertTrue(last_id > 0);
-        assertTrue(managerService.validateCurriculum(true, student.get().getId()));
-        assertNotNull(student);
-        assertNotNull(student.get());
-        assertTrue(student.get().isCurriculumValidated());
     }
+
+/*
 
     @Test
     @SuppressWarnings("ConstantConditions")
     @DisplayName("test manager validate curriculum invalid data")
     public void test_validateCurriculum_invalid() throws Exception {
         assertThrows(Exception.class,() -> studentRepository.save(null));
-
-     //   assertTrue(last_id > 0);
 
         assertFalse(managerService.validateCurriculum(true, 1));
     }*/
