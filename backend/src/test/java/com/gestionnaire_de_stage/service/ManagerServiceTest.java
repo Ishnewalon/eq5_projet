@@ -127,6 +127,45 @@ public class ManagerServiceTest {
         }
         return managerList;
     }
+
+    @Test
+    public void testUpdate_withValidEntries() throws  IdDoesNotExistException {
+        Manager manager = getManager();
+        manager.setId(2L);
+        when(managerRepository.existsById(any())).thenReturn(true);
+        when(managerRepository.save(any())).thenReturn(manager);
+
+        Manager actual = managerService.update(manager, manager.getId());
+
+        assertThat(actual.getEmail()).isEqualTo(manager.getEmail());
+    }
+
+    @Test
+    public void testUpdate_withNullID() {
+        Manager manager = getManager();
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            managerService.update(manager, null);
+        });
+    }
+
+    @Test
+    public void testUpdate_withNullStudent() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            managerService.update(null, 1L);
+        });
+    }
+
+    @Test
+    public void testUpdate_doesntExistID() {
+        Manager manager = getManager();
+        manager.setId(1L);
+        when(managerRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class, () -> {
+            managerService.update(manager, manager.getId());
+        });
+    }
  /*
     private Student getStudent() {
         Student student = new Student();
@@ -142,36 +181,7 @@ public class ManagerServiceTest {
         student.setMatricule("6473943");
         return student;
     }
-    @Test
-    @DisplayName("test modifier un manager par des données valides")
-    public void testUpdate_withValidEntries() {
-        Manager manager = getDummyManager();
-        Long validID = 2L;
 
-        Optional<Manager> actual = Optional.empty();
-        try {
-            actual = managerService.update(manager, validID);
-        } catch (Exception e) {
-            fail(e);
-        }
-
-        assertTrue(actual.isPresent());
-    }
-
-    @Test
-    @DisplayName("test modifier un manager par des données vides")
-    public void testUpdate_withNullEntries() {
-        Manager manager = getDummyManager();
-
-        Optional<Manager> actual = Optional.empty();
-        try {
-            actual = managerService.update(manager, null);
-        } catch (Exception e) {
-            fail(e);
-        }
-
-        assertTrue(actual.isEmpty());
-    }
 
     @Test
     @DisplayName("test supprimer un manager avec un id valide")

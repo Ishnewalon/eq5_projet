@@ -43,13 +43,14 @@ public class ManagerService {
         return managerRepository.findAll();
     }
 
-    public Optional<Manager> update(Manager manager, Long id) throws ValidationException {
-        if (id != null && manager != null) {
-            manager.setId(id);
-            return Optional.of(managerRepository.save(manager));
-        } else {
-            return Optional.empty();
+    public Manager update(Manager manager, Long aLong) throws IdDoesNotExistException {
+        Assert.isTrue(aLong != null, "ID est null");
+        Assert.isTrue(manager != null, "Le gestionnaire est null");
+        if (!isIDValid(aLong)) {
+            throw new IdDoesNotExistException();
         }
+        manager.setId(aLong);
+        return managerRepository.save(manager);
     }
 
     public Optional<Manager> getOneByEmailAndPassword(String email, String password) {
