@@ -1,10 +1,16 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.ManagerAlreadyExistsException;
+import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.ManagerRepository;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,23 +23,32 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
-@DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = JpaRepository.class))
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 public class ManagerServiceTest {
 
-    @Autowired
-    private ManagerRepository managerRepository;
-
-    @Autowired
+    @InjectMocks
     private ManagerService managerService;
 
-    @Autowired
-    private StudentRepository studentRepository;
+    @Mock
+    private ManagerRepository managerRepository;
 
-    private long last_id;
+   /* @Mock
+    private StudentRepository studentRepository;*/
 
-    private Manager getDummyManager() {
+    @Test
+    public void testCreate_withValidManager() throws ManagerAlreadyExistsException {
+        Manager manager = getManager();
+        when(managerRepository.save(any())).thenReturn(manager);
+
+        Manager actual = managerService.create(manager);
+
+        assertThat(actual.getEmail()).isEqualTo(manager.getEmail());
+    }
+
+    private Manager getManager() {
         Manager manager = new Manager();
         manager.setPassword("Test1234");
         manager.setEmail("oussamakably@gmail.com");
@@ -43,7 +58,23 @@ public class ManagerServiceTest {
         return manager;
     }
 
-    private Student getDummyStudent() {
+    @Test
+    public void testCreate_withNullManager() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            managerService.create(null);
+        });
+    }
+
+    @Test
+    public void testCreate_alreadyExistsManager() {
+        when(managerRepository.existsByEmail(any())).thenReturn(true);
+
+        assertThrows(ManagerAlreadyExistsException.class, () -> {
+            managerService.create(getManager());
+        });
+    }
+
+    private Student getStudent() {
         Student student = new Student();
         student.setLastName("Scott");
         student.setFirstName("Jordan");
@@ -57,51 +88,11 @@ public class ManagerServiceTest {
         student.setMatricule("6473943");
         return student;
     }
+ /*
 
 
-    @BeforeEach
-    public void init() {
-        last_id = managerRepository.save(getDummyManager()).getId();
-    }
 
-    @AfterEach
-    public void after() {
-        managerRepository.deleteAll();
-    }
 
-    @Test
-    @DisplayName("Test findAll pour ManagerRepository")
-    public void testFindall() {
-        Manager manager = getDummyManager();
-        manager.setId(1L);
-        assertThat(managerRepository.findAll()).hasSize(1).contains(manager);
-    }
-
-    @Test
-    @DisplayName("Test créer un manager null")
-    public void testCreate_withNullManager() throws Exception {
-        Optional<Manager> manager = Optional.empty();
-        try {
-            manager = managerService.create(null);
-        } catch (Exception e) {
-            fail(e);
-        }
-        assertTrue(manager.isEmpty());
-    }
-
-    @Test
-    @DisplayName("test créer un manager valide")
-    public void testCreate_withValidManager() {
-        Optional<Manager> manager = Optional.empty();
-        Manager dummy = getDummyManager();
-        dummy.setId(1L);
-        try {
-            manager = managerService.create(dummy);
-        } catch (Exception e) {
-            fail(e);
-        }
-        assertFalse(manager.isEmpty());
-    }
 
     @Test
     @DisplayName("test chercher par id valide un manager")
@@ -259,4 +250,6 @@ public class ManagerServiceTest {
 
         assertFalse(managerService.validateCurriculum(true, 1));
     }
+
+  */
 }

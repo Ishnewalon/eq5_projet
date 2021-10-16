@@ -10,4 +10,5 @@ import java.util.Optional;
 
 public interface ManagerRepository extends JpaRepository<Manager, Long> {
     Optional<Manager> findManagerByEmailAndPassword(@NotBlank @Email String email,@NotBlank String password);
+    boolean existsByEmail(String email);
 }

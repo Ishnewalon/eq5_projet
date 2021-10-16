@@ -39,7 +39,7 @@ public class AuthServiceTest {
         assertNull(authService.loginManager(email, password));
     }
 
-    @Test
+ /*   @Test
     @Order(2)
     @DisplayName("Test login valide pour Manager")
     public void test_managerLogin_valid(){
@@ -55,6 +55,6 @@ public class AuthServiceTest {
 
         assertFalse(manager.isEmpty());
         assertNotNull(authService.loginManager(email, password));
-    }
+    }*/
 
 }
