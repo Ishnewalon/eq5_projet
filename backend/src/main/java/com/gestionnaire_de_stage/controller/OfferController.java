@@ -83,13 +83,18 @@ public class OfferController {
 
     @PostMapping("/manager/add")
     public ResponseEntity<?> addOfferManager(@Valid @RequestBody OfferDTO offerDTO) {
-        Optional<Manager> manager = managerService.getOneByID(offerDTO.getCreator_id());
+        Manager manager = null;
+        try {
+            manager = managerService.getOneByID(offerDTO.getCreator_id());
+        } catch (IdDoesNotExistException e) {
+            e.printStackTrace();
+        }
 
-        if (manager.isEmpty()) {
+        if (manager == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur: gestionnaire non existant!");
         } else {
             Offer offer = offerService.mapToOffer(offerDTO);
-            offer.setCreator(manager.get());
+            offer.setCreator(manager);
             Optional<Offer> optionalOffer = offerService.create(offer);
             return new ResponseEntity<>(optionalOffer.isPresent(), HttpStatus.CREATED);
         }

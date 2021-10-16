@@ -31,10 +31,12 @@ public class ManagerService {
         return managerRepository.save(manager);
     }
 
-    public Optional<Manager> getOneByID(Long id) {
-        if (id == null)
-            return Optional.empty();
-        return managerRepository.findById(id);
+    public Manager getOneByID(Long aLong) throws IdDoesNotExistException {
+        Assert.isTrue(aLong != null, "Id est null");
+        if (!isIDValid(aLong)) {
+            throw new IdDoesNotExistException();
+        }
+        return managerRepository.getById(aLong);
     }
 
     public List<Manager> getAll() {
@@ -64,6 +66,10 @@ public class ManagerService {
 
     private boolean isNotValid(Manager manager) {
         return manager.getEmail() != null && managerRepository.existsByEmail(manager.getEmail());
+    }
+
+    private boolean isIDValid(Long id) {
+        return managerRepository.existsById(id);
     }
 
     public boolean validateCurriculum(boolean valid, long id) throws IdDoesNotExistException {

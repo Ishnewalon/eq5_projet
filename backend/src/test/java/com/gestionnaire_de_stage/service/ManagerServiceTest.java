@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.ManagerAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Manager;
@@ -74,6 +75,36 @@ public class ManagerServiceTest {
         });
     }
 
+    @Test
+    public void testGetByID_withValidID() throws IdDoesNotExistException {
+        Long validID = 1L;
+        Manager manager = getManager();
+        when(managerRepository.existsById(validID)).thenReturn(true);
+        when(managerRepository.getById(any())).thenReturn(manager);
+
+        Manager actual = managerService.getOneByID(validID);
+
+        assertThat(actual.getEmail()).isEqualTo(manager.getEmail());
+    }
+
+    @Test
+    public void testGetByID_withNullID() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            managerService.getOneByID(null);
+        });
+    }
+
+    @Test
+    public void testGetByID_doesntExistID() {
+        Manager manager = getManager();
+        manager.setId(1L);
+        when(managerRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class, () -> {
+            managerService.getOneByID(manager.getId());
+        });
+    }
+ /*
     private Student getStudent() {
         Student student = new Student();
         student.setLastName("Scott");
@@ -87,29 +118,6 @@ public class ManagerServiceTest {
         student.setPostalCode("H5N 9F2");
         student.setMatricule("6473943");
         return student;
-    }
- /*
-
-
-
-
-
-    @Test
-    @DisplayName("test chercher par id valide un manager")
-    public void testGetByID_withValidID() {
-        Long validID = managerService.getAll().get(0).getId();
-
-        Optional<Manager> actual = managerService.getOneByID(validID);
-
-        assertTrue(actual.isPresent());
-    }
-
-    @Test
-    @DisplayName("test chercher par id null un manager")
-    public void testGetByID_withNullID() {
-        Optional<Manager> actual = managerService.getOneByID(null);
-
-        assertTrue(actual.isEmpty());
     }
 
     @Test
