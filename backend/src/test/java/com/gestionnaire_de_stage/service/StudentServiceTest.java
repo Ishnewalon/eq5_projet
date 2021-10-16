@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
+import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -222,6 +224,15 @@ public class StudentServiceTest {
         assertThrows(EmailAndPasswordDoesNotExistException.class, () -> {
             studentService.getOneByEmailAndPassword(student.getEmail(), student.getPassword());
         });
+    }
+
+    @Test
+    public void testGetAllStudents(){
+        when(studentRepository.findAll()).thenReturn(Arrays.asList(new Student(), new Student(), new Student()));
+
+        List<Student> studentList = studentService.getAll();
+
+        assertThat(studentList.size()).isEqualTo(3);
     }
 
 }
