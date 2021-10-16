@@ -84,22 +84,12 @@ public class ManagerService {
     }
 
     public boolean validateCurriculum(boolean valid, long id) throws IdDoesNotExistException {
-        Student s = null;
-        try {
-  //          s = studentService.getOneByID(id).orElse(null);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        Student student = studentService.getOneByID(id);
+        student.setCurriculumValidated(valid);
 
-        if (s == null)
-            return false;
+        student = studentService.update(student, id);
 
-        s.setCurriculumValidated(valid);
-
-        Student resStudent = studentService.update(s, id);
-
-        return resStudent != null && resStudent.isCurriculumValidated() == valid;
+        return student != null && student.isCurriculumValidated() == valid;
     }
 
 

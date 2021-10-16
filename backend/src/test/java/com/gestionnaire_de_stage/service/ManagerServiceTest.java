@@ -38,8 +38,8 @@ public class ManagerServiceTest {
     @Mock
     private ManagerRepository managerRepository;
 
-   /* @Mock
-    private StudentRepository studentRepository;*/
+    @Mock
+    private StudentRepository studentRepository;
 
     @Test
     public void testCreate_withValidManager() throws ManagerAlreadyExistsException {
@@ -236,8 +236,8 @@ public class ManagerServiceTest {
             managerService.getOneByEmailAndPassword(manager.getEmail(), manager.getPassword());
         });
     }
- /*
-    private Student getStudent() {
+
+  /*  private Student getStudent() {
         Student student = new Student();
         student.setLastName("Scott");
         student.setFirstName("Jordan");
@@ -253,13 +253,27 @@ public class ManagerServiceTest {
     }
 
     @Test
+    public void testValidateCurriculum_withValidCurriculum() throws IdDoesNotExistException {
+        Student student = getStudent();
+        Student student1 = getStudent();
+        student1.setCurriculumValidated(true);
+        when(studentRepository.existsById(any())).thenReturn(true);
+        when(studentRepository.getById(any())).thenReturn(student);
+        when(studentRepository.save(any())).thenReturn(student1);
+
+        boolean actual = managerService.validateCurriculum(true, student.getId());
+
+        assertThat(actual).isTrue();
+    }*/
+
+/*    @Test
     @DisplayName("test manager validate curriculum valid data")
     public void test_validateCurriculum_valid() throws Exception {
-        AtomicReference<Student> student = new AtomicReference<>(getDummyStudent());
+        AtomicReference<Student> student = new AtomicReference<>(getStudent());
 
         assertDoesNotThrow(() -> student.set(studentRepository.save(student.get())));
 
-        assertTrue(last_id > 0);
+     //   assertTrue(last_id > 0);
         assertTrue(managerService.validateCurriculum(true, student.get().getId()));
         assertNotNull(student);
         assertNotNull(student.get());
@@ -272,10 +286,8 @@ public class ManagerServiceTest {
     public void test_validateCurriculum_invalid() throws Exception {
         assertThrows(Exception.class,() -> studentRepository.save(null));
 
-        assertTrue(last_id > 0);
+     //   assertTrue(last_id > 0);
 
         assertFalse(managerService.validateCurriculum(true, 1));
-    }
-
-  */
+    }*/
 }
