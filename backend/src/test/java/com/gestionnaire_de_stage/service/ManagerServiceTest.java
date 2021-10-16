@@ -18,6 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -104,6 +105,28 @@ public class ManagerServiceTest {
             managerService.getOneByID(manager.getId());
         });
     }
+
+    @Test
+    public void testGetAll() {
+        when(managerRepository.findAll()).thenReturn(getListOfManagers());
+
+        final List<Manager> allManagers = managerService.getAll();
+
+        assertThat(allManagers.size()).isEqualTo(3);
+        assertThat(allManagers.get(0).getFirstName()).isEqualTo("Oussama");
+    }
+
+    private List<Manager> getListOfManagers() {
+        List<Manager> managerList = new ArrayList<>();
+        Long idIterator = 1L;
+        for (int i = 0; i < 3; i++) {
+            Manager manager = getManager();
+            manager.setId(idIterator);
+            managerList.add(manager);
+            idIterator++;
+        }
+        return managerList;
+    }
  /*
     private Student getStudent() {
         Student student = new Student();
@@ -119,17 +142,6 @@ public class ManagerServiceTest {
         student.setMatricule("6473943");
         return student;
     }
-
-    @Test
-    @DisplayName("test chercher tous les managers")
-    public void testGetAll() {
-        int expectedLength = 1;
-
-        List<Manager> monitorList = managerService.getAll();
-
-        assertEquals(expectedLength, monitorList.size());
-    }
-
     @Test
     @DisplayName("test modifier un manager par des données valides")
     public void testUpdate_withValidEntries() {
