@@ -22,7 +22,8 @@ public class CurriculumController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadCurriculum(@RequestParam("file") MultipartFile file, @RequestParam("id") Long studentId){
+    public ResponseEntity<ResponseMessage> uploadCurriculum(@RequestParam("file") MultipartFile file,
+                                                            @RequestParam("id") Long studentId){
         Optional<Curriculum> curriculum;
         try {
             curriculum = curriculumService.convertMultipartFileToCurriculum(file, studentId);
@@ -33,7 +34,7 @@ public class CurriculumController {
         if (curriculum.isPresent()) {
             curriculumService.createCurriculum(curriculum.get());
             return ResponseEntity.ok(new ResponseMessage("Success: file created successfully!"));
-        }else{
+        } else {
             return ResponseEntity.badRequest().body(new ResponseMessage("Student Not Found with id: "+studentId));
         }
     }
