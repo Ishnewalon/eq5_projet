@@ -4,7 +4,6 @@ import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.dto.ValidationCurriculum;
-import com.gestionnaire_de_stage.service.AuthService;
 import com.gestionnaire_de_stage.service.ManagerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +21,9 @@ import java.util.Map;
 @CrossOrigin
 public class ManagerController {
 
-    private final AuthService authService;
-
     private final ManagerService managerService;
 
-    public ManagerController(AuthService authService, ManagerService managerService) {
-        this.authService = authService;
+    public ManagerController(ManagerService managerService) {
         this.managerService = managerService;
     }
 
