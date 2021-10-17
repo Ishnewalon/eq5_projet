@@ -62,20 +62,20 @@ public class SupervisorControllerTest {
     public void testSupervisorSignUp_withNullEntries() throws Exception {
         Supervisor supervisor = null;
 
-       // when(supervisorService.create(supervisor)).thenReturn(Optional.empty());
+        when(supervisorService.create(any())).thenReturn(supervisor);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/supervisor/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(supervisor))).andReturn();
-        Student actualStudent = null;
+        Supervisor actualSupervisor = null;
         try {
-            actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+            actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Supervisor.class);
         } catch (Exception ignored) {
 
         }
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(actualStudent).isEqualTo(null);
+        assertThat(actualSupervisor).isEqualTo(null);
     }
 
     @Test
