@@ -82,7 +82,7 @@ public class StudentControllerTest {
             Student student = getStudent();
             String email = "clip@gmail.com";
             String password = "thiswilldo";
-            when(studentService.getOneByEmailAndPassword(email, password)).thenReturn(student);
+            when(studentService.getOneByEmailAndPassword(any(), any())).thenReturn(student);
 
             MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/" + email + "/" + password)
                     .contentType(MediaType.APPLICATION_JSON))

@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
@@ -60,9 +61,8 @@ public class SupervisorControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(supervisor))).andReturn();
 
-        //  var actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), IllegalArgumentException.class);
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        //  assertThat(actualSupervisor).isInstanceOf(IllegalArgumentException.class);
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel ne peut pas etre null");
     }
 
     @Test
@@ -74,51 +74,54 @@ public class SupervisorControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(supervisor))).andReturn();
 
-        //  var actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), SupervisorAlreadyExistsException.class);
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        //  assertThat(actualSupervisor).isInstanceOf(SupervisorAlreadyExistsException.class);
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Ce courriel existe deja!");
     }
 
-    /*
-        @Test
-        public void testSupervisorLogin_withValidEntries() throws Exception {
-            Supervisor supervisor = supervisorLogin();
-            String email = "sinl@gmail.com";
-            String password = "weightofworld";
-            when(supervisorService.getOneByEmailAndPassword(any(),any())).thenReturn(supervisor);
+    @Test
+    public void testSupervisorLogin_withValidEntries() throws Exception {
+        Supervisor supervisor = getSupervisor();
+        String email = "sinl@gmail.com";
+        String password = "weightofworld";
+        when(supervisorService.getOneByEmailAndPassword(any(),any())).thenReturn(supervisor);
 
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
-                    .contentType(MediaType.APPLICATION_JSON))
-                    .andReturn();
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
 
-            var actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Supervisor.class);
-            assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
-            assertThat(actualSupervisor.getLastName()).isEqualTo("Singh");
-        }
+        var actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Supervisor.class);
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualSupervisor.getLastName()).isEqualTo("Singh");
+    }
 
+    @Test
+    public void testSupervisorLogin_withNullEntries() throws Exception {
+        String email = "sinl@gmail.com";
+        String password = "weightofworld";
+        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
 
-        @Test
-        public void testSupervisorLogin_withNullEntries() throws Exception {
-            Supervisor supervisor = null;
-            String email = null;
-            String password = null;
-            when(supervisorService.getOneByEmailAndPassword(any(), any())).thenReturn(null);
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
 
-            //noinspection ConstantConditions
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
-                    .contentType(MediaType.APPLICATION_JSON))
-                    .andReturn();
-            Supervisor actualSupervisor = null;
-            try {
-                actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Supervisor.class);
-            } catch (Exception ignored) {
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas etre null");
+    }
 
-            }
+    @Test
+    public void testSupervisorLogin_withInvalidEntries() throws Exception {
+        String email = "sinl@gmail.com";
+        String password = "weightofworld";
+        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenThrow(EmailAndPasswordDoesNotExistException.class);
 
-            assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-    //        assertThat(actualSupervisor).isNull();
-        }
-        */
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
+    }
+
     private Supervisor getSupervisor() {
         Supervisor supervisor = new Supervisor();
         supervisor.setId(1L);
