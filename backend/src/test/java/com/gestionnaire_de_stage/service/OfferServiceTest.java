@@ -156,6 +156,17 @@ public class OfferServiceTest {
         assertThat(offerService.mapArrayToOfferDTO(getDummyArrayOffer())).isEqualTo(offers);
     }
 
+    @Test
+    public void testFindOfferById(){
+        Offer offer = getDummyOffer();
+        when(offerRepository.findById(any())).thenReturn(Optional.of(offer));
+
+        Optional<Offer> optionalOffer = offerService.findOfferById(offer.getId());
+
+        assertThat(optionalOffer).isPresent();
+        assertThat(optionalOffer.get()).isEqualTo(offer);
+    }
+
     private List<Offer> getDummyArrayOffer() {
         List<Offer> myList = new ArrayList<>();
         for (long i = 0; i < 3; i++) {
