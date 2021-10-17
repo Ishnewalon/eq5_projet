@@ -16,6 +16,6 @@ public class OfferApplication {
     @ManyToOne
     private Offer offer;
 
-    @OneToOne
+    @ManyToOne
     private Curriculum curriculum;
 }

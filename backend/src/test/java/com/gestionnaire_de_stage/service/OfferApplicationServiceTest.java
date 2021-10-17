@@ -40,14 +40,14 @@ class OfferApplicationServiceTest {
         when(curriculumService.getCurriculum(any())).thenReturn(dummyCurriculum);
         when(offerService.findOfferById(any())).thenReturn(Optional.of(dummyOffer));
 
-        Optional<OfferApplication> offerApp = offerApplicationService.create(1L, 1L);
+        Optional<OfferApplication> offerApp = offerApplicationService.create(dummyOffer.getId(), dummyCurriculum.getId());
 
         assertThat(offerApp).isPresent();
         assertThat(offerApp.get()).isEqualTo(dummyOfferApplication);
     }
 
     @Test
-    void testCreate_withNoCurriculum() {
+    void testCreate_withCurriculumNonExistant() {
         Offer dummyOffer = getDummyOffer();
         when(curriculumService.getCurriculum(any())).thenReturn(null);
         when(offerService.findOfferById(any())).thenReturn(Optional.of(getDummyOffer()));
@@ -57,7 +57,7 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    void testCreate_withNoOffer() {
+    void testCreate_withOfferNonExistant() {
         Curriculum dummyCurriculum = getDummyCurriculum();
         when(curriculumService.getCurriculum(any())).thenReturn(dummyCurriculum);
         when(offerService.findOfferById(any())).thenReturn(Optional.empty());
@@ -67,7 +67,7 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    void testCreate_withOfferNull() {
+    void testCreate_withIdOfferNull() {
         Offer dummyOffer = getDummyOffer();
 
         assertThrows(IllegalArgumentException.class, () ->
@@ -75,7 +75,7 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    void testCreate_withCurriculumNull() {
+    void testCreate_withIdCurriculumNull() {
         Curriculum dummyCurriculum = getDummyCurriculum();
 
         assertThrows(IllegalArgumentException.class, () ->

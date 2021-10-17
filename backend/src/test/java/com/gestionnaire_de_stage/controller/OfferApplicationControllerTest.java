@@ -65,7 +65,7 @@ class OfferApplicationControllerTest {
     }
 
     @Test
-    public void testStudentApplyToOfferWithOfferNonExistant() throws Exception {
+    public void testStudentApplyToOffer_withOfferNonExistant() throws Exception {
         // Arrange
         when(offerApplicationService.create(any(), any())).thenThrow(new IdDoesNotExistException());
         // Act
@@ -79,7 +79,7 @@ class OfferApplicationControllerTest {
     }
 
     @Test
-    public void testStudentApplyToOfferWithNoCurriculum() throws Exception {
+    public void testStudentApplyToOffer_withCurriculumNonExistant() throws Exception {
         // Arrange
         when(offerApplicationService.create(any(), any())).thenThrow(new IdDoesNotExistException());
         // Act
@@ -93,7 +93,7 @@ class OfferApplicationControllerTest {
     }
 
     @Test
-    public void testStudentApplyToOfferWithDTOWithNoOfferId() throws Exception {
+    public void testStudentApplyToOffer_withDTOWithNoOfferId() throws Exception {
         // Arrange
         OfferAppDTO dummyOfferAppDto = getDummyOfferAppDto();
         dummyOfferAppDto.setIdOffer(null);
@@ -109,7 +109,7 @@ class OfferApplicationControllerTest {
     }
 
     @Test
-    public void testStudentApplyToOfferWithDTOWithNoCurriculumId() throws Exception {
+    public void testStudentApplyToOffer_withDTOWithNoCurriculumId() throws Exception {
         // Arrange
         OfferAppDTO dummyOfferAppDto = getDummyOfferAppDto();
         dummyOfferAppDto.setIdCurriculum(null);
