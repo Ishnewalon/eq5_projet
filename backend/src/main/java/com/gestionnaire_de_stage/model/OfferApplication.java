@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 @Data
-public class OfferApp {
+public class OfferApplication {
 
     @Id
     private Long id;

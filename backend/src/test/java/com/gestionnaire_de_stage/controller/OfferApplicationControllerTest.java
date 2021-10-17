@@ -6,9 +6,9 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Offer;
-import com.gestionnaire_de_stage.model.OfferApp;
+import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
-import com.gestionnaire_de_stage.service.OfferAppService;
+import com.gestionnaire_de_stage.service.OfferApplicationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -27,19 +27,19 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 
 
-@WebMvcTest(OfferAppController.class)
-class OfferAppControllerTest {
+@WebMvcTest(OfferApplicationController.class)
+class OfferApplicationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private OfferAppService offerAppService;
+    private OfferApplicationService offerApplicationService;
 
     @Test
     public void testStudentApplyToOffer() throws Exception {
         // Arrange
-        when(offerAppService.create(any(), any())).thenReturn(Optional.of(getDummyOfferApp()));
+        when(offerApplicationService.create(any(), any())).thenReturn(Optional.of(getDummyOfferApp()));
         // Act
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -53,7 +53,7 @@ class OfferAppControllerTest {
     @Test
     public void testStudentApplyToOfferAgain() throws Exception {
         // Arrange
-        when(offerAppService.create(any(), any())).thenThrow(new StudentAlreadyAppliedToOfferException());
+        when(offerApplicationService.create(any(), any())).thenThrow(new StudentAlreadyAppliedToOfferException());
         // Act
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -67,7 +67,7 @@ class OfferAppControllerTest {
     @Test
     public void testStudentApplyToOfferWithOfferNonExistant() throws Exception {
         // Arrange
-        when(offerAppService.create(any(), any())).thenThrow(new IdDoesNotExistException());
+        when(offerApplicationService.create(any(), any())).thenThrow(new IdDoesNotExistException());
         // Act
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -81,7 +81,7 @@ class OfferAppControllerTest {
     @Test
     public void testStudentApplyToOfferWithNoCurriculum() throws Exception {
         // Arrange
-        when(offerAppService.create(any(), any())).thenThrow(new IdDoesNotExistException());
+        when(offerApplicationService.create(any(), any())).thenThrow(new IdDoesNotExistException());
         // Act
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -97,7 +97,7 @@ class OfferAppControllerTest {
         // Arrange
         OfferAppDTO dummyOfferAppDto = getDummyOfferAppDto();
         dummyOfferAppDto.setIdOffer(null);
-        when(offerAppService.create(any(), any())).thenThrow(new IllegalArgumentException("Erreur: Le id de l'offre ne peut pas etre null"));
+        when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("Erreur: Le id de l'offre ne peut pas etre null"));
         // Act
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -113,7 +113,7 @@ class OfferAppControllerTest {
         // Arrange
         OfferAppDTO dummyOfferAppDto = getDummyOfferAppDto();
         dummyOfferAppDto.setIdCurriculum(null);
-        when(offerAppService.create(any(), any())).thenThrow(new IllegalArgumentException("Erreur: Le id du curriculum ne peut pas etre null"));
+        when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("Erreur: Le id du curriculum ne peut pas etre null"));
         // Act
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -132,13 +132,13 @@ class OfferAppControllerTest {
         return offerAppDTO;
     }
 
-    private OfferApp getDummyOfferApp() {
-        OfferApp offerAppDTO = new OfferApp();
-        offerAppDTO.setOffer(getDummyOffer());
-        offerAppDTO.setCurriculum(getDummyCurriculum());
-        offerAppDTO.setId(1L);
+    private OfferApplication getDummyOfferApp() {
+        OfferApplication offerApplicationDTO = new OfferApplication();
+        offerApplicationDTO.setOffer(getDummyOffer());
+        offerApplicationDTO.setCurriculum(getDummyCurriculum());
+        offerApplicationDTO.setId(1L);
 
-        return offerAppDTO;
+        return offerApplicationDTO;
     }
 
     private Offer getDummyOffer() {

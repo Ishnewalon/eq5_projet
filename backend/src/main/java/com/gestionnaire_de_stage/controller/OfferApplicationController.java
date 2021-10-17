@@ -4,7 +4,7 @@ import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
-import com.gestionnaire_de_stage.service.OfferAppService;
+import com.gestionnaire_de_stage.service.OfferApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,18 +13,18 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("/applications")
 @CrossOrigin
-public class OfferAppController {
-    private final OfferAppService offerAppService;
+public class OfferApplicationController {
+    private final OfferApplicationService offerApplicationService;
 
-    public OfferAppController(OfferAppService offerAppService) {
-        this.offerAppService = offerAppService;
+    public OfferApplicationController(OfferApplicationService offerApplicationService) {
+        this.offerApplicationService = offerApplicationService;
     }
 
 
     @PostMapping("/apply")
     public ResponseEntity<?> studentApplyToOffer(@RequestBody OfferAppDTO offerAppDTO) {
         try {
-            offerAppService.create(offerAppDTO.getIdOffer(), offerAppDTO.getIdCurriculum());
+            offerApplicationService.create(offerAppDTO.getIdOffer(), offerAppDTO.getIdCurriculum());
         } catch (StudentAlreadyAppliedToOfferException err) {
             return ResponseEntity
                     .badRequest()
