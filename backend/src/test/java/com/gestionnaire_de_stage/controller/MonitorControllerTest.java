@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
@@ -101,15 +102,32 @@ public class MonitorControllerTest {
 
     @Test
     public void monitorLoginTest_withNullEntries() throws Exception {
-        //when(monitorService.getOneByEmailAndPassword(null, null)).thenReturn(Optional.empty());
+        String email = "potato@mail.com";
+        String password = "secretPasswordShhhh";
+        when(monitorService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/monitor/null/null")
-                .contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
-        int actual = mvcResult.getResponse().getStatus();
 
-        assertEquals(HttpStatus.BAD_REQUEST.value(), actual);
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas etre null");
     }
+
+    @Test
+    public void testSupervisorLogin_withInvalidEntries() throws Exception {
+        String email = "sinl@gmail.com";
+        String password = "weightofworld";
+        when(monitorService.getOneByEmailAndPassword(any(), any())).thenThrow(EmailAndPasswordDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
+    }
+
     private Monitor getMonitor() {
         Monitor monitor = new Monitor();
         monitor.setEmail("potato@mail.com");
