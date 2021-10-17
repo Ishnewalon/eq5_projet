@@ -1,11 +1,10 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
-import com.gestionnaire_de_stage.service.MonitorService;
 import com.gestionnaire_de_stage.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -95,28 +92,37 @@ public class StudentControllerTest {
             assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
             assertThat(actualStudent.getLastName()).isEqualTo("Brawl");
         }
-    /*
+
         @Test
         public void testStudentLogin_withNullEntries() throws Exception {
-            String email = null;
-            String password = null;
-       //     when(studentService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.empty());
+            String email = "clip@gmail.com";
+            String password = "thiswilldo";
+            when(studentService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
 
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/null/null")
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/" + email + "/" + password)
                     .contentType(MediaType.APPLICATION_JSON))
                     .andReturn();
 
-            Student actualStudent = null;
-            try {
-                actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
-            } catch (Exception ignored) {
-
-            }
-
+            //  var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), IllegalArgumentException.class);
             assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-            assertThat(actualStudent).isEqualTo(null);
+            //  assertThat(actualStudent).isInstanceOf(IllegalArgumentException.class);
         }
-    */
+
+    @Test
+    public void testStudentLogin_withInvalidEntries() throws Exception {
+        String email = "clip@gmail.com";
+        String password = "thiswilldo";
+        when(studentService.getOneByEmailAndPassword(any(), any())).thenThrow(EmailAndPasswordDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/" + email + "/" + password)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        //  var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), IllegalArgumentException.class);
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        //  assertThat(actualStudent).isInstanceOf(IllegalArgumentException.class);
+    }
+
     private Student getStudent() {
         Student student = new Student();
         student.setId(1L);

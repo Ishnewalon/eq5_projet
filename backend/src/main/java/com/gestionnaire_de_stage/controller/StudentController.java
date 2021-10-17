@@ -36,13 +36,11 @@ public class StudentController {
         Student createdStudent;
         try {
             createdStudent = studentService.create(student);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Il faut un courriel"));
-        }
-        catch (StudentAlreadyExistsException e) {
+                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas être null"));
+        } catch (StudentAlreadyExistsException e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Erreur: Ce courriel existe deja!"));
@@ -63,11 +61,19 @@ public class StudentController {
     }
 */
     @GetMapping("/{email}/{password}")
-    public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) throws EmailAndPasswordDoesNotExistException {
-        Student student = studentService.getOneByEmailAndPassword(email, password);
-        if (student != null) {
-            return ResponseEntity.ok(student);
+    public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
+        Student student;
+        try {
+            student = studentService.getOneByEmailAndPassword(email, password);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));
+        } catch (EmailAndPasswordDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
         }
-        return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
+        return ResponseEntity.ok(student);
     }
 }
