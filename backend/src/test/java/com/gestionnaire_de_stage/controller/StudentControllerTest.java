@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import com.gestionnaire_de_stage.service.MonitorService;
@@ -35,6 +36,9 @@ public class StudentControllerTest {
     @MockBean
     private StudentRepository studentRepository;
 
+    @MockBean
+    private StudentController studentController;
+
     @Test
     public void testStudentSignUp_withValidEntries() throws Exception {
         Student student = getStudent();
@@ -48,61 +52,56 @@ public class StudentControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(actualStudent).isEqualTo(student);
     }
-/*
+
+
     @Test
-    public void testStudentSignUp_withNullEntries() throws Exception {
-        when(studentService.create(any())).thenThrow()
+    public void testStudentSignUp_withNullStudent() throws Exception {
+        when(studentController.signup(any())).thenThrow(new IllegalArgumentException("Etudiant est null"));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/student/signup")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(student))).andReturn();
-
-        Student actualStudent = null;
-        try {
-            actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
-        } catch (Exception ignored) {}
-
+                .content(new ObjectMapper().writeValueAsString(null))).andReturn();
+        
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(actualStudent).isEqualTo(null);
     }
+    /*
+        @Test
+        public void testStudentLogin_withValidEntries() throws Exception {
+            Student student = getStudent();
+            String email = "clip@gmail.com";
+            String password = "thiswilldo";
+      //      when(studentService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(student));
 
-    @Test
-    public void testStudentLogin_withValidEntries() throws Exception {
-        Student student = getStudent();
-        String email = "clip@gmail.com";
-        String password = "thiswilldo";
-  //      when(studentService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(student));
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/clip@gmail.com/thiswilldo")
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andReturn();
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/clip@gmail.com/thiswilldo")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualStudent.getLastName()).isEqualTo("Brawl");
-    }
-
-    @Test
-    public void testStudentLogin_withNullEntries() throws Exception {
-        String email = null;
-        String password = null;
-   //     when(studentService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.empty());
-
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/null/null")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        Student actualStudent = null;
-        try {
-            actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
-        } catch (Exception ignored) {
-
+            var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+            assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
+            assertThat(actualStudent.getLastName()).isEqualTo("Brawl");
         }
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(actualStudent).isEqualTo(null);
-    }
-*/
+        @Test
+        public void testStudentLogin_withNullEntries() throws Exception {
+            String email = null;
+            String password = null;
+       //     when(studentService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.empty());
+
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/null/null")
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andReturn();
+
+            Student actualStudent = null;
+            try {
+                actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+            } catch (Exception ignored) {
+
+            }
+
+            assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+            assertThat(actualStudent).isEqualTo(null);
+        }
+    */
     private Student getStudent() {
         Student student = new Student();
         student.setId(1L);
