@@ -1,6 +1,8 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
+import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.repository.MonitorRepository;
 import com.gestionnaire_de_stage.service.MonitorService;
@@ -32,14 +34,15 @@ public class MonitorController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody Monitor monitor) {
-        if (monitor.getEmail() != null && monitorRepository.existsByEmail(monitor.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Erreur: Ce courriel existe deja!"));
+        Monitor createdMonitor;
+        try{
+            createdMonitor = monitorService.create(monitor);
+        } catch (MonitorAlreadyExistsException e) {
+            return ResponseEntity.badRequest().body(new ResponseMessage("Ce couriel est deja en utilisation!"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new ResponseMessage("Parametre null"));
         }
-
-        //return ResponseEntity.ok(monitorService.create(monitor));
-        return null;
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdMonitor);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -64,13 +67,14 @@ public class MonitorController {
 
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email,@PathVariable String password) {
-        /*Optional<Monitor> monitor = monitorService.getOneByEmailAndPassword(email, password);
-        if (monitor.isPresent()) {
-            return ResponseEntity.ok(monitor.get());
+        Monitor monitor;
+        try{
+            monitor = monitorService.getOneByEmailAndPassword(email,password);
+        } catch (EmailAndPasswordDoesNotExistException e) {
+            return ResponseEntity.badRequest().body(new ResponseMessage("Erreur d'Authentification!"));
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(new ResponseMessage("Parametre null!"));
         }
-        return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalid"));
-
-         */
-        return null;
+        return ResponseEntity.status(HttpStatus.FOUND).body(monitor);
     }
 }
