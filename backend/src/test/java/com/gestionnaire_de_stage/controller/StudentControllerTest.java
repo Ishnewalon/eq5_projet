@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import com.gestionnaire_de_stage.service.MonitorService;
@@ -36,9 +37,6 @@ public class StudentControllerTest {
     @MockBean
     private StudentRepository studentRepository;
 
-    @MockBean
-    private StudentController studentController;
-
     @Test
     public void testStudentSignUp_withValidEntries() throws Exception {
         Student student = getStudent();
@@ -56,13 +54,30 @@ public class StudentControllerTest {
 
     @Test
     public void testStudentSignUp_withNullStudent() throws Exception {
-        when(studentController.signup(any())).thenThrow(new IllegalArgumentException("Etudiant est null"));
+        Student student = getStudent();
+        when(studentService.create(any())).thenThrow(IllegalArgumentException.class);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/student/signup")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(null))).andReturn();
-        
+                .content(new ObjectMapper().writeValueAsString(student))).andReturn();
+
+        //  var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), IllegalArgumentException.class);
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        //  assertThat(actualStudent).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void testStudentSignUp_withInvalidStudent() throws Exception {
+        Student student = getStudent();
+        when(studentService.create(any())).thenThrow(StudentAlreadyExistsException.class);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/student/signup")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(student))).andReturn();
+
+      //  var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), StudentAlreadyExistsException.class);
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+      //  assertThat(actualStudent).isInstanceOf(StudentAlreadyExistsException.class);
     }
     /*
         @Test
