@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
+import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import com.gestionnaire_de_stage.service.SupervisorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(SupervisorController.class)
@@ -29,6 +31,9 @@ public class SupervisorControllerTest {
 
     @MockBean
     SupervisorService supervisorService;
+
+    @MockBean
+    SupervisorRepository supervisorRepository;
 
     @Test
     public void testSupervisorSignUp_withValidEntries() throws Exception {
@@ -42,7 +47,7 @@ public class SupervisorControllerTest {
         supervisor.setDepartment("Informatique");
         supervisor.setMatricule("07485");
 
-       // when(supervisorService.create(supervisor)).thenReturn(Optional.of(supervisor));
+        when(supervisorService.create(any())).thenReturn(supervisor);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/supervisor/signup")
                 .contentType(MediaType.APPLICATION_JSON)
