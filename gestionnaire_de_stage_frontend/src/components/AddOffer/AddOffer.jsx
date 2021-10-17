@@ -1,7 +1,7 @@
 import React,{Component} from "react";
 import {FieldAddress} from "../Fields/FieldAddress";
 import OfferService from "../../services/offer-service";
-import Offer from "../../models/Offer";
+import OfferDTO from "../../models/OfferDTO";
 import AuthService from "../../services/auth-service";
 import {DepartmentEnum} from "../../enums/Departement";
 
@@ -25,9 +25,10 @@ export default class AddOffer extends Component {
         const {title, department, description, address, salary} = this.state
         const id = this.authService.getUserId()
 
-        let offer = new Offer(title, department, description, address, salary, id)
+        let offer = new OfferDTO(title, department, description, address, salary, id)
         this.props.addOffer(offer)
     }
+
     handleChange = input => e => {
         this.setState({[input]: e.target.value});
     }
@@ -71,7 +72,7 @@ export default class AddOffer extends Component {
             <div className="form-group">
                 <label>Salaire</label>
                 <div className="input-group">
-                    <input name="description" placeholder="Description" className="form-control" type="number"
+                    <input name="description" placeholder="Salaire" className="form-control" type="number"
                            value={this.state.salary} onChange={this.handleChange('salary')}/>
                 </div>
             </div>

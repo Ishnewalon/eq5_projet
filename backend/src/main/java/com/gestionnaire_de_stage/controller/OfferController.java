@@ -2,13 +2,13 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.service.ManagerService;
 import com.gestionnaire_de_stage.service.MonitorService;
 import com.gestionnaire_de_stage.service.OfferService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class OfferController {
 
     private final OfferService offerService;
 
-    public OfferController(MonitorService monitorService, ManagerService managerService, OfferService offerService){
+    public OfferController(MonitorService monitorService, ManagerService managerService, OfferService offerService) {
         this.offerService = offerService;
         this.managerService = managerService;
         this.monitorService = monitorService;
@@ -59,33 +60,63 @@ public class OfferController {
                 .body(new ResponseMessage(ex.getMessage()));
     }
 
+    @GetMapping
+    public List<Offer> getAllOffers(){
+        return offerService.getAll();
+    }
+
 
     @PostMapping("/monitor/add")
-    public ResponseEntity<?> addOfferMonitor(@Valid @RequestBody OfferDTO offerDTO){
-        /*Monitor monitor = monitorService.getOneByID(offerDTO.getCreator_id());
+    public ResponseEntity<?> addOfferMonitor(@Valid @RequestBody OfferDTO offerDTO) {
+        Monitor monitor;
+        try {
+            monitor = monitorService.getOneByID(offerDTO.getCreator_id());
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erreur: moniteur non existant!");
+        }
 
-        if(monitor.isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur: moniteur non existant!");
-        }else{
-            Offer offer = offerService.mapToOffer(offerDTO);
-            offer.setCreator(monitor.get());
-            Optional<Offer> optionalOffer = offerService.create(offer);
-            return new ResponseEntity<>(optionalOffer.isPresent(), HttpStatus.CREATED);
-        }*/
-        return null;
+        Offer offer = offerService.mapToOffer(offerDTO);
+        offer.setCreator(monitor);
+        Optional<Offer> optionalOffer = offerService.create(offer);
+        return new ResponseEntity<>(optionalOffer.isPresent(), HttpStatus.CREATED);
     }
 
     @PostMapping("/manager/add")
-    public ResponseEntity<?> addOfferManager(@Valid @RequestBody OfferDTO offerDTO){
-        Optional<Manager> manager = managerService.getOneByID(offerDTO.getCreator_id());
+    public ResponseEntity<?> addOfferManager(@Valid @RequestBody OfferDTO offerDTO) {
+        Manager manager = null;
+        try {
+            manager = managerService.getOneByID(offerDTO.getCreator_id());
+        } catch (IdDoesNotExistException e) {
+            e.printStackTrace();
+        }
 
-        if(manager.isEmpty()){
+        if (manager == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur: gestionnaire non existant!");
-        }else{
+        } else {
             Offer offer = offerService.mapToOffer(offerDTO);
-            offer.setCreator(manager.get());
+            offer.setCreator(manager);
             Optional<Offer> optionalOffer = offerService.create(offer);
             return new ResponseEntity<>(optionalOffer.isPresent(), HttpStatus.CREATED);
         }
     }
+
+    @GetMapping({"/", "/{department}"}) //TODO Handle exception
+    public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {
+        if (department == null || department.isEmpty() || department.isBlank())
+            return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Le departement n'est pas precise"));
+
+        List<OfferDTO> offerDTOS = offerService.getOffersByDepartment(department);
+
+        return new ResponseEntity<>(offerDTOS, HttpStatus.OK);
+    }
+
+    @PutMapping("/validate")
+    public ResponseEntity<?> validateOffer(@RequestBody Offer offer) {
+        Optional<Offer> optionalOffer = offerService.update(offer);
+
+        if(optionalOffer.isEmpty())
+            return ResponseEntity.badRequest().body("Erreur : offre non existante!");
+        return ResponseEntity.accepted().body(optionalOffer.get());
+    }
+
 }

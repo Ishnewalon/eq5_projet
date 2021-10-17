@@ -123,7 +123,7 @@ public class SupervisorServiceTest {
         when(supervisorRepository.existsById(any())).thenReturn(true);
         when(supervisorRepository.save(any())).thenReturn(supervisor);
 
-       Supervisor actual = supervisorService.update(supervisor, supervisor.getId());
+        Supervisor actual = supervisorService.update(supervisor, supervisor.getId());
 
         assertThat(actual.getMatricule()).isEqualTo(supervisor.getMatricule());
     }

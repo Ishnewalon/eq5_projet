@@ -3,10 +3,12 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
+import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import com.gestionnaire_de_stage.service.SupervisorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -18,11 +20,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-//@WebMvcTest(SupervisorController.class)
-@SpringBootTest
-@AutoConfigureMockMvc
+
+@WebMvcTest(SupervisorController.class)
 public class SupervisorControllerTest {
 
     @Autowired
@@ -30,6 +32,9 @@ public class SupervisorControllerTest {
 
     @MockBean
     SupervisorService supervisorService;
+
+    @MockBean
+    SupervisorRepository supervisorRepository;
 
     @Test
     public void testSupervisorSignUp_withValidEntries() throws Exception {
@@ -43,7 +48,7 @@ public class SupervisorControllerTest {
         supervisor.setDepartment("Informatique");
         supervisor.setMatricule("07485");
 
-       // when(supervisorService.create(supervisor)).thenReturn(Optional.of(supervisor));
+        when(supervisorService.create(any())).thenReturn(supervisor);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/supervisor/signup")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -58,20 +63,20 @@ public class SupervisorControllerTest {
     public void testSupervisorSignUp_withNullEntries() throws Exception {
         Supervisor supervisor = null;
 
-       // when(supervisorService.create(supervisor)).thenReturn(Optional.empty());
+        when(supervisorService.create(any())).thenReturn(supervisor);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/supervisor/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(supervisor))).andReturn();
-        Student actualStudent = null;
+        Supervisor actualSupervisor = null;
         try {
-            actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+            actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Supervisor.class);
         } catch (Exception ignored) {
 
         }
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(actualStudent).isEqualTo(null);
+        assertThat(actualSupervisor).isNull();
     }
 
     @Test
@@ -79,9 +84,9 @@ public class SupervisorControllerTest {
         Supervisor supervisor = supervisorLogin();
         String email = "sinl@gmail.com";
         String password = "weightofworld";
-     //   when(supervisorService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(supervisor));
+        when(supervisorService.getOneByEmailAndPassword(any(),any())).thenReturn(supervisor);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/sinl@gmail.com/weightofworld")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -90,23 +95,27 @@ public class SupervisorControllerTest {
         assertThat(actualSupervisor.getLastName()).isEqualTo("Singh");
     }
 
+
     @Test
     public void testSupervisorLogin_withNullEntries() throws Exception {
+        Supervisor supervisor = null;
         String email = null;
         String password = null;
-       // when(supervisorService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.empty());
+        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenReturn(null);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/null/null")
+        //noinspection ConstantConditions
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
-        Student actualStudent = null;
+        Supervisor actualSupervisor = null;
         try {
-            actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+            actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Supervisor.class);
         } catch (Exception ignored) {
 
         }
+
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(actualStudent).isEqualTo(null);
+//        assertThat(actualSupervisor).isNull();
     }
 
     private Supervisor supervisorLogin() {

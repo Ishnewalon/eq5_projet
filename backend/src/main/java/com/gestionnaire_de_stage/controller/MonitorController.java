@@ -6,7 +6,6 @@ import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.repository.MonitorRepository;
 import com.gestionnaire_de_stage.service.MonitorService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -24,11 +23,14 @@ import java.util.Optional;
 @RequestMapping("/monitor")
 public class MonitorController {
 
-    @Autowired
-    private MonitorService monitorService;
+    private final MonitorService monitorService;
 
-    @Autowired
-    private MonitorRepository monitorRepository;
+    private final MonitorRepository monitorRepository;
+
+    public MonitorController(MonitorService monitorService, MonitorRepository monitorRepository) {
+        this.monitorService = monitorService;
+        this.monitorRepository = monitorRepository;
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody Monitor monitor) {
