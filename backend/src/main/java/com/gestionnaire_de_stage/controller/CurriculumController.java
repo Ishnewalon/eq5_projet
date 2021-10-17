@@ -23,7 +23,7 @@ public class CurriculumController {
 
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadCurriculum(@RequestParam("file") MultipartFile file, @RequestParam("id") Long studentId){
-        Optional<Curriculum> curriculum = null;
+        Optional<Curriculum> curriculum;
         try {
             curriculum = curriculumService.convertMultipartFileToCurriculum(file, studentId);
         } catch (IOException e) {
