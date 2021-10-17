@@ -96,6 +96,7 @@ class OfferAppControllerTest {
         // Arrange
         OfferAppDTO dummyOfferAppDto = getDummyOfferAppDto();
         dummyOfferAppDto.setIdOffer(null);
+        when(offerAppService.create(any(), any())).thenThrow(new IllegalArgumentException("Erreur: Le id de l'offre ne peut pas etre null"));
         // Act
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -111,6 +112,7 @@ class OfferAppControllerTest {
         // Arrange
         OfferAppDTO dummyOfferAppDto = getDummyOfferAppDto();
         dummyOfferAppDto.setIdCurriculum(null);
+        when(offerAppService.create(any(), any())).thenThrow(new IllegalArgumentException("Erreur: Le id du curriculum ne peut pas etre null"));
         // Act
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
                         .contentType(MediaType.APPLICATION_JSON)

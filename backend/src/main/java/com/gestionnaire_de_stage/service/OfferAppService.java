@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static org.hibernate.validator.internal.util.Contracts.assertTrue;
+
 @Service
 public class OfferAppService {
 
@@ -25,7 +27,9 @@ public class OfferAppService {
     }
 
 
-    public Optional<OfferApp> create(Long idOffer, Long idCurriculum) throws StudentAlreadyAppliedToOfferException, IdDoesNotExistException {
+    public Optional<OfferApp> create(Long idOffer, Long idCurriculum) throws StudentAlreadyAppliedToOfferException, IdDoesNotExistException, IllegalArgumentException {
+        assertTrue(idOffer != null, "Erreur: Le id de l'offre ne peut pas etre null");
+        assertTrue(idCurriculum != null, "Erreur: Le id du curriculum ne peut pas etre null");
         Optional<Offer> offer = offerService.findOfferById(idOffer);
         Curriculum curriculum = curriculumService.getCurriculum(idCurriculum);
 
