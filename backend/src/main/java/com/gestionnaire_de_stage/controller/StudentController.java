@@ -71,7 +71,7 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getAllOffers(){
+    public List<Student> getAllStudents(){
         return studentService.getAll();
     }
 

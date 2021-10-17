@@ -1,5 +1,5 @@
 import './App.css';
-import {BrowserRouter as Router, Link, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import UnprotectedRoute from "./components/UnprotectedRoute/UnprotectedRoute";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Dashboard from "./components/Dashboard/Dashboard";
@@ -10,6 +10,7 @@ import ValiderCv from "./components/ValidateCv/ValiderCv";
 import React from "react";
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import TeleverserCv from "./components/TeleverserCv/TeleverserCv";
 
 
 function App() {
@@ -35,13 +36,13 @@ function App() {
                 <li>
                     <Link to="/dashboard">Dash</Link>
                 </li>
-                <li>
-                    <Link to={"/valider-cv"}>Validez cv</Link>
-                    <Link to="/view-offers">Voir offres</Link>
-                </li>
             </ul>
+
         </nav>
         <div className="container">
+            <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+                <ValiderCv />
+            </div>
             <Switch>
                 <UnprotectedRoute exact path="/login"
                                   component={Login}/>
@@ -49,9 +50,6 @@ function App() {
                                   component={Register}/>
                 <ProtectedRoute exact path="/dashboard"
                                 component={Dashboard}/>
-                <Route exact path="/valide-cv"
-                                component={ValiderCv}/>
-                <Route exact path="/televerser-cv" component={TeleverserCv}/>
             </Switch>
         </div>
     </Router>

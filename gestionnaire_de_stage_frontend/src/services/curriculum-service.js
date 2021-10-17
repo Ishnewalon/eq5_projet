@@ -26,6 +26,3 @@ export async function validateCV(file){
     const response = await fetch(`${urlBackend}/validate_curriculum`, requestInit(methods.POST, file));
     return await response.json();
 }
-
-export default class CurriculumService {
-}
