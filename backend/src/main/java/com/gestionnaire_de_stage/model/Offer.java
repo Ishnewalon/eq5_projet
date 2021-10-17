@@ -57,5 +57,13 @@ public class Offer {
     @Min(value = 0, message = "Le salaire ne peut être négatif.")
     private double salary;
 
-    private boolean valid;
+    private Boolean valid;
+
+    public Boolean getValid() {
+        return this.valid;
+    }
+
+    public void setValid(Boolean valid) {
+        this.valid = valid;
+    }
 }

@@ -3,7 +3,6 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
-import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.junit.jupiter.api.Test;
@@ -13,11 +12,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -31,7 +30,7 @@ public class StudentServiceTest {
     StudentRepository studentRepository;
 
     @Test
-    public void testCreate_withValidStudent() throws Exception{
+    public void testCreate_withValidStudent() throws Exception {
         Student student = getStudent();
         when(studentRepository.save(any())).thenReturn(student);
 
@@ -69,7 +68,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testGetByID_withValidID() throws Exception{
+    public void testGetByID_withValidID() throws Exception {
         Long validID = 1L;
         Student student = getStudent();
         when(studentRepository.existsById(any())).thenReturn(true);
@@ -157,7 +156,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testDelete_withValidID() throws Exception{
+    public void testDelete_withValidID() throws Exception {
         Long id = 1L;
         when(studentRepository.existsById(any())).thenReturn(true);
         doNothing().when(studentRepository).deleteById(any());
@@ -227,12 +226,32 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testGetAllStudents(){
+    public void testGetAllStudents() {
         when(studentRepository.findAll()).thenReturn(getListOfStudents());
 
         List<Student> studentList = studentService.getAll();
 
         assertThat(studentList.size()).isEqualTo(3);
     }
+
+    @Test
+    public void testFindAllStudentsWithInvalidCurriculum() {
+        List<Student> listOfStudents = getListOfStudents();
+        when(studentRepository.findStudentsByCurriculumValidatedIsNull()).thenReturn(listOfStudents);
+
+        List<Student> studentList = studentService.findAllStudentsWithCurriculumNotValidatedYet();
+
+        assertThat(studentList).isEqualTo(listOfStudents);
+    }
+
+    @Test
+    public void testFindAllStudentsWithInvalidCurriculum_withEmptyList() {
+        when(studentRepository.findStudentsByCurriculumValidatedIsNull()).thenReturn(Collections.emptyList());
+
+        List<Student> studentList = studentService.findAllStudentsWithCurriculumNotValidatedYet();
+
+        assertThat(studentList).isEqualTo(Collections.emptyList());
+    }
+
 
 }

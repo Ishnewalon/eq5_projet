@@ -78,4 +78,8 @@ public class StudentService {
     private boolean isEmailAndPasswordValid(String email, String password) {
         return studentRepository.existsByEmailAndPassword(email, password);
     }
+
+    public List<Student> findAllStudentsWithCurriculumNotValidatedYet() {
+        return studentRepository.findStudentsByCurriculumValidatedIsNull();
+    }
 }
