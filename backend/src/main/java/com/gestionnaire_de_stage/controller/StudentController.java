@@ -75,4 +75,6 @@ public class StudentController {
         return studentService.getAll();
     }
 
+    // get students with invalid cv
+
 }
