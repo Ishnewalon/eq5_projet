@@ -23,11 +23,11 @@ export async function getAllStudents(){
 }
 
 export async function getStudentsWithInvalidCV(){
-    const response = await fetch(`${urlBackend}/student/invalid`, requestInit(methods.GET));
+    const response = await fetch(`${urlBackend}/student/curriculum/invalid`, requestInit(methods.GET));
     return await response.json();
 }
 
-export async function validateCV(file){
-    const response = await fetch(`${urlBackend}/validate_curriculum`, requestInit(methods.POST, file));
+export async function validateCV(id){
+    const response = await fetch(`${urlBackend}/curriculum/validate`, requestInit(methods.POST, id));
     return await response.json();
 }

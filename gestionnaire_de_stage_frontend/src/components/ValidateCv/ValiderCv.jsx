@@ -1,6 +1,6 @@
 import './ValiderCv.css'
 import React, {Component} from "react";
-import {getStudentsWithInvalidCV} from "../../services/curriculum-service";
+import {getStudentsWithInvalidCV, validateCV} from "../../services/curriculum-service";
 import ListStudentView from "./ListStudentView/ListStudentView";
 import AuthService from "../../services/auth-service";
 
@@ -19,6 +19,7 @@ export default class ValiderCv extends Component{
                 this.setState({students: []})
                 console.trace(e);
             });
+
     }
 
     render() {
