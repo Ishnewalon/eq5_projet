@@ -38,9 +38,13 @@ public class MonitorController {
         try{
             createdMonitor = monitorService.create(monitor);
         } catch (MonitorAlreadyExistsException e) {
-            return ResponseEntity.badRequest().body(new ResponseMessage("Ce couriel est deja en utilisation!"));
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: Ce courriel existe deja!"));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(new ResponseMessage("Parametre null"));
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas etre null"));
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMonitor);
     }

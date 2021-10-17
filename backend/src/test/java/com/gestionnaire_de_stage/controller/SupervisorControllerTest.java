@@ -53,7 +53,7 @@ public class SupervisorControllerTest {
     }
 
     @Test
-    public void testSupervisorSignUp_withNullSupervisor() throws Exception {
+    public void testSupervisorSignUp_withNullEntries() throws Exception {
         Supervisor supervisor = getSupervisor();
         when(supervisorService.create(any())).thenThrow(IllegalArgumentException.class);
 

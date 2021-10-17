@@ -56,14 +56,15 @@ public class MonitorControllerTest {
 
     @Test
     public void monitorSignupTest_withNullEntries() throws Exception {
-        //when(monitorService.create(null)).thenReturn(Optional.empty());
+        Monitor monitor = getMonitor();
+        when(monitorService.create(any())).thenThrow(IllegalArgumentException.class);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/monitor/signup")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(null))).andReturn();
-        int actual = mvcResult.getResponse().getStatus();
+                .content(new ObjectMapper().writeValueAsString(monitor))).andReturn();
 
-        assertEquals(HttpStatus.BAD_REQUEST.value(), actual);
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel ne peut pas etre null");
     }
 
     @Test
