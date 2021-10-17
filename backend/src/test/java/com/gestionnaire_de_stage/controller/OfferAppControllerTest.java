@@ -2,13 +2,13 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApp;
 import com.gestionnaire_de_stage.model.Student;
-import com.gestionnaire_de_stage.service.CurriculumService;
 import com.gestionnaire_de_stage.service.OfferAppService;
-import com.gestionnaire_de_stage.service.OfferService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,16 +34,10 @@ class OfferAppControllerTest {
 
     @MockBean
     private OfferAppService offerAppService;
-    @MockBean
-    private OfferService offerService;
-    @MockBean
-    private CurriculumService curriculumService;
 
     @Test
     public void testStudentApplyToOffer() throws Exception {
         // Arrange
-        when(offerService.findOfferById(any())).thenReturn(Optional.of(new Offer()));
-        when(curriculumService.getCurriculum(any())).thenReturn(new Curriculum());
         when(offerAppService.create(any(), any())).thenReturn(Optional.of(getDummyOfferApp()));
         // Act
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
@@ -58,9 +52,7 @@ class OfferAppControllerTest {
     @Test
     public void testStudentApplyToOfferAgain() throws Exception {
         // Arrange
-        when(offerService.findOfferById(any())).thenReturn(Optional.of(new Offer()));
-        when(curriculumService.getCurriculum(any())).thenReturn(new Curriculum());
-        when(offerAppService.create(any(), any())).thenReturn(Optional.empty());
+        when(offerAppService.create(any(), any())).thenThrow(new StudentAlreadyAppliedToOfferException());
         // Act
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -74,7 +66,7 @@ class OfferAppControllerTest {
     @Test
     public void testStudentApplyToOfferWithOfferNonExistant() throws Exception {
         // Arrange
-        when(offerService.findOfferById(any())).thenReturn(Optional.empty());
+        when(offerAppService.create(any(), any())).thenThrow(new IdDoesNotExistException());
         // Act
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -82,14 +74,13 @@ class OfferAppControllerTest {
                 .andReturn();
         // Assert
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Offre non existant!");
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Offre ou Curriculum non existant!");
     }
 
     @Test
     public void testStudentApplyToOfferWithNoCurriculum() throws Exception {
         // Arrange
-        when(offerService.findOfferById(any())).thenReturn(Optional.of(new Offer()));
-        when(curriculumService.getCurriculum(any())).thenReturn(null);
+        when(offerAppService.create(any(), any())).thenThrow(new IdDoesNotExistException());
         // Act
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -97,7 +88,7 @@ class OfferAppControllerTest {
                 .andReturn();
         // Assert
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: curriculum inexistant");
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Offre ou Curriculum non existant!");
     }
 
     @Test
