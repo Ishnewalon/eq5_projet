@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -34,30 +35,10 @@ public class StudentControllerTest {
     @MockBean
     private StudentRepository studentRepository;
 
-    @MockBean
-    private MonitorService monitorService;
-
-    @MockBean
-    private MonitorController monitorController;
-
-    private Student expected;
-
     @Test
     public void testStudentSignUp_withValidEntries() throws Exception {
-        Student student = new Student();
-        student.setId(1L);
-        student.setLastName("Brawl");
-        student.setFirstName("Spaghetta");
-        student.setPhone("514-546-2375");
-        student.setEmail("clip@gmail.com");
-        student.setPassword("thiswilldo");
-        student.setAddress("758 George");
-        student.setCity("LaSalle");
-        student.setDepartment("Informatique");
-        student.setPostalCode("H5N 9F2");
-        student.setMatricule("1740934");
-
-    //    when(studentService.create(student)).thenReturn(Optional.of(student));
+        Student student = getStudent();
+        when(studentService.create(any())).thenReturn(student);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/student/signup")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -67,12 +48,10 @@ public class StudentControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(actualStudent).isEqualTo(student);
     }
-
+/*
     @Test
     public void testStudentSignUp_withNullEntries() throws Exception {
-        Student student = null;
-
-   //     when(studentService.create(student)).thenReturn(Optional.empty());
+        when(studentService.create(any())).thenThrow()
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/student/signup")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -89,7 +68,7 @@ public class StudentControllerTest {
 
     @Test
     public void testStudentLogin_withValidEntries() throws Exception {
-        Student student = studentLogin();
+        Student student = getStudent();
         String email = "clip@gmail.com";
         String password = "thiswilldo";
   //      when(studentService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(student));
@@ -123,8 +102,8 @@ public class StudentControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(actualStudent).isEqualTo(null);
     }
-
-    private Student studentLogin() {
+*/
+    private Student getStudent() {
         Student student = new Student();
         student.setId(1L);
         student.setLastName("Brawl");
