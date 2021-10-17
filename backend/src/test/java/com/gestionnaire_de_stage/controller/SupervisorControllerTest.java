@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+
 @WebMvcTest(SupervisorController.class)
 public class SupervisorControllerTest {
 
@@ -75,7 +76,7 @@ public class SupervisorControllerTest {
         }
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(actualSupervisor).isEqualTo(null);
+        assertThat(actualSupervisor).isNull();
     }
 
     @Test
@@ -83,9 +84,9 @@ public class SupervisorControllerTest {
         Supervisor supervisor = supervisorLogin();
         String email = "sinl@gmail.com";
         String password = "weightofworld";
-     //   when(supervisorService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(supervisor));
+        when(supervisorService.getOneByEmailAndPassword(any(),any())).thenReturn(supervisor);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/sinl@gmail.com/weightofworld")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -94,23 +95,27 @@ public class SupervisorControllerTest {
         assertThat(actualSupervisor.getLastName()).isEqualTo("Singh");
     }
 
+
     @Test
     public void testSupervisorLogin_withNullEntries() throws Exception {
+        Supervisor supervisor = null;
         String email = null;
         String password = null;
-       // when(supervisorService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.empty());
+        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenReturn(null);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/null/null")
+        //noinspection ConstantConditions
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
-        Student actualStudent = null;
+        Supervisor actualSupervisor = null;
         try {
-            actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+            actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Supervisor.class);
         } catch (Exception ignored) {
 
         }
+
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(actualStudent).isEqualTo(null);
+//        assertThat(actualSupervisor).isNull();
     }
 
     private Supervisor supervisorLogin() {
