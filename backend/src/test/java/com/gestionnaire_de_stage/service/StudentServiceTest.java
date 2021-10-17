@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
+import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,8 @@ public class StudentServiceTest {
 
     @Mock
     StudentRepository studentRepository;
+    @Mock
+    CurriculumService curriculumService;
 
     @Test
     public void testCreate_withValidStudent() throws Exception {
@@ -237,7 +240,7 @@ public class StudentServiceTest {
     @Test
     public void testFindAllStudentsWithInvalidCurriculum() {
         List<Student> listOfStudents = getListOfStudents();
-        when(studentRepository.findStudentsByCurriculumValidatedIsNull()).thenReturn(listOfStudents);
+        when(curriculumService.findCurriculumNotValidatedYet()).thenReturn(getDummyCurriculumList(listOfStudents));
 
         List<Student> studentList = studentService.findAllStudentsWithCurriculumNotValidatedYet();
 
@@ -246,12 +249,23 @@ public class StudentServiceTest {
 
     @Test
     public void testFindAllStudentsWithInvalidCurriculum_withEmptyList() {
-        when(studentRepository.findStudentsByCurriculumValidatedIsNull()).thenReturn(Collections.emptyList());
+        when(curriculumService.findCurriculumNotValidatedYet()).thenReturn(getDummyCurriculumList(Collections.emptyList()));
 
         List<Student> studentList = studentService.findAllStudentsWithCurriculumNotValidatedYet();
 
         assertThat(studentList).isEqualTo(Collections.emptyList());
     }
 
+    private List<Curriculum> getDummyCurriculumList(List<Student> listOfStudents) {
 
+        List<Curriculum> c = new ArrayList<>();
+        for (Student stuuu : listOfStudents) {
+            Curriculum curriculum = new Curriculum();
+            curriculum.setStudent(stuuu);
+            curriculum.setName("myFileeee");
+            curriculum.setType("pdf");
+            c.add(curriculum);
+        }
+        return c;
+    }
 }

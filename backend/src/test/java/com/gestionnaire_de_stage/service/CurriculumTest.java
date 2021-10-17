@@ -11,11 +11,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,8 +34,8 @@ public class CurriculumTest {
     @Test
     public void testConvertMultipartFileToCurriculum_WithValidData() throws IOException, Exception {
         Student student = new Student();
-        MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain","some xml".getBytes());
-       // when(studentService.getOneByID(any())).thenReturn(Optional.of(student));
+        MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
+        // when(studentService.getOneByID(any())).thenReturn(Optional.of(student));
 
         Optional<Curriculum> actual = curriculumService.convertMultipartFileToCurriculum(file, student.getId());
 
@@ -44,11 +45,31 @@ public class CurriculumTest {
     @Test
     public void testConvertMultipartFileToCurriculum_WithInvalidData() throws IOException, Exception {
         Student student = new Student();
-        MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain","some xml".getBytes());
-      //  when(studentService.getOneByID(any())).thenReturn(Optional.empty());
+        MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
+        //  when(studentService.getOneByID(any())).thenReturn(Optional.empty());
 
         Optional<Curriculum> actual = curriculumService.convertMultipartFileToCurriculum(file, student.getId());
 
         assertThat(actual).isEqualTo(Optional.empty());
     }
+
+    @Test
+    void testFindCurriculumNotValidatedYet() {
+        List<Curriculum> curricula = Arrays.asList(new Curriculum(), new Curriculum(), new Curriculum());
+        when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(curricula);
+
+        List<Curriculum> curriculumNotValidatedYet = curriculumService.findCurriculumNotValidatedYet();
+
+        assertThat(curriculumNotValidatedYet).isEqualTo(curricula);
+    }
+
+    @Test
+    void testFindCurriculumNotValidatedYet_withNoNotValidated() {
+        when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(Collections.emptyList());
+
+        List<Curriculum> curriculumNotValidatedYet = curriculumService.findCurriculumNotValidatedYet();
+
+        assertThat(curriculumNotValidatedYet).isEqualTo(Collections.emptyList());
+    }
+
 }

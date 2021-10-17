@@ -81,13 +81,6 @@ public class ManagerService {
         return managerRepository.existsByEmailAndPassword(email, password);
     }
 
-    public boolean validateCurriculum(boolean valid, long id) throws IdDoesNotExistException {
-        Student student = studentService.getOneByID(id);
-        student.setCurriculumValidated(valid);
-        student = studentService.update(student, id);
-
-        return true;
-    }
 
 
 }

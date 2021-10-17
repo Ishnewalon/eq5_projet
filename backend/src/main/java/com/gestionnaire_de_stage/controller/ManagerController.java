@@ -41,12 +41,6 @@ public class ManagerController {
         return ResponseEntity.status(status).body(manager);
     }
 
-    @PostMapping("/validate_curriculum")
-    public ResponseEntity<Boolean> validateCurriculum(@Valid @RequestBody ValidationCurriculum validationCurriculum) throws Exception {
-        boolean validated =  managerService.validateCurriculum(validationCurriculum.isValid(), validationCurriculum.getId());
-        return ResponseEntity.status(validated ? HttpStatus.OK : HttpStatus.BAD_REQUEST).body(validated);
-    }
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleInvalidRequests(MethodArgumentNotValidException ex) {

@@ -3,21 +3,24 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
+import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.springframework.util.Assert;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final CurriculumService curriculumService;
 
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository, CurriculumService curriculumService) {
         this.studentRepository = studentRepository;
+        this.curriculumService = curriculumService;
     }
 
     public Student create(Student student) throws StudentAlreadyExistsException {
@@ -80,6 +83,8 @@ public class StudentService {
     }
 
     public List<Student> findAllStudentsWithCurriculumNotValidatedYet() {
-        return studentRepository.findStudentsByCurriculumValidatedIsNull();
+        List<Curriculum> curriculumNotValidatedYet = curriculumService.findCurriculumNotValidatedYet();
+
+        return curriculumNotValidatedYet.stream().map(Curriculum::getStudent).collect(Collectors.toList());
     }
 }

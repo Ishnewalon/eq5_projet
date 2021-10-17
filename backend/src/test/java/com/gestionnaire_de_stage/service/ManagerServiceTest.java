@@ -244,18 +244,7 @@ public class ManagerServiceTest {
         return student;
     }
 
-    @Test
-    public void testValidateCurriculum_withValidCurriculum() throws IdDoesNotExistException {
-        Student student = getStudent();
-        Student student1 = getStudent();
-        student1.setCurriculumValidated(true);
-        when(studentService.getOneByID(any())).thenReturn(student);
-        when(studentService.update(any(),any())).thenReturn(student1);
 
-        boolean actual = managerService.validateCurriculum(true, student.getId());
-
-        assertThat(actual).isTrue();
-    }
 
 /*
 
