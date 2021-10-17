@@ -79,15 +79,15 @@ public class StudentControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
       //  assertThat(actualStudent).isInstanceOf(StudentAlreadyExistsException.class);
     }
-    /*
+
         @Test
         public void testStudentLogin_withValidEntries() throws Exception {
             Student student = getStudent();
             String email = "clip@gmail.com";
             String password = "thiswilldo";
-      //      when(studentService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(student));
+            when(studentService.getOneByEmailAndPassword(email, password)).thenReturn(student);
 
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/clip@gmail.com/thiswilldo")
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/" + email + "/" + password)
                     .contentType(MediaType.APPLICATION_JSON))
                     .andReturn();
 
@@ -95,7 +95,7 @@ public class StudentControllerTest {
             assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
             assertThat(actualStudent.getLastName()).isEqualTo("Brawl");
         }
-
+    /*
         @Test
         public void testStudentLogin_withNullEntries() throws Exception {
             String email = null;
