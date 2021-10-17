@@ -58,9 +58,8 @@ public class StudentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(student))).andReturn();
 
-        //  var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), IllegalArgumentException.class);
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        //  assertThat(actualStudent).isInstanceOf(IllegalArgumentException.class);
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel ne peut pas etre null");
     }
 
     @Test
@@ -72,9 +71,8 @@ public class StudentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(student))).andReturn();
 
-      //  var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), StudentAlreadyExistsException.class);
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-      //  assertThat(actualStudent).isInstanceOf(StudentAlreadyExistsException.class);
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Ce courriel existe deja!");
     }
 
         @Test
@@ -103,9 +101,8 @@ public class StudentControllerTest {
                     .contentType(MediaType.APPLICATION_JSON))
                     .andReturn();
 
-            //  var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), IllegalArgumentException.class);
             assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-            //  assertThat(actualStudent).isInstanceOf(IllegalArgumentException.class);
+            assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas etre null");
         }
 
     @Test
@@ -118,9 +115,8 @@ public class StudentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        //  var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), IllegalArgumentException.class);
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        //  assertThat(actualStudent).isInstanceOf(IllegalArgumentException.class);
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
     }
 
     private Student getStudent() {

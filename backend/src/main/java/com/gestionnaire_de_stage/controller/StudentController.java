@@ -39,7 +39,7 @@ public class StudentController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas être null"));
+                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas etre null"));
         } catch (StudentAlreadyExistsException e) {
             return ResponseEntity
                     .badRequest()
@@ -56,7 +56,7 @@ public class StudentController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));
+                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas etre null"));
         } catch (EmailAndPasswordDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
