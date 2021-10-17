@@ -31,15 +31,20 @@ public class SupervisorController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody Supervisor supervisor) throws SupervisorAlreadyExistsException {
-        if (supervisor.getEmail() != null && supervisorRepository.existsByEmail(supervisor.getEmail())) {
+    public ResponseEntity<?> signup(@RequestBody Supervisor supervisor) {
+        Supervisor createdSupervisor;
+        try {
+            createdSupervisor = supervisorService.create(supervisor);
+        } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Ce courriel existe déja!"));
+                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas être null"));
+        } catch (SupervisorAlreadyExistsException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: Ce courriel existe deja!"));
         }
-        Supervisor supervisor1 = supervisorService.create(supervisor);
-
-        return new ResponseEntity<>(supervisor1, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSupervisor);
     }
 
     @GetMapping("/{email}/{password}")
