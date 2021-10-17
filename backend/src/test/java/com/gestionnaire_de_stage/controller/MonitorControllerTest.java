@@ -1,6 +1,8 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
+import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.MonitorRepository;
@@ -69,17 +71,15 @@ public class MonitorControllerTest {
 
     @Test
     public void monitorSignupTest_withInvalidEntries() throws Exception {
-        Monitor monitor = new Monitor();
-        monitor.setEmail("notAnEmail");
-        monitor.setPassword("2short");
-        //when(monitorService.create(monitor)).thenReturn(Optional.of(monitor));
+        Monitor monitor = getMonitor();
+        when(monitorService.create(any())).thenThrow(MonitorAlreadyExistsException.class);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/monitor/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(monitor))).andReturn();
-        int actual = mvcResult.getResponse().getStatus();
 
-        assertEquals(HttpStatus.BAD_REQUEST.value(), actual);
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Ce courriel existe deja!");
     }
     
     @Test
