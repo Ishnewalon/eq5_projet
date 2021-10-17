@@ -143,31 +143,7 @@ public class StudentControllerTest {
 
     }
 
-    @Test
-    public void testGetAllStudents_withInvalidCurriculum() throws Exception {
-        List<Student> list = Arrays.asList(new Student(), new Student(),new Student());
-        when(studentService.findAllStudentsWithCurriculumNotValidatedYet()).thenReturn(list);
 
-        MvcResult mvcResult = mockMvc.perform(get("/student/curriculum/invalid")
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        var actual = mvcResult.getResponse().getContentAsString();
-        assertThat(new ObjectMapper().readValue(actual,
-                new TypeReference<List<Student>>(){})).isEqualTo(list);
-
-    }
-    @Test
-    public void testGetAllStudents_withInvalidCurriculum_withEmptyList() throws Exception {
-        when(studentService.findAllStudentsWithCurriculumNotValidatedYet()).thenReturn(Collections.emptyList());
-
-        MvcResult mvcResult = mockMvc.perform(get("/student/curriculum/invalid")
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        var actual = mvcResult.getResponse().getContentAsString();
-        assertThat(new ObjectMapper().readValue(actual,
-                new TypeReference<List<Student>>(){})).isEqualTo(Collections.emptyList());
-
-    }
 
     private Student studentLogin() {
         Student student = new Student();

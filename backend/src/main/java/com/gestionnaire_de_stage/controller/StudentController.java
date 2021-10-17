@@ -72,10 +72,4 @@ public class StudentController {
         return studentService.getAll();
     }
 
-    @GetMapping("/curriculum/invalid")
-    public ResponseEntity<?> getAllStudent_withCurriculumNotValidatedYet() {
-        List<Student> student = studentService.findAllStudentsWithCurriculumNotValidatedYet();
-        return ResponseEntity.ok(student);
-    }
-
 }

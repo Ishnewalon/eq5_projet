@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -57,7 +58,9 @@ public class CurriculumService {
         return curriculumRepository.findAllByIsValid(validity).stream();
     }
 
-    public List<Curriculum> findCurriculumNotValidatedYet() {
-        return curriculumRepository.findAllByIsValidIsNull();
+    public List<Student> findAllStudentsWithCurriculumNotValidatedYet() {
+        List<Curriculum> curriculumNotValidatedYet = curriculumRepository.findAllByIsValidIsNull();
+
+        return curriculumNotValidatedYet.stream().map(Curriculum::getStudent).collect(Collectors.toList());
     }
 }

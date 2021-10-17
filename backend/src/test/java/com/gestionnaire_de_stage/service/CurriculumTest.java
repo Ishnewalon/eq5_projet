@@ -11,10 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -54,22 +51,35 @@ public class CurriculumTest {
     }
 
     @Test
-    void testFindCurriculumNotValidatedYet() {
-        List<Curriculum> curricula = Arrays.asList(new Curriculum(), new Curriculum(), new Curriculum());
-        when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(curricula);
+    public void testFindAllStudentsWithInvalidCurriculum() {
+        List<Student> listOfStudents = List.of(new Student(),new Student(),new Student());
+        when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(getDummyCurriculumList(listOfStudents));
 
-        List<Curriculum> curriculumNotValidatedYet = curriculumService.findCurriculumNotValidatedYet();
+        List<Student> studentList = curriculumService.findAllStudentsWithCurriculumNotValidatedYet();
 
-        assertThat(curriculumNotValidatedYet).isEqualTo(curricula);
+        assertThat(studentList).isEqualTo(listOfStudents);
     }
 
     @Test
-    void testFindCurriculumNotValidatedYet_withNoNotValidated() {
-        when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(Collections.emptyList());
+    public void testFindAllStudentsWithInvalidCurriculum_withEmptyList() {
+        when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(getDummyCurriculumList(Collections.emptyList()));
 
-        List<Curriculum> curriculumNotValidatedYet = curriculumService.findCurriculumNotValidatedYet();
+        List<Student> studentList = curriculumService.findAllStudentsWithCurriculumNotValidatedYet();
 
-        assertThat(curriculumNotValidatedYet).isEqualTo(Collections.emptyList());
+        assertThat(studentList).isEqualTo(Collections.emptyList());
+    }
+
+    private List<Curriculum> getDummyCurriculumList(List<Student> listOfStudents) {
+
+        List<Curriculum> c = new ArrayList<>();
+        for (Student stuuu : listOfStudents) {
+            Curriculum curriculum = new Curriculum();
+            curriculum.setStudent(stuuu);
+            curriculum.setName("myFileeee");
+            curriculum.setType("pdf");
+            c.add(curriculum);
+        }
+        return c;
     }
 
 }

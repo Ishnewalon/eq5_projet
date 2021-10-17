@@ -23,7 +23,7 @@ export async function getAllStudents(){
 }
 
 export async function getStudentsWithInvalidCV(){
-    const response = await fetch(`${urlBackend}/student/curriculum/invalid`, requestInit(methods.GET));
+    const response = await fetch(`${urlBackend}/curriculum/invalid/students`, requestInit(methods.GET));
     return await response.json();
 }
 

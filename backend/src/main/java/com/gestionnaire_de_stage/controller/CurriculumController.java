@@ -2,12 +2,14 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.CurriculumService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -37,5 +39,10 @@ public class CurriculumController {
         } else {
             return ResponseEntity.badRequest().body(new ResponseMessage("Student Not Found with id: "+studentId));
         }
+    }
+    @GetMapping("/invalid/students")
+    public ResponseEntity<?> getAllStudent_withCurriculumNotValidatedYet() {
+        List<Student> student = curriculumService.findAllStudentsWithCurriculumNotValidatedYet();
+        return ResponseEntity.ok(student);
     }
 }

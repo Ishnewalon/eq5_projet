@@ -16,11 +16,9 @@ import java.util.stream.Collectors;
 public class StudentService {
 
     private final StudentRepository studentRepository;
-    private final CurriculumService curriculumService;
 
-    public StudentService(StudentRepository studentRepository, CurriculumService curriculumService) {
+    public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
-        this.curriculumService = curriculumService;
     }
 
     public Student create(Student student) throws StudentAlreadyExistsException {
@@ -82,9 +80,5 @@ public class StudentService {
         return studentRepository.existsByEmailAndPassword(email, password);
     }
 
-    public List<Student> findAllStudentsWithCurriculumNotValidatedYet() {
-        List<Curriculum> curriculumNotValidatedYet = curriculumService.findCurriculumNotValidatedYet();
 
-        return curriculumNotValidatedYet.stream().map(Curriculum::getStudent).collect(Collectors.toList());
-    }
 }

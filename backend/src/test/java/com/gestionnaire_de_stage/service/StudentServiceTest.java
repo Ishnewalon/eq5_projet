@@ -29,8 +29,6 @@ public class StudentServiceTest {
 
     @Mock
     StudentRepository studentRepository;
-    @Mock
-    CurriculumService curriculumService;
 
     @Test
     public void testCreate_withValidStudent() throws Exception {
@@ -237,35 +235,5 @@ public class StudentServiceTest {
         assertThat(studentList.size()).isEqualTo(3);
     }
 
-    @Test
-    public void testFindAllStudentsWithInvalidCurriculum() {
-        List<Student> listOfStudents = getListOfStudents();
-        when(curriculumService.findCurriculumNotValidatedYet()).thenReturn(getDummyCurriculumList(listOfStudents));
 
-        List<Student> studentList = studentService.findAllStudentsWithCurriculumNotValidatedYet();
-
-        assertThat(studentList).isEqualTo(listOfStudents);
-    }
-
-    @Test
-    public void testFindAllStudentsWithInvalidCurriculum_withEmptyList() {
-        when(curriculumService.findCurriculumNotValidatedYet()).thenReturn(getDummyCurriculumList(Collections.emptyList()));
-
-        List<Student> studentList = studentService.findAllStudentsWithCurriculumNotValidatedYet();
-
-        assertThat(studentList).isEqualTo(Collections.emptyList());
-    }
-
-    private List<Curriculum> getDummyCurriculumList(List<Student> listOfStudents) {
-
-        List<Curriculum> c = new ArrayList<>();
-        for (Student stuuu : listOfStudents) {
-            Curriculum curriculum = new Curriculum();
-            curriculum.setStudent(stuuu);
-            curriculum.setName("myFileeee");
-            curriculum.setType("pdf");
-            c.add(curriculum);
-        }
-        return c;
-    }
 }
