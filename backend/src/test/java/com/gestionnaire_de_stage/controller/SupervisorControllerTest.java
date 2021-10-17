@@ -47,9 +47,9 @@ public class SupervisorControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(supervisor))).andReturn();
 
-        var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Supervisor.class);
+        var actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Supervisor.class);
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(actualStudent).isEqualTo(supervisor);
+        assertThat(actualSupervisor).isEqualTo(supervisor);
     }
 
     @Test

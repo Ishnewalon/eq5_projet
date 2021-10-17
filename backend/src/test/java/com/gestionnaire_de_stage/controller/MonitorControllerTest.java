@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.model.Monitor;
+import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.MonitorRepository;
 import com.gestionnaire_de_stage.service.MonitorService;
 import com.gestionnaire_de_stage.service.StudentService;
@@ -18,6 +19,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,20 +42,16 @@ public class MonitorControllerTest {
 
     @Test
     public void monitorSignupTest_withValidEntries() throws Exception {
-        Monitor monitor = new Monitor();
-        monitor.setEmail("potato@mail.com");
-        monitor.setPassword("secretPasswordShhhh");
-        monitor.setFirstName("toto");
-        monitor.setLastName("tata");
-        monitor.setDepartment("Informatique");
+        Monitor monitor = getMonitor();
+        when(monitorService.create(any())).thenReturn(monitor);
 
-        //when(monitorService.create(monitor)).thenReturn(Optional.of(monitor));
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/monitor/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(monitor))).andReturn();
-        Monitor actual = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Monitor.class);
 
-        assertEquals(monitor, actual);
+        var actualMonitor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Monitor.class);
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(actualMonitor).isEqualTo(monitor);
     }
 
     @Test
@@ -113,4 +112,15 @@ public class MonitorControllerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST.value(), actual);
     }
+    private Monitor getMonitor() {
+        Monitor monitor = new Monitor();
+        monitor.setEmail("potato@mail.com");
+        monitor.setPassword("secretPasswordShhhh");
+        monitor.setFirstName("toto");
+        monitor.setLastName("tata");
+        monitor.setDepartment("Informatique");
+        return monitor;
+    }
+
+
 }
