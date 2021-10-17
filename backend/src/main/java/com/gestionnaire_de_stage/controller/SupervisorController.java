@@ -3,7 +3,6 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
-import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import com.gestionnaire_de_stage.service.SupervisorService;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -33,7 +31,7 @@ public class SupervisorController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@Valid @RequestBody Supervisor supervisor) throws SupervisorAlreadyExistsException {
+    public ResponseEntity<?> signup(@RequestBody Supervisor supervisor) throws SupervisorAlreadyExistsException {
         if (supervisor.getEmail() != null && supervisorRepository.existsByEmail(supervisor.getEmail())) {
             return ResponseEntity
                     .badRequest()
@@ -42,18 +40,6 @@ public class SupervisorController {
         Supervisor supervisor1 = supervisorService.create(supervisor);
 
         return new ResponseEntity<>(supervisor1, HttpStatus.CREATED);
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleInvalidRequests(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
     }
 
     @GetMapping("/{email}/{password}")

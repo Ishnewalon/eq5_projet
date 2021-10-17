@@ -47,19 +47,7 @@ public class StudentController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(createdStudent);
     }
-/*
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleInvalidRequests(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
-    }
-*/
+
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
         Student student;
