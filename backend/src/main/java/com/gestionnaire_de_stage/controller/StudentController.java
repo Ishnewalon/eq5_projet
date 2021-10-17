@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
+import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import com.gestionnaire_de_stage.service.StudentService;
@@ -31,40 +32,36 @@ public class StudentController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@Valid @RequestBody Student student) {
-        if (student.getEmail() != null && studentRepository.existsByEmail(student.getEmail())) {
+    public ResponseEntity<?> signup(@RequestBody Student student) {
+        Student createdStudent;
+        try {
+            createdStudent = studentService.create(student);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas etre null"));
+        } catch (StudentAlreadyExistsException e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Erreur: Ce courriel existe deja!"));
         }
-        Student student1 = null;
-        try {
-            student1 = studentService.create(student);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(student1, HttpStatus.CREATED);
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleInvalidRequests(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdStudent);
     }
 
     @GetMapping("/{email}/{password}")
-    public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) throws EmailAndPasswordDoesNotExistException {
-        Student student = studentService.getOneByEmailAndPassword(email, password);
-        if (student != null) {
-            return ResponseEntity.ok(student);
+    public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
+        Student student;
+        try {
+            student = studentService.getOneByEmailAndPassword(email, password);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas etre null"));
+        } catch (EmailAndPasswordDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
         }
-        return ResponseEntity.badRequest().body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
+        return ResponseEntity.ok(student);
     }
 }

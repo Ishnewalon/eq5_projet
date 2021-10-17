@@ -66,4 +66,7 @@ public class OfferService {
     public List<Offer> getAll() {
         return offerRepository.findAll();
     }
+    public Optional<Offer> findOfferById(Long idOffer) {
+        return offerRepository.findById(idOffer);
+    }
 }
