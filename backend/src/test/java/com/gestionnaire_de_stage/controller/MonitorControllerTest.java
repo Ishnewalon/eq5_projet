@@ -84,22 +84,19 @@ public class MonitorControllerTest {
     
     @Test
     public void monitorLoginTest_withValidEntries() throws Exception {
-        Monitor monitor = new Monitor();
-        monitor.setEmail("potato@mail.com");
-        monitor.setPassword("secretPasswordShhhh");
-        monitor.setFirstName("toto");
-        monitor.setLastName("tata");
-        monitor.setDepartment("Informatique");
-        String email = monitor.getEmail();
-        String password = monitor.getPassword();
-        //when(monitorService.getOneByEmailAndPassword(email, password)).thenReturn(Optional.of(monitor));
+        Monitor monitor = getMonitor();
+        String email = "potato@mail.com";
+        String password = "secretPasswordShhhh";
+        when(monitorService.getOneByEmailAndPassword(any(),any())).thenReturn(monitor);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/monitor/potato@mail.com/secretPasswordShhhh")
-                .contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
-        Monitor actual = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Monitor.class);
 
-        assertEquals(monitor, actual);
+        var actualMonitor = new ObjectMapper()
+                .readValue(mvcResult.getResponse().getContentAsString(), Monitor.class);
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.FOUND.value());
+        assertThat(actualMonitor.getLastName()).isEqualTo("tata");
     }
 
     @Test
