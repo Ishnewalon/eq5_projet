@@ -137,6 +137,4 @@ public class MonitorControllerTest {
         monitor.setDepartment("Informatique");
         return monitor;
     }
-
-
 }

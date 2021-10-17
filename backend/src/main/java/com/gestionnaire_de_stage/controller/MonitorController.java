@@ -33,7 +33,7 @@ public class MonitorController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@Valid @RequestBody Monitor monitor) {
+    public ResponseEntity<?> signup(@RequestBody Monitor monitor) {
         Monitor createdMonitor;
         try{
             createdMonitor = monitorService.create(monitor);
@@ -49,25 +49,6 @@ public class MonitorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMonitor);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleInvalidRequests(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ResponseMessage> handleEmptyRequestBody(HttpMessageNotReadableException ex) {
-        return ResponseEntity
-                .badRequest()
-                .body(new ResponseMessage(ex.getMessage()));
-    }
 
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email,@PathVariable String password) {
