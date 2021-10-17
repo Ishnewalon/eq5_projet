@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -24,6 +23,8 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CREATED;
 
 
 @WebMvcTest(OfferAppController.class)
@@ -45,7 +46,7 @@ class OfferAppControllerTest {
                         .content(new ObjectMapper().writeValueAsString(getDummyOfferAppDto())))
                 .andReturn();
         // Assert
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(CREATED.value());
         assertThat(mvcResult.getResponse().getContentAsString()).contains("Succes: candidature envoyer!");
     }
 
@@ -59,7 +60,7 @@ class OfferAppControllerTest {
                         .content(new ObjectMapper().writeValueAsString(getDummyOfferAppDto())))
                 .andReturn();
         // Assert
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.ALREADY_REPORTED.value());
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(BAD_REQUEST.value());
         assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: candidature deja envoye!");
     }
 
@@ -73,7 +74,7 @@ class OfferAppControllerTest {
                         .content(new ObjectMapper().writeValueAsString(getDummyOfferAppDto())))
                 .andReturn();
         // Assert
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(BAD_REQUEST.value());
         assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Offre ou Curriculum non existant!");
     }
 
@@ -87,7 +88,7 @@ class OfferAppControllerTest {
                         .content(new ObjectMapper().writeValueAsString(getDummyOfferAppDto())))
                 .andReturn();
         // Assert
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(BAD_REQUEST.value());
         assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Offre ou Curriculum non existant!");
     }
 
@@ -103,7 +104,7 @@ class OfferAppControllerTest {
                         .content(new ObjectMapper().writeValueAsString(dummyOfferAppDto)))
                 .andReturn();
         // Assert
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(BAD_REQUEST.value());
         assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le id de l'offre ne peut pas etre null");
     }
 
@@ -119,7 +120,7 @@ class OfferAppControllerTest {
                         .content(new ObjectMapper().writeValueAsString(dummyOfferAppDto)))
                 .andReturn();
         // Assert
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(BAD_REQUEST.value());
         assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le id du curriculum ne peut pas etre null");
     }
 

@@ -5,9 +5,10 @@ import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.service.OfferAppService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("/applications")
@@ -25,12 +26,20 @@ public class OfferAppController {
         try {
             offerAppService.create(offerAppDTO.getIdOffer(), offerAppDTO.getIdCurriculum());
         } catch (StudentAlreadyAppliedToOfferException err) {
-            return new ResponseEntity<>(new ResponseMessage("Erreur: candidature deja envoye!"), HttpStatus.ALREADY_REPORTED);
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: candidature deja envoye!"));
         } catch (IdDoesNotExistException e) {
-            return new ResponseEntity<>(new ResponseMessage("Erreur: Offre ou Curriculum non existant!"), HttpStatus.BAD_REQUEST);
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: Offre ou Curriculum non existant!"));
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(new ResponseMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
         }
-        return new ResponseEntity<>(new ResponseMessage("Succes: candidature envoyer!"), HttpStatus.CREATED);
+        return ResponseEntity
+                .status(CREATED)
+                .body(new ResponseMessage("Succes: candidature envoyer!"));
     }
 }
