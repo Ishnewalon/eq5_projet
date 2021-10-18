@@ -5,13 +5,10 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
-import org.springframework.util.Assert;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
-import javax.validation.ValidationException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SupervisorService {

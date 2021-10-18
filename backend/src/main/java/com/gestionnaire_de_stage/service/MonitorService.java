@@ -8,9 +8,7 @@ import com.gestionnaire_de_stage.repository.MonitorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.validation.ValidationException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MonitorService {
