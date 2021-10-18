@@ -68,4 +68,23 @@ public class CurriculumController {
         }
         return ResponseEntity.ok("Succes: curriculum valide!");
     }
+    @PostMapping("/reject/{idCurriculum}")
+    public ResponseEntity<?> reject(@PathVariable Long idCurriculum) {
+        try {
+            curriculumService.reject(idCurriculum);
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: curriculum non existant!"));
+        } catch (CurriculumAlreadyTreatedException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: curriculum deja traite!"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+        return ResponseEntity.ok("Succes: curriculum rejete!");
+    }
 }

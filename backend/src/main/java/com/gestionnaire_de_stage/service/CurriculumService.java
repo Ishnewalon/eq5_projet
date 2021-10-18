@@ -6,7 +6,6 @@ import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -69,7 +68,15 @@ public class CurriculumService {
     }
 
     public boolean validate(Long idCurriculum) throws IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
-        assertTrue(idCurriculum!=null,"Erreur: Le id du curriculum ne peut pas etre null");
+        return updateIsValid(idCurriculum, true);
+    }
+
+    public boolean reject(Long idCurriculum) throws IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
+        return updateIsValid(idCurriculum, false);
+    }
+
+    private boolean updateIsValid(Long idCurriculum, boolean isValid) throws IdDoesNotExistException, CurriculumAlreadyTreatedException {
+        assertTrue(idCurriculum != null, "Erreur: Le id du curriculum ne peut pas etre null");
 
         Optional<Curriculum> curriculumOptional = curriculumRepository.findById(idCurriculum);
 
@@ -79,9 +86,8 @@ public class CurriculumService {
             throw new CurriculumAlreadyTreatedException();
 
         Curriculum curriculum = curriculumOptional.get();
-        curriculum.setIsValid(true);
+        curriculum.setIsValid(isValid);
         curriculumRepository.save(curriculum);
-
         return true;
     }
 }

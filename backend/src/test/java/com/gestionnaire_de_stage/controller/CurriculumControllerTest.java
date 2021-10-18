@@ -6,7 +6,6 @@ import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.CurriculumService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -76,6 +75,7 @@ class CurriculumControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actual).contains("Succes: curriculum valide!");
     }
+
     @Test
     public void testValidate_whenCvNonExistent() throws Exception {
         Long id = 1L;
@@ -88,6 +88,7 @@ class CurriculumControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(actual).contains("Erreur: curriculum non existant!");
     }
+
     @Test
     public void testValidate_whenCurriculumAlreadyTreated() throws Exception {
         Long id = 1L;
@@ -100,6 +101,7 @@ class CurriculumControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(actual).contains("Erreur: curriculum deja traite!");
     }
+
     @Test
     public void testValidate_withIdCurriculumNull() throws Exception {
         Long id = 1L;
@@ -112,17 +114,56 @@ class CurriculumControllerTest {
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(actual).contains("Erreur: Le id du curriculum ne peut pas etre null");
     }
-    @Disabled
+
     @Test
     public void testReject() throws Exception {
         Long id = 1L;
-        when(curriculumService.validate(anyLong())).thenReturn(true);
+        when(curriculumService.reject(anyLong())).thenReturn(true);
 
         MvcResult mvcResult = mockMvc.perform(post(String.format("/curriculum/reject/%s", id))
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         var actual = mvcResult.getResponse().getContentAsString();
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actual).contains("Succes: curriculum valide!");
+        assertThat(actual).contains("Succes: curriculum rejete!");
+    }
+
+    @Test
+    public void testReject_whenCvNonExistent() throws Exception {
+        Long id = 1L;
+        when(curriculumService.reject(anyLong())).thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(post(String.format("/curriculum/reject/%s", id))
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        var actual = mvcResult.getResponse().getContentAsString();
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(actual).contains("Erreur: curriculum non existant!");
+    }
+
+    @Test
+    public void testReject_whenCurriculumAlreadyTreated() throws Exception {
+        Long id = 1L;
+        when(curriculumService.reject(anyLong())).thenThrow(CurriculumAlreadyTreatedException.class);
+
+        MvcResult mvcResult = mockMvc.perform(post(String.format("/curriculum/reject/%s", id))
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        var actual = mvcResult.getResponse().getContentAsString();
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(actual).contains("Erreur: curriculum deja traite!");
+    }
+
+    @Test
+    public void testReject_withIdCurriculumNull() throws Exception {
+        Long id = 1L;
+        when(curriculumService.reject(anyLong())).thenThrow(new IllegalArgumentException("Erreur: Le id du curriculum ne peut pas etre null"));
+
+        MvcResult mvcResult = mockMvc.perform(post(String.format("/curriculum/reject/%s", id))
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        var actual = mvcResult.getResponse().getContentAsString();
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(actual).contains("Erreur: Le id du curriculum ne peut pas etre null");
     }
 }
