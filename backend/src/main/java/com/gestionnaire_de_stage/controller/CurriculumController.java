@@ -1,6 +1,8 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.CurriculumService;
@@ -19,13 +21,13 @@ public class CurriculumController {
 
     private final CurriculumService curriculumService;
 
-    public CurriculumController(CurriculumService curriculumService){
+    public CurriculumController(CurriculumService curriculumService) {
         this.curriculumService = curriculumService;
     }
 
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadCurriculum(@RequestParam("file") MultipartFile file,
-                                                            @RequestParam("id") Long studentId){
+                                                            @RequestParam("id") Long studentId) {
         Optional<Curriculum> curriculum;
         try {
             curriculum = curriculumService.convertMultipartFileToCurriculum(file, studentId);
@@ -37,12 +39,33 @@ public class CurriculumController {
             curriculumService.createCurriculum(curriculum.get());
             return ResponseEntity.ok(new ResponseMessage("Success: file created successfully!"));
         } else {
-            return ResponseEntity.badRequest().body(new ResponseMessage("Student Not Found with id: "+studentId));
+            return ResponseEntity.badRequest().body(new ResponseMessage("Student Not Found with id: " + studentId));
         }
     }
+
     @GetMapping("/invalid/students")
     public ResponseEntity<?> getAllStudent_withCurriculumNotValidatedYet() {
         List<Student> student = curriculumService.findAllStudentsWithCurriculumNotValidatedYet();
         return ResponseEntity.ok(student);
+    }
+
+    @PostMapping("/validate/{idCurriculum}")
+    public ResponseEntity<?> validate(@PathVariable Long idCurriculum) {
+        try {
+            curriculumService.validate(idCurriculum);
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: curriculum non existant!"));
+        } catch (CurriculumAlreadyTreatedException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: curriculum deja traite!"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+        return ResponseEntity.ok("Succes: curriculum valide!");
     }
 }

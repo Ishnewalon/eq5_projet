@@ -1,9 +1,12 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.hibernate.validator.internal.util.Contracts.assertTrue;
 
 @Service
 public class CurriculumService {
@@ -39,22 +44,21 @@ public class CurriculumService {
                 );
                 return Optional.of(curriculum);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return Optional.empty();
     }
 
-    public Curriculum createCurriculum(Curriculum curriculum){
+    public Curriculum createCurriculum(Curriculum curriculum) {
         return curriculumRepository.save(curriculum);
     }
 
-    public Curriculum getCurriculum(Long id){
+    public Curriculum getCurriculum(Long id) {
         return curriculumRepository.getById(id);
     }
 
-    public Stream<Curriculum> getAllCurriculumByValidity(boolean validity){
+    public Stream<Curriculum> getAllCurriculumByValidity(boolean validity) {
         return curriculumRepository.findAllByIsValid(validity).stream();
     }
 
@@ -62,5 +66,22 @@ public class CurriculumService {
         List<Curriculum> curriculumNotValidatedYet = curriculumRepository.findAllByIsValidIsNull();
 
         return curriculumNotValidatedYet.stream().map(Curriculum::getStudent).collect(Collectors.toList());
+    }
+
+    public boolean validate(Long idCurriculum) throws IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
+        assertTrue(idCurriculum!=null,"Erreur: Le id du curriculum ne peut pas etre null");
+
+        Optional<Curriculum> curriculumOptional = curriculumRepository.findById(idCurriculum);
+
+        if (curriculumOptional.isEmpty())
+            throw new IdDoesNotExistException();
+        if (curriculumOptional.get().getIsValid() != null)
+            throw new CurriculumAlreadyTreatedException();
+
+        Curriculum curriculum = curriculumOptional.get();
+        curriculum.setIsValid(true);
+        curriculumRepository.save(curriculum);
+
+        return true;
     }
 }
