@@ -30,6 +30,9 @@ public class MonitorController {
         Monitor createdMonitor;
         try{
             createdMonitor = monitorService.create(monitor);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(createdMonitor);
         } catch (MonitorAlreadyExistsException e) {
             return ResponseEntity
                     .badRequest()
@@ -39,9 +42,6 @@ public class MonitorController {
                     .badRequest()
                     .body(new ResponseMessage("Erreur: Le courriel ne peut pas etre null"));
         }
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(createdMonitor);
     }
 
 
@@ -50,6 +50,9 @@ public class MonitorController {
         Monitor monitor;
         try{
             monitor = monitorService.getOneByEmailAndPassword(email,password);
+            return ResponseEntity
+                    .status(HttpStatus.FOUND)
+                    .body(monitor);
         } catch (EmailAndPasswordDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
@@ -59,8 +62,5 @@ public class MonitorController {
                     .badRequest()
                     .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas etre null"));
         }
-        return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(monitor);
     }
 }
