@@ -6,7 +6,7 @@ import com.gestionnaire_de_stage.exception.ManagerAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.ManagerRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 

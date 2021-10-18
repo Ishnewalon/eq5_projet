@@ -6,6 +6,7 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.model.*;
+import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.repository.OfferRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -78,5 +79,8 @@ public class OfferService {
 
     public List<Offer> getAll() {
         return offerRepository.findAll();
+    }
+    public Optional<Offer> findOfferById(Long idOffer) {
+        return offerRepository.findById(idOffer);
     }
 }

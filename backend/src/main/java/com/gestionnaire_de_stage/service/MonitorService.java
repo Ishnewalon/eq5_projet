@@ -8,9 +8,7 @@ import com.gestionnaire_de_stage.repository.MonitorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.validation.ValidationException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MonitorService {
@@ -21,7 +19,7 @@ public class MonitorService {
         this.monitorRepository = monitorRepository;
     }
 
-    public Monitor create(Monitor monitor) throws MonitorAlreadyExistsException {
+    public Monitor create(Monitor monitor) throws MonitorAlreadyExistsException, IllegalArgumentException {
         Assert.isTrue(monitor != null, "Monitor est null");
         if (emailAlreadyInUse(monitor)) {
             throw new MonitorAlreadyExistsException();
@@ -51,7 +49,7 @@ public class MonitorService {
         return monitorRepository.save(monitor);
     }
 
-    public Monitor getOneByEmailAndPassword(String email, String password) throws EmailAndPasswordDoesNotExistException {
+    public Monitor getOneByEmailAndPassword(String email, String password) throws EmailAndPasswordDoesNotExistException, IllegalArgumentException {
         Assert.isTrue(email != null, "Le courriel est null");
         Assert.isTrue(password != null, "Le mot de passe est null");
         if (!monitorRepository.existsByEmailAndPassword(email, password)) {
