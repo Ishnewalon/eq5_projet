@@ -5,11 +5,9 @@ import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class OfferDTO {
     @NotBlank(message = "Le departement est vide.")
     @Size(min = 2, message = "Le departement doit avoir au minimum 2 lettres.")

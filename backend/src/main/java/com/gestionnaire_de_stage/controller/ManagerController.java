@@ -3,19 +3,9 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.model.Manager;
-import com.gestionnaire_de_stage.dto.ValidationCurriculum;
-import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.service.ManagerService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/manager")

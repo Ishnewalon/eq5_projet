@@ -9,7 +9,6 @@ import javax.validation.constraints.Size;
 
 @Data
 @Entity
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Supervisor extends User{
 
     @NotNull

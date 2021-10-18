@@ -9,7 +9,6 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Curriculum implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)

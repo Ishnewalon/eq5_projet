@@ -12,8 +12,6 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@ToString(callSuper = true)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Student extends User {
 
     @NotNull
