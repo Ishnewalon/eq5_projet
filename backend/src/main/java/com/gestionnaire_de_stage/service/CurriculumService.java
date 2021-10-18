@@ -67,15 +67,7 @@ public class CurriculumService {
         return curriculumNotValidatedYet.stream().map(Curriculum::getStudent).collect(Collectors.toList());
     }
 
-    public boolean validate(Long idCurriculum) throws IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
-        return updateIsValid(idCurriculum, true);
-    }
-
-    public boolean reject(Long idCurriculum) throws IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
-        return updateIsValid(idCurriculum, false);
-    }
-
-    private boolean updateIsValid(Long idCurriculum, boolean isValid) throws IdDoesNotExistException, CurriculumAlreadyTreatedException {
+    public boolean validate(Long idCurriculum, boolean valid) throws IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
         assertTrue(idCurriculum != null, "Erreur: Le id du curriculum ne peut pas etre null");
 
         Optional<Curriculum> curriculumOptional = curriculumRepository.findById(idCurriculum);
@@ -86,7 +78,7 @@ public class CurriculumService {
             throw new CurriculumAlreadyTreatedException();
 
         Curriculum curriculum = curriculumOptional.get();
-        curriculum.setIsValid(isValid);
+        curriculum.setIsValid(valid);
         curriculumRepository.save(curriculum);
         return true;
     }

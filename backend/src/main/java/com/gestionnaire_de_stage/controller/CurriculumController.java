@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.dto.ValidationCurriculum;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
@@ -49,10 +50,10 @@ public class CurriculumController {
         return ResponseEntity.ok(student);
     }
 
-    @PostMapping("/validate/{idCurriculum}")
-    public ResponseEntity<?> validate(@PathVariable Long idCurriculum) {
+    @PostMapping("/validate")
+    public ResponseEntity<?> validate(@RequestBody ValidationCurriculum validationCurriculum) {
         try {
-            curriculumService.validate(idCurriculum);
+            curriculumService.validate(validationCurriculum.getId(), validationCurriculum.isValid());
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
@@ -66,25 +67,7 @@ public class CurriculumController {
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
         }
-        return ResponseEntity.ok("Succes: curriculum valide!");
-    }
-    @PostMapping("/reject/{idCurriculum}")
-    public ResponseEntity<?> reject(@PathVariable Long idCurriculum) {
-        try {
-            curriculumService.reject(idCurriculum);
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Erreur: curriculum non existant!"));
-        } catch (CurriculumAlreadyTreatedException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Erreur: curriculum deja traite!"));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        }
-        return ResponseEntity.ok("Succes: curriculum rejete!");
+        String response = validationCurriculum.isValid() ? "Succes: curriculum valide!" : "Succes: curriculum rejete!";
+        return ResponseEntity.ok(response);
     }
 }

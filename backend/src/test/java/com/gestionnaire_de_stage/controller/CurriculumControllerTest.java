@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.dto.ValidationCurriculum;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Student;
@@ -20,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -65,11 +67,12 @@ class CurriculumControllerTest {
 
     @Test
     public void testValidate() throws Exception {
-        Long id = 1L;
-        when(curriculumService.validate(anyLong())).thenReturn(true);
+        ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, true);
+        when(curriculumService.validate(anyLong(), anyBoolean())).thenReturn(true);
 
-        MvcResult mvcResult = mockMvc.perform(post(String.format("/curriculum/validate/%s", id))
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        MvcResult mvcResult = mockMvc.perform(post("/curriculum/validate")
+                .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(validationCurriculum)
+                )).andReturn();
 
         var actual = mvcResult.getResponse().getContentAsString();
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
@@ -78,11 +81,12 @@ class CurriculumControllerTest {
 
     @Test
     public void testValidate_whenCvNonExistent() throws Exception {
-        Long id = 1L;
-        when(curriculumService.validate(anyLong())).thenThrow(IdDoesNotExistException.class);
+        ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, true);
+        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(IdDoesNotExistException.class);
 
-        MvcResult mvcResult = mockMvc.perform(post(String.format("/curriculum/validate/%s", id))
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        MvcResult mvcResult = mockMvc.perform(post("/curriculum/validate")
+                .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(validationCurriculum)
+                )).andReturn();
 
         var actual = mvcResult.getResponse().getContentAsString();
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -91,11 +95,12 @@ class CurriculumControllerTest {
 
     @Test
     public void testValidate_whenCurriculumAlreadyTreated() throws Exception {
-        Long id = 1L;
-        when(curriculumService.validate(anyLong())).thenThrow(CurriculumAlreadyTreatedException.class);
+        ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, true);
+        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(CurriculumAlreadyTreatedException.class);
 
-        MvcResult mvcResult = mockMvc.perform(post(String.format("/curriculum/validate/%s", id))
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        MvcResult mvcResult = mockMvc.perform(post("/curriculum/validate")
+                .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(validationCurriculum)
+                )).andReturn();
 
         var actual = mvcResult.getResponse().getContentAsString();
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -104,11 +109,12 @@ class CurriculumControllerTest {
 
     @Test
     public void testValidate_withIdCurriculumNull() throws Exception {
-        Long id = 1L;
-        when(curriculumService.validate(anyLong())).thenThrow(new IllegalArgumentException("Erreur: Le id du curriculum ne peut pas etre null"));
+        ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, true);
+        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(new IllegalArgumentException("Erreur: Le id du curriculum ne peut pas etre null"));
 
-        MvcResult mvcResult = mockMvc.perform(post(String.format("/curriculum/validate/%s", id))
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        MvcResult mvcResult = mockMvc.perform(post("/curriculum/validate")
+                .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(validationCurriculum)
+                )).andReturn();
 
         var actual = mvcResult.getResponse().getContentAsString();
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -117,11 +123,12 @@ class CurriculumControllerTest {
 
     @Test
     public void testReject() throws Exception {
-        Long id = 1L;
-        when(curriculumService.reject(anyLong())).thenReturn(true);
+        ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, false);
+        when(curriculumService.validate(anyLong(), anyBoolean())).thenReturn(true);
 
-        MvcResult mvcResult = mockMvc.perform(post(String.format("/curriculum/reject/%s", id))
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        MvcResult mvcResult = mockMvc.perform(post("/curriculum/validate")
+                .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(validationCurriculum)
+                )).andReturn();
 
         var actual = mvcResult.getResponse().getContentAsString();
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
@@ -130,11 +137,12 @@ class CurriculumControllerTest {
 
     @Test
     public void testReject_whenCvNonExistent() throws Exception {
-        Long id = 1L;
-        when(curriculumService.reject(anyLong())).thenThrow(IdDoesNotExistException.class);
+        ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, false);
+        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(IdDoesNotExistException.class);
 
-        MvcResult mvcResult = mockMvc.perform(post(String.format("/curriculum/reject/%s", id))
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        MvcResult mvcResult = mockMvc.perform(post("/curriculum/validate")
+                .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(validationCurriculum)
+                )).andReturn();
 
         var actual = mvcResult.getResponse().getContentAsString();
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -143,11 +151,12 @@ class CurriculumControllerTest {
 
     @Test
     public void testReject_whenCurriculumAlreadyTreated() throws Exception {
-        Long id = 1L;
-        when(curriculumService.reject(anyLong())).thenThrow(CurriculumAlreadyTreatedException.class);
+        ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, false);
+        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(CurriculumAlreadyTreatedException.class);
 
-        MvcResult mvcResult = mockMvc.perform(post(String.format("/curriculum/reject/%s", id))
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        MvcResult mvcResult = mockMvc.perform(post("/curriculum/validate")
+                .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(validationCurriculum)
+                )).andReturn();
 
         var actual = mvcResult.getResponse().getContentAsString();
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -156,11 +165,12 @@ class CurriculumControllerTest {
 
     @Test
     public void testReject_withIdCurriculumNull() throws Exception {
-        Long id = 1L;
-        when(curriculumService.reject(anyLong())).thenThrow(new IllegalArgumentException("Erreur: Le id du curriculum ne peut pas etre null"));
+        ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, false);
+        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(new IllegalArgumentException("Erreur: Le id du curriculum ne peut pas etre null"));
 
-        MvcResult mvcResult = mockMvc.perform(post(String.format("/curriculum/reject/%s", id))
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        MvcResult mvcResult = mockMvc.perform(post("/curriculum/validate")
+                .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(validationCurriculum)
+                )).andReturn();
 
         var actual = mvcResult.getResponse().getContentAsString();
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
