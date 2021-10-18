@@ -1,6 +1,8 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.repository.OfferRepository;
 import org.junit.jupiter.api.Test;
@@ -15,10 +17,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("ConstantConditions")
 public class OfferServiceTest {
 
     @InjectMocks
@@ -26,6 +31,18 @@ public class OfferServiceTest {
 
     @Mock
     private OfferRepository offerRepository;
+
+    @Test
+    public void testMapToOffer_withNullDto(){
+        Offer mappedOffer = offerService.mapToOffer(null);
+        assertThat(mappedOffer).isNull();
+    }
+
+    @Test
+    public void testMapToOfferDto_withNullOffer(){
+        OfferDTO mappedDto = offerService.mapToOfferDTO(null);
+        assertThat(mappedDto).isNull();
+    }
 
     @Test
     public void testMapToOffer() {
@@ -54,52 +71,64 @@ public class OfferServiceTest {
     }
 
     @Test
-    public void testCreateOffer_withValidOffer() {
+    public void testCreateOffer_withValidOffer() throws OfferAlreadyExistsException {
         Offer offer = getDummyOffer();
         offer.setId(null);
+        when(offerRepository.save(any())).thenReturn(getDummyOffer());
+        when(offerRepository.findOne(any())).thenReturn(Optional.empty());
 
-        when(offerRepository.save(any(Offer.class))).thenReturn(getDummyOffer());
+        Offer createdOffer = offerService.create(offer);
 
-        Optional<Offer> optionalOffer = offerService.create(offer);
-
-        assertThat(optionalOffer.isPresent()).isTrue();
-        assertThat(optionalOffer.get().getId()).isEqualTo(1L);
+        assertThat(createdOffer).isNotNull();
+        assertThat(createdOffer.getId())
+                .isNotNull()
+                .isGreaterThan(0);
     }
 
     @Test
-    public void testCreateOffer_withNullOffer() {
-        Optional<Offer> optionalOffer = offerService.create(null);
+    public void testCreateOffer_withNullOffer(){
+        assertThrows(IllegalArgumentException.class, () -> offerService.create(null));
+    }
 
-        assertThat(optionalOffer.isPresent()).isFalse();
+    @Test
+    public void testCreateOffer_withExistingOffer(){
+        final Offer offer = getDummyOffer();
+
+        assertDoesNotThrow(() -> offerService.create(offer));
     }
 
     @Test
     public void testUpdateOffer_withNullId(){
-        Offer offer = new Offer();
-        when(offerRepository.existsById(any())).thenReturn(false);
+        final Offer offer = getDummyOffer();
+        offer.setId(null);
 
-        Optional<Offer> optionalOffer = offerService.update(offer);
-
-        assertThat(optionalOffer.isPresent()).isFalse();
+        assertThrows(IllegalArgumentException.class, () -> offerService.update(offer));
     }
 
     @Test
     public void testUpdateOffer_withNullOffer(){
-        Optional<Offer> optionalOffer = offerService.update(null);
-
-        assertThat(optionalOffer.isPresent()).isFalse();
+        assertThrows(IllegalArgumentException.class, () -> offerService.update(null));
     }
 
     @Test
-    public void testUpdateOffer_withValidOffer(){
+    public void testUpdateOffer_withInvalidOffer(){
         Offer offer = getDummyOffer();
-        when(offerRepository.existsById(any())).thenReturn(true);
+        when(offerRepository.existsById(1L)).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class, () -> offerService.update(offer));
+    }
+
+    @Test
+    public void testUpdateOffer_withValidOffer() throws IdDoesNotExistException {
+        Offer offer = getDummyOffer();
+        when(offerRepository.existsById(1L)).thenReturn(true);
         when(offerRepository.save(any())).thenReturn(offer);
 
-        Optional<Offer> optionalOffer = offerService.update(offer);
+        Offer updatedOffer = offerService.update(offer);
 
-        assertThat(optionalOffer.isPresent()).isTrue();
-        assertThat(optionalOffer.get().getId()).isEqualTo(1L);
+        assertThat(updatedOffer)
+                .isNotNull()
+                .isEqualTo(offer);
     }
 
     @Test
@@ -118,23 +147,26 @@ public class OfferServiceTest {
 
         List<Offer> offerList = offerService.getAll();
 
-        assertThat(offerList).isEqualTo(Collections.emptyList());
+        assertThat(offerList).isEmpty();
     }
 
     @Test
     public void testMapArrayToOfferDto() {
         List<Offer> dummyArrayOffer = getDummyArrayOffer();
 
-
         List<OfferDTO> arrayOfferDTOS = offerService.mapArrayToOfferDTO(dummyArrayOffer);
 
+        int maxSize = Math.max(dummyArrayOffer.size(), arrayOfferDTOS.size());
 
-        for (int i = 0; i < dummyArrayOffer.size(); i++) {
-            assertThat(arrayOfferDTOS.get(i).getAddress()).isEqualTo(dummyArrayOffer.get(i).getAddress());
-            assertThat(arrayOfferDTOS.get(i).getDepartment()).isEqualTo(dummyArrayOffer.get(i).getDepartment());
-            assertThat(arrayOfferDTOS.get(i).getTitle()).isEqualTo(dummyArrayOffer.get(i).getTitle());
-            assertThat(arrayOfferDTOS.get(i).getDescription()).isEqualTo(dummyArrayOffer.get(i).getDescription());
-            assertThat(arrayOfferDTOS.get(i).getSalary()).isEqualTo(dummyArrayOffer.get(i).getSalary());
+        for (int i = 0; i < maxSize; i++) {
+            Offer offer = dummyArrayOffer.get(i);
+            OfferDTO offerDto = arrayOfferDTOS.get(i);
+
+            assertThat(offerDto.getAddress()).isEqualTo(offer.getAddress());
+            assertThat(offerDto.getDepartment()).isEqualTo(offer.getDepartment());
+            assertThat(offerDto.getTitle()).isEqualTo(offer.getTitle());
+            assertThat(offerDto.getDescription()).isEqualTo(offer.getDescription());
+            assertThat(offerDto.getSalary()).isEqualTo(offer.getSalary());
         }
     }
 
@@ -144,7 +176,7 @@ public class OfferServiceTest {
 
         List<OfferDTO> offers = offerService.getOffersByDepartment(department);
 
-        assertThat(offers.size()).isEqualTo(0);
+        assertThat(offers).isEmpty();
     }
 
     @Test
@@ -153,7 +185,9 @@ public class OfferServiceTest {
 
         List<OfferDTO> offers = offerService.getOffersByDepartment("Un departement");
 
-        assertThat(offerService.mapArrayToOfferDTO(getDummyArrayOffer())).isEqualTo(offers);
+        List<OfferDTO> mappedDtos = offerService.mapArrayToOfferDTO(getDummyArrayOffer());
+
+        assertThat(mappedDtos).isEqualTo(offers);
     }
 
     @Test
