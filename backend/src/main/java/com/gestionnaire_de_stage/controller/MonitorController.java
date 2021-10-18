@@ -8,14 +8,8 @@ import com.gestionnaire_de_stage.repository.MonitorRepository;
 import com.gestionnaire_de_stage.service.MonitorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -45,7 +39,9 @@ public class MonitorController {
                     .badRequest()
                     .body(new ResponseMessage("Erreur: Le courriel ne peut pas etre null"));
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdMonitor);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(createdMonitor);
     }
 
 
@@ -63,6 +59,8 @@ public class MonitorController {
                     .badRequest()
                     .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas etre null"));
         }
-        return ResponseEntity.status(HttpStatus.FOUND).body(monitor);
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .body(monitor);
     }
 }

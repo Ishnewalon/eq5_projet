@@ -3,17 +3,13 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
-import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
-import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.MonitorRepository;
 import com.gestionnaire_de_stage.service.MonitorService;
 import com.gestionnaire_de_stage.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,12 +17,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.*;
 
 @WebMvcTest(MonitorController.class)
 public class MonitorControllerTest {
