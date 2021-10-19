@@ -13,7 +13,7 @@ class OfferService {
                     swalErr(value.message).fire({}).then()
                     return
                 }
-                toast.fire({title: "Offre créé!"}).then()
+                toast.fire({title: "Offre crée!"}).then()
             },
             err => {
                 swalErr(err).fire({}).then()

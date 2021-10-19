@@ -17,17 +17,17 @@ export async function uploadFile(file, id) {
     )
 }
 
-export async function getAllStudents(){
-    const response = await fetch(`${urlBackend}/student`, requestInit(methods.GET));
-    return await response.json();
-}
-
 export async function getStudentsWithInvalidCV(){
     const response = await fetch(`${urlBackend}/curriculum/invalid/students`, requestInit(methods.GET));
     return await response.json();
 }
 
-export async function validateCV(id){
-    const response = await fetch(`${urlBackend}/curriculum/validate`, requestInit(methods.POST, id));
+export async function validateCV(id, valid){
+    const response = await fetch(`${urlBackend}/curriculum/validate`, requestInit(methods.POST, id, valid));
+    return await response.json();
+}
+
+export async function downloadCV(id){
+    const response = await fetch(`${urlBackend}/curriculum/download?id=${id}`, requestInit(methods.GET));
     return await response.json();
 }
