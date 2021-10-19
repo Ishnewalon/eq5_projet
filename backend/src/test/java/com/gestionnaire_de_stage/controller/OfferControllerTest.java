@@ -43,8 +43,6 @@ public class OfferControllerTest {
     @MockBean
     private MonitorService monitorService;
 
-    @MockBean
-    private ManagerService managerService;
 
     private Offer dummyOffer;
 
@@ -134,7 +132,7 @@ public class OfferControllerTest {
         when(offerService.create(any())).thenReturn(getDummyOffer());
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/offers/manager/add" + email)
+                        MockMvcRequestBuilders.post("/offers/manager/add/" + email)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(MAPPER.writeValueAsString(dummyOfferDTO)))
                 .andReturn();
@@ -154,7 +152,7 @@ public class OfferControllerTest {
         when(offerService.create(any())).thenThrow(new IllegalArgumentException("Offre est null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/offers/manager/add" + email)
+                        MockMvcRequestBuilders.post("/offers/manager/add/" + email)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(MAPPER.writeValueAsString(new OfferDTO())))
                 .andReturn();
@@ -164,22 +162,6 @@ public class OfferControllerTest {
         assertThat(response.getContentAsString()).contains("Offre est null");
     }
 
-    @Test
-    public void testManagerOfferCreate_withInvalidId() throws Exception {
-        OfferDTO dummyOfferDTO = getDummyOfferDTO();
-        dummyOfferDTO.setCreator_id(45L);
-        when(managerService.getOneByID(45L)).thenThrow(new IdDoesNotExistException());
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/offers/manager/add")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(MAPPER.writeValueAsString(dummyOfferDTO)))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le gestionnaire n'existe pas");
-    }
 
     @Test
     public void testManagerOfferCreate_withAlreadyExistingOffer() throws Exception {
@@ -191,7 +173,7 @@ public class OfferControllerTest {
         when(offerService.create(dummyOffer)).thenThrow(new OfferAlreadyExistsException());
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/offers/manager/add" + email)
+                        MockMvcRequestBuilders.post("/offers/manager/add/" + email)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(MAPPER.writeValueAsString(dummyOfferDTO)))
                 .andReturn();
