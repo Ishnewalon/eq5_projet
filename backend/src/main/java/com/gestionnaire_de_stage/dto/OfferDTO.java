@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -29,7 +30,7 @@ public class OfferDTO {
     @Min(value = 0, message = "Le salaire n'est pas positif.")
     private double salary;
 
+    @NotBlank(message = "Le courriel est vide")
+    private String creator_email;
 
-    @Min(value = 1, message = "Le id de l'utilsateur n'est pas positif.")
-    private long creator_id;
 }

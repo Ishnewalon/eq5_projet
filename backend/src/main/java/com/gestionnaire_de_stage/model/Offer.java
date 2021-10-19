@@ -20,7 +20,7 @@ public class Offer {
     private Long id;
 
     @OneToOne
-    private User creator;
+    private Monitor creator;
 
     @NotBlank(message = "Le département ne peut pas être vide.")
     @Size(min = 2, message = "Le departement doit avoir au minimum 2 caractères.")
@@ -55,9 +55,9 @@ public class Offer {
 
     private boolean valid;
 
-    public Long getCreatorId() {
+    public String getCreatorEmail() {
         if (creator == null)
             return null;
-        return creator.getId();
+        return creator.getEmail();
     }
 }

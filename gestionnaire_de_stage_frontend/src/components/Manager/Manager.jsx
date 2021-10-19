@@ -1,31 +1,20 @@
 import React, {Component} from "react";
 import AddOffer from "../AddOffer/AddOffer";
-import OfferService from "../../services/offer-service";
 import ReviewOffers from "../ReviewOffers/ReviewOffers";
 import ViewOffers from "../ViewOffers/ViewOffers";
 
 export default class Manager extends Component {
 
-
-    constructor(props) {
-        super(props);
-        this.serviceOffer = OfferService
-    }
-
-    addOffer = (offer) => {
-        this.serviceOffer.createOfferManager(offer).then()
-    }
-
     render() {
         return (<>
                 <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-                    <AddOffer addOffer={this.addOffer}/>
+                    <AddOffer/>
                 </div>
                 <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-                    <ViewOffers />
+                    <ViewOffers/>
                 </div>
                 <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-                    <ReviewOffers />
+                    <ReviewOffers/>
                 </div>
             </>
         )
