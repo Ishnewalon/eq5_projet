@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Student;
-import com.gestionnaire_de_stage.repository.StudentRepository;
 import com.gestionnaire_de_stage.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -35,63 +35,73 @@ public class StudentControllerTest {
     @MockBean
     private StudentService studentService;
 
-    @MockBean
-    private StudentRepository studentRepository;
+    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void testStudentSignUp_withValidEntries() throws Exception {
-        Student student = getStudent();
-        when(studentService.create(any())).thenReturn(student);
+        Student dummyStudent = getDummyStudent();
+        when(studentService.create(any())).thenReturn(dummyStudent);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/student/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(student))).andReturn();
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/student/signup")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyStudent)))
+                .andReturn();
 
-        var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(actualStudent).isEqualTo(student);
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        Student actualStudent = MAPPER.readValue(response.getContentAsString(), Student.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(actualStudent).isEqualTo(dummyStudent);
     }
 
 
     @Test
     public void testStudentSignUp_withNullStudent() throws Exception {
-        Student student = getStudent();
+        Student dummyStudent = getDummyStudent();
         when(studentService.create(any())).thenThrow(IllegalArgumentException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/student/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(student))).andReturn();
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/student/signup")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyStudent)))
+                .andReturn();
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
     }
 
     @Test
     public void testStudentSignUp_withInvalidStudent() throws Exception {
-        Student student = getStudent();
+        Student dummyStudent = getDummyStudent();
         when(studentService.create(any())).thenThrow(StudentAlreadyExistsException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/student/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(student))).andReturn();
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/student/signup")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyStudent)))
+                .andReturn();
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Ce courriel existe déjà!");
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Ce courriel existe déjà!");
     }
 
     @Test
     public void testStudentLogin_withValidEntries() throws Exception {
-        Student student = getStudent();
+        Student dummyStudent = getDummyStudent();
         String email = "clip@gmail.com";
         String password = "thiswilldo";
-        when(studentService.getOneByEmailAndPassword(any(), any())).thenReturn(student);
+        when(studentService.getOneByEmailAndPassword(any(), any())).thenReturn(dummyStudent);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/" + email + "/" + password)
-                        .contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/student/" + email + "/" + password)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        Student actualStudent = MAPPER.readValue(response.getContentAsString(), Student.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualStudent.getLastName()).isEqualTo("Brawl");
     }
 
@@ -101,12 +111,14 @@ public class StudentControllerTest {
         String password = "thiswilldo";
         when(studentService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/" + email + "/" + password)
-                        .contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/student/" + email + "/" + password)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
     }
 
     @Test
@@ -115,13 +127,16 @@ public class StudentControllerTest {
         String password = "thiswilldo";
         when(studentService.getOneByEmailAndPassword(any(), any())).thenThrow(EmailAndPasswordDoesNotExistException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/" + email + "/" + password)
-                        .contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/student/" + email + "/" + password)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
     }
+
 
     // BON TEST !!!!!!!!!!!!!
     @Test
@@ -140,20 +155,20 @@ public class StudentControllerTest {
     }
 
 
-    private Student getStudent() {
-        Student student = new Student();
-        student.setId(1L);
-        student.setLastName("Brawl");
-        student.setFirstName("Spaghetta");
-        student.setPhone("514-546-2375");
-        student.setEmail("clip@gmail.com");
-        student.setPassword("thiswilldo");
-        student.setAddress("758 George");
-        student.setCity("LaSalle");
-        student.setDepartment("Informatique");
-        student.setPostalCode("H5N 9F2");
-        student.setMatricule("1740934");
+    private Student getDummyStudent() {
+        Student dummyStudent = new Student();
+        dummyStudent.setId(1L);
+        dummyStudent.setLastName("Brawl");
+        dummyStudent.setFirstName("Spaghetta");
+        dummyStudent.setPhone("514-546-2375");
+        dummyStudent.setEmail("clip@gmail.com");
+        dummyStudent.setPassword("thiswilldo");
+        dummyStudent.setAddress("758 George");
+        dummyStudent.setCity("LaSalle");
+        dummyStudent.setDepartment("Informatique");
+        dummyStudent.setPostalCode("H5N 9F2");
+        dummyStudent.setMatricule("1740934");
 
-        return student;
+        return dummyStudent;
     }
 }

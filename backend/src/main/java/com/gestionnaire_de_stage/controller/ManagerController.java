@@ -20,9 +20,9 @@ public class ManagerController {
 
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
-        Manager manager;
         try {
-            manager = managerService.getOneByEmailAndPassword(email, password);
+            Manager manager = managerService.getOneByEmailAndPassword(email, password);
+            return ResponseEntity.ok(manager);
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
@@ -32,6 +32,5 @@ public class ManagerController {
                     .badRequest()
                     .body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
         }
-        return ResponseEntity.ok(manager);
     }
 }

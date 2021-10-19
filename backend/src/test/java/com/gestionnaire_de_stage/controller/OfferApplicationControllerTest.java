@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -36,92 +37,100 @@ class OfferApplicationControllerTest {
     @MockBean
     private OfferApplicationService offerApplicationService;
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
+
     @Test
     public void testStudentApplyToOffer() throws Exception {
-        // Arrange
         when(offerApplicationService.create(any(), any())).thenReturn(Optional.of(getDummyOfferApp()));
-        // Act
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(getDummyOfferAppDto())))
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/applications/apply")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(getDummyOfferAppDto())))
                 .andReturn();
-        // Assert
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(CREATED.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Succes: candidature envoyer!");
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(CREATED.value());
+        assertThat(response.getContentAsString()).contains("Succes: candidature envoyer!");
     }
 
     @Test
     public void testStudentApplyToOfferAgain() throws Exception {
-        // Arrange
         when(offerApplicationService.create(any(), any())).thenThrow(new StudentAlreadyAppliedToOfferException());
-        // Act
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(getDummyOfferAppDto())))
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/applications/apply")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(getDummyOfferAppDto())))
                 .andReturn();
-        // Assert
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: candidature deja envoye!");
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: candidature deja envoye!");
     }
 
     @Test
     public void testStudentApplyToOffer_withOfferNonExistant() throws Exception {
-        // Arrange
         when(offerApplicationService.create(any(), any())).thenThrow(new IdDoesNotExistException());
-        // Act
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(getDummyOfferAppDto())))
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/applications/apply")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(getDummyOfferAppDto())))
                 .andReturn();
-        // Assert
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Offre ou Curriculum non existant!");
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Offre ou Curriculum non existant!");
     }
 
     @Test
     public void testStudentApplyToOffer_withCurriculumNonExistant() throws Exception {
-        // Arrange
         when(offerApplicationService.create(any(), any())).thenThrow(new IdDoesNotExistException());
-        // Act
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(getDummyOfferAppDto())))
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/applications/apply")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(getDummyOfferAppDto())))
                 .andReturn();
-        // Assert
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Offre ou Curriculum non existant!");
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Offre ou Curriculum non existant!");
     }
 
     @Test
     public void testStudentApplyToOffer_withDTOWithNoOfferId() throws Exception {
-        // Arrange
         OfferAppDTO dummyOfferAppDto = getDummyOfferAppDto();
         dummyOfferAppDto.setIdOffer(null);
         when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("Erreur: Le id de l'offre ne peut pas etre null"));
-        // Act
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(dummyOfferAppDto)))
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/applications/apply")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyOfferAppDto)))
                 .andReturn();
-        // Assert
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le id de l'offre ne peut pas etre null");
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Le id de l'offre ne peut pas etre null");
     }
 
     @Test
     public void testStudentApplyToOffer_withDTOWithNoCurriculumId() throws Exception {
-        // Arrange
         OfferAppDTO dummyOfferAppDto = getDummyOfferAppDto();
         dummyOfferAppDto.setIdCurriculum(null);
         when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("Erreur: Le id du curriculum ne peut pas etre null"));
-        // Act
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/applications/apply")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(dummyOfferAppDto)))
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/applications/apply")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyOfferAppDto)))
                 .andReturn();
-        // Assert
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le id du curriculum ne peut pas etre null");
+
+        MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Le id du curriculum ne peut pas etre null");
     }
 
     private OfferAppDTO getDummyOfferAppDto() {
@@ -133,32 +142,32 @@ class OfferApplicationControllerTest {
     }
 
     private OfferApplication getDummyOfferApp() {
-        OfferApplication offerApplicationDTO = new OfferApplication();
-        offerApplicationDTO.setOffer(getDummyOffer());
-        offerApplicationDTO.setCurriculum(getDummyCurriculum());
-        offerApplicationDTO.setId(1L);
+        OfferApplication dummyOfferApplicationDTO = new OfferApplication();
+        dummyOfferApplicationDTO.setOffer(getDummyOffer());
+        dummyOfferApplicationDTO.setCurriculum(getDummyCurriculum());
+        dummyOfferApplicationDTO.setId(1L);
 
-        return offerApplicationDTO;
+        return dummyOfferApplicationDTO;
     }
 
     private Offer getDummyOffer() {
-        Offer offer = new Offer();
-        offer.setDepartment("Un departement");
-        offer.setAddress("ajsaodas");
-        offer.setId(1L);
-        offer.setDescription("oeinoiendw");
-        offer.setSalary(10);
-        offer.setTitle("oeinoiendw");
-        return offer;
+        Offer dummyOffer = new Offer();
+        dummyOffer.setDepartment("Un departement");
+        dummyOffer.setAddress("ajsaodas");
+        dummyOffer.setId(1L);
+        dummyOffer.setDescription("oeinoiendw");
+        dummyOffer.setSalary(10);
+        dummyOffer.setTitle("oeinoiendw");
+        return dummyOffer;
     }
 
     private Curriculum getDummyCurriculum() {
-        Curriculum curriculum = new Curriculum();
+        Curriculum dummyCurriculum = new Curriculum();
 
-        curriculum.setId(1L);
-        curriculum.setData("some xml".getBytes());
-        curriculum.setName("fileeeename");
-        curriculum.setStudent(new Student());
-        return curriculum;
+        dummyCurriculum.setId(1L);
+        dummyCurriculum.setData("some xml".getBytes());
+        dummyCurriculum.setName("fileeeename");
+        dummyCurriculum.setStudent(new Student());
+        return dummyCurriculum;
     }
 }

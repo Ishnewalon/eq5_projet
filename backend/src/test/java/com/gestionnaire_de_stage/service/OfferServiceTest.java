@@ -35,148 +35,145 @@ public class OfferServiceTest {
     @Test
     public void testMapToOffer_withNullDto() {
         Offer mappedOffer = offerService.mapToOffer(null);
+
         assertThat(mappedOffer).isNull();
     }
 
     @Test
     public void testMapToOfferDto_withNullOffer() {
-        OfferDTO mappedDto = offerService.mapToOfferDTO(null);
-        assertThat(mappedDto).isNull();
+        OfferDTO mappedOfferDto = offerService.mapToOfferDTO(null);
+
+        assertThat(mappedOfferDto).isNull();
     }
 
     @Test
     public void testMapToOffer() {
-        OfferDTO dto = getDummyDto();
+        OfferDTO dummyOfferDto = getDummyOfferDto();
 
-        Offer mappedOffer = offerService.mapToOffer(dto);
+        Offer mappedOffer = offerService.mapToOffer(dummyOfferDto);
 
         assertThat(mappedOffer.getId()).isNull();
-        assertThat(dto.getAddress()).isEqualTo(mappedOffer.getAddress());
-        assertThat(dto.getDepartment()).isEqualTo(mappedOffer.getDepartment());
-        assertThat(dto.getDescription()).isEqualTo(mappedOffer.getDescription());
-        assertThat(dto.getSalary()).isEqualTo(mappedOffer.getSalary());
+        assertThat(dummyOfferDto.getAddress()).isEqualTo(mappedOffer.getAddress());
+        assertThat(dummyOfferDto.getDepartment()).isEqualTo(mappedOffer.getDepartment());
+        assertThat(dummyOfferDto.getDescription()).isEqualTo(mappedOffer.getDescription());
+        assertThat(dummyOfferDto.getSalary()).isEqualTo(mappedOffer.getSalary());
     }
 
     @Test
     public void testMapToOfferDto() {
-        Offer offer = getDummyOffer();
-        OfferDTO mappedDto = offerService.mapToOfferDTO(offer);
+        Offer dummyOffer = getDummyOffer();
 
-        assertThat(mappedDto.getAddress()).isEqualTo(offer.getAddress());
-        assertThat(mappedDto.getDepartment()).isEqualTo(offer.getDepartment());
-        assertThat(mappedDto.getDescription()).isEqualTo(offer.getDescription());
-        assertThat(mappedDto.getTitle()).isEqualTo(offer.getTitle());
-        assertThat(mappedDto.getSalary()).isEqualTo(offer.getSalary());
+        OfferDTO mappedOfferDto = offerService.mapToOfferDTO(dummyOffer);
+
+        assertThat(mappedOfferDto.getAddress()).isEqualTo(dummyOffer.getAddress());
+        assertThat(mappedOfferDto.getDepartment()).isEqualTo(dummyOffer.getDepartment());
+        assertThat(mappedOfferDto.getDescription()).isEqualTo(dummyOffer.getDescription());
+        assertThat(mappedOfferDto.getTitle()).isEqualTo(dummyOffer.getTitle());
+        assertThat(mappedOfferDto.getSalary()).isEqualTo(dummyOffer.getSalary());
     }
 
     @Test
     public void testCreateOffer_withNullOffer() {
         assertThrows(IllegalArgumentException.class,
-                () -> offerService.create(null)
-        );
+                () -> offerService.create(null));
     }
 
     @Test
     public void testCreateOffer_withExistingOffer() {
-        final Offer offer = getDummyOffer();
-        when(offerRepository.findOne(any())).thenReturn(Optional.of(offer));
+        final Offer dummyOffer = getDummyOffer();
+        when(offerRepository.findOne(any())).thenReturn(Optional.of(dummyOffer));
 
         assertThrows(OfferAlreadyExistsException.class,
-            () -> offerService.create(offer)
-        );
+                () -> offerService.create(dummyOffer));
     }
 
     @Test
     public void testCreateOffer_withValidOffer() throws OfferAlreadyExistsException {
-        Offer offer = getDummyOffer();
-        offer.setId(null);
+        Offer dummyOffer = getDummyOffer();
+        dummyOffer.setId(null);
         when(offerRepository.save(any())).thenReturn(getDummyOffer());
         when(offerRepository.findOne(any())).thenReturn(Optional.empty());
 
-        Offer createdOffer = offerService.create(offer);
+        Offer actualOffer = offerService.create(dummyOffer);
 
-        assertThat(createdOffer).isNotNull();
-        assertThat(createdOffer.getId())
+        assertThat(actualOffer).isNotNull();
+        assertThat(actualOffer.getId())
                 .isNotNull()
                 .isGreaterThan(0);
     }
 
     @Test
     public void testUpdateOffer_withNullId() {
-        final Offer offer = getDummyOffer();
-        offer.setId(null);
+        final Offer dummyOffer = getDummyOffer();
+        dummyOffer.setId(null);
 
         assertThrows(IllegalArgumentException.class,
-            () -> offerService.update(offer)
-        );
+                () -> offerService.update(dummyOffer));
     }
 
     @Test
     public void testUpdateOffer_withNullOffer() {
         assertThrows(IllegalArgumentException.class,
-            () -> offerService.update(null)
-        );
+                () -> offerService.update(null));
     }
 
     @Test
     public void testUpdateOffer_withInvalidOffer() {
-        Offer offer = getDummyOffer();
+        Offer dummyOffer = getDummyOffer();
         when(offerRepository.existsById(1L)).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-            () -> offerService.update(offer)
-        );
+                () -> offerService.update(dummyOffer));
     }
 
     @Test
     public void testUpdateOffer_withValidOffer() throws IdDoesNotExistException {
-        Offer offer = getDummyOffer();
+        Offer dummyOffer = getDummyOffer();
         when(offerRepository.existsById(1L)).thenReturn(true);
-        when(offerRepository.save(any())).thenReturn(offer);
+        when(offerRepository.save(any())).thenReturn(dummyOffer);
 
-        Offer updatedOffer = offerService.update(offer);
+        Offer actualOffer = offerService.update(dummyOffer);
 
-        assertThat(updatedOffer)
+        assertThat(actualOffer)
                 .isNotNull()
-                .isEqualTo(offer);
+                .isEqualTo(dummyOffer);
     }
 
     @Test
     public void testGetAllOffers_withValidList() {
-        List<Offer> list = getDummyArrayOffer();
-        when(offerRepository.findAll()).thenReturn(list);
+        List<Offer> dummyOfferList = getDummyOfferList();
+        when(offerRepository.findAll()).thenReturn(dummyOfferList);
 
-        List<Offer> offerList = offerService.getAll();
+        List<Offer> actualOfferList = offerService.getAll();
 
-        assertThat(offerList).isEqualTo(list);
+        assertThat(actualOfferList).isEqualTo(dummyOfferList);
     }
 
     @Test
     public void testGetAllOffers_withEmptyList() {
         when(offerRepository.findAll()).thenReturn(Collections.emptyList());
 
-        List<Offer> offerList = offerService.getAll();
+        List<Offer> actualOfferList = offerService.getAll();
 
-        assertThat(offerList).isEmpty();
+        assertThat(actualOfferList).isEmpty();
     }
 
     @Test
     public void testMapArrayToOfferDto() {
-        List<Offer> dummyArrayOffer = getDummyArrayOffer();
+        List<Offer> dummyOfferList = getDummyOfferList();
 
-        List<OfferDTO> arrayOfferDTOS = offerService.mapArrayToOfferDTO(dummyArrayOffer);
+        List<OfferDTO> mappedOfferDtoList = offerService.mapArrayToOfferDTO(dummyOfferList);
 
-        assertThat(arrayOfferDTOS.size()).isEqualTo(dummyArrayOffer.size());
+        assertThat(mappedOfferDtoList.size()).isEqualTo(dummyOfferList.size());
+        for (int i = 0, size = mappedOfferDtoList.size(); i < size; i++) {
+            Offer dummyOffer = dummyOfferList.get(i);
+            OfferDTO actualOfferDto = mappedOfferDtoList.get(i);
 
-        for (int i = 0, size = arrayOfferDTOS.size(); i < size; i++) {
-            Offer offer = dummyArrayOffer.get(i);
-            OfferDTO dto = arrayOfferDTOS.get(i);
-
-            assertThat(dto.getAddress()).isEqualTo(offer.getAddress());
-            assertThat(dto.getDepartment()).isEqualTo(offer.getDepartment());
-            assertThat(dto.getTitle()).isEqualTo(offer.getTitle());
-            assertThat(dto.getDescription()).isEqualTo(offer.getDescription());
-            assertThat(dto.getSalary()).isEqualTo(offer.getSalary());
+            assertThat(actualOfferDto.getAddress()).isEqualTo(dummyOffer.getAddress());
+            assertThat(actualOfferDto.getDepartment()).isEqualTo(dummyOffer.getDepartment());
+            assertThat(actualOfferDto.getTitle()).isEqualTo(dummyOffer.getTitle());
+            assertThat(actualOfferDto.getDescription()).isEqualTo(dummyOffer.getDescription());
+            assertThat(actualOfferDto.getSalary()).isEqualTo(dummyOffer.getSalary());
         }
     }
 
@@ -184,75 +181,76 @@ public class OfferServiceTest {
     public void testGetOffersByDepartment_withNoOffer() {
         String department = "myDepartmentWithNoOffer";
 
-        List<OfferDTO> offers = offerService.getOffersByDepartment(department);
+        List<OfferDTO> actualOfferDtoList = offerService.getOffersByDepartment(department);
 
-        assertThat(offers).isEmpty();
+        assertThat(actualOfferDtoList).isEmpty();
     }
 
     @Test
     public void testGetOffersByDepartment() {
-        when(offerRepository.findAllByDepartment(any())).thenReturn(getDummyArrayOffer());
+        List<Offer> dummyOfferList = getDummyOfferList();
+        List<OfferDTO> mappedOfferDtoList = offerService.mapArrayToOfferDTO(dummyOfferList);
+        when(offerRepository.findAllByDepartment(any())).thenReturn(dummyOfferList);
 
-        List<OfferDTO> offers = offerService.getOffersByDepartment("Un departement");
-        List<OfferDTO> mappedDtos = offerService.mapArrayToOfferDTO(getDummyArrayOffer());
+        List<OfferDTO> actualOfferDtoList = offerService.getOffersByDepartment("Un departement");
 
-        assertThat(mappedDtos).isEqualTo(offers);
+        assertThat(actualOfferDtoList).isEqualTo(mappedOfferDtoList);
     }
 
     @Test
-    public void testFindOfferById(){
-        Offer offer = getDummyOffer();
-        when(offerRepository.findById(any())).thenReturn(Optional.of(offer));
+    public void testFindOfferById() {
+        Offer dummyOffer = getDummyOffer();
+        when(offerRepository.findById(any())).thenReturn(Optional.of(dummyOffer));
 
-        Optional<Offer> optionalOffer = offerService.findOfferById(offer.getId());
+        Optional<Offer> actualOffer = offerService.findOfferById(dummyOffer.getId());
 
-        assertThat(optionalOffer).isPresent();
-        assertThat(optionalOffer.get()).isEqualTo(offer);
+        assertThat(actualOffer).isPresent();
+        assertThat(actualOffer.get()).isEqualTo(dummyOffer);
     }
 
-    private List<Offer> getDummyArrayOffer() {
-        List<Offer> myList = new ArrayList<>();
+    private List<Offer> getDummyOfferList() {
+        List<Offer> dummyOfferList = new ArrayList<>();
         for (long i = 0; i < 3; i++) {
             Offer dummyOffer = getDummyOffer();
             dummyOffer.setId(i);
-            myList.add(dummyOffer);
+            dummyOfferList.add(dummyOffer);
         }
-        return myList;
+        return dummyOfferList;
     }
 
 
     private Offer getDummyOffer() {
-        Offer offer = new Offer();
-        offer.setCreator(getDummyMonitor());
-        offer.setDepartment("Un departement");
-        offer.setAddress("ajsaodas");
-        offer.setId(1L);
-        offer.setDescription("oeinoiendw");
-        offer.setSalary(10);
-        offer.setTitle("oeinoiendw");
-        return offer;
+        Offer dummyOffer = new Offer();
+        dummyOffer.setCreator(getDummyMonitor());
+        dummyOffer.setDepartment("Un departement");
+        dummyOffer.setAddress("ajsaodas");
+        dummyOffer.setId(1L);
+        dummyOffer.setDescription("oeinoiendw");
+        dummyOffer.setSalary(10);
+        dummyOffer.setTitle("oeinoiendw");
+        return dummyOffer;
     }
 
-    private Monitor getDummyMonitor(){
-        Monitor monitor = new Monitor();
-        monitor.setId(1L);
-        monitor.setFirstName("same");
-        monitor.setLastName("dude");
-        monitor.setEmail("dudesame@gmail.com");
-        monitor.setPhone("5145555112");
-        monitor.setDepartment("Informatique");
-        monitor.setPassword("testPassword");
-        return monitor;
+    private Monitor getDummyMonitor() {
+        Monitor dummyMonitor = new Monitor();
+        dummyMonitor.setId(1L);
+        dummyMonitor.setFirstName("same");
+        dummyMonitor.setLastName("dude");
+        dummyMonitor.setEmail("dudesame@gmail.com");
+        dummyMonitor.setPhone("5145555112");
+        dummyMonitor.setDepartment("Informatique");
+        dummyMonitor.setPassword("testPassword");
+        return dummyMonitor;
     }
 
-    private OfferDTO getDummyDto() {
-        OfferDTO offerDTO = new OfferDTO();
-        offerDTO.setCreator_id(1L);
-        offerDTO.setSalary(18.0d);
-        offerDTO.setDescription("Une description");
-        offerDTO.setAddress("Addresse du cégep");
-        offerDTO.setTitle("Offer title");
-        offerDTO.setDepartment("Department name");
-        return offerDTO;
+    private OfferDTO getDummyOfferDto() {
+        OfferDTO dummyOfferDTO = new OfferDTO();
+        dummyOfferDTO.setCreator_id(1L);
+        dummyOfferDTO.setSalary(18.0d);
+        dummyOfferDTO.setDescription("Une description");
+        dummyOfferDTO.setAddress("Addresse du cégep");
+        dummyOfferDTO.setTitle("Offer title");
+        dummyOfferDTO.setDepartment("Department name");
+        return dummyOfferDTO;
     }
 }

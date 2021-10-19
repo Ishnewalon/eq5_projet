@@ -48,7 +48,9 @@ public class OfferController {
             offer.setCreator(monitor);
 
             offer = offerService.create(offer);
-            return new ResponseEntity<>(offer, HttpStatus.CREATED);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(offer);
         } catch (IllegalArgumentException ie) {
             return ResponseEntity
                     .badRequest()
@@ -64,24 +66,20 @@ public class OfferController {
         }
     }
 
-    @PostMapping("/manager/add")
-    public ResponseEntity<?> addOfferManager(@RequestBody OfferDTO offerDTO) {
+    @PostMapping("/manager/add/{monitorEmail}")
+    public ResponseEntity<?> addOfferManager(@RequestBody OfferDTO offerDTO, @PathVariable String monitorEmail) {
         Offer offer = offerService.mapToOffer(offerDTO);
-
         try {
-            Manager manager = managerService.getOneByID(offerDTO.getCreator_id());
-            offer.setCreator(manager);
-
+            Monitor monitor = monitorService.getOneByEmail(monitorEmail);
+            offer.setCreator(monitor);
             offer = offerService.create(offer);
-            return new ResponseEntity<>(offer, HttpStatus.CREATED);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(offer);
         } catch (IllegalArgumentException ie) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(ie.getMessage()));
-        } catch (IdDoesNotExistException ide) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le gestionnaire n'existe pas"));
         } catch (OfferAlreadyExistsException e) {
             return ResponseEntity
                     .badRequest()
@@ -92,22 +90,29 @@ public class OfferController {
     @GetMapping({"/", "/{department}"}) //TODO Handle exception
     public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {
         if (department == null || department.isEmpty() || department.isBlank())
-            return ResponseEntity.badRequest().body(new ResponseMessage("Le département n'est pas précisé"));
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Le département n'est pas précisé"));
 
         List<OfferDTO> offerDTOS = offerService.getOffersByDepartment(department);
 
-        return new ResponseEntity<>(offerDTOS, HttpStatus.OK);
+        return ResponseEntity.ok(offerDTOS);
     }
 
     @PutMapping("/validate")
     public ResponseEntity<?> validateOffer(@RequestBody Offer o) {
         try {
             Offer offer = offerService.update(o);
-            return ResponseEntity.accepted().body(offer);
+            return ResponseEntity
+                    .ok(offer);
         } catch (IdDoesNotExistException e) {
-            return ResponseEntity.badRequest().body(new ResponseMessage("Offre non existante!"));
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Offre non existante!"));
         } catch (IllegalArgumentException ie) {
-            return ResponseEntity.badRequest().body(ie.getMessage());
+            return ResponseEntity
+                    .badRequest()
+                    .body(ie.getMessage());
         }
     }
 
