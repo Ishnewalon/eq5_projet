@@ -66,14 +66,12 @@ public class OfferController {
         }
     }
 
-    @PostMapping("/manager/add")
-    public ResponseEntity<?> addOfferManager(@RequestBody OfferDTO offerDTO) {
+    @PostMapping("/manager/add/{monitorEmail}")
+    public ResponseEntity<?> addOfferManager(@RequestBody OfferDTO offerDTO, @PathVariable String monitorEmail) {
         Offer offer = offerService.mapToOffer(offerDTO);
-
         try {
-            Manager manager = managerService.getOneByID(offerDTO.getCreator_id());
-            offer.setCreator(manager);
-
+            Monitor monitor = monitorService.getOneByEmail(monitorEmail);
+            offer.setCreator(monitor);
             offer = offerService.create(offer);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
@@ -82,10 +80,6 @@ public class OfferController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(ie.getMessage()));
-        } catch (IdDoesNotExistException ide) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le gestionnaire n'existe pas"));
         } catch (OfferAlreadyExistsException e) {
             return ResponseEntity
                     .badRequest()

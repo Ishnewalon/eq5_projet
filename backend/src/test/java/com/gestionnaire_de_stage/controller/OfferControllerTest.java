@@ -126,6 +126,7 @@ public class OfferControllerTest {
 
     @Test
     public void testManagerOfferCreate_withValidEntry() throws Exception {
+        String email = "anemail@gmail.com";
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
@@ -133,7 +134,7 @@ public class OfferControllerTest {
         when(offerService.create(any())).thenReturn(getDummyOffer());
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/offers/manager/add")
+                        MockMvcRequestBuilders.post("/offers/manager/add" + email)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(MAPPER.writeValueAsString(dummyOfferDTO)))
                 .andReturn();
@@ -148,11 +149,12 @@ public class OfferControllerTest {
 
     @Test
     public void testManagerOfferCreate_withNullEntry() throws Exception {
+        String email = "anemail@gmail.com";
         when(offerService.mapToOffer(any())).thenReturn(new Offer());
         when(offerService.create(any())).thenThrow(new IllegalArgumentException("Offre est null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/offers/manager/add")
+                        MockMvcRequestBuilders.post("/offers/manager/add" + email)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(MAPPER.writeValueAsString(new OfferDTO())))
                 .andReturn();
@@ -181,6 +183,7 @@ public class OfferControllerTest {
 
     @Test
     public void testManagerOfferCreate_withAlreadyExistingOffer() throws Exception {
+        String email = "anemail@gmail.com";
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
@@ -188,7 +191,7 @@ public class OfferControllerTest {
         when(offerService.create(dummyOffer)).thenThrow(new OfferAlreadyExistsException());
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/offers/manager/add")
+                        MockMvcRequestBuilders.post("/offers/manager/add" + email)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(MAPPER.writeValueAsString(dummyOfferDTO)))
                 .andReturn();

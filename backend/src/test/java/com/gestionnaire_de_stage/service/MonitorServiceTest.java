@@ -180,7 +180,22 @@ public class MonitorServiceTest {
         assertThrows(EmailAndPasswordDoesNotExistException.class,
                 () -> monitorService.getOneByEmailAndPassword(dummyMonitor.getEmail(), dummyMonitor.getPassword()));
     }
+    @Test
+    public void testFindMonitorByEmail_withValidEmail() {
+        Monitor monitor = getDummyMonitor();
+        String email = "stepotato@gmail.com";
+        when(monitorRepository.getMonitorByEmail(any())).thenReturn(monitor);
 
+        Monitor actual = monitorService.getOneByEmail(email);
+
+        assertThat(actual.getPostalCode()).isEqualTo(monitor.getPostalCode());
+    }
+
+    @Test
+    public void testFindMonitorByEmail_withNullEmail() {
+        assertThrows(IllegalArgumentException.class,
+                () -> monitorService.getOneByEmail(null));
+    }
     private Monitor getDummyMonitor() {
         Monitor dummyMonitor = new Monitor();
         dummyMonitor.setId(1L);
