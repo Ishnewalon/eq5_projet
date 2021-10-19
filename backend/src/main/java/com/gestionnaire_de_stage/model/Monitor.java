@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Monitor extends User {
 
     @NotNull
