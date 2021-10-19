@@ -24,15 +24,15 @@ public class OfferApplicationController {
     @PostMapping("/apply")
     public ResponseEntity<?> studentApplyToOffer(@RequestBody OfferAppDTO offerAppDTO) {
         try {
-            offerApplicationService.create(offerAppDTO.getIdOffer(), offerAppDTO.getIdCurriculum());
+            offerApplicationService.create(offerAppDTO.getIdStudent(), offerAppDTO.getIdOffer());
         } catch (StudentAlreadyAppliedToOfferException err) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: candidature deja envoye!"));
+                    .body(new ResponseMessage("Candidature déjà envoyé!"));
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Offre ou Curriculum non existant!"));
+                    .body(new ResponseMessage("Offre ou étudiant non existant!"));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
@@ -40,6 +40,6 @@ public class OfferApplicationController {
         }
         return ResponseEntity
                 .status(CREATED)
-                .body(new ResponseMessage("Succes: candidature envoyer!"));
+                .body(new ResponseMessage("Candidature envoyé!"));
     }
 }

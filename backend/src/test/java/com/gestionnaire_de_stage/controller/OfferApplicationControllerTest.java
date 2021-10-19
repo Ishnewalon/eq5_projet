@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
-import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
@@ -51,7 +50,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(CREATED.value());
-        assertThat(response.getContentAsString()).contains("Succes: candidature envoyer!");
+        assertThat(response.getContentAsString()).contains("Candidature envoyé!");
     }
 
     @Test
@@ -66,7 +65,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: candidature deja envoye!");
+        assertThat(response.getContentAsString()).contains("Candidature déjà envoyé!");
     }
 
     @Test
@@ -81,11 +80,11 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Offre ou Curriculum non existant!");
+        assertThat(response.getContentAsString()).contains("Offre ou étudiant non existant!");
     }
 
     @Test
-    public void testStudentApplyToOffer_withCurriculumNonExistant() throws Exception {
+    public void testStudentApplyToOffer_withStudentNonExistant() throws Exception {
         when(offerApplicationService.create(any(), any())).thenThrow(new IdDoesNotExistException());
 
         MvcResult mvcResult = mockMvc.perform(
@@ -96,14 +95,14 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Offre ou Curriculum non existant!");
+        assertThat(response.getContentAsString()).contains("Offre ou étudiant non existant!");
     }
 
     @Test
     public void testStudentApplyToOffer_withDTOWithNoOfferId() throws Exception {
         OfferAppDTO dummyOfferAppDto = getDummyOfferAppDto();
         dummyOfferAppDto.setIdOffer(null);
-        when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("Erreur: Le id de l'offre ne peut pas etre null"));
+        when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("L'id de l'offre ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/apply")
@@ -113,14 +112,14 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le id de l'offre ne peut pas etre null");
+        assertThat(response.getContentAsString()).contains("L'id de l'offre ne peut pas être null");
     }
 
     @Test
-    public void testStudentApplyToOffer_withDTOWithNoCurriculumId() throws Exception {
+    public void testStudentApplyToOffer_withDTOWithNoStudentId() throws Exception {
         OfferAppDTO dummyOfferAppDto = getDummyOfferAppDto();
-        dummyOfferAppDto.setIdCurriculum(null);
-        when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("Erreur: Le id du curriculum ne peut pas etre null"));
+        dummyOfferAppDto.setIdStudent(null);
+        when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("ID est null"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/apply")
@@ -130,13 +129,13 @@ class OfferApplicationControllerTest {
 
         MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le id du curriculum ne peut pas etre null");
+        assertThat(response.getContentAsString()).contains("ID est null");
     }
 
     private OfferAppDTO getDummyOfferAppDto() {
         OfferAppDTO offerAppDTO = new OfferAppDTO();
+        offerAppDTO.setIdStudent(1L);
         offerAppDTO.setIdOffer(1L);
-        offerAppDTO.setIdCurriculum(1L);
 
         return offerAppDTO;
     }
@@ -144,7 +143,7 @@ class OfferApplicationControllerTest {
     private OfferApplication getDummyOfferApp() {
         OfferApplication dummyOfferApplicationDTO = new OfferApplication();
         dummyOfferApplicationDTO.setOffer(getDummyOffer());
-        dummyOfferApplicationDTO.setCurriculum(getDummyCurriculum());
+        dummyOfferApplicationDTO.setStudent(getDummyStudent());
         dummyOfferApplicationDTO.setId(1L);
 
         return dummyOfferApplicationDTO;
@@ -161,13 +160,15 @@ class OfferApplicationControllerTest {
         return dummyOffer;
     }
 
-    private Curriculum getDummyCurriculum() {
-        Curriculum dummyCurriculum = new Curriculum();
-
-        dummyCurriculum.setId(1L);
-        dummyCurriculum.setData("some xml".getBytes());
-        dummyCurriculum.setName("fileeeename");
-        dummyCurriculum.setStudent(new Student());
-        return dummyCurriculum;
+    private Student getDummyStudent() {
+        Student dummyStudent = new Student();
+        dummyStudent.setId(1L);
+        dummyStudent.setLastName("Candle");
+        dummyStudent.setFirstName("Tea");
+        dummyStudent.setEmail("cant@outlook.com");
+        dummyStudent.setPassword("cantPass");
+        dummyStudent.setDepartment("info");
+        dummyStudent.setMatricule("4673943");
+        return dummyStudent;
     }
 }
