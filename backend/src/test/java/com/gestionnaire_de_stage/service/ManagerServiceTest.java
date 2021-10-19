@@ -4,7 +4,6 @@ import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.ManagerAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Manager;
-import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.ManagerRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,19 +29,18 @@ public class ManagerServiceTest {
 
     @Test
     public void testCreate_withValidManager() throws ManagerAlreadyExistsException {
-        Manager manager = getManager();
-        when(managerRepository.save(any())).thenReturn(manager);
+        Manager dummyManager = getDummyManager();
+        when(managerRepository.save(any())).thenReturn(dummyManager);
 
-        Manager actual = managerService.create(manager);
+        Manager actualManager = managerService.create(dummyManager);
 
-        assertThat(actual.getEmail()).isEqualTo(manager.getEmail());
+        assertThat(actualManager.getEmail()).isEqualTo(dummyManager.getEmail());
     }
 
     @Test
     public void testCreate_withNullManager() {
         assertThrows(IllegalArgumentException.class,
-            () -> managerService.create(null)
-        );
+                () -> managerService.create(null));
     }
 
     @Test
@@ -50,87 +48,81 @@ public class ManagerServiceTest {
         when(managerRepository.existsByEmail(any())).thenReturn(true);
 
         assertThrows(ManagerAlreadyExistsException.class,
-            () -> managerService.create(getManager())
-        );
+                () -> managerService.create(getDummyManager()));
     }
 
     @Test
     public void testGetByID_withValidID() throws IdDoesNotExistException {
         Long validID = 1L;
-        Manager manager = getManager();
+        Manager dummyManager = getDummyManager();
         when(managerRepository.existsById(validID)).thenReturn(true);
-        when(managerRepository.getById(any())).thenReturn(manager);
+        when(managerRepository.getById(any())).thenReturn(dummyManager);
 
-        Manager actual = managerService.getOneByID(validID);
+        Manager actualManager = managerService.getOneByID(validID);
 
-        assertThat(actual.getEmail()).isEqualTo(manager.getEmail());
+        assertThat(actualManager.getEmail()).isEqualTo(dummyManager.getEmail());
     }
 
     @Test
     public void testGetByID_withNullID() {
         assertThrows(IllegalArgumentException.class,
-            () -> managerService.getOneByID(null)
-        );
+                () -> managerService.getOneByID(null));
     }
 
     @Test
     public void testGetByID_doesntExistID() {
-        Manager manager = getManager();
-        manager.setId(1L);
+        Manager dummyManager = getDummyManager();
+        dummyManager.setId(1L);
         when(managerRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-            () -> managerService.getOneByID(manager.getId())
-        );
+                () -> managerService.getOneByID(dummyManager.getId()));
     }
 
     @Test
     public void testGetAll() {
-        when(managerRepository.findAll()).thenReturn(getListOfManagers());
+        when(managerRepository.findAll()).thenReturn(getDummyManagerList());
 
-        final List<Manager> allManagers = managerService.getAll();
+        final List<Manager> actualManagerList = managerService.getAll();
 
-        assertThat(allManagers.size()).isEqualTo(3);
-        assertThat(allManagers.get(0).getFirstName()).isEqualTo("Oussama");
+        assertThat(actualManagerList.size()).isEqualTo(3);
+        assertThat(actualManagerList.get(0).getFirstName()).isEqualTo("Oussama");
     }
 
     @Test
     public void testUpdate_withValidEntries() throws IdDoesNotExistException {
-        Manager manager = getManager();
-        manager.setId(2L);
+        Manager dummyManager = getDummyManager();
+        dummyManager.setId(2L);
         when(managerRepository.existsById(any())).thenReturn(true);
-        when(managerRepository.save(any())).thenReturn(manager);
+        when(managerRepository.save(any())).thenReturn(dummyManager);
 
-        Manager actual = managerService.update(manager, manager.getId());
+        Manager actualManager = managerService.update(dummyManager, dummyManager.getId());
 
-        assertThat(actual.getEmail()).isEqualTo(manager.getEmail());
+        assertThat(actualManager.getEmail()).isEqualTo(dummyManager.getEmail());
     }
 
     @Test
     public void testUpdate_withNullID() {
-        Manager manager = getManager();
+        Manager dummyManager = getDummyManager();
 
         assertThrows(IllegalArgumentException.class,
-            () -> managerService.update(manager, null)
-        );
+                () -> managerService.update(dummyManager, null));
     }
 
     @Test
     public void testUpdate_withNullStudent() {
         assertThrows(IllegalArgumentException.class,
-            () -> managerService.update(null, 1L)
-        );
+                () -> managerService.update(null, 1L));
     }
 
     @Test
     public void testUpdate_doesntExistID() {
-        Manager manager = getManager();
-        manager.setId(1L);
+        Manager dummyManager = getDummyManager();
+        dummyManager.setId(1L);
         when(managerRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-            () -> managerService.update(manager, manager.getId())
-        );
+                () -> managerService.update(dummyManager, dummyManager.getId()));
     }
 
     @Test
@@ -147,8 +139,7 @@ public class ManagerServiceTest {
     @Test
     public void testDelete_withNullID() {
         assertThrows(IllegalArgumentException.class,
-            () -> managerService.deleteByID(null)
-        );
+                () -> managerService.deleteByID(null));
     }
 
     @Test
@@ -157,68 +148,62 @@ public class ManagerServiceTest {
         when(managerRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-            () -> managerService.deleteByID(id)
-        );
+                () -> managerService.deleteByID(id));
     }
 
     @Test
     public void testGetOneByEmailAndPassword_withValidEntries() throws EmailAndPasswordDoesNotExistException {
-        Manager manager = getManager();
-        when(managerRepository.existsByEmailAndPassword(any(), any()))
-                .thenReturn(true);
-        when(managerRepository.findManagerByEmailAndPassword(any(), any()))
-                .thenReturn(manager);
+        Manager dummyManager = getDummyManager();
+        when(managerRepository.existsByEmailAndPassword(any(), any())).thenReturn(true);
+        when(managerRepository.findManagerByEmailAndPassword(any(), any())).thenReturn(dummyManager);
 
-        Manager actual = managerService.getOneByEmailAndPassword(manager.getEmail(), manager.getPassword());
+        Manager actualManager = managerService.getOneByEmailAndPassword(dummyManager.getEmail(), dummyManager.getPassword());
 
-        assertThat(actual.getFirstName()).isEqualTo(manager.getFirstName());
+        assertThat(actualManager.getFirstName()).isEqualTo(dummyManager.getFirstName());
     }
 
     @Test
     public void testGetOneByEmailAndPassword_withNullEmail() {
-        Manager manager = getManager();
+        Manager dummyManager = getDummyManager();
 
         assertThrows(IllegalArgumentException.class,
-            () -> managerService.getOneByEmailAndPassword(null, manager.getPassword())
-        );
+                () -> managerService.getOneByEmailAndPassword(null, dummyManager.getPassword()));
     }
 
     @Test
     public void testGetOneByEmailAndPassword_withNullPassword() {
-        Manager manager = getManager();
+        Manager dummyManager = getDummyManager();
 
         assertThrows(IllegalArgumentException.class,
-            () -> managerService.getOneByEmailAndPassword(manager.getEmail(), null)
-        );
+                () -> managerService.getOneByEmailAndPassword(dummyManager.getEmail(), null));
     }
 
     @Test
     public void testGetOneByEmailAndPassword_doesntExistEmailAndPassword() {
-        Manager manager = getManager();
+        Manager dummyManager = getDummyManager();
         when(managerRepository.existsByEmailAndPassword(any(), any())).thenReturn(false);
 
         assertThrows(EmailAndPasswordDoesNotExistException.class,
-            () -> managerService.getOneByEmailAndPassword(manager.getEmail(), manager.getPassword())
-        );
+                () -> managerService.getOneByEmailAndPassword(dummyManager.getEmail(), dummyManager.getPassword()));
     }
 
-    private Manager getManager() {
-        Manager manager = new Manager();
-        manager.setPassword("Test1234");
-        manager.setEmail("oussamakably@gmail.com");
-        manager.setFirstName("Oussama");
-        manager.setLastName("Kably");
-        manager.setPhone("5143643320");
-        return manager;
+    private Manager getDummyManager() {
+        Manager dummyManager = new Manager();
+        dummyManager.setPassword("Test1234");
+        dummyManager.setEmail("oussamakably@gmail.com");
+        dummyManager.setFirstName("Oussama");
+        dummyManager.setLastName("Kably");
+        dummyManager.setPhone("5143643320");
+        return dummyManager;
     }
 
-    private List<Manager> getListOfManagers() {
-        List<Manager> managerList = new ArrayList<>();
+    private List<Manager> getDummyManagerList() {
+        List<Manager> dummyManagerList = new ArrayList<>();
         for (long id = 0; id < 3; id++) {
-            Manager manager = getManager();
-            manager.setId(id);
-            managerList.add(manager);
+            Manager dummyManager = getDummyManager();
+            dummyManager.setId(id);
+            dummyManagerList.add(dummyManager);
         }
-        return managerList;
+        return dummyManagerList;
     }
 }

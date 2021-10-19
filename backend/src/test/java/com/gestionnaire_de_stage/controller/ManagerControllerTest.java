@@ -3,7 +3,6 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.model.Manager;
-import com.gestionnaire_de_stage.repository.ManagerRepository;
 import com.gestionnaire_de_stage.service.ManagerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -29,24 +29,24 @@ public class ManagerControllerTest {
     @MockBean
     private ManagerService managerService;
 
-    @MockBean
-    private ManagerRepository managerRepository;
-
+    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void testManagerLogin_withValidEntries() throws Exception {
-        Manager manager = getDummyManager();
+        Manager dummyManager = getDummyManager();
         String email = "oussamakably@gmail.com";
         String password = "Test1234";
-        when(managerService.getOneByEmailAndPassword(any(), any())).thenReturn(manager);
+        when(managerService.getOneByEmailAndPassword(any(), any())).thenReturn(dummyManager);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/manager/" + email + "/" + password)
-                .contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/manager/" + email + "/" + password)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        var actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString()
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        Manager actualSupervisor = MAPPER.readValue(response.getContentAsString()
                 , Manager.class);
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualSupervisor.getLastName()).isEqualTo("Kably");
     }
 
@@ -56,12 +56,14 @@ public class ManagerControllerTest {
         String password = null;
         when(managerService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/manager/" + email + "/" + password)
-                .contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/manager/" + email + "/" + password)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
     }
 
     @Test
@@ -70,21 +72,23 @@ public class ManagerControllerTest {
         String password = "qwreqwer";
         when(managerService.getOneByEmailAndPassword(any(), any())).thenThrow(EmailAndPasswordDoesNotExistException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/manager/" + email + "/" + password)
-                .contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/manager/" + email + "/" + password)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
     }
 
     private Manager getDummyManager() {
-        Manager manager = new Manager();
-        manager.setPassword("Test1234");
-        manager.setEmail("oussamakablsy@gmail.com");
-        manager.setFirstName("Oussama");
-        manager.setLastName("Kably");
-        manager.setPhone("5143643320");
-        return manager;
+        Manager dummyManager = new Manager();
+        dummyManager.setPassword("Test1234");
+        dummyManager.setEmail("oussamakablsy@gmail.com");
+        dummyManager.setFirstName("Oussama");
+        dummyManager.setLastName("Kably");
+        dummyManager.setPhone("5143643320");
+        return dummyManager;
     }
 }

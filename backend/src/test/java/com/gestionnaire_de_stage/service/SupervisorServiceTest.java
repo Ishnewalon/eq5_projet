@@ -29,19 +29,18 @@ public class SupervisorServiceTest {
 
     @Test
     public void testCreate_withValidSupervisor() throws SupervisorAlreadyExistsException {
-        Supervisor supervisor = getSupervisor();
-        when(supervisorRepository.save(any())).thenReturn(supervisor);
+        Supervisor dummySupervisor = getDummySupervisor();
+        when(supervisorRepository.save(any())).thenReturn(dummySupervisor);
 
-        Supervisor actual = supervisorService.create(supervisor);
+        Supervisor actualSupervisor = supervisorService.create(dummySupervisor);
 
-        assertThat(actual.getEmail()).isEqualTo(supervisor.getEmail());
+        assertThat(actualSupervisor.getEmail()).isEqualTo(dummySupervisor.getEmail());
     }
 
     @Test
     public void testCreate_withNullSupervisor() {
         assertThrows(IllegalArgumentException.class,
-            () -> supervisorService.create(null)
-        );
+                () -> supervisorService.create(null));
     }
 
     @Test
@@ -49,94 +48,79 @@ public class SupervisorServiceTest {
         when(supervisorRepository.existsByEmail(any())).thenReturn(true);
 
         assertThrows(SupervisorAlreadyExistsException.class,
-            () -> supervisorService.create(getSupervisor())
-        );
+                () -> supervisorService.create(getDummySupervisor()));
     }
 
     @Test
     public void testGetByID_withValidID() throws IdDoesNotExistException {
         Long validID = 1L;
-        Supervisor supervisor = getSupervisor();
+        Supervisor dummySupervisor = getDummySupervisor();
         when(supervisorRepository.existsById(any())).thenReturn(true);
-        when(supervisorRepository.getById(any())).thenReturn(supervisor);
+        when(supervisorRepository.getById(any())).thenReturn(dummySupervisor);
 
-        Supervisor actual = supervisorService.getOneByID(validID);
+        Supervisor actualSupervisor = supervisorService.getOneByID(validID);
 
-        assertThat(actual.getMatricule()).isEqualTo(supervisor.getMatricule());
+        assertThat(actualSupervisor.getMatricule()).isEqualTo(dummySupervisor.getMatricule());
     }
 
     @Test
     public void testGetByID_withNullID() {
         assertThrows(IllegalArgumentException.class,
-            () -> supervisorService.getOneByID(null)
-        );
+                () -> supervisorService.getOneByID(null));
     }
 
     @Test
     public void testGetByID_doesntExistID() {
-        Supervisor supervisor = getSupervisor();
+        Supervisor dummySupervisor = getDummySupervisor();
         when(supervisorRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-            () -> supervisorService.getOneByID(supervisor.getId())
-        );
+                () -> supervisorService.getOneByID(dummySupervisor.getId()));
     }
 
     @Test
     public void testGetAll() {
-        when(supervisorRepository.findAll()).thenReturn(getListOfSupervisors());
+        when(supervisorRepository.findAll()).thenReturn(getDummySupervisorList());
 
-        final List<Supervisor> allSupervisors = supervisorService.getAll();
+        final List<Supervisor> actualSupervisorList = supervisorService.getAll();
 
-        assertThat(allSupervisors.size()).isEqualTo(3);
-        assertThat(allSupervisors.get(0).getFirstName()).isEqualTo("Harold");
+        assertThat(actualSupervisorList.size()).isEqualTo(3);
+        assertThat(actualSupervisorList.get(0).getFirstName()).isEqualTo("Harold");
     }
 
-    private List<Supervisor> getListOfSupervisors() {
-        List<Supervisor> supervisorList = new ArrayList<>();
-        for (long id = 0; id < 3; id++) {
-            Supervisor supervisor = getSupervisor();
-            supervisor.setId(id);
-            supervisorList.add(supervisor);
-        }
-        return supervisorList;
-    }
 
     @Test
     public void testUpdate_withValidEntries() throws IdDoesNotExistException {
-        Supervisor supervisor = getSupervisor();
+        Supervisor dummySupervisor = getDummySupervisor();
         when(supervisorRepository.existsById(any())).thenReturn(true);
-        when(supervisorRepository.save(any())).thenReturn(supervisor);
+        when(supervisorRepository.save(any())).thenReturn(dummySupervisor);
 
-        Supervisor actual = supervisorService.update(supervisor, supervisor.getId());
+        Supervisor actualSupervisor = supervisorService.update(dummySupervisor, dummySupervisor.getId());
 
-        assertThat(actual.getMatricule()).isEqualTo(supervisor.getMatricule());
+        assertThat(actualSupervisor.getMatricule()).isEqualTo(dummySupervisor.getMatricule());
     }
 
     @Test
     public void testUpdate_withNullID() {
-        Supervisor supervisor = getSupervisor();
+        Supervisor dummySupervisor = getDummySupervisor();
 
         assertThrows(IllegalArgumentException.class,
-            () -> supervisorService.update(supervisor, null)
-        );
+                () -> supervisorService.update(dummySupervisor, null));
     }
 
     @Test
     public void testUpdate_withNullSupervisor() {
         assertThrows(IllegalArgumentException.class,
-            () -> supervisorService.update(null, 1L)
-        );
+                () -> supervisorService.update(null, 1L));
     }
 
     @Test
     public void testUpdate_doesntExistID() {
-        Supervisor supervisor = getSupervisor();
+        Supervisor dummySupervisor = getDummySupervisor();
         when(supervisorRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-            () -> supervisorService.update(supervisor, supervisor.getId())
-        );
+                () -> supervisorService.update(dummySupervisor, dummySupervisor.getId()));
     }
 
     @Test
@@ -154,8 +138,7 @@ public class SupervisorServiceTest {
     @Test
     public void testDelete_withNullID() {
         assertThrows(IllegalArgumentException.class,
-            () -> supervisorService.deleteByID(null)
-        );
+                () -> supervisorService.deleteByID(null));
     }
 
     @Test
@@ -164,60 +147,64 @@ public class SupervisorServiceTest {
         when(supervisorRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-            () -> supervisorService.deleteByID(id)
-        );
+                () -> supervisorService.deleteByID(id));
     }
 
     @Test
     public void testSupervisorByEmailAndPassword_withValidEntries() throws EmailAndPasswordDoesNotExistException {
-        Supervisor supervisor = getSupervisor();
-        when(supervisorRepository.existsByEmailAndPassword(supervisor.getEmail(), supervisor.getPassword()))
-                .thenReturn(true);
-        when(supervisorRepository.findSupervisorByEmailAndPassword(supervisor.getEmail(), supervisor.getPassword()))
-                .thenReturn(supervisor);
+        Supervisor dummySupervisor = getDummySupervisor();
+        when(supervisorRepository.existsByEmailAndPassword(dummySupervisor.getEmail(), dummySupervisor.getPassword())).thenReturn(true);
+        when(supervisorRepository.findSupervisorByEmailAndPassword(dummySupervisor.getEmail(), dummySupervisor.getPassword())).thenReturn(dummySupervisor);
 
-        Supervisor actual = supervisorService.getOneByEmailAndPassword(supervisor.getEmail(), supervisor.getPassword());
+        Supervisor actualSupervisor = supervisorService.getOneByEmailAndPassword(dummySupervisor.getEmail(), dummySupervisor.getPassword());
 
-        assertThat(actual.getMatricule()).isEqualTo(supervisor.getMatricule());
+        assertThat(actualSupervisor.getMatricule()).isEqualTo(dummySupervisor.getMatricule());
     }
 
     @Test
     public void testSupervisorByEmailAndPassword_withNullEmail() {
-        Supervisor supervisor = getSupervisor();
+        Supervisor dummySupervisor = getDummySupervisor();
 
         assertThrows(IllegalArgumentException.class,
-                () -> supervisorService.getOneByEmailAndPassword(null, supervisor.getPassword())
-        );
+                () -> supervisorService.getOneByEmailAndPassword(null, dummySupervisor.getPassword()));
     }
 
     @Test
     public void testSupervisorByEmailAndPassword_withNullPassword() {
-        Supervisor supervisor = getSupervisor();
+        Supervisor dummySupervisor = getDummySupervisor();
 
         assertThrows(IllegalArgumentException.class,
-            () -> supervisorService.getOneByEmailAndPassword(supervisor.getEmail(), null)
-        );
+                () -> supervisorService.getOneByEmailAndPassword(dummySupervisor.getEmail(), null));
     }
 
     @Test
     public void testSupervisorByEmailAndPassword_doesntExistEmailAndPassword() {
-        Supervisor supervisor = getSupervisor();
+        Supervisor dummySupervisor = getDummySupervisor();
         when(supervisorRepository.existsByEmailAndPassword(any(), any())).thenReturn(false);
 
         assertThrows(EmailAndPasswordDoesNotExistException.class,
-            () -> supervisorService.getOneByEmailAndPassword(supervisor.getEmail(), supervisor.getPassword())
-        );
+                () -> supervisorService.getOneByEmailAndPassword(dummySupervisor.getEmail(), dummySupervisor.getPassword()));
     }
 
-    private Supervisor getSupervisor() {
-        Supervisor supervisor = new Supervisor();
-        supervisor.setId(1L);
-        supervisor.setLastName("Keys");
-        supervisor.setFirstName("Harold");
-        supervisor.setEmail("keyh@gmail.com");
-        supervisor.setPassword("galaxy29");
-        supervisor.setDepartment("Comptabilité");
-        supervisor.setMatricule("04736");
-        return supervisor;
+    private Supervisor getDummySupervisor() {
+        Supervisor dummySupervisor = new Supervisor();
+        dummySupervisor.setId(1L);
+        dummySupervisor.setLastName("Keys");
+        dummySupervisor.setFirstName("Harold");
+        dummySupervisor.setEmail("keyh@gmail.com");
+        dummySupervisor.setPassword("galaxy29");
+        dummySupervisor.setDepartment("Comptabilité");
+        dummySupervisor.setMatricule("04736");
+        return dummySupervisor;
+    }
+
+    private List<Supervisor> getDummySupervisorList() {
+        List<Supervisor> dummySupervisorList = new ArrayList<>();
+        for (long id = 0; id < 3; id++) {
+            Supervisor dummySupervisor = getDummySupervisor();
+            dummySupervisor.setId(id);
+            dummySupervisorList.add(dummySupervisor);
+        }
+        return dummySupervisorList;
     }
 }

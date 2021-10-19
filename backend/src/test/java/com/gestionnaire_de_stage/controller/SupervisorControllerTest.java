@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -33,59 +34,72 @@ public class SupervisorControllerTest {
     @MockBean
     SupervisorRepository supervisorRepository;
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
+
     @Test
     public void testSupervisorSignUp_withValidEntries() throws Exception {
-        Supervisor supervisor = getSupervisor();
-        when(supervisorService.create(any())).thenReturn(supervisor);
+        Supervisor dummySupervisor = getDummySupervisor();
+        when(supervisorService.create(any())).thenReturn(dummySupervisor);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/supervisor/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(supervisor))).andReturn();
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/supervisor/signup")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummySupervisor)))
+                .andReturn();
 
-        var actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Supervisor.class);
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(actualSupervisor).isEqualTo(supervisor);
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        Supervisor actualSupervisor = MAPPER.readValue(response.getContentAsString(), Supervisor.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(actualSupervisor).isEqualTo(dummySupervisor);
     }
 
     @Test
     public void testSupervisorSignUp_withNullEntries() throws Exception {
-        Supervisor supervisor = getSupervisor();
+        Supervisor dummySupervisor = getDummySupervisor();
         when(supervisorService.create(any())).thenThrow(IllegalArgumentException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/supervisor/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(supervisor))).andReturn();
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/supervisor/signup")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummySupervisor)))
+                .andReturn();
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
     }
 
     @Test
     public void testSupervisorSignUp_withInvalidSupervisor() throws Exception {
-        Supervisor supervisor = getSupervisor();
+        Supervisor dummySupervisor = getDummySupervisor();
         when(supervisorService.create(any())).thenThrow(SupervisorAlreadyExistsException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/supervisor/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(supervisor))).andReturn();
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/supervisor/signup")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummySupervisor)))
+                .andReturn();
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Ce courriel existe déjà!");
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Ce courriel existe déjà!");
     }
 
     @Test
     public void testSupervisorLogin_withValidEntries() throws Exception {
-        Supervisor supervisor = getSupervisor();
+        Supervisor dummySupervisor = getDummySupervisor();
         String email = "sinl@gmail.com";
         String password = "weightofworld";
-        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenReturn(supervisor);
+        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenReturn(dummySupervisor);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
-                .contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        var actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Supervisor.class);
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        Supervisor actualSupervisor = MAPPER.readValue(response.getContentAsString(), Supervisor.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualSupervisor.getLastName()).isEqualTo("Singh");
     }
 
@@ -95,12 +109,14 @@ public class SupervisorControllerTest {
         String password = "weightofworld";
         when(supervisorService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
-                .contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
     }
 
     @Test
@@ -109,24 +125,26 @@ public class SupervisorControllerTest {
         String password = "weightofworld";
         when(supervisorService.getOneByEmailAndPassword(any(), any())).thenThrow(EmailAndPasswordDoesNotExistException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
-                .contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
     }
 
-    private Supervisor getSupervisor() {
-        Supervisor supervisor = new Supervisor();
-        supervisor.setId(1L);
-        supervisor.setLastName("Singh");
-        supervisor.setFirstName("Lohse");
-        supervisor.setPhone("514-845-3234");
-        supervisor.setEmail("sinl@gmail.com");
-        supervisor.setPassword("weightofworld");
-        supervisor.setDepartment("Informatique");
-        supervisor.setMatricule("07485");
-        return supervisor;
+    private Supervisor getDummySupervisor() {
+        Supervisor dummySupervisor = new Supervisor();
+        dummySupervisor.setId(1L);
+        dummySupervisor.setLastName("Singh");
+        dummySupervisor.setFirstName("Lohse");
+        dummySupervisor.setPhone("514-845-3234");
+        dummySupervisor.setEmail("sinl@gmail.com");
+        dummySupervisor.setPassword("weightofworld");
+        dummySupervisor.setDepartment("Informatique");
+        dummySupervisor.setMatricule("07485");
+        return dummySupervisor;
     }
 }

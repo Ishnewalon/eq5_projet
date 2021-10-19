@@ -39,9 +39,9 @@ public class CurriculumServiceTest {
         MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
         when(studentService.getOneByID(any())).thenReturn(student);
 
-        Curriculum actual = curriculumService.convertMultipartFileToCurriculum(file, student.getId());
+        Curriculum actualCurriculum = curriculumService.convertMultipartFileToCurriculum(file, student.getId());
 
-        assertThat(actual.getStudent()).isEqualTo(student);
+        assertThat(actualCurriculum.getStudent()).isEqualTo(student);
     }
 
     @Test
@@ -49,8 +49,7 @@ public class CurriculumServiceTest {
         Student student = new Student();
 
         assertThrows(IllegalArgumentException.class,
-                () ->  curriculumService.convertMultipartFileToCurriculum(null, student.getId())
-        );
+                () -> curriculumService.convertMultipartFileToCurriculum(null, student.getId()));
     }
 
     @Test
@@ -58,8 +57,7 @@ public class CurriculumServiceTest {
         MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
 
         assertThrows(IllegalArgumentException.class,
-                () -> curriculumService.convertMultipartFileToCurriculum(file, null)
-        );
+                () -> curriculumService.convertMultipartFileToCurriculum(file, null));
     }
 
     @Test
@@ -69,41 +67,42 @@ public class CurriculumServiceTest {
         MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
         when(studentService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
 
-        assertThrows(IdDoesNotExistException.class, () -> curriculumService.convertMultipartFileToCurriculum(file, student.getId()));
+        assertThrows(IdDoesNotExistException.class,
+                () -> curriculumService.convertMultipartFileToCurriculum(file, student.getId()));
     }
 
     @Test
     public void testCreate_withValidCurriculum() {
-        Curriculum curriculum = getCurriculum();
-        when(curriculumRepository.save(any())).thenReturn(curriculum);
+        Curriculum dummyCurriculum = getDummyCurriculum();
+        when(curriculumRepository.save(any())).thenReturn(dummyCurriculum);
 
-        Curriculum actual = curriculumService.create(curriculum);
+        Curriculum actualCurriculum = curriculumService.create(dummyCurriculum);
 
-        assertThat(actual).isEqualTo(curriculum);
+        assertThat(actualCurriculum).isEqualTo(dummyCurriculum);
     }
 
     @Test
     public void testCreate_withNullCurriculum() {
-        assertThrows(IllegalArgumentException.class, () ->
-                curriculumService.create(null));
+        assertThrows(IllegalArgumentException.class,
+                () -> curriculumService.create(null));
     }
 
     @Test
     public void testGetByID_withValidID() throws Exception {
         Long validID = 1L;
-        Curriculum curriculum = getCurriculum();
+        Curriculum dummyCurriculum = getDummyCurriculum();
         when(curriculumRepository.existsById(any())).thenReturn(true);
-        when(curriculumRepository.getById(any())).thenReturn(curriculum);
+        when(curriculumRepository.getById(any())).thenReturn(dummyCurriculum);
 
-        Curriculum actual = curriculumService.getOneByID(validID);
+        Curriculum actualCurriculum = curriculumService.getOneByID(validID);
 
-        assertThat(actual).isEqualTo(curriculum);
+        assertThat(actualCurriculum).isEqualTo(dummyCurriculum);
     }
 
     @Test
     public void testGetByID_withNullID() {
-        assertThrows(IllegalArgumentException.class, () ->
-                curriculumService.getOneByID(null));
+        assertThrows(IllegalArgumentException.class,
+                () -> curriculumService.getOneByID(null));
     }
 
     @Test
@@ -111,54 +110,37 @@ public class CurriculumServiceTest {
         Long invalidID = 5L;
         when(curriculumRepository.existsById(any())).thenReturn(false);
 
-        assertThrows(IdDoesNotExistException.class, () -> curriculumService.getOneByID(invalidID));
+        assertThrows(IdDoesNotExistException.class,
+                () -> curriculumService.getOneByID(invalidID));
     }
 
     @Test
     public void testGetAll() {
-        when(curriculumRepository.findAll()).thenReturn(getCurriculumList());
+        when(curriculumRepository.findAll()).thenReturn(getDummyCurriculumList());
 
-        List<Curriculum> actualList = curriculumService.getAll();
+        List<Curriculum> actualCurriculumList = curriculumService.getAll();
 
-        assertThat(actualList.size()).isGreaterThan(0);
+        assertThat(actualCurriculumList.size()).isGreaterThan(0);
     }
 
 
-    private Curriculum getCurriculum() {
-        Student student = new Student();
-        student.setId(1L);
+    private Curriculum getDummyCurriculum() {
+        Student dummyStudent = new Student();
+        dummyStudent.setId(1L);
 
         return new Curriculum(
                 "fileName",
                 "content type",
                 "test".getBytes(),
-                student
+                dummyStudent
         );
     }
 
-    private List<Curriculum> getCurriculumList() {
-        Student student = new Student();
-        student.setId(1L);
+    private List<Curriculum> getDummyCurriculumList() {
+        Curriculum dummyCurriculum1 = getDummyCurriculum();
+        Curriculum dummyCurriculum2 = getDummyCurriculum();
+        Curriculum dummyCurriculum3 = getDummyCurriculum();
 
-        Curriculum c1 = new Curriculum(
-                "fileName",
-                "content type",
-                "test".getBytes(),
-                student
-        );
-        Curriculum c2 = new Curriculum(
-                "fileName",
-                "content type",
-                "test".getBytes(),
-                student
-        );
-        Curriculum c3 = new Curriculum(
-                "fileName",
-                "content type",
-                "test".getBytes(),
-                student
-        );
-
-        return Arrays.asList(c1, c2, c3);
+        return Arrays.asList(dummyCurriculum1, dummyCurriculum2, dummyCurriculum3);
     }
 }

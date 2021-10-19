@@ -4,15 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
-import com.gestionnaire_de_stage.repository.MonitorRepository;
 import com.gestionnaire_de_stage.service.MonitorService;
-import com.gestionnaire_de_stage.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -30,66 +29,71 @@ public class MonitorControllerTest {
     @MockBean
     private MonitorService monitorService;
 
-    @MockBean
-    private MonitorRepository monitorRepository;
-
-    @MockBean
-    private StudentService studentService;
+    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void monitorSignupTest_withValidEntries() throws Exception {
-        Monitor monitor = getMonitor();
-        when(monitorService.create(any())).thenReturn(monitor);
+        Monitor dummyMonitor = getDummyMonitor();
+        when(monitorService.create(any())).thenReturn(dummyMonitor);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/monitor/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(monitor))).andReturn();
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/monitor/signup")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyMonitor)))
+                .andReturn();
 
-        var actualMonitor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Monitor.class);
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(actualMonitor).isEqualTo(monitor);
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        Monitor actualMonitor = MAPPER.readValue(response.getContentAsString(), Monitor.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(actualMonitor).isEqualTo(dummyMonitor);
     }
 
     @Test
     public void monitorSignupTest_withNullEntries() throws Exception {
-        Monitor monitor = getMonitor();
+        Monitor dummyMonitor = getDummyMonitor();
         when(monitorService.create(any())).thenThrow(IllegalArgumentException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/monitor/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(monitor))).andReturn();
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/monitor/signup")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyMonitor)))
+                .andReturn();
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
     }
 
     @Test
     public void monitorSignupTest_withInvalidEntries() throws Exception {
-        Monitor monitor = getMonitor();
+        Monitor dummyMonitor = getDummyMonitor();
         when(monitorService.create(any())).thenThrow(MonitorAlreadyExistsException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/monitor/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(monitor))).andReturn();
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/monitor/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(dummyMonitor))).andReturn();
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Ce courriel existe déjà!");
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Ce courriel existe déjà!");
     }
 
     @Test
     public void monitorLoginTest_withValidEntries() throws Exception {
-        Monitor monitor = getMonitor();
+        Monitor dummyMonitor = getDummyMonitor();
         String email = "potato@mail.com";
         String password = "secretPasswordShhhh";
-        when(monitorService.getOneByEmailAndPassword(any(), any())).thenReturn(monitor);
+        when(monitorService.getOneByEmailAndPassword(any(), any())).thenReturn(dummyMonitor);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
-                .contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        var actualMonitor = new ObjectMapper()
-                .readValue(mvcResult.getResponse().getContentAsString(), Monitor.class);
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.FOUND.value());
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        Monitor actualMonitor = MAPPER.readValue(response.getContentAsString(), Monitor.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.FOUND.value());
         assertThat(actualMonitor.getLastName()).isEqualTo("tata");
     }
 
@@ -99,12 +103,14 @@ public class MonitorControllerTest {
         String password = "secretPasswordShhhh";
         when(monitorService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
-                .contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
     }
 
     @Test
@@ -113,21 +119,22 @@ public class MonitorControllerTest {
         String password = "weightofworld";
         when(monitorService.getOneByEmailAndPassword(any(), any())).thenThrow(EmailAndPasswordDoesNotExistException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
-                .contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
-
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
     }
 
-    private Monitor getMonitor() {
-        Monitor monitor = new Monitor();
-        monitor.setEmail("potato@mail.com");
-        monitor.setPassword("secretPasswordShhhh");
-        monitor.setFirstName("toto");
-        monitor.setLastName("tata");
-        monitor.setDepartment("Informatique");
-        return monitor;
+    private Monitor getDummyMonitor() {
+        Monitor dummyMonitor = new Monitor();
+        dummyMonitor.setEmail("potato@mail.com");
+        dummyMonitor.setPassword("secretPasswordShhhh");
+        dummyMonitor.setFirstName("toto");
+        dummyMonitor.setLastName("tata");
+        dummyMonitor.setDepartment("Informatique");
+        return dummyMonitor;
     }
 }

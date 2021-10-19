@@ -40,58 +40,58 @@ class OfferApplicationServiceTest {
         when(curriculumService.getOneByID(any())).thenReturn(dummyCurriculum);
         when(offerService.findOfferById(any())).thenReturn(Optional.of(dummyOffer));
 
-        Optional<OfferApplication> offerApp = offerApplicationService.create(dummyOffer.getId(), dummyCurriculum.getId());
+        Optional<OfferApplication> actualOfferApplication = offerApplicationService.create(dummyOffer.getId(), dummyCurriculum.getId());
 
-        assertThat(offerApp).isPresent();
-        assertThat(offerApp.get()).isEqualTo(dummyOfferApplication);
+        assertThat(actualOfferApplication).isPresent();
+        assertThat(actualOfferApplication.get()).isEqualTo(dummyOfferApplication);
     }
 
     @Test
-    void testCreate_withCurriculumNonExistant() throws Exception{
+    void testCreate_withCurriculumNonExistant() throws Exception {
         Offer dummyOffer = getDummyOffer();
         when(curriculumService.getOneByID(any())).thenReturn(null);
         when(offerService.findOfferById(any())).thenReturn(Optional.of(getDummyOffer()));
 
-        assertThrows(IdDoesNotExistException.class, () ->
-                offerApplicationService.create(dummyOffer.getId(), 36L));
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerApplicationService.create(dummyOffer.getId(), 36L));
     }
 
     @Test
-    void testCreate_withOfferNonExistant() throws Exception{
+    void testCreate_withOfferNonExistant() throws Exception {
         Curriculum dummyCurriculum = getDummyCurriculum();
         when(curriculumService.getOneByID(any())).thenReturn(dummyCurriculum);
         when(offerService.findOfferById(any())).thenReturn(Optional.empty());
 
-        assertThrows(IdDoesNotExistException.class, () ->
-                offerApplicationService.create(34L, dummyCurriculum.getId()));
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerApplicationService.create(34L, dummyCurriculum.getId()));
     }
 
     @Test
     void testCreate_withIdOfferNull() {
         Offer dummyOffer = getDummyOffer();
 
-        assertThrows(IllegalArgumentException.class, () ->
-                offerApplicationService.create(dummyOffer.getId(), null));
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.create(dummyOffer.getId(), null));
     }
 
     @Test
     void testCreate_withIdCurriculumNull() {
         Curriculum dummyCurriculum = getDummyCurriculum();
 
-        assertThrows(IllegalArgumentException.class, () ->
-                offerApplicationService.create(null, dummyCurriculum.getId()));
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.create(null, dummyCurriculum.getId()));
     }
 
     @Test
-    void testCreate_withStudentAlreadyApplied() throws Exception{
+    void testCreate_withStudentAlreadyApplied() throws Exception {
         Offer dummyOffer = getDummyOffer();
         Curriculum dummyCurriculum = getDummyCurriculum();
         when(curriculumService.getOneByID(any())).thenReturn(dummyCurriculum);
         when(offerService.findOfferById(any())).thenReturn(Optional.of(dummyOffer));
         when(offerApplicationRepository.existsByOfferAndCurriculum(any(), any())).thenReturn(true);
 
-        assertThrows(StudentAlreadyAppliedToOfferException.class, () ->
-                offerApplicationService.create(dummyOffer.getId(), dummyCurriculum.getId()));
+        assertThrows(StudentAlreadyAppliedToOfferException.class,
+                () -> offerApplicationService.create(dummyOffer.getId(), dummyCurriculum.getId()));
     }
 
 
@@ -105,23 +105,23 @@ class OfferApplicationServiceTest {
     }
 
     private Offer getDummyOffer() {
-        Offer offer = new Offer();
-        offer.setDepartment("Un departement");
-        offer.setAddress("ajsaodas");
-        offer.setId(1L);
-        offer.setDescription("oeinoiendw");
-        offer.setSalary(10);
-        offer.setTitle("oeinoiendw");
-        return offer;
+        Offer dummyOffer = new Offer();
+        dummyOffer.setDepartment("Un departement");
+        dummyOffer.setAddress("ajsaodas");
+        dummyOffer.setId(1L);
+        dummyOffer.setDescription("oeinoiendw");
+        dummyOffer.setSalary(10);
+        dummyOffer.setTitle("oeinoiendw");
+        return dummyOffer;
     }
 
     private Curriculum getDummyCurriculum() {
-        Curriculum curriculum = new Curriculum();
+        Curriculum dummyCurriculum = new Curriculum();
 
-        curriculum.setId(1L);
-        curriculum.setData("some xml".getBytes());
-        curriculum.setName("fileeeename");
-        curriculum.setStudent(new Student());
-        return curriculum;
+        dummyCurriculum.setId(1L);
+        dummyCurriculum.setData("some xml".getBytes());
+        dummyCurriculum.setName("fileeeename");
+        dummyCurriculum.setStudent(new Student());
+        return dummyCurriculum;
     }
 }

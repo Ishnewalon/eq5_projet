@@ -29,19 +29,18 @@ public class MonitorServiceTest {
 
     @Test
     public void testCreate_withValidMonitor() throws Exception {
-        Monitor monitor = getMonitor();
-        when(monitorRepository.save(any())).thenReturn(monitor);
+        Monitor dummyMonitor = getDummyMonitor();
+        when(monitorRepository.save(any())).thenReturn(dummyMonitor);
 
-        Monitor actual = monitorService.create(monitor);
+        Monitor actualMonitor = monitorService.create(dummyMonitor);
 
-        assertThat(actual).isEqualTo(monitor);
+        assertThat(actualMonitor).isEqualTo(dummyMonitor);
     }
 
     @Test
     public void testCreate_withNullMonitor() {
         assertThrows(IllegalArgumentException.class,
-            () -> monitorService.create(null)
-        );
+                () -> monitorService.create(null));
     }
 
     @Test
@@ -49,27 +48,25 @@ public class MonitorServiceTest {
         when(monitorRepository.existsByEmail(any())).thenReturn(true);
 
         assertThrows(MonitorAlreadyExistsException.class,
-            () -> monitorService.create(getMonitor())
-        );
+                () -> monitorService.create(getDummyMonitor()));
     }
 
     @Test
     public void testGetByID_withValidID() throws Exception {
         Long validID = 1L;
-        Monitor monitor = getMonitor();
+        Monitor dummyMonitor = getDummyMonitor();
         when(monitorRepository.existsById(any())).thenReturn(true);
-        when(monitorRepository.getById(any())).thenReturn(monitor);
+        when(monitorRepository.getById(any())).thenReturn(dummyMonitor);
 
-        Monitor actual = monitorService.getOneByID(validID);
+        Monitor actualMonitor = monitorService.getOneByID(validID);
 
-        assertThat(actual).isEqualTo(monitor);
+        assertThat(actualMonitor).isEqualTo(dummyMonitor);
     }
 
     @Test
     public void testGetByID_withNullID() {
         assertThrows(IllegalArgumentException.class,
-            () -> monitorService.getOneByID(null)
-        );
+                () -> monitorService.getOneByID(null));
     }
 
     @Test
@@ -78,52 +75,48 @@ public class MonitorServiceTest {
         when(monitorRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-            () -> monitorService.getOneByID(invalidID)
-        );
+                () -> monitorService.getOneByID(invalidID));
     }
 
     @Test
     public void testGetAll() {
-        when(monitorRepository.findAll()).thenReturn(getListOfMonitors());
+        when(monitorRepository.findAll()).thenReturn(getDummyMonitorList());
 
-        List<Monitor> actualList = monitorService.getAll();
+        List<Monitor> actualMonitorList = monitorService.getAll();
 
-        assertThat(actualList.size()).isEqualTo(getListOfMonitors().size());
+        assertThat(actualMonitorList.size()).isEqualTo(getDummyMonitorList().size());
     }
 
     @Test
     public void testUpdate_withValidEntries() throws Exception {
-        Monitor monitor = getMonitor();
+        Monitor dummyMonitor = getDummyMonitor();
         when(monitorRepository.existsById(any())).thenReturn(true);
-        when(monitorRepository.save(any())).thenReturn(monitor);
+        when(monitorRepository.save(any())).thenReturn(dummyMonitor);
 
-        Monitor actual = monitorService.update(monitor, monitor.getId());
+        Monitor actualMonitor = monitorService.update(dummyMonitor, dummyMonitor.getId());
 
-        assertThat(actual).isEqualTo(monitor);
+        assertThat(actualMonitor).isEqualTo(dummyMonitor);
     }
 
     @Test
     public void testUpdate_withNullID() {
         assertThrows(IllegalArgumentException.class,
-            () -> monitorService.update(getMonitor(), null)
-        );
+                () -> monitorService.update(getDummyMonitor(), null));
     }
 
     @Test
     public void testUpdate_withNullMonitor() {
         assertThrows(IllegalArgumentException.class,
-            () -> monitorService.update(null, 1L)
-        );
+                () -> monitorService.update(null, 1L));
     }
 
     @Test
     public void testUpdate_doesntExistID() {
-        Monitor monitor = getMonitor();
+        Monitor dummyMonitor = getDummyMonitor();
         when(monitorRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-            () -> monitorService.update(monitor, monitor.getId())
-        );
+                () -> monitorService.update(dummyMonitor, dummyMonitor.getId()));
     }
 
     @Test
@@ -140,8 +133,7 @@ public class MonitorServiceTest {
     @Test
     public void testDelete_withNullID() {
         assertThrows(IllegalArgumentException.class,
-            () -> monitorService.deleteByID(null)
-        );
+                () -> monitorService.deleteByID(null));
     }
 
     @Test
@@ -150,62 +142,56 @@ public class MonitorServiceTest {
         when(monitorRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-            () -> monitorService.deleteByID(invalidID)
-        );
+                () -> monitorService.deleteByID(invalidID));
     }
 
     @Test
     public void testGetOneByEmailAndPassword_withValidEntries() throws EmailAndPasswordDoesNotExistException {
-        Monitor monitor = getMonitor();
-        when(monitorRepository.existsByEmailAndPassword(monitor.getEmail(), monitor.getPassword()))
-                .thenReturn(true);
-        when(monitorRepository.findMonitorByEmailAndPassword(monitor.getEmail(), monitor.getPassword()))
-                .thenReturn(monitor);
+        Monitor dummyMonitor = getDummyMonitor();
+        when(monitorRepository.existsByEmailAndPassword(dummyMonitor.getEmail(), dummyMonitor.getPassword())).thenReturn(true);
+        when(monitorRepository.findMonitorByEmailAndPassword(dummyMonitor.getEmail(), dummyMonitor.getPassword())).thenReturn(dummyMonitor);
 
-        Monitor actual = monitorService.getOneByEmailAndPassword(monitor.getEmail(), monitor.getPassword());
+        Monitor actualMonitor = monitorService.getOneByEmailAndPassword(dummyMonitor.getEmail(), dummyMonitor.getPassword());
 
-        assertThat(actual).isEqualTo(monitor);
+        assertThat(actualMonitor).isEqualTo(dummyMonitor);
     }
 
     @Test
     public void testGetOneByEmailAndPassword_withNullEmail() {
-        Monitor monitor = getMonitor();
+        Monitor dummyMonitor = getDummyMonitor();
 
         assertThrows(IllegalArgumentException.class,
-            () -> monitorService.getOneByEmailAndPassword(null, monitor.getPassword())
-        );
+                () -> monitorService.getOneByEmailAndPassword(null, dummyMonitor.getPassword()));
     }
 
     @Test
     public void testGetOneByEmailAndPassword_withNullPassword() {
-        Monitor monitor = getMonitor();
+        Monitor dummyMonitor = getDummyMonitor();
 
         assertThrows(IllegalArgumentException.class,
-            () -> monitorService.getOneByEmailAndPassword(monitor.getEmail(), null)
-        );
+                () -> monitorService.getOneByEmailAndPassword(dummyMonitor.getEmail(), null));
     }
 
     @Test
     public void testGetOneByEmailAndPassword_doesntExistEmailAndPassword() {
-        Monitor monitor = getMonitor();
+        Monitor dummyMonitor = getDummyMonitor();
         when(monitorRepository.existsByEmailAndPassword(any(), any())).thenReturn(false);
 
         assertThrows(EmailAndPasswordDoesNotExistException.class,
-            () -> monitorService.getOneByEmailAndPassword(monitor.getEmail(), monitor.getPassword())
-        );
+                () -> monitorService.getOneByEmailAndPassword(dummyMonitor.getEmail(), dummyMonitor.getPassword()));
     }
 
-    private Monitor getMonitor() {
-        Monitor monitor = new Monitor();
-        monitor.setId(1L);
-        monitor.setLastName("toto");
-        monitor.setFirstName("titi");
-        monitor.setEmail("toto@gmail.com");
-        monitor.setPassword("testPassword");
-        return monitor;
+    private Monitor getDummyMonitor() {
+        Monitor dummyMonitor = new Monitor();
+        dummyMonitor.setId(1L);
+        dummyMonitor.setLastName("toto");
+        dummyMonitor.setFirstName("titi");
+        dummyMonitor.setEmail("toto@gmail.com");
+        dummyMonitor.setPassword("testPassword");
+        return dummyMonitor;
     }
 
-    private List<Monitor> getListOfMonitors() {
+    private List<Monitor> getDummyMonitorList() {
         Monitor monitor1 = new Monitor();
         monitor1.setId(1L);
         monitor1.setFirstName("Steph");

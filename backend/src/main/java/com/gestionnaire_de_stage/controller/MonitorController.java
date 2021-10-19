@@ -24,9 +24,9 @@ public class MonitorController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody Monitor monitor) {
-        Monitor createdMonitor;
+
         try {
-            createdMonitor = monitorService.create(monitor);
+            Monitor createdMonitor = monitorService.create(monitor);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(createdMonitor);
@@ -44,9 +44,9 @@ public class MonitorController {
 
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
-        Monitor monitor;
+
         try {
-            monitor = monitorService.getOneByEmailAndPassword(email, password);
+            Monitor monitor = monitorService.getOneByEmailAndPassword(email, password);
             return ResponseEntity
                     .status(HttpStatus.FOUND)
                     .body(monitor);
