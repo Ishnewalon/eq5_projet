@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.hibernate.validator.internal.util.Contracts.assertTrue;
-
 @Service
 public class CurriculumService {
 
@@ -75,7 +73,7 @@ public class CurriculumService {
 
     public boolean validate(Long idCurriculum, boolean valid) throws
             IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
-        assertTrue(idCurriculum != null, "Erreur: Le id du curriculum ne peut pas etre null");
+        Assert.isTrue(idCurriculum != null, "Erreur: Le id du curriculum ne peut pas etre null");
 
         Optional<Curriculum> curriculumOptional = curriculumRepository.findById(idCurriculum);
 
@@ -91,7 +89,7 @@ public class CurriculumService {
     }
 
     public Curriculum findOneById(Long idCurriculum) throws IllegalArgumentException, IdDoesNotExistException {
-        assertTrue(idCurriculum != null, "Erreur: L'id du curriculum ne peut pas etre null");
+        Assert.isTrue(idCurriculum != null, "Erreur: L'id du curriculum ne peut pas etre null");
         Optional<Curriculum> byId = curriculumRepository.findById(idCurriculum);
         if (byId.isEmpty())
             throw new IdDoesNotExistException();
