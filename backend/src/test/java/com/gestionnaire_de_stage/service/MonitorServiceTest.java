@@ -195,6 +195,24 @@ public class MonitorServiceTest {
         );
     }
 
+    @Test
+    public void testFindMonitorByEmail_withValidEmail() {
+        Monitor monitor = getMonitor();
+        String email = "stepotato@gmail.com";
+        when(monitorRepository.getMonitorByEmail(any())).thenReturn(monitor);
+
+        Monitor actual = monitorService.getOneByEmail(email);
+
+        assertThat(actual.getPostalCode()).isEqualTo(monitor.getPostalCode());
+    }
+
+    @Test
+    public void testFindMonitorByEmail_withNullEmail() {
+        assertThrows(IllegalArgumentException.class,
+                () -> monitorService.getOneByEmail(null)
+        );
+    }
+
     private Monitor getMonitor() {
         Monitor monitor = new Monitor();
         monitor.setId(1L);

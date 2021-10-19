@@ -61,6 +61,11 @@ public class MonitorService {
         monitorRepository.deleteById(aLong);
     }
 
+    public Monitor getOneByEmail(String email) {
+        Assert.isTrue(email != null, "Le courriel est null");
+        return monitorRepository.getMonitorByEmail(email);
+    }
+
     private boolean emailAlreadyInUse(Monitor monitor) {
         return monitor.getEmail() != null && monitorRepository.existsByEmail(monitor.getEmail());
     }

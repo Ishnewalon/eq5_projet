@@ -11,5 +11,5 @@ public interface MonitorRepository extends JpaRepository<Monitor, Long> {
 
     Monitor findMonitorByEmailAndPassword(String email, String password);
 
-
+    Monitor getMonitorByEmail(String email);
 }
