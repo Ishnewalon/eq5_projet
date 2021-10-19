@@ -1,16 +1,24 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
 import {swalErr, toast} from "../utility";
+import OfferApp from "../models/OfferApp";
 
 class OfferAppService {
 
-    async apply(idOffer, idCurriculum) {
-        if (!this._isIdValid(idOffer) || !this._isIdValid(idCurriculum)){
+    async apply(offerApp) {
+        if (!this._isApplicationValid(offerApp))
             return;
-        }
+
+        const response = await fetch(`${urlBackend}/applications/apply`,
+            requestInit(methods.POST, offerApp));
+        return await response.json().then(value => {
+            console.log(value);
+        });
     }
 
-    _isIdValid(id) {
-        if (id && id > 0)
+    _isApplicationValid(offerApp) {
+        if (offerApp instanceof OfferApp &&
+            offerApp.idOffer &&
+            offerApp.idCurriculum)
             return true;
         return false;
     }
