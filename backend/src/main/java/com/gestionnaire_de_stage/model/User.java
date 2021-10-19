@@ -1,6 +1,9 @@
 package com.gestionnaire_de_stage.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -10,8 +13,26 @@ import java.io.Serializable;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class User implements Serializable {
+
+    @JsonCreator
+    public User(
+        @JsonProperty("id") Long id,
+        @JsonProperty("lastName") String lastName,
+        @JsonProperty("firstName") String firstName,
+        @JsonProperty("email") String email,
+        @JsonProperty("phone") String phone,
+        @JsonProperty("password") String password
+    ){
+        this.id = id;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
