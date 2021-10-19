@@ -28,16 +28,16 @@ public class MonitorController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody Monitor monitor) {
         Monitor createdMonitor;
-        try{
+        try {
             createdMonitor = monitorService.create(monitor);
         } catch (MonitorAlreadyExistsException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Ce courriel existe deja!"));
+                    .body(new ResponseMessage("Erreur: Ce courriel existe déjà!"));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas etre null"));
+                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas être null"));
         }
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -46,18 +46,18 @@ public class MonitorController {
 
 
     @GetMapping("/{email}/{password}")
-    public ResponseEntity<?> login(@PathVariable String email,@PathVariable String password) {
+    public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
         Monitor monitor;
-        try{
-            monitor = monitorService.getOneByEmailAndPassword(email,password);
+        try {
+            monitor = monitorService.getOneByEmailAndPassword(email, password);
         } catch (EmailAndPasswordDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas etre null"));
+                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));
         }
         return ResponseEntity
                 .status(HttpStatus.FOUND)

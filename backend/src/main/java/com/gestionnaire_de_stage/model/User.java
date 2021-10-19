@@ -39,15 +39,15 @@ public abstract class User implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
     @NotBlank
-    @Size(min = 2, max = 32, message = "Le nom doit contenir entre 2 et 32 charactere")
+    @Size(min = 2, max = 32, message = "Le nom doit contenir entre 2 et 32 caractères")
     private String lastName;
 
     @NotBlank
-    @Size(min = 2, max = 32, message = "Le prénom doit contenir entre 2 et 32 charactere")
+    @Size(min = 2, max = 32, message = "Le prénom doit contenir entre 2 et 32 caractères")
     private String firstName;
 
     @NotBlank

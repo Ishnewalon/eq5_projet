@@ -26,7 +26,7 @@ public class ManagerController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas etre null"));
+                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));
         } catch (EmailAndPasswordDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()

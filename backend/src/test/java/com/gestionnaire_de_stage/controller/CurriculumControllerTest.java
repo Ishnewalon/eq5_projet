@@ -41,7 +41,7 @@ public class CurriculumControllerTest {
     @Test
     public void uploadCurriculumTest_withValidEntries() throws Exception {
         Curriculum curriculum = getCurriculum();
-        MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain","some xml".getBytes());
+        MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
         Long studentId = 1L;
         when(curriculumService.convertMultipartFileToCurriculum(any(), any())).thenReturn(curriculum);
         when(curriculumService.create(any())).thenReturn(curriculum);
@@ -56,7 +56,7 @@ public class CurriculumControllerTest {
 
     @Test
     public void uploadCurriculumTest_withInvalidStudentID() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain","some xml".getBytes());
+        MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
         Long studentId = 1L;
         when(curriculumService.convertMultipartFileToCurriculum(any(), any())).thenThrow(IdDoesNotExistException.class);
 
@@ -71,7 +71,7 @@ public class CurriculumControllerTest {
 
     @Test
     public void uploadCurriculumTest_fileThrowsIOException() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain","some xml".getBytes());
+        MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
         Long studentId = 1L;
         when(curriculumService.convertMultipartFileToCurriculum(any(), any())).thenThrow(IOException.class);
 
@@ -88,13 +88,11 @@ public class CurriculumControllerTest {
         Student student = new Student();
         student.setId(1L);
 
-        Curriculum curriculum = new Curriculum(
+        return new Curriculum(
                 "file",
                 "content type",
                 "test".getBytes(),
                 student
         );
-
-        return curriculum;
     }
 }

@@ -36,7 +36,7 @@ public class CurriculumServiceTest {
     public void testConvertMultipartFileToCurriculum_WithValidData() throws IOException, IdDoesNotExistException {
         Student student = new Student();
         student.setId(1L);
-        MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain","some xml".getBytes());
+        MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
         when(studentService.getOneByID(any())).thenReturn(student);
 
         Curriculum actual = curriculumService.convertMultipartFileToCurriculum(file, student.getId());
@@ -48,25 +48,25 @@ public class CurriculumServiceTest {
     public void testConvertMultipartFileToCurriculum_withNullFile() {
         Student student = new Student();
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            curriculumService.convertMultipartFileToCurriculum(null, student.getId());
-        });
+        assertThrows(IllegalArgumentException.class,
+                () ->  curriculumService.convertMultipartFileToCurriculum(null, student.getId())
+        );
     }
 
     @Test
     public void testConvertMultipartFileToCurriculum_withNullStudentID() {
-        MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain","some xml".getBytes());
+        MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            curriculumService.convertMultipartFileToCurriculum(file, null);
-        });
+        assertThrows(IllegalArgumentException.class,
+                () -> curriculumService.convertMultipartFileToCurriculum(file, null)
+        );
     }
 
     @Test
     public void testConvertMultipartFileToCurriculum_doesntExistStudentID() throws Exception {
         Student student = new Student();
         student.setId(1L);
-        MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain","some xml".getBytes());
+        MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
         when(studentService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
 
         assertThrows(IdDoesNotExistException.class, () -> {

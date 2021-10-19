@@ -57,7 +57,7 @@ public class SupervisorControllerTest {
                 .content(new ObjectMapper().writeValueAsString(supervisor))).andReturn();
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel ne peut pas etre null");
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
     }
 
     @Test
@@ -70,7 +70,7 @@ public class SupervisorControllerTest {
                 .content(new ObjectMapper().writeValueAsString(supervisor))).andReturn();
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Ce courriel existe deja!");
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Ce courriel existe déjà!");
     }
 
     @Test
@@ -78,7 +78,7 @@ public class SupervisorControllerTest {
         Supervisor supervisor = getSupervisor();
         String email = "sinl@gmail.com";
         String password = "weightofworld";
-        when(supervisorService.getOneByEmailAndPassword(any(),any())).thenReturn(supervisor);
+        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenReturn(supervisor);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -100,7 +100,7 @@ public class SupervisorControllerTest {
                 .andReturn();
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas etre null");
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
     }
 
     @Test

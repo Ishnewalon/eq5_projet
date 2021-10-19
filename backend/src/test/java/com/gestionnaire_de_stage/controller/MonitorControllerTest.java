@@ -60,7 +60,7 @@ public class MonitorControllerTest {
                 .content(new ObjectMapper().writeValueAsString(monitor))).andReturn();
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel ne peut pas etre null");
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
     }
 
     @Test
@@ -73,18 +73,18 @@ public class MonitorControllerTest {
                 .content(new ObjectMapper().writeValueAsString(monitor))).andReturn();
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Ce courriel existe deja!");
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Ce courriel existe déjà!");
     }
-    
+
     @Test
     public void monitorLoginTest_withValidEntries() throws Exception {
         Monitor monitor = getMonitor();
         String email = "potato@mail.com";
         String password = "secretPasswordShhhh";
-        when(monitorService.getOneByEmailAndPassword(any(),any())).thenReturn(monitor);
+        when(monitorService.getOneByEmailAndPassword(any(), any())).thenReturn(monitor);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         var actualMonitor = new ObjectMapper()
@@ -100,11 +100,11 @@ public class MonitorControllerTest {
         when(monitorService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas etre null");
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
     }
 
     @Test
@@ -114,7 +114,7 @@ public class MonitorControllerTest {
         when(monitorService.getOneByEmailAndPassword(any(), any())).thenThrow(EmailAndPasswordDoesNotExistException.class);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());

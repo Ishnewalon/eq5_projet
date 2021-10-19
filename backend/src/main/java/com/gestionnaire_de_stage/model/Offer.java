@@ -21,14 +21,12 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnore
-    @JsonProperty(value = "")
     @OneToOne
     private User creator;
 
-    @NotBlank(message = "Le departement ne peut pas être vide.")
+    @NotBlank(message = "Le département ne peut pas être vide.")
     @Size(min = 2, message = "Le departement doit avoir au minimum 2 caractères.")
-    @NotNull(message = "Le departement est nécessaire.")
+    @NotNull(message = "Le département est nécessaire.")
     @Column(nullable = false)
     private String department;
 
@@ -48,9 +46,9 @@ public class Offer {
     @Column(nullable = false, updatable = false)
     private Date created = new Date();
 
-    @Size(min = 2, message = "L'addresse doit avoir au minimum 2 caractères.")
-    @NotBlank(message = "L'addresse ne peut pas être vide.")
-    @NotNull(message = "L'addresse est nécessaire.")
+    @Size(min = 2, message = "L'adresse doit avoir au minimum 2 caractères.")
+    @NotBlank(message = "L'adresse ne peut pas être vide.")
+    @NotNull(message = "L'adresse est nécessaire.")
     @Column(nullable = false)
     private String address;
 
@@ -58,4 +56,10 @@ public class Offer {
     private double salary;
 
     private boolean valid;
+
+    public Long getCreatorId(){
+        if(creator == null)
+            return null;
+        return creator.getId();
+    }
 }

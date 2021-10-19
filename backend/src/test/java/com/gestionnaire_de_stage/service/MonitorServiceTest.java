@@ -40,16 +40,18 @@ public class MonitorServiceTest {
 
     @Test
     public void testCreate_withNullMonitor() {
-        assertThrows(IllegalArgumentException.class, () ->
-                monitorService.create(null));
+        assertThrows(IllegalArgumentException.class,
+            () -> monitorService.create(null)
+        );
     }
 
     @Test
     public void testCreate_alreadyExistsMonitor() {
         when(monitorRepository.existsByEmail(any())).thenReturn(true);
 
-        assertThrows(MonitorAlreadyExistsException.class, () ->
-                monitorService.create(getMonitor()));
+        assertThrows(MonitorAlreadyExistsException.class,
+            () -> monitorService.create(getMonitor())
+        );
     }
 
     @Test
@@ -66,8 +68,9 @@ public class MonitorServiceTest {
 
     @Test
     public void testGetByID_withNullID() {
-        assertThrows(IllegalArgumentException.class, () ->
-                monitorService.getOneByID(null));
+        assertThrows(IllegalArgumentException.class,
+            () -> monitorService.getOneByID(null)
+        );
     }
 
     @Test
@@ -75,9 +78,9 @@ public class MonitorServiceTest {
         Long invalidID = 5L;
         when(monitorRepository.existsById(any())).thenReturn(false);
 
-        assertThrows(IdDoesNotExistException.class, () -> {
-            monitorService.getOneByID(invalidID);
-        });
+        assertThrows(IdDoesNotExistException.class,
+            () -> monitorService.getOneByID(invalidID)
+        );
     }
 
     @Test
@@ -102,14 +105,16 @@ public class MonitorServiceTest {
 
     @Test
     public void testUpdate_withNullID() {
-        assertThrows(IllegalArgumentException.class, () ->
-                monitorService.update(getMonitor(), null));
+        assertThrows(IllegalArgumentException.class,
+            () -> monitorService.update(getMonitor(), null)
+        );
     }
 
     @Test
     public void testUpdate_withNullMonitor() {
-        assertThrows(IllegalArgumentException.class, () ->
-                monitorService.update(null, 1L));
+        assertThrows(IllegalArgumentException.class,
+            () -> monitorService.update(null, 1L)
+        );
     }
 
     @Test
@@ -117,8 +122,9 @@ public class MonitorServiceTest {
         Monitor monitor = getMonitor();
         when(monitorRepository.existsById(any())).thenReturn(false);
 
-        assertThrows(IdDoesNotExistException.class, () ->
-                monitorService.update(monitor, monitor.getId()));
+        assertThrows(IdDoesNotExistException.class,
+            () -> monitorService.update(monitor, monitor.getId())
+        );
     }
 
     @Test
@@ -134,8 +140,9 @@ public class MonitorServiceTest {
 
     @Test
     public void testDelete_withNullID() {
-        assertThrows(IllegalArgumentException.class, () ->
-                monitorService.deleteByID(null));
+        assertThrows(IllegalArgumentException.class,
+            () -> monitorService.deleteByID(null)
+        );
     }
 
     @Test
@@ -143,8 +150,9 @@ public class MonitorServiceTest {
         Long invalidID = 5L;
         when(monitorRepository.existsById(any())).thenReturn(false);
 
-        assertThrows(IdDoesNotExistException.class, () ->
-                monitorService.deleteByID(invalidID));
+        assertThrows(IdDoesNotExistException.class,
+            () -> monitorService.deleteByID(invalidID)
+        );
     }
 
     @Test
@@ -164,16 +172,18 @@ public class MonitorServiceTest {
     public void testGetOneByEmailAndPassword_withNullEmail() {
         Monitor monitor = getMonitor();
 
-        assertThrows(IllegalArgumentException.class, () ->
-                monitorService.getOneByEmailAndPassword(null, monitor.getPassword()));
+        assertThrows(IllegalArgumentException.class,
+            () -> monitorService.getOneByEmailAndPassword(null, monitor.getPassword())
+        );
     }
 
     @Test
     public void testGetOneByEmailAndPassword_withNullPassword() {
         Monitor monitor = getMonitor();
 
-        assertThrows(IllegalArgumentException.class, () ->
-                monitorService.getOneByEmailAndPassword(monitor.getEmail(), null));
+        assertThrows(IllegalArgumentException.class,
+            () -> monitorService.getOneByEmailAndPassword(monitor.getEmail(), null)
+        );
     }
 
     @Test
@@ -181,8 +191,9 @@ public class MonitorServiceTest {
         Monitor monitor = getMonitor();
         when(monitorRepository.existsByEmailAndPassword(any(), any())).thenReturn(false);
 
-        assertThrows(EmailAndPasswordDoesNotExistException.class, () ->
-                monitorService.getOneByEmailAndPassword(monitor.getEmail(), monitor.getPassword()));
+        assertThrows(EmailAndPasswordDoesNotExistException.class,
+            () -> monitorService.getOneByEmailAndPassword(monitor.getEmail(), monitor.getPassword())
+        );
     }
 
     private Monitor getMonitor() {

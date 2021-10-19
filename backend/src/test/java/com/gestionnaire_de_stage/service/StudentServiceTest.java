@@ -29,7 +29,7 @@ public class StudentServiceTest {
     StudentRepository studentRepository;
 
     @Test
-    public void testCreate_withValidStudent() throws Exception{
+    public void testCreate_withValidStudent() throws Exception {
         Student student = getStudent();
         when(studentRepository.save(any())).thenReturn(student);
 
@@ -67,7 +67,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testGetByID_withValidID() throws Exception{
+    public void testGetByID_withValidID() throws Exception {
         Long validID = 1L;
         Student student = getStudent();
         when(studentRepository.existsById(any())).thenReturn(true);
@@ -155,7 +155,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testDelete_withValidID() throws Exception{
+    public void testDelete_withValidID() throws Exception {
         Long id = 1L;
         when(studentRepository.existsById(any())).thenReturn(true);
         doNothing().when(studentRepository).deleteById(any());

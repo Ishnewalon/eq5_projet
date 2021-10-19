@@ -20,6 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(ManagerController.class)
+@SuppressWarnings("ConstantConditions")
 public class ManagerControllerTest {
 
     @Autowired
@@ -37,10 +38,10 @@ public class ManagerControllerTest {
         Manager manager = getDummyManager();
         String email = "oussamakably@gmail.com";
         String password = "Test1234";
-        when(managerService.getOneByEmailAndPassword(any(),any())).thenReturn(manager);
+        when(managerService.getOneByEmailAndPassword(any(), any())).thenReturn(manager);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/manager/" + email + "/" + password)
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         var actualSupervisor = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString()
@@ -55,13 +56,12 @@ public class ManagerControllerTest {
         String password = null;
         when(managerService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
 
-        //noinspection ConstantConditions
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/manager/" + email + "/" + password)
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas etre null");
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
     }
 
     @Test
@@ -71,7 +71,7 @@ public class ManagerControllerTest {
         when(managerService.getOneByEmailAndPassword(any(), any())).thenThrow(EmailAndPasswordDoesNotExistException.class);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/manager/" + email + "/" + password)
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -81,7 +81,7 @@ public class ManagerControllerTest {
     private Manager getDummyManager() {
         Manager manager = new Manager();
         manager.setPassword("Test1234");
-        manager.setEmail("oussamakably@gmail.com");
+        manager.setEmail("oussamakablsy@gmail.com");
         manager.setFirstName("Oussama");
         manager.setLastName("Kably");
         manager.setPhone("5143643320");

@@ -59,7 +59,7 @@ public class StudentControllerTest {
                 .content(new ObjectMapper().writeValueAsString(student))).andReturn();
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel ne peut pas etre null");
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
     }
 
     @Test
@@ -72,38 +72,38 @@ public class StudentControllerTest {
                 .content(new ObjectMapper().writeValueAsString(student))).andReturn();
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Ce courriel existe deja!");
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Ce courriel existe déjà!");
     }
 
-        @Test
-        public void testStudentLogin_withValidEntries() throws Exception {
-            Student student = getStudent();
-            String email = "clip@gmail.com";
-            String password = "thiswilldo";
-            when(studentService.getOneByEmailAndPassword(any(), any())).thenReturn(student);
+    @Test
+    public void testStudentLogin_withValidEntries() throws Exception {
+        Student student = getStudent();
+        String email = "clip@gmail.com";
+        String password = "thiswilldo";
+        when(studentService.getOneByEmailAndPassword(any(), any())).thenReturn(student);
 
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/" + email + "/" + password)
-                    .contentType(MediaType.APPLICATION_JSON))
-                    .andReturn();
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/" + email + "/" + password)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
 
-            var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
-            assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
-            assertThat(actualStudent.getLastName()).isEqualTo("Brawl");
-        }
+        var actualStudent = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), Student.class);
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualStudent.getLastName()).isEqualTo("Brawl");
+    }
 
-        @Test
-        public void testStudentLogin_withNullEntries() throws Exception {
-            String email = "clip@gmail.com";
-            String password = "thiswilldo";
-            when(studentService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
+    @Test
+    public void testStudentLogin_withNullEntries() throws Exception {
+        String email = "clip@gmail.com";
+        String password = "thiswilldo";
+        when(studentService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
 
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/" + email + "/" + password)
-                    .contentType(MediaType.APPLICATION_JSON))
-                    .andReturn();
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/" + email + "/" + password)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
 
-            assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-            assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas etre null");
-        }
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(mvcResult.getResponse().getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
+    }
 
     @Test
     public void testStudentLogin_withInvalidEntries() throws Exception {

@@ -17,7 +17,7 @@ public class ManagerService {
     private final ManagerRepository managerRepository;
     private final StudentService studentService;
 
-    public ManagerService(ManagerRepository managerRepository, StudentService studentService){
+    public ManagerService(ManagerRepository managerRepository, StudentService studentService) {
         this.managerRepository = managerRepository;
         this.studentService = studentService;
     }
@@ -54,18 +54,16 @@ public class ManagerService {
 
     public void deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
-        if (!isIDValid(aLong)) {
+        if (!isIDValid(aLong))
             throw new IdDoesNotExistException();
-        }
         managerRepository.deleteById(aLong);
     }
 
     public Manager getOneByEmailAndPassword(String email, String password) throws EmailAndPasswordDoesNotExistException {
         Assert.isTrue(email != null, "Le courriel est null");
         Assert.isTrue(password != null, "Le mot de passe est null");
-        if (!isEmailAndPasswordValid(email, password)) {
+        if (!isEmailAndPasswordValid(email, password))
             throw new EmailAndPasswordDoesNotExistException();
-        }
         return managerRepository.findManagerByEmailAndPassword(email, password);
     }
 

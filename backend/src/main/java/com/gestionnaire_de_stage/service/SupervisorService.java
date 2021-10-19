@@ -27,7 +27,7 @@ public class SupervisorService {
         return supervisorRepository.save(supervisor);
     }
 
-    public Supervisor getOneByID(Long aLong)throws IdDoesNotExistException {
+    public Supervisor getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (!isIDValid(aLong)) {
             throw new IdDoesNotExistException();

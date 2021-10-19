@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -28,7 +29,8 @@ public class Curriculum implements Serializable {
 
     private boolean isValid;
 
-    public Curriculum(){}
+    public Curriculum() {
+    }
 
     public Curriculum(String name, String type, byte[] data, Student student) {
         this.name = name;

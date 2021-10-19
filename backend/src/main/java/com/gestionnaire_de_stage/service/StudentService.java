@@ -20,7 +20,7 @@ public class StudentService {
     }
 
     public Student create(Student student) throws StudentAlreadyExistsException {
-        Assert.isTrue(student != null, "Etudiant est null");
+        Assert.isTrue(student != null, "Étudiant est null");
         if (isNotValid(student)) {
             throw new StudentAlreadyExistsException();
         }

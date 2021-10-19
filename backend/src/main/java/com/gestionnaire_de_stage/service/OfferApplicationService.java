@@ -28,8 +28,8 @@ public class OfferApplicationService {
 
 
     public Optional<OfferApplication> create(Long idOffer, Long idCurriculum) throws StudentAlreadyAppliedToOfferException, IdDoesNotExistException, IllegalArgumentException {
-        assertTrue(idOffer != null, "Erreur: Le id de l'offre ne peut pas etre null");
-        assertTrue(idCurriculum != null, "Erreur: Le id du curriculum ne peut pas etre null");
+        assertTrue(idOffer != null, "Erreur: Le id de l'offre ne peut pas être null");
+        assertTrue(idCurriculum != null, "Erreur: Le id du curriculum ne peut pas être null");
         Optional<Offer> offer = offerService.findOfferById(idOffer);
         Curriculum curriculum = curriculumService.getOneByID(idCurriculum);
 

@@ -38,32 +38,20 @@ public class SupervisorServiceTest {
         assertThat(actual.getEmail()).isEqualTo(supervisor.getEmail());
     }
 
-    private Supervisor getSupervisor() {
-        Supervisor supervisor = new Supervisor();
-        supervisor.setId(1L);
-        supervisor.setLastName("Keys");
-        supervisor.setFirstName("Harold");
-        supervisor.setEmail("keyh@gmail.com");
-        supervisor.setPassword("galaxy29");
-        supervisor.setDepartment("Comptabilité");
-        supervisor.setMatricule("04736");
-        return supervisor;
-    }
-
     @Test
     public void testCreate_withNullSupervisor() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            supervisorService.create(null);
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> supervisorService.create(null)
+        );
     }
 
     @Test
     public void testCreate_alreadyExistsStudent() {
         when(supervisorRepository.existsByEmail(any())).thenReturn(true);
 
-        assertThrows(SupervisorAlreadyExistsException.class, () -> {
-            supervisorService.create(getSupervisor());
-        });
+        assertThrows(SupervisorAlreadyExistsException.class,
+            () -> supervisorService.create(getSupervisor())
+        );
     }
 
     @Test
@@ -80,9 +68,9 @@ public class SupervisorServiceTest {
 
     @Test
     public void testGetByID_withNullID() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            supervisorService.getOneByID(null);
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> supervisorService.getOneByID(null)
+        );
     }
 
     @Test
@@ -90,9 +78,9 @@ public class SupervisorServiceTest {
         Supervisor supervisor = getSupervisor();
         when(supervisorRepository.existsById(any())).thenReturn(false);
 
-        assertThrows(IdDoesNotExistException.class, () -> {
-            supervisorService.getOneByID(supervisor.getId());
-        });
+        assertThrows(IdDoesNotExistException.class,
+            () -> supervisorService.getOneByID(supervisor.getId())
+        );
     }
 
     @Test
@@ -107,12 +95,10 @@ public class SupervisorServiceTest {
 
     private List<Supervisor> getListOfSupervisors() {
         List<Supervisor> supervisorList = new ArrayList<>();
-        Long idIterator = 1L;
-        for (int i = 0; i < 3; i++) {
+        for (long id = 0; id < 3; id++) {
             Supervisor supervisor = getSupervisor();
-            supervisor.setId(idIterator);
+            supervisor.setId(id);
             supervisorList.add(supervisor);
-            idIterator++;
         }
         return supervisorList;
     }
@@ -132,16 +118,16 @@ public class SupervisorServiceTest {
     public void testUpdate_withNullID() {
         Supervisor supervisor = getSupervisor();
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            supervisorService.update(supervisor, null);
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> supervisorService.update(supervisor, null)
+        );
     }
 
     @Test
     public void testUpdate_withNullSupervisor() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            supervisorService.update(null, 1L);
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> supervisorService.update(null, 1L)
+        );
     }
 
     @Test
@@ -149,9 +135,9 @@ public class SupervisorServiceTest {
         Supervisor supervisor = getSupervisor();
         when(supervisorRepository.existsById(any())).thenReturn(false);
 
-        assertThrows(IdDoesNotExistException.class, () -> {
-            supervisorService.update(supervisor, supervisor.getId());
-        });
+        assertThrows(IdDoesNotExistException.class,
+            () -> supervisorService.update(supervisor, supervisor.getId())
+        );
     }
 
     @Test
@@ -168,9 +154,9 @@ public class SupervisorServiceTest {
 
     @Test
     public void testDelete_withNullID() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            supervisorService.deleteByID(null);
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> supervisorService.deleteByID(null)
+        );
     }
 
     @Test
@@ -178,9 +164,9 @@ public class SupervisorServiceTest {
         Long id = 1L;
         when(supervisorRepository.existsById(any())).thenReturn(false);
 
-        assertThrows(IdDoesNotExistException.class, () -> {
-            supervisorService.deleteByID(id);
-        });
+        assertThrows(IdDoesNotExistException.class,
+            () -> supervisorService.deleteByID(id)
+        );
     }
 
     @Test
@@ -200,18 +186,18 @@ public class SupervisorServiceTest {
     public void testSupervisorByEmailAndPassword_withNullEmail() {
         Supervisor supervisor = getSupervisor();
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            supervisorService.getOneByEmailAndPassword(null, supervisor.getPassword());
-        });
+        assertThrows(IllegalArgumentException.class,
+                () -> supervisorService.getOneByEmailAndPassword(null, supervisor.getPassword())
+        );
     }
 
     @Test
     public void testSupervisorByEmailAndPassword_withNullPassword() {
         Supervisor supervisor = getSupervisor();
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            supervisorService.getOneByEmailAndPassword(supervisor.getEmail(), null);
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> supervisorService.getOneByEmailAndPassword(supervisor.getEmail(), null)
+        );
     }
 
     @Test
@@ -219,8 +205,20 @@ public class SupervisorServiceTest {
         Supervisor supervisor = getSupervisor();
         when(supervisorRepository.existsByEmailAndPassword(any(), any())).thenReturn(false);
 
-        assertThrows(EmailAndPasswordDoesNotExistException.class, () -> {
-            supervisorService.getOneByEmailAndPassword(supervisor.getEmail(), supervisor.getPassword());
-        });
+        assertThrows(EmailAndPasswordDoesNotExistException.class,
+            () -> supervisorService.getOneByEmailAndPassword(supervisor.getEmail(), supervisor.getPassword())
+        );
+    }
+
+    private Supervisor getSupervisor() {
+        Supervisor supervisor = new Supervisor();
+        supervisor.setId(1L);
+        supervisor.setLastName("Keys");
+        supervisor.setFirstName("Harold");
+        supervisor.setEmail("keyh@gmail.com");
+        supervisor.setPassword("galaxy29");
+        supervisor.setDepartment("Comptabilité");
+        supervisor.setMatricule("04736");
+        return supervisor;
     }
 }

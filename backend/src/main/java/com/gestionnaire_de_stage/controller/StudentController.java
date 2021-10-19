@@ -17,11 +17,8 @@ public class StudentController {
 
     private final StudentService studentService;
 
-    private final StudentRepository studentRepository;
-
-    public StudentController(StudentService studentService, StudentRepository studentRepository) {
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
-        this.studentRepository = studentRepository;
     }
 
     @PostMapping("/signup")
@@ -32,11 +29,11 @@ public class StudentController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas etre null"));
+                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas être null"));
         } catch (StudentAlreadyExistsException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Ce courriel existe deja!"));
+                    .body(new ResponseMessage("Erreur: Ce courriel existe déjà!"));
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(createdStudent);
     }
@@ -49,7 +46,7 @@ public class StudentController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas etre null"));
+                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));
         } catch (EmailAndPasswordDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()

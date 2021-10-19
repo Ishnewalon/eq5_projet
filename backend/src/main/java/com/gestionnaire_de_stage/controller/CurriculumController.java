@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin()
@@ -19,12 +18,12 @@ public class CurriculumController {
 
     private final CurriculumService curriculumService;
 
-    public CurriculumController(CurriculumService curriculumService){
+    public CurriculumController(CurriculumService curriculumService) {
         this.curriculumService = curriculumService;
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadCurriculum(@RequestParam("file") MultipartFile file, @RequestParam("id") Long studentId){
+    public ResponseEntity<ResponseMessage> uploadCurriculum(@RequestParam("file") MultipartFile file, @RequestParam("id") Long studentId) {
         Curriculum curriculum;
         try {
             curriculum = curriculumService.convertMultipartFileToCurriculum(file, studentId);

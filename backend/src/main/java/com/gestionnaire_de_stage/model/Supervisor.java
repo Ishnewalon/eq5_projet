@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Data
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Supervisor extends User{
+public class Supervisor extends User {
 
     @NotNull
     @Size(min = 5, max = 5, message = "La matricule doit être de 5 chiffres")
