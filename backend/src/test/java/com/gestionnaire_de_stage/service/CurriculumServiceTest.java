@@ -152,6 +152,7 @@ public class CurriculumServiceTest {
     @Test
     void testValidate() throws Exception {
         Curriculum curriculum = getDummyCurriculum();
+        curriculum.setId(1L);
 
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(curriculum));
 
@@ -161,16 +162,18 @@ public class CurriculumServiceTest {
     @Test
     void testValidate_whenCvNonExistent() {
         Curriculum curriculum = getDummyCurriculum();
+        curriculum.setId(1L);
 
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(IdDoesNotExistException.class, () ->
-                curriculumService.validate(curriculum.getId(), true));
+        assertThrows(IdDoesNotExistException.class,
+                () -> curriculumService.validate(curriculum.getId(), true));
     }
 
     @Test
     void testValidate_whenCurriculumAlreadyTreated() {
         Curriculum curriculum = getDummyCurriculum();
+        curriculum.setId(1L);
         curriculum.setIsValid(true);
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(curriculum));
         assertThrows(CurriculumAlreadyTreatedException.class, () ->
@@ -187,6 +190,7 @@ public class CurriculumServiceTest {
     @Test
     void testReject() throws Exception {
         Curriculum dummyCurriculum = getDummyCurriculum();
+        dummyCurriculum.setId(1L);
 
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(dummyCurriculum));
 
@@ -196,6 +200,7 @@ public class CurriculumServiceTest {
     @Test
     void testReject_whenCvNonExistent() {
         Curriculum dummyCurriculum = getDummyCurriculum();
+        dummyCurriculum.setId(1L);
 
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.empty());
 
@@ -206,6 +211,7 @@ public class CurriculumServiceTest {
     @Test
     void testReject_whenCurriculumAlreadyTreated() {
         Curriculum dummyCurriculum = getDummyCurriculum();
+        dummyCurriculum.setId(1L);
         dummyCurriculum.setIsValid(true);
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(dummyCurriculum));
 
@@ -222,6 +228,7 @@ public class CurriculumServiceTest {
     @Test
     void testFindOneById() throws Exception {
         Curriculum dummyCurriculum = getDummyCurriculum();
+        dummyCurriculum.setId(1L);
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(dummyCurriculum));
 
         Curriculum actualCurriculum = curriculumService.findOneById(dummyCurriculum.getId());
