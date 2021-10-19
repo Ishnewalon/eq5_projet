@@ -6,6 +6,7 @@ import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,27 +30,25 @@ public class CurriculumService {
     }
 
 
-    public Optional<Curriculum> convertMultipartFileToCurriculum(MultipartFile file, Long studentId) throws IOException {
-        try {
-            Student student = studentService.getOneByID(studentId);
-            if (student != null) {
-                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+    public Curriculum convertMultipartFileToCurriculum(MultipartFile file, Long studentId)
+            throws IOException, IdDoesNotExistException, IllegalArgumentException {
+        Assert.isTrue(file != null, "Fichier est null");
+        Assert.isTrue(studentId != null, "StudentId est null");
 
-                Curriculum curriculum = new Curriculum(
-                        fileName,
-                        file.getContentType(),
-                        file.getBytes(),
-                        student
-                );
-                return Optional.of(curriculum);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
+        Student student = studentService.getOneByID(studentId);
+
+        //noinspection ConstantConditions
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        return new Curriculum(
+                fileName,
+                file.getContentType(),
+                file.getBytes(),
+                student
+        );
     }
 
-    public Curriculum createCurriculum(Curriculum curriculum) {
+    public Curriculum create(Curriculum curriculum) throws IllegalArgumentException {
+        Assert.isTrue(curriculum != null, "Curriculum est null");
         return curriculumRepository.save(curriculum);
     }
 
@@ -57,8 +56,18 @@ public class CurriculumService {
         return curriculumRepository.getById(id);
     }
 
+    public Curriculum getOneByID(Long aLong) throws IdDoesNotExistException {
+        Assert.isTrue(aLong != null, "ID est null");
+        if (!curriculumRepository.existsById(aLong))
+            throw new IdDoesNotExistException();
+        return curriculumRepository.getById(aLong);
+    }
+
     public Stream<Curriculum> getAllCurriculumByValidity(boolean validity) {
         return curriculumRepository.findAllByIsValid(validity).stream();
+        public List<Curriculum> getAll () {
+            return curriculumRepository.findAll();
+        }
     }
 
     public List<Student> findAllStudentsWithCurriculumNotValidatedYet() {
@@ -71,7 +80,8 @@ public class CurriculumService {
         return curriculumNotValidatedYet.stream().map(Curriculum::getStudent).collect(Collectors.toList());
     }
 
-    public boolean validate(Long idCurriculum, boolean valid) throws IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
+    public boolean validate(Long idCurriculum, boolean valid) throws
+            IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
         assertTrue(idCurriculum != null, "Erreur: Le id du curriculum ne peut pas etre null");
 
         Optional<Curriculum> curriculumOptional = curriculumRepository.findById(idCurriculum);

@@ -37,7 +37,7 @@ class OfferApplicationServiceTest {
         Curriculum dummyCurriculum = getDummyCurriculum();
         Offer dummyOffer = getDummyOffer();
         when(offerApplicationRepository.save(any())).thenReturn(dummyOfferApplication);
-        when(curriculumService.getCurriculum(any())).thenReturn(dummyCurriculum);
+        when(curriculumService.getOneByID(any())).thenReturn(dummyCurriculum);
         when(offerService.findOfferById(any())).thenReturn(Optional.of(dummyOffer));
 
         Optional<OfferApplication> offerApp = offerApplicationService.create(dummyOffer.getId(), dummyCurriculum.getId());
@@ -47,9 +47,9 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    void testCreate_withCurriculumNonExistant() {
+    void testCreate_withCurriculumNonExistant() throws Exception{
         Offer dummyOffer = getDummyOffer();
-        when(curriculumService.getCurriculum(any())).thenReturn(null);
+        when(curriculumService.getOneByID(any())).thenReturn(null);
         when(offerService.findOfferById(any())).thenReturn(Optional.of(getDummyOffer()));
 
         assertThrows(IdDoesNotExistException.class, () ->
@@ -57,9 +57,9 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    void testCreate_withOfferNonExistant() {
+    void testCreate_withOfferNonExistant() throws Exception{
         Curriculum dummyCurriculum = getDummyCurriculum();
-        when(curriculumService.getCurriculum(any())).thenReturn(dummyCurriculum);
+        when(curriculumService.getOneByID(any())).thenReturn(dummyCurriculum);
         when(offerService.findOfferById(any())).thenReturn(Optional.empty());
 
         assertThrows(IdDoesNotExistException.class, () ->
@@ -83,10 +83,10 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    void testCreate_withStudentAlreadyApplied() {
+    void testCreate_withStudentAlreadyApplied() throws Exception{
         Offer dummyOffer = getDummyOffer();
         Curriculum dummyCurriculum = getDummyCurriculum();
-        when(curriculumService.getCurriculum(any())).thenReturn(dummyCurriculum);
+        when(curriculumService.getOneByID(any())).thenReturn(dummyCurriculum);
         when(offerService.findOfferById(any())).thenReturn(Optional.of(dummyOffer));
         when(offerApplicationRepository.existsByOfferAndCurriculum(any(), any())).thenReturn(true);
 

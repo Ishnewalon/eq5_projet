@@ -3,14 +3,12 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
-import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.StudentRepository;
-import org.springframework.util.Assert;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -22,7 +20,7 @@ public class StudentService {
     }
 
     public Student create(Student student) throws StudentAlreadyExistsException {
-        Assert.isTrue(student != null, "Etudiant est null");
+        Assert.isTrue(student != null, "Étudiant est null");
         if (isNotValid(student)) {
             throw new StudentAlreadyExistsException();
         }
@@ -31,7 +29,7 @@ public class StudentService {
 
     public Student getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
-        if (!isIDValid(aLong)) {
+        if (isIDValid(aLong)) {
             throw new IdDoesNotExistException();
         }
         return studentRepository.getById(aLong);
@@ -44,7 +42,7 @@ public class StudentService {
     public Student update(Student student, Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         Assert.isTrue(student != null, "L'étudiant est null");
-        if (!isIDValid(aLong)) {
+        if (isIDValid(aLong)) {
             throw new IdDoesNotExistException();
         }
         student.setId(aLong);
@@ -53,7 +51,7 @@ public class StudentService {
 
     public void deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
-        if (!isIDValid(aLong)) {
+        if (isIDValid(aLong)) {
             throw new IdDoesNotExistException();
         }
         studentRepository.deleteById(aLong);
@@ -73,12 +71,10 @@ public class StudentService {
     }
 
     private boolean isIDValid(Long id) {
-        return studentRepository.existsById(id);
+        return !studentRepository.existsById(id);
     }
 
     private boolean isEmailAndPasswordValid(String email, String password) {
         return studentRepository.existsByEmailAndPassword(email, password);
     }
-
-
 }

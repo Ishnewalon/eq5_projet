@@ -1,4 +1,4 @@
 package com.gestionnaire_de_stage.exception;
 
-public class StudentAlreadyExistsException extends Exception{
+public class StudentAlreadyExistsException extends Exception {
 }

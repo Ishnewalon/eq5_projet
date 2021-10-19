@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin()
@@ -27,21 +26,24 @@ public class CurriculumController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadCurriculum(@RequestParam("file") MultipartFile file,
-                                                            @RequestParam("id") Long studentId) {
-        Optional<Curriculum> curriculum;
+    public ResponseEntity<ResponseMessage> uploadCurriculum(@RequestParam("file") MultipartFile file, @RequestParam("id") Long studentId) {
+        Curriculum curriculum;
         try {
             curriculum = curriculumService.convertMultipartFileToCurriculum(file, studentId);
         } catch (IOException e) {
-            return ResponseEntity.internalServerError().body(new ResponseMessage("IO ERROR: Check file integrity!"));
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("IO Error: check file integrity!"));
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Invalid Student ID"));
         }
 
-        if (curriculum.isPresent()) {
-            curriculumService.createCurriculum(curriculum.get());
-            return ResponseEntity.ok(new ResponseMessage("Success: file created successfully!"));
-        } else {
-            return ResponseEntity.badRequest().body(new ResponseMessage("Student Not Found with id: " + studentId));
-        }
+        curriculumService.create(curriculum);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseMessage("File Uploaded Successfully"));
     }
 
     @GetMapping("/invalid/students")
@@ -81,7 +83,7 @@ public class CurriculumController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
-        } catch (IdDoesNotExistException e){
+        } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Erreur: curriculum non existant!"));

@@ -2,12 +2,14 @@ package com.gestionnaire_de_stage.service;
 
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Offer;
-import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.OfferRepository;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
-import javax.validation.ValidationException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,25 +23,32 @@ public class OfferService {
         this.offerRepository = offerRepository;
     }
 
-    public Offer mapToOffer(OfferDTO offerDTO) {
+    public Offer mapToOffer(OfferDTO dto) {
+        if (dto == null)
+            return null;
+
         Offer offer = new Offer();
-        offer.setAddress(offerDTO.getAddress());
-        offer.setDepartment(offerDTO.getDepartment());
-        offer.setDescription(offerDTO.getDescription());
-        offer.setSalary(offerDTO.getSalary());
-        offer.setTitle(offerDTO.getTitle());
+        offer.setAddress(dto.getAddress());
+        offer.setDepartment(dto.getDepartment());
+        offer.setDescription(dto.getDescription());
+        offer.setSalary(dto.getSalary());
+        offer.setTitle(dto.getTitle());
         return offer;
     }
 
-    public OfferDTO mapToOfferDTO(Offer o) {
+    public OfferDTO mapToOfferDTO(Offer offer) {
+        if (offer == null)
+            return null;
+
+        Assert.isTrue(offer.getCreatorId() != null, "Id de l'utilisateur ne peut être null");
+
         OfferDTO dto = new OfferDTO();
-        dto.setAddress(o.getAddress());
-        if (o.getCreator() != null)
-            dto.setCreator_id(o.getCreator().getId());
-        dto.setDepartment(o.getDepartment());
-        dto.setTitle(o.getTitle());
-        dto.setDescription(o.getDescription());
-        dto.setSalary(o.getSalary());
+        dto.setAddress(offer.getAddress());
+        dto.setCreator_id(offer.getCreator().getId());
+        dto.setDepartment(offer.getDepartment());
+        dto.setTitle(offer.getTitle());
+        dto.setDescription(offer.getDescription());
+        dto.setSalary(offer.getSalary());
         return dto;
     }
 
@@ -47,25 +56,29 @@ public class OfferService {
         return offers.stream().map(this::mapToOfferDTO).collect(Collectors.toList());
     }
 
-    public Optional<Offer> create(Offer offer) throws ValidationException {
-        if (offer == null)
-            return Optional.empty();
-        return Optional.of(offerRepository.save(offer));
+    public Offer create(Offer offer) throws IllegalArgumentException, OfferAlreadyExistsException {
+        Assert.isTrue(offer != null, "Offre est null");
+        if (offerRepository.findOne(Example.of(offer)).isPresent())
+            throw new OfferAlreadyExistsException();
+        return offerRepository.save(offer);
     }
 
     public List<OfferDTO> getOffersByDepartment(String department) {
         return mapArrayToOfferDTO(offerRepository.findAllByDepartment(department));
     }
 
-    public Optional<Offer> update(Offer offer) {
-        if (offer != null && offerRepository.existsById(offer.getId()))
-            return Optional.of(offerRepository.save(offer));
-        return Optional.empty();
+    public Offer update(Offer offer) throws IdDoesNotExistException, IllegalArgumentException {
+        Assert.isTrue(offer != null, "offre est null");
+        Assert.isTrue(offer.getId() != null, "L'id est null");
+        if (!offerRepository.existsById(offer.getId()))
+            throw new IdDoesNotExistException();
+        return offerRepository.save(offer);
     }
 
     public List<Offer> getAll() {
         return offerRepository.findAll();
     }
+
     public Optional<Offer> findOfferById(Long idOffer) {
         return offerRepository.findById(idOffer);
     }

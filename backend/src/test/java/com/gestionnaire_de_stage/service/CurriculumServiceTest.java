@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -36,25 +37,95 @@ public class CurriculumServiceTest {
     private StudentService studentService;
 
     @Test
-    public void testConvertMultipartFileToCurriculum_WithValidData() throws IOException, Exception {
+    public void testConvertMultipartFileToCurriculum_WithValidData() throws IOException, IdDoesNotExistException {
         Student student = new Student();
+        student.setId(1L);
         MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
-        // when(studentService.getOneByID(any())).thenReturn(Optional.of(student));
+        when(studentService.getOneByID(any())).thenReturn(student);
 
-        Optional<Curriculum> actual = curriculumService.convertMultipartFileToCurriculum(file, student.getId());
+        Curriculum actual = curriculumService.convertMultipartFileToCurriculum(file, student.getId());
 
-        assertThat(actual).isNotNull();
+        assertThat(actual.getStudent()).isEqualTo(student);
     }
 
     @Test
-    public void testConvertMultipartFileToCurriculum_WithInvalidData() throws IOException, Exception {
+    public void testConvertMultipartFileToCurriculum_withNullFile() {
         Student student = new Student();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> curriculumService.convertMultipartFileToCurriculum(null, student.getId())
+        );
+    }
+
+    @Test
+    public void testConvertMultipartFileToCurriculum_withNullStudentID() {
         MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
-        //  when(studentService.getOneByID(any())).thenReturn(Optional.empty());
 
-        Optional<Curriculum> actual = curriculumService.convertMultipartFileToCurriculum(file, student.getId());
+        assertThrows(IllegalArgumentException.class,
+                () -> curriculumService.convertMultipartFileToCurriculum(file, null)
+        );
+    }
 
-        assertThat(actual).isEqualTo(Optional.empty());
+    @Test
+    public void testConvertMultipartFileToCurriculum_doesntExistStudentID() throws Exception {
+        Student student = new Student();
+        student.setId(1L);
+        MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
+        when(studentService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
+
+        assertThrows(IdDoesNotExistException.class, () -> curriculumService.convertMultipartFileToCurriculum(file, student.getId()));
+    }
+
+    @Test
+    public void testCreate_withValidCurriculum() {
+        Curriculum curriculum = getDummyCurriculum();
+        when(curriculumRepository.save(any())).thenReturn(curriculum);
+
+        Curriculum actual = curriculumService.create(curriculum);
+
+        assertThat(actual).isEqualTo(curriculum);
+    }
+
+    @Test
+    public void testCreate_withNullCurriculum() {
+        assertThrows(IllegalArgumentException.class, () ->
+                curriculumService.create(null));
+    }
+
+    @Test
+    public void testGetByID_withValidID() throws Exception {
+        Long validID = 1L;
+        Curriculum curriculum = getDummyCurriculum();
+        when(curriculumRepository.existsById(any())).thenReturn(true);
+        when(curriculumRepository.getById(any())).thenReturn(curriculum);
+
+        Curriculum actual = curriculumService.getOneByID(validID);
+
+        assertThat(actual).isEqualTo(curriculum);
+    }
+
+    @Test
+    public void testGetByID_withNullID() {
+        assertThrows(IllegalArgumentException.class, () ->
+                curriculumService.getOneByID(null));
+    }
+
+    @Test
+    public void testGetByID_doesntExistID() {
+        Long invalidID = 5L;
+        when(curriculumRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class, () -> curriculumService.getOneByID(invalidID));
+    }
+
+    @Test
+    public void testGetAll() {
+        List<Student> listOfStudents = List.of(new Student(), new Student(), new Student());
+        when(curriculumRepository.findAll()).thenReturn(getDummyCurriculumList(listOfStudents));
+
+        List<Curriculum> actualList = curriculumService.getAll();
+
+        assertThat(actualList.size()).isGreaterThan(0);
     }
 
     @Test
@@ -190,5 +261,4 @@ public class CurriculumServiceTest {
         curriculum.setId(1L);
         return curriculum;
     }
-
 }

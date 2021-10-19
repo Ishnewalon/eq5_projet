@@ -5,7 +5,6 @@ import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
@@ -29,6 +28,7 @@ public class OfferDTO {
 
     @Min(value = 0, message = "Le salaire n'est pas positif.")
     private double salary;
+
 
     @Min(value = 1, message = "Le id de l'utilsateur n'est pas positif.")
     private long creator_id;

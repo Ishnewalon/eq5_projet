@@ -1,14 +1,14 @@
 package com.gestionnaire_de_stage.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Monitor extends User {
 
     @NotNull
