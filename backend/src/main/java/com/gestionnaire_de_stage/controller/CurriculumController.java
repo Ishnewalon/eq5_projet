@@ -30,6 +30,7 @@ public class CurriculumController {
         Curriculum curriculum;
         try {
             curriculum = curriculumService.convertMultipartFileToCurriculum(file, studentId);
+            curriculumService.create(curriculum);
         } catch (IOException e) {
             return ResponseEntity
                     .badRequest()
@@ -38,9 +39,11 @@ public class CurriculumController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Invalid Student ID"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
         }
-
-        curriculumService.create(curriculum);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseMessage("File Uploaded Successfully"));

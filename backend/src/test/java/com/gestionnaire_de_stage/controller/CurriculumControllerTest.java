@@ -92,6 +92,54 @@ public class CurriculumControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("IO Error: check file integrity!");
     }
+    @Test
+    public void uploadCurriculumTest_studentIdThrowsIdDoesNotExistException() throws Exception {
+        Long studentId = 1L;
+        MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
+        when(curriculumService.create(any())).thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.multipart("/curriculum/upload")
+                                .file(file)
+                                .param("id", MAPPER.writeValueAsString(studentId)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Invalid Student ID");
+    }
+    @Test
+    public void uploadCurriculumTest_idStudentNull() throws Exception {
+        Long studentId = 1L;
+        MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
+        when(curriculumService.create(any())).thenThrow(new IllegalArgumentException("L'étudiant est null"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.multipart("/curriculum/upload")
+                                .file(file)
+                                .param("id", MAPPER.writeValueAsString(studentId)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'étudiant est null");
+    }
+    @Test
+    public void uploadCurriculumTest_idCurriculumNull() throws Exception {
+        Long studentId = 1L;
+        MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
+        when(curriculumService.create(any())).thenThrow(new IllegalArgumentException("L'étudiant est null"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.multipart("/curriculum/upload")
+                                .file(file)
+                                .param("id", MAPPER.writeValueAsString(studentId)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'étudiant est null");
+    }
 
 
     @Test
