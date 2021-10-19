@@ -26,12 +26,10 @@ public class Student extends User {
 
     private String postalCode;
 
-<<<<<<< HEAD
     private String curriculumPath;
-=======
+
     private boolean curriculumValidated;
 
     @OneToOne
     private Curriculum principalCurriculum;
->>>>>>> 659944d6e1a01196f3da4b8fe5e36229e75ded28
 }
