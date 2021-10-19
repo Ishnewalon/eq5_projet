@@ -4,7 +4,6 @@ import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Supervisor;
-import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import com.gestionnaire_de_stage.service.SupervisorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

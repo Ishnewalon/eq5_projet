@@ -17,7 +17,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,9 +27,6 @@ public class ManagerServiceTest {
 
     @Mock
     private ManagerRepository managerRepository;
-
-    @Mock
-    private StudentService studentService;
 
     @Test
     public void testCreate_withValidManager() throws ManagerAlreadyExistsException {
@@ -206,35 +202,6 @@ public class ManagerServiceTest {
         );
     }
 
-    @Test
-    public void testValidateCurriculum_withValidCurriculum() throws IdDoesNotExistException {
-        Student student = getStudent();
-        Student student1 = getStudent();
-        student1.setCurriculumValidated(true);
-        when(studentService.getOneByID(any())).thenReturn(student);
-        when(studentService.update(any(), any())).thenReturn(student1);
-
-        boolean actual = managerService.validateCurriculum(true, student.getId());
-
-        assertThat(actual).isTrue();
-    }
-
-    private Student getStudent() {
-        Student student = new Student();
-        student.setId(1L);
-        student.setLastName("Scott");
-        student.setFirstName("Jordan");
-        student.setEmail("jscotty@gmail.com");
-        student.setPhone("514-546-2375");
-        student.setPassword("rockrocks");
-        student.setAddress("758 George");
-        student.setCity("LaSalle");
-        student.setDepartment("Informatique");
-        student.setPostalCode("H5N 9F2");
-        student.setMatricule("6473943");
-        return student;
-    }
-
     private Manager getManager() {
         Manager manager = new Manager();
         manager.setPassword("Test1234");
@@ -254,14 +221,4 @@ public class ManagerServiceTest {
         }
         return managerList;
     }
-/*
-
-    @Test
-    @SuppressWarnings("ConstantConditions")
-    @DisplayName("test manager validate curriculum invalid data")
-    public void test_validateCurriculum_invalid() throws Exception {
-        assertThrows(Exception.class,() -> studentRepository.save(null));
-
-        assertFalse(managerService.validateCurriculum(true, 1));
-    }*/
 }

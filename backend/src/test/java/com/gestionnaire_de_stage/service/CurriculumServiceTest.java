@@ -69,13 +69,11 @@ public class CurriculumServiceTest {
         MockMultipartFile file = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
         when(studentService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
 
-        assertThrows(IdDoesNotExistException.class, () -> {
-            curriculumService.convertMultipartFileToCurriculum(file, student.getId());
-        });
+        assertThrows(IdDoesNotExistException.class, () -> curriculumService.convertMultipartFileToCurriculum(file, student.getId()));
     }
 
     @Test
-    public void testCreate_withValidCurriculum() throws Exception {
+    public void testCreate_withValidCurriculum() {
         Curriculum curriculum = getCurriculum();
         when(curriculumRepository.save(any())).thenReturn(curriculum);
 
@@ -113,9 +111,7 @@ public class CurriculumServiceTest {
         Long invalidID = 5L;
         when(curriculumRepository.existsById(any())).thenReturn(false);
 
-        assertThrows(IdDoesNotExistException.class, () -> {
-            curriculumService.getOneByID(invalidID);
-        });
+        assertThrows(IdDoesNotExistException.class, () -> curriculumService.getOneByID(invalidID));
     }
 
     @Test
@@ -132,14 +128,12 @@ public class CurriculumServiceTest {
         Student student = new Student();
         student.setId(1L);
 
-        Curriculum curriculum = new Curriculum(
+        return new Curriculum(
                 "fileName",
                 "content type",
                 "test".getBytes(),
                 student
         );
-
-        return curriculum;
     }
 
     private List<Curriculum> getCurriculumList() {

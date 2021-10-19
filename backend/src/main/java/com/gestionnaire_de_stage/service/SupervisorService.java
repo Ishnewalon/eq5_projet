@@ -29,7 +29,7 @@ public class SupervisorService {
 
     public Supervisor getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
-        if (!isIDValid(aLong)) {
+        if (isIdInvalid(aLong)) {
             throw new IdDoesNotExistException();
         }
         return supervisorRepository.getById(aLong);
@@ -43,7 +43,7 @@ public class SupervisorService {
     public Supervisor update(Supervisor supervisor, Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         Assert.isTrue(supervisor != null, "Le superviseur est null");
-        if (!isIDValid(aLong)) {
+        if (isIdInvalid(aLong)) {
             throw new IdDoesNotExistException();
         }
         supervisor.setId(aLong);
@@ -52,7 +52,7 @@ public class SupervisorService {
 
     public void deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
-        if (!isIDValid(aLong)) {
+        if (isIdInvalid(aLong)) {
             throw new IdDoesNotExistException();
         }
         supervisorRepository.deleteById(aLong);
@@ -72,8 +72,8 @@ public class SupervisorService {
                 supervisorRepository.existsByEmail(supervisor.getEmail());
     }
 
-    private boolean isIDValid(Long id) {
-        return supervisorRepository.existsById(id);
+    private boolean isIdInvalid(Long id) {
+        return !supervisorRepository.existsById(id);
     }
 
     private boolean isEmailAndPasswordValid(String email, String password) {

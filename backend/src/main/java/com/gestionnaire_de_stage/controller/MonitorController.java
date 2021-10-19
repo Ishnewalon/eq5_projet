@@ -18,11 +18,8 @@ public class MonitorController {
 
     private final MonitorService monitorService;
 
-    private final MonitorRepository monitorRepository;
-
     public MonitorController(MonitorService monitorService, MonitorRepository monitorRepository) {
         this.monitorService = monitorService;
-        this.monitorRepository = monitorRepository;
     }
 
     @PostMapping("/signup")
@@ -48,8 +45,8 @@ public class MonitorController {
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
         Monitor monitor;
-        try{
-            monitor = monitorService.getOneByEmailAndPassword(email,password);
+        try {
+            monitor = monitorService.getOneByEmailAndPassword(email, password);
             return ResponseEntity
                     .status(HttpStatus.FOUND)
                     .body(monitor);

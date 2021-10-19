@@ -29,7 +29,7 @@ public class StudentService {
 
     public Student getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
-        if (!isIDValid(aLong)) {
+        if (isIDValid(aLong)) {
             throw new IdDoesNotExistException();
         }
         return studentRepository.getById(aLong);
@@ -42,7 +42,7 @@ public class StudentService {
     public Student update(Student student, Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         Assert.isTrue(student != null, "L'étudiant est null");
-        if (!isIDValid(aLong)) {
+        if (isIDValid(aLong)) {
             throw new IdDoesNotExistException();
         }
         student.setId(aLong);
@@ -51,7 +51,7 @@ public class StudentService {
 
     public void deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
-        if (!isIDValid(aLong)) {
+        if (isIDValid(aLong)) {
             throw new IdDoesNotExistException();
         }
         studentRepository.deleteById(aLong);
@@ -71,7 +71,7 @@ public class StudentService {
     }
 
     private boolean isIDValid(Long id) {
-        return studentRepository.existsById(id);
+        return !studentRepository.existsById(id);
     }
 
     private boolean isEmailAndPasswordValid(String email, String password) {

@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
@@ -7,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OfferDTO {
     @NotBlank(message = "Le departement est vide.")
     @Size(min = 2, message = "Le departement doit avoir au minimum 2 lettres.")
@@ -26,6 +28,7 @@ public class OfferDTO {
 
     @Min(value = 0, message = "Le salaire n'est pas positif.")
     private double salary;
+
 
     @Min(value = 1, message = "Le id de l'utilsateur n'est pas positif.")
     private long creator_id;

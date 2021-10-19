@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
-import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import com.gestionnaire_de_stage.service.CurriculumService;
-import com.gestionnaire_de_stage.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -28,12 +26,6 @@ public class CurriculumControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @MockBean
-    private StudentService studentService;
-
-    @MockBean
-    private CurriculumRepository curriculumRepository;
 
     @MockBean
     private CurriculumService curriculumService;

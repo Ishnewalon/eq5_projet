@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class CurriculumService {
@@ -32,6 +31,7 @@ public class CurriculumService {
 
         Student student = studentService.getOneByID(studentId);
 
+        //noinspection ConstantConditions
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         return new Curriculum(
                 fileName,

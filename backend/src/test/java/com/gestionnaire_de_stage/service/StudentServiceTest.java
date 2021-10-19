@@ -16,7 +16,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,18 +51,14 @@ public class StudentServiceTest {
 
     @Test
     public void testCreate_withNullStudent() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            studentService.create(null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> studentService.create(null));
     }
 
     @Test
     public void testCreate_alreadyExistsStudent() {
         when(studentRepository.existsByEmail(any())).thenReturn(true);
 
-        assertThrows(StudentAlreadyExistsException.class, () -> {
-            studentService.create(getStudent());
-        });
+        assertThrows(StudentAlreadyExistsException.class, () -> studentService.create(getStudent()));
     }
 
     @Test
@@ -80,9 +75,7 @@ public class StudentServiceTest {
 
     @Test
     public void testGetByID_withNullID() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            studentService.getOneByID(null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> studentService.getOneByID(null));
     }
 
     @Test
@@ -90,9 +83,7 @@ public class StudentServiceTest {
         Student student = getStudent();
         when(studentRepository.existsById(any())).thenReturn(false);
 
-        assertThrows(IdDoesNotExistException.class, () -> {
-            studentService.getOneByID(student.getId());
-        });
+        assertThrows(IdDoesNotExistException.class, () -> studentService.getOneByID(student.getId()));
     }
 
     @Test
@@ -132,16 +123,12 @@ public class StudentServiceTest {
     public void testUpdate_withNullID() {
         Student student = getStudent();
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            studentService.update(student, null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> studentService.update(student, null));
     }
 
     @Test
     public void testUpdate_withNullStudent() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            studentService.update(null, 1L);
-        });
+        assertThrows(IllegalArgumentException.class, () -> studentService.update(null, 1L));
     }
 
     @Test
@@ -149,9 +136,7 @@ public class StudentServiceTest {
         Student student = getStudent();
         when(studentRepository.existsById(any())).thenReturn(false);
 
-        assertThrows(IdDoesNotExistException.class, () -> {
-            studentService.update(student, student.getId());
-        });
+        assertThrows(IdDoesNotExistException.class, () -> studentService.update(student, student.getId()));
     }
 
     @Test
@@ -168,9 +153,7 @@ public class StudentServiceTest {
 
     @Test
     public void testDelete_withNullID() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            studentService.deleteByID(null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> studentService.deleteByID(null));
     }
 
     @Test
@@ -178,9 +161,7 @@ public class StudentServiceTest {
         Long id = 1L;
         when(studentRepository.existsById(any())).thenReturn(false);
 
-        assertThrows(IdDoesNotExistException.class, () -> {
-            studentService.deleteByID(id);
-        });
+        assertThrows(IdDoesNotExistException.class, () -> studentService.deleteByID(id));
     }
 
     @Test
@@ -200,18 +181,14 @@ public class StudentServiceTest {
     public void testStudentByEmailAndPassword_withNullEmail() {
         Student student = getStudent();
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            studentService.getOneByEmailAndPassword(null, student.getPassword());
-        });
+        assertThrows(IllegalArgumentException.class, () -> studentService.getOneByEmailAndPassword(null, student.getPassword()));
     }
 
     @Test
     public void testStudentByEmailAndPassword_withNullPassword() {
         Student student = getStudent();
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            studentService.getOneByEmailAndPassword(student.getEmail(), null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> studentService.getOneByEmailAndPassword(student.getEmail(), null));
     }
 
     @Test
@@ -219,9 +196,7 @@ public class StudentServiceTest {
         Student student = getStudent();
         when(studentRepository.existsByEmailAndPassword(any(), any())).thenReturn(false);
 
-        assertThrows(EmailAndPasswordDoesNotExistException.class, () -> {
-            studentService.getOneByEmailAndPassword(student.getEmail(), student.getPassword());
-        });
+        assertThrows(EmailAndPasswordDoesNotExistException.class, () -> studentService.getOneByEmailAndPassword(student.getEmail(), student.getPassword()));
     }
 
 }
