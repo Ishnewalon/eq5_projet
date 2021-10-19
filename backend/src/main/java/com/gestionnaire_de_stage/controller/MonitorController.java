@@ -18,7 +18,7 @@ public class MonitorController {
 
     private final MonitorService monitorService;
 
-    public MonitorController(MonitorService monitorService, MonitorRepository monitorRepository) {
+    public MonitorController(MonitorService monitorService) {
         this.monitorService = monitorService;
     }
 
