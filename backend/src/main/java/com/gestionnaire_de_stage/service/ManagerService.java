@@ -29,7 +29,7 @@ public class ManagerService {
 
     public Manager getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "Id est null");
-        if (isIDValid(aLong)) {
+        if (isIDNotValid(aLong)) {
             throw new IdDoesNotExistException();
         }
         return managerRepository.getById(aLong);
@@ -42,7 +42,7 @@ public class ManagerService {
     public Manager update(Manager manager, Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         Assert.isTrue(manager != null, "Le gestionnaire est null");
-        if (isIDValid(aLong)) {
+        if (isIDNotValid(aLong)) {
             throw new IdDoesNotExistException();
         }
         manager.setId(aLong);
@@ -51,7 +51,7 @@ public class ManagerService {
 
     public void deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
-        if (isIDValid(aLong))
+        if (isIDNotValid(aLong))
             throw new IdDoesNotExistException();
         managerRepository.deleteById(aLong);
     }
@@ -68,7 +68,7 @@ public class ManagerService {
         return manager.getEmail() != null && managerRepository.existsByEmail(manager.getEmail());
     }
 
-    private boolean isIDValid(Long id) {
+    private boolean isIDNotValid(Long id) {
         return !managerRepository.existsById(id);
     }
 

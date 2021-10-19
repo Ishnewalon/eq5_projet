@@ -4,6 +4,7 @@ import OfferService from "../../services/offer-service";
 import OfferDTO from "../../models/OfferDTO";
 import AuthService from "../../services/auth-service";
 import {DepartmentEnum} from "../../enums/Departement";
+import {ManagerModel} from "../../models/User";
 
 
 export default class AddOffer extends Component {
@@ -19,6 +20,9 @@ export default class AddOffer extends Component {
         }
         this.service = OfferService
         this.authService = AuthService
+
+        if(this.authService.isManager())
+            this.state = {...this.state, email: ''};
     }
 
     addOffer = () => {
@@ -26,7 +30,7 @@ export default class AddOffer extends Component {
         const id = this.authService.getUserId()
 
         let offer = new OfferDTO(title, department, description, address, salary, id)
-        this.props.addOffer(offer)
+        this.props.addOffer(offer, this.state.email)
     }
 
     handleChange = input => e => {
@@ -35,6 +39,13 @@ export default class AddOffer extends Component {
 
 
     render() {
+        const isManager = this.authService.isManager();
+        const moniteurAddOffer = isManager ?
+            <div className={"form-group text-center"}>
+                <label>Email du moniteur</label>
+                <input type="text" onChange={this.handleChange("email")}/>
+            </div>: <React.Fragment></React.Fragment>;
+
         return (<>
             <h2 className="text-center">Ajouter une offre de stage</h2>
             <div className="form-group row">
@@ -82,6 +93,7 @@ export default class AddOffer extends Component {
                     <button className="btn btn-primary" type={"button"} onClick={this.addOffer}>Ajouter</button>
                 </div>
             </div>
+            {moniteurAddOffer}
         </>);
     }
 }
