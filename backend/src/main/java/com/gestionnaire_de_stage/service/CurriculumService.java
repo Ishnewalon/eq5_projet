@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.hibernate.validator.internal.util.Contracts.assertTrue;
 
@@ -52,9 +51,6 @@ public class CurriculumService {
         return curriculumRepository.save(curriculum);
     }
 
-    public Curriculum getCurriculum(Long id) {
-        return curriculumRepository.getById(id);
-    }
 
     public Curriculum getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
@@ -63,11 +59,8 @@ public class CurriculumService {
         return curriculumRepository.getById(aLong);
     }
 
-    public Stream<Curriculum> getAllCurriculumByValidity(boolean validity) {
-        return curriculumRepository.findAllByIsValid(validity).stream();
-        public List<Curriculum> getAll () {
-            return curriculumRepository.findAll();
-        }
+    public List<Curriculum> getAll() {
+        return curriculumRepository.findAll();
     }
 
     public List<Student> findAllStudentsWithCurriculumNotValidatedYet() {
