@@ -7,7 +7,7 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.CurriculumService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -69,5 +69,28 @@ public class CurriculumController {
         }
         String response = validationCurriculum.isValid() ? "Succes: curriculum valide!" : "Succes: curriculum rejete!";
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping({"/download", "/download/{idCurriculum}"})
+    public ResponseEntity<?> downloadById(@PathVariable(required = false) Long idCurriculum) {
+        System.out.println(idCurriculum);
+        Curriculum oneById;
+        try {
+            oneById = curriculumService.findOneById(idCurriculum);
+        } catch (IllegalArgumentException e) {
+            System.out.println();
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename(oneById.getName()).build().toString());
+
+        return ResponseEntity
+                .ok()
+                .headers(httpHeaders)
+                .body(oneById.getData());
     }
 }

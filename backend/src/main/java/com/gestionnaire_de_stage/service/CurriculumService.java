@@ -82,4 +82,8 @@ public class CurriculumService {
         curriculumRepository.save(curriculum);
         return true;
     }
+
+    public Curriculum findOneById(Long idCurriculum) throws IllegalArgumentException {
+        return null;
+    }
 }
