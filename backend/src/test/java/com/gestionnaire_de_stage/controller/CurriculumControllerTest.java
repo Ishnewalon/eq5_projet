@@ -186,7 +186,7 @@ class CurriculumControllerTest {
 
         when(curriculumService.findOneById(anyLong())).thenReturn(dummyCurriculum);
 
-        MvcResult mvcResult = mockMvc.perform(get(String.format("/curriculum/download/%s", dummyCurriculum.getId()))
+        MvcResult mvcResult = mockMvc.perform(get("/curriculum/download/{id}", dummyCurriculum.getId())
                         .contentType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
                 .andReturn();
 
@@ -197,7 +197,7 @@ class CurriculumControllerTest {
     }
 
     @Test
-    public void testGetCurriculumById_whenIdIsNull() throws Exception {
+    public void testGetCurriculumById_withIdNull() throws Exception {
         Long id = null;
         when(curriculumService.findOneById(any())).thenThrow(new IllegalArgumentException("Erreur: L'id du curriculum ne peut pas etre null!"));
 
@@ -208,6 +208,19 @@ class CurriculumControllerTest {
         var actual = mvcResult.getResponse().getContentAsString();
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(actual).contains("Erreur: L'id du curriculum ne peut pas etre null!");
+    }
+    @Test
+    public void testGetCurriculumById_withCurriculumNonExistant() throws Exception {
+        Long id = 34L;
+        when(curriculumService.findOneById(any())).thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(get("/curriculum/download/{idCurriculum}", id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        var actual = mvcResult.getResponse().getContentAsString();
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(actual).contains("Erreur: curriculum non existant!");
     }
 
     Curriculum getDummyCurriculum() {

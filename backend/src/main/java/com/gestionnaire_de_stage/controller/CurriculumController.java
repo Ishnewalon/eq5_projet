@@ -78,10 +78,13 @@ public class CurriculumController {
         try {
             oneById = curriculumService.findOneById(idCurriculum);
         } catch (IllegalArgumentException e) {
-            System.out.println();
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
+        } catch (IdDoesNotExistException e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: curriculum non existant!"));
         }
 
         HttpHeaders httpHeaders = new HttpHeaders();

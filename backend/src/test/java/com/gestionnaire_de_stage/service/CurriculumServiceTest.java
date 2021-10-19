@@ -5,7 +5,6 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -147,6 +146,31 @@ public class CurriculumServiceTest {
         assertThrows(IllegalArgumentException.class, () ->
                 curriculumService.validate(null, false));
     }
+
+    @Test
+    void testFindOneById() throws Exception {
+        Curriculum dummyCurriculum = getDummyCurriculum();
+        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(dummyCurriculum));
+
+        Curriculum oneById = curriculumService.findOneById(dummyCurriculum.getId());
+
+        assertThat(oneById).isEqualTo(dummyCurriculum);
+    }
+
+    @Test
+    void testFindOneById_withIdNull() {
+        assertThrows(IllegalArgumentException.class, () ->
+                curriculumService.findOneById(null));
+    }
+
+    @Test
+    void testFindOneById_withCurriculumNonExistent() {
+        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(IdDoesNotExistException.class, () ->
+                curriculumService.findOneById(34L));
+    }
+
 
     private List<Curriculum> getDummyCurriculumList(List<Student> listOfStudents) {
 
