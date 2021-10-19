@@ -25,5 +25,5 @@ public class Student extends User {
 
     private String postalCode;
 
-    private boolean curriculumValidated;
+    private String curriculumPath;
 }

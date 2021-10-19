@@ -3,7 +3,6 @@ import './ViewOffers.css'
 import OfferService from '../../services/offer-service'
 import PreviewOffer from '../PreviewOffer/PreviewOffer';
 import AuthService from '../../services/auth-service';
-import OfferDTO from "../../models/OfferDTO";
 
 export default class ViewOffers extends React.Component {
 
@@ -21,9 +20,6 @@ export default class ViewOffers extends React.Component {
                 console.trace(e);
             });
     }
-
-
-
 
     render() {
         return (

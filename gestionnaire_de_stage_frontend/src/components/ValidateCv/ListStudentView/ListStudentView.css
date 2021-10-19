@@ -1,0 +1,7 @@
+.preview *{
+    margin-bottom: 20px;
+}
+
+.preview *:nth-child(5){
+    margin-bottom: 10px;
+}

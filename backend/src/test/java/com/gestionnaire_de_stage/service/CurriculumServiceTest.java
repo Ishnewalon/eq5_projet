@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
@@ -13,11 +14,15 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -123,6 +128,128 @@ public class CurriculumServiceTest {
         assertThat(actualCurriculumList.size()).isGreaterThan(0);
     }
 
+    @Test
+    public void testFindAllStudentsWithInvalidCurriculum() {
+        List<Curriculum> dummyCurriculumList = getDummyCurriculumList();
+        when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(dummyCurriculumList);
+
+        List<Student> studentList = curriculumService.findAllStudentsWithCurriculumNotValidatedYet();
+
+        List<Student> collect = dummyCurriculumList.stream().map(Curriculum::getStudent).collect(Collectors.toList());
+        assertThat(studentList).isEqualTo(collect);
+    }
+
+    @Test
+    public void testFindAllStudentsWithInvalidCurriculum_withEmptyList() {
+        when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(Collections.emptyList());
+
+        List<Student> studentList = curriculumService.findAllStudentsWithCurriculumNotValidatedYet();
+
+        assertThat(studentList).isEqualTo(Collections.emptyList());
+    }
+
+
+    @Test
+    void testValidate() throws Exception {
+        Curriculum curriculum = getDummyCurriculum();
+        curriculum.setId(1L);
+
+        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(curriculum));
+
+        assertThat(curriculumService.validate(curriculum.getId(), true)).isTrue();
+    }
+
+    @Test
+    void testValidate_whenCvNonExistent() {
+        Curriculum curriculum = getDummyCurriculum();
+        curriculum.setId(1L);
+
+        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> curriculumService.validate(curriculum.getId(), true));
+    }
+
+    @Test
+    void testValidate_whenCurriculumAlreadyTreated() {
+        Curriculum curriculum = getDummyCurriculum();
+        curriculum.setId(1L);
+        curriculum.setIsValid(true);
+        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(curriculum));
+        assertThrows(CurriculumAlreadyTreatedException.class, () ->
+                curriculumService.validate(curriculum.getId(), true));
+
+    }
+
+    @Test
+    void testValidate_withIdCurriculumNull() {
+        assertThrows(IllegalArgumentException.class, () ->
+                curriculumService.validate(null, true));
+    }
+
+    @Test
+    void testReject() throws Exception {
+        Curriculum dummyCurriculum = getDummyCurriculum();
+        dummyCurriculum.setId(1L);
+
+        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(dummyCurriculum));
+
+        assertThat(curriculumService.validate(dummyCurriculum.getId(), false)).isTrue();
+    }
+
+    @Test
+    void testReject_whenCvNonExistent() {
+        Curriculum dummyCurriculum = getDummyCurriculum();
+        dummyCurriculum.setId(1L);
+
+        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(IdDoesNotExistException.class, () ->
+                curriculumService.validate(dummyCurriculum.getId(), false));
+    }
+
+    @Test
+    void testReject_whenCurriculumAlreadyTreated() {
+        Curriculum dummyCurriculum = getDummyCurriculum();
+        dummyCurriculum.setId(1L);
+        dummyCurriculum.setIsValid(true);
+        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(dummyCurriculum));
+
+        assertThrows(CurriculumAlreadyTreatedException.class, () ->
+                curriculumService.validate(dummyCurriculum.getId(), false));
+    }
+
+    @Test
+    void testReject_withIdCurriculumNull() {
+        assertThrows(IllegalArgumentException.class, () ->
+                curriculumService.validate(null, false));
+    }
+
+    @Test
+    void testFindOneById() throws Exception {
+        Curriculum dummyCurriculum = getDummyCurriculum();
+        dummyCurriculum.setId(1L);
+        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(dummyCurriculum));
+
+        Curriculum actualCurriculum = curriculumService.findOneById(dummyCurriculum.getId());
+
+        assertThat(actualCurriculum).isEqualTo(dummyCurriculum);
+    }
+
+    @Test
+    void testFindOneById_withIdNull() {
+        assertThrows(IllegalArgumentException.class, () ->
+                curriculumService.findOneById(null));
+    }
+
+    @Test
+    void testFindOneById_withCurriculumNonExistent() {
+        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(IdDoesNotExistException.class, () ->
+                curriculumService.findOneById(34L));
+    }
+
 
     private Curriculum getDummyCurriculum() {
         Student dummyStudent = new Student();
@@ -140,7 +267,6 @@ public class CurriculumServiceTest {
         Curriculum dummyCurriculum1 = getDummyCurriculum();
         Curriculum dummyCurriculum2 = getDummyCurriculum();
         Curriculum dummyCurriculum3 = getDummyCurriculum();
-
         return Arrays.asList(dummyCurriculum1, dummyCurriculum2, dummyCurriculum3);
     }
 }

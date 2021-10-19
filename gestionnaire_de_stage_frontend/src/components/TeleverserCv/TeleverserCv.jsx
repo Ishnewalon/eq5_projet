@@ -61,9 +61,6 @@ export default function TeleverserCv() {
                     ))}
                 </ul>
             </div>
-            {/*<div className={"text-center"}>*/}
-            {/*    <button>Envoyer</button>*/}
-            {/*</div>*/}
         </div>
     );
 }
