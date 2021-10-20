@@ -42,4 +42,6 @@ public class OfferApplicationController {
                 .status(CREATED)
                 .body(new ResponseMessage("Succes: candidature envoyer!"));
     }
+
+
 }

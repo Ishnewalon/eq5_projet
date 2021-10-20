@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Optional;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -132,6 +135,27 @@ class OfferApplicationControllerTest {
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Erreur: Le id du curriculum ne peut pas etre null");
     }
+
+/*    @Test
+    public void testViewStudentsAppliedOffer_withValidEntries() throws Exception {
+        List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
+        List<CurriculumDTO> curriculumDTOList = getDummyCurriculumDTOList();
+        //Monitor monitor = getDummyMonitor();
+        when(offerApplicationService.getAllByOfferCreatorEmail(any()))
+                .thenReturn(offerApplicationsList);
+        when(curriculumService.mapToDTO(any()))
+                .thenReturn(curriculumDTOList);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/applications/applicants")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        List<CurriculumDTO> actualCurriculumDTOs = MAPPER.readValue(response.getContentAsString(), List.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualCurriculumDTOs.size()).isEqualTo(3);
+    }*/
 
     private OfferAppDTO getDummyOfferAppDto() {
         OfferAppDTO offerAppDTO = new OfferAppDTO();
