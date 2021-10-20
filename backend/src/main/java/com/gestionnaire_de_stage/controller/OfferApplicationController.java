@@ -50,7 +50,7 @@ public class OfferApplicationController {
                 .body(new ResponseMessage("Succes: candidature envoyer!"));
     }
 
-/*    @GetMapping("/applicants/{email}")
+    @GetMapping("/applicants/{email}")
     public ResponseEntity<?> viewApplicantList(@PathVariable String email) {
         List<OfferApplication> offerApplicationList;
         try {
@@ -60,9 +60,9 @@ public class OfferApplicationController {
                     .badRequest()
                     .body(e.getMessage());
         }
-        List<CurriculumDTO> curriculumDTOList = curriculumService.mapToDTO(offerApplicationList);
+        List<CurriculumDTO> curriculumDTOList = curriculumService.mapToCurriculumDTOList(offerApplicationList);
 
         return ResponseEntity
                 .ok(curriculumDTOList);
-    }*/
+    }
 }

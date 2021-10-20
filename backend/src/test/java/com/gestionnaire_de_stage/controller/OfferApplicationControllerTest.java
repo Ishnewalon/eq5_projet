@@ -5,10 +5,7 @@ import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
-import com.gestionnaire_de_stage.model.Curriculum;
-import com.gestionnaire_de_stage.model.Offer;
-import com.gestionnaire_de_stage.model.OfferApplication;
-import com.gestionnaire_de_stage.model.Student;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.service.CurriculumService;
 import com.gestionnaire_de_stage.service.OfferApplicationService;
 import org.junit.jupiter.api.Test;
@@ -141,17 +138,18 @@ class OfferApplicationControllerTest {
         assertThat(response.getContentAsString()).contains("Erreur: Le id du curriculum ne peut pas etre null");
     }
 
-  /*  @Test
+    @Test
     public void testViewStudentsAppliedOffer_withValidEntries() throws Exception {
         List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
         List<CurriculumDTO> curriculumDTOList = getDummyCurriculumDTOList();
+        String email = "rolling@email.com";
         when(offerApplicationService.getAllByOfferCreatorEmail(any()))
                 .thenReturn(offerApplicationsList);
-        when(curriculumService.mapToDTO(any()))
+        when(curriculumService.mapToCurriculumDTOList(any()))
                 .thenReturn(curriculumDTOList);
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/applications/applicants")
+                        MockMvcRequestBuilders.get("/applications/applicants/" + email)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -159,7 +157,7 @@ class OfferApplicationControllerTest {
         List<CurriculumDTO> actualCurriculumDTOs = MAPPER.readValue(response.getContentAsString(), List.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualCurriculumDTOs.size()).isEqualTo(3);
-    }*/
+    }
 
     private OfferAppDTO getDummyOfferAppDto() {
         OfferAppDTO offerAppDTO = new OfferAppDTO();
@@ -179,6 +177,17 @@ class OfferApplicationControllerTest {
     }
 
     private Offer getDummyOffer() {
+        Offer dummyOffer = new Offer();
+        dummyOffer.setDepartment("Un departement");
+        dummyOffer.setAddress("ajsaodas");
+        dummyOffer.setId(1L);
+        dummyOffer.setDescription("oeinoiendw");
+        dummyOffer.setSalary(10);
+        dummyOffer.setTitle("oeinoiendw");
+        return dummyOffer;
+    }
+
+    private Offer getDummyOfferWithCreator() {
         Offer dummyOffer = new Offer();
         dummyOffer.setDepartment("Un departement");
         dummyOffer.setAddress("ajsaodas");
