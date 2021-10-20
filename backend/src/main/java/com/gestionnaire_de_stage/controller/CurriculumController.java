@@ -69,8 +69,8 @@ public class CurriculumController {
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
         }
-        String response = validationCurriculum.isValid() ? "Succes: curriculum valide!" : "Succes: curriculum rejete!";
-        return ResponseEntity.ok(response);
+        String response = validationCurriculum.isValid() ? "Succès: curriculum validé!" : "Erreur: curriculum rejeté!";
+        return ResponseEntity.ok(new ResponseMessage(response));
     }
 
     @GetMapping({"/download", "/download/{idCurriculum}"})

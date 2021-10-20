@@ -2,7 +2,8 @@ import './ValiderCv.css'
 import React, {Component} from "react";
 import {getCurriculumWithInvalidCV, validateCV} from "../../services/curriculum-service";
 import ListStudentView from "./ListStudentView/ListStudentView";
-import {swalErr, toast} from "../../utility";
+import {swalErr} from "../../utility";
+import Swal from "sweetalert2";
 
 
 export default class ValiderCv extends Component {
@@ -27,22 +28,16 @@ export default class ValiderCv extends Component {
 
     valideCV = (id, valid) => {
         validateCV(id, valid)
-            .then(x => {
-                alert(x)
-                if (typeof x === "string") {
-                    console.trace(x);
-                    swalErr(x).fire({}).then();
-                    return;
-                }
+            .then(responseMessage => {
                 this.setState({valid})
-
-                if (!valid)
-                    swalErr('Cv invalidé').fire({}).then();
-                else
-                    toast.fire({title: 'Cv validé'}).then()
-            }, e => {
-                console.log(e)
+                Swal.fire({title: responseMessage.message, icon: valid ? 'success' : 'error'})
+                    .then(v => this.refresh());
+            })
+            .catch(e => {
+                console.trace(e)
+                swalErr(e).fire({}).then();
             });
+
     }
 
     render() {
@@ -61,7 +56,7 @@ export default class ValiderCv extends Component {
                                         onClick={() => this.valideCV(cv.id, true)}>Valide
                                 </button>
                                 <button id="invalidateBtn" className="btn btn-danger fw-bold text-white w-50"
-                                        onClick={() => this.validateCV(cv.id, false)}>Invalide
+                                        onClick={() => this.valideCV(cv.id, false)}>Invalide
                                 </button>
                             </div>
                         </div>

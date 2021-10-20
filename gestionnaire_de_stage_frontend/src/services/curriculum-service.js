@@ -32,6 +32,8 @@ export async function validateCV(id, valid) {
     return await response.json();
 }
 
+
+
 export async function downloadCV(id) {
     const response = await fetch(`${urlBackend}/curriculum/download?id=${id}`, requestInit(methods.GET));
     return await response.json();
