@@ -10,6 +10,7 @@ import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class OfferApplicationService {
@@ -41,5 +42,9 @@ public class OfferApplicationService {
         offerApplication.setCurriculum(curriculum);
 
         return Optional.of(offerApplicationRepository.save(offerApplication));
+    }
+
+    public List<OfferApplication> getAllByOfferCreatorEmail(String email) {
+        return offerApplicationRepository.getAllByOffer_CreatorEmail(email);
     }
 }

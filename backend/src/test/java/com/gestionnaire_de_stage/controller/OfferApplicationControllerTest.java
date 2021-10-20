@@ -9,6 +9,7 @@ import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
+import com.gestionnaire_de_stage.service.CurriculumService;
 import com.gestionnaire_de_stage.service.OfferApplicationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ class OfferApplicationControllerTest {
 
     @MockBean
     private OfferApplicationService offerApplicationService;
+
+    @MockBean
+    private CurriculumService curriculumService;
 
     private final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -137,7 +141,7 @@ class OfferApplicationControllerTest {
         assertThat(response.getContentAsString()).contains("Erreur: Le id du curriculum ne peut pas etre null");
     }
 
-    /*@Test
+  /*  @Test
     public void testViewStudentsAppliedOffer_withValidEntries() throws Exception {
         List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
         List<CurriculumDTO> curriculumDTOList = getDummyCurriculumDTOList();
