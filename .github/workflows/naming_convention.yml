@@ -1,0 +1,13 @@
+name: 'Assert Branch Naming Convention'
+on: [push, pull_request]
+
+jobs:
+  branch-naming-rules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: deepakputhraya/action-branch-name@master
+        with:
+          regex: '(EQ5-[0-9]+_)\w+' # Regex the branch should match. This example enforces grouping
+          ignore: master,develop,Veille_Samuel,Veille_Imem,Veille_Oussama  # Ignore exactly matching branch names from convention
+          min_length: 5 # Min length of the branch name
+          max_length: 45 # Max length of the branch name
