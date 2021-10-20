@@ -43,9 +43,6 @@ public class OfferController {
         try {
 
             offer = offerService.create(offer);
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(offer);
         } catch (IllegalArgumentException ie) {
             return ResponseEntity
                     .badRequest()
@@ -55,6 +52,9 @@ public class OfferController {
                     .badRequest()
                     .body(new ResponseMessage("Offre existe déjà"));
         }
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(offer);
     }
 
     @GetMapping({"/", "/{department}"}) //TODO Handle exception
