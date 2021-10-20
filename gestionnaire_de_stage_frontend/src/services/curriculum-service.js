@@ -32,9 +32,11 @@ export async function validateCV(id, valid) {
     return await response.json();
 }
 
-
-
 export async function downloadCV(id) {
-    const response = await fetch(`${urlBackend}/curriculum/download?id=${id}`, requestInit(methods.GET));
-    return await response.json();
+    let requestInit1 = requestInit(methods.GET);
+    requestInit1.headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/octet-stream'
+    }
+    return (await fetch(`${urlBackend}/curriculum/download/${id}`)).blob();
 }
