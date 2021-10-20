@@ -43,7 +43,7 @@ public class OfferApplicationService {
         return Optional.of(offerApplicationRepository.save(offerApplication));
     }
 
-/*    public List<OfferApplication> getAllByOfferCreatorEmail(String email) throws EmailDoesNotExistException {
+    public List<OfferApplication> getAllByOfferCreatorEmail(String email) throws EmailDoesNotExistException {
         Assert.isTrue(email != null, "Le courriel est null");
         if (isEmailInvalid(email)) {
             throw new EmailDoesNotExistException();
@@ -53,5 +53,5 @@ public class OfferApplicationService {
 
     private boolean isEmailInvalid(String email) {
         return !offerApplicationRepository.existsByOffer_CreatorEmail(email);
-    }*/
+    }
 }

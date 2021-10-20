@@ -97,7 +97,7 @@ class OfferApplicationServiceTest {
                 () -> offerApplicationService.create(dummyOffer.getId(), dummyCurriculum.getId()));
     }
 
-   /* @Test
+    @Test
     void testGetAllByOfferCreatorEmail_withValidEntries() throws EmailDoesNotExistException {
         List<OfferApplication> offerApplicationList = getDummyOfferAppList();
         String email = "americanm@email.com";
@@ -123,7 +123,7 @@ class OfferApplicationServiceTest {
 
         assertThrows(EmailDoesNotExistException.class,
                 () -> offerApplicationService.getAllByOfferCreatorEmail(email));
-    }*/
+    }
 
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();
