@@ -59,17 +59,17 @@ public class CurriculumController {
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: curriculum non existant!"));
+                    .body(new ResponseMessage("Curriculum non existant!"));
         } catch (CurriculumAlreadyTreatedException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: curriculum deja traite!"));
+                    .body(new ResponseMessage("Curriculum déjà traité!"));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
         }
-        String response = validationCurriculum.isValid() ? "Succès: curriculum validé!" : "Erreur: curriculum rejeté!";
+        String response = validationCurriculum.isValid() ? "Curriculum validé!" : "Curriculum rejeté!";
         return ResponseEntity.ok(new ResponseMessage(response));
     }
 
@@ -86,7 +86,7 @@ public class CurriculumController {
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: curriculum non existant!"));
+                    .body(new ResponseMessage("Curriculum non existant!"));
         }
 
         HttpHeaders httpHeaders = new HttpHeaders();

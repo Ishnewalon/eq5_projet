@@ -1,6 +1,5 @@
 package com.gestionnaire_de_stage.service;
 
-import com.gestionnaire_de_stage.dto.CurriculumStudentDto;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
@@ -68,7 +67,7 @@ public class CurriculumService {
 
     public boolean validate(Long idCurriculum, boolean valid) throws
             IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
-        Assert.isTrue(idCurriculum != null, "Erreur: Le id du curriculum ne peut pas etre null");
+        Assert.isTrue(idCurriculum != null, "Le id du curriculum ne peut pas être null");
 
         Optional<Curriculum> curriculumOptional = curriculumRepository.findById(idCurriculum);
 
@@ -84,7 +83,7 @@ public class CurriculumService {
     }
 
     public Curriculum findOneById(Long idCurriculum) throws IllegalArgumentException, IdDoesNotExistException {
-        Assert.isTrue(idCurriculum != null, "Erreur: L'id du curriculum ne peut pas etre null");
+        Assert.isTrue(idCurriculum != null, "Le id du curriculum ne peut pas être null");
         Optional<Curriculum> byId = curriculumRepository.findById(idCurriculum);
         if (byId.isEmpty())
             throw new IdDoesNotExistException();

@@ -32,9 +32,6 @@ function App() {
 
         </nav>
         <div className="container">
-            <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-                <ValiderCv />
-            </div>
             <Switch>
                 <UnprotectedRoute exact path="/login"
                                   component={Login}/>

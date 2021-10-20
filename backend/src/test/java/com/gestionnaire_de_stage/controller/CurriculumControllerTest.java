@@ -140,7 +140,7 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Succes: curriculum valide!");
+        assertThat(response.getContentAsString()).contains("Curriculum validé!");
     }
 
     @Test
@@ -155,7 +155,7 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: curriculum non existant!");
+        assertThat(response.getContentAsString()).contains("Curriculum non existant!");
     }
 
     @Test
@@ -170,13 +170,14 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: curriculum deja traite!");
+        assertThat(response.getContentAsString()).contains("Curriculum déjà traité!");
     }
 
     @Test
     public void testValidate_withIdCurriculumNull() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(null, true);
-        when(curriculumService.validate(any(), anyBoolean())).thenThrow(new IllegalArgumentException("Erreur: Le id du curriculum ne peut pas etre null"));
+        when(curriculumService.validate(any(), anyBoolean()))
+                .thenThrow(new IllegalArgumentException("Le id du curriculum ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/curriculum/validate")
@@ -185,7 +186,7 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le id du curriculum ne peut pas etre null");
+        assertThat(response.getContentAsString()).contains("Le id du curriculum ne peut pas être null");
     }
 
     @Test
@@ -200,7 +201,7 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Succes: curriculum rejete!");
+        assertThat(response.getContentAsString()).contains("Curriculum rejeté!");
     }
 
     @Test
@@ -215,7 +216,7 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: curriculum non existant!");
+        assertThat(response.getContentAsString()).contains("Curriculum non existant!");
     }
 
     @Test
@@ -230,13 +231,14 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: curriculum deja traite!");
+        assertThat(response.getContentAsString()).contains("Curriculum déjà traité!");
     }
 
     @Test
     public void testReject_withIdCurriculumNull() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(null, false);
-        when(curriculumService.validate(any(), anyBoolean())).thenThrow(new IllegalArgumentException("Erreur: Le id du curriculum ne peut pas etre null"));
+        when(curriculumService.validate(any(), anyBoolean()))
+                .thenThrow(new IllegalArgumentException("Le id du curriculum ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/curriculum/validate")
@@ -245,7 +247,7 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le id du curriculum ne peut pas etre null");
+        assertThat(response.getContentAsString()).contains("Le id du curriculum ne peut pas être null");
     }
 
     @Test
@@ -270,7 +272,8 @@ public class CurriculumControllerTest {
     @Test
     public void testGetCurriculumById_withIdNull() throws Exception {
         Long id = null;
-        when(curriculumService.findOneById(any())).thenThrow(new IllegalArgumentException("Erreur: L'id du curriculum ne peut pas etre null!"));
+        when(curriculumService.findOneById(any()))
+                .thenThrow(new IllegalArgumentException("Le id du curriculum ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/curriculum/download/{idCurriculum}", id)
@@ -279,7 +282,7 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: L'id du curriculum ne peut pas etre null!");
+        assertThat(response.getContentAsString()).contains("Le id du curriculum ne peut pas être null");
     }
 
     @Test
@@ -294,7 +297,7 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: curriculum non existant!");
+        assertThat(response.getContentAsString()).contains("Curriculum non existant!");
     }
 
     Curriculum getDummyCurriculum() {
