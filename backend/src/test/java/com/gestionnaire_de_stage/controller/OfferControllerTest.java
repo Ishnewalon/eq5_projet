@@ -71,7 +71,7 @@ public class OfferControllerTest {
     }
 
     @Test
-    public void testMonitorOfferCreate_withNullEntry() throws Exception {
+    public void testOfferCreate_withNullEntry() throws Exception {
         when(offerService.mapToOffer(any())).thenReturn(new Offer());
         when(offerService.create(any())).thenThrow(new IllegalArgumentException("Offre est null"));
 
@@ -87,7 +87,7 @@ public class OfferControllerTest {
     }
 
     @Test
-    public void testMonitorOfferCreate_withInvalidEmail() throws Exception {
+    public void testOfferCreate_withInvalidEmail() throws Exception {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOfferDTO.setCreator_email("goaway@email.com");
         when(monitorService.getOneByEmail(dummyOfferDTO.getCreator_email()))
@@ -105,7 +105,7 @@ public class OfferControllerTest {
     }
 
     @Test
-    public void testMonitorOfferCreate_withAlreadyExistingOffer() throws Exception {
+    public void testOfferCreate_withAlreadyExistingOffer() throws Exception {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOffer = getDummyOffer();
         dummyOffer.setId(null);

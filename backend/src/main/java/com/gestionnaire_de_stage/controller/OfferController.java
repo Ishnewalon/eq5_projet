@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Manager;
@@ -37,13 +38,12 @@ public class OfferController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<?> addOfferMonitor(@RequestBody OfferDTO dto) {
+    public ResponseEntity<?> addOffer(@RequestBody OfferDTO dto) {
         Offer offer = offerService.mapToOffer(dto);
         System.out.println(dto.getCreator_email());
-        Monitor monitor = monitorService.getOneByEmail(dto.getCreator_email());
-        offer.setCreator(monitor);
         try {
-
+            Monitor monitor = monitorService.getOneByEmail(dto.getCreator_email());
+            offer.setCreator(monitor);
             offer = offerService.create(offer);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
@@ -56,6 +56,10 @@ public class OfferController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Offre existe déjà"));
+        } catch (EmailDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Le courriel n'existe pas"));
         }
     }
 

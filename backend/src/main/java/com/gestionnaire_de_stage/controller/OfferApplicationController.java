@@ -27,7 +27,6 @@ public class OfferApplicationController {
         this.curriculumService = curriculumService;
     }
 
-
     @PostMapping("/apply")
     public ResponseEntity<?> studentApplyToOffer(@RequestBody OfferAppDTO offerAppDTO) {
         try {

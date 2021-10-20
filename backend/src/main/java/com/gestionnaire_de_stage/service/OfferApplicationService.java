@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.model.Curriculum;
@@ -15,7 +16,6 @@ import java.util.List;
 @Service
 public class OfferApplicationService {
 
-
     private final OfferApplicationRepository offerApplicationRepository;
     private final CurriculumService curriculumService;
     private final OfferService offerService;
@@ -25,7 +25,6 @@ public class OfferApplicationService {
         this.curriculumService = curriculumService;
         this.offerService = offerService;
     }
-
 
     public Optional<OfferApplication> create(Long idOffer, Long idCurriculum) throws StudentAlreadyAppliedToOfferException, IdDoesNotExistException, IllegalArgumentException {
         Assert.isTrue(idOffer != null, "Erreur: Le id de l'offre ne peut pas être null");
@@ -44,8 +43,15 @@ public class OfferApplicationService {
         return Optional.of(offerApplicationRepository.save(offerApplication));
     }
 
-    public List<OfferApplication> getAllByOfferCreatorEmail(String email) {
+/*    public List<OfferApplication> getAllByOfferCreatorEmail(String email) throws EmailDoesNotExistException {
         Assert.isTrue(email != null, "Le courriel est null");
+        if (isEmailInvalid(email)) {
+            throw new EmailDoesNotExistException();
+        }
         return offerApplicationRepository.getAllByOffer_CreatorEmail(email);
     }
+
+    private boolean isEmailInvalid(String email) {
+        return !offerApplicationRepository.existsByOffer_CreatorEmail(email);
+    }*/
 }
