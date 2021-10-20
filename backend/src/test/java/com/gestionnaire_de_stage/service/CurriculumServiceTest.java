@@ -1,8 +1,8 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.model.Curriculum;
-import com.gestionnaire_de_stage.model.Student;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -123,6 +124,23 @@ public class CurriculumServiceTest {
         assertThat(actualCurriculumList.size()).isGreaterThan(0);
     }
 
+    @Test
+    public void testMapToCurriculumDTOList_withValidEntries() {
+        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
+        List<CurriculumDTO> curriculumDTOList = getDummyCurriculumDTOList();
+
+        List<CurriculumDTO> actualCurriculumDTOList = curriculumService.mapToCurriculumDTOList(offerApplicationList);
+
+        assertThat(actualCurriculumDTOList.size()).isEqualTo(curriculumDTOList.size());
+        assertThat(actualCurriculumDTOList.get(1).getFirstName()).isEqualTo(curriculumDTOList.get(1).getFirstName());
+    }
+
+    @Test
+    public void testMapToCurriculumDTOList_withEmptyList() {
+        List<OfferApplication> offerApplicationList = new ArrayList<>();
+        assertThrows(IllegalArgumentException.class,
+                () -> curriculumService.mapToCurriculumDTOList(offerApplicationList));
+    }
 
     private Curriculum getDummyCurriculum() {
         Student dummyStudent = new Student();
@@ -142,5 +160,92 @@ public class CurriculumServiceTest {
         Curriculum dummyCurriculum3 = getDummyCurriculum();
 
         return Arrays.asList(dummyCurriculum1, dummyCurriculum2, dummyCurriculum3);
+    }
+
+    private Curriculum getDummyCurriculumOffer() {
+        Curriculum dummyCurriculum = new Curriculum();
+
+        dummyCurriculum.setId(1L);
+        dummyCurriculum.setData("some xml".getBytes());
+        dummyCurriculum.setName("fileeeename");
+        dummyCurriculum.setStudent(getDummyStudent());
+        return dummyCurriculum;
+    }
+
+    private Student getDummyStudent() {
+        Student dummyStudent = new Student();
+        dummyStudent.setId(1L);
+        dummyStudent.setLastName("Winter");
+        dummyStudent.setFirstName("Summer");
+        dummyStudent.setEmail("cant@outlook.com");
+        dummyStudent.setPassword("cantPass");
+        dummyStudent.setDepartment("info");
+        dummyStudent.setMatricule("4673943");
+        return dummyStudent;
+    }
+
+    private Offer getDummyOffer() {
+        Offer dummyOffer = new Offer();
+        dummyOffer.setDepartment("Un departement");
+        dummyOffer.setAddress("ajsaodas");
+        dummyOffer.setId(1L);
+        dummyOffer.setDescription("oeinoiendw");
+        dummyOffer.setSalary(10);
+        dummyOffer.setTitle("oeinoiendw");
+        dummyOffer.setCreator(getDummyMonitor());
+        return dummyOffer;
+    }
+
+    private Monitor getDummyMonitor() {
+        Monitor dummyMonitor = new Monitor();
+        dummyMonitor.setId(1L);
+        dummyMonitor.setLastName("toto");
+        dummyMonitor.setFirstName("titi");
+        dummyMonitor.setEmail("toto@gmail.com");
+        dummyMonitor.setPassword("testPassword");
+        return dummyMonitor;
+    }
+
+    private List<OfferApplication> getDummyOfferAppList() {
+        List<OfferApplication> dummyOfferApplicationList = new ArrayList<>();
+        OfferApplication dummyOfferApplication = new OfferApplication();
+        dummyOfferApplication.setOffer(getDummyOffer());
+        dummyOfferApplication.setCurriculum(getDummyCurriculumOffer());
+        dummyOfferApplication.setId(1L);
+        dummyOfferApplicationList.add(dummyOfferApplication);
+
+        dummyOfferApplication.setId(2L);
+        dummyOfferApplicationList.add(dummyOfferApplication);
+
+        dummyOfferApplication.setId(3L);
+        dummyOfferApplicationList.add(dummyOfferApplication);
+
+        return dummyOfferApplicationList;
+    }
+
+    private List<CurriculumDTO> getDummyCurriculumDTOList() {
+        List<CurriculumDTO> curriculumDTOList = new ArrayList<>();
+        CurriculumDTO curriculumDTO1 = new CurriculumDTO();
+        curriculumDTO1.setFirstName("Summer");
+        curriculumDTO1.setLastName("Winter");
+        curriculumDTO1.setFileName("SW_CV");
+        curriculumDTO1.setFile(new byte[65 * 1024]);
+        curriculumDTOList.add(curriculumDTO1);
+
+        CurriculumDTO curriculumDTO2 = new CurriculumDTO();
+        curriculumDTO2.setFirstName("Summer");
+        curriculumDTO2.setLastName("Winter");
+        curriculumDTO2.setFileName("SW_CV");
+        curriculumDTO2.setFile(new byte[65 * 1024]);
+        curriculumDTOList.add(curriculumDTO2);
+
+        CurriculumDTO curriculumDTO3 = new CurriculumDTO();
+        curriculumDTO3.setFirstName("Summer");
+        curriculumDTO3.setLastName("Winter");
+        curriculumDTO3.setFileName("SW_CV");
+        curriculumDTO3.setFile(new byte[65 * 1024]);
+        curriculumDTOList.add(curriculumDTO3);
+
+        return curriculumDTOList;
     }
 }

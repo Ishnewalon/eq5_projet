@@ -1,7 +1,9 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,7 +25,6 @@ public class CurriculumService {
         this.curriculumRepository = curriculumRepository;
         this.studentService = studentService;
     }
-
 
     public Curriculum convertMultipartFileToCurriculum(MultipartFile file, Long studentId)
             throws IOException, IdDoesNotExistException, IllegalArgumentException {
@@ -51,6 +53,25 @@ public class CurriculumService {
         if (!curriculumRepository.existsById(aLong))
             throw new IdDoesNotExistException();
         return curriculumRepository.getById(aLong);
+    }
+
+    public List<CurriculumDTO> mapToCurriculumDTOList (List<OfferApplication> offerApplicationList) {
+        Assert.isTrue(!offerApplicationList.isEmpty(), "La liste d'offre ne peut pas être vide");
+        List<CurriculumDTO> curriculumDTOList = new ArrayList<>();
+        Student student;
+        CurriculumDTO curriculumDTO = new CurriculumDTO();
+        Curriculum curriculum;
+        for (OfferApplication offerApp : offerApplicationList) {
+            curriculum = offerApp.getCurriculum();
+            student = curriculum.getStudent();
+
+            curriculumDTO.setFirstName(student.getFirstName());
+            curriculumDTO.setLastName(student.getLastName());
+            curriculumDTO.setFileName(curriculum.getName());
+            curriculumDTO.setFile(curriculum.getData());
+            curriculumDTOList.add(curriculumDTO);
+        }
+        return curriculumDTOList;
     }
 
     public List<Curriculum> getAll() {

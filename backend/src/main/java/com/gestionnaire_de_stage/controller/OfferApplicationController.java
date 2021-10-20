@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.model.OfferApplication;
@@ -51,7 +52,14 @@ public class OfferApplicationController {
 
 /*    @GetMapping("/applicants/{email}")
     public ResponseEntity<?> viewApplicantList(@PathVariable String email) {
-        List<OfferApplication> offerApplicationList = offerApplicationService.getAllByOfferCreatorEmail(email);
+        List<OfferApplication> offerApplicationList;
+        try {
+            offerApplicationList = offerApplicationService.getAllByOfferCreatorEmail(email);
+        } catch (EmailDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
         List<CurriculumDTO> curriculumDTOList = curriculumService.mapToDTO(offerApplicationList);
 
         return ResponseEntity
