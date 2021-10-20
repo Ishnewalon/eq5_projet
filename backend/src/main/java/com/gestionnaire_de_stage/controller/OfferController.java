@@ -40,7 +40,6 @@ public class OfferController {
     @PostMapping("/add")
     public ResponseEntity<?> addOffer(@RequestBody OfferDTO dto) {
         Offer offer = offerService.mapToOffer(dto);
-        System.out.println(dto.getCreator_email());
         try {
             Monitor monitor = monitorService.getOneByEmail(dto.getCreator_email());
             offer.setCreator(monitor);
