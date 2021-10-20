@@ -107,6 +107,11 @@ class OfferApplicationServiceTest {
         assertThat(actualOfferAppList.size()).isEqualTo(offerApplicationList.size());
     }
 
+    @Test
+    void testGetAllByOfferCreatorEmail_withNullEmail() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.getAllByOfferCreatorEmail(null));
+    }
 
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();

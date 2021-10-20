@@ -45,6 +45,7 @@ public class OfferApplicationService {
     }
 
     public List<OfferApplication> getAllByOfferCreatorEmail(String email) {
+        Assert.isTrue(email != null, "Le courriel est null");
         return offerApplicationRepository.getAllByOffer_CreatorEmail(email);
     }
 }
