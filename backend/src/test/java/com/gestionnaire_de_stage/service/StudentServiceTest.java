@@ -193,7 +193,7 @@ public class StudentServiceTest {
                 () -> studentService.getOneByEmailAndPassword(dummyStudent.getEmail(), dummyStudent.getPassword()));
     }
 
-<<<<<<< HEAD
+
     @Test
     public void testGetAllStudents() {
         when(studentRepository.findAll()).thenReturn(getDummyStudentList());
@@ -201,7 +201,7 @@ public class StudentServiceTest {
         List<Student> studentList = studentService.getAll();
 
         assertThat(studentList.size()).isEqualTo(3);
-=======
+    }
 
     @Test
     void testSetPrincipalCurriculum() throws IdDoesNotExistException {
@@ -264,7 +264,7 @@ public class StudentServiceTest {
 
         assertThrows(IdDoesNotExistException.class,
                 () -> studentService.setPrincipalCurriculum(dummyStudent, dummyCurriculum.getId()));
->>>>>>> 659944d6e1a01196f3da4b8fe5e36229e75ded28
+
     }
 
     private Student getDummyStudent() {
