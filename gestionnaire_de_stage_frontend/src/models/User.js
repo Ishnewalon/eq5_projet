@@ -45,17 +45,15 @@ export class Student extends User {
     address = '';
     city = '';
     postalCode = '';
-    curriculumPath = 0;
 
     constructor($email, $password, $lastName, $firstName, $phone, $matricule, $department = 'informatique',
-                $address = '', $city = '', $postalCode = '', $curriculumPath = 0) {
+                $address = '', $city = '', $postalCode = '') {
         super($email, $password, $lastName, $firstName, $phone);
         this.matricule = $matricule;
         this.department = $department
         this.address = $address;
         this.city = $city;
         this.postalCode = $postalCode;
-        this.curriculumPath = $curriculumPath;
     }
 }
 

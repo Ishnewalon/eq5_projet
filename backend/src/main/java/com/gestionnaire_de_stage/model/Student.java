@@ -25,5 +25,4 @@ public class Student extends User {
 
     private String postalCode;
 
-    private String curriculumPath;
 }

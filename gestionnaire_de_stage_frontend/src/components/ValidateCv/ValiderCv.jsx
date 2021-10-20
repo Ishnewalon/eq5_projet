@@ -1,9 +1,8 @@
 import './ValiderCv.css'
 import React, {Component} from "react";
-import {getStudentsWithInvalidCV, validateCV} from "../../services/curriculum-service";
+import {getCurriculumWithInvalidCV, validateCV} from "../../services/curriculum-service";
 import ListStudentView from "./ListStudentView/ListStudentView";
-import {swalErr} from "../../utility";
-import Swal from "sweetalert2";
+import {swalErr, toast} from "../../utility";
 
 
 export default class ValiderCv extends Component {
@@ -11,31 +10,38 @@ export default class ValiderCv extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            students: [],
+            curriculumList: [],
             valid: false
         };
-        getStudentsWithInvalidCV()
-            .then(students => this.setState({students}))
+        getCurriculumWithInvalidCV()
+            .then(curriculumList => this.setState({curriculumList}))
             .catch(e => {
-                this.setState({students: []})
+                this.setState({curriculumList: []})
                 console.trace(e);
             });
     }
 
-    validateCV = (id, valid) => {
+    refresh = () => {
+        window.location.reload();
+    }
+
+    valideCV = (id, valid) => {
         validateCV(id, valid)
             .then(x => {
+                alert(x)
                 if (typeof x === "string") {
                     console.trace(x);
                     swalErr(x).fire({}).then();
                     return;
                 }
                 this.setState({valid})
-                Swal.fire(valid ? 'Cv validé!' : 'Cv invalide!', '', valid ? 'success' : 'error').then();
-            })
-            .catch(e => {
-                console.trace(e)
-                swalErr(e).fire({}).then();
+
+                if (!valid)
+                    swalErr('Cv invalidé').fire({}).then();
+                else
+                    toast.fire({title: 'Cv validé'}).then()
+            }, e => {
+                console.log(e)
             });
     }
 
@@ -44,18 +50,18 @@ export default class ValiderCv extends Component {
         return (
             <div className='container'>
                 <h2 className="text-center">Liste des étudiants</h2>
-                {this.state.students.map((student, index) =>
+                {this.state.curriculumList.map((cv, index) =>
                     <div>
                         <ul>
-                            <li key={index}><ListStudentView student={student}/></li>
+                            <li key={index}><ListStudentView cv={cv}/></li>
                         </ul>
                         <div className={`${valid ? 'border-left border-success' : 'border-left border-danger'}`}>
                             <div className="d-flex justify-content-between align-items-center">
                                 <button id="validateBtn" className="btn btn-success fw-bold text-white w-50"
-                                        onClick={() => this.validateCV(student.curriculumPath, true)}>Valide
+                                        onClick={() => this.valideCV(cv.id, true)}>Valide
                                 </button>
                                 <button id="invalidateBtn" className="btn btn-danger fw-bold text-white w-50"
-                                        onClick={() => this.validateCV(student.curriculumPath, false)}>Invalide
+                                        onClick={() => this.validateCV(cv.id, false)}>Invalide
                                 </button>
                             </div>
                         </div>
