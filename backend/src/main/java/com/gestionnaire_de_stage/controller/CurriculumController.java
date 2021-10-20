@@ -5,7 +5,6 @@ import com.gestionnaire_de_stage.dto.ValidationCurriculum;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
-import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.CurriculumService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -47,9 +46,9 @@ public class CurriculumController {
     }
 
     @GetMapping("/invalid/students")
-    public ResponseEntity<?> getAllStudent_withCurriculumNotValidatedYet() {
-        List<Student> student = curriculumService.findAllStudentsWithCurriculumNotValidatedYet();
-        return ResponseEntity.ok(student);
+    public ResponseEntity<?> getAllCurriculumNotValidatedYet() {
+        List<Curriculum> curriculumList = curriculumService.findAllCurriculumNotValidatedYet();
+        return ResponseEntity.ok(curriculumList);
     }
 
     @PostMapping("/validate")
