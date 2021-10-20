@@ -4,6 +4,6 @@ export default class OfferApp{
 
     constructor($idOffer, idStudent) {
         this.idOffer = $idOffer;
-        this.idCurriculum = idStudent;
+        this.idStudent = idStudent;
     }
 }

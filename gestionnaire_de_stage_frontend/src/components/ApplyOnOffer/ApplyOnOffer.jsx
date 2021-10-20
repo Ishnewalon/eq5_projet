@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import AuthService from "../../services/auth-service";
-import OfferAppService from "../../services/offerApp-service";
+import OfferAppService from "../../services/offerAppService";
 import OfferApp from "../../models/OfferApp";
+import PreviewOffer from "../PreviewOffer/PreviewOffer";
 
 export default class ApplyOnOffer extends Component{
 
@@ -11,18 +12,20 @@ export default class ApplyOnOffer extends Component{
         this.userId = AuthService.getUserId();
     }
 
-    apply = offerId => (e) => {
+    apply = offerId => e => {
         console.log(offerId);
-        console.log(e);
-        e.preventDefault();
-        this.service.apply(new OfferApp(this.userId, offerId)).then();
+        this.service.apply(new OfferApp(offerId, this.userId)).then();
     }
 
     render() {
+        const {offer} = this.props;
         return (
-            <div className="form-group text-center">
-                <label/>
-                <button className="btn btn-primary" type={"button"} onClick={this.apply()}>Soumettre votre candidature</button>
+            <div>
+                <PreviewOffer offer={offer} />
+                <div className="form-group text-center mt-2">
+                    <label/>
+                    <button className="btn btn-primary" onClick={this.apply(offer.id)}>Soumettre votre candidature</button>
+                </div>
             </div>
         );
     }

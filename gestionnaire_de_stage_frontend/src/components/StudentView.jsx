@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import TeleverserCv from "./TeleverserCv/TeleverserCv";
-import ViewOffers from "./ViewOffers/ViewOffers";
+import ViewOffersAndApply from "./ViewOffersAndApply/ViewOffersAndApply";
 
 export default class StudentView extends Component {
 
@@ -11,7 +11,7 @@ export default class StudentView extends Component {
                     <TeleverserCv/>
                 </div>
                 <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-                    <ViewOffers/>
+                    <ViewOffersAndApply/>
                 </div>
             </>
         )

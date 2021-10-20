@@ -6,6 +6,7 @@ class OfferAppService {
 
     async apply(offerApp) {
         if (!this._isApplicationValid(offerApp))
+            console.log("off")
             return;
 
         const response = await fetch(`${urlBackend}/applications/apply`,
@@ -18,7 +19,7 @@ class OfferAppService {
     _isApplicationValid(offerApp) {
         if (offerApp instanceof OfferApp &&
             offerApp.idOffer &&
-            offerApp.idCurriculum)
+            offerApp.idStudent)
             return true;
         return false;
     }
