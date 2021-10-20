@@ -1,6 +1,7 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
 import {swalErr, toast} from "../utility";
 import OfferApp from "../models/OfferApp";
+import Swal from "sweetalert2";
 
 class OfferAppService {
 
@@ -11,9 +12,9 @@ class OfferAppService {
         const response = await fetch(`${urlBackend}/applications/apply`,
             requestInit(methods.POST, offerApp));
         return await response.json().then(value => {
-            console.log(value);
             if (value.message) {
-                swalErr(value.message).fire({}).then()
+                const valid = value.message.contain("Candidature envoyé!");
+                Swal.fire({title: value.message, icon: valid ? 'success' : 'error'});
             }
         });
     }
