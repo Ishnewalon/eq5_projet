@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.dto.CurriculumStudentDto;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
@@ -61,16 +62,8 @@ public class CurriculumService {
         return curriculumRepository.findAll();
     }
 
-    public List<Student> findAllStudentsWithCurriculumNotValidatedYet() {
-        List<Curriculum> curriculumNotValidatedYet = curriculumRepository.findAllByIsValidIsNull();
-
-        return getStudentList(curriculumNotValidatedYet);
-    }
-
-//    public List<Curriculum>
-
-    private List<Student> getStudentList(List<Curriculum> curriculumNotValidatedYet) {
-        return curriculumNotValidatedYet.stream().map(Curriculum::getStudent).collect(Collectors.toList());
+    public List<Curriculum> findAllCurriculumNotValidatedYet() {
+        return curriculumRepository.findAllByIsValidIsNull();
     }
 
     public boolean validate(Long idCurriculum, boolean valid) throws

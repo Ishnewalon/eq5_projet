@@ -17,7 +17,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -133,19 +132,18 @@ public class CurriculumServiceTest {
         List<Curriculum> dummyCurriculumList = getDummyCurriculumList();
         when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(dummyCurriculumList);
 
-        List<Student> studentList = curriculumService.findAllStudentsWithCurriculumNotValidatedYet();
+        List<Curriculum> curriculumList = curriculumService.findAllCurriculumNotValidatedYet();
 
-        List<Student> collect = dummyCurriculumList.stream().map(Curriculum::getStudent).collect(Collectors.toList());
-        assertThat(studentList).isEqualTo(collect);
+        assertThat(curriculumList).isEqualTo(dummyCurriculumList);
     }
 
     @Test
     public void testFindAllStudentsWithInvalidCurriculum_withEmptyList() {
         when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(Collections.emptyList());
 
-        List<Student> studentList = curriculumService.findAllStudentsWithCurriculumNotValidatedYet();
+        List<Curriculum> curriculumList = curriculumService.findAllCurriculumNotValidatedYet();
 
-        assertThat(studentList).isEqualTo(Collections.emptyList());
+        assertThat(curriculumList).isEmpty();
     }
 
 

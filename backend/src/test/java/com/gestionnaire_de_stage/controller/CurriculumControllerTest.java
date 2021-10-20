@@ -6,7 +6,6 @@ import com.gestionnaire_de_stage.dto.ValidationCurriculum;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
-import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.CurriculumService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,9 +94,9 @@ public class CurriculumControllerTest {
 
 
     @Test
-    public void testGetAllStudents_withCurriculumNotValidatedYet() throws Exception {
-        List<Student> list = Arrays.asList(new Student(), new Student(), new Student());
-        when(curriculumService.findAllStudentsWithCurriculumNotValidatedYet()).thenReturn(list);
+    public void testGetAllCurriculumNotValidatedYet() throws Exception {
+        List<Curriculum> list = Arrays.asList(new Curriculum(), new Curriculum(), new Curriculum());
+        when(curriculumService.findAllCurriculumNotValidatedYet()).thenReturn(list);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/curriculum/invalid/students")
@@ -105,16 +104,16 @@ public class CurriculumControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Student> actualStudentList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        List<Curriculum> actualCurriculumList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
         });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualStudentList).isEqualTo(list);
+        assertThat(actualCurriculumList).isEqualTo(list);
 
     }
 
     @Test
-    public void testGetAllStudents_withCurriculumNotValidatedYet_withEmptyList() throws Exception {
-        when(curriculumService.findAllStudentsWithCurriculumNotValidatedYet()).thenReturn(Collections.emptyList());
+    public void testGetAllCurriculumNotValidatedYet_withEmptyList() throws Exception {
+        when(curriculumService.findAllCurriculumNotValidatedYet()).thenReturn(Collections.emptyList());
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/curriculum/invalid/students")
@@ -122,10 +121,10 @@ public class CurriculumControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Student> actualStudentList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        List<Curriculum> actualCurriculumList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
         });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualStudentList).isEqualTo(Collections.emptyList());
+        assertThat(actualCurriculumList).isEqualTo(Collections.emptyList());
 
     }
 
