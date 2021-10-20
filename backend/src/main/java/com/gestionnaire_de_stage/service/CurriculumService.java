@@ -63,19 +63,13 @@ public class CurriculumService {
         return curriculumRepository.findAll();
     }
 
-    public List<Student> findAllStudentsWithCurriculumNotValidatedYet() {
-        List<Curriculum> curriculumNotValidatedYet = curriculumRepository.findAllByIsValidIsNull();
-
-        return getStudentList(curriculumNotValidatedYet);
-    }
-
-    private List<Student> getStudentList(List<Curriculum> curriculumNotValidatedYet) {
-        return curriculumNotValidatedYet.stream().map(Curriculum::getStudent).collect(Collectors.toList());
+    public List<Curriculum> findAllCurriculumNotValidatedYet() {
+        return curriculumRepository.findAllByIsValidIsNull();
     }
 
     public boolean validate(Long idCurriculum, boolean valid) throws
             IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
-        Assert.isTrue(idCurriculum != null, "Erreur: Le id du curriculum ne peut pas etre null");
+        Assert.isTrue(idCurriculum != null, "Le id du curriculum ne peut pas être null");
 
         Optional<Curriculum> curriculumOptional = curriculumRepository.findById(idCurriculum);
 
@@ -91,7 +85,7 @@ public class CurriculumService {
     }
 
     public Curriculum findOneById(Long idCurriculum) throws IllegalArgumentException, IdDoesNotExistException {
-        Assert.isTrue(idCurriculum != null, "Erreur: L'id du curriculum ne peut pas etre null");
+        Assert.isTrue(idCurriculum != null, "Le id du curriculum ne peut pas être null");
         Optional<Curriculum> byId = curriculumRepository.findById(idCurriculum);
         if (byId.isEmpty())
             throw new IdDoesNotExistException();

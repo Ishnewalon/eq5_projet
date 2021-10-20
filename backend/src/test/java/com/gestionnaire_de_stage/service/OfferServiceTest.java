@@ -245,7 +245,7 @@ public class OfferServiceTest {
 
     private OfferDTO getDummyOfferDto() {
         OfferDTO dummyOfferDTO = new OfferDTO();
-        dummyOfferDTO.setCreator_id(1L);
+        dummyOfferDTO.setCreator_email("thisemail@email.com");
         dummyOfferDTO.setSalary(18.0d);
         dummyOfferDTO.setDescription("Une description");
         dummyOfferDTO.setAddress("Addresse du cégep");

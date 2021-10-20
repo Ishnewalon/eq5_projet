@@ -1,38 +1,67 @@
 import './ValiderCv.css'
 import React, {Component} from "react";
-import {getStudentsWithInvalidCV, validateCV} from "../../services/curriculum-service";
+import {getCurriculumWithInvalidCV, validateCV} from "../../services/curriculum-service";
 import ListStudentView from "./ListStudentView/ListStudentView";
-import AuthService from "../../services/auth-service";
+import {swalErr} from "../../utility";
+import Swal from "sweetalert2";
 
 
-export default class ValiderCv extends Component{
+export default class ValiderCv extends Component {
 
     constructor(props) {
         super(props);
-        console.log(AuthService.user);
         this.state = {
-            students: []
+            curriculumList: [],
+            valid: false
         };
-        getStudentsWithInvalidCV()
-            .then(students => this.setState({students}))
+        getCurriculumWithInvalidCV()
+            .then(curriculumList => this.setState({curriculumList}))
             .catch(e => {
-                this.setState({students: []})
+                this.setState({curriculumList: []})
                 console.trace(e);
+            });
+    }
+
+    refresh = () => {
+        window.location.reload();
+    }
+
+    valideCV = (id, valid) => {
+        validateCV(id, valid)
+            .then(responseMessage => {
+                this.setState({valid})
+                Swal.fire({title: responseMessage.message, icon: valid ? 'success' : 'error'})
+                    .then(v => this.refresh());
+            })
+            .catch(e => {
+                console.trace(e)
+                swalErr(e).fire({}).then();
             });
 
     }
 
     render() {
+        const {valid} = this.state;
         return (
             <div className='container'>
-                <h2 className="text-center">Liste étudiants</h2>
-                <ul>
-                    {this.state.students.map((student, index) =>
-                        <li key={index}><ListStudentView student={student}/></li>)}
-                </ul>
+                <h2 className="text-center">Liste des étudiants</h2>
+                {this.state.curriculumList.map((cv, index) =>
+                    <div>
+                        <ul>
+                            <li key={index}><ListStudentView cv={cv}/></li>
+                        </ul>
+                        <div className={`${valid ? 'border-left border-success' : 'border-left border-danger'}`}>
+                            <div className="d-flex justify-content-between align-items-center">
+                                <button id="validateBtn" className="btn btn-success fw-bold text-white w-50"
+                                        onClick={() => this.valideCV(cv.id, true)}>Valide
+                                </button>
+                                <button id="invalidateBtn" className="btn btn-danger fw-bold text-white w-50"
+                                        onClick={() => this.valideCV(cv.id, false)}>Invalide
+                                </button>
+                            </div>
+                        </div>
+                    </div>)}
             </div>
         )
     }
 }
-
-

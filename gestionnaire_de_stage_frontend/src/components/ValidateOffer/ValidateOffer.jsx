@@ -40,9 +40,9 @@ export default class ValidateOffer extends Component{
                 <PreviewOffer offer={offer} />
                 <div className="d-flex justify-content-between align-items-center">
                     <button id="validateBtn" className="btn btn-success fw-bold text-white w-50"
-                            onClick={() => this.validateOffer(offer, true)}>Valid</button>
+                            onClick={() => this.validateOffer(offer, true)}>Valide</button>
                     <button id="invalidateBtn" className="btn btn-danger fw-bold text-white w-50"
-                            onClick={() => this.validateOffer(offer, false)}>Incorrect</button>
+                            onClick={() => this.validateOffer(offer, false)}>Invalide</button>
                 </div>
             </div>
     }

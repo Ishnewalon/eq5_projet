@@ -40,11 +40,11 @@ public class OfferService {
         if (offer == null)
             return null;
 
-        Assert.isTrue(offer.getCreatorId() != null, "Id de l'utilisateur ne peut être null");
+        Assert.isTrue(offer.getCreatorEmail() != null, "Le courriel de l'utilisateur ne peut être null");
 
         OfferDTO dto = new OfferDTO();
         dto.setAddress(offer.getAddress());
-        dto.setCreator_id(offer.getCreator().getId());
+        dto.setCreator_email(offer.getCreator().getEmail());
         dto.setDepartment(offer.getDepartment());
         dto.setTitle(offer.getTitle());
         dto.setDescription(offer.getDescription());

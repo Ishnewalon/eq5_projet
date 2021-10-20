@@ -1,7 +1,7 @@
 import './TeleverserCv.css'
 import React, {useState} from "react";
 import Dropzone from "react-dropzone";
-import {uploadFile} from "../../services/curriculum-service";
+import { uploadFile } from "../../services/curriculum-service";
 import authService from "../../services/auth-service";
 
 export default function TeleverserCv() {
@@ -11,7 +11,6 @@ export default function TeleverserCv() {
         console.log(acceptedFiles)
         uploadFile(acceptedFiles, authService.getUserId()).then()
     }
-
 
     return (
         <div>
