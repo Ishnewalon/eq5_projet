@@ -159,6 +159,22 @@ class OfferApplicationControllerTest {
         assertThat(actualCurriculumDTOs.size()).isEqualTo(3);
     }
 
+    @Test
+    public void testViewStudentsAppliedOffer_withNullEmail() throws Exception {
+        String email = "rolling@email.com";
+        when(offerApplicationService.getAllByOfferCreatorEmail(any()))
+                .thenThrow(new IllegalArgumentException("Erreur: Le courriel ne peut pas être null"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/applications/applicants/" + email)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
+    }
+
     private OfferAppDTO getDummyOfferAppDto() {
         OfferAppDTO offerAppDTO = new OfferAppDTO();
         offerAppDTO.setIdOffer(1L);
