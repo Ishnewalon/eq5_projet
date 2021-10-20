@@ -3,6 +3,7 @@ import AddOffer from "../AddOffer/AddOffer";
 import OfferService from "../../services/offer-service";
 import ReviewOffers from "../ReviewOffers/ReviewOffers";
 import ViewOffers from "../ViewOffers/ViewOffers";
+import ValiderCv from "../ValidateCv/ValiderCv";
 
 export default class Manager extends Component {
 
@@ -27,6 +28,9 @@ export default class Manager extends Component {
                 <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
                     <ReviewOffers />
                 </div>
+                {/*<div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">*/}
+                {/*    <ValiderCv />*/}
+                {/*</div>*/}
             </>
         )
     }

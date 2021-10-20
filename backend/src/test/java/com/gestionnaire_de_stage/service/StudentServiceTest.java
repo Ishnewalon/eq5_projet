@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -192,6 +193,15 @@ public class StudentServiceTest {
                 () -> studentService.getOneByEmailAndPassword(dummyStudent.getEmail(), dummyStudent.getPassword()));
     }
 
+<<<<<<< HEAD
+    @Test
+    public void testGetAllStudents() {
+        when(studentRepository.findAll()).thenReturn(getDummyStudentList());
+
+        List<Student> studentList = studentService.getAll();
+
+        assertThat(studentList.size()).isEqualTo(3);
+=======
 
     @Test
     void testSetPrincipalCurriculum() throws IdDoesNotExistException {
@@ -254,6 +264,7 @@ public class StudentServiceTest {
 
         assertThrows(IdDoesNotExistException.class,
                 () -> studentService.setPrincipalCurriculum(dummyStudent, dummyCurriculum.getId()));
+>>>>>>> 659944d6e1a01196f3da4b8fe5e36229e75ded28
     }
 
     private Student getDummyStudent() {
