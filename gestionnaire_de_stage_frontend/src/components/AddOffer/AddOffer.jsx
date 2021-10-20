@@ -1,51 +1,45 @@
-import React,{Component} from "react";
+import React, {Component} from "react";
 import {FieldAddress} from "../Fields/FieldAddress";
 import OfferService from "../../services/offer-service";
-import OfferDTO from "../../models/OfferDTO";
-import AuthService from "../../services/auth-service";
 import {DepartmentEnum} from "../../enums/Departement";
-import {ManagerModel} from "../../models/User";
+import authService from "../../services/auth-service";
+import OfferDTO from "../../models/OfferDTO";
 
 
 export default class AddOffer extends Component {
     constructor(props) {
         super(props);
+        this.serviceOffer = OfferService
+        this.serviceAuth = authService
         this.state = {
             title: '',
             department: DepartmentEnum.info,
             description: '',
             address: '',
             salary: 0,
-            creator_id: 0,
+            creator_email: (this.serviceAuth.isMonitor()) ? this.serviceAuth.user.email : '',
         }
-        this.service = OfferService
-        this.authService = AuthService
-
-        if(this.authService.isManager())
-            this.state = {...this.state, email: ''};
     }
 
     addOffer = () => {
-        const {title, department, description, address, salary} = this.state
-        const id = this.authService.getUserId()
-
-        let offer = new OfferDTO(title, department, description, address, salary, id)
-        this.props.addOffer(offer, this.state.email)
+        const {title, department, description, address, salary, creator_email} = this.state
+        let offer = new OfferDTO(title, department, description, address, salary, creator_email)
+        this.serviceOffer.createOffer(offer).then()
     }
 
     handleChange = input => e => {
+        e.preventDefault()
         this.setState({[input]: e.target.value});
     }
 
-
     render() {
-        const isManager = this.authService.isManager();
-        const moniteurAddOffer = isManager ?
-            <div className={"form-group text-center"}>
-                <label>Email du moniteur</label>
-                <input type="text" onChange={this.handleChange("email")}/>
-            </div>: <React.Fragment></React.Fragment>;
-
+        const x = <div className="col-md-6">
+            <label>Email</label>
+            <div className="input-group">
+                <input name="email" placeholder="Email" className="form-control" type="text"
+                       value={this.state.creator_email} onChange={this.handleChange('creator_email')}/>
+            </div>
+        </div>
         return (<>
             <h2 className="text-center">Ajouter une offre de stage</h2>
             <div className="form-group row">
@@ -83,17 +77,17 @@ export default class AddOffer extends Component {
             <div className="form-group">
                 <label>Salaire</label>
                 <div className="input-group">
-                    <input name="description" placeholder="Salaire" className="form-control" type="number"
+                    <input name="salaire" placeholder="Salaire" className="form-control" type="number"
                            value={this.state.salary} onChange={this.handleChange('salary')}/>
                 </div>
             </div>
+            {(this.serviceAuth.isManager()) ? x : <></>}
             <div className="form-group text-center">
                 <label/>
                 <div>
                     <button className="btn btn-primary" type={"button"} onClick={this.addOffer}>Ajouter</button>
                 </div>
             </div>
-            {moniteurAddOffer}
         </>);
     }
 }

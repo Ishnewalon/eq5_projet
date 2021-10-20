@@ -4,15 +4,15 @@ export default class OfferDTO {
     description
     address
     salary
-    creator_id
+    creator_email
 
 
-    constructor($title, $department, $description, $address, $salary, $creator_id) {
+    constructor($title, $department, $description, $address, $salary, $creator_email) {
         this.title = $title;
         this.department = $department;
         this.description = $description;
         this.address = $address;
         this.salary = $salary;
-        this.creator_id = $creator_id;
+        this.creator_email = $creator_email;
     }
 }

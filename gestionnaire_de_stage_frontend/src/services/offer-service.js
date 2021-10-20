@@ -4,36 +4,31 @@ import {swalErr, toast} from "../utility";
 
 class OfferService {
 
-    async _createOffer(offer, userType) {
+    async createOffer(offer) {
         if (!(offer instanceof OfferDTO) || !offer)
             return;
-        const response = await fetch(`${urlBackend}/offers/${userType}/add`, requestInit(methods.POST, offer));
+        const response = await fetch(`${urlBackend}/offers/add`, requestInit(methods.POST, offer));
         return await response.json().then(value => {
                 if (value.message) {
                     swalErr(value.message).fire({}).then()
                     return
                 }
-                toast.fire({title: "Offre crée!"}).then()
+                toast.fire({title: "Offre créé!"}).then()
+                return value
             },
             err => {
                 swalErr(err).fire({}).then()
             })
     }
 
-    async createOfferMonitor(offer) {
-        return await this._createOffer(offer, "monitor")
-    }
 
-    async createOfferManager(offer) {
-        return await this._createOffer(offer, "manager")
-    }
 
-    async getAllOffersByDepartment(department){
+    async getAllOffersByDepartment(department) {
         const response = await fetch(`${urlBackend}/offers/${department}`, requestInit(methods.GET));
         return await response.json();
     }
 
-    async getAllOffers(){
+    async getAllOffers() {
         const response = await fetch(`${urlBackend}/offers`, requestInit(methods.GET));
         return await response.json();
     }
