@@ -22,7 +22,7 @@ public abstract class User {
     private String lastName;
 
     @NotBlank
-    @Size(min = 2, max = 32, message = "Le prénom doit contenir entre 2 et 32 charactere")
+    @Size(min = 2, max = 32, message = "Le prénom doit contenir entre 2 et 33 charactere")
     private String firstName;
 
     @NotBlank
