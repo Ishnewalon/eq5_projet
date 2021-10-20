@@ -31,7 +31,8 @@ export default class ValiderCv extends Component {
             .then(responseMessage => {
                 this.setState({valid})
                 Swal.fire({title: responseMessage.message, icon: valid ? 'success' : 'error'})
-                    .then(v => this.refresh());
+                    .then();
+                    // .then(v => this.refresh());
             })
             .catch(e => {
                 console.trace(e)
