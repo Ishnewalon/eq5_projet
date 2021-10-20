@@ -60,7 +60,7 @@ public class OfferApplicationController {
         } catch (EmailDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(e.getMessage());
+                    .body("Erreur: Le courriel n'existe pas");
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()

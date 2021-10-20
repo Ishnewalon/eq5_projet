@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
+import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.model.*;
@@ -173,6 +174,41 @@ class OfferApplicationControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
+    }
+
+    @Test
+    public void testViewStudentsAppliedOffer_withInvalidEmail() throws Exception {
+        String email = "rolling@email.com";
+        when(offerApplicationService.getAllByOfferCreatorEmail(any()))
+                .thenThrow(new EmailDoesNotExistException());
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/applications/applicants/" + email)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Le courriel n'existe pas");
+    }
+
+    @Test
+    public void testViewStudentsAppliedOffer_withEmptyList() throws Exception {
+        List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
+        String email = "rolling@email.com";
+        when(offerApplicationService.getAllByOfferCreatorEmail(any()))
+                .thenReturn(offerApplicationsList);
+        when(curriculumService.mapToCurriculumDTOList(any()))
+                .thenThrow(new IllegalArgumentException("Erreur: La liste d'offre ne peut pas être vide"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/applications/applicants/" + email)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: La liste d'offre ne peut pas être vide");
     }
 
     private OfferAppDTO getDummyOfferAppDto() {

@@ -59,7 +59,7 @@ public class CurriculumService {
     }
 
     public List<CurriculumDTO> mapToCurriculumDTOList (List<OfferApplication> offerApplicationList) {
-        Assert.isTrue(!offerApplicationList.isEmpty(), "La liste d'offre ne peut pas être vide");
+        Assert.isTrue(!offerApplicationList.isEmpty(), "Erreur: La liste d'offre ne peut pas être vide");
         List<CurriculumDTO> curriculumDTOList = new ArrayList<>();
         Student student;
         CurriculumDTO curriculumDTO = new CurriculumDTO();
