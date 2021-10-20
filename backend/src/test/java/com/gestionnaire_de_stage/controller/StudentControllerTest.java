@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
@@ -17,6 +18,9 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -132,6 +136,24 @@ public class StudentControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
     }
+
+
+    // BON TEST !!!!!!!!!!!!!
+    @Test
+    public void testGetAllStudents() throws Exception {
+        List<Student> list = Arrays.asList(new Student(), new Student());
+        when(studentService.getAll()).thenReturn(Arrays.asList(new Student(), new Student()));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        var actual = mvcResult.getResponse().getContentAsString();
+        assertThat(new ObjectMapper().readValue(actual,
+                new TypeReference<List<Student>>() {
+                })).isEqualTo(list);
+
+    }
+
 
     private Student getDummyStudent() {
         Student dummyStudent = new Student();

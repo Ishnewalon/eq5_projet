@@ -28,7 +28,8 @@ export class MonitorModel extends User {
     postalCode = '';
     department = ''
 
-    constructor($email, $password, $lastName, $firstName, $phone, $companyName, $address, $city, $postalCode, $department = 'informatique') {
+    constructor($email, $password, $lastName, $firstName, $phone, $companyName, $address, $city, $postalCode,
+                $department = 'informatique') {
         super($email, $password, $lastName, $firstName, $phone);
         this.companyName = $companyName;
         this.address = $address;
@@ -45,7 +46,8 @@ export class Student extends User {
     city = '';
     postalCode = '';
 
-    constructor($email, $password, $lastName, $firstName, $phone, $matricule, $department = 'informatique', $address = '', $city = '', $postalCode = '') {
+    constructor($email, $password, $lastName, $firstName, $phone, $matricule, $department = 'informatique',
+                $address = '', $city = '', $postalCode = '') {
         super($email, $password, $lastName, $firstName, $phone);
         this.matricule = $matricule;
         this.department = $department
