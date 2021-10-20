@@ -13,7 +13,7 @@ export default class ApplyOnOffer extends Component{
     }
 
     apply = offerId => e => {
-        console.log(offerId);
+        e.preventDefault();
         this.service.apply(new OfferApp(offerId, this.userId)).then();
     }
 

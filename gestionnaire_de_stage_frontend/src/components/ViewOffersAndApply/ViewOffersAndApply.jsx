@@ -16,7 +16,7 @@ export default class ViewOffersAndApply extends Component {
     }
 
     _getAllOffers() {
-        this.service.getAllOffersByDepartment(this.department)
+        this.service.getAllOffers()
             .then(offers => {
                 this.setState({offers});
             }).catch(e => {
@@ -24,14 +24,26 @@ export default class ViewOffersAndApply extends Component {
             });
     }
 
+    _extractRelevantOffers(offers) {
+        let relOffers = [];
+        offers.map(offer => {
+            if(offer.department == this.department &&
+                offer.valid){
+                relOffers.push(offer);
+            }
+        });
+        return relOffers;
+    }
+
     render() {
         const {offers} = this.state;
-        console.log(offers)
+        const exOffers = this._extractRelevantOffers(offers);
+
         return (
             <div className='container'>
                 <h2 className="text-center">Offres de Stage</h2>
                 <ul>
-                    {offers.map((offer, index) => <li key={index}><ApplyOnOffer offer={offer}/></li>)}
+                    {exOffers.map((offer, index) => <li key={index}><ApplyOnOffer offer={offer}/></li>)}
                 </ul>
             </div>
         );

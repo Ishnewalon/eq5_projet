@@ -24,7 +24,7 @@ public class OfferApplicationController {
     @PostMapping("/apply")
     public ResponseEntity<?> studentApplyToOffer(@RequestBody OfferAppDTO offerAppDTO) {
         try {
-            offerApplicationService.create(offerAppDTO.getIdStudent(), offerAppDTO.getIdOffer());
+            offerApplicationService.create(offerAppDTO.getIdOffer(), offerAppDTO.getIdStudent());
         } catch (StudentAlreadyAppliedToOfferException err) {
             return ResponseEntity
                     .badRequest()
