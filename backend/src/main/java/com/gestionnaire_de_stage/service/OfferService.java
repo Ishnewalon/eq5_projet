@@ -64,7 +64,7 @@ public class OfferService {
     }
 
     public List<OfferDTO> getOffersByDepartment(String department) {
-        return mapArrayToOfferDTO(offerRepository.findAllByDepartment(department));
+        return mapArrayToOfferDTO(offerRepository.findAllByDepartmentAndValidIsTrue(department));
     }
 
     public Offer update(Offer offer) throws IdDoesNotExistException, IllegalArgumentException {

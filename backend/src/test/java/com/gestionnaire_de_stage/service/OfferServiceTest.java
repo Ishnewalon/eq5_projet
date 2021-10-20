@@ -190,7 +190,7 @@ public class OfferServiceTest {
     public void testGetOffersByDepartment() {
         List<Offer> dummyOfferList = getDummyOfferList();
         List<OfferDTO> mappedOfferDtoList = offerService.mapArrayToOfferDTO(dummyOfferList);
-        when(offerRepository.findAllByDepartment(any())).thenReturn(dummyOfferList);
+        when(offerRepository.findAllByDepartmentAndValidIsTrue(any())).thenReturn(dummyOfferList);
 
         List<OfferDTO> actualOfferDtoList = offerService.getOffersByDepartment("Un departement");
 
