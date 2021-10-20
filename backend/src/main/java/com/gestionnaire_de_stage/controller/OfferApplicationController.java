@@ -53,15 +53,19 @@ public class OfferApplicationController {
     @GetMapping("/applicants/{email}")
     public ResponseEntity<?> viewApplicantList(@PathVariable String email) {
         List<OfferApplication> offerApplicationList;
+        List<CurriculumDTO> curriculumDTOList;
         try {
             offerApplicationList = offerApplicationService.getAllByOfferCreatorEmail(email);
+            curriculumDTOList = curriculumService.mapToCurriculumDTOList(offerApplicationList);
         } catch (EmailDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
                     .body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
         }
-        List<CurriculumDTO> curriculumDTOList = curriculumService.mapToCurriculumDTOList(offerApplicationList);
-
         return ResponseEntity
                 .ok(curriculumDTOList);
     }
