@@ -1,12 +1,17 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
+import com.gestionnaire_de_stage.model.OfferApplication;
+import com.gestionnaire_de_stage.service.CurriculumService;
 import com.gestionnaire_de_stage.service.OfferApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -15,9 +20,11 @@ import static org.springframework.http.HttpStatus.CREATED;
 @CrossOrigin
 public class OfferApplicationController {
     private final OfferApplicationService offerApplicationService;
+    private final CurriculumService curriculumService;
 
-    public OfferApplicationController(OfferApplicationService offerApplicationService) {
+    public OfferApplicationController(OfferApplicationService offerApplicationService, CurriculumService curriculumService) {
         this.offerApplicationService = offerApplicationService;
+        this.curriculumService = curriculumService;
     }
 
 
@@ -43,5 +50,12 @@ public class OfferApplicationController {
                 .body(new ResponseMessage("Succes: candidature envoyer!"));
     }
 
+/*    @GetMapping("/applicants/{email}")
+    public ResponseEntity<?> viewApplicantList(@PathVariable String email) {
+        List<OfferApplication> offerApplicationList = offerApplicationService.getAllByOfferCreatorEmail(email);
+        List<CurriculumDTO> curriculumDTOList = curriculumService.mapToDTO(offerApplicationList);
 
+        return ResponseEntity
+                .ok(curriculumDTOList);
+    }*/
 }
