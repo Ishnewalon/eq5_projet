@@ -13,7 +13,7 @@ class OfferAppService {
             requestInit(methods.POST, offerApp));
         return await response.json().then(value => {
             if (value.message) {
-                const valid = value.message.contain("Candidature envoyé!");
+                const valid = response.status === 201;
                 Swal.fire({title: value.message, icon: valid ? 'success' : 'error'});
             }
         });
