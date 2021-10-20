@@ -26,7 +26,8 @@ public class CurriculumController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadCurriculum(@RequestParam("file") MultipartFile file, @RequestParam("id") Long studentId) {
+    public ResponseEntity<ResponseMessage> uploadCurriculum(@RequestParam("file") MultipartFile file,
+                                                            @RequestParam("id") Long studentId) {
         Curriculum curriculum;
         try {
             curriculum = curriculumService.convertMultipartFileToCurriculum(file, studentId);
@@ -91,7 +92,8 @@ public class CurriculumController {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename(oneById.getName()).build().toString());
+        httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION,
+                ContentDisposition.attachment().filename(oneById.getName()).build().toString());
 
         return ResponseEntity
                 .ok()

@@ -33,7 +33,6 @@ public class OfferController {
         return offerService.getAll();
     }
 
-
     @PostMapping("/monitor/add")
     public ResponseEntity<?> addOfferMonitor(@RequestBody OfferDTO dto) {
         Offer offer = offerService.mapToOffer(dto);

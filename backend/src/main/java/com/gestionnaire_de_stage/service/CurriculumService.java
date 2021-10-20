@@ -67,6 +67,8 @@ public class CurriculumService {
         return getStudentList(curriculumNotValidatedYet);
     }
 
+//    public List<Curriculum>
+
     private List<Student> getStudentList(List<Curriculum> curriculumNotValidatedYet) {
         return curriculumNotValidatedYet.stream().map(Curriculum::getStudent).collect(Collectors.toList());
     }
