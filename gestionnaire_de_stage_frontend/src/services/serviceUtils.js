@@ -12,7 +12,8 @@ export const requestInit = (method, body) => {
         cache: 'no-cache',
         credentials: 'same-origin',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         }
     }
     if (method === methods.POST || method === methods.PUT)

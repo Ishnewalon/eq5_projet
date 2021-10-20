@@ -34,43 +34,15 @@ public class OfferController {
     }
 
 
-    @PostMapping("/monitor/add")
+    @PostMapping("/add")
     public ResponseEntity<?> addOfferMonitor(@RequestBody OfferDTO dto) {
         Offer offer = offerService.mapToOffer(dto);
-
+        System.out.println(dto.getCreator_email());
+        Monitor monitor = monitorService.getOneByEmail(dto.getCreator_email());
+        offer.setCreator(monitor);
         try {
-            Monitor monitor = monitorService.getOneByID(dto.getCreator_id());
-            offer.setCreator(monitor);
 
             offer = offerService.create(offer);
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(offer);
-        } catch (IllegalArgumentException ie) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(ie.getMessage()));
-        } catch (IdDoesNotExistException ide) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le moniteur n'existe pas"));
-        } catch (OfferAlreadyExistsException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Offre existe déjà"));
-        }
-    }
-
-    @PostMapping("/manager/add/{monitorEmail}")
-    public ResponseEntity<?> addOfferManager(@RequestBody OfferDTO offerDTO, @PathVariable String monitorEmail) {
-        Offer offer = offerService.mapToOffer(offerDTO);
-        try {
-            Monitor monitor = monitorService.getOneByEmail(monitorEmail);
-            offer.setCreator(monitor);
-            offer = offerService.create(offer);
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(offer);
         } catch (IllegalArgumentException ie) {
             return ResponseEntity
                     .badRequest()
@@ -80,6 +52,9 @@ public class OfferController {
                     .badRequest()
                     .body(new ResponseMessage("Offre existe déjà"));
         }
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(offer);
     }
 
     @GetMapping({"/", "/{department}"}) //TODO Handle exception
