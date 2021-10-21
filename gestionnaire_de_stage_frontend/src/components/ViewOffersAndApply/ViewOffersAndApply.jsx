@@ -27,7 +27,7 @@ export default class ViewOffersAndApply extends Component {
     _extractRelevantOffers(offers) {
         let relOffers = [];
         offers.map(offer => {
-            if(offer.department == this.department &&
+            if(offer.department === this.department &&
                 offer.valid){
                 relOffers.push(offer);
             }

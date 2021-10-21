@@ -20,11 +20,9 @@ class OfferAppService {
     }
 
     _isApplicationValid(offerApp) {
-        if (offerApp instanceof OfferApp &&
+        return offerApp instanceof OfferApp &&
             offerApp.idOffer &&
-            offerApp.idStudent)
-            return true;
-        return false;
+            offerApp.idStudent;
     }
 }
 
