@@ -35,7 +35,7 @@ class OfferApplicationServiceTest {
     private OfferApplicationRepository offerApplicationRepository;
 
     @Test
-    void testCreate() throws StudentAlreadyAppliedToOfferException, IdDoesNotExistException {
+    void testCreate() throws Exception {
         OfferApplication dummyOfferApplication = getDummyOfferApp();
         Student dummyStudent = getDummyStudent();
         Offer dummyOffer = getDummyOffer();

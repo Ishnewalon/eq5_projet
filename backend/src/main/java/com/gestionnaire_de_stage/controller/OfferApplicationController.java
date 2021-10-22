@@ -6,6 +6,7 @@ import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
+import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.service.CurriculumService;
 import com.gestionnaire_de_stage.service.OfferApplicationService;
@@ -44,6 +45,10 @@ public class OfferApplicationController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
+        } catch (StudentHasNoCurriculumException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Vous devez d'abord ajouter un curriculum!"));
         }
         return ResponseEntity
                 .status(CREATED)

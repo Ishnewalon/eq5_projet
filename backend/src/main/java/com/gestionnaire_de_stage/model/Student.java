@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -27,5 +28,6 @@ public class Student extends User {
     private String postalCode;
 
     @OneToOne
+    @JsonIgnore
     private Curriculum principalCurriculum;
 }

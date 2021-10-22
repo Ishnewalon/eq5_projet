@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
+import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
@@ -29,11 +30,15 @@ public class OfferApplicationService {
     }
 
 
-    public OfferApplication create(Long idOffer, Long idStudent) throws StudentAlreadyAppliedToOfferException, IdDoesNotExistException, IllegalArgumentException {
+    public OfferApplication create(Long idOffer, Long idStudent) throws StudentAlreadyAppliedToOfferException, IdDoesNotExistException, IllegalArgumentException, StudentHasNoCurriculumException {
         Assert.isTrue(idOffer != null, "L'id de l'offre ne peut pas être null");
         Optional<Offer> offer = offerService.findOfferById(idOffer);
         Student student = studentService.getOneByID(idStudent);
         Curriculum curriculum = student.getPrincipalCurriculum();
+
+        if(curriculum == null) {
+            throw new StudentHasNoCurriculumException();
+        }
 
         if (offer.isEmpty()) throw new IdDoesNotExistException();
         if (offerApplicationRepository.existsByOfferAndCurriculum(offer.get(), curriculum))

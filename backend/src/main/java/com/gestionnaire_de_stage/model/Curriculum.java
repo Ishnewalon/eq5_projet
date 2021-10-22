@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
