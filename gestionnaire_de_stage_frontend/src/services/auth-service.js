@@ -87,7 +87,7 @@ class AuthService {
                     Object.setPrototypeOf(this.user, ManagerModel.prototype)
                 }
                 this._isAuthenticated = true
-                toast.fire({title:"connection reussi!"}).then()
+                toast.fire({title:"connexion réussie!"}).then()
                 console.log(value)
             },
             err => {
