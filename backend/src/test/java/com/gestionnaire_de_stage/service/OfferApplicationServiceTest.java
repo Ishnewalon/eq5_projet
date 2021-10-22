@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.model.Curriculum;
@@ -13,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -93,6 +96,33 @@ class OfferApplicationServiceTest {
                 () -> offerApplicationService.create(dummyOffer.getId(), dummyStudent.getId()));
     }
 
+    @Test
+    void testGetAllByOfferCreatorEmail_withValidEntries() throws EmailDoesNotExistException {
+        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
+        String email = "americanm@email.com";
+        when(offerApplicationRepository.existsByOffer_CreatorEmail(any()))
+                .thenReturn(true);
+        when(offerApplicationRepository.getAllByOffer_CreatorEmail(any()))
+                .thenReturn(getDummyOfferAppList());
+
+        List<OfferApplication> actualOfferAppList = offerApplicationService.getAllByOfferCreatorEmail(email);
+
+        assertThat(actualOfferAppList.size()).isEqualTo(offerApplicationList.size());
+    }
+
+    @Test
+    void testGetAllByOfferCreatorEmail_withNullEmail() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.getAllByOfferCreatorEmail(null));
+    }
+
+    @Test
+    void testGetAllByOfferCreatorEmail_withInvalidEmail() {
+        String email = "fredmerc@email.com";
+
+        assertThrows(EmailDoesNotExistException.class,
+                () -> offerApplicationService.getAllByOfferCreatorEmail(email));
+    }
 
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();
@@ -124,5 +154,22 @@ class OfferApplicationServiceTest {
         dummyStudent.setDepartment("info");
         dummyStudent.setMatricule("4673943");
         return dummyStudent;
+    }
+
+    private List<OfferApplication> getDummyOfferAppList() {
+        List<OfferApplication> offerApplicationList = new ArrayList<>();
+        OfferApplication dummyOfferApplicationDTO = new OfferApplication();
+        dummyOfferApplicationDTO.setOffer(getDummyOffer());
+        dummyOfferApplicationDTO.setCurriculum(getDummyCurriculum());
+        dummyOfferApplicationDTO.setId(1L);
+        offerApplicationList.add(dummyOfferApplicationDTO);
+
+        dummyOfferApplicationDTO.setId(2L);
+        offerApplicationList.add(dummyOfferApplicationDTO);
+
+        dummyOfferApplicationDTO.setId(3L);
+        offerApplicationList.add(dummyOfferApplicationDTO);
+
+        return offerApplicationList;
     }
 }

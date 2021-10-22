@@ -10,3 +10,7 @@ div h3 span {
     background-color: #eee4db !important;
     color: #343c49 !important;
 }
+
+a{
+    cursor: pointer;
+}

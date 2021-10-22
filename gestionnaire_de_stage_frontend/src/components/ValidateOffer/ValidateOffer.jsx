@@ -24,7 +24,7 @@ export default class ValidateOffer extends Component{
                     return;
                 }
                 this.setState({valid})
-                Swal.fire(valid ? 'Offre validé!' : 'Offre invalidé!', '', valid ? 'success': 'error').then();
+                Swal.fire(valid ? 'Offre validée!' : 'Offre invalidée!', '', valid ? 'success': 'error').then();
             })
             .catch(e => {
                 console.trace(e)
@@ -37,7 +37,7 @@ export default class ValidateOffer extends Component{
         const {valid} = this.state;
 
         return <div className={`${valid ? 'border-left border-success' : 'border-left border-danger'}`}>
-                <PreviewOffer offer={offer} />
+                {PreviewOffer(offer)}
                 <div className="d-flex justify-content-between align-items-center">
                     <button id="validateBtn" className="btn btn-success fw-bold text-white w-50"
                             onClick={() => this.validateOffer(offer, true)}>Valide</button>

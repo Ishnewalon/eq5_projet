@@ -35,7 +35,7 @@ class AuthService {
             if (value.message) {
                 swalErr(value.message).fire({}).then()
             } else {
-                toast.fire({title:"Compte cree"}).then()
+                toast.fire({title:"Compte crée"}).then()
             }
         })
     }
@@ -48,7 +48,7 @@ class AuthService {
             if (value.message) {
                 swalErr(value.message).fire({}).then()
             } else {
-                toast.fire({title:"Compte cree"}).then()
+                toast.fire({title:"Compte crée"}).then()
             }
         })
     }
@@ -61,7 +61,7 @@ class AuthService {
             if (value.message) {
                 swalErr(value.message).fire({}).then()
             } else {
-                toast.fire({title:"Compte cree"}).then()
+                toast.fire({title:"Compte crée"}).then()
             }
 
         })
@@ -87,7 +87,7 @@ class AuthService {
                     Object.setPrototypeOf(this.user, ManagerModel.prototype)
                 }
                 this._isAuthenticated = true
-                toast.fire({title:"connection reussi!"}).then()
+                toast.fire({title:"Connexion réussie!"}).then()
                 console.log(value)
             },
             err => {

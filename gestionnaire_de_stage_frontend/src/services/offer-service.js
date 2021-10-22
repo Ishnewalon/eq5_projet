@@ -21,8 +21,6 @@ class OfferService {
             })
     }
 
-
-
     async getAllOffersByDepartment(department) {
         const response = await fetch(`${urlBackend}/offers/${department}`, requestInit(methods.GET));
         return await response.json();

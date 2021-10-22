@@ -17,7 +17,8 @@ export default class StepPassword extends Component {
         return (<div>
                 <div className="form-group row">
                     <div className="col-md-12">
-                        <FieldPassword password={this.props.password} label="Mot de passe" placeholder="Votre mot de passe" handleChange={this.props.handleChange('password')}/>
+                        <FieldPassword password={this.props.password} label="Mot de passe"
+                                       placeholder="Votre mot de passe" handleChange={this.props.handleChange('password')}/>
                     </div>
 
                     {/* REVOIR LA CONFIRMATION DU MDP*/}
@@ -32,7 +33,7 @@ export default class StepPassword extends Component {
                         <label/>
                         <div>
                             <button className="btn btn-primary" type={"button"}
-                                    onClick={this.previous}>Precedent
+                                    onClick={this.previous}>Précédent
                             </button>
                             <button className="btn btn-primary" type={"button"} onClick={this.continue}>Suivant
                             </button>
