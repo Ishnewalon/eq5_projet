@@ -128,7 +128,7 @@ public class CurriculumServiceTest {
     }
 
     @Test
-    public void testFindAllStudentsWithInvalidCurriculum() {
+    public void testFindAllCurriculumWithInvalidCurriculum() {
         List<Curriculum> dummyCurriculumList = getDummyCurriculumList();
         when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(dummyCurriculumList);
 
@@ -137,8 +137,9 @@ public class CurriculumServiceTest {
         assertThat(curriculumList).isEqualTo(dummyCurriculumList);
     }
 
+
     @Test
-    public void testFindAllStudentsWithInvalidCurriculum_withEmptyList() {
+    public void testFindAllCurriculumsWithInvalidCurriculum_withEmptyList() {
         when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(Collections.emptyList());
 
         List<Curriculum> curriculumList = curriculumService.findAllCurriculumNotValidatedYet();
@@ -146,7 +147,25 @@ public class CurriculumServiceTest {
         assertThat(curriculumList).isEmpty();
     }
 
+    @Test
+    public void testFindAllCurriculumWithValidCurricculum() {
+        List<Curriculum> dummyCurriculumList = getDummyCurriculumValidList();
+        when(curriculumRepository.findAllByIsValidIsTrue()).thenReturn(dummyCurriculumList);
 
+        List<Curriculum> curriculumList = curriculumService.findAllCurriculumValidated();
+
+        assertThat(curriculumList).isEqualTo(dummyCurriculumList);
+    }
+
+
+    @Test
+    public void testFindAllCurriculumsWithValidCurriculum_withEmptyList() {
+        when(curriculumRepository.findAllByIsValidIsTrue()).thenReturn(Collections.emptyList());
+
+        List<Curriculum> curriculumList = curriculumService.findAllCurriculumValidated();
+
+        assertThat(curriculumList).isEmpty();
+    }
     @Test
     void testValidate() throws Exception {
         Curriculum curriculum = getDummyCurriculum();
@@ -265,6 +284,16 @@ public class CurriculumServiceTest {
         Curriculum dummyCurriculum1 = getDummyCurriculum();
         Curriculum dummyCurriculum2 = getDummyCurriculum();
         Curriculum dummyCurriculum3 = getDummyCurriculum();
+        return Arrays.asList(dummyCurriculum1, dummyCurriculum2, dummyCurriculum3);
+    }
+
+    private List<Curriculum> getDummyCurriculumValidList() {
+        Curriculum dummyCurriculum1 = getDummyCurriculum();
+        Curriculum dummyCurriculum2 = getDummyCurriculum();
+        Curriculum dummyCurriculum3 = getDummyCurriculum();
+        dummyCurriculum1.setIsValid(true);
+        dummyCurriculum2.setIsValid(true);
+        dummyCurriculum3.setIsValid(true);
         return Arrays.asList(dummyCurriculum1, dummyCurriculum2, dummyCurriculum3);
     }
 }
