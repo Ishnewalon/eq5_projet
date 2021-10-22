@@ -45,9 +45,8 @@ public class OfferApplicationService {
 
     public List<OfferApplication> getAllByOfferCreatorEmail(String email) throws EmailDoesNotExistException {
         Assert.isTrue(email != null, "Le courriel ne peut pas être null");
-        if (isEmailInvalid(email)) {
+        if (isEmailInvalid(email))
             throw new EmailDoesNotExistException();
-        }
         return offerApplicationRepository.getAllByOffer_CreatorEmail(email);
     }
 

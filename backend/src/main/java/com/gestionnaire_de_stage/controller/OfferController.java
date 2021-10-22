@@ -11,6 +11,7 @@ import com.gestionnaire_de_stage.service.MonitorService;
 import com.gestionnaire_de_stage.service.OfferService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -76,8 +77,7 @@ public class OfferController {
     public ResponseEntity<?> validateOffer(@RequestBody Offer o) {
         try {
             Offer offer = offerService.update(o);
-            return ResponseEntity
-                    .ok(offer);
+            return ResponseEntity.ok(offer);
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()

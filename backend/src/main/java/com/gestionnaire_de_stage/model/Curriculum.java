@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -8,6 +9,7 @@ import java.io.Serializable;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Curriculum implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
@@ -21,13 +23,10 @@ public class Curriculum implements Serializable {
     private byte[] data;
 
     @NotNull
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne
     private Student student;
 
     private Boolean isValid;
-
-    public Curriculum() {
-    }
 
     public Curriculum(String name, String type, byte[] data, Student student) {
         this.name = name;
@@ -35,13 +34,5 @@ public class Curriculum implements Serializable {
         this.data = data;
         this.student = student;
         this.isValid = null;
-    }
-
-    public Boolean getIsValid() {
-        return this.isValid;
-    }
-
-    public void setIsValid(Boolean isValid) {
-        this.isValid = isValid;
     }
 }

@@ -6,9 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface CurriculumRepository extends JpaRepository<Curriculum, Long> {
-
-    List<Curriculum> findAllByIsValid(boolean isValid);
-
     List<Curriculum> findAllByIsValidIsNull();
 
 }

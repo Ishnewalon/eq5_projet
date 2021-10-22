@@ -66,7 +66,6 @@ public class OfferApplicationController {
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
         }
-        return ResponseEntity
-                .ok(curriculumDTOList);
+        return ResponseEntity.ok(curriculumDTOList);
     }
 }

@@ -151,7 +151,7 @@ class OfferApplicationControllerTest {
                 .thenReturn(curriculumDTOList);
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/applications/applicants/" + email)
+                        MockMvcRequestBuilders.get("/applications/applicants/{}", email)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -168,7 +168,7 @@ class OfferApplicationControllerTest {
                 .thenThrow(new IllegalArgumentException("Le courriel ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/applications/applicants/" + email)
+                MockMvcRequestBuilders.get("/applications/applicants/{}", email)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -184,7 +184,7 @@ class OfferApplicationControllerTest {
                 .thenThrow(new EmailDoesNotExistException());
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/applications/applicants/" + email)
+                MockMvcRequestBuilders.get("/applications/applicants/{}", email)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -203,7 +203,7 @@ class OfferApplicationControllerTest {
                 .thenThrow(new IllegalArgumentException("La liste d'offre ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/applications/applicants/" + email)
+                MockMvcRequestBuilders.get("/applications/applicants/{}", email)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -256,7 +256,7 @@ class OfferApplicationControllerTest {
 
         dummyCurriculum.setId(1L);
         dummyCurriculum.setData("some xml".getBytes());
-        dummyCurriculum.setName("fileeeename");
+        dummyCurriculum.setName("sample.pdf");
         dummyCurriculum.setStudent(new Student());
         return dummyCurriculum;
     }
