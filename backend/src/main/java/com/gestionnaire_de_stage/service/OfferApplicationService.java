@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.model.Curriculum;
@@ -10,10 +11,10 @@ import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class OfferApplicationService {
-
 
     private final OfferApplicationRepository offerApplicationRepository;
     private final CurriculumService curriculumService;
@@ -25,10 +26,9 @@ public class OfferApplicationService {
         this.offerService = offerService;
     }
 
-
     public Optional<OfferApplication> create(Long idOffer, Long idCurriculum) throws StudentAlreadyAppliedToOfferException, IdDoesNotExistException, IllegalArgumentException {
-        Assert.isTrue(idOffer != null, "Erreur: Le id de l'offre ne peut pas être null");
-        Assert.isTrue(idCurriculum != null, "Erreur: Le id du curriculum ne peut pas être null");
+        Assert.isTrue(idOffer != null, "Le id de l'offre ne peut pas être null");
+        Assert.isTrue(idCurriculum != null, "Le id du curriculum ne peut pas être null");
         Optional<Offer> offer = offerService.findOfferById(idOffer);
         Curriculum curriculum = curriculumService.getOneByID(idCurriculum);
 
@@ -41,5 +41,16 @@ public class OfferApplicationService {
         offerApplication.setCurriculum(curriculum);
 
         return Optional.of(offerApplicationRepository.save(offerApplication));
+    }
+
+    public List<OfferApplication> getAllByOfferCreatorEmail(String email) throws EmailDoesNotExistException {
+        Assert.isTrue(email != null, "Le courriel ne peut pas être null");
+        if (isEmailInvalid(email))
+            throw new EmailDoesNotExistException();
+        return offerApplicationRepository.getAllByOffer_CreatorEmail(email);
+    }
+
+    private boolean isEmailInvalid(String email) {
+        return !offerApplicationRepository.existsByOffer_CreatorEmail(email);
     }
 }

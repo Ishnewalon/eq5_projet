@@ -55,7 +55,7 @@ export default class StepInformationGeneral extends Component {
         return (<div>
             <div className="form-group row">
                 <div className="col-md-6">
-                    <label>Prenom</label>
+                    <label>Prénom</label>
                     <div className="input-group">
                         <input name="firstName" placeholder="Prenom" className="form-control" type="text"
                                value={this.props.values.firstName} onChange={this.props.handleChange('firstName')}/>
@@ -88,7 +88,7 @@ export default class StepInformationGeneral extends Component {
             <div className="form-group text-center">
                 <label/>
                 <div>
-                    <button className="btn btn-primary" type={"button"} onClick={this.previous}>Precedent</button>
+                    <button className="btn btn-primary" type={"button"} onClick={this.previous}>Précédent</button>
                     <button className="btn btn-primary" type={"button"} onClick={() => {
                         if (this.verification())
                             this.continue(Step.PASSWORD)

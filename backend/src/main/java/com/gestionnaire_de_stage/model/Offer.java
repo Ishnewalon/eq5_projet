@@ -56,7 +56,8 @@ public class Offer {
     private Boolean valid;
 
 
-    public String getCreatorEmail() {
+    @Transient
+    public String creatorEmail() {
         if (creator == null)
             return null;
         return creator.getEmail();

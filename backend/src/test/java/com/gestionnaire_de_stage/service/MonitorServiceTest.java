@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
+import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
@@ -181,9 +182,10 @@ public class MonitorServiceTest {
                 () -> monitorService.getOneByEmailAndPassword(dummyMonitor.getEmail(), dummyMonitor.getPassword()));
     }
     @Test
-    public void testFindMonitorByEmail_withValidEmail() {
+    public void testGetOneByEmail_withValidEmail() throws EmailDoesNotExistException {
         Monitor monitor = getDummyMonitor();
         String email = "stepotato@gmail.com";
+        when(monitorRepository.existsByEmail(any())).thenReturn(true);
         when(monitorRepository.getMonitorByEmail(any())).thenReturn(monitor);
 
         Monitor actual = monitorService.getOneByEmail(email);
@@ -192,10 +194,18 @@ public class MonitorServiceTest {
     }
 
     @Test
-    public void testFindMonitorByEmail_withNullEmail() {
+    public void testGetOneByEmail_withNullEmail() {
         assertThrows(IllegalArgumentException.class,
                 () -> monitorService.getOneByEmail(null));
     }
+
+    @Test
+    public void testGetOneByEmail_withInvalidEmail() {
+        String email = "civfan@email.com";
+        assertThrows(EmailDoesNotExistException.class,
+                () -> monitorService.getOneByEmail(email));
+    }
+
     private Monitor getDummyMonitor() {
         Monitor dummyMonitor = new Monitor();
         dummyMonitor.setId(1L);
