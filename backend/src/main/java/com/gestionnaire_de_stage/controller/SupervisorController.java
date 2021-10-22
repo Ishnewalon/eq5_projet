@@ -2,8 +2,11 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
+import com.gestionnaire_de_stage.service.StudentService;
 import com.gestionnaire_de_stage.service.SupervisorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +20,11 @@ import java.util.List;
 public class SupervisorController {
 
     private final SupervisorService supervisorService;
+    private final StudentService studentService;
 
-    public SupervisorController(SupervisorService supervisorService) {
+    public SupervisorController(SupervisorService supervisorService, StudentService studentService) {
         this.supervisorService = supervisorService;
+        this.studentService = studentService;
     }
 
     @PostMapping("/signup")
@@ -60,5 +65,23 @@ public class SupervisorController {
     public ResponseEntity<?> getAllSupervisor() {
         List<Supervisor> supervisorList = supervisorService.getAll();
         return ResponseEntity.ok(supervisorList);
+    }
+
+    @PostMapping("/assign/student")
+    public ResponseEntity<?> AssignSupervisor(Long idStudent, Long idSupervisor){
+        Student student;
+        Supervisor supervisor;
+        try {
+            student = studentService.getOneByID(idStudent);
+            supervisor = supervisorService.getOneByID(idSupervisor);
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Erreur: Inexistant"));
+        }
+        boolean assign = supervisorService.assign(student, supervisor);
+
+        String response = assign ? "Assignement fait!" : "Assignement rejeté!";
+        return ResponseEntity.ok(new ResponseMessage(response));
     }
 }
