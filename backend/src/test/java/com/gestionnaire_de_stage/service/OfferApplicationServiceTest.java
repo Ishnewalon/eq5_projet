@@ -153,6 +153,7 @@ class OfferApplicationServiceTest {
         dummyStudent.setPassword("cantPass");
         dummyStudent.setDepartment("info");
         dummyStudent.setMatricule("4673943");
+        dummyStudent.setPrincipalCurriculum(new Curriculum());
         return dummyStudent;
     }
 
