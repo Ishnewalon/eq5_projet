@@ -14,11 +14,11 @@ export default function ViewAppliedStudents(email) {
         email: PropTypes.string.isRequired
     }
 
-    return <div className='container'>
+    return <div className=''>
         <div className={'d-flex justify-content-center align-items-center'}>
             <h2 className="text-center">Applicants</h2>
             <h2 className={'ms-2'}>
-                <span className={`badge ${students.length < 10 ? 'bg-danger': 'bg-primary'}`}>{students.length}</span>
+                <span className={`badge bg-secondary`}>{students.length}</span>
             </h2>
         </div>
             {students.length > 0 ?

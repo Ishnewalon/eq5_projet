@@ -33,7 +33,7 @@ export default function PreviewStudent(dto) {
         toast.fire({title: 'Téléchargé'}).then()
     }
 
-    return <div className="shadow-lg rounded-top p-3 mt-5 border-left border-right border-light">
+    return <div className=" p-3 mt-5 border-left border-right border-light">
         <div className={'row'}>
             <div className="col-12 col-sm-6">
                 <div className={'d-flex justify-content-center align-items-center flex-column p-3 shadow h-100'}>

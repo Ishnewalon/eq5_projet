@@ -9,7 +9,7 @@ export default function Monitor(){
             <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
                 <AddOffer/>
             </div>
-            <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+            <div className="container bg-dark px-3 py-4 rounded mt-5">
                 {ViewAppliedStudents(AuthService.user.email)}
             </div>
         </>;
