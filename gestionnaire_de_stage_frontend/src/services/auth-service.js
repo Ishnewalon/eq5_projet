@@ -96,6 +96,21 @@ class AuthService {
         )
     }
 
+     async getSupervisors() {
+        const response = await fetch(`${urlBackend}/supervisor`, requestInit(methods.GET));
+        return await response.json();
+    }
+
+    async assign(idStudent, idSupervisor) {
+        let obj = {
+            idStudent,
+            idSupervisor
+        };
+        const response = await fetch(`${urlBackend}/supervisor/assign/student`,
+            requestInit(methods.POST, obj));
+        return await response.json();
+    }
+
     logOut() {
         this.user = null
         this._isAuthenticated = false
@@ -105,6 +120,8 @@ class AuthService {
         if (this.user)
             return this.user.id
     }
+
+
 }
 
 const authService = new AuthService();

@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import org.junit.jupiter.api.Test;
@@ -86,6 +87,17 @@ public class SupervisorServiceTest {
 
         assertThat(actualSupervisorList.size()).isEqualTo(3);
         assertThat(actualSupervisorList.get(0).getFirstName()).isEqualTo("Harold");
+    }
+
+    @Test
+    public void testAssign(){
+        Supervisor supervisor = getDummySupervisor();
+        Student student = getDummyStudent();
+
+        supervisorService.assign(student, supervisor);
+
+        assertThat(supervisor.getStudentList().size()).isEqualTo(1);
+        assertThat(supervisor.getStudentList().get(0).getFirstName()).isEqualTo("Tea");
     }
 
 
@@ -196,6 +208,18 @@ public class SupervisorServiceTest {
         dummySupervisor.setDepartment("Comptabilité");
         dummySupervisor.setMatricule("04736");
         return dummySupervisor;
+    }
+
+    private Student getDummyStudent() {
+        Student dummyStudent = new Student();
+        dummyStudent.setId(1L);
+        dummyStudent.setLastName("Candle");
+        dummyStudent.setFirstName("Tea");
+        dummyStudent.setEmail("cant@outlook.com");
+        dummyStudent.setPassword("cantPass");
+        dummyStudent.setDepartment("info");
+        dummyStudent.setMatricule("4673943");
+        return dummyStudent;
     }
 
     private List<Supervisor> getDummySupervisorList() {

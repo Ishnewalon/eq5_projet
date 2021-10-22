@@ -94,7 +94,7 @@ public class CurriculumControllerTest {
 
 
     @Test
-    public void testGetAllCurriculumNotValidatedYet() throws Exception {
+    public void testGetAllCurriculumNotValidatedYet_withValidList() throws Exception {
         List<Curriculum> list = Arrays.asList(new Curriculum(), new Curriculum(), new Curriculum());
         when(curriculumService.findAllCurriculumNotValidatedYet()).thenReturn(list);
 
@@ -117,6 +117,47 @@ public class CurriculumControllerTest {
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/curriculum/invalid/students")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        List<Curriculum> actualCurriculumList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualCurriculumList).isEqualTo(Collections.emptyList());
+
+    }
+
+    @Test
+    public void testGetAllCurriculumValidated_withValidList() throws Exception {
+        Curriculum cv1 = new Curriculum();
+        Curriculum cv2 = new Curriculum();
+        Curriculum cv3 = new Curriculum();
+        cv1.setIsValid(true);
+        cv2.setIsValid(true);
+        cv3.setIsValid(true);
+        List<Curriculum> list = Arrays.asList(cv1, cv2, cv3);
+        when(curriculumService.findAllCurriculumValidated()).thenReturn(list);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/curriculum/valid/students")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        List<Curriculum> actualCurriculumList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualCurriculumList).isEqualTo(list);
+
+    }
+
+    @Test
+    public void testGetAllCurriculumValidated_withEmptyList() throws Exception {
+        when(curriculumService.findAllCurriculumValidated()).thenReturn(Collections.emptyList());
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/curriculum/valid/students")
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
