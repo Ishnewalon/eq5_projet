@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.gestionnaire_de_stage.dto.AssignDto;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
@@ -68,12 +69,13 @@ public class SupervisorController {
     }
 
     @PostMapping("/assign/student")
-    public ResponseEntity<?> AssignSupervisor(Long idStudent, Long idSupervisor){
+    public ResponseEntity<?> AssignSupervisor(@RequestBody AssignDto assignDto) {
+
         Student student;
         Supervisor supervisor;
         try {
-            student = studentService.getOneByID(idStudent);
-            supervisor = supervisorService.getOneByID(idSupervisor);
+            student = studentService.getOneByID(assignDto.getIdStudent());
+            supervisor = supervisorService.getOneByID(assignDto.getIdSupervisor());
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()

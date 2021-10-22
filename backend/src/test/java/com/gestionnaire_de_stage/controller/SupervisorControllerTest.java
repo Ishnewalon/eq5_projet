@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.dto.AssignDto;
 import com.gestionnaire_de_stage.dto.ValidationCurriculum;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
@@ -133,11 +135,13 @@ public class SupervisorControllerTest {
 
     @Test
     public void testAssign() throws Exception {
+        AssignDto assignDto = new AssignDto(1L, 2L);
         when(supervisorService.assign(any(), any())).thenReturn(true);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/supervisor/assign/student")
-                                .contentType(MediaType.APPLICATION_JSON))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(assignDto)))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -147,12 +151,14 @@ public class SupervisorControllerTest {
 
     @Test
     public void testAssign_withInvalidSupervisorAndStudent() throws Exception {
+        AssignDto assignDto = new AssignDto(1L, 2L);
         when(supervisorService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
 //        when(supervisorService.assign(any(), any())).thenReturn(true);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/supervisor/assign/student")
-                                .contentType(MediaType.APPLICATION_JSON))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(assignDto)))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
