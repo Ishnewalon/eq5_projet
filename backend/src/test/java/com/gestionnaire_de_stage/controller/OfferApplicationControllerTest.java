@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
+import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
@@ -40,7 +41,7 @@ class OfferApplicationControllerTest {
 
     @Test
     public void testStudentApplyToOffer() throws Exception {
-        when(offerApplicationService.create(any(), any())).thenReturn(Optional.of(getDummyOfferApp()));
+        when(offerApplicationService.create(any(), any())).thenReturn(getDummyOfferApp());
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/apply")
@@ -143,7 +144,7 @@ class OfferApplicationControllerTest {
     private OfferApplication getDummyOfferApp() {
         OfferApplication dummyOfferApplicationDTO = new OfferApplication();
         dummyOfferApplicationDTO.setOffer(getDummyOffer());
-        dummyOfferApplicationDTO.setStudent(getDummyStudent());
+        dummyOfferApplicationDTO.setCurriculum(new Curriculum());
         dummyOfferApplicationDTO.setId(1L);
 
         return dummyOfferApplicationDTO;

@@ -7,5 +7,5 @@ import com.gestionnaire_de_stage.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OfferApplicationRepository extends JpaRepository<OfferApplication, Long> {
-    boolean existsByOfferAndStudent(Offer offer, Student student);
+    boolean existsByOfferAndCurriculum(Offer offer, Curriculum curriculum);
 }

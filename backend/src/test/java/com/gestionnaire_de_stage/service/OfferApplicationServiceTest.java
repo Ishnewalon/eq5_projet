@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
+import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
@@ -39,10 +40,9 @@ class OfferApplicationServiceTest {
         when(studentService.getOneByID(any())).thenReturn(dummyStudent);
         when(offerService.findOfferById(any())).thenReturn(Optional.of(dummyOffer));
 
-        Optional<OfferApplication> actualOfferApplication = offerApplicationService.create(dummyOffer.getId(), dummyStudent.getId());
+        OfferApplication actualOfferApplication = offerApplicationService.create(dummyOffer.getId(), dummyStudent.getId());
 
-        assertThat(actualOfferApplication).isPresent();
-        assertThat(actualOfferApplication.get()).isEqualTo(dummyOfferApplication);
+        assertThat(actualOfferApplication).isEqualTo(dummyOfferApplication);
     }
 
     @Test
@@ -87,7 +87,7 @@ class OfferApplicationServiceTest {
         Student dummyStudent = getDummyStudent();
         when(studentService.getOneByID(any())).thenReturn(dummyStudent);
         when(offerService.findOfferById(any())).thenReturn(Optional.of(dummyOffer));
-        when(offerApplicationRepository.existsByOfferAndStudent(any(), any())).thenReturn(true);
+        when(offerApplicationRepository.existsByOfferAndCurriculum(any(), any())).thenReturn(true);
 
         assertThrows(StudentAlreadyAppliedToOfferException.class,
                 () -> offerApplicationService.create(dummyOffer.getId(), dummyStudent.getId()));
@@ -97,7 +97,7 @@ class OfferApplicationServiceTest {
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();
         offerApplicationDTO.setOffer(getDummyOffer());
-        offerApplicationDTO.setStudent(getDummyStudent());
+        offerApplicationDTO.setCurriculum(new Curriculum());
         offerApplicationDTO.setId(1L);
 
         return offerApplicationDTO;
