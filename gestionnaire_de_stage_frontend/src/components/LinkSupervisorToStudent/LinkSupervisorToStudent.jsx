@@ -1,7 +1,6 @@
 import React, {Component} from "react";
-import {getCurriculumWithValidCV, validateCV} from "../../services/curriculum-service";
+import {getCurriculumWithValidCV} from "../../services/curriculum-service";
 import ListStudentValidCVView from "./ListStudentValidCVView/ListStudentValidCVView";
-import ListSupervisorsList from "./ListSupervisorsList/ListSupervisorsList";
 import authService from "../../services/auth-service";
 import Swal from "sweetalert2";
 import {swalErr} from "../../utility";
@@ -36,7 +35,6 @@ export default class LinkSupervisorToStudent extends Component {
             .then(responseMessage => {
                 Swal.fire({title: responseMessage.message, icon: 'success'})
                     .then();
-                // .then(v => this.refresh());
             })
             .catch(e => {
                 console.trace(e)
