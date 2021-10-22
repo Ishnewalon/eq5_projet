@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
@@ -57,7 +58,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(CREATED.value());
-        assertThat(response.getContentAsString()).contains("Succes: candidature envoyer!");
+        assertThat(response.getContentAsString()).contains("candidature envoyé!");
     }
 
     @Test
@@ -72,7 +73,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: candidature deja envoye!");
+        assertThat(response.getContentAsString()).contains("candidature déjà envoyé!");
     }
 
     @Test
@@ -87,7 +88,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Offre ou Curriculum non existant!");
+        assertThat(response.getContentAsString()).contains("Offre ou Curriculum non existant!");
     }
 
     @Test
@@ -102,14 +103,14 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Offre ou Curriculum non existant!");
+        assertThat(response.getContentAsString()).contains("Offre ou Curriculum non existant!");
     }
 
     @Test
     public void testStudentApplyToOffer_withDTOWithNoOfferId() throws Exception {
         OfferAppDTO dummyOfferAppDto = getDummyOfferAppDto();
         dummyOfferAppDto.setIdOffer(null);
-        when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("Erreur: Le id de l'offre ne peut pas etre null"));
+        when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("Le id de l'offre ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/apply")
@@ -119,14 +120,14 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le id de l'offre ne peut pas etre null");
+        assertThat(response.getContentAsString()).contains("Le id de l'offre ne peut pas être null");
     }
 
     @Test
     public void testStudentApplyToOffer_withDTOWithNoCurriculumId() throws Exception {
         OfferAppDTO dummyOfferAppDto = getDummyOfferAppDto();
         dummyOfferAppDto.setIdCurriculum(null);
-        when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("Erreur: Le id du curriculum ne peut pas etre null"));
+        when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("Le id du curriculum ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/apply")
@@ -136,7 +137,7 @@ class OfferApplicationControllerTest {
 
         MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le id du curriculum ne peut pas etre null");
+        assertThat(response.getContentAsString()).contains("Le id du curriculum ne peut pas être null");
     }
 
     @Test
@@ -155,7 +156,7 @@ class OfferApplicationControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<CurriculumDTO> actualCurriculumDTOs = MAPPER.readValue(response.getContentAsString(), List.class);
+        List<CurriculumDTO> actualCurriculumDTOs = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualCurriculumDTOs.size()).isEqualTo(3);
     }
@@ -164,7 +165,7 @@ class OfferApplicationControllerTest {
     public void testViewStudentsAppliedOffer_withNullEmail() throws Exception {
         String email = "rolling@email.com";
         when(offerApplicationService.getAllByOfferCreatorEmail(any()))
-                .thenThrow(new IllegalArgumentException("Erreur: Le courriel ne peut pas être null"));
+                .thenThrow(new IllegalArgumentException("Le courriel ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.get("/applications/applicants/" + email)
@@ -173,7 +174,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("Le courriel ne peut pas être null");
     }
 
     @Test
@@ -189,7 +190,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le courriel n'existe pas");
+        assertThat(response.getContentAsString()).contains("Le courriel n'existe pas");
     }
 
     @Test
@@ -199,7 +200,7 @@ class OfferApplicationControllerTest {
         when(offerApplicationService.getAllByOfferCreatorEmail(any()))
                 .thenReturn(offerApplicationsList);
         when(curriculumService.mapToCurriculumDTOList(any()))
-                .thenThrow(new IllegalArgumentException("Erreur: La liste d'offre ne peut pas être vide"));
+                .thenThrow(new IllegalArgumentException("La liste d'offre ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.get("/applications/applicants/" + email)
@@ -208,7 +209,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: La liste d'offre ne peut pas être vide");
+        assertThat(response.getContentAsString()).contains("La liste d'offre ne peut pas être vide");
     }
 
     private OfferAppDTO getDummyOfferAppDto() {

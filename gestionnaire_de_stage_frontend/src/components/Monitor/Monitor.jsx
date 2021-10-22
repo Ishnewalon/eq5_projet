@@ -1,21 +1,16 @@
-import React, {Component} from "react";
+import React from "react";
 import AddOffer from "../AddOffer/AddOffer";
-import OfferService from "../../services/offer-service";
 import ViewAppliedStudents from "../ViewAppliedStudents/ViewAppliedStudents";
+import AuthService from '../../services/auth-service';
 
-export default class Monitor extends Component {
-    constructor(props) {
-        super(props);
-    }
+export default function Monitor(){
 
-    render() {
-        return <>
-                <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-                    <AddOffer/>
-                </div>
-                <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-                    <ViewAppliedStudents />
-                </div>
-            </>
-    }
+    return <>
+            <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+                <AddOffer/>
+            </div>
+            <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+                {ViewAppliedStudents(AuthService.user.email)}
+            </div>
+        </>;
 }

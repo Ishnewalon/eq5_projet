@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
+import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.*;
@@ -25,6 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("ConstantConditions")
 @ExtendWith(MockitoExtension.class)
 public class CurriculumServiceTest {
 
@@ -36,6 +38,9 @@ public class CurriculumServiceTest {
 
     @Mock
     private StudentService studentService;
+
+    @Mock
+    private OfferService offerService;
 
     @Test
     public void testConvertMultipartFileToCurriculum_WithValidData() throws IOException, IdDoesNotExistException {
@@ -132,6 +137,7 @@ public class CurriculumServiceTest {
     public void testMapToCurriculumDTOList_withValidEntries() {
         List<OfferApplication> offerApplicationList = getDummyOfferAppList();
         List<CurriculumDTO> curriculumDTOList = getDummyCurriculumDTOList();
+        when(offerService.mapToOfferDTO(any())).thenReturn(getDummyOfferDto());
 
         List<CurriculumDTO> actualCurriculumDTOList = curriculumService.mapToCurriculumDTOList(offerApplicationList);
 
@@ -372,5 +378,16 @@ public class CurriculumServiceTest {
         curriculumDTOList.add(curriculumDTO3);
 
         return curriculumDTOList;
+    }
+
+    private OfferDTO getDummyOfferDto() {
+        OfferDTO dummyOfferDTO = new OfferDTO();
+        dummyOfferDTO.setCreator_email("thisemail@email.com");
+        dummyOfferDTO.setSalary(18.0d);
+        dummyOfferDTO.setDescription("Une description");
+        dummyOfferDTO.setAddress("Addresse du cégep");
+        dummyOfferDTO.setTitle("Offer title");
+        dummyOfferDTO.setDepartment("Department name");
+        return dummyOfferDTO;
     }
 }

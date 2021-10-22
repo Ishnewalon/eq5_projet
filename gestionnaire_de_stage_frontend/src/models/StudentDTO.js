@@ -1,4 +1,4 @@
-class StudentDTO{
+export default class StudentDTO{
     first_name
     last_name
     curriculum

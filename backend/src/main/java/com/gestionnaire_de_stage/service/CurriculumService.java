@@ -1,9 +1,11 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
+import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
@@ -23,10 +25,16 @@ public class CurriculumService {
 
     private final CurriculumRepository curriculumRepository;
     private final StudentService studentService;
+    private final OfferService offerService;
 
-    public CurriculumService(CurriculumRepository curriculumRepository, StudentService studentService) {
+    public CurriculumService(
+        CurriculumRepository curriculumRepository,
+        StudentService studentService,
+        OfferService offerService
+    ) {
         this.curriculumRepository = curriculumRepository;
         this.studentService = studentService;
+        this.offerService = offerService;
     }
 
     public Curriculum convertMultipartFileToCurriculum(MultipartFile file, Long studentId)
@@ -59,19 +67,22 @@ public class CurriculumService {
     }
 
     public List<CurriculumDTO> mapToCurriculumDTOList (List<OfferApplication> offerApplicationList) {
-        Assert.isTrue(!offerApplicationList.isEmpty(), "Erreur: La liste d'offre ne peut pas être vide");
+        Assert.isTrue(!offerApplicationList.isEmpty(), "La liste d'offre ne peut pas être vide");
         List<CurriculumDTO> curriculumDTOList = new ArrayList<>();
         Student student;
         CurriculumDTO curriculumDTO = new CurriculumDTO();
         Curriculum curriculum;
+        OfferDTO offerDto;
         for (OfferApplication offerApp : offerApplicationList) {
             curriculum = offerApp.getCurriculum();
             student = curriculum.getStudent();
+            offerDto = offerService.mapToOfferDTO(offerApp.getOffer());
 
             curriculumDTO.setFirstName(student.getFirstName());
             curriculumDTO.setLastName(student.getLastName());
             curriculumDTO.setFileName(curriculum.getName());
             curriculumDTO.setFile(curriculum.getData());
+            curriculumDTO.setOfferDTO(offerDto);
             curriculumDTOList.add(curriculumDTO);
         }
         return curriculumDTOList;

@@ -27,8 +27,8 @@ public class OfferApplicationService {
     }
 
     public Optional<OfferApplication> create(Long idOffer, Long idCurriculum) throws StudentAlreadyAppliedToOfferException, IdDoesNotExistException, IllegalArgumentException {
-        Assert.isTrue(idOffer != null, "Erreur: Le id de l'offre ne peut pas être null");
-        Assert.isTrue(idCurriculum != null, "Erreur: Le id du curriculum ne peut pas être null");
+        Assert.isTrue(idOffer != null, "Le id de l'offre ne peut pas être null");
+        Assert.isTrue(idCurriculum != null, "Le id du curriculum ne peut pas être null");
         Optional<Offer> offer = offerService.findOfferById(idOffer);
         Curriculum curriculum = curriculumService.getOneByID(idCurriculum);
 
@@ -44,7 +44,7 @@ public class OfferApplicationService {
     }
 
     public List<OfferApplication> getAllByOfferCreatorEmail(String email) throws EmailDoesNotExistException {
-        Assert.isTrue(email != null, "Erreur: Le courriel ne peut pas être null");
+        Assert.isTrue(email != null, "Le courriel ne peut pas être null");
         if (isEmailInvalid(email)) {
             throw new EmailDoesNotExistException();
         }
