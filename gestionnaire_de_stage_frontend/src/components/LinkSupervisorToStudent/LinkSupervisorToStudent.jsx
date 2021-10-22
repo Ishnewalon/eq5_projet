@@ -1,8 +1,10 @@
-import {Component} from "react";
-import {getCurriculumWithValidCV} from "../../services/curriculum-service";
+import React, {Component} from "react";
+import {getCurriculumWithValidCV, validateCV} from "../../services/curriculum-service";
 import ListStudentValidCVView from "./ListStudentValidCVView/ListStudentValidCVView";
 import ListSupervisorsList from "./ListSupervisorsList/ListSupervisorsList";
 import authService from "../../services/auth-service";
+import Swal from "sweetalert2";
+import {swalErr} from "../../utility";
 
 export default class LinkSupervisorToStudent extends Component {
 
@@ -11,6 +13,7 @@ export default class LinkSupervisorToStudent extends Component {
         this.state = {
             cvList: [],
             supervisorList: [],
+            supervisorID: '',
         };
 
         getCurriculumWithValidCV()
@@ -27,6 +30,26 @@ export default class LinkSupervisorToStudent extends Component {
             });
     }
 
+    assign = (idStudent) => e => {
+        e.preventDefault();
+        authService.assign(idStudent, this.state.supervisorID)
+            .then(responseMessage => {
+                Swal.fire({title: responseMessage.message, icon: 'success'})
+                    .then();
+                // .then(v => this.refresh());
+            })
+            .catch(e => {
+                console.trace(e)
+                swalErr(e).fire({}).then();
+            });
+
+    }
+
+    handleChange = input => e => {
+        e.preventDefault()
+        this.setState({[input]: e.target.value});
+    }
+
     render() {
         return (
             <div className="container">
@@ -37,24 +60,20 @@ export default class LinkSupervisorToStudent extends Component {
                         <li ><ListStudentValidCVView key={index} student={cv.student} /></li>
                     </ul>
 
-                    <div>
-                        <select>
-                            {this.state.supervisorList.map((supervisor, index) =>
-                            <ListSupervisorsList key={index} supervisor={supervisor}/>
+                    <div className="text-center">
+                        <select onChange={this.handleChange('supervisorID')}>
+                            {this.state.supervisorList.map((supervisor) =>
+                                    <option value={supervisor.id}>{supervisor.lastName}, {supervisor.firstName}</option>
                             )}
                         </select>
                     </div>
 
-                  {/* <div className={`${valid ? 'border-left border-success' : 'border-left border-danger'}`}>
-                        <div className="d-flex justify-content-between align-items-center">
-                            <button id="validateBtn" className="btn btn-success fw-bold text-white w-50"
-                                    onClick={() => this.valideCV(cv.id, true)}>Valide
-                            </button>
-                            <button id="invalidateBtn" className="btn btn-danger fw-bold text-white w-50"
-                                    onClick={() => this.valideCV(cv.id, false)}>Invalide
-                            </button>
-                        </div>
-                    </div>*/}
+                       <div className="form-group text-center">
+                           <label/>
+                           <div>
+                               <button className="btn btn-success" onClick={this.assign(cv.student.id)}>Accepter</button>
+                           </div>
+                       </div>
                 </div>)}
             </div>
         )

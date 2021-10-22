@@ -6,9 +6,9 @@ export default class ListSupervisorsList extends Component {
    }
 
     render() {
-       const {supervisor} = this.props
+       const {key,supervisor} = this.props
         return (
-                <option value={supervisor.id}>{supervisor.lastName}, {supervisor.firstName}</option>
+                <option value={key}>{supervisor.lastName}, {supervisor.firstName}</option>
         );
     }
 }

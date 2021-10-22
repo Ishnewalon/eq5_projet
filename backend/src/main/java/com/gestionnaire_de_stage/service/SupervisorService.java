@@ -46,6 +46,7 @@ public class SupervisorService {
         if (supervisor.getStudentList() == null)
             supervisor.setStudentList(new ArrayList<>());
         supervisor.getStudentList().add(student);
+        supervisorRepository.save(supervisor);
         return true;
     }
 

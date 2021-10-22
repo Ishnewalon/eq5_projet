@@ -101,6 +101,16 @@ class AuthService {
         return await response.json();
     }
 
+    async assign(idStudent, idSupervisor) {
+        let obj = {
+            idStudent,
+            idSupervisor
+        };
+        const response = await fetch(`${urlBackend}/supervisor/assign/student`,
+            requestInit(methods.POST, obj));
+        return await response.json();
+    }
+
     logOut() {
         this.user = null
         this._isAuthenticated = false
