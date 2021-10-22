@@ -153,7 +153,6 @@ public class SupervisorControllerTest {
     public void testAssign_withInvalidSupervisorAndStudent() throws Exception {
         AssignDto assignDto = new AssignDto(1L, 2L);
         when(supervisorService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
-//        when(supervisorService.assign(any(), any())).thenReturn(true);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/supervisor/assign/student")
@@ -165,8 +164,6 @@ public class SupervisorControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Erreur: Inexistant");
     }
-
-
 
     @Test
     public void testSupervisorLogin_withInvalidEntries() throws Exception {
