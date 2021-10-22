@@ -33,7 +33,7 @@ export default class StepCegep extends Component {
                 <div className="form-group text-center">
                     <label/>
                     <div>
-                        <button className="btn btn-primary" type={"button"} onClick={this.previous}>Precedent</button>
+                        <button className="btn btn-primary" type={"button"} onClick={this.previous}>Précédent</button>
                         <button className="btn btn-primary" type={"button"} onClick={() => {
                             this.continue(Step.GENERAL)
                         }}>Suivant

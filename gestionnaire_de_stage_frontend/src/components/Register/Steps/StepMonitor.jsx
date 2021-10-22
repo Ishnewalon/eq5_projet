@@ -83,7 +83,7 @@ export default class StepMonitor extends Component {
             <div className="form-group text-center">
                 <label/>
                 <div>
-                    <button className="btn btn-primary" type={"button"} onClick={this.previous}>Precedent
+                    <button className="btn btn-primary" type={"button"} onClick={this.previous}>Précédent
                     </button>
                     <button className="btn btn-primary" type={"button"} onClick={() => {
                         if (this.verification()) this.continue(Step.GENERAL)
