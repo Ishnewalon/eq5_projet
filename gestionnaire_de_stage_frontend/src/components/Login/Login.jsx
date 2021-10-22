@@ -25,7 +25,7 @@ export default class Login extends Component {
         e.preventDefault()
         this.service.signIn(this.state.userType, this.state.email, this.state.password).then(() => {
             if (this.service.isAuthenticated())
-                this.props.history.push('/dashboard')
+                this.props.history.push('/')
         })
     }
 

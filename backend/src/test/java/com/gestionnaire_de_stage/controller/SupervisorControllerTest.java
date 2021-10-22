@@ -1,10 +1,16 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.dto.AssignDto;
+import com.gestionnaire_de_stage.dto.ValidationCurriculum;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
+import com.gestionnaire_de_stage.service.StudentService;
 import com.gestionnaire_de_stage.service.SupervisorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +23,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 
@@ -32,7 +42,11 @@ public class SupervisorControllerTest {
     SupervisorService supervisorService;
 
     @MockBean
+    StudentService studentService;
+
+    @MockBean
     SupervisorRepository supervisorRepository;
+
 
     private final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -120,6 +134,38 @@ public class SupervisorControllerTest {
     }
 
     @Test
+    public void testAssign() throws Exception {
+        AssignDto assignDto = new AssignDto(1L, 2L);
+        when(supervisorService.assign(any(), any())).thenReturn(true);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/supervisor/assign/student")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(assignDto)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Assignement fait!");
+    }
+
+    @Test
+    public void testAssign_withInvalidSupervisorAndStudent() throws Exception {
+        AssignDto assignDto = new AssignDto(1L, 2L);
+        when(supervisorService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/supervisor/assign/student")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(assignDto)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Erreur: Inexistant");
+    }
+
+    @Test
     public void testSupervisorLogin_withInvalidEntries() throws Exception {
         String email = "sinl@gmail.com";
         String password = "weightofworld";
@@ -133,6 +179,21 @@ public class SupervisorControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
+    }
+
+    @Test
+    public void testGetAllSupervisor() throws Exception {
+        List<Supervisor> list = Arrays.asList(new Supervisor(), new Supervisor());
+        when(supervisorService.getAll()).thenReturn(Arrays.asList(new Supervisor(), new Supervisor()));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        var actual = mvcResult.getResponse().getContentAsString();
+        assertThat(new ObjectMapper().readValue(actual,
+                new TypeReference<List<Supervisor>>() {
+                })).isEqualTo(list);
+
     }
 
     private Supervisor getDummySupervisor() {

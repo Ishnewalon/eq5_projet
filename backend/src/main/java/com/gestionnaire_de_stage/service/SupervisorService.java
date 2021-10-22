@@ -3,11 +3,13 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,6 +40,14 @@ public class SupervisorService {
 
     public List<Supervisor> getAll() {
         return supervisorRepository.findAll();
+    }
+
+    public boolean assign(Student student, Supervisor supervisor){
+        if (supervisor.getStudentList() == null)
+            supervisor.setStudentList(new ArrayList<>());
+        supervisor.getStudentList().add(student);
+        supervisorRepository.save(supervisor);
+        return true;
     }
 
     public Supervisor update(Supervisor supervisor, Long aLong) throws IdDoesNotExistException {

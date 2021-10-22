@@ -98,6 +98,10 @@ public class CurriculumService {
         return curriculumRepository.findAllByIsValidIsNull();
     }
 
+    public List<Curriculum> findAllCurriculumValidated() {
+        return curriculumRepository.findAllByIsValidIsTrue();
+    }
+
     public boolean validate(Long idCurriculum, boolean valid) throws
             IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
         Assert.isTrue(idCurriculum != null, "Le id du curriculum ne peut pas être null");

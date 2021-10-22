@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface CurriculumRepository extends JpaRepository<Curriculum, Long> {
     List<Curriculum> findAllByIsValidIsNull();
+    List<Curriculum> findAllByIsValidIsTrue();
 
 }

@@ -22,6 +22,11 @@ export async function getCurriculumWithInvalidCV() {
     return await response.json();
 }
 
+export async function getCurriculumWithValidCV() {
+    const response = await fetch(`${urlBackend}/curriculum/valid/students`, requestInit(methods.GET));
+    return await response.json();
+}
+
 export async function validateCV(id, valid) {
     let obj = {
         id,
@@ -40,3 +45,7 @@ export async function downloadCV(id) {
     }
     return (await fetch(`${urlBackend}/curriculum/download/${id}`)).blob();
 }
+
+
+
+

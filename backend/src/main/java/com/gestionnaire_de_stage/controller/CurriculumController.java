@@ -55,6 +55,12 @@ public class CurriculumController {
         return ResponseEntity.ok(curriculumList);
     }
 
+    @GetMapping("/valid/students")
+    public ResponseEntity<?> getAllCurriculumValidated() {
+        List<Curriculum> curriculumList = curriculumService.findAllCurriculumValidated();
+        return ResponseEntity.ok(curriculumList);
+    }
+
     @PostMapping("/validate")
     public ResponseEntity<?> validate(@RequestBody ValidationCurriculum validationCurriculum) {
         try {
