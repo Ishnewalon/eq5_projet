@@ -158,17 +158,17 @@ class OfferApplicationServiceTest {
 
     private List<OfferApplication> getDummyOfferAppList() {
         List<OfferApplication> offerApplicationList = new ArrayList<>();
-        OfferApplication dummyOfferApplicationDTO = new OfferApplication();
-        dummyOfferApplicationDTO.setOffer(getDummyOffer());
-        dummyOfferApplicationDTO.setCurriculum(getDummyCurriculum());
-        dummyOfferApplicationDTO.setId(1L);
-        offerApplicationList.add(dummyOfferApplicationDTO);
+        OfferApplication dummyOfferApplication = new OfferApplication();
+        dummyOfferApplication.setOffer(getDummyOffer());
+        dummyOfferApplication.setCurriculum(new Curriculum());
+        dummyOfferApplication.setId(1L);
+        offerApplicationList.add(dummyOfferApplication);
 
-        dummyOfferApplicationDTO.setId(2L);
-        offerApplicationList.add(dummyOfferApplicationDTO);
+        dummyOfferApplication.setId(2L);
+        offerApplicationList.add(dummyOfferApplication);
 
-        dummyOfferApplicationDTO.setId(3L);
-        offerApplicationList.add(dummyOfferApplicationDTO);
+        dummyOfferApplication.setId(3L);
+        offerApplicationList.add(dummyOfferApplication);
 
         return offerApplicationList;
     }

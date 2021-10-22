@@ -18,14 +18,12 @@ import java.util.List;
 public class OfferApplicationService {
 
     private final OfferApplicationRepository offerApplicationRepository;
-    private final CurriculumService curriculumService;
     private final OfferService offerService;
     private final StudentService studentService;
 
 
     public OfferApplicationService(OfferApplicationRepository offerApplicationRepository, OfferService offerService, StudentService studentService) {
         this.offerApplicationRepository = offerApplicationRepository;
-        this.curriculumService = curriculumService;
         this.offerService = offerService;
         this.studentService = studentService;
     }
