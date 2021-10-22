@@ -105,6 +105,8 @@ class AuthService {
         if (this.user)
             return this.user.id
     }
+
+
 }
 
 const authService = new AuthService();
