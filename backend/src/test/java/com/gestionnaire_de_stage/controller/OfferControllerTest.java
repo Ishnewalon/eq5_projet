@@ -8,7 +8,6 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.repository.OfferRepository;
-import com.gestionnaire_de_stage.service.ManagerService;
 import com.gestionnaire_de_stage.service.MonitorService;
 import com.gestionnaire_de_stage.service.OfferService;
 import org.junit.jupiter.api.Test;
@@ -233,7 +232,7 @@ public class OfferControllerTest {
         String department = "myDepartment";
         List<Offer> dummyArrayOffer = getDummyArrayOffer();
         List<OfferDTO> mappedDTOS = offerService.mapArrayToOfferDTO(dummyArrayOffer);
-        when(offerRepository.findAllByDepartment(any())).thenReturn(dummyArrayOffer);
+        when(offerRepository.findAllByDepartmentAndValidIsTrue(any())).thenReturn(dummyArrayOffer);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get(String.format("/offers/%s", department))

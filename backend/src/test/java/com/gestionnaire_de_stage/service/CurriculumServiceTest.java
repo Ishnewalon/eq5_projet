@@ -82,7 +82,7 @@ public class CurriculumServiceTest {
     }
 
     @Test
-    public void testCreate_withValidCurriculum() {
+    public void testCreate_withValidCurriculum() throws IdDoesNotExistException {
         Curriculum dummyCurriculum = getDummyCurriculum();
         when(curriculumRepository.save(any())).thenReturn(dummyCurriculum);
 

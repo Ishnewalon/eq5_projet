@@ -1,9 +1,11 @@
 package com.gestionnaire_de_stage.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -25,4 +27,7 @@ public class Student extends User {
 
     private String postalCode;
 
+    @OneToOne
+    @JsonIgnore
+    private Curriculum principalCurriculum;
 }

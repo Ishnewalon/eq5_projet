@@ -47,9 +47,9 @@ export default class ValiderCv extends Component {
             <div className='container'>
                 <h2 className="text-center">Liste des étudiants</h2>
                 {this.state.curriculumList.map((cv, index) =>
-                    <div>
+                    <div key={index}>
                         <ul>
-                            <li key={index}><ListStudentView cv={cv}/></li>
+                            <li><ListStudentView cv={cv}/></li>
                         </ul>
                         <div className={`${valid ? 'border-left border-success' : 'border-left border-danger'}`}>
                             <div className="d-flex justify-content-between align-items-center">

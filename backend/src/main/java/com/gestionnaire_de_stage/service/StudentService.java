@@ -3,20 +3,25 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
+import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
+import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final CurriculumRepository curriculumRepository;
 
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository, CurriculumRepository curriculumRepository) {
         this.studentRepository = studentRepository;
+        this.curriculumRepository = curriculumRepository;
     }
 
     public Student create(Student student) throws StudentAlreadyExistsException {
@@ -64,6 +69,21 @@ public class StudentService {
             throw new EmailAndPasswordDoesNotExistException();
         }
         return studentRepository.findStudentByEmailAndPassword(email, password);
+    }
+
+    public Student setPrincipalCurriculum(Student receivedStudent, Long idCurriculum) throws IdDoesNotExistException {
+        Assert.isTrue(receivedStudent != null, "L'étudiant est null");
+        Assert.isTrue(idCurriculum != null, "Le id curriculum est null");
+
+        Optional<Student> optionalStudent = studentRepository.findById(receivedStudent.getId());
+        Optional<Curriculum> curriculum = curriculumRepository.findById(idCurriculum);
+        if (optionalStudent.isEmpty() || curriculum.isEmpty())
+            throw new IdDoesNotExistException();
+
+        Student student = optionalStudent.get();
+
+        student.setPrincipalCurriculum(curriculum.get());
+        return studentRepository.save(student);
     }
 
     private boolean isNotValid(Student student) {

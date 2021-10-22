@@ -30,29 +30,28 @@ class OfferApplicationServiceTest {
     @Mock
     private OfferService offerService;
     @Mock
-    private CurriculumService curriculumService;
+    private StudentService studentService;
     @Mock
     private OfferApplicationRepository offerApplicationRepository;
 
     @Test
-    void testCreate() throws StudentAlreadyAppliedToOfferException, IdDoesNotExistException {
+    void testCreate() throws Exception {
         OfferApplication dummyOfferApplication = getDummyOfferApp();
-        Curriculum dummyCurriculum = getDummyCurriculum();
+        Student dummyStudent = getDummyStudent();
         Offer dummyOffer = getDummyOffer();
         when(offerApplicationRepository.save(any())).thenReturn(dummyOfferApplication);
-        when(curriculumService.getOneByID(any())).thenReturn(dummyCurriculum);
+        when(studentService.getOneByID(any())).thenReturn(dummyStudent);
         when(offerService.findOfferById(any())).thenReturn(Optional.of(dummyOffer));
 
-        Optional<OfferApplication> actualOfferApplication = offerApplicationService.create(dummyOffer.getId(), dummyCurriculum.getId());
+        OfferApplication actualOfferApplication = offerApplicationService.create(dummyOffer.getId(), dummyStudent.getId());
 
-        assertThat(actualOfferApplication).isPresent();
-        assertThat(actualOfferApplication.get()).isEqualTo(dummyOfferApplication);
+        assertThat(actualOfferApplication).isEqualTo(dummyOfferApplication);
     }
 
     @Test
-    void testCreate_withCurriculumNonExistant() throws Exception {
+    void testCreate_withStudentNonExistant() throws Exception {
         Offer dummyOffer = getDummyOffer();
-        when(curriculumService.getOneByID(any())).thenReturn(null);
+        when(studentService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
         when(offerService.findOfferById(any())).thenReturn(Optional.of(getDummyOffer()));
 
         assertThrows(IdDoesNotExistException.class,
@@ -61,12 +60,12 @@ class OfferApplicationServiceTest {
 
     @Test
     void testCreate_withOfferNonExistant() throws Exception {
-        Curriculum dummyCurriculum = getDummyCurriculum();
-        when(curriculumService.getOneByID(any())).thenReturn(dummyCurriculum);
+        Student dummyStudent = getDummyStudent();
+        when(studentService.getOneByID(any())).thenReturn(dummyStudent);
         when(offerService.findOfferById(any())).thenReturn(Optional.empty());
 
         assertThrows(IdDoesNotExistException.class,
-                () -> offerApplicationService.create(34L, dummyCurriculum.getId()));
+                () -> offerApplicationService.create(34L, dummyStudent.getId()));
     }
 
     @Test
@@ -74,27 +73,27 @@ class OfferApplicationServiceTest {
         Offer dummyOffer = getDummyOffer();
 
         assertThrows(IllegalArgumentException.class,
-                () -> offerApplicationService.create(dummyOffer.getId(), null));
+                () -> offerApplicationService.create(null, dummyOffer.getId()));
     }
 
     @Test
     void testCreate_withIdCurriculumNull() {
-        Curriculum dummyCurriculum = getDummyCurriculum();
+        Student dummyStudent = getDummyStudent();
 
         assertThrows(IllegalArgumentException.class,
-                () -> offerApplicationService.create(null, dummyCurriculum.getId()));
+                () -> offerApplicationService.create(null, dummyStudent.getId()));
     }
 
     @Test
     void testCreate_withStudentAlreadyApplied() throws Exception {
         Offer dummyOffer = getDummyOffer();
-        Curriculum dummyCurriculum = getDummyCurriculum();
-        when(curriculumService.getOneByID(any())).thenReturn(dummyCurriculum);
+        Student dummyStudent = getDummyStudent();
+        when(studentService.getOneByID(any())).thenReturn(dummyStudent);
         when(offerService.findOfferById(any())).thenReturn(Optional.of(dummyOffer));
         when(offerApplicationRepository.existsByOfferAndCurriculum(any(), any())).thenReturn(true);
 
         assertThrows(StudentAlreadyAppliedToOfferException.class,
-                () -> offerApplicationService.create(dummyOffer.getId(), dummyCurriculum.getId()));
+                () -> offerApplicationService.create(dummyOffer.getId(), dummyStudent.getId()));
     }
 
     @Test
@@ -128,7 +127,7 @@ class OfferApplicationServiceTest {
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();
         offerApplicationDTO.setOffer(getDummyOffer());
-        offerApplicationDTO.setCurriculum(getDummyCurriculum());
+        offerApplicationDTO.setCurriculum(new Curriculum());
         offerApplicationDTO.setId(1L);
 
         return offerApplicationDTO;
@@ -145,29 +144,32 @@ class OfferApplicationServiceTest {
         return dummyOffer;
     }
 
-    private Curriculum getDummyCurriculum() {
-        Curriculum dummyCurriculum = new Curriculum();
-
-        dummyCurriculum.setId(1L);
-        dummyCurriculum.setData("some xml".getBytes());
-        dummyCurriculum.setName("fileeeename");
-        dummyCurriculum.setStudent(new Student());
-        return dummyCurriculum;
+    private Student getDummyStudent() {
+        Student dummyStudent = new Student();
+        dummyStudent.setId(1L);
+        dummyStudent.setLastName("Candle");
+        dummyStudent.setFirstName("Tea");
+        dummyStudent.setEmail("cant@outlook.com");
+        dummyStudent.setPassword("cantPass");
+        dummyStudent.setDepartment("info");
+        dummyStudent.setMatricule("4673943");
+        dummyStudent.setPrincipalCurriculum(new Curriculum());
+        return dummyStudent;
     }
 
     private List<OfferApplication> getDummyOfferAppList() {
         List<OfferApplication> offerApplicationList = new ArrayList<>();
-        OfferApplication dummyOfferApplicationDTO = new OfferApplication();
-        dummyOfferApplicationDTO.setOffer(getDummyOffer());
-        dummyOfferApplicationDTO.setCurriculum(getDummyCurriculum());
-        dummyOfferApplicationDTO.setId(1L);
-        offerApplicationList.add(dummyOfferApplicationDTO);
+        OfferApplication dummyOfferApplication = new OfferApplication();
+        dummyOfferApplication.setOffer(getDummyOffer());
+        dummyOfferApplication.setCurriculum(new Curriculum());
+        dummyOfferApplication.setId(1L);
+        offerApplicationList.add(dummyOfferApplication);
 
-        dummyOfferApplicationDTO.setId(2L);
-        offerApplicationList.add(dummyOfferApplicationDTO);
+        dummyOfferApplication.setId(2L);
+        offerApplicationList.add(dummyOfferApplication);
 
-        dummyOfferApplicationDTO.setId(3L);
-        offerApplicationList.add(dummyOfferApplicationDTO);
+        dummyOfferApplication.setId(3L);
+        offerApplicationList.add(dummyOfferApplication);
 
         return offerApplicationList;
     }

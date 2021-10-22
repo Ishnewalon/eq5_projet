@@ -3,7 +3,9 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
+import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
+import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -27,6 +30,8 @@ public class StudentServiceTest {
 
     @Mock
     StudentRepository studentRepository;
+    @Mock
+    CurriculumRepository curriculumRepository;
 
     @Test
     public void testCreate_withValidStudent() throws Exception {
@@ -188,6 +193,7 @@ public class StudentServiceTest {
                 () -> studentService.getOneByEmailAndPassword(dummyStudent.getEmail(), dummyStudent.getPassword()));
     }
 
+
     @Test
     public void testGetAllStudents() {
         when(studentRepository.findAll()).thenReturn(getDummyStudentList());
@@ -195,6 +201,70 @@ public class StudentServiceTest {
         List<Student> studentList = studentService.getAll();
 
         assertThat(studentList.size()).isEqualTo(3);
+    }
+
+    @Test
+    void testSetPrincipalCurriculum() throws IdDoesNotExistException {
+        Curriculum dummyCurriculumOriginal = getDummyCurriculum();
+        Curriculum dummyCurriculum = getDummyCurriculum();
+        Student dummyStudent = getDummyStudent();
+        dummyCurriculum.setStudent(dummyStudent);
+        dummyCurriculumOriginal.setStudent(dummyStudent);
+        dummyStudent.setPrincipalCurriculum(dummyCurriculumOriginal);
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.of(dummyStudent));
+        when(studentRepository.save(any())).thenReturn(dummyStudent);
+        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(dummyCurriculum));
+
+        Student actualStudent = studentService.setPrincipalCurriculum(dummyStudent, dummyCurriculum.getId());
+
+        assertThat(actualStudent.getPrincipalCurriculum()).isEqualTo(dummyCurriculum);
+    }
+
+    @Test
+    void testSetPrincipalCurriculum_withStudentNull() {
+        Curriculum dummyCurriculum = getDummyCurriculum();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> studentService.setPrincipalCurriculum(null, dummyCurriculum.getId()));
+    }
+
+    @Test
+    void testSetPrincipalCurriculum_withIdCurriculumNull() {
+        Student dummyStudent = getDummyStudent();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> studentService.setPrincipalCurriculum(dummyStudent, null));
+    }
+
+    @Test
+    void testSetPrincipalCurriculum_CurriculumNonExistant() {
+        Curriculum dummyCurriculumOriginal = getDummyCurriculum();
+        Curriculum dummyCurriculum = getDummyCurriculum();
+        Student dummyStudent = getDummyStudent();
+        dummyCurriculum.setStudent(dummyStudent);
+        dummyCurriculumOriginal.setStudent(dummyStudent);
+        dummyStudent.setPrincipalCurriculum(dummyCurriculumOriginal);
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.of(dummyStudent));
+        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> studentService.setPrincipalCurriculum(dummyStudent, dummyCurriculum.getId()));
+    }
+
+    @Test
+    void testSetPrincipalCurriculum_StudentNonExistant() {
+        Curriculum dummyCurriculumOriginal = getDummyCurriculum();
+        Curriculum dummyCurriculum = getDummyCurriculum();
+        Student dummyStudent = getDummyStudent();
+        dummyCurriculum.setStudent(dummyStudent);
+        dummyCurriculumOriginal.setStudent(dummyStudent);
+        dummyStudent.setPrincipalCurriculum(dummyCurriculumOriginal);
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(dummyCurriculum));
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> studentService.setPrincipalCurriculum(dummyStudent, dummyCurriculum.getId()));
+
     }
 
     private Student getDummyStudent() {
@@ -207,6 +277,16 @@ public class StudentServiceTest {
         dummyStudent.setDepartment("info");
         dummyStudent.setMatricule("4673943");
         return dummyStudent;
+    }
+
+
+    private Curriculum getDummyCurriculum() {
+        Curriculum curriculum = new Curriculum();
+        curriculum.setId(1L);
+        curriculum.setData("test".getBytes());
+        curriculum.setName("filename");
+        curriculum.setName("pdffff");
+        return curriculum;
     }
 
     private List<Student> getDummyStudentList() {

@@ -10,7 +10,7 @@ public class OfferAppDTO {
     @Min(value = 1, message = "Le id de l'offre  n'est pas positif.")
     @NotNull(message = "Le id de l'offre ne peut pas être null")
     private Long idOffer;
-    @Min(value = 1, message = "Le id du curriculum n'est pas positif.")
-    @NotNull(message = "Le id du curriculum ne peut pas être null")
-    private Long idCurriculum;
+    @Min(value = 1, message = "Le id de l'étudiant n'est pas positif.")
+    @NotNull(message = "Le id de l'étudiant ne peut pas être null")
+    private Long idStudent;
 }
