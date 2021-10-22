@@ -1,8 +1,10 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import com.gestionnaire_de_stage.service.SupervisorService;
@@ -16,6 +18,9 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -133,6 +138,21 @@ public class SupervisorControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
+    }
+
+    @Test
+    public void testGetAllSupervisor() throws Exception {
+        List<Supervisor> list = Arrays.asList(new Supervisor(), new Supervisor());
+        when(supervisorService.getAll()).thenReturn(Arrays.asList(new Supervisor(), new Supervisor()));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        var actual = mvcResult.getResponse().getContentAsString();
+        assertThat(new ObjectMapper().readValue(actual,
+                new TypeReference<List<Supervisor>>() {
+                })).isEqualTo(list);
+
     }
 
     private Supervisor getDummySupervisor() {

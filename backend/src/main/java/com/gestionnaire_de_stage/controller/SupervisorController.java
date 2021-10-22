@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/supervisor")
@@ -52,5 +54,11 @@ public class SupervisorController {
                     .body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
         }
         return ResponseEntity.ok(supervisor);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllSupervisor() {
+        List<Supervisor> supervisorList = supervisorService.getAll();
+        return ResponseEntity.ok(supervisorList);
     }
 }
