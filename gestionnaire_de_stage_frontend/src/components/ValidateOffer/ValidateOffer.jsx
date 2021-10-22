@@ -24,7 +24,7 @@ export default class ValidateOffer extends Component{
                     return;
                 }
                 this.setState({valid})
-                Swal.fire(valid ? 'Offre validé!' : 'Offre invalidé!', '', valid ? 'success': 'error').then();
+                Swal.fire(valid ? 'Offre validée!' : 'Offre invalidée!', '', valid ? 'success': 'error').then();
             })
             .catch(e => {
                 console.trace(e)

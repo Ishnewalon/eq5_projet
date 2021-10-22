@@ -30,7 +30,7 @@ export default class ListStudentView extends Component {
             a.download = filename;
             a.click();
             URL.revokeObjectURL(url)
-            toast.fire({title: 'Téléchargé'}).then()
+            toast.fire({title: 'Téléchargement en cours'}).then()
         });
     }
 
