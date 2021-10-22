@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.OfferDTO;
+import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Offer;
@@ -70,7 +71,7 @@ public class OfferControllerTest {
     }
 
     @Test
-    public void testMonitorOfferCreate_withNullEntry() throws Exception {
+    public void testOfferCreate_withNullEntry() throws Exception {
         when(offerService.mapToOffer(any())).thenReturn(new Offer());
         when(offerService.create(any())).thenThrow(new IllegalArgumentException("Offre est null"));
 
@@ -86,7 +87,7 @@ public class OfferControllerTest {
     }
 
     @Test
-    public void testMonitorOfferCreate_withInvalidEmail() throws Exception {
+    public void testOfferCreate_withNullEmail() throws Exception {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
@@ -105,7 +106,7 @@ public class OfferControllerTest {
     }
 
     @Test
-    public void testMonitorOfferCreate_withAlreadyExistingOffer() throws Exception {
+    public void testOfferCreate_withAlreadyExistingOffer() throws Exception {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
@@ -121,6 +122,25 @@ public class OfferControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Offre existe déjà");
+    }
+
+    @Test
+    public void testOfferCreate_withInvalidEmail() throws Exception {
+        OfferDTO dummyOfferDTO = getDummyOfferDTO();
+        dummyOffer = getDummyOffer();
+        dummyOffer.setId(null);
+        when(offerService.mapToOffer(dummyOfferDTO)).thenReturn(dummyOffer);
+        when(monitorService.getOneByEmail(any())).thenThrow(new EmailDoesNotExistException());
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/offers/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(dummyOfferDTO)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Le courriel n'existe pas");
     }
 
     @Test
