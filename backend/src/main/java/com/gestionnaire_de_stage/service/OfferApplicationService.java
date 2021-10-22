@@ -44,7 +44,7 @@ public class OfferApplicationService {
     }
 
     public List<OfferApplication> getAllByOfferCreatorEmail(String email) throws EmailDoesNotExistException {
-        Assert.isTrue(email != null, "Le courriel est null");
+        Assert.isTrue(email != null, "Erreur: Le courriel ne peut pas être null");
         if (isEmailInvalid(email)) {
             throw new EmailDoesNotExistException();
         }

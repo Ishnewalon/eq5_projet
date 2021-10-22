@@ -50,19 +50,23 @@ public class OfferApplicationController {
                 .body(new ResponseMessage("Succes: candidature envoyer!"));
     }
 
-/*    @GetMapping("/applicants/{email}")
+    @GetMapping("/applicants/{email}")
     public ResponseEntity<?> viewApplicantList(@PathVariable String email) {
         List<OfferApplication> offerApplicationList;
+        List<CurriculumDTO> curriculumDTOList;
         try {
             offerApplicationList = offerApplicationService.getAllByOfferCreatorEmail(email);
+            curriculumDTOList = curriculumService.mapToCurriculumDTOList(offerApplicationList);
         } catch (EmailDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Erreur: Le courriel n'existe pas");
+        } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
                     .body(e.getMessage());
         }
-        List<CurriculumDTO> curriculumDTOList = curriculumService.mapToDTO(offerApplicationList);
-
         return ResponseEntity
                 .ok(curriculumDTOList);
-    }*/
+    }
 }

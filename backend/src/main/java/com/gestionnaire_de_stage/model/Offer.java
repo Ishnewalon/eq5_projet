@@ -53,7 +53,8 @@ public class Offer {
     @Min(value = 0, message = "Le salaire ne peut être négatif.")
     private double salary;
 
-    private boolean valid;
+    private Boolean valid;
+
 
     public String getCreatorEmail() {
         if (creator == null)

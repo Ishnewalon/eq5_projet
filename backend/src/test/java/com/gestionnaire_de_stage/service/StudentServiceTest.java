@@ -16,6 +16,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -185,6 +186,15 @@ public class StudentServiceTest {
 
         assertThrows(EmailAndPasswordDoesNotExistException.class,
                 () -> studentService.getOneByEmailAndPassword(dummyStudent.getEmail(), dummyStudent.getPassword()));
+    }
+
+    @Test
+    public void testGetAllStudents() {
+        when(studentRepository.findAll()).thenReturn(getDummyStudentList());
+
+        List<Student> studentList = studentService.getAll();
+
+        assertThat(studentList.size()).isEqualTo(3);
     }
 
     private Student getDummyStudent() {

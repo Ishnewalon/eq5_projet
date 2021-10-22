@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
+import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.OfferApplication;
@@ -14,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CurriculumService {
@@ -56,7 +59,7 @@ public class CurriculumService {
     }
 
     public List<CurriculumDTO> mapToCurriculumDTOList (List<OfferApplication> offerApplicationList) {
-        Assert.isTrue(!offerApplicationList.isEmpty(), "La liste d'offre ne peut pas être vide");
+        Assert.isTrue(!offerApplicationList.isEmpty(), "Erreur: La liste d'offre ne peut pas être vide");
         List<CurriculumDTO> curriculumDTOList = new ArrayList<>();
         Student student;
         CurriculumDTO curriculumDTO = new CurriculumDTO();
@@ -76,5 +79,35 @@ public class CurriculumService {
 
     public List<Curriculum> getAll() {
         return curriculumRepository.findAll();
+    }
+
+    public List<Curriculum> findAllCurriculumNotValidatedYet() {
+        return curriculumRepository.findAllByIsValidIsNull();
+    }
+
+    public boolean validate(Long idCurriculum, boolean valid) throws
+            IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
+        Assert.isTrue(idCurriculum != null, "Le id du curriculum ne peut pas être null");
+
+        Optional<Curriculum> curriculumOptional = curriculumRepository.findById(idCurriculum);
+
+        if (curriculumOptional.isEmpty())
+            throw new IdDoesNotExistException();
+        if (curriculumOptional.get().getIsValid() != null)
+            throw new CurriculumAlreadyTreatedException();
+
+        Curriculum curriculum = curriculumOptional.get();
+        curriculum.setIsValid(valid);
+        curriculumRepository.save(curriculum);
+        return true;
+    }
+
+    public Curriculum findOneById(Long idCurriculum) throws IllegalArgumentException, IdDoesNotExistException {
+        Assert.isTrue(idCurriculum != null, "Le id du curriculum ne peut pas être null");
+        Optional<Curriculum> byId = curriculumRepository.findById(idCurriculum);
+        if (byId.isEmpty())
+            throw new IdDoesNotExistException();
+
+        return byId.get();
     }
 }
