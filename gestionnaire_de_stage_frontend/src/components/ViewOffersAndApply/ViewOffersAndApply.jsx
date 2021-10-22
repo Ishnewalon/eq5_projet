@@ -18,6 +18,7 @@ export default class ViewOffersAndApply extends Component {
     _getAllOffers() {
         this.service.getAllOffers()
             .then(offers => {
+                console.log(offers)
                 this.setState({offers});
             }).catch(e => {
                 console.trace(e);

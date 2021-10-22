@@ -19,6 +19,18 @@ class OfferAppService {
         });
     }
 
+    async getAllApplicants(email) {
+        return await fetch(`${urlBackend}/applications/applicants/${email}`, requestInit(methods.GET))
+            .then(res => {
+                if(res.status === 400) {
+                    res.json().then(err => swalErr().fire({text: err.message}))
+                    return Promise.any([]);
+                }else{
+                    return res.json();
+                }
+            });
+    }
+
     _isApplicationValid(offerApp) {
         return offerApp instanceof OfferApp &&
             offerApp.idOffer &&
