@@ -96,6 +96,11 @@ class AuthService {
         )
     }
 
+     async getSupervisors() {
+        const response = await fetch(`${urlBackend}/supervisor`, requestInit(methods.GET));
+        return await response.json();
+    }
+
     logOut() {
         this.user = null
         this._isAuthenticated = false
