@@ -21,17 +21,15 @@ export default class ViewOffersAndApply extends Component {
                 console.log(offers)
                 this.setState({offers});
             }).catch(e => {
-                console.trace(e);
-            });
+            console.trace(e);
+        });
     }
 
     _extractRelevantOffers(offers) {
         let relOffers = [];
         offers.map(offer => {
-            if(offer.department === this.department &&
-                offer.valid){
+            if (offer.department === AuthService.user.department)
                 relOffers.push(offer);
-            }
         });
         return relOffers;
     }
