@@ -58,6 +58,8 @@ export default {
 
 
 <style scoped>
+
+
 label {
   margin-top: 20px;
   margin-bottom: 10px;
