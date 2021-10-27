@@ -1,21 +1,46 @@
 <template>
-
+  <div class="border-left"  v-bind:class="{'border-success': this.valid, 'border-danger': !this.valid }">
+    <PreviewOffer :offer=this.offer />
+    <div class="d-flex justify-content-between align-items-center">
+      <button id="validateBtn" class="btn btn-success fw-bold text-white w-50"
+              v-on:click="this.validateOffer(this.offer, true)">Valide</button>
+      <button id="invalidateBtn" class="btn btn-danger fw-bold text-white w-50"
+              v-on:click="this.validateOffer(this.offer, false)">Invalide</button>
+    </div>
+  </div>
 </template>
 
 <script>
-import axios from "axios";
+import Offer from '../models/offer';
+import offerService from "../services/offer-service";
+import Swal from "sweetalert2";
 
 export default {
   name: "ValidateOffer",
-  props: ['offer'],
+  props:{
+    offer: Offer
+  },
   data(){
     return {
       valid: false
     }
   },
   methods: {
-    validateOffer: function(){
-      axios.post('http://localhost:8181/offers/validate', this.offer).then(response => (this.valid = response));
+    validateOffer: (offer, valid) => {
+      offer.valid = valid;
+      offerService.validateOffer(this.offer).then(response => {
+          if(response.message){
+            console.trace(response.message);
+            Swal.fire({
+              title: response.message,
+              icon: 'error'
+            });
+            return;
+          }
+
+        this.valid = valid;
+        Swal.fire(valid ? 'Offre validée!' : 'Offre invalidée!', '', valid ? 'success': 'error').then();
+      });
     }
   }
 }

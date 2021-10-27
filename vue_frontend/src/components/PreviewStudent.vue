@@ -1,26 +1,31 @@
 <template>
-  <div className=" p-3 mt-5 border-left border-right border-light">
-    <div className="row">
-      <div className="col-12 col-sm-6">
-        <div className="d-flex justify-content-center align-items-center flex-column p-3 shadow h-100">
-        <h4 className="p-2 rounded bg-secondary fw-bold text-white">{dto.firstName + ', ' + dto.lastName} </h4>
-        <div className="d-flex justify-content-center align-items-center badge bg-primary text-wrap h2">
-        <AiOutlineFile />
-        <a onClick={openFile} target="_blank" className="ms-2 text-white">{dto.fileName}</a>
+  <div class=" p-3 mt-5 border-left border-right border-light">
+    <div class="row">
+      <div class="col-12 col-sm-6">
+        <div class="d-flex justify-content-center align-items-center flex-column p-3 shadow h-100">
+        <h4 class="p-2 rounded bg-secondary fw-bold text-white">{{`${dto.firstName}, ${dto.lastName}`}} </h4>
+        <div class="d-flex justify-content-center align-items-center badge bg-primary text-wrap h2">
+        <a v-on:click="openFile" target="_blank" class="ms-2 text-white">{{dto.fileName}}</a>
       </div>
     </div>
   </div>
-  <div className="col-12 col-sm-6">
-    <PreviewOffer  :offer=dto.offerDTO></PreviewOffer>
+  <div class="col-12 col-sm-6">
+    <PreviewOffer  :offer=dto.offerDTO />
   </div>
   </div>
   </div>
 </template>
 
 <script>
+import CurriculumDto from "@/models/CurriculumDto";
+
 export default {
   name: "PreviewStudent",
-  props: ['dto'],
+  props: {
+    dto:{
+      type: CurriculumDto
+    }
+  },
   methods:{
     openFile(){
       const decodedChars = atob(this.dto.file);

@@ -2,14 +2,14 @@
   <div class="container">
     <ul>
       <li v-for="(offer, index) in offers" :key="index">
-        <ValidateOffer :offer="offer"></ValidateOffer>
+        <ValidateOffer :offer="offer" />
       </li>
     </ul>
   </div>
 </template>
 <script>
-
-import axios from "axios";
+import offerService from "../services/offer-service";
+import Swal from "sweetalert2";
 
 export default {
   name: "ReviewOffers",
@@ -23,13 +23,14 @@ export default {
   },
   methods: {
     loadOffers: function(){
-      axios.get('http://localhost:8181/offers').then(response => {
-        const {message} = response;
-        if(!message)
-          this.offers = response;
-        else
-          alert(response.message);
-      });
+      offerService.getAllOffers().then(offers => (this.offers = offers))
+          .catch(e => {
+            console.trace(e);
+            Swal.fire({
+              title: e,
+              icon: 'error'
+            });
+          })
     },
   }
 }
