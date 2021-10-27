@@ -16,7 +16,7 @@
 import Offer from '../models/offer';
 import offerService from "../services/offer-service";
 import Swal from "sweetalert2";
-import PreviewOffer from '@/components/PreviewOffer';
+import PreviewOffer from '@/views/PreviewOffer';
 
 export default {
   name: "ValidateOffer",

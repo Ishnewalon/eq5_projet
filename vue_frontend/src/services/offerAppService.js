@@ -1,5 +1,4 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
-import {swalErr, toast} from "../utility";
 import OfferApp from "../models/OfferApp";
 import Swal from "sweetalert2";
 
@@ -23,7 +22,7 @@ class OfferAppService {
         return await fetch(`${urlBackend}/applications/applicants/${email}`, requestInit(methods.GET))
             .then(res => {
                 if(res.status === 400) {
-                    res.json().then(err => swalErr().fire({text: err.message}))
+                    res.json().then(err => Swal.fire({title: err.message, icon: 'error'}))
                     return Promise.any([]);
                 }else{
                     return res.json();

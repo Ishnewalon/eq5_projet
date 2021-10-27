@@ -21,7 +21,7 @@
 
 
 import offerAppService from "@/services/offerAppService";
-import PreviewStudent from "@/components/PreviewStudent";
+import PreviewStudent from "@/views/PreviewStudent";
 
 export default {
   name: "ViewAppliedStudents",

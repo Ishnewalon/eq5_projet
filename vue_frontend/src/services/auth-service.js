@@ -1,7 +1,7 @@
-import {ManagerModel, MonitorModel, Student, Supervisor} from "../models/User";
+import {ManagerModel, MonitorModel, Student, Supervisor} from "@/models/User";
 import {methods, requestInit, urlBackend} from "./serviceUtils";
-import {UserType} from "../components/Register/Register";
-import {swalErr, toast} from "../utility";
+import {UserType} from "../views/Register";
+import Swal from "sweetalert2";
 
 class AuthService {
     user;
@@ -33,9 +33,9 @@ class AuthService {
         const response = await fetch(`${urlBackend}/monitor/signup`, requestInit(methods.POST, monitor));
         return await response.json().then(value => {
             if (value.message) {
-                swalErr(value.message).fire({}).then()
+                Swal.fire({title: value.message, icon: 'error'})
             } else {
-                toast.fire({title:"Compte crée"}).then()
+                Swal.fire({title: "Compte crée", icon: 'success'})
             }
         })
     }
@@ -46,9 +46,9 @@ class AuthService {
         const response = await fetch(`${urlBackend}/supervisor/signup`, requestInit(methods.POST, supervisor));
         return await response.json().then(value => {
             if (value.message) {
-                swalErr(value.message).fire({}).then()
+                Swal.fire({title: value.message, icon: 'error'})
             } else {
-                toast.fire({title:"Compte crée"}).then()
+                Swal.fire({title: "Compte crée", icon: 'success'})
             }
         })
     }
@@ -59,9 +59,9 @@ class AuthService {
         const response = await fetch(`${urlBackend}/student/signup`, requestInit(methods.POST, student));
         return await response.json().then(value => {
             if (value.message) {
-                swalErr(value.message).fire({}).then()
+                Swal.fire({title: value.message, icon: 'error'})
             } else {
-                toast.fire({title:"Compte crée"}).then()
+                Swal.fire({title: "Compte crée", icon: 'success'})
             }
 
         })
@@ -72,7 +72,7 @@ class AuthService {
         return await response.json().then(
             (value) => {
                 if (value.message) {
-                    swalErr(value.message).fire({}).then()
+                    Swal.fire({title: value.message, icon: 'error'})
                     return
                 }
 
@@ -87,11 +87,11 @@ class AuthService {
                     Object.setPrototypeOf(this.user, ManagerModel.prototype)
                 }
                 this._isAuthenticated = true
-                toast.fire({title:"Connexion réussie!"}).then()
+                Swal.fire({title:"Connexion réussie!", icon: 'success'});
                 console.log(value)
             },
             err => {
-                swalErr(err).fire({}).then()
+                Swal.fire({title: err, icon: 'error'})
             }
         )
     }

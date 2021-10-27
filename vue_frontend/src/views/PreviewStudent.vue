@@ -18,7 +18,7 @@
 
 <script>
 import CurriculumDto from "@/models/CurriculumDto";
-import PreviewOffer from "@/components/PreviewOffer";
+import PreviewOffer from "@/views/PreviewOffer";
 export default {
   name: "PreviewStudent",
   props: {
