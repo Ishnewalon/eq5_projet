@@ -1,6 +1,6 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
 import OfferDTO from "../models/OfferDTO";
-import {swalErr, toast} from "../utility";
+import Swal from "sweetalert2";
 
 class OfferService {
 
@@ -8,32 +8,48 @@ class OfferService {
         if (!(offer instanceof OfferDTO) || !offer)
             return;
         const response = await fetch(`${urlBackend}/offers/add`, requestInit(methods.POST, offer));
-        return await response.json().then(value => {
-                if (value.message) {
-                    swalErr(value.message).fire({}).then()
-                    return
-                }
-                toast.fire({title: "Offre créé!"}).then()
-                return value
-            },
-            err => {
-                swalErr(err).fire({}).then()
-            })
+        return await this.promisedReturn(response, 'Offre créé', []);
     }
 
     async getAllOffersByDepartment(department) {
         const response = await fetch(`${urlBackend}/offers/${department}`, requestInit(methods.GET));
-        return await response.json();
+        return await this.promisedReturn(response, undefined, []);
     }
 
     async getAllOffers() {
         const response = await fetch(`${urlBackend}/offers`, requestInit(methods.GET));
-        return await response.json();
+        return await this.promisedReturn(response, undefined,[]);
     }
 
     async validateOffer(offer) {
         const response = await fetch(`${urlBackend}/offers/validate`, requestInit(methods.PUT, offer));
-        return await response.json();
+        return await this.promisedReturn(response, 'Offre validé',[]);
+    }
+
+
+    async promisedReturn(response, successMessage, defaultValue){
+        return response.json().then(value => {
+                if (value.message) {
+                    Swal.fire({
+                        title: value.message,
+                        icon:'error'
+                    });
+                    if(defaultValue)
+                        return Promise.any(defaultValue);
+                }
+                if(successMessage){
+                    Swal.fire({
+                        title: successMessage,
+                        icon: 'success'
+                    });
+                }
+                return value
+            }).catch(err=>
+                Swal.fire({
+                    title: err,
+                    icon: 'error'
+                })
+            );
     }
 }
 

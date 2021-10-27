@@ -2,14 +2,16 @@
   <div class="container">
     <ul>
       <li v-for="(offer, index) in offers" :key="index">
-        <ValidateOffer :offer="offer" />
+        <ValidateOffer :offer="offer"/>
       </li>
     </ul>
   </div>
 </template>
 <script>
-import offerService from "../services/offer-service";
+
+import offerService from "@/services/offer-service";
 import Swal from "sweetalert2";
+import ValidateOffer from "@/components/ValidateOffer";
 
 export default {
   name: "ReviewOffers",
@@ -18,11 +20,14 @@ export default {
       offers: []
     }
   },
-  created: function(){
+  components: {
+    ValidateOffer
+  },
+  created: function () {
     this.loadOffers();
   },
   methods: {
-    loadOffers: function(){
+    loadOffers: function () {
       offerService.getAllOffers().then(offers => (this.offers = offers))
           .catch(e => {
             console.trace(e);
