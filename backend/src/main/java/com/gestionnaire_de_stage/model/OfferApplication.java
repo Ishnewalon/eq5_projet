@@ -22,7 +22,7 @@ public class OfferApplication {
     @ManyToOne
     private Curriculum curriculum;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date entrevueDate;
-
 }
 
