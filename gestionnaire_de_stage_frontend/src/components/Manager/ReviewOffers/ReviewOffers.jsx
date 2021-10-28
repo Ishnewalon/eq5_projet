@@ -10,7 +10,6 @@ export default function ReviewOffers() {
     useEffect(() => {
         offerService.getAllOffersInvalid()
             .then(offers => {
-                console.log(offers)
                 setOffers(offers)
             })
             .catch(e => {
