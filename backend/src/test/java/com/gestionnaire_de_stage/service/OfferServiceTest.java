@@ -1,8 +1,10 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
+import com.gestionnaire_de_stage.dto.ValidationOffer;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
+import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.repository.OfferRepository;
@@ -103,17 +105,16 @@ public class OfferServiceTest {
 
     @Test
     public void testUpdateOffer_withNullId() {
-        final Offer dummyOffer = getDummyOffer();
-        dummyOffer.setId(null);
 
         assertThrows(IllegalArgumentException.class,
-                () -> offerService.update(dummyOffer));
+                () -> offerService.validation(new ValidationOffer(null, true)));
     }
 
     @Test
-    public void testUpdateOffer_withNullOffer() {
-        assertThrows(IllegalArgumentException.class,
-                () -> offerService.update(null));
+    public void testUpdateOffer_withOfferNonExistant() {
+        when(offerRepository.existsById(any())).thenReturn(false);
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerService.validation(new ValidationOffer(1L, true)));
     }
 
     @Test
@@ -122,16 +123,18 @@ public class OfferServiceTest {
         when(offerRepository.existsById(1L)).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-                () -> offerService.update(dummyOffer));
+                () -> offerService.validation(new ValidationOffer(dummyOffer.getId(),false)));
     }
 
     @Test
-    public void testUpdateOffer_withValidOffer() throws IdDoesNotExistException {
+    public void testUpdateOffer_withValidOffer() throws IdDoesNotExistException, OfferAlreadyTreatedException {
         Offer dummyOffer = getDummyOffer();
-        when(offerRepository.existsById(1L)).thenReturn(true);
+        when(offerRepository.existsById(any())).thenReturn(true);
+        when(offerRepository.existsByIdAndValidIsNotNull(any())).thenReturn(false);
+        when(offerRepository.getById(any())).thenReturn(dummyOffer);
         when(offerRepository.save(any())).thenReturn(dummyOffer);
 
-        Offer actualOffer = offerService.update(dummyOffer);
+        Offer actualOffer = offerService.validation(new ValidationOffer(dummyOffer.getId(), true));
 
         assertThat(actualOffer)
                 .isNotNull()

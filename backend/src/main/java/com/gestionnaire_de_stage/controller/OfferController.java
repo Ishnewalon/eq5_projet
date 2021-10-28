@@ -2,9 +2,11 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.dto.ValidationOffer;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
+import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.service.MonitorService;
@@ -65,10 +67,10 @@ public class OfferController {
         return ResponseEntity.ok(offerDTOS);
     }
 
-    @PutMapping("/validate")
-    public ResponseEntity<?> validateOffer(@RequestBody Offer o) {
+    @PostMapping("/validate")
+    public ResponseEntity<?> validateOffer(@RequestBody ValidationOffer validationOffer) {
         try {
-            Offer offer = offerService.update(o);
+            Offer offer = offerService.validation(validationOffer);
             return ResponseEntity.ok(offer);
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
@@ -78,6 +80,10 @@ public class OfferController {
             return ResponseEntity
                     .badRequest()
                     .body(ie.getMessage());
+        } catch (OfferAlreadyTreatedException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Offre déjà traité!"));
         }
     }
     @GetMapping("/valid")
