@@ -1,8 +1,8 @@
 import React from "react";
 import './ViewOffers.css'
-import OfferService from '../../services/offer-service'
-import PreviewOffer from '../PreviewOffer/PreviewOffer';
-import AuthService from '../../services/auth-service';
+import OfferService from '../../../services/offer-service'
+import PreviewOffer from '../../PreviewOffer/PreviewOffer';
+import AuthService from '../../../services/auth-service';
 
 export default class ViewOffers extends React.Component {
 

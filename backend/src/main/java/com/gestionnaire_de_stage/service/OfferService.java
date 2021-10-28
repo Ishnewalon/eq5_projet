@@ -63,8 +63,8 @@ public class OfferService {
         return offerRepository.save(offer);
     }
 
-    public List<OfferDTO> getOffersByDepartment(String department) {
-        return mapArrayToOfferDTO(offerRepository.findAllByDepartmentAndValidIsTrue(department));
+    public List<Offer> getOffersByDepartment(String department) {
+        return offerRepository.findAllByDepartmentIgnoreCaseAndValidIsTrue(department);
     }
 
     public Offer update(Offer offer) throws IdDoesNotExistException, IllegalArgumentException {
@@ -75,11 +75,16 @@ public class OfferService {
         return offerRepository.save(offer);
     }
 
-    public List<Offer> getAll() {
-        return offerRepository.findAll();
-    }
 
     public Optional<Offer> findOfferById(Long idOffer) {
         return offerRepository.findById(idOffer);
+    }
+
+    public List<Offer> getValidOffers() {
+        return offerRepository.findAllByValid(true);
+    }
+
+    public List<Offer> getNotValidatedOffers() {
+        return offerRepository.findAllByValid(null);
     }
 }

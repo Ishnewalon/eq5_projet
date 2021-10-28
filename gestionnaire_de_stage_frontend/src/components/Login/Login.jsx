@@ -2,7 +2,8 @@ import './Login.css'
 import React, {Component} from "react";
 import {UserType} from "../Register/Register";
 import AuthService from "../../services/auth-service";
-import {FieldPassword} from "../Fields/FieldPassword";
+import FieldPassword from "../Fields/FieldPassword";
+import FieldEmail from "../Fields/FieldEmail";
 
 
 export default class Login extends Component {
@@ -47,11 +48,8 @@ export default class Login extends Component {
                     </div>
                     <div className="form-group row">
                         <div className="col-md-6">
-                            <label>Email</label>
-                            <div className="input-group">
-                                <input name="email" placeholder="Email" className="form-control" type="text"
-                                       value={this.state.email} onChange={this.handleChange('email')}/>
-                            </div>
+                            <FieldEmail email={this.state.email} label="Email" placeholder="Votre Email"
+                                        handleChanges={this.handleChange("email")}/>
                         </div>
                         <div className="col-md-6">
                             <FieldPassword password={this.state.password} label="Mot de passe"

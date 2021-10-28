@@ -133,9 +133,9 @@ public class OfferControllerTest {
         when(monitorService.getOneByEmail(any())).thenThrow(new EmailDoesNotExistException());
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/offers/add")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(dummyOfferDTO)))
+                        MockMvcRequestBuilders.post("/offers/add")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyOfferDTO)))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -210,29 +210,13 @@ public class OfferControllerTest {
         assertThat(response.getContentAsString()).contains("Offre non existante!");
     }
 
-    @Test
-    public void testGetOffers_withValidOffers() throws Exception {
-        List<Offer> dummyArrayOffer = getDummyArrayOffer();
-        when(offerService.getAll()).thenReturn(dummyArrayOffer);
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/offers")
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Offer> returnedOffers = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
-        });
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
-    }
 
     @Test
     public void testGetOffersByDepartment() throws Exception {
         String department = "myDepartment";
         List<Offer> dummyArrayOffer = getDummyArrayOffer();
         List<OfferDTO> mappedDTOS = offerService.mapArrayToOfferDTO(dummyArrayOffer);
-        when(offerRepository.findAllByDepartmentAndValidIsTrue(any())).thenReturn(dummyArrayOffer);
+        when(offerRepository.findAllByDepartmentIgnoreCaseAndValidIsTrue(any())).thenReturn(dummyArrayOffer);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get(String.format("/offers/%s", department))
@@ -285,6 +269,7 @@ public class OfferControllerTest {
         return dummyArrayOffer;
     }
 
+
     private Offer getDummyOffer() {
         Offer offer = new Offer();
         offer.setDepartment("Un departement");
@@ -305,5 +290,39 @@ public class OfferControllerTest {
         offerDTO.setTitle("Offer title");
         offerDTO.setDepartment("Department name");
         return offerDTO;
+    }
+
+    @Test
+    void getValidOffers() throws Exception {
+        List<Offer> dummyArrayOffer = getDummyArrayOffer();
+        when(offerService.getValidOffers()).thenReturn(dummyArrayOffer);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/offers/valid")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        List<Offer> returnedOffers = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
+    }
+
+    @Test
+    void getNotValidatedOffers() throws Exception {
+        List<Offer> dummyArrayOffer = getDummyArrayOffer();
+        when(offerService.getNotValidatedOffers()).thenReturn(dummyArrayOffer);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/offers/not_validated")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        List<Offer> returnedOffers = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
     }
 }

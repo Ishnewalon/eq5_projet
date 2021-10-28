@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import AuthService from "../../services/auth-service";
 import Monitor from "../Monitor/Monitor";
 import Manager from "../Manager/Manager";
-import StudentView from "../StudentView";
+import StudentView from "../StudentView/StudentView";
 
 function SupervisorView() {
     return (<div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">

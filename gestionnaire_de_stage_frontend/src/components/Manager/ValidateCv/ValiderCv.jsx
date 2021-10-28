@@ -1,8 +1,8 @@
 import './ValiderCv.css'
 import React, {Component} from "react";
-import {getCurriculumWithInvalidCV, validateCV} from "../../services/curriculum-service";
+import {getCurriculumWithInvalidCV, validateCV} from "../../../services/curriculum-service";
 import ListStudentView from "./ListStudentView/ListStudentView";
-import {swalErr} from "../../utility";
+import {swalErr} from "../../../utility";
 import Swal from "sweetalert2";
 
 

@@ -11,7 +11,6 @@ import com.gestionnaire_de_stage.service.MonitorService;
 import com.gestionnaire_de_stage.service.OfferService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,12 +28,6 @@ public class OfferController {
         this.offerService = offerService;
         this.monitorService = monitorService;
     }
-
-    @GetMapping
-    public List<Offer> getAllOffers() {
-        return offerService.getAll();
-    }
-
 
     @PostMapping("/add")
     public ResponseEntity<?> addOffer(@RequestBody OfferDTO dto) {
@@ -60,7 +53,6 @@ public class OfferController {
                 .status(HttpStatus.CREATED)
                 .body(offer);
     }
-
     @GetMapping({"/", "/{department}"}) //TODO Handle exception
     public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {
         if (department == null || department.isEmpty() || department.isBlank())
@@ -68,7 +60,7 @@ public class OfferController {
                     .badRequest()
                     .body(new ResponseMessage("Le département n'est pas précisé"));
 
-        List<OfferDTO> offerDTOS = offerService.getOffersByDepartment(department);
+        List<Offer> offerDTOS = offerService.getOffersByDepartment(department);
 
         return ResponseEntity.ok(offerDTOS);
     }
@@ -87,6 +79,16 @@ public class OfferController {
                     .badRequest()
                     .body(ie.getMessage());
         }
+    }
+    @GetMapping("/valid")
+    public ResponseEntity<?> getValidOffers() {
+        List<Offer> offers = offerService.getValidOffers();
+        return ResponseEntity.ok(offers);
+    }
+    @GetMapping("/not_validated")
+    public ResponseEntity<?> getNotValidatedOffers() {
+        List<Offer> offers = offerService.getNotValidatedOffers();
+        return ResponseEntity.ok(offers);
     }
 
 }

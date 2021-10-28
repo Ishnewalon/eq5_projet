@@ -1,8 +1,8 @@
 package com.gestionnaire_de_stage.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -24,7 +24,7 @@ public class Curriculum implements Serializable {
     private byte[] data;
 
     @NotNull
-    @OneToOne
+    @ManyToOne
     private Student student;
 
     private Boolean isValid;

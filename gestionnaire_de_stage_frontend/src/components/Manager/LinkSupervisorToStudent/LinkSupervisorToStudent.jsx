@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {getCurriculumWithValidCV} from "../../services/curriculum-service";
+import {getCurriculumWithValidCV} from "../../../services/curriculum-service";
 import ListStudentValidCVView from "./ListStudentValidCVView/ListStudentValidCVView";
-import authService from "../../services/auth-service";
+import authService from "../../../services/auth-service";
 import Swal from "sweetalert2";
-import {swalErr} from "../../utility";
+import {swalErr} from "../../../utility";
 
 export default class LinkSupervisorToStudent extends Component {
 

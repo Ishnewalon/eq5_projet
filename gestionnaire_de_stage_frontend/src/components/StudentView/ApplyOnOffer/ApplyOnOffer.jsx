@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import AuthService from "../../services/auth-service";
-import OfferAppService from "../../services/offerAppService";
-import OfferApp from "../../models/OfferApp";
-import PreviewOffer from "../PreviewOffer/PreviewOffer";
+import AuthService from "../../../services/auth-service";
+import OfferAppService from "../../../services/offerAppService";
+import OfferApp from "../../../models/OfferApp";
+import PreviewOffer from "../../PreviewOffer/PreviewOffer";
 
 export default class ApplyOnOffer extends Component{
 

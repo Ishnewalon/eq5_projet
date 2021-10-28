@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './ListStudentView.css'
-import {downloadCV} from "../../../services/curriculum-service";
-import {toast} from "../../../utility";
+import {downloadCV} from "../../../../services/curriculum-service";
+import {toast} from "../../../../utility";
 
 
 export default class ListStudentView extends Component {
@@ -43,7 +43,7 @@ export default class ListStudentView extends Component {
                          {student.firstName} {student.lastName}
                     </span>
                 </h3>
-                <a onClick={this.dl} target={'_blank'}>Télécharger Cv</a>
+                <button className="btn btn-primary" onClick={this.dl}>Télécharger Cv</button>
             </div>
         </div>
     }

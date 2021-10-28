@@ -5,9 +5,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -27,7 +30,7 @@ public class Student extends User {
 
     private String postalCode;
 
-    @OneToOne
-    @JsonIgnore
-    private Curriculum principalCurriculum;
+//    @OneToOne
+//    @JsonIgnore
+//    private Curriculum principalCurriculum;
 }

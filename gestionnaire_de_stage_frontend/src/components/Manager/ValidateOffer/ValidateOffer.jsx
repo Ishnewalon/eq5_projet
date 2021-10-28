@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import PreviewOffer from "../PreviewOffer/PreviewOffer";
-import OfferService from '../../services/offer-service';
-import {swalErr} from "../../utility";
+import PreviewOffer from "../../PreviewOffer/PreviewOffer";
+import OfferService from '../../../services/offer-service';
+import {swalErr} from "../../../utility";
 import Swal from "sweetalert2";
 import "./ValidateOffer.css";
 

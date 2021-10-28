@@ -1,8 +1,8 @@
 import './ReviewOffers.css'
 import React, {Component} from 'react';
-import OfferService from '../../services/offer-service';
+import OfferService from '../../../services/offer-service';
 import ValidateOffer from "../ValidateOffer/ValidateOffer";
-import {swalErr} from "../../utility";
+import {swalErr} from "../../../utility";
 
 export default class ReviewOffers extends Component{
 
@@ -12,7 +12,7 @@ export default class ReviewOffers extends Component{
         this.state = {
             offers: []
         }
-        this.service.getAllOffers()
+        this.service.getAllOffersInvalid()
             .then(offers => this.setState({offers}))
             .catch(e => {
                 console.trace(e);

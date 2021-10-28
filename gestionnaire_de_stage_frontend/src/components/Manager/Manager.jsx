@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import AddOffer from "../AddOffer/AddOffer";
-import ReviewOffers from "../ReviewOffers/ReviewOffers";
-import ViewOffers from "../ViewOffers/ViewOffers";
-import ValiderCv from "../ValidateCv/ValiderCv";
-import LinkSupervisorToStudent from "../LinkSupervisorToStudent/LinkSupervisorToStudent";
+import ReviewOffers from "./ReviewOffers/ReviewOffers";
+import ViewOffers from "./ViewOffers/ViewOffers";
+import ValiderCv from "./ValidateCv/ValiderCv";
+import LinkSupervisorToStudent from "./LinkSupervisorToStudent/LinkSupervisorToStudent";
 
 export default class Manager extends Component {
 
