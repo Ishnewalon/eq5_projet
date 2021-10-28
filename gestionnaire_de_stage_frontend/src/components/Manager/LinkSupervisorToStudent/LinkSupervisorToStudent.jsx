@@ -43,7 +43,7 @@ export default function LinkSupervisorToStudent() {
             })
             .catch(e => {
                 console.error(e)
-                swalErr(e).fire({icon:"error"}).then();
+                swalErr(e).fire({icon: "error"}).then();
             });
 
     }
@@ -54,13 +54,14 @@ export default function LinkSupervisorToStudent() {
             {cvList.map((cv, index) =>
                 <div key={index}>
                     <ul>
-                        <li><ListStudentValidCVView  student={cv.student}/></li>
+                        <li><ListStudentValidCVView student={cv.student}/></li>
                     </ul>
 
                     <div className="text-center input-group">
-                        <select className="form-control" onChange={()=>setSupervisorId('supervisorID')}>
-                            {supervisorList.map((supervisor,indexSupervisor) =>
-                                <option key={indexSupervisor} value={supervisor.id}>{supervisor.lastName}, {supervisor.firstName}</option>
+                        <select className="form-control" onChange={() => setSupervisorId('supervisorID')}>
+                            {supervisorList.map((supervisor, indexSupervisor) =>
+                                <option key={indexSupervisor}
+                                        value={supervisor.id}>{supervisor.lastName}, {supervisor.firstName}</option>
                             )}
                         </select>
                     </div>

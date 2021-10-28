@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {FieldAddress} from "../Fields/FieldAddress";
+import FieldAddress from "../Fields/FieldAddress";
 import OfferService from "../../services/offer-service";
 import {DepartmentEnum} from "../../enums/Departement";
 import authService from "../../services/auth-service";

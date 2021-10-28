@@ -1,6 +1,6 @@
 import React from "react";
 
-export function FieldAddress({label, address, handleChange}) {
+export default function FieldAddress({label, address, handleChange}) {
 
     return (<>
         <label>{label}</label>
