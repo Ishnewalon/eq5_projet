@@ -1,50 +1,37 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './ListStudentView.css'
 import {downloadCV} from "../../../../services/curriculum-service";
 import {toast} from "../../../../utility";
 
 
-export default class ListStudentView extends Component {
+export default function ListStudentView({cv}) {
 
-    constructor(props) {
-        super(props);
+    const {firstName, lastName} = cv.student;
 
-        this.state = {
-            url: "",
-            filename: "default.pdf"
-        }
-    }
-
-    dl = () => {
-
-        const {id, student} = this.props.cv;
-        const {firstName, lastName} = student;
+    const downloadStudentCv = () => {
+        const {id}=cv
         downloadCV(id).then(blob => {
-            let url = URL.createObjectURL(blob);
+            let myUrl = URL.createObjectURL(blob);
 
-            let filename = firstName + "_" + lastName + "_" + id + ".pdf";
+            let myFilename = firstName + "_" + lastName + "_" + id + ".pdf";
 
-            this.setState({url, filename});
             const a = document.createElement('a')
-            a.href = url
-            a.download = filename;
+            a.href = myUrl
+            a.download = myFilename;
             a.click();
-            URL.revokeObjectURL(url)
+            URL.revokeObjectURL(myUrl)
             toast.fire({title: 'Téléchargement en cours'}).then()
         });
     }
 
-    render() {
-        const {student} = this.props.cv;
-        return <div className="shadow-lg rounded-top p-3 mt-3 border-left border-right">
-            <div className={'d-flex align-items-center flex-column'}>
-                <h3 className={'d-inline-block text-dark'}>
+    return <div className="shadow-lg rounded-top p-3 mt-3 border-left border-right">
+        <div className={'d-flex align-items-center flex-column'}>
+            <h3 className={'d-inline-block text-dark'}>
                     <span className={"badge rounded-pill"}>
-                         {student.firstName} {student.lastName}
+                         {firstName} {lastName}
                     </span>
-                </h3>
-                <button className="btn btn-primary" onClick={this.dl}>Télécharger Cv</button>
-            </div>
+            </h3>
+            <button className="btn btn-primary" onClick={downloadStudentCv}>Télécharger Cv</button>
         </div>
-    }
+    </div>
 }
