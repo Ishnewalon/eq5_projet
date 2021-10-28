@@ -48,7 +48,7 @@ public class OfferApplicationService {
         OfferApplication offerApplication = new OfferApplication();
         offerApplication.setOffer(offer.get());
         offerApplication.setCurriculum(student.getPrincipalCurriculum());
-        offerApplication.setStatus(Status.EN_ATTENTE_ENTREVUE);
+        offerApplication.setStatus(Status.CV_ENVOYE);
 
         return offerApplicationRepository.save(offerApplication);
     }

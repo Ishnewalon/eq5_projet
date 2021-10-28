@@ -13,6 +13,7 @@ public class OfferApplication {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @ManyToOne
@@ -23,14 +24,5 @@ public class OfferApplication {
 
     private Date entrevueDate;
 
-    private EtatOffre etat;
-
-    enum EtatOffre {
-        CANDIDATURE_ACCEPTE,
-        CANDIDATURE_REJETE,
-        EN_ATTENTE,
-        EN_ENTREVUE,
-        STAGE_TROUVE
-    }
 }
 
