@@ -1,8 +1,8 @@
 package com.gestionnaire_de_stage.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +11,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Curriculum implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
@@ -24,7 +25,7 @@ public class Curriculum implements Serializable {
     private byte[] data;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Student student;
 
     private Boolean isValid;

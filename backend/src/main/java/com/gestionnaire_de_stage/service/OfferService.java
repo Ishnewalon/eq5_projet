@@ -85,6 +85,6 @@ public class OfferService {
     }
 
     public List<Offer> getNotValidatedOffers() {
-        return offerRepository.findAllByValid(null);
+        return offerRepository.findAllByValidIsNull();
     }
 }

@@ -1,33 +1,34 @@
 import './ReviewOffers.css'
-import React, {Component} from 'react';
-import OfferService from '../../../services/offer-service';
+import React, {useEffect, useState} from 'react';
+import offerService from '../../../services/offer-service';
 import ValidateOffer from "../ValidateOffer/ValidateOffer";
 import {swalErr} from "../../../utility";
 
-export default class ReviewOffers extends Component{
+export default function ReviewOffers() {
 
-    constructor(props){
-        super(props);
-        this.service = OfferService;
-        this.state = {
-            offers: []
-        }
-        this.service.getAllOffersInvalid()
-            .then(offers => this.setState({offers}))
+    const [offers, setOffers] = useState([])
+    useEffect(() => {
+        offerService.getAllOffersInvalid()
+            .then(offers => {
+                console.log(offers)
+                setOffers(offers)
+            })
             .catch(e => {
-                console.trace(e);
+                setOffers([]);
+                console.error(e);
                 swalErr(e).fire({}).then();
             })
-    }
+    }, [])
 
-    render() {
-        const {offers} = this.state;
-        return (
+
+    return (
+        <>
+            <h1 className="text-center">Review Offers</h1>
             <div className='container'>
                 <ul>
                     {offers.map((offer, index) => <li key={index}><ValidateOffer offer={offer}/></li>)}
                 </ul>
             </div>
-        );
-    }
+        </>
+    );
 }

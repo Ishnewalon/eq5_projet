@@ -37,7 +37,7 @@ export default class ValidateOffer extends Component{
         const {valid} = this.state;
 
         return <div className={`${valid ? 'border-left border-success' : 'border-left border-danger'}`}>
-                {PreviewOffer(offer)}
+                <PreviewOffer offer={offer}/>
                 <div className="d-flex justify-content-between align-items-center">
                     <button id="validateBtn" className="btn btn-success fw-bold text-white w-50"
                             onClick={() => this.validateOffer(offer, true)}>Valide</button>

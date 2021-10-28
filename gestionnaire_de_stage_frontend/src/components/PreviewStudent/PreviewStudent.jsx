@@ -45,7 +45,7 @@ export default function PreviewStudent(dto) {
                 </div>
             </div>
             <div className="col-12 col-sm-6">
-                {PreviewOffer(dto.offerDTO)}
+                <PreviewOffer offer={dto.offerDTO}/>
             </div>
         </div>
     </div>

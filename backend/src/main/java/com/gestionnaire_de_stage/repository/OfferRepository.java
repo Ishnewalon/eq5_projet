@@ -8,4 +8,6 @@ import java.util.List;
 public interface OfferRepository extends JpaRepository<Offer, Long> {
     List<Offer> findAllByDepartmentIgnoreCaseAndValidIsTrue(String department);
     List<Offer> findAllByValid(Boolean valid);
+
+    List<Offer> findAllByValidIsNull();
 }

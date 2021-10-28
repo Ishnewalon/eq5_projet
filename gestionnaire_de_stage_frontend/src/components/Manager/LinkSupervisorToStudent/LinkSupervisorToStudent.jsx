@@ -1,80 +1,78 @@
-import React, {Component} from "react";
-import {getCurriculumWithValidCV} from "../../../services/curriculum-service";
+import React, {useEffect, useState} from "react";
 import ListStudentValidCVView from "./ListStudentValidCVView/ListStudentValidCVView";
 import authService from "../../../services/auth-service";
 import Swal from "sweetalert2";
 import {swalErr} from "../../../utility";
+import {getCurriculumWithValidCV} from "../../../services/curriculum-service";
 
-export default class LinkSupervisorToStudent extends Component {
+export default function LinkSupervisorToStudent() {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            cvList: [],
-            supervisorList: [],
-            supervisorID: '',
-        };
+    const [cvList, setCvList] = useState([])
+    const [supervisorList, setSupervisorList] = useState([])
+    const [supervisorID, setSupervisorId] = useState(null)
 
+    useEffect(() => {
         getCurriculumWithValidCV()
-            .then(cvList => this.setState({cvList}))
+            .then(cvList => {
+                console.log(cvList)
+                setCvList(cvList)
+            })
             .catch(e => {
-                this.setState({cvList: []})
-                console.trace(e);
+                setCvList([])
+                console.error(e);
             });
-                authService.getSupervisors()
-            .then(supervisorList => this.setState({supervisorList}))
+        authService.getSupervisors()
+            .then(supervisorList => {
+                console.log(supervisorList);
+                setSupervisorList(supervisorList)
+                setSupervisorId(supervisorList[0].id)
+            })
             .catch(e => {
-                this.setState({supervisorList: []})
-                console.trace(e);
+                setSupervisorList([])
+                console.error(e);
             });
-    }
 
-    assign = (idStudent) => e => {
+    }, [])
+
+    const assign = (idStudent) => e => {
         e.preventDefault();
-        authService.assign(idStudent, this.state.supervisorID)
+        authService.assign(idStudent, supervisorID)
             .then(responseMessage => {
                 Swal.fire({title: responseMessage.message, icon: 'success'})
                     .then();
             })
             .catch(e => {
-                console.trace(e)
-                swalErr(e).fire({}).then();
+                console.error(e)
+                swalErr(e).fire({icon:"error"}).then();
             });
 
     }
 
-    handleChange = input => e => {
-        e.preventDefault()
-        this.setState({[input]: e.target.value});
-    }
-
-    render() {
-        return (
-            <div className="container">
-                <h2 className="text-center">Attribuer des superviseurs aux étudiants</h2>
-                {this.state.cvList.map((cv, index) =>
-                <div>
+    return (
+        <div className="container">
+            <h2 className="text-center">Attribuer des superviseurs aux étudiants</h2>
+            {cvList.map((cv, index) =>
+                <div key={index}>
                     <ul>
-                        <li ><ListStudentValidCVView key={index} student={cv.student} /></li>
+                        <li><ListStudentValidCVView  student={cv.student}/></li>
                     </ul>
 
                     <div className="text-center">
-                        <select onChange={this.handleChange('supervisorID')}>
-                            {this.state.supervisorList.map((supervisor) =>
-                                    <option value={supervisor.id}>{supervisor.lastName}, {supervisor.firstName}</option>
+                        <select onChange={()=>setSupervisorId('supervisorID')}>
+                            {supervisorList.map((supervisor,indexSupervisor) =>
+                                <option key={indexSupervisor} value={supervisor.id}>{supervisor.lastName}, {supervisor.firstName}</option>
                             )}
                         </select>
                     </div>
 
-                       <div className="form-group text-center">
-                           <label/>
-                           <div>
-                               <button className="btn btn-success" onClick={this.assign(cv.student.id)}>Accepter</button>
-                           </div>
-                       </div>
+                    <div className="form-group text-center">
+                        <label/>
+                        <div>
+                            <button className="btn btn-success" onClick={assign(cv.student.id)}>Accepter</button>
+                        </div>
+                    </div>
                 </div>)}
-            </div>
-        )
-    }
+        </div>
+    )
 
 }

@@ -1,34 +1,33 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import './ViewOffers.css'
 import OfferService from '../../../services/offer-service'
 import PreviewOffer from '../../PreviewOffer/PreviewOffer';
 import AuthService from '../../../services/auth-service';
 
-export default class ViewOffers extends React.Component {
+export default function ViewOffers() {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            department: AuthService.user.department || 'Informatique',
-            offers: []
-        };
-        OfferService.getAllOffersByDepartment(this.state.department)
-            .then(offers => this.setState({offers}))
+    const [offers, setOffers] = useState([])
+    useEffect(() => {
+        OfferService.getAllOffersByDepartment(AuthService.user.department || 'informatique')
+            .then(offers => {
+                console.log(offers)
+
+                setOffers(offers)
+            })
             .catch(e => {
-                this.setState({offers: []})
-                console.trace(e);
+                setOffers([])
+                console.error(e);
             });
-    }
+    }, [])
 
-    render() {
-        return (
-            <div className='container'>
-                <h2 className="text-center">Offres de Stage</h2>
-                <ul>
-                    {this.state.offers.map((offer, index) => <li key={index}>{PreviewOffer(offer)}</li>)}
-                </ul>
-            </div>
-        );
-    }
+
+    return (
+        <div className='container'>
+            <h2 className="text-center">Offres de Stage</h2>
+            <ul>
+                {offers.map((offer, index) => <li key={index}><PreviewOffer offer={offer}/></li>)}
+            </ul>
+        </div>
+    )
 }
 

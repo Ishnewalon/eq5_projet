@@ -1,7 +1,7 @@
 import React from 'react';
 import './PreviewOffer.css';
 
-export default function PreviewOffer(offer) {
+export default function PreviewOffer({offer}) {
 
     return <div className="shadow-lg rounded-top p-3 border-left border-right border-light">
         <div className={'d-flex align-items-center flex-column'}>

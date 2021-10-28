@@ -201,7 +201,7 @@ public class OfferServiceTest {
     @Test
     void testGetNotValidatedOffers() {
         List<Offer> dummyArrayOffer = getDummyArrayOffer();
-        when(offerRepository.findAllByValid(any())).thenReturn(dummyArrayOffer);
+        when(offerRepository.findAllByValidIsNull()).thenReturn(dummyArrayOffer);
 
         List<Offer> returnedOffers = offerService.getNotValidatedOffers();
 
