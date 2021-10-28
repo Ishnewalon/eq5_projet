@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
@@ -47,6 +48,7 @@ public class OfferApplicationService {
         OfferApplication offerApplication = new OfferApplication();
         offerApplication.setOffer(offer.get());
         offerApplication.setCurriculum(student.getPrincipalCurriculum());
+        offerApplication.setStatus(Status.EN_ATTENTE_ENTREVUE);
 
         return offerApplicationRepository.save(offerApplication);
     }
