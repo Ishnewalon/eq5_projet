@@ -57,8 +57,8 @@ export default function LinkSupervisorToStudent() {
                         <li><ListStudentValidCVView  student={cv.student}/></li>
                     </ul>
 
-                    <div className="text-center">
-                        <select onChange={()=>setSupervisorId('supervisorID')}>
+                    <div className="text-center input-group">
+                        <select className="form-control" onChange={()=>setSupervisorId('supervisorID')}>
                             {supervisorList.map((supervisor,indexSupervisor) =>
                                 <option key={indexSupervisor} value={supervisor.id}>{supervisor.lastName}, {supervisor.firstName}</option>
                             )}
