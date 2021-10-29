@@ -1,6 +1,6 @@
 <template>
   <div class="border-left" v-bind:class="{'border-success': this.valid, 'border-danger': !this.valid }">
-    <PreviewOffer v-bind:offer="this.offer"/>
+    <PreviewOffer :offer="this.offer"/>
     <div class="d-flex justify-content-between align-items-center">
       <button id="validateBtn" class="btn btn-success fw-bold text-white w-50"
               v-on:click="this.validateOffer(this.offer, true)">Valide
@@ -16,7 +16,7 @@
 import Offer from '../models/offer';
 import offerService from "../services/offer-service";
 import Swal from "sweetalert2";
-import PreviewOffer from '@/views/PreviewOffer';
+import PreviewOffer from '../views/PreviewOffer';
 
 export default {
   name: "ValidateOffer",

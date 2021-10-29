@@ -20,8 +20,8 @@
 <script>
 
 
-import offerAppService from "@/services/offerAppService";
-import PreviewStudent from "@/views/PreviewStudent";
+import offerAppService from "../services/offerAppService";
+import PreviewStudent from "../views/PreviewStudent";
 
 export default {
   name: "ViewAppliedStudents",

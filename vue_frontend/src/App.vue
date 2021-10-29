@@ -1,23 +1,120 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
+  <header>
+    <Navbar />
+  </header>
   <router-view/>
 </template>
 
 <style>
 
-#nav {
-  padding: 30px;
+:root {
+  --color-dark: #192024;
+
+  --color-bg-dark: #343C49;
+  --color-text: #253650;
+  --color-primary-hover: #304c7b;
+  --color-primary: #4f657d;
+  --color-light: #eee4db;
+  --color-text-secondary: #322E2C;
+
+  --color-rgb-primary: 79, 101, 125;
+  --color-rgb-secondary: 224, 137, 44;
+  --color-primary-bg-dark: #e0892c;
+  --color-primary-bg-dark-hover: #dc7718;
+
+  --color-primary-bg: var(--color-light);
+  --font-family-primary: 'Montserrat', sans-serif;
 }
 
-#nav a {
+body {
+  margin: 0;
+  font-family: var(--font-family-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-light);
+  color: var(--color-text) !important;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  monospace;
+}
+
+
+/********
+Custom BS
+*********/
+.btn {
+  padding: 8px 20px!important;
+  border-radius: 0 !important;
+  overflow: hidden;
+}
+
+.link, .btn-link {
+  font-weight: bold!important;
+  color: var(--color-primary) !important;
+}
+
+.link:hover, .btn-link:hover {
+  color: var(--color-primary-hover) !important;
+}
+
+.btn-primary {
+  background: var(--color-primary) !important;
+  border: var(--color-primary) !important;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background: var(--color-primary-hover) !important;
+  border-color: rgba(var(--color-rgb-primary), 0.8) !important;
+  box-shadow: 0 1px 1px rgba(var(--color-rgb-primary), 0.075) inset, 0 0 8px rgba(var(--color-rgb-primary), 0.6) !important;
+  outline: 0 none !important;
+}
+
+/*********************
+Adapt color to bg-dark
+**********************/
+.bg-dark {
+  background-color: var(--color-bg-dark) !important;
+  color: var(--color-light) !important;
+}
+
+.bg-dark > .link, .bg-dark > .btn-link, .bg-dark * > .link, .bg-dark * > .btn-link {
   font-weight: bold;
-  color: #2c3e50;
+  color: var(--color-primary-bg-dark) !important;
 }
 
-#nav a {
-  color: #42b983;
+.bg-dark > .link:hover, .bg-dark > .btn-link:hover, .bg-dark * > .link:hover, .bg-dark * > .btn-link:hover {
+  color: var(--color-primary-bg-dark-hover) !important;
 }
+
+.bg-dark > .btn-primary, .bg-dark * > .btn-primary {
+  color: var(--color-text-secondary);
+  background: var(--color-primary-bg-dark) !important;
+  border: var(--color-primary-bg-dark) !important;
+}
+
+.bg-dark > .btn-primary:hover, .bg-dark > .btn-primary:focus, .bg-dark > .btn-primary:active, .bg-dark * > .btn-primary:hover, .bg-dark * > .btn-primary:focus, .bg-dark * > .btn-primary:active {
+  background: var(--color-primary-bg-dark-hover) !important;
+  /*box-shadow: var(--color-primary)!important;*/
+  border-color: rgba(var(--color-rgb-primary), 0.8) !important;
+  box-shadow: 0 1px 1px rgba(var(--color-rgb-secondary), 0.075) inset, 0 0 8px rgba(var(--color-rgb-secondary), 0.6) !important;
+  outline: 0 none !important;
+}
+
+.text-white {
+  color: var(--color-light);
+}
+
+.text-primary {
+  color: var(--color-primary) !important;
+}
+
+
 </style>
+<script>
+import Navbar from "./views/Navbar";
+export default {
+  components: {Navbar}
+}
+</script>

@@ -9,9 +9,9 @@
 </template>
 <script>
 
-import offerService from "@/services/offer-service";
+import offerService from "../services/offer-service";
 import Swal from "sweetalert2";
-import ValidateOffer from "@/views/ValidateOffer";
+import ValidateOffer from "../views/ValidateOffer";
 
 export default {
   name: "ReviewOffers",
@@ -23,11 +23,11 @@ export default {
   components: {
     ValidateOffer
   },
-  created: function () {
+  created() {
     this.loadOffers();
   },
   methods: {
-    loadOffers: function () {
+    loadOffers:  () => {
       offerService.getAllOffers().then(offers => (this.offers = offers))
           .catch(e => {
             console.trace(e);
