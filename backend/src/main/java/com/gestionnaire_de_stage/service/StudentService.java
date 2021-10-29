@@ -82,7 +82,7 @@ public class StudentService {
 
         Student student = optionalStudent.get();
 
-        student.setPrincipalCurriculum(curriculum.get());
+//        student.setPrincipalCurriculum(curriculum.get());
         return studentRepository.save(student);
     }
 
@@ -97,4 +97,5 @@ public class StudentService {
     private boolean isEmailAndPasswordValid(String email, String password) {
         return studentRepository.existsByEmailAndPassword(email, password);
     }
+
 }

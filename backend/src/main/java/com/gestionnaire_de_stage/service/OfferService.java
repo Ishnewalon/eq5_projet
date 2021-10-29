@@ -2,8 +2,10 @@ package com.gestionnaire_de_stage.service;
 
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
+import com.gestionnaire_de_stage.dto.ValidationOffer;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
+import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.repository.OfferRepository;
 import org.springframework.data.domain.Example;
@@ -63,23 +65,30 @@ public class OfferService {
         return offerRepository.save(offer);
     }
 
-    public List<OfferDTO> getOffersByDepartment(String department) {
-        return mapArrayToOfferDTO(offerRepository.findAllByDepartmentAndValidIsTrue(department));
-    }
-
-    public Offer update(Offer offer) throws IdDoesNotExistException, IllegalArgumentException {
-        Assert.isTrue(offer != null, "offre est null");
-        Assert.isTrue(offer.getId() != null, "L'id est null");
-        if (!offerRepository.existsById(offer.getId()))
-            throw new IdDoesNotExistException();
-        return offerRepository.save(offer);
-    }
-
-    public List<Offer> getAll() {
-        return offerRepository.findAll();
+    public List<Offer> getOffersByDepartment(String department) {
+        return offerRepository.findAllByDepartmentIgnoreCaseAndValidIsTrue(department);
     }
 
     public Optional<Offer> findOfferById(Long idOffer) {
         return offerRepository.findById(idOffer);
+    }
+
+    public List<Offer> getValidOffers() {
+        return offerRepository.findAllByValid(true);
+    }
+
+    public List<Offer> getNotValidatedOffers() {
+        return offerRepository.findAllByValidIsNull();
+    }
+
+    public Offer validation(ValidationOffer validationOffer) throws IdDoesNotExistException, OfferAlreadyTreatedException {
+        Assert.isTrue(validationOffer.getId() != null, "L'id est null");
+        if (!offerRepository.existsById(validationOffer.getId())) throw new IdDoesNotExistException();
+        if (offerRepository.existsByIdAndValidIsNotNull(validationOffer.getId())) throw new OfferAlreadyTreatedException();
+
+        Offer offer = offerRepository.getById(validationOffer.getId());
+        offer.setValid(validationOffer.isValid());
+
+        return offerRepository.save(offer);
     }
 }

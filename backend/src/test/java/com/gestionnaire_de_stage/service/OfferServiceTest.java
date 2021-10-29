@@ -1,8 +1,10 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
+import com.gestionnaire_de_stage.dto.ValidationOffer;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
+import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.repository.OfferRepository;
@@ -13,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -104,17 +105,16 @@ public class OfferServiceTest {
 
     @Test
     public void testUpdateOffer_withNullId() {
-        final Offer dummyOffer = getDummyOffer();
-        dummyOffer.setId(null);
 
         assertThrows(IllegalArgumentException.class,
-                () -> offerService.update(dummyOffer));
+                () -> offerService.validation(new ValidationOffer(null, true)));
     }
 
     @Test
-    public void testUpdateOffer_withNullOffer() {
-        assertThrows(IllegalArgumentException.class,
-                () -> offerService.update(null));
+    public void testUpdateOffer_withOfferNonExistant() {
+        when(offerRepository.existsById(any())).thenReturn(false);
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerService.validation(new ValidationOffer(1L, true)));
     }
 
     @Test
@@ -123,40 +123,24 @@ public class OfferServiceTest {
         when(offerRepository.existsById(1L)).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-                () -> offerService.update(dummyOffer));
+                () -> offerService.validation(new ValidationOffer(dummyOffer.getId(),false)));
     }
 
     @Test
-    public void testUpdateOffer_withValidOffer() throws IdDoesNotExistException {
+    public void testUpdateOffer_withValidOffer() throws IdDoesNotExistException, OfferAlreadyTreatedException {
         Offer dummyOffer = getDummyOffer();
-        when(offerRepository.existsById(1L)).thenReturn(true);
+        when(offerRepository.existsById(any())).thenReturn(true);
+        when(offerRepository.existsByIdAndValidIsNotNull(any())).thenReturn(false);
+        when(offerRepository.getById(any())).thenReturn(dummyOffer);
         when(offerRepository.save(any())).thenReturn(dummyOffer);
 
-        Offer actualOffer = offerService.update(dummyOffer);
+        Offer actualOffer = offerService.validation(new ValidationOffer(dummyOffer.getId(), true));
 
         assertThat(actualOffer)
                 .isNotNull()
                 .isEqualTo(dummyOffer);
     }
 
-    @Test
-    public void testGetAllOffers_withValidList() {
-        List<Offer> dummyOfferList = getDummyOfferList();
-        when(offerRepository.findAll()).thenReturn(dummyOfferList);
-
-        List<Offer> actualOfferList = offerService.getAll();
-
-        assertThat(actualOfferList).isEqualTo(dummyOfferList);
-    }
-
-    @Test
-    public void testGetAllOffers_withEmptyList() {
-        when(offerRepository.findAll()).thenReturn(Collections.emptyList());
-
-        List<Offer> actualOfferList = offerService.getAll();
-
-        assertThat(actualOfferList).isEmpty();
-    }
 
     @Test
     public void testMapArrayToOfferDto() {
@@ -181,7 +165,7 @@ public class OfferServiceTest {
     public void testGetOffersByDepartment_withNoOffer() {
         String department = "myDepartmentWithNoOffer";
 
-        List<OfferDTO> actualOfferDtoList = offerService.getOffersByDepartment(department);
+        List<Offer> actualOfferDtoList = offerService.getOffersByDepartment(department);
 
         assertThat(actualOfferDtoList).isEmpty();
     }
@@ -189,12 +173,11 @@ public class OfferServiceTest {
     @Test
     public void testGetOffersByDepartment() {
         List<Offer> dummyOfferList = getDummyOfferList();
-        List<OfferDTO> mappedOfferDtoList = offerService.mapArrayToOfferDTO(dummyOfferList);
-        when(offerRepository.findAllByDepartmentAndValidIsTrue(any())).thenReturn(dummyOfferList);
+        when(offerRepository.findAllByDepartmentIgnoreCaseAndValidIsTrue(any())).thenReturn(dummyOfferList);
 
-        List<OfferDTO> actualOfferDtoList = offerService.getOffersByDepartment("Un departement");
+        List<Offer> actualOfferDtoList = offerService.getOffersByDepartment("Un departement");
 
-        assertThat(actualOfferDtoList).isEqualTo(mappedOfferDtoList);
+        assertThat(actualOfferDtoList).isEqualTo(dummyOfferList);
     }
 
     @Test
@@ -206,6 +189,26 @@ public class OfferServiceTest {
 
         assertThat(actualOffer).isPresent();
         assertThat(actualOffer.get()).isEqualTo(dummyOffer);
+    }
+
+    @Test
+    void testGetValidOffers() {
+        List<Offer> dummyArrayOffer = getDummyArrayOffer();
+        when(offerRepository.findAllByValid(any())).thenReturn(dummyArrayOffer);
+
+        List<Offer> returnedOffers = offerService.getValidOffers();
+
+        assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
+    }
+
+    @Test
+    void testGetNotValidatedOffers() {
+        List<Offer> dummyArrayOffer = getDummyArrayOffer();
+        when(offerRepository.findAllByValidIsNull()).thenReturn(dummyArrayOffer);
+
+        List<Offer> returnedOffers = offerService.getNotValidatedOffers();
+
+        assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
     }
 
     private List<Offer> getDummyOfferList() {
@@ -252,5 +255,15 @@ public class OfferServiceTest {
         dummyOfferDTO.setTitle("Offer title");
         dummyOfferDTO.setDepartment("Department name");
         return dummyOfferDTO;
+    }
+
+    private List<Offer> getDummyArrayOffer() {
+        List<Offer> dummyArrayOffer = new ArrayList<>();
+        for (long i = 0; i < 3; i++) {
+            Offer dummyOffer = getDummyOffer();
+            dummyOffer.setId(i);
+            dummyArrayOffer.add(dummyOffer);
+        }
+        return dummyArrayOffer;
     }
 }
