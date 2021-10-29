@@ -1,4 +1,4 @@
-import offerAppService from "../../services/offerAppService";
+import offerAppService from "../../../services/offerAppService";
 
 export default function ContractToBeStarted(contract){
 

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import offerAppService from "../../services/offerAppService";
+import offerAppService from "../../../services/offerAppService";
 import ContractToBeStarted from "./ContractToBeStarted";
 
 export default function ManagerStartContract(){

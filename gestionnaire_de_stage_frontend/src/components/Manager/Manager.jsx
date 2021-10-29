@@ -4,6 +4,7 @@ import ReviewOffers from "./ReviewOffers/ReviewOffers";
 import ViewOffers from "./ViewOffers/ViewOffers";
 import ValiderCv from "./ValidateCv/ValiderCv";
 import LinkSupervisorToStudent from "./LinkSupervisorToStudent/LinkSupervisorToStudent";
+import ManagerStartContract from "./ContractSigning/ManagerStartContract";
 
 export default function Manager() {
     return (<>
