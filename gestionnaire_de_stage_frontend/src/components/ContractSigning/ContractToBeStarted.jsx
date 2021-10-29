@@ -1,9 +1,9 @@
-import offerAppService from "../../../services/offerAppService";
+import offerAppService from "../../services/offerAppService";
 
 export default function ContractToBeStarted(contract){
 
     const startContract = (contract, accepted) => {
-        offerAppService.managerStartContract({contract, accepted});
+        offerAppService.managerStartContract({contract, accepted}).then();
     }
 
     return <div className="d-flex justify-content-between align-items-center">

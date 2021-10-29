@@ -4,7 +4,7 @@ import ReviewOffers from "../ReviewOffers/ReviewOffers";
 import ViewOffers from "../ViewOffers/ViewOffers";
 import ValiderCv from "../ValidateCv/ValiderCv";
 import LinkSupervisorToStudent from "../LinkSupervisorToStudent/LinkSupervisorToStudent";
-import ManagerStartContract from "../ContractSigning/ManagerStartContract/ManagerStartContract";
+import ManagerStartContract from "../ContractSigning/ManagerStartContract";
 
 export default class Manager extends Component {
 
