@@ -1,27 +1,20 @@
 import {Step} from "../Register";
-import React, {Component} from "react";
+import React from "react";
 
-export default class Choice extends Component {
-    continue = (value) => {
-        this.props.nextStep(value);
-    }
-
-    render() {
-        return (<>
-            <div className="form-group text-center">
-                <label/>
-                <div>
-                    <button className="btn btn-primary" type={"button"} onClick={() => {
-                        this.continue(Step.CEGEP)
-                    }}>Membre du cégep
-                    </button>
-                    <button className="btn btn-primary" type={"button"} onClick={() => {
-                        this.continue(Step.MONITOR)
-                    }}>Compagnie
-                    </button>
-                </div>
+export default function Choice({nextStep}) {
+    return (<>
+        <div className="form-group text-center">
+            <label/>
+            <div>
+                <button className="btn btn-primary" type={"button"} onClick={() => nextStep(Step.CEGEP)
+                }>Membre du cégep
+                </button>
+                <button className="btn btn-primary" type={"button"} onClick={() => nextStep(Step.MONITOR)
+                }>Compagnie
+                </button>
             </div>
-        </>)
-    }
+        </div>
+    </>)
+
 }
 
