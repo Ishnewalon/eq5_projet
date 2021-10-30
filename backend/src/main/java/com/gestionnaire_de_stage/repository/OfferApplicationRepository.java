@@ -11,4 +11,5 @@ public interface OfferApplicationRepository extends JpaRepository<OfferApplicati
     boolean existsByOfferAndCurriculum(Offer offer, Curriculum curriculum);
     boolean existsByOffer_CreatorEmail(String email);
     List<OfferApplication> getAllByOffer_CreatorEmail(String email);
+    List<OfferApplication> getAllByCurriculum_StudentId(Long id);
 }

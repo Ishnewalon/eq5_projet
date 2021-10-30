@@ -55,6 +55,7 @@ public class OfferController {
                 .status(HttpStatus.CREATED)
                 .body(offer);
     }
+
     @GetMapping({"/", "/{department}"}) //TODO Handle exception
     public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {
         if (department == null || department.isEmpty() || department.isBlank())
@@ -86,15 +87,16 @@ public class OfferController {
                     .body(new ResponseMessage("Offre déjà traité!"));
         }
     }
+
     @GetMapping("/valid")
     public ResponseEntity<?> getValidOffers() {
         List<Offer> offers = offerService.getValidOffers();
         return ResponseEntity.ok(offers);
     }
+
     @GetMapping("/not_validated")
     public ResponseEntity<?> getNotValidatedOffers() {
         List<Offer> offers = offerService.getNotValidatedOffers();
         return ResponseEntity.ok(offers);
     }
-
 }
