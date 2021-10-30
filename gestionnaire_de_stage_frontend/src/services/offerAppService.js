@@ -1,5 +1,5 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
-import {swalErr, toast} from "../utility";
+import {swalErr} from "../utility";
 import OfferApp from "../models/OfferApp";
 import Swal from "sweetalert2";
 
@@ -44,6 +44,16 @@ class OfferAppService {
             if(res.message) {
                 swalErr().fire({text: res.message});
                 return Promise.any([]);
+            }
+            return res;
+        });
+    }
+
+    async managerStartContract(contract) {
+        return await fetch(`${this.url}/start_signature`, requestInit(methods.GET)).then(res => res.json()).then(res => {
+            if(res.message){
+                swalErr().fire({text: res.message});
+                return Promise.any(contract);
             }
             return res;
         });

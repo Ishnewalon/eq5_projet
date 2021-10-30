@@ -2,9 +2,15 @@ package com.gestionnaire_de_stage.repository;
 
 import com.gestionnaire_de_stage.model.Offer;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface OfferRepository extends JpaRepository<Offer, Long> {
-    List<Offer> findAllByDepartmentAndValidIsTrue(String department);
+    List<Offer> findAllByDepartmentIgnoreCaseAndValidIsTrue(String department);
+    List<Offer> findAllByValid(Boolean valid);
+
+    List<Offer> findAllByValidNull();
+    boolean existsByIdAndValidNotNull(Long id);
 }

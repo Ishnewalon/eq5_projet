@@ -1,8 +1,10 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
+import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
@@ -46,6 +48,7 @@ class OfferApplicationServiceTest {
         OfferApplication actualOfferApplication = offerApplicationService.create(dummyOffer.getId(), dummyStudent.getId());
 
         assertThat(actualOfferApplication).isEqualTo(dummyOfferApplication);
+        assertThat(actualOfferApplication.getStatus()).isEqualTo(Status.CV_ENVOYE);
     }
 
     @Test
@@ -70,18 +73,32 @@ class OfferApplicationServiceTest {
 
     @Test
     void testCreate_withIdOfferNull() {
-        Offer dummyOffer = getDummyOffer();
-
-        assertThrows(IllegalArgumentException.class,
-                () -> offerApplicationService.create(null, dummyOffer.getId()));
-    }
-
-    @Test
-    void testCreate_withIdCurriculumNull() {
         Student dummyStudent = getDummyStudent();
 
         assertThrows(IllegalArgumentException.class,
                 () -> offerApplicationService.create(null, dummyStudent.getId()));
+    }
+
+    @Test
+    void testCreate_withIdStudentNull() throws IdDoesNotExistException {
+        Offer dummyOffer = getDummyOffer();
+        when(studentService.getOneByID(any())).thenThrow(IllegalArgumentException.class);
+        when(offerService.findOfferById(any())).thenReturn(Optional.of(dummyOffer));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.create(dummyOffer.getId(), null));
+    }
+
+    @Test
+    void testCreate_withCvNull() throws IdDoesNotExistException {
+        Offer dummyOffer = getDummyOffer();
+        Student dummyStudent = getDummyStudent();
+        dummyStudent.setPrincipalCurriculum(null);
+        when(studentService.getOneByID(any())).thenReturn(dummyStudent);
+        when(offerService.findOfferById(any())).thenReturn(Optional.of(dummyOffer));
+
+        assertThrows(StudentHasNoCurriculumException.class,
+                () -> offerApplicationService.create( dummyOffer.getId(), dummyStudent.getId()));
     }
 
     @Test
@@ -129,6 +146,7 @@ class OfferApplicationServiceTest {
         offerApplicationDTO.setOffer(getDummyOffer());
         offerApplicationDTO.setCurriculum(new Curriculum());
         offerApplicationDTO.setId(1L);
+        offerApplicationDTO.setStatus(Status.CV_ENVOYE);
 
         return offerApplicationDTO;
     }

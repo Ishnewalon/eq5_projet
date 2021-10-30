@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import PreviewStudent from "../PreviewStudent/PreviewStudent";
-import OfferAppService from '../../services/offerAppService';
+import PreviewStudent from "../../PreviewStudent/PreviewStudent";
+import OfferAppService from '../../../services/offerAppService';
 import PropTypes from 'prop-types';
 export default function ViewAppliedStudents(email) {
 
@@ -8,7 +8,9 @@ export default function ViewAppliedStudents(email) {
 
     const loadAllData = () => async () => await OfferAppService.getAllApplicants(email).then(v => setStudents(v))
 
-    useEffect(loadAllData(), []);
+    useEffect(()=> {
+        loadAllData()
+    } );
 
     ViewAppliedStudents.propTypes = {
         email: PropTypes.string.isRequired
