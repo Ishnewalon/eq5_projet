@@ -1,4 +1,3 @@
-
 INSERT INTO MANAGER VALUES(1, 'admin@email.com', 'richard', 'gautier', 'UnMotDePasse1234', '5145145514');
 INSERT INTO MONITOR VALUES(2, 'monitor@email.com', 'Verron', 'Lambert', 'UnMotDePasse1234', '5141234567', '1000, avenue Bouchard', 'Lasalle', 'Informatique', 'H0H0H0');
 INSERT INTO OFFER VALUES(1, '1000, avenue Bouchard', now(), 'Informatique', 'UneDescription', 28, 'Un Titre', NULL, 2);

@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
@@ -12,6 +13,7 @@ import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.List;
 
@@ -36,17 +38,19 @@ public class OfferApplicationService {
         Student student = studentService.getOneByID(idStudent);
         Curriculum curriculum = student.getPrincipalCurriculum();
 
-        if(curriculum == null) {
+        if(curriculum == null)
             throw new StudentHasNoCurriculumException();
-        }
 
-        if (offer.isEmpty()) throw new IdDoesNotExistException();
+        if (offer.isEmpty())
+            throw new IdDoesNotExistException();
+
         if (offerApplicationRepository.existsByOfferAndCurriculum(offer.get(), curriculum))
             throw new StudentAlreadyAppliedToOfferException();
 
         OfferApplication offerApplication = new OfferApplication();
         offerApplication.setOffer(offer.get());
         offerApplication.setCurriculum(student.getPrincipalCurriculum());
+        offerApplication.setStatus(Status.CV_ENVOYE);
 
         return offerApplicationRepository.save(offerApplication);
     }
