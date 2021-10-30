@@ -1,5 +1,5 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
-import {swalErr, toast} from "../utility";
+import {swalErr} from "../utility";
 import OfferApp from "../models/OfferApp";
 import Swal from "sweetalert2";
 

@@ -54,6 +54,7 @@ export default class Register extends Component {
     }
 
     nextStep = (val) => {
+        console.log(val)
         const {previousStep} = this.state;
         const {step} = this.state;
         previousStep.push(step)
@@ -69,7 +70,7 @@ export default class Register extends Component {
         this.setState({[input]: e.target.value});
     }
 
-    finish = () => {
+    endThis = () => {
         const {
             email, password, firstName, lastName, phone, companyName, address, codePostal, city, matricule
         } = this.state;
@@ -101,8 +102,8 @@ export default class Register extends Component {
 
 
     render() {
-        const {step} = this.state;
         const {
+            step,
             email,
             password,
             firstName,
@@ -114,8 +115,6 @@ export default class Register extends Component {
             codePostal,
             matricule
         } = this.state;
-        const valGeneral = {email, firstName, lastName, phone}
-        const valMonitor = {companyName, city, address, codePostal}
         let show = null;
 
         switch (step) {
@@ -131,15 +130,16 @@ export default class Register extends Component {
                 show =
                     <StepMonitor prevStep={this.prevStep} nextStep={this.nextStep} updateUserType={this.updateUserType}
                                  handleChange={this.handleChange}
-                                 values={valMonitor}/>
+                                 address={address} codePostal={codePostal} city={city} companyName={companyName}/>
                 break;
             case Step.GENERAL:
                 show = <StepInformationGeneral prevStep={this.prevStep} nextStep={this.nextStep}
                                                handleChange={this.handleChange}
-                                               values={valGeneral}/>
+                                               email={email} firstName={firstName} lastName={lastName} phone={phone}/>
                 break;
             case Step.PASSWORD:
-                show = <StepPassword prevStep={this.prevStep} finish={this.finish} handleChange={this.handleChange}
+                console.log("lol oui")
+                show = <StepPassword prevStep={this.prevStep} endThis={this.endThis} handleChange={this.handleChange}
                                      password={password}/>
 
                 break;

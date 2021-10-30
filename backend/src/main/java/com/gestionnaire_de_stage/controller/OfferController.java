@@ -2,16 +2,17 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.dto.ValidationOffer;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
+import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.service.MonitorService;
 import com.gestionnaire_de_stage.service.OfferService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,12 +30,6 @@ public class OfferController {
         this.offerService = offerService;
         this.monitorService = monitorService;
     }
-
-    @GetMapping
-    public List<Offer> getAllOffers() {
-        return offerService.getAll();
-    }
-
 
     @PostMapping("/add")
     public ResponseEntity<?> addOffer(@RequestBody OfferDTO dto) {
@@ -60,7 +55,6 @@ public class OfferController {
                 .status(HttpStatus.CREATED)
                 .body(offer);
     }
-
     @GetMapping({"/", "/{department}"}) //TODO Handle exception
     public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {
         if (department == null || department.isEmpty() || department.isBlank())
@@ -68,15 +62,15 @@ public class OfferController {
                     .badRequest()
                     .body(new ResponseMessage("Le département n'est pas précisé"));
 
-        List<OfferDTO> offerDTOS = offerService.getOffersByDepartment(department);
+        List<Offer> offerDTOS = offerService.getOffersByDepartment(department);
 
         return ResponseEntity.ok(offerDTOS);
     }
 
-    @PutMapping("/validate")
-    public ResponseEntity<?> validateOffer(@RequestBody Offer o) {
+    @PostMapping("/validate")
+    public ResponseEntity<?> validateOffer(@RequestBody ValidationOffer validationOffer) {
         try {
-            Offer offer = offerService.update(o);
+            Offer offer = offerService.validation(validationOffer);
             return ResponseEntity.ok(offer);
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
@@ -86,7 +80,21 @@ public class OfferController {
             return ResponseEntity
                     .badRequest()
                     .body(ie.getMessage());
+        } catch (OfferAlreadyTreatedException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Offre déjà traité!"));
         }
+    }
+    @GetMapping("/valid")
+    public ResponseEntity<?> getValidOffers() {
+        List<Offer> offers = offerService.getValidOffers();
+        return ResponseEntity.ok(offers);
+    }
+    @GetMapping("/not_validated")
+    public ResponseEntity<?> getNotValidatedOffers() {
+        List<Offer> offers = offerService.getNotValidatedOffers();
+        return ResponseEntity.ok(offers);
     }
 
 }

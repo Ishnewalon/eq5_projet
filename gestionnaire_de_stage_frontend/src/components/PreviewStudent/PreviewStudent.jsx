@@ -18,7 +18,7 @@ export default function PreviewStudent(dto) {
             byteNums[i] = decodedChars.charCodeAt(i);
         let contentType = 'application/pdf';
 
-        if(dto.fileName.endsWith('docx'))
+        if (dto.fileName.endsWith('docx'))
             contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
         const blob = new Blob([new Uint8Array(byteNums), {type: contentType}]);
@@ -39,13 +39,13 @@ export default function PreviewStudent(dto) {
                 <div className={'d-flex justify-content-center align-items-center flex-column p-3 shadow h-100'}>
                     <h4 className={'p-2 rounded bg-secondary fw-bold text-white'}>{dto.firstName + ', ' + dto.lastName} </h4>
                     <div className={'d-flex justify-content-center align-items-center badge bg-primary text-wrap h2'}>
-                        <AiOutlineFile />
-                        <a onClick={openFile} target={'_blank'} className={'ms-2 text-white'}>{dto.fileName}</a>
+                        <AiOutlineFile/>
+                        <button onClick={openFile} className={'ms-2 text-white'}>{dto.fileName}</button>
                     </div>
                 </div>
             </div>
             <div className="col-12 col-sm-6">
-                {PreviewOffer(dto.offerDTO)}
+                <PreviewOffer offer={dto.offerDTO}/>
             </div>
         </div>
     </div>

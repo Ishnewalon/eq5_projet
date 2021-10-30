@@ -1,6 +1,6 @@
 import React from "react";
 import AddOffer from "../AddOffer/AddOffer";
-import ViewAppliedStudents from "../ViewAppliedStudents/ViewAppliedStudents";
+import ViewAppliedStudents from "./ViewAppliedStudents/ViewAppliedStudents";
 import AuthService from '../../services/auth-service';
 
 export default function Monitor(){
