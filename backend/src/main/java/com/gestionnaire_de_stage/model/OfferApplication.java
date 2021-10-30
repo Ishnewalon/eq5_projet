@@ -1,19 +1,22 @@
 package com.gestionnaire_de_stage.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class OfferApplication {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @ManyToOne
+    @OneToOne
     private Offer offer;
 
-    @ManyToOne
+    @OneToOne
     private Curriculum curriculum;
 }

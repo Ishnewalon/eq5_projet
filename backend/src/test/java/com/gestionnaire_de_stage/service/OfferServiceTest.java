@@ -24,7 +24,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@SuppressWarnings("ConstantConditions")
 public class OfferServiceTest {
 
     @InjectMocks
@@ -130,7 +129,7 @@ public class OfferServiceTest {
     public void testUpdateOffer_withValidOffer() throws IdDoesNotExistException, OfferAlreadyTreatedException {
         Offer dummyOffer = getDummyOffer();
         when(offerRepository.existsById(any())).thenReturn(true);
-        when(offerRepository.existsByIdAndValidIsNotNull(any())).thenReturn(false);
+        when(offerRepository.existsByIdAndValidNotNull(any())).thenReturn(false);
         when(offerRepository.getById(any())).thenReturn(dummyOffer);
         when(offerRepository.save(any())).thenReturn(dummyOffer);
 
@@ -204,7 +203,7 @@ public class OfferServiceTest {
     @Test
     void testGetNotValidatedOffers() {
         List<Offer> dummyArrayOffer = getDummyArrayOffer();
-        when(offerRepository.findAllByValidIsNull()).thenReturn(dummyArrayOffer);
+        when(offerRepository.findAllByValidNull()).thenReturn(dummyArrayOffer);
 
         List<Offer> returnedOffers = offerService.getNotValidatedOffers();
 

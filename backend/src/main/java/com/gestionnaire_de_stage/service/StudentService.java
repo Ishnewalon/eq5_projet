@@ -82,7 +82,7 @@ public class StudentService {
 
         Student student = optionalStudent.get();
 
-//        student.setPrincipalCurriculum(curriculum.get());
+        student.setPrincipalCurriculum(curriculum.get());
         return studentRepository.save(student);
     }
 

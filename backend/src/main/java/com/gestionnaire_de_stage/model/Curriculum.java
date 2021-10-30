@@ -25,7 +25,7 @@ public class Curriculum implements Serializable {
     private byte[] data;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private Student student;
 
     private Boolean isValid;
