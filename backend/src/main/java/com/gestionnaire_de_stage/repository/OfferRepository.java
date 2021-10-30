@@ -11,6 +11,6 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     List<Offer> findAllByDepartmentIgnoreCaseAndValidIsTrue(String department);
     List<Offer> findAllByValid(Boolean valid);
 
-    List<Offer> findAllByValidIsNull();
-    boolean existsByIdAndValidIsNotNull(Long id);
+    List<Offer> findAllByValidNull();
+    boolean existsByIdAndValidNotNull(Long id);
 }

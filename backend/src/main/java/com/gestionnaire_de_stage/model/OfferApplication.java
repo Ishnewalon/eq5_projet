@@ -2,12 +2,15 @@ package com.gestionnaire_de_stage.model;
 
 import com.gestionnaire_de_stage.enums.Status;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class OfferApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -16,10 +19,10 @@ public class OfferApplication {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToOne
+    @OneToOne
     private Offer offer;
 
-    @ManyToOne
+    @OneToOne
     private Curriculum curriculum;
 
     @Temporal(TemporalType.TIMESTAMP)

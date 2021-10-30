@@ -78,13 +78,13 @@ public class OfferService {
     }
 
     public List<Offer> getNotValidatedOffers() {
-        return offerRepository.findAllByValidIsNull();
+        return offerRepository.findAllByValidNull();
     }
 
     public Offer validation(ValidationOffer validationOffer) throws IdDoesNotExistException, OfferAlreadyTreatedException {
         Assert.isTrue(validationOffer.getId() != null, "L'id est null");
         if (!offerRepository.existsById(validationOffer.getId())) throw new IdDoesNotExistException();
-        if (offerRepository.existsByIdAndValidIsNotNull(validationOffer.getId())) throw new OfferAlreadyTreatedException();
+        if (offerRepository.existsByIdAndValidNotNull(validationOffer.getId())) throw new OfferAlreadyTreatedException();
 
         Offer offer = offerRepository.getById(validationOffer.getId());
         offer.setValid(validationOffer.isValid());
