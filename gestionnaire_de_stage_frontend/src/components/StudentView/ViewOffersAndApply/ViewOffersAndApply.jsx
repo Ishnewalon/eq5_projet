@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import OfferService from '../../services/offer-service';
-import AuthService from '../../services/auth-service';
+import OfferService from '../../../services/offer-service';
+import AuthService from '../../../services/auth-service';
 import ApplyOnOffer from "../ApplyOnOffer/ApplyOnOffer";
 
 export default class ViewOffersAndApply extends Component {
@@ -16,20 +16,23 @@ export default class ViewOffersAndApply extends Component {
     }
 
     _getAllOffers() {
-        this.service.getAllOffers()
+        this.service.getAllOffersValid()
             .then(offers => {
                 console.log(offers)
                 this.setState({offers});
             }).catch(e => {
-            console.trace(e);
-        });
+                console.trace(e);
+            });
     }
 
     _extractRelevantOffers(offers) {
         let relOffers = [];
         offers.map(offer => {
-            if (offer.department === AuthService.user.department)
+            if(offer.department === this.department &&
+                offer.valid){
                 relOffers.push(offer);
+            }
+            return offer;
         });
         return relOffers;
     }
