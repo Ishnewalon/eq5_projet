@@ -59,9 +59,12 @@ export default function StepMonitor({
             <label/>
             <div>
                 <button data-testid="btn-prev" className="btn btn-primary" type={"button"}
-                        onClick={() => prevStep}>Précédent
+                        onClick={() => {
+                            prevStep()
+                        }}>Précédent
                 </button>
                 <button data-testid="btn-next" className="btn btn-primary" type={"button"} onClick={() => {
+                    console.log("OUI")
                     if (service.verification()) next(Step.GENERAL)
                 }}>Suivant
                 </button>

@@ -2,10 +2,10 @@ import {cleanup, render, screen} from "@testing-library/react";
 import StepMonitor, {service} from "./StepMonitor";
 import userEvent from "@testing-library/user-event";
 
-let code = "dawdwa";
-let addd = "ddddd";
-let comp = "dadwdawdawdad";
-let city = "dawdawd";
+let code = "postalll";
+let addd = "mon address";
+let comp = "name";
+let city = "ville";
 const prev = jest.fn();
 const next = jest.fn();
 const handle = () => jest.fn((e) => {
@@ -13,12 +13,12 @@ const handle = () => jest.fn((e) => {
     console.log(e.target.value)
     comp = e.target.value;
 });
-const updatee = jest.fn();
+const updateType = jest.fn();
 
 jest.mock('../../Fields/FieldAddress', () => () => 'myAddressComponents');
 beforeEach(() => {
     render(
-        <StepMonitor prevStep={prev} nextStep={next} handleChange={handle} updateUserType={updatee} codePostal={code}
+        <StepMonitor prevStep={prev} nextStep={next} handleChange={handle} updateUserType={updateType} codePostal={code}
                      companyName={comp} city={city} address={addd}/>
     );
 });
@@ -35,20 +35,18 @@ it('loads and displays StepMonitor', async () => {
     let btnNext = screen.getByText("Suivant");
     let btnPrev = screen.getByText("Précédent");
     expect(screen.getByTestId("companyName")).toBeInTheDocument();
-    userEvent.type(screen.getByTestId("companyName"), "test");
-    expect(screen.getByTestId("companyName")).toHaveValue("test");
 
     expect(cityInput).toBeInTheDocument();
     expect(postalCodeInput).toBeInTheDocument();
-    expect(cityInput.value).toBe(city);
-    expect(postalCodeInput.value).toBe(code);
+    expect(cityInput).toHaveValue(city);
+    expect(postalCodeInput).toHaveValue(code);
     expect(btnNext).toBeInTheDocument();
     expect(btnPrev).toBeInTheDocument();
     expect(screen.getByText("myAddressComponents")).toBeInTheDocument()
-    // fireEvent.click(btnPrev);
+    userEvent.click(btnPrev);
     expect(prev).toHaveBeenCalled()
-    // expect(prev).toHaveBeenCalled()
-    // expect(handle).toHaveBeenCalled()
-    // expect(updatee).toHaveBeenCalled()
+    userEvent.click(btnNext);
+    expect(next).toHaveBeenCalled()
+    expect(updateType).toHaveBeenCalled()
 });
 
