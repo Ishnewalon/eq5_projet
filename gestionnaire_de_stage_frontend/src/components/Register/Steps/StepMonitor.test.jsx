@@ -57,18 +57,33 @@ it('click prev', () => {
 
     expect(mockFnPrev).toHaveBeenCalled()
 });
-it('verification', function () {
+it('verification', () => {
     let myBool = verification('myBigCompagnie', 'mtl', '555 rue blabla', 'H0H0H0');
     expect(myBool).toBeTruthy();
 });
-it('verification bad postalCode', function () {
+it('verification bad postalCode', () => {
     let myBool = verification('myBigCompagnie', 'mtl', '555 rue blabla', 'H0H0H03');
     expect(myBool).toBeFalsy();
     myBool = verification('myBigCompagnie', 'mtl', '555 rue blabla', 'H0H03H');
     expect(myBool).toBeFalsy();
 });
-it('verification bad companyName', function () {
+it('verification bad companyName', () => {
     let myBool = verification('myBigCompagnie!', 'mtl', '555 rue blabla', 'H0H0H0');
     expect(myBool).toBeFalsy();
 });
-
+it('verification undefined CompanyName', () => {
+    let myBool = verification(undefined, 'mtl', '555 rue blabla', 'H0H0H0');
+    expect(myBool).toBeFalsy();
+});
+it('verification undefined City', () => {
+    let myBool = verification('myBigCompagnie', undefined, '555 rue blabla', 'H0H0H0');
+    expect(myBool).toBeFalsy();
+});
+it('verification undefined Address', () => {
+    let myBool = verification('myBigCompagnie', 'mtl', undefined, 'H0H0H0');
+    expect(myBool).toBeFalsy();
+});
+it('verification undefined PostalCode', () => {
+    let myBool = verification('myBigCompagnie', 'mtl', '555 rue blabla', undefined);
+    expect(myBool).toBeFalsy();
+})
