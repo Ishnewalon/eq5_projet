@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -25,7 +26,6 @@ public class OfferApplication {
     @OneToOne
     private Curriculum curriculum;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date entrevueDate;
+    private LocalDate interviewDate;
 }
 

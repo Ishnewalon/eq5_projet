@@ -13,6 +13,7 @@ import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 import java.util.List;
@@ -60,6 +61,10 @@ public class OfferApplicationService {
         if (isEmailInvalid(email))
             throw new EmailDoesNotExistException();
         return offerApplicationRepository.getAllByOffer_CreatorEmail(email);
+    }
+
+    public void setInterviewDate(Long offerAppID, LocalDate date){
+        
     }
 
     private boolean isEmailInvalid(String email) {

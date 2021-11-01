@@ -141,6 +141,11 @@ class OfferApplicationServiceTest {
                 () -> offerApplicationService.getAllByOfferCreatorEmail(email));
     }
 
+    @Test
+    void testSetInterviewDate_withValidIDs(){
+
+    }
+
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();
         offerApplicationDTO.setOffer(getDummyOffer());
