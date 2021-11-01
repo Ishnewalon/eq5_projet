@@ -23,7 +23,7 @@
 </template>
 
 <style>
-input{
+input {
   width: 80%;
   padding: 12px 20px;
   margin: 8px 0;

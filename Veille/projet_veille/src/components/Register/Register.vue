@@ -1,14 +1,19 @@
 <template>
   <div class="text-center ">
     <div>
-      <h2><ins>Inscription</ins></h2>
+      <h2>
+        <ins>Inscription</ins>
+      </h2>
       <div>
-        <button :class = "getCurrentRegister()==='RegisterStudent' ? 'btnSelected': 'btnSimple'"
-                v-on:click="handleClick('student')">Étudiant</button>
-        <button :class = "getCurrentRegister()==='RegisterMonitor' ? 'btnSelected': 'btnSimple'"
-                v-on:click="handleClick('monitor')">Moniteur</button>
-        <button :class = "getCurrentRegister()==='RegisterSupervisor' ? 'btnSelected': 'btnSimple'"
-                v-on:click="handleClick('supervisor')">Superviseur</button>
+        <button :class="getCurrentRegister()==='RegisterStudent' ? 'btnSelected': 'btnSimple'"
+                v-on:click="handleClick('student')">Étudiant
+        </button>
+        <button :class="getCurrentRegister()==='RegisterMonitor' ? 'btnSelected': 'btnSimple'"
+                v-on:click="handleClick('monitor')">Moniteur
+        </button>
+        <button :class="getCurrentRegister()==='RegisterSupervisor' ? 'btnSelected': 'btnSimple'"
+                v-on:click="handleClick('supervisor')">Superviseur
+        </button>
         <component v-bind:is="getCurrentRegister()"></component>
       </div>
     </div>
@@ -17,7 +22,7 @@
 
 <style scoped>
 
-button{
+button {
   font-size: 15px;
   border: 2px solid black;
   padding: 15px;
@@ -26,9 +31,11 @@ button{
   cursor: pointer;
   margin-left: 10px;
 }
+
 .btnSelected {
   background: rgba(64, 255, 169, 0.74);
 }
+
 .btnSimple {
   background: rgba(115, 128, 125, 0.74);
 }
@@ -38,10 +45,11 @@ button{
 import RegisterStudent from './RegisterStudent'
 import RegisterMonitor from './RegisterMonitor'
 import RegisterSupervisor from './RegisterSupervisor'
-export default{
+
+export default {
   name: 'register',
-  data: function(){
-    return { currentRegister: 'RegisterStudent'}
+  data: function () {
+    return {currentRegister: 'RegisterStudent'}
   },
   components: {
     RegisterStudent,
@@ -49,22 +57,22 @@ export default{
     RegisterSupervisor
   },
   methods: {
-    getCurrentRegister(){
+    getCurrentRegister() {
       return this.currentRegister
     },
-    setCurrentRegister(current){
+    setCurrentRegister(current) {
       this.currentRegister = current
     },
-    handleClick(current){
-      if(current === "student"){
+    handleClick(current) {
+      if (current === "student") {
         this.setCurrentRegister('RegisterStudent')
         return this.currentRegister
       }
-      if(current === "monitor"){
+      if (current === "monitor") {
         this.setCurrentRegister('RegisterMonitor')
         return this.currentRegister
       }
-      if(current === "supervisor"){
+      if (current === "supervisor") {
         this.setCurrentRegister('RegisterSupervisor')
         return this.currentRegister
       }
