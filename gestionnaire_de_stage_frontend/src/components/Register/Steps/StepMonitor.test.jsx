@@ -8,12 +8,12 @@ let comp = "name";
 let city = "ville";
 const prev = jest.fn();
 const next = jest.fn();
+const updateType = jest.fn();
 const handle = () => jest.fn((e) => {
     e.preventDefault();
     console.log(e.target.value)
     comp = e.target.value;
 });
-const updateType = jest.fn();
 
 jest.mock('../../Fields/FieldAddress', () => () => 'myAddressComponents');
 beforeEach(() => {
@@ -26,27 +26,32 @@ afterEach(() => {
     cleanup();
     jest.resetAllMocks();
 })
-it('loads and displays StepMonitor', async () => {
+it('loads and displays StepMonitor', () => {
+    expect(screen.getByTestId("companyName")).toBeInTheDocument();
+    expect(screen.getByTestId("input-city")).toBeInTheDocument();
+    expect(screen.getByTestId("codePostal")).toBeInTheDocument();
+    expect(screen.getByText("Suivant")).toBeInTheDocument();
+    expect(screen.getByText("Précédent")).toBeInTheDocument();
+    expect(screen.getByText("myAddressComponents")).toBeInTheDocument()
+    expect(screen.getByTestId("input-city")).toHaveValue(city);
+    expect(screen.getByTestId("codePostal")).toHaveValue(code);
+
+});
+it('click next', () => {
     service.verification = jest.fn(() => {
         return true;
     });
-    let cityInput = screen.getByTestId("input-city");
-    let postalCodeInput = screen.getByTestId("codePostal");
-    let btnNext = screen.getByText("Suivant");
-    let btnPrev = screen.getByText("Précédent");
-    expect(screen.getByTestId("companyName")).toBeInTheDocument();
 
-    expect(cityInput).toBeInTheDocument();
-    expect(postalCodeInput).toBeInTheDocument();
-    expect(cityInput).toHaveValue(city);
-    expect(postalCodeInput).toHaveValue(code);
-    expect(btnNext).toBeInTheDocument();
-    expect(btnPrev).toBeInTheDocument();
-    expect(screen.getByText("myAddressComponents")).toBeInTheDocument()
-    userEvent.click(btnPrev);
-    expect(prev).toHaveBeenCalled()
-    userEvent.click(btnNext);
+    expect(next).not.toHaveBeenCalled()
+    userEvent.click(screen.getByText("Suivant"));
+
     expect(next).toHaveBeenCalled()
     expect(updateType).toHaveBeenCalled()
+});
+it('click prev', () => {
+    expect(prev).not.toHaveBeenCalled()
+    userEvent.click(screen.getByText("Précédent"));
+
+    expect(prev).toHaveBeenCalled()
 });
 
