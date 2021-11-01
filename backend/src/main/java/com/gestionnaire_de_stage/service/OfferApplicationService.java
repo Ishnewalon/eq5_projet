@@ -1,10 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.enums.Status;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
-import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
@@ -62,11 +59,25 @@ public class OfferApplicationService {
         return offerApplicationRepository.getAllByOffer_CreatorEmail(email);
     }
 
-    public OfferApplication setInterviewDate(Long offerAppID, LocalDate date){
+    public OfferApplication setInterviewDate(Long offerAppID, LocalDate date) throws IdDoesNotExistException, DateNotValidException {
+        Assert.isTrue(offerAppID != null, "L'id de l'offre ne peut pas être null");
+        Assert.isTrue(date != null, "La date ne peut pas être null");
+
+        if (!offerApplicationRepository.existsById(offerAppID))
+            throw new IdDoesNotExistException();
+
+        if (isDateInvalid(date))
+            throw new DateNotValidException();
+
         OfferApplication offerApplication = offerApplicationRepository.getById(offerAppID);
         offerApplication.setInterviewDate(date);
 
         return offerApplicationRepository.save(offerApplication);
+    }
+
+    private boolean isDateInvalid(LocalDate date) {
+        return !date.isAfter(LocalDate.now()) ||
+                !date.isBefore(LocalDate.now().plusMonths(2));
     }
 
     private boolean isEmailInvalid(String email) {

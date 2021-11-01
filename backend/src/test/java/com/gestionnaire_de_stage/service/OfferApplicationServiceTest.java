@@ -1,10 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.enums.Status;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
-import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
@@ -143,8 +140,9 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    void testSetInterviewDate_withValidIDs(){
+    void testSetInterviewDate_withValidIDs() throws Exception {
         OfferApplication offerApplication = getDummyOfferApp();
+        when(offerApplicationRepository.existsById(any())).thenReturn(true);
         when(offerApplicationRepository.getById(any())).thenReturn(offerApplication);
         offerApplication.setInterviewDate(LocalDate.now());
         when(offerApplicationRepository.save(any())).thenReturn(offerApplication);
@@ -152,6 +150,31 @@ class OfferApplicationServiceTest {
         OfferApplication actual = offerApplicationService.setInterviewDate(offerApplication.getId(), LocalDate.now());
 
         assertThat(actual).isEqualTo(offerApplication);
+    }
+
+    @Test
+    void testSetInterviewDate_withNullIDs() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.setInterviewDate(null, null));
+    }
+
+    @Test
+    void testSetInterviewDate_withOfferAppIdNotExist() {
+        when(offerApplicationRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerApplicationService.setInterviewDate(5L, LocalDate.now()));
+    }
+
+    @Test
+    void testSetInterviewDate_withDateInvalid() {
+        OfferApplication offerApplication = getDummyOfferApp();
+        when(offerApplicationRepository.existsById(any())).thenReturn(true);
+
+        assertThrows(DateNotValidException.class,
+                () -> offerApplicationService.setInterviewDate(
+                        offerApplication.getId(),
+                        LocalDate.now().minusDays(5)));
     }
 
     private OfferApplication getDummyOfferApp() {
