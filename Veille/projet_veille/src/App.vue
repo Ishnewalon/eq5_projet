@@ -1,23 +1,25 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-<!--  <HelloWorld msg="Welcome to Your Vue.js App"/>-->
-  <Register msg="Bienvenue dans la page du l'inscription "/>
+  <div id="nav">
+    <router-link to="/">Home</router-link> |
+    <router-link to="/register">Inscription</router-link>
+  </div>
+  <router-view/>
 </template>
-
-<script>
-import Register from "./components/Register/Register";
-
-export default {
-  name: 'App',
-  components: {
-    // HelloWorld,
-    Register
-  }
-}
-</script>
 
 <style>
 #app {
+  font-family: 'Roboto', 'Times New Roman', sans-serif;
   text-align: center;
+}
+#nav {
+  padding: 30px;
+}
+#nav a {
+  font-weight: bold;
+  font-size: 30px;
+  color: black;
+}
+#nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>

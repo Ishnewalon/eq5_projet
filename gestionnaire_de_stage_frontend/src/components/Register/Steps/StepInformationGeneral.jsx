@@ -86,8 +86,6 @@ export default function StepInformationGeneral({prevStep, nextStep, handleChange
                 <button className="btn btn-primary" type={"button"} onClick={() => {
                     if (verification())
                         next(Step.PASSWORD)
-                    else
-                        console.log("fuck you sam")
                 }}>Suivant
                 </button>
             </div>

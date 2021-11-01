@@ -1,72 +1,57 @@
 <template>
-  <div>
-    <form>
-      <h1> {{ titre }}</h1>
-      <div class="form-group row">
-
-        <div class="col-md-6">
-          <label>Prénom</label>
-          <div class="input-group">
-            <input name="firstName" placeholder="Prenom" class="form-control" type="text"/>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <label>Nom</label>
-          <div>
-            <div class="input-group">
-              <input name="lastName" placeholder="Nom" class="form-control" type="text"/>
-            </div>
-          </div>
-        </div>
+  <div class="text-center ">
+    <div>
+      <h2><ins>Inscription</ins></h2>
+      <div>
+        <button :class = "getCurrentRegister()==='RegisterStudent' ? 'btnSelected': 'btnSimple'"
+                v-on:click="handleClick('student')">Étudiant</button>
+        <component v-bind:is="getCurrentRegister()"></component>
       </div>
-
-      <div class="form-group">
-        <label>E-Mail</label>
-        <div class="input-group">
-          <input name="email" placeholder="Adresse E-mail" class="form-control" type="email"/>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Téléphone</label>
-        <div class="input-group">
-          <input name="contact_no" placeholder="000 000 000" class="form-control" type="tel" />
-        </div>
-      </div>
-
-      <div class="form-group text-center">
-        <label/>
-        <div>
-          <button class="btn btn-primary" type="button" >S'inscrire</button>
-        </div>
-      </div>
-
-    </form>
+    </div>
   </div>
 </template>
 
+<style scoped>
 
+button{
+  font-size: 15px;
+  border: 2px solid black;
+  padding: 15px;
+  border-radius: 50%;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btnSelected {
+  background: rgba(64, 255, 169, 0.74);
+}
+.btnSimple {
+  background: rgba(115, 128, 125, 0.74);
+}
+</style>
 <script>
-export default {
-  name: 'Register',
-  props: {
-    titre: String
+import RegisterStudent from './RegisterStudent.vue'
+export default{
+  name: 'register',
+  data: function(){
+    return { currentRegister: 'RegisterStudent'}
+  },
+  components: {
+    RegisterStudent
+  },
+  methods: {
+    getCurrentRegister(){
+      return this.currentRegister
+    },
+    setCurrentRegister(current){
+      this.currentRegister = current
+    },
+    handleClick(current){
+      if(current === "student"){
+        this.setCurrentRegister('RegisterStudent')
+        return this.currentRegister
+      }
+    }
   }
 }
 </script>
 
-
-<style scoped>
-
-
-label {
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
-
-button {
-  margin-right: 10px;
-}
-
-</style>
