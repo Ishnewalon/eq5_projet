@@ -38,6 +38,7 @@ it('loads and displays StepMonitor', () => {
     expect(screen.getByText("myAddressComponents")).toBeInTheDocument()
     expect(screen.getByTestId("input-city")).toHaveValue(myCity);
     expect(screen.getByTestId("codePostal")).toHaveValue(myPostalCode);
+    expect(screen.getByTestId("companyName")).toHaveValue(myCompanyName);
 
 });
 it('click next', () => {
