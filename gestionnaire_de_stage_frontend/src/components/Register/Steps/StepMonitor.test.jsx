@@ -6,19 +6,19 @@ let code = "postalll";
 let addd = "mon address";
 let comp = "name";
 let city = "ville";
-const prev = jest.fn();
-const next = jest.fn();
-const updateType = jest.fn();
-const handle = () => jest.fn((e) => {
+const mockFnPrev = jest.fn();
+const mockFnNext = jest.fn();
+const mockFnUpdateType = jest.fn();
+const mockFnHandleChange = () => jest.fn((e) => {
     e.preventDefault();
-    console.log(e.target.value)
     comp = e.target.value;
 });
 
 jest.mock('../../Fields/FieldAddress', () => () => 'myAddressComponents');
+
 beforeEach(() => {
     render(
-        <StepMonitor prevStep={prev} nextStep={next} handleChange={handle} updateUserType={updateType} codePostal={code}
+        <StepMonitor prevStep={mockFnPrev} nextStep={mockFnNext} handleChange={mockFnHandleChange} updateUserType={mockFnUpdateType} codePostal={code}
                      companyName={comp} city={city} address={addd}/>
     );
 });
@@ -42,16 +42,16 @@ it('click next', () => {
         return true;
     });
 
-    expect(next).not.toHaveBeenCalled()
+    expect(mockFnNext).not.toHaveBeenCalled()
     userEvent.click(screen.getByText("Suivant"));
 
-    expect(next).toHaveBeenCalled()
-    expect(updateType).toHaveBeenCalled()
+    expect(mockFnNext).toHaveBeenCalled()
+    expect(mockFnUpdateType).toHaveBeenCalled()
 });
 it('click prev', () => {
-    expect(prev).not.toHaveBeenCalled()
+    expect(mockFnPrev).not.toHaveBeenCalled()
     userEvent.click(screen.getByText("Précédent"));
 
-    expect(prev).toHaveBeenCalled()
+    expect(mockFnPrev).toHaveBeenCalled()
 });
 
