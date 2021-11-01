@@ -145,6 +145,7 @@ class OfferApplicationServiceTest {
     @Test
     void testSetInterviewDate_withValidIDs(){
         OfferApplication offerApplication = getDummyOfferApp();
+        when(offerApplicationRepository.getById(any())).thenReturn(offerApplication);
         offerApplication.setInterviewDate(LocalDate.now());
         when(offerApplicationRepository.save(any())).thenReturn(offerApplication);
 

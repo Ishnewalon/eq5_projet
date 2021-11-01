@@ -63,8 +63,10 @@ public class OfferApplicationService {
     }
 
     public OfferApplication setInterviewDate(Long offerAppID, LocalDate date){
+        OfferApplication offerApplication = offerApplicationRepository.getById(offerAppID);
+        offerApplication.setInterviewDate(date);
 
-        return null;
+        return offerApplicationRepository.save(offerApplication);
     }
 
     private boolean isEmailInvalid(String email) {
