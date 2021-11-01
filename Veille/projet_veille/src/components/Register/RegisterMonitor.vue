@@ -2,13 +2,16 @@
   <div>
     <form>
       <div>
-        <h2 class="pt-3">Inscription Étudiant</h2>
+        <h2 class="pt-3">Inscription Moniteur</h2>
       </div>
       <div>
         <input name="firstName" type="text" placeholder="Prénom" required/>
         <input name="lastName" type="text" placeholder="Nom" required/>
         <input name="email" type="email" placeholder="E-mail" required/>
         <input name="username" type="number" placeholder="Téléphone" required/>
+        <input name="companyName" type="text" placeholder="Nom de la compagnie" required/>
+        <input name="city" type="text" placeholder="Ville" required/>
+        <input name="postalCode" type="text" placeholder="Code postale" required/>
         <input name="password" type="password" placeholder="Mot de passe" required/>
       </div>
       <div>
