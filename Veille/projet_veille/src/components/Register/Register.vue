@@ -5,13 +5,13 @@
         <ins>Inscription</ins>
       </h2>
       <div>
-        <button :class="getCurrentRegister()==='RegisterStudent' ? 'btnSelected': 'btnSimple'"
+        <button v-bind:class="getCurrentRegister()==='RegisterStudent' ? 'btnSelected': 'btnSimple'"
                 v-on:click="handleClick('student')">Étudiant
         </button>
-        <button :class="getCurrentRegister()==='RegisterMonitor' ? 'btnSelected': 'btnSimple'"
+        <button v-bind:class="getCurrentRegister()==='RegisterMonitor' ? 'btnSelected': 'btnSimple'"
                 v-on:click="handleClick('monitor')">Moniteur
         </button>
-        <button :class="getCurrentRegister()==='RegisterSupervisor' ? 'btnSelected': 'btnSimple'"
+        <button v-bind:class="getCurrentRegister()==='RegisterSupervisor' ? 'btnSelected': 'btnSimple'"
                 v-on:click="handleClick('supervisor')">Superviseur
         </button>
         <component v-bind:is="getCurrentRegister()"></component>
