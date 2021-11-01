@@ -2,7 +2,7 @@
   <div>
     <form>
       <div>
-        <h2 class="pt-3">Inscription Étudiant</h2>
+        <h2>Inscription Étudiant</h2>
       </div>
       <div>
         <input name="firstName" type="text" placeholder="Prénom" required/>

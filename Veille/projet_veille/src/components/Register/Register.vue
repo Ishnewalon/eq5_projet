@@ -7,6 +7,8 @@
                 v-on:click="handleClick('student')">Étudiant</button>
         <button :class = "getCurrentRegister()==='RegisterMonitor' ? 'btnSelected': 'btnSimple'"
                 v-on:click="handleClick('monitor')">Moniteur</button>
+        <button :class = "getCurrentRegister()==='RegisterSupervisor' ? 'btnSelected': 'btnSimple'"
+                v-on:click="handleClick('supervisor')">Superviseur</button>
         <component v-bind:is="getCurrentRegister()"></component>
       </div>
     </div>
@@ -35,6 +37,7 @@ button{
 
 import RegisterStudent from './RegisterStudent'
 import RegisterMonitor from './RegisterMonitor'
+import RegisterSupervisor from './RegisterSupervisor'
 export default{
   name: 'register',
   data: function(){
@@ -42,7 +45,8 @@ export default{
   },
   components: {
     RegisterStudent,
-    RegisterMonitor
+    RegisterMonitor,
+    RegisterSupervisor
   },
   methods: {
     getCurrentRegister(){
@@ -58,6 +62,10 @@ export default{
       }
       if(current === "monitor"){
         this.setCurrentRegister('RegisterMonitor')
+        return this.currentRegister
+      }
+      if(current === "supervisor"){
+        this.setCurrentRegister('RegisterSupervisor')
         return this.currentRegister
       }
     }
