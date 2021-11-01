@@ -1,31 +1,34 @@
 import {cleanup, render, screen} from "@testing-library/react";
-import StepMonitor, {service} from "./StepMonitor";
+import StepMonitor, {service, verification} from "./StepMonitor";
 import userEvent from "@testing-library/user-event";
 
-let code = "postalll";
-let addd = "mon address";
-let comp = "name";
-let city = "ville";
+let myPostalCode = "postalll";
+let myAddress = "mon address";
+let myCompanyName = "name";
+let myCity = "ville";
 const mockFnPrev = jest.fn();
 const mockFnNext = jest.fn();
 const mockFnUpdateType = jest.fn();
 const mockFnHandleChange = () => jest.fn((e) => {
     e.preventDefault();
-    comp = e.target.value;
+    myCompanyName = e.target.value;
 });
 
 jest.mock('../../Fields/FieldAddress', () => () => 'myAddressComponents');
 
 beforeEach(() => {
     render(
-        <StepMonitor prevStep={mockFnPrev} nextStep={mockFnNext} handleChange={mockFnHandleChange} updateUserType={mockFnUpdateType} codePostal={code}
-                     companyName={comp} city={city} address={addd}/>
+        <StepMonitor prevStep={mockFnPrev} nextStep={mockFnNext} handleChange={mockFnHandleChange}
+                     updateUserType={mockFnUpdateType} codePostal={myPostalCode}
+                     companyName={myCompanyName} city={myCity} address={myAddress}/>
     );
 });
+
 afterEach(() => {
     cleanup();
     jest.resetAllMocks();
 })
+
 it('loads and displays StepMonitor', () => {
     expect(screen.getByTestId("companyName")).toBeInTheDocument();
     expect(screen.getByTestId("input-city")).toBeInTheDocument();
@@ -33,8 +36,8 @@ it('loads and displays StepMonitor', () => {
     expect(screen.getByText("Suivant")).toBeInTheDocument();
     expect(screen.getByText("Précédent")).toBeInTheDocument();
     expect(screen.getByText("myAddressComponents")).toBeInTheDocument()
-    expect(screen.getByTestId("input-city")).toHaveValue(city);
-    expect(screen.getByTestId("codePostal")).toHaveValue(code);
+    expect(screen.getByTestId("input-city")).toHaveValue(myCity);
+    expect(screen.getByTestId("codePostal")).toHaveValue(myPostalCode);
 
 });
 it('click next', () => {
@@ -53,5 +56,19 @@ it('click prev', () => {
     userEvent.click(screen.getByText("Précédent"));
 
     expect(mockFnPrev).toHaveBeenCalled()
+});
+it('verification', function () {
+    let myBool = verification('myBigCompagnie', 'mtl', '555 rue blabla', 'H0H0H0');
+    expect(myBool).toBeTruthy();
+});
+it('verification bad postalCode', function () {
+    let myBool = verification('myBigCompagnie', 'mtl', '555 rue blabla', 'H0H0H03');
+    expect(myBool).toBeFalsy();
+    myBool = verification('myBigCompagnie', 'mtl', '555 rue blabla', 'H0H03H');
+    expect(myBool).toBeFalsy();
+});
+it('verification bad companyName', function () {
+    let myBool = verification('myBigCompagnie!', 'mtl', '555 rue blabla', 'H0H0H0');
+    expect(myBool).toBeFalsy();
 });
 
