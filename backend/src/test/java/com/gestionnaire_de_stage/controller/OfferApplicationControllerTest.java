@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
-import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.service.CurriculumService;
 import com.gestionnaire_de_stage.service.OfferApplicationService;
@@ -22,11 +19,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -226,6 +225,31 @@ class OfferApplicationControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("La liste d'offre ne peut pas être vide");
+    }
+
+    @Test
+    void testSetInterviewDate_withValidIDs() throws Exception {
+        OfferApplication offerApplication = getDummyOfferApp();
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/applications/setdate/" + offerApplication.getId(), LocalDate.now())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+    }
+
+    @Test
+    void testSetInterviewDate_withNullIDs() {
+
+    }
+
+    @Test
+    void testSetInterviewDate_withOfferAppIdNotExist() {
+
+    }
+
+    @Test
+    void testSetInterviewDate_withDateInvalid() {
+
     }
 
     private OfferAppDTO getDummyOfferAppDto() {

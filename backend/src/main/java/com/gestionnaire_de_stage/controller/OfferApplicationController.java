@@ -13,6 +13,7 @@ import com.gestionnaire_de_stage.service.OfferApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -72,5 +73,11 @@ public class OfferApplicationController {
                     .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity.ok(curriculumDTOList);
+    }
+
+    @PostMapping("/setdate/{offerAppID}")
+    public ResponseEntity<?> setInterviewDate(@PathVariable Long offerAppID, @RequestBody LocalDate date) {
+        //todo a venir
+        return null;
     }
 }

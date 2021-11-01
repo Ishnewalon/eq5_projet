@@ -147,7 +147,7 @@ class OfferApplicationServiceTest {
         offerApplication.setInterviewDate(LocalDate.now());
         when(offerApplicationRepository.save(any())).thenReturn(offerApplication);
 
-        OfferApplication actual = offerApplicationService.setInterviewDate(offerApplication.getId(), LocalDate.now());
+        OfferApplication actual = offerApplicationService.setInterviewDate(offerApplication.getId(), LocalDate.now().plusDays(1));
 
         assertThat(actual).isEqualTo(offerApplication);
     }
