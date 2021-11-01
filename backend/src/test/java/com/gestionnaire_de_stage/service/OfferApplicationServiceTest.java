@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -143,7 +144,13 @@ class OfferApplicationServiceTest {
 
     @Test
     void testSetInterviewDate_withValidIDs(){
+        OfferApplication offerApplication = getDummyOfferApp();
+        offerApplication.setInterviewDate(LocalDate.now());
+        when(offerApplicationRepository.save(any())).thenReturn(offerApplication);
 
+        OfferApplication actual = offerApplicationService.setInterviewDate(offerApplication.getId(), LocalDate.now());
+
+        assertThat(actual).isEqualTo(offerApplication);
     }
 
     private OfferApplication getDummyOfferApp() {

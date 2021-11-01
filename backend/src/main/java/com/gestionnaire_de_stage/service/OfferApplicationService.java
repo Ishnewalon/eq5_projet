@@ -14,7 +14,6 @@ import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Optional;
 import java.util.List;
 
@@ -63,8 +62,9 @@ public class OfferApplicationService {
         return offerApplicationRepository.getAllByOffer_CreatorEmail(email);
     }
 
-    public void setInterviewDate(Long offerAppID, LocalDate date){
-        
+    public OfferApplication setInterviewDate(Long offerAppID, LocalDate date){
+
+        return null;
     }
 
     private boolean isEmailInvalid(String email) {
