@@ -11,6 +11,7 @@
         <input name="username" type="number" placeholder="Téléphone" required/>
         <input name="companyName" type="text" placeholder="Nom de la compagnie" required/>
         <input name="city" type="text" placeholder="Ville" required/>
+        <input name="companyAddress" type="text" placeholder="Adresse de la compagnie" required/>
         <input name="postalCode" type="text" placeholder="Code postale" required/>
         <input name="password" type="password" placeholder="Mot de passe" required/>
       </div>
