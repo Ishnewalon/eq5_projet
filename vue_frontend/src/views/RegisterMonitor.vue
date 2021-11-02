@@ -45,6 +45,7 @@
 import authService from "@/services/auth-service";
 import router from "@/router";
 import {MonitorModel} from "@/models/User";
+import Swal from "sweetalert2";
 
 export default {
   name: "RegisterMonitor",
@@ -66,17 +67,29 @@ export default {
       let allFieldsFilled = true;
       for(const prop in this) {
         if (prop === '' || this[prop] === '' || this[prop] === null) {
-          alert('Please fill all the fields');
+          Swal.fire({
+            title: 'Oops...',
+            text: 'Veuillez remplir tous les champs',
+            icon: 'error'
+          });
           allFieldsFilled = false;
           break;
         }
       }
 
       if(allFieldsFilled){
+        if (this.password.length > 8 && this.password.length < 64) {
+          Swal.fire({
+            title: 'Mot de passe doit être entre 8 et 64 caractères long',
+            icon: 'error'
+          });
+          return;
+        }
 
         let monitor = new MonitorModel(this.email, this.password, this.lastName, this.firstName, this.phone, this.address, this.city, this.postalCode, this.department);
         authService.signupMonitor(monitor);
-        router.push("/login");
+        if(authService.isAuthenticated())
+          router.push("/logged-in");
       }
 
     }

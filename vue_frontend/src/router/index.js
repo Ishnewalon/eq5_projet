@@ -5,6 +5,17 @@ import LoggedIn from "@/views/LoggedIn";
 import RegisterStudent from "@/views/RegisterStudent";
 import RegisterSupervisor from "@/views/RegisterSupervisor";
 import RegisterMonitor from "@/views/RegisterMonitor";
+import authService from "@/services/auth-service";
+
+function authenticationCheck(to, from, next)
+{
+  if(authService.isAuthenticated())
+    next();
+  else
+    next('/login');
+}
+
+
 
 const routes = [
   {
@@ -21,6 +32,7 @@ const routes = [
   {
     path:'/logged-in',
     name: 'Connecté',
+    beforeEnter: authenticationCheck,
     component: LoggedIn
   },
   {

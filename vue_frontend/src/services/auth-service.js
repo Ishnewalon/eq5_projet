@@ -1,33 +1,30 @@
 import {ManagerModel, MonitorModel, Student, Supervisor} from "@/models/User";
 import {methods, requestInit, urlBackend} from "./serviceUtils";
-import {UserType} from "../views/Register";
 import Swal from "sweetalert2";
 
 class AuthService {
-    user;
-    _isAuthenticated = false;
-
     isAuthenticated() {
-        return this._isAuthenticated;
+        return localStorage.getItem("user") != null;
     }
 
     isMonitor() {
-        return this.user instanceof MonitorModel;
+        return JSON.parse(localStorage.getItem("user")) instanceof MonitorModel;
     }
 
     isManager() {
-        return this.user instanceof ManagerModel;
+        return JSON.parse(localStorage.getItem("user")) instanceof ManagerModel;
     }
 
     isStudent() {
-        return this.user instanceof Student;
+        return JSON.parse(localStorage.getItem("user")) instanceof Student;
     }
 
     isSupervisor() {
-        return this.user instanceof Supervisor;
+        return JSON.parse(localStorage.getItem("user")) instanceof Supervisor;
     }
 
     async signupMonitor(monitor) {
+        localStorage.clear();
         if (!(monitor instanceof MonitorModel) || !monitor)
             return;
         const response = await fetch(`${urlBackend}/monitor/signup`, requestInit(methods.POST, monitor));
@@ -35,12 +32,14 @@ class AuthService {
             if (value.message) {
                 Swal.fire({title: value.message, icon: 'error'})
             } else {
+                localStorage.setItem("user", JSON.stringify(value));
                 Swal.fire({title: "Compte crée", icon: 'success'})
             }
         })
     }
 
     async signupSupervisor(supervisor) {
+        localStorage.clear();
         if (!(supervisor instanceof Supervisor) || !supervisor)
             return;
         const response = await fetch(`${urlBackend}/supervisor/signup`, requestInit(methods.POST, supervisor));
@@ -48,12 +47,14 @@ class AuthService {
             if (value.message) {
                 Swal.fire({title: value.message, icon: 'error'})
             } else {
+                localStorage.setItem("user", JSON.stringify(value));
                 Swal.fire({title: "Compte crée", icon: 'success'})
             }
         })
     }
 
     async signupStudent(student) {
+        localStorage.clear();
         if (!(student instanceof Student) || !student)
             return;
         const response = await fetch(`${urlBackend}/student/signup`, requestInit(methods.POST, student));
@@ -61,6 +62,7 @@ class AuthService {
             if (value.message) {
                 Swal.fire({title: value.message, icon: 'error'})
             } else {
+                localStorage.setItem("user", JSON.stringify(value));
                 Swal.fire({title: "Compte crée", icon: 'success'})
             }
 
@@ -68,25 +70,16 @@ class AuthService {
     }
 
     async signIn(userType, email, password) {
+        localStorage.clear();
         const response = await fetch(`${urlBackend}/${userType}/${email}/${password}`, requestInit(methods.GET));
         return await response.json().then(
             (value) => {
                 if (value.message) {
                     Swal.fire({title: value.message, icon: 'error'})
-                    return
+                    return;
                 }
 
-                this.user = value
-                if (userType === UserType.MONITOR[0]) {
-                    Object.setPrototypeOf(this.user, MonitorModel.prototype)
-                } else if (userType === UserType.STUDENT[0]) {
-                    Object.setPrototypeOf(this.user, Student.prototype)
-                } else if (userType === UserType.SUPERVISOR[0]) {
-                    Object.setPrototypeOf(this.user, Supervisor.prototype)
-                } else if (userType === UserType.MANAGER[0]) {
-                    Object.setPrototypeOf(this.user, ManagerModel.prototype)
-                }
-                this._isAuthenticated = true
+                localStorage.setItem("user", JSON.stringify(value))
                 Swal.fire({title:"Connexion réussie!", icon: 'success'});
                 console.log(value)
             },
@@ -112,13 +105,12 @@ class AuthService {
     }
 
     logOut() {
-        this.user = null
-        this._isAuthenticated = false
+        localStorage.clear();
     }
 
     getUserId() {
-        if (this.user)
-            return this.user.id
+        if (this.isAuthenticated())
+            return parseInt(JSON.parse(localStorage.getItem("user")).id);
     }
 
 

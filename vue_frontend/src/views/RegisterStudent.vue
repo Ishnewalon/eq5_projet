@@ -5,7 +5,7 @@
   </div>
   <div class="form-group">
     <label>Matricule</label>
-    <input type="number" class="form-control" v-model="matricule" placeholder="Enter matricule">
+    <input type="text" class="form-control" v-model="matricule" placeholder="Enter matricule">
   </div>
   <div class="form-group">
     <label for="lastName">Last Name</label>
@@ -50,6 +50,7 @@
 import router from "@/router";
 import authService from "@/services/auth-service";
 import {Student} from "@/models/User";
+import Swal from "sweetalert2";
 
 export default {
   name: "RegisterStudent",
@@ -68,21 +69,42 @@ export default {
     };
   },
   methods: {
-    submit(){
+    submit() {
       let allFieldsFilled = true;
-      for(const prop in this) {
+      for (const prop in this) {
         if (prop === '' || this[prop] === '' || this[prop] === null) {
-          alert('Please fill all the fields');
+          Swal.fire({
+            title: 'Oops...',
+            text: 'Veuillez remplir tous les champs',
+            icon: 'error'
+          });
           allFieldsFilled = false;
           break;
         }
       }
 
-      if(allFieldsFilled){
+      if (allFieldsFilled) {
+        if (this.matricule.length !== 7 && isNaN(this.matricule)) {
+          Swal.fire({
+            title: 'Matricule doit être un identifiant de 7 chiffres long',
+            icon: 'error'
+          });
+          return;
+        }
+
+        if (this.password.length > 8 && this.password.length < 64) {
+          Swal.fire({
+            title: 'Mot de passe doit être entre 8 et 64 caractères long',
+            icon: 'error'
+          });
+          return;
+        }
+
         let student = new Student(this.email, this.password, this.lastName, this.firstName, this.phone, this.matricule, this.department, this.address, this.city, this.postalCode);
 
         authService.signupStudent(student);
-        router.push("/login")
+        if (authService.isAuthenticated())
+          router.push("/logged-in")
       }
     }
   }
