@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav class="bg-secondary mb-5 py-4">
     <a><router-link to="/home">Home</router-link></a>
     <a><router-link to="/login">Se connecter</router-link></a>
     <a><router-link to="/register">Créer un compte</router-link></a>
@@ -20,8 +20,6 @@ nav {
 }
 
 nav a {
-  font-weight: bold;
-  color: #42b983;
   margin: 0 10px;
 }
 </style>

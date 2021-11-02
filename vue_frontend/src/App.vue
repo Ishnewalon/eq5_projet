@@ -110,7 +110,13 @@ Adapt color to bg-dark
   color: var(--color-primary) !important;
 }
 
+@import '~bootstrap/dist/css/bootstrap.min.css';
 
+a{
+  color: #42b983;
+  font-weight: bold;
+  text-decoration: none;
+}
 </style>
 <script>
 import Navbar from "./views/Navbar";
