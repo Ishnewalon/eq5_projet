@@ -42,7 +42,7 @@
     <label for="zip">Code postal</label>
     <input type="text" class="form-control" id="zip" v-model="postalCode" placeholder="Code postal">
   </div>
-  <button type="button" @click.prevent="submit">Submit</button>
+  <button type="button" v-on:click="submit">Submit</button>
 
 </template>
 
