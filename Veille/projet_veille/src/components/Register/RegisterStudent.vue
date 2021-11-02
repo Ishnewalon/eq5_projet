@@ -5,11 +5,11 @@
         <h2>Inscription Étudiant</h2>
       </div>
       <div>
-        <input name="firstName" type="text" placeholder="Prénom" required/>
-        <input name="lastName" type="text" placeholder="Nom" required/>
-        <input name="email" type="email" placeholder="E-mail" required/>
-        <input name="username" type="number" placeholder="Téléphone" required/>
-        <input name="password" type="password" placeholder="Mot de passe" required/>
+        <input name="firstName" v-model="firstName" type="text" placeholder="Prénom" required/>
+        <input name="lastName" v-model="lastName" type="text" placeholder="Nom" required/>
+        <input name="email" v-model="email" type="email" placeholder="E-mail" required/>
+        <input name="username" v-model="username" type="number" placeholder="Téléphone" required/>
+        <input name="password" v-model="password" type="password" placeholder="Mot de passe" required/>
       </div>
       <div>
         <button>S'inscrire</button>
