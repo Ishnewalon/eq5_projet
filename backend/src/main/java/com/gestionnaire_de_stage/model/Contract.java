@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 import java.util.Date;
 
 @Data
@@ -25,6 +26,9 @@ public class Contract {
     private String monitorSignature;
 
     private String studentSignature;
+
+    @OneToOne
+    private Student student;
 
     @Lob
     private byte[] contractPDF;

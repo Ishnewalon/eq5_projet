@@ -2,7 +2,7 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gestionnaire_de_stage.model.Contract;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.service.ContractService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +49,29 @@ public class ContractControllerTest {
         assertThat(actualContractList.size()).isEqualTo(dummyContractList.size());
     }
 
+    @Test
+    public void testCreateContractPDF_withValidEntries() throws Exception {
+        OfferApplication dummyOfferApplication = getDummyOfferApp();
+        when(contractService.managerSignContract(any())).thenReturn(getDummyContract());
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/contracts/managerSign")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(dummyOfferApplication)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(response.getContentAsString()).contains("Signature fait");
+    }
+
+    private Contract getDummyContract() {
+        Contract dummyContract = new Contract();
+        dummyContract.setId(1L);
+        dummyContract.setStudent(new Student());
+        return dummyContract;
+    }
+
     private List<Contract> getDummyContractList() {
         List<Contract> dummyContractList = new ArrayList<>();
         Contract contract1 = new Contract();
@@ -62,5 +85,25 @@ public class ContractControllerTest {
         dummyContractList.add(contract3);
 
         return dummyContractList;
+    }
+
+    private OfferApplication getDummyOfferApp() {
+        OfferApplication dummyOfferApplicationDTO = new OfferApplication();
+        dummyOfferApplicationDTO.setOffer(getDummyOffer());
+        dummyOfferApplicationDTO.setCurriculum(new Curriculum());
+        dummyOfferApplicationDTO.setId(1L);
+
+        return dummyOfferApplicationDTO;
+    }
+
+    private Offer getDummyOffer() {
+        Offer dummyOffer = new Offer();
+        dummyOffer.setDepartment("Un departement");
+        dummyOffer.setAddress("ajsaodas");
+        dummyOffer.setId(1L);
+        dummyOffer.setDescription("oeinoiendw");
+        dummyOffer.setSalary(10);
+        dummyOffer.setTitle("oeinoiendw");
+        return dummyOffer;
     }
 }

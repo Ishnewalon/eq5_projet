@@ -1,13 +1,13 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.model.Contract;
+import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +25,13 @@ public class ContractController {
     public ResponseEntity<?> contractsNeedSignature() {
         List<Contract> contractList = contractService.getAllUnsignedContracts();
         return ResponseEntity.ok(contractList);
+    }
+
+    @PostMapping("/managerSign")
+    public ResponseEntity<?> managerSignContract(@RequestBody OfferApplication offerApplication) {
+        contractService.managerSignContract(offerApplication);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseMessage("Signature fait"));
     }
 }
