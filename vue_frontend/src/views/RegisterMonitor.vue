@@ -1,5 +1,4 @@
 <template>
-<form @submit.prevent="register">
   <div class="form-group">
     <label for="firstName">First Name</label>
     <input type="text" class="form-control" id="firstName" v-model="firstName" placeholder="Enter first name">
@@ -39,8 +38,7 @@
     <label for="zip">Code postal</label>
     <input type="text" class="form-control" id="zip" v-model="postalCode" placeholder="Code postal">
   </div>
-  <button type="submit" @click.prevent="register">Submit</button>
-</form>
+  <button type="button" v-on:click="register">Submit</button>
 </template>
 
 <script>
@@ -52,30 +50,31 @@ export default {
   name: "RegisterMonitor",
   data() {
     return {
-      email:'',
-      password :'',
-      lastName :'',
-      firstName :'',
-      phone :'',
-      address :'',
-      city :'',
-      postalCode : '',
-      department : ''
+      email: '',
+      password: '',
+      lastName: '',
+      firstName: '',
+      phone: '',
+      address: '',
+      city: '',
+      postalCode: '',
+      department: ''
     };
   },
   methods: {
     register() {
       let allFieldsFilled = true;
-      Object.values(this.data).forEach(value => {
-        if(value === ''){
+      for(const prop in this) {
+        if (prop === '' || this[prop] === '' || this[prop] === null) {
           alert('Please fill all the fields');
           allFieldsFilled = false;
+          break;
         }
-      });
-
-      let monitor = new MonitorModel(this.email, this.password, this.lastName, this.firstName, this.phone, this.address, this.city, this.postalCode, this.department);
+      }
 
       if(allFieldsFilled){
+
+        let monitor = new MonitorModel(this.email, this.password, this.lastName, this.firstName, this.phone, this.address, this.city, this.postalCode, this.department);
         authService.signupMonitor(monitor);
         router.push("/login");
       }
