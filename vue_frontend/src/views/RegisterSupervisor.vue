@@ -1,43 +1,45 @@
 <template>
-  <div class="form-group">
-    <label for="firstName">First Name</label>
-    <input type="text" class="form-control" id="firstName" v-model="firstName" placeholder="Enter first name">
-  </div>
-  <div class="form-group">
-    <label for="lastName">Last Name</label>
-    <input type="text" class="form-control" id="lastName" v-model="lastName" placeholder="Enter last name">
-  </div>
-  <div class="form-group">
-    <label for="matricule">Matricule</label>
-    <input type="text" class="form-control" id="matricule" v-model="matricule" placeholder="Enter matricule">
-  </div>
-  <div class="form-group">
-    <label for="email">Email address</label>
-    <input type="email" class="form-control" id="email" v-model="email" placeholder="Enter email">
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" class="form-control" id="password" v-model="password" placeholder="Password">
-  </div>
-  <div class="form-group">
-    <label for="phone">Phone</label>
-    <input type="text" class="form-control" id="phone" v-model="phone" placeholder="Phone">
-  </div>
+  <div class="container bg-dark p-4 rounded text-white">
+    <h2>Supervisor Register</h2>
+    <div class="form-group mt-2">
+      <label for="firstName">First Name</label>
+      <input type="text" class="form-control" id="firstName" v-model="firstName" placeholder="Enter first name">
+    </div>
+    <div class="form-group mt-2">
+      <label for="lastName">Last Name</label>
+      <input type="text" class="form-control" id="lastName" v-model="lastName" placeholder="Enter last name">
+    </div>
+    <div class="form-group mt-2">
+      <label for="matricule">Matricule</label>
+      <input type="text" class="form-control" id="matricule" v-model="matricule" placeholder="Enter matricule">
+    </div>
+    <div class="form-group mt-2">
+      <label for="email">Email address</label>
+      <input type="email" class="form-control" id="email" v-model="email" placeholder="Enter email">
+    </div>
+    <div class="form-group mt-2">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" v-model="password" placeholder="Password">
+    </div>
+    <div class="form-group mt-2">
+      <label for="phone">Phone</label>
+      <input type="text" class="form-control" id="phone" v-model="phone" placeholder="Phone">
+    </div>
 
-  <div class="form-group">
-    <label>Departement</label>
-    <select id="dep" v-model="department">
-      <option>informatique</option>
-      <option>Arts et cinéma</option>
-    </select>
+    <div class="form-group mt-2">
+      <label>Departement</label>
+      <select id="dep" class="form-select" v-model="department">
+        <option>informatique</option>
+        <option>Arts et cinéma</option>
+      </select>
+    </div>
+    <button class="btn rounded bg-success mt-3 text-white fw-bold w-100" type="button"  v-on:click="submit">Submit</button>
   </div>
-  <button type="button" v-on:click="submit">Submit</button>
 </template>
 
 <script>
 import {Supervisor} from "@/models/User";
 import authService from "@/services/auth-service";
-import router from "@/router";
 import Swal from "sweetalert2";
 
 export default {
@@ -70,26 +72,8 @@ export default {
       }
 
       if (allFieldsFilled) {
-        if (this.matricule.length !== 5 && isNaN(this.matricule)) {
-          Swal.fire({
-            title: 'Matricule doit être un identifiant de 5 chiffres long',
-            icon: 'error'
-          });
-          return;
-        }
-
-        if (this.password.length > 8 && this.password.length < 64) {
-          Swal.fire({
-            title: 'Mot de passe doit être entre 8 et 64 caractères long',
-            icon: 'error'
-          });
-          return;
-        }
         let supervisor = new Supervisor(this.email, this.password, this.lastName, this.firstName, this.phone, this.matricule, this.department);
-
         authService.signupSupervisor(supervisor);
-        if (authService.isAuthenticated())
-          router.push("/logged-in")
       }
     }
   }

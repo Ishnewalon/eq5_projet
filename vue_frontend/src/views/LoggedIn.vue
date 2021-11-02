@@ -5,12 +5,11 @@
 </template>
 
 <script>
-import AuthService from '../services/auth-service';
 export default {
   name: "LoggedIn",
   data() {
     return {
-      user: AuthService.user
+      user: JSON.parse(localStorage.getItem("user")),
     }
   }
 }

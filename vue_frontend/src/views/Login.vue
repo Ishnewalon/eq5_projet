@@ -27,7 +27,6 @@
 
 <script>
 import AuthService from '../services/auth-service';
-import router from "@/router";
 import Swal from "sweetalert2";
 
 export default {
@@ -54,12 +53,8 @@ export default {
           break;
         }
       }
-      if (allFieldsFilled) {
+      if (allFieldsFilled)
         this.service.signIn(this.userType, this.email, this.password);
-        if (this.service.isAuthenticated()) {
-          router.push("/logged-in")
-        }
-      }
     }
   }
 }

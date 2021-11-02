@@ -1,6 +1,7 @@
 import {ManagerModel, MonitorModel, Student, Supervisor} from "@/models/User";
 import {methods, requestInit, urlBackend} from "./serviceUtils";
 import Swal from "sweetalert2";
+import router from "@/router";
 
 class AuthService {
     isAuthenticated() {
@@ -27,12 +28,22 @@ class AuthService {
         localStorage.clear();
         if (!(monitor instanceof MonitorModel) || !monitor)
             return;
+
+        if (monitor.password.length > 8 && monitor.password.length < 64) {
+            Swal.fire({
+                title: 'Mot de passe doit être entre 8 et 64 caractères long',
+                icon: 'error'
+            });
+            return;
+        }
+
         const response = await fetch(`${urlBackend}/monitor/signup`, requestInit(methods.POST, monitor));
         return await response.json().then(value => {
             if (value.message) {
                 Swal.fire({title: value.message, icon: 'error'})
             } else {
                 localStorage.setItem("user", JSON.stringify(value));
+                router.push("/logged-in");
                 Swal.fire({title: "Compte crée", icon: 'success'})
             }
         })
@@ -42,12 +53,30 @@ class AuthService {
         localStorage.clear();
         if (!(supervisor instanceof Supervisor) || !supervisor)
             return;
+
+        if (supervisor.matricule.length !== 5 && typeof supervisor.matricule == "number") {
+            Swal.fire({
+                title: 'Matricule doit être un identifiant de 7 chiffres long',
+                icon: 'error'
+            });
+            return;
+        }
+
+        if (supervisor.password.length > 8 && supervisor.password.length < 64) {
+            Swal.fire({
+                title: 'Mot de passe doit être entre 8 et 64 caractères long',
+                icon: 'error'
+            });
+            return;
+        }
+
         const response = await fetch(`${urlBackend}/supervisor/signup`, requestInit(methods.POST, supervisor));
         return await response.json().then(value => {
             if (value.message) {
                 Swal.fire({title: value.message, icon: 'error'})
             } else {
                 localStorage.setItem("user", JSON.stringify(value));
+                router.push("/logged-in");
                 Swal.fire({title: "Compte crée", icon: 'success'})
             }
         })
@@ -57,12 +86,31 @@ class AuthService {
         localStorage.clear();
         if (!(student instanceof Student) || !student)
             return;
+
+        if (student.matricule.length !== 7 && typeof this.matricule == "number") {
+            Swal.fire({
+                title: 'Matricule doit être un identifiant de 7 chiffres long',
+                icon: 'error'
+            });
+            return;
+        }
+
+        if (student.password.length > 8 && student.password.length < 64) {
+            Swal.fire({
+                title: 'Mot de passe doit être entre 8 et 64 caractères long',
+                icon: 'error'
+            });
+            return;
+        }
+
+
         const response = await fetch(`${urlBackend}/student/signup`, requestInit(methods.POST, student));
         return await response.json().then(value => {
             if (value.message) {
                 Swal.fire({title: value.message, icon: 'error'})
             } else {
                 localStorage.setItem("user", JSON.stringify(value));
+                router.push("/logged-in");
                 Swal.fire({title: "Compte crée", icon: 'success'})
             }
 
@@ -82,6 +130,7 @@ class AuthService {
                 localStorage.setItem("user", JSON.stringify(value))
                 Swal.fire({title:"Connexion réussie!", icon: 'success'});
                 console.log(value)
+                router.push("/logged-in")
             },
             err => {
                 Swal.fire({title: err, icon: 'error'})
