@@ -52,7 +52,7 @@ public class ContractService {
     //private byte[] createContractPDF(OfferApplication offerApplication) throws Exception {
     private byte[] createContractPDF() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        HtmlConverter.convertToPdf(new FileInputStream("src/main/resources/test.html"), baos);
+        HtmlConverter.convertToPdf(new FileInputStream("src/main/resources/test.html"), new FileOutputStream("c:/permits/contract.pdf"));
 
         return baos.toByteArray();
     }
