@@ -17,7 +17,16 @@ export default function AddOffer() {
 
     const addOffer = () => {
         let offer = new OfferDTO(title, department, description, address, salary, creator_email)
-        createOffer(offer).then()
+        createOffer(offer).then((b) => {
+            if (b === null)
+                return
+            setTitle('')
+            setDescription('')
+            setDepartement(DepartmentEnum.info)
+            setAddress('')
+            setSalary(0)
+            setCreatorId(serviceAuth.isMonitor() ? serviceAuth.user.email : '')
+        })
     }
 
     const monitorEmail = (

@@ -2,6 +2,24 @@ import {methods, requestInit, urlBackend} from "./serviceUtils";
 import OfferDTO from "../models/OfferDTO";
 import {swalErr, toast} from "../utility";
 
+export async function getAllOffers() {
+    return await fetch(`${urlBackend}/offers`, requestInit(methods.GET)).then(
+        response => {
+            return response.json().then(
+                body => {
+                    if (response.status === 200) {
+                        return body
+                    }
+                    if (response.status === 400) {
+                        swalErr.fire({text: body.message})
+                    }
+                    return Promise.any([])
+                })
+        }, err => console.error(err)
+    );
+}
+
+
 export async function createOffer(offer) {
     if (!(offer instanceof OfferDTO) || !offer)
         return;
@@ -22,7 +40,7 @@ export async function createOffer(offer) {
         }, err => console.error(err))
 }
 
-export async function getAllOffersByDepartment(department) {
+export async function getAllOffersByDepartment(department) {//TODO: send studentId to get only not applied offers
     return await fetch(`${urlBackend}/offers/${department}`, requestInit(methods.GET)).then(
         response => {
             return response.json().then(

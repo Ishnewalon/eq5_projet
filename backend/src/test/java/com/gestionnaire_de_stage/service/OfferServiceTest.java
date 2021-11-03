@@ -122,7 +122,17 @@ public class OfferServiceTest {
         when(offerRepository.existsById(1L)).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-                () -> offerService.validation(new ValidationOffer(dummyOffer.getId(),false)));
+                () -> offerService.validation(new ValidationOffer(dummyOffer.getId(), false)));
+    }
+
+    @Test
+    public void testUpdateOffer_withOfferAlreadyTreated() {
+        Offer dummyOffer = getDummyOffer();
+        when(offerRepository.existsById(1L)).thenReturn(true);
+        when(offerRepository.existsByIdAndValidNotNull(any())).thenReturn(true);
+
+        assertThrows(OfferAlreadyTreatedException.class,
+                () -> offerService.validation(new ValidationOffer(dummyOffer.getId(), false)));
     }
 
     @Test
@@ -180,6 +190,14 @@ public class OfferServiceTest {
     }
 
     @Test
+    public void testGetOffersByDepartment_withNullDepartment() {
+        List<Offer> dummyOfferList = getDummyOfferList();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> offerService.getOffersByDepartment(null));
+    }
+
+    @Test
     public void testFindOfferById() {
         Offer dummyOffer = getDummyOffer();
         when(offerRepository.findById(any())).thenReturn(Optional.of(dummyOffer));
@@ -209,6 +227,7 @@ public class OfferServiceTest {
 
         assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
     }
+
 
     private List<Offer> getDummyOfferList() {
         List<Offer> dummyOfferList = new ArrayList<>();

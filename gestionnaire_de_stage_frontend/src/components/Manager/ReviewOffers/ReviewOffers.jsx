@@ -19,13 +19,19 @@ export default function ReviewOffers() {
             })
     }, [])
 
-
+    const setOfferValidated = (id) => {
+        setOffers(offers.filter(items => items.id !== id))
+    }
     return (
         <>
             <h1 className="text-center">Review Offers</h1>
             <div className='container'>
                 <ul>
-                    {offers.map((offer, index) => <li key={index}><ValidateOffer offer={offer}/></li>)}
+                    {offers.map(offer =>
+                        <li key={offer.id}>
+                            <ValidateOffer offer={offer} removeFromList={setOfferValidated}/>
+                        </li>
+                    )}
                 </ul>
             </div>
         </>
