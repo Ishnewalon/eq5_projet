@@ -11,3 +11,10 @@ export const toast = Swal.mixin({
     showConfirmButton: false,
     timer: 3000,
 });
+export const toastErr = Swal.mixin({
+    toast: true,
+    icon: 'error',
+    position: 'bottom-end',
+    showConfirmButton: false,
+    timer: 3000,
+});
