@@ -7,21 +7,8 @@ import Choice from "./Steps/StepChoices";
 import StepCegep from "./Steps/StepCegep";
 import {MonitorModel, Student, Supervisor} from "../../models/User";
 import AuthService from "../../services/auth-service"
+import {Step, Step as UserType} from "../../enums/Steps";
 
-export const Step = {
-    CHOICE: "choice",
-    CEGEP: "cegep",
-    GENERAL: "general",
-    MONITOR: "monitor",
-    STUDENT: "student",
-    PASSWORD: "password",
-}
-export const UserType = {
-    MONITOR: ["monitor", "moniteur"],
-    STUDENT: ["student", "etudiant"],
-    SUPERVISOR: ["supervisor", "superviseur"],
-    MANAGER: ["manager", "gestionnaire"]
-}
 
 export default class Register extends Component {
 
