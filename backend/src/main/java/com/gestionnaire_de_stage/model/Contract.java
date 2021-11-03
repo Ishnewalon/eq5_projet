@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -15,11 +16,11 @@ public class Contract {
     @Id
     Long id;
 
-    private Date managerSignDate;
+    private LocalDate managerSignDate;
 
-    private Date monitorSignDate;
+    private LocalDate monitorSignDate;
 
-    private Date StudentSignDate;
+    private LocalDate StudentSignDate;
 
     private String managerSignature;
 
