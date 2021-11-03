@@ -1,7 +1,7 @@
 import {ManagerModel, MonitorModel, Student, Supervisor} from "../models/User";
 import {methods, requestInit, urlBackend} from "./serviceUtils";
-import {UserType} from "../components/Register/Register";
 import {swalErr, toast} from "../utility";
+import {UserType} from "../enums/UserTypes";
 
 class AuthService { //TODO Hook auth
     user;

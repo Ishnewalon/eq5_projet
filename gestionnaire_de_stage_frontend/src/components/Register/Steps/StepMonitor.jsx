@@ -1,7 +1,8 @@
-import {Step, UserType} from "../Register";
 import React from "react";
 import FieldAddress from "../../Fields/FieldAddress";
 import {toast} from "../../../utility";
+import {UserType} from "../../../enums/UserTypes";
+import {Step} from "../../../enums/Steps";
 
 const regexCodePostal = /^([A-Za-z]\s?[0-9]){3}$/;
 

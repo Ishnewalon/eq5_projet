@@ -1,5 +1,6 @@
-import {Step, UserType} from "../Register";
 import React from "react";
+import {UserType} from "../../../enums/UserTypes";
+import {Step} from "../../../enums/Steps";
 
 export default function StepCegep({prevStep, nextStep, updateUserType, handleChange, matricule}) {
 

@@ -1,10 +1,10 @@
 import './Login.css'
 import React, {useState} from "react";
-import {UserType} from "../Register/Register";
 import AuthService from "../../services/auth-service";
 import FieldPassword from "../Fields/FieldPassword";
 import FieldEmail from "../Fields/FieldEmail";
 import {useHistory} from "react-router-dom";
+import {UserType} from "../../enums/UserTypes";
 
 
 export default function Login() {

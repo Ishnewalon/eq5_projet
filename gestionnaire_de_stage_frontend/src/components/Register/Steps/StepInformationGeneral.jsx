@@ -1,6 +1,6 @@
-import {Step} from "../Register";
 import React from "react";
 import FieldEmail from "../../Fields/FieldEmail";
+import {Step} from "../../../enums/Steps";
 
 // eslint-disable-next-line
 const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -9,7 +9,6 @@ const regexPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 export default function StepInformationGeneral({prevStep, nextStep, handleChange, lastName, firstName, email, phone}) {
 
     const next = (val) => {
-        console.log("fawfa")
         nextStep(val);
     }
 
