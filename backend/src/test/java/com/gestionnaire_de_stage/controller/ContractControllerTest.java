@@ -49,7 +49,7 @@ public class ContractControllerTest {
         assertThat(actualContractList.size()).isEqualTo(dummyContractList.size());
     }
 
-    @Test
+/*    @Test
     public void testCreateContractPDF_withValidEntries() throws Exception {
         OfferApplication dummyOfferApplication = getDummyOfferApp();
         when(contractService.managerSignContract(any())).thenReturn(getDummyContract());
@@ -63,7 +63,7 @@ public class ContractControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(response.getContentAsString()).contains("Signature fait");
-    }
+    }*/
 
     private Contract getDummyContract() {
         Contract dummyContract = new Contract();

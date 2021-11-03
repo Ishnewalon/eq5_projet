@@ -5,12 +5,15 @@ import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.ContractRepository;
+import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.layout.Document;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 
 import java.util.List;
@@ -36,7 +39,8 @@ public class ContractService {
         Contract contract = contractRepository.getContractByStudent_Matricule(matricule);
       //  contract.setManagerSignDate(LocalDate.now());
        // contract.setContractPDF(createContractPDF(offerApplication));
-        contract.setContractPDF(createContractPDF());
+        //contract.setContractPDF(createContractPDF());
+        createContractPDF();
         return contractRepository.save(contract);
     }
 
@@ -46,9 +50,12 @@ public class ContractService {
     }
 
     //private byte[] createContractPDF(OfferApplication offerApplication) throws Exception {
-    private byte[] createContractPDF() throws Exception {
-        PdfReader pdfReader = new PdfReader(new File("src/main/resources/contratTemplate.pdf"));
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    //private byte[] createContractPDF() throws Exception {
+    private void createContractPDF() throws Exception {
+ //       ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        HtmlConverter.convertToPdf(new FileInputStream("src/main/resources/test.html"), new FileOutputStream("c:/permits/contract.pdf"));
+/*        PdfReader pdfReader = new PdfReader(new File("src/main/resources/contratTemplate.pdf"));
+
         PdfWriter pdfWriter = new PdfWriter("c:/permits/contract.pdf");
         PdfDocument pdfDocument = new PdfDocument(pdfReader, pdfWriter);
         PdfPage pdfPage = pdfDocument.getFirstPage();
@@ -63,7 +70,7 @@ public class ContractService {
             pdfStream.setData(changeUp.getBytes(StandardCharsets.UTF_8));
         }
 
-        /*for (int i = 1; i <= pdfDocument.getNumberOfPages(); i++) {
+        *//*for (int i = 1; i <= pdfDocument.getNumberOfPages(); i++) {
             PdfPage pdfPage = pdfDocument.getPage(i);
             PdfDictionary dictionary = pdfPage.getPdfObject();
             PdfObject pdfObject = dictionary.get(PdfName.Contents);
@@ -75,9 +82,8 @@ public class ContractService {
                 System.out.println(changeUp);
                 pdfStream.setData(changeUp.getBytes(StandardCharsets.UTF_8));
             }
-        }*/
-        pdfDocument.close();
+        }*//*
+        pdfDocument.close();*/
 
-        return baos.toByteArray();
     }
 }
