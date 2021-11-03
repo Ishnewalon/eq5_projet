@@ -9,7 +9,11 @@ import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.layout.Document;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -17,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -34,13 +39,17 @@ public class ContractService {
     }
 
     public Contract managerSignContract(String matricule) throws Exception{
-    //public Contract managerSignContract(OfferApplication offerApplication) throws Exception{
-    //    Student student = getStudentFromCurriculum(offerApplication.getCurriculum());
-   //     Contract contract = contractRepository.getContractByStudent_Matricule(student.getMatricule());
+   // public Contract managerSignContract(OfferApplication offerApplication) throws Exception{
+       // Student student = getStudentFromCurriculum(offerApplication.getCurriculum());
+      //  Contract contract = contractRepository.getContractByStudent_Matricule(student.getMatricule());
         Contract contract = contractRepository.getContractByStudent_Matricule(matricule);
-      //  contract.setManagerSignDate(LocalDate.now());
+        final String uri = "http://127.0.0.1:8181/pdf/pdf/";
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<byte[]> responseEntity = restTemplate.getForEntity(uri + contract.getId(), byte[].class);
+        contract.setContractPDF(responseEntity.getBody());
+        contract.setManagerSignDate(LocalDate.now());
        // contract.setContractPDF(createContractPDF(offerApplication));
-        contract.setContractPDF(createContractPDF());
+     //   contract.setContractPDF(createContractPDF(null, contract));
         return contractRepository.save(contract);
     }
 
@@ -49,11 +58,7 @@ public class ContractService {
         return student;
     }
 
-    //private byte[] createContractPDF(OfferApplication offerApplication) throws Exception {
-    private byte[] createContractPDF() throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        HtmlConverter.convertToPdf(new FileInputStream("src/main/resources/test.html"), new FileOutputStream("c:/permits/contract.pdf"));
-
-        return baos.toByteArray();
+    public Contract getContractById(Long id) {
+        return contractRepository.getContractById(id);
     }
 }
