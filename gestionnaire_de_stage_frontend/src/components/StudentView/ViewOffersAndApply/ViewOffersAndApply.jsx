@@ -3,7 +3,7 @@ import {getAllOffersByDepartment} from '../../../services/offer-service';
 import AuthService from '../../../services/auth-service';
 import ApplyOnOffer from "../ApplyOnOffer/ApplyOnOffer";
 
-export default function ViewOffersAndApply() {
+export default function ViewOffersAndApply() {//TODO: remove Offer after applied
 
     const [offers, setOffers] = useState([])
 

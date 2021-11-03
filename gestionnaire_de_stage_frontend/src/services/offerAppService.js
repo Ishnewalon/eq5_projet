@@ -3,7 +3,7 @@ import {swalErr, toast} from "../utility";
 import OfferApp from "../models/OfferApp";
 
 
-export async function applyToOffer(offerApp) {
+export async function applyToOffer(offerApp) {//TODO: Should not be able to apply when his curriculum is not valid
     if (!_isApplicationValid(offerApp))
         return;
 

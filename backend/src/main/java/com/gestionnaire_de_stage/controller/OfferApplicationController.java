@@ -56,7 +56,7 @@ public class OfferApplicationController {
     }
 
     @GetMapping("/applicants/{email}")
-    public ResponseEntity<?> viewApplicantList(@PathVariable String email) {
+    public ResponseEntity<?> viewApplicantList(@PathVariable String email) {//TODO: Return a list of curriculum with a list of applicants inside
         List<OfferApplication> offerApplicationList;
         List<CurriculumDTO> curriculumDTOList;
         try {

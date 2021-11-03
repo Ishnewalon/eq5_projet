@@ -1,15 +1,9 @@
 import './PreviewStudent.css';
-import PropTypes from "prop-types";
-import CurriculumDto from "../../models/CurriculumDto";
 import {toast} from "../../utility";
 import PreviewOffer from "../PreviewOffer/PreviewOffer";
 import {AiOutlineFile} from "react-icons/all";
 
-export default function PreviewStudent(dto) {
-
-    PreviewStudent.propTypes = {
-        student: PropTypes.instanceOf(CurriculumDto).isRequired
-    }
+export default function PreviewStudent({dto}) {
 
     const openFile = () => {
         const decodedChars = atob(dto.file);
