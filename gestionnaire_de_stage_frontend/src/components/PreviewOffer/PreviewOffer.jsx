@@ -11,6 +11,10 @@ export default function PreviewOffer({offer}) {
                 <span className={"col badge bg-dark rounded-pill px-2 py-1"}>{offer.department}</span>
                 <span className="ms-2 col badge bg-success px-2 py-1">{offer.salary + '$/h'}</span>
             </div>
+            <div className={'row mb-0'}>
+                <span className={"col badge bg-dark rounded-pill px-2 py-1"}>Valide :</span>
+                <span className="ms-2 col badge bg-danger px-2 py-1">{offer.valid?'oui':'non'}</span>
+            </div>
             <p>Adresse : {offer.address}</p>
             <p className={'mb-0'}>Description: <br/> {offer.description}</p>
         </div>

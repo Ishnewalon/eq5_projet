@@ -1,9 +1,8 @@
 import Swal from "sweetalert2";
 
-export const swalErr = (err) => Swal.mixin({
+export const swalErr = Swal.mixin({
     icon: 'error',
     title: 'Oops...',
-    text: err
 });
 export const toast = Swal.mixin({
     toast: true,

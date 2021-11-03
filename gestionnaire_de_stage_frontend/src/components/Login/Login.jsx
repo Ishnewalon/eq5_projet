@@ -4,10 +4,11 @@ import {UserType} from "../Register/Register";
 import AuthService from "../../services/auth-service";
 import FieldPassword from "../Fields/FieldPassword";
 import FieldEmail from "../Fields/FieldEmail";
+import {useHistory} from "react-router-dom";
 
 
-export default function Login(props) {
-
+export default function Login() {
+    const history = useHistory();
     const service = AuthService
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -15,9 +16,9 @@ export default function Login(props) {
 
     const connect = (e) => {
         e.preventDefault()
-        service.signIn(userType, email, password).then(() => {
+        service.signIn(userType, email, password).then((v) => {
             if (service.isAuthenticated())
-                props.history.push('/')
+                history.push('/')
         })
     }
 
@@ -29,7 +30,7 @@ export default function Login(props) {
                     <label>Type d'utilisateur</label>
                     <div className="input-group">
                         <select className="form-control" name="choice" id="userTypes"
-                                onChange={(e)=>setUserType(e.target.value)}>
+                                onChange={(e) => setUserType(e.target.value)}>
                             <option defaultChecked={true} value={UserType.MONITOR[0]}>{UserType.MONITOR[1]}</option>
                             <option value={UserType.SUPERVISOR[0]}>{UserType.SUPERVISOR[1]}</option>
                             <option value={UserType.STUDENT[0]}>{UserType.STUDENT[1]}</option>
@@ -40,12 +41,12 @@ export default function Login(props) {
                 <div className="form-group row">
                     <div className="col-md-6">
                         <FieldEmail email={email} label="Email" placeholder="Votre Email"
-                                    handleChanges={(e)=>setEmail(e.target.value)}/>
+                                    handleChanges={(e) => setEmail(e.target.value)}/>
                     </div>
                     <div className="col-md-6">
                         <FieldPassword password={password} label="Mot de passe"
                                        placeholder="Votre mot de passe"
-                                       handleChange={(e)=>setPassword(e.target.value)}/>
+                                       handleChange={(e) => setPassword(e.target.value)}/>
                     </div>
                 </div>
                 <div className="form-group text-center">

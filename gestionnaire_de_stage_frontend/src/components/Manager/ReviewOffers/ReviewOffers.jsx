@@ -1,6 +1,6 @@
 import './ReviewOffers.css'
 import React, {useEffect, useState} from 'react';
-import offerService from '../../../services/offer-service';
+import {getAllOffersInvalid} from '../../../services/offer-service';
 import ValidateOffer from "../ValidateOffer/ValidateOffer";
 import {swalErr} from "../../../utility";
 
@@ -8,14 +8,14 @@ export default function ReviewOffers() {
 
     const [offers, setOffers] = useState([])
     useEffect(() => {
-        offerService.getAllOffersInvalid()
+        getAllOffersInvalid()
             .then(offers => {
                 setOffers(offers)
             })
             .catch(e => {
                 setOffers([]);
                 console.error(e);
-                swalErr(e).fire({}).then();
+                swalErr.fire({text: e}).then();
             })
     }, [])
 
