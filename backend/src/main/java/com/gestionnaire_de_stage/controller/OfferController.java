@@ -54,7 +54,7 @@ public class OfferController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(offer);
-    }
+    }//TODO GET ALL @IMEM
     @GetMapping({"/", "/{department}"}) //TODO Handle exception
     public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {
         if (department == null || department.isEmpty() || department.isBlank())
@@ -62,9 +62,9 @@ public class OfferController {
                     .badRequest()
                     .body(new ResponseMessage("Le département n'est pas précisé"));
 
-        List<Offer> offerDTOS = offerService.getOffersByDepartment(department);
+        List<Offer> offers = offerService.getOffersByDepartment(department);
 
-        return ResponseEntity.ok(offerDTOS);
+        return ResponseEntity.ok(offers);
     }
 
     @PostMapping("/validate")

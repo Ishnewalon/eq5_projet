@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import PreviewStudent from "../../PreviewStudent/PreviewStudent";
-import OfferAppService from '../../../services/offerAppService';
+import {getAllApplicants} from '../../../services/offerAppService';
 import PropTypes from 'prop-types';
 export default function ViewAppliedStudents(email) {
 
     const [students, setStudents] = useState([]);
 
-    const loadAllData = () => async () => await OfferAppService.getAllApplicants(email).then(v => setStudents(v))
+    const loadAllData = () => async () => await getAllApplicants(email).then(v => setStudents(v))
 
     useEffect(()=> {
         loadAllData()

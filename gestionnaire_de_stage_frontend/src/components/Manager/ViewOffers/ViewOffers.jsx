@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import './ViewOffers.css'
-import OfferService from '../../../services/offer-service'
+import {getAllOffersByDepartment} from '../../../services/offer-service'
 import PreviewOffer from '../../PreviewOffer/PreviewOffer';
 import AuthService from '../../../services/auth-service';
 
@@ -8,10 +8,8 @@ export default function ViewOffers() {
 
     const [offers, setOffers] = useState([])
     useEffect(() => {
-        OfferService.getAllOffersByDepartment(AuthService.user.department || 'informatique')
+        getAllOffersByDepartment(AuthService.user.department ? AuthService.user.department : 'informatique')//TODO: make view offer adaptable (dep or all)
             .then(offers => {
-                console.log(offers)
-
                 setOffers(offers)
             })
             .catch(e => {

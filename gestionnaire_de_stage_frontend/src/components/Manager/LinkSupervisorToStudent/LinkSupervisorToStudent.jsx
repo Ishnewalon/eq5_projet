@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import ListStudentValidCVView from "./ListStudentValidCVView/ListStudentValidCVView";
-import authService from "../../../services/auth-service";
 import Swal from "sweetalert2";
 import {swalErr} from "../../../utility";
 import {getCurriculumWithValidCV} from "../../../services/curriculum-service";
+import {assignStudentToSupervisor, getSupervisors} from "../../../services/user-service";
 
 export default function LinkSupervisorToStudent() {
 
@@ -21,7 +21,7 @@ export default function LinkSupervisorToStudent() {
                 setCvList([])
                 console.error(e);
             });
-        authService.getSupervisors()
+        getSupervisors()
             .then(supervisorList => {
                 console.log(supervisorList);
                 setSupervisorList(supervisorList)
@@ -36,14 +36,14 @@ export default function LinkSupervisorToStudent() {
 
     const assign = (idStudent) => e => {
         e.preventDefault();
-        authService.assign(idStudent, supervisorID)
+        assignStudentToSupervisor(idStudent, supervisorID)
             .then(responseMessage => {
                 Swal.fire({title: responseMessage.message, icon: 'success'})
                     .then();
             })
             .catch(e => {
                 console.error(e)
-                swalErr(e).fire({icon: "error"}).then();
+                swalErr.fire({text: e}).then();
             });
 
     }

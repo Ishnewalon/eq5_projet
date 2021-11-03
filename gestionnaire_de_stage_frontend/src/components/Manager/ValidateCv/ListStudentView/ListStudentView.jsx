@@ -9,7 +9,7 @@ export default function ListStudentView({cv}) {
     const {firstName, lastName} = cv.student;
 
     const downloadStudentCv = () => {
-        const {id}=cv
+        const {id} = cv
         downloadCV(id).then(blob => {
             let myUrl = URL.createObjectURL(blob);
 
