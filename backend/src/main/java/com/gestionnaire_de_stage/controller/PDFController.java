@@ -47,7 +47,7 @@ public class PDFController {
         String contractHtml = templateEngine.process("test", context);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        HtmlConverter.convertToPdf(contractHtml, new FileOutputStream("c:/permits/contract.pdf"));
+        HtmlConverter.convertToPdf(contractHtml, baos);
         return ResponseEntity.ok().body(new ResponseMessage("It has been created"));
     }
 
