@@ -63,7 +63,7 @@ public class ContractControllerTest {
         when(contractService.fillPDF(any(), any())).thenReturn(dummyContract);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get(uri)
+                MockMvcRequestBuilders.put(uri)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -83,7 +83,7 @@ public class ContractControllerTest {
                 .thenThrow(new IllegalArgumentException("La signature, l'id du contrat et du gestionnaire ne peuvent être null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get(uri)
+                MockMvcRequestBuilders.put(uri)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -103,7 +103,7 @@ public class ContractControllerTest {
                 .thenThrow(IdDoesNotExistException.class);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get(uri)
+                MockMvcRequestBuilders.put(uri)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
