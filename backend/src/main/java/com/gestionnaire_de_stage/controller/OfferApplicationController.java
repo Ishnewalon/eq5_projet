@@ -3,10 +3,7 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
-import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.service.CurriculumService;
 import com.gestionnaire_de_stage.service.OfferApplicationService;
@@ -14,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -76,8 +74,22 @@ public class OfferApplicationController {
     }
 
     @PostMapping("/setdate/{offerAppID}")
-    public ResponseEntity<?> setInterviewDate(@PathVariable Long offerAppID, @RequestBody LocalDate date) {
-        //todo a venir
-        return null;
+    public ResponseEntity<?> setInterviewDate(@PathVariable Long offerAppID, @RequestBody LocalDateTime date) {
+        try{
+            OfferApplication offerApplication = offerApplicationService.setInterviewDate(offerAppID, date);
+            return ResponseEntity.ok(offerApplication);
+        } catch (DateNotValidException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("La date entrée est invalide!"));
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Impossible de trouver l'offre avec cette ID!"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
     }
 }

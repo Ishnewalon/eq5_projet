@@ -13,7 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -144,10 +146,10 @@ class OfferApplicationServiceTest {
         OfferApplication offerApplication = getDummyOfferApp();
         when(offerApplicationRepository.existsById(any())).thenReturn(true);
         when(offerApplicationRepository.getById(any())).thenReturn(offerApplication);
-        offerApplication.setInterviewDate(LocalDate.now());
+        offerApplication.setInterviewDate(LocalDateTime.now());
         when(offerApplicationRepository.save(any())).thenReturn(offerApplication);
 
-        OfferApplication actual = offerApplicationService.setInterviewDate(offerApplication.getId(), LocalDate.now().plusDays(1));
+        OfferApplication actual = offerApplicationService.setInterviewDate(offerApplication.getId(), LocalDateTime.now().plusDays(1));
 
         assertThat(actual).isEqualTo(offerApplication);
     }
@@ -163,7 +165,7 @@ class OfferApplicationServiceTest {
         when(offerApplicationRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-                () -> offerApplicationService.setInterviewDate(5L, LocalDate.now()));
+                () -> offerApplicationService.setInterviewDate(5L, LocalDateTime.now()));
     }
 
     @Test
@@ -174,7 +176,7 @@ class OfferApplicationServiceTest {
         assertThrows(DateNotValidException.class,
                 () -> offerApplicationService.setInterviewDate(
                         offerApplication.getId(),
-                        LocalDate.now().minusDays(5)));
+                        LocalDateTime.now().minusDays(5)));
     }
 
     private OfferApplication getDummyOfferApp() {

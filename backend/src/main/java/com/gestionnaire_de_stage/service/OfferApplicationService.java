@@ -10,7 +10,10 @@ import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 import java.util.List;
 
@@ -59,7 +62,7 @@ public class OfferApplicationService {
         return offerApplicationRepository.getAllByOffer_CreatorEmail(email);
     }
 
-    public OfferApplication setInterviewDate(Long offerAppID, LocalDate date) throws IdDoesNotExistException, DateNotValidException {
+    public OfferApplication setInterviewDate(Long offerAppID, LocalDateTime date) throws IdDoesNotExistException, DateNotValidException, IllegalArgumentException {
         Assert.isTrue(offerAppID != null, "L'id de l'offre ne peut pas être null");
         Assert.isTrue(date != null, "La date ne peut pas être null");
 
@@ -75,9 +78,9 @@ public class OfferApplicationService {
         return offerApplicationRepository.save(offerApplication);
     }
 
-    private boolean isDateInvalid(LocalDate date) {
-        return !date.isAfter(LocalDate.now()) ||
-                !date.isBefore(LocalDate.now().plusMonths(2));
+    private boolean isDateInvalid(LocalDateTime date) {
+        return !date.isAfter(LocalDateTime.now())||
+                !date.isBefore(LocalDateTime.now().plusMonths(2));
     }
 
     private boolean isEmailInvalid(String email) {

@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.exception.*;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.List;
@@ -28,8 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.*;
 
 
 @WebMvcTest(OfferApplicationController.class)
@@ -44,7 +45,7 @@ class OfferApplicationControllerTest {
     @MockBean
     private CurriculumService curriculumService;
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void testStudentApplyToOffer() throws Exception {
@@ -229,12 +230,22 @@ class OfferApplicationControllerTest {
 
     @Test
     void testSetInterviewDate_withValidIDs() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
         OfferApplication offerApplication = getDummyOfferApp();
+        offerApplication.setInterviewDate(LocalDateTime.now());
+        when(offerApplicationService.setInterviewDate(any(), any()))
+                .thenReturn(offerApplication);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/applications/setdate/" + offerApplication.getId(), LocalDate.now())
-                        .contentType(MediaType.APPLICATION_JSON))
+                MockMvcRequestBuilders.post("/applications/setdate/" + offerApplication.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(LocalDateTime.now())))
                 .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        final OfferApplication actual = MAPPER.readValue(response.getContentAsString(), OfferApplication.class);
+        assertThat(response.getStatus()).isEqualTo(OK.value());
+        assertThat(actual.getInterviewDate()).isEqualTo(offerApplication.getInterviewDate());
     }
 
     @Test
