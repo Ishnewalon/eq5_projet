@@ -128,6 +128,8 @@ public class ContractControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualContractList.size()).isEqualTo(dummyContractList.size());
     }
+
+
     private Contract getDummyContract() {
         Contract dummyContract = new Contract();
         dummyContract.setId(1L);

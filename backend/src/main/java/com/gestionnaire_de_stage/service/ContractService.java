@@ -47,9 +47,12 @@ public class ContractService {
         return contractRepository.save(contract);
     }
 
-    public List<Contract> getAllUnsignedContractForMonitor(Long monitor_id) throws Exception {
-        Monitor monitor = monitorService.getOneByID(monitor_id);
-        return contractRepository.getAllByOffer_CreatorIdAndAndMonitorSignatureNull(monitor_id);
+    public List<Contract> getAllUnsignedContractForMonitor(Long monitor_id) throws IdDoesNotExistException {
+        Assert.isTrue(monitor_id != null, "L'id du moniteur ne peut pas être null");
+        if (monitorService.isIdInvalid(monitor_id)) {
+            throw new IdDoesNotExistException();
+        }
+        return contractRepository.getAllByOffer_CreatorIdAndAndMonitorSignatureNullAndManagerSignatureNotNull(monitor_id);
     }
 
     public Contract fillPDF(Contract contract, ByteArrayOutputStream baos) {

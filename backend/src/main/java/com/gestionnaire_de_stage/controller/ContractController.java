@@ -15,6 +15,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -65,16 +66,21 @@ public class ContractController {
                 .body(new ResponseMessage("Signature fait"));
     }
 
-/*    @GetMapping("/monitor/{monitor_id}")
+    @GetMapping("/monitor/{monitor_id}")
     public ResponseEntity<?> ContractNeedsMonitorSignature(@PathVariable Long monitor_id) {
+        List<Contract> contractList;
         try {
-            List<Contract> contractList = contractService.getAllUnsignedContractForMonitor(monitor_id);
+            contractList = contractService.getAllUnsignedContractForMonitor(monitor_id);
         } catch (IllegalArgumentException e) {
-
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
         } catch (IdDoesNotExistException e) {
-
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Le id du moniteur n'existe pas"));
         }
 
         return ResponseEntity.ok(contractList);
-    }*/
+    }
 }

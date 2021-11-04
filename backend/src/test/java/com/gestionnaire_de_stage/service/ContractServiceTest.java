@@ -30,6 +30,9 @@ public class ContractServiceTest {
     @Mock
     private ManagerService managerService;
 
+    @Mock
+    private MonitorService monitorService;
+
     @Test
     public void testGetAllByManagerSignatureNull() {
         when(contractRepository.getAllByManagerSignatureNull()).thenReturn(getDummyContractList());
@@ -89,8 +92,6 @@ public class ContractServiceTest {
                 () -> contractService.addManagerSignature(managerSignature, dummyContract.getId(), manager_id));
     }
 
-
-
     @Test
     public void testFillPDF_withValidEntries() {
         Contract dummyContract = getDummyFilledContract();
@@ -110,6 +111,34 @@ public class ContractServiceTest {
                 () -> contractService.fillPDF(null, baos));
     }
 
+    @Test
+    public void testgetAllUnsignedContractForMonitor_withValidEntries() throws Exception {
+        List<Contract> dummyContractList = getDummyContractList();
+        long monitor_id = 1L;
+        when(monitorService.isIdInvalid(any())).thenReturn(false);
+        when(contractRepository.getAllByOffer_CreatorIdAndAndMonitorSignatureNullAndManagerSignatureNotNull(any()))
+                .thenReturn(dummyContractList);
+
+
+        List<Contract> actualContractList = contractService.getAllUnsignedContractForMonitor(monitor_id);
+
+        assertThat(actualContractList.get(1).getId()).isEqualTo(dummyContractList.get(1).getId());
+    }
+
+    @Test
+    public void testgetAllUnsignedContractForMonitor_withNullMonitorID() {
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.getAllUnsignedContractForMonitor(null));
+    }
+
+    @Test
+    public void testgetAllUnsignedContractForMonitor_withInvalidMonitorID() {
+        long monitor_id = 1L;
+        when(monitorService.isIdInvalid(any())).thenReturn(true);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> contractService.getAllUnsignedContractForMonitor(monitor_id));
+    }
 
     private List<Contract> getDummyContractList() {
         List<Contract> dummyContractList = new ArrayList<>();
@@ -167,4 +196,5 @@ public class ContractServiceTest {
         dummyManager.setPhone("5143643320");
         return dummyManager;
     }
+
 }
