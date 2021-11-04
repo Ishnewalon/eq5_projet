@@ -51,7 +51,7 @@ export default function Login() {
                 </div>
                 <div className="form-group text-center">
                     <label/>
-                    <button className="btn btn-primary" type={"button"} onClick={connect}>Connexion</button>
+                    <button className="btn btn-primary btn-login" type={"button"} onClick={connect}>Connexion</button>
                 </div>
             </div>
         </>

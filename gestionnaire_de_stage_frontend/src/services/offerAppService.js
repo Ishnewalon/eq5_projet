@@ -33,7 +33,8 @@ export async function getAllApplicants(email) {
                 }
                 return Promise.any([]);
             })
-        });
+        }, err => console.error(err)
+    );
 }
 
 export async function getStudentApplications(id) {
@@ -46,7 +47,26 @@ export async function getStudentApplications(id) {
                     toastErr.fire({title: body.message})
                 return Promise.any([]);
             })
-        }
+        }, err => console.error(err)
+    );
+}
+
+export async function setApplicationsStatusWhenEnAttenteDeReponse(idOfferApp, status) {
+    return await fetch(`${urlBackend}/applications/applicants/student/`, requestInit(methods.POST, {
+        idOfferApplication: idOfferApp,
+        status: status
+    })).then(
+        response => {
+            return response.json().then((body) => {
+                if (response.status === 200) {
+                    toast.fire({title: body.message})
+                    return true;
+                }
+                if (response.status === 400)
+                    toastErr.fire({title: body.message})
+                return false;
+            })
+        }, err => console.error(err)
     );
 }
 
