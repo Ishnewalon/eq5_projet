@@ -60,7 +60,7 @@ public class ContractControllerTest {
                 + "/" + dummyContract.getId() + "/" + manager_id;
         when(contractService.addManagerSignature(any(),any(),any()))
                 .thenReturn(dummyContract);
-        when(contractService.fillPDF(any())).thenReturn(dummyContract);
+        when(contractService.fillPDF(any(), any())).thenReturn(dummyContract);
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.get(uri)

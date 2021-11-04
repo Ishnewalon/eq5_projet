@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -113,8 +114,9 @@ public class ContractServiceTest {
 
     @Test
     public void testFillPDF_withNullContractId() {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         assertThrows(IllegalArgumentException.class,
-                () -> contractService.fillPDF(null));
+                () -> contractService.fillPDF(null, baos));
     }
 
 

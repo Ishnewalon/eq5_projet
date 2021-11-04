@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -44,12 +45,9 @@ public class ContractService {
         return contractRepository.save(contract);
     }
 
-    public Contract fillPDF(Contract contract) {
+    public Contract fillPDF(Contract contract, ByteArrayOutputStream baos) {
         Assert.isTrue(contract != null, "Le contract ne peut pas être null");
-        final String uri = "http://127.0.0.1:8181/pdf/pdf/";
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<byte[]> responseEntity = restTemplate.getForEntity(uri + contract.getId(), byte[].class);
-        contract.setContractPDF(responseEntity.getBody());
+        contract.setContractPDF(baos.toByteArray());
         return contractRepository.save(contract);
     }
 
