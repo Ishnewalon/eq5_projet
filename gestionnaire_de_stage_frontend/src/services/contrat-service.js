@@ -9,12 +9,17 @@ export async function managerSignContract(managerSignature, managerId, contractI
     return await signContract(UserType.MANAGER[0], managerSignature, managerId, contractId);
 }
 
-export async function monitorSignContract(monitorSignature, monitorId, contractId) {
-    return await signContract(UserType.MONITOR[0], monitorSignature, monitorId, contractId);
+export async function monitorSignContract(monitorSignature, contractId) {
+    return await signContract(UserType.MONITOR[0], monitorSignature, undefined, contractId);
 }
 
 async function signContract(userType, signature, userId, contractId) {
-    return await fetch(`${url}/${userType}Sign/${signature}/${userId}/${contractId}`, requestInit(methods.PUT)).then(
+    let urlToAccess = `${url}/${userType}Sign/${signature}`;
+
+    if(userId)
+        urlToAccess += `/${userId}`;
+
+    return await fetch(`${urlToAccess}/${contractId}`, requestInit(methods.PUT)).then(
         response => {
             return response.json().then(
                 body => {

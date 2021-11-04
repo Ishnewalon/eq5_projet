@@ -7,7 +7,6 @@ import {UserType} from "../../enums/UserTypes";
 
 export default function ContratSignature({userId, userType, contract, removeContract}) {
 
-
     const [signature, setSignature] = useState('');
 
     const toPdfBlob = (pdfFile) => {
@@ -44,7 +43,7 @@ export default function ContratSignature({userId, userType, contract, removeCont
                     removeContract(contract.id);
             });
         else if(userType === UserType.MONITOR[0])
-            monitorSignContract(signature, userId, contract.id).then(isSigned => {
+            monitorSignContract(signature, contract.id).then(isSigned => {
                 if (isSigned)
                     removeContract(contract.id);
             });
