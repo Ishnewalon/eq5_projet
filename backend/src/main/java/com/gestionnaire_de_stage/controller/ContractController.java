@@ -48,7 +48,7 @@ public class ContractController {
             Contract contract = contractService.addManagerSignature(managerSignature, contract_id, manager_id);
             WebContext context = new WebContext(request, response, servletContext);
             context.setVariable("contract", contract);
-            String contractHtml = templateEngine.process("test", context);
+            String contractHtml = templateEngine.process("contractTemplate", context);
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             HtmlConverter.convertToPdf(contractHtml, baos);
