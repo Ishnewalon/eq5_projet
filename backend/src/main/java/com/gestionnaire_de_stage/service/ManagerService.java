@@ -68,7 +68,7 @@ public class ManagerService {
         return manager.getEmail() != null && managerRepository.existsByEmail(manager.getEmail());
     }
 
-    private boolean isIDNotValid(Long id) {
+    public boolean isIDNotValid(Long id) {
         return !managerRepository.existsById(id);
     }
 

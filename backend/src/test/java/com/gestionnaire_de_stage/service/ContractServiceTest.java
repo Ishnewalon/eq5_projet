@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.ContractRepository;
 import com.gestionnaire_de_stage.repository.ManagerRepository;
@@ -8,6 +9,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,6 +80,40 @@ public class ContractServiceTest {
         Contract dummyContract = getDummyContract();
         assertThrows(IllegalArgumentException.class,
                 () -> contractService.addManagerSignature(managerSignature, dummyContract.getId(), null));
+    }
+
+    @Test
+    public void testAddManagerSignature_withInvalidContractID() {
+        String managerSignature = "Joe Janson";
+        Contract dummyContract = getDummyContract();
+        Long manager_id = 1L;
+        when(contractRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> contractService.addManagerSignature(managerSignature, dummyContract.getId(), manager_id));
+    }
+
+
+
+ /*   //NEEDS TO BE FIXED URI ERROR
+    @Test
+    public void testFillPDF_withValidEntries() {
+        Contract dummyContract = getDummyContract();
+        String uri = "http://127.0.0.1:8181/pdf/pdf/" + dummyContract.getId();
+        byte[] dummyPdf = {2,4,5,7,2};
+        when(contractRepository.getContractById(any())).thenReturn(dummyContract);
+        when(contractRepository.save(any())).thenReturn(getDummyFilledContract());
+        when(testRestTemplate.getForEntity(uri, byte[].class)).thenReturn(new ResponseEntity(dummyPdf, HttpStatus.OK));
+
+        Contract actualContract = contractService.fillPDF(dummyContract.getId());
+
+        assertThat(actualContract.getContractPDF()).isEqualTo(getDummyFilledContract().getContractPDF());
+    }*/
+
+    @Test
+    public void testFillPDF_withNullContractId() {
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.fillPDF(null));
     }
 
 
