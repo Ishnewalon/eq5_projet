@@ -55,7 +55,7 @@ public class ContractControllerTest {
     public void testCreateContractPDF_withValidEntries() throws Exception {
         String managerSignature = "Joe Janson";
         Contract dummyContract = getDummyContract();
-        Long manager_id = 1L;
+        long manager_id = 1L;
         String uri = "/contracts/managerSign/" + managerSignature
                 + "/" + dummyContract.getId() + "/" + manager_id;
         when(contractService.addManagerSignature(any(),any(),any()))
@@ -76,7 +76,7 @@ public class ContractControllerTest {
     public void testCreateContractPDF_withNullEntries() throws Exception {
         String managerSignature = "Joe Janson";
         Contract dummyContract = getDummyContract();
-        Long manager_id = 1L;
+        long manager_id = 1L;
         String uri = "/contracts/managerSign/" + managerSignature
                 + "/" + dummyContract.getId() + "/" + manager_id;
         when(contractService.addManagerSignature(any(),any(),any()))
@@ -96,7 +96,7 @@ public class ContractControllerTest {
     public void testCreateContractPDF_withInvalidEntries() throws Exception {
         String managerSignature = "Joe Janson";
         Contract dummyContract = getDummyContract();
-        Long manager_id = 1L;
+        long manager_id = 1L;
         String uri = "/contracts/managerSign/" + managerSignature
                 + "/" + dummyContract.getId() + "/" + manager_id;
         when(contractService.addManagerSignature(any(),any(),any()))
