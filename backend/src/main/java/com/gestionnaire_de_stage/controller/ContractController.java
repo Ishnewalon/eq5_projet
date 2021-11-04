@@ -83,4 +83,29 @@ public class ContractController {
 
         return ResponseEntity.ok(contractList);
     }
+
+    @PutMapping("/monitorSign/{managerSignature}/{contract_id}")
+    public ResponseEntity<?> monitorSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature, @PathVariable Long manager_id, @PathVariable Long contract_id){
+        try {
+            Contract contract = contractService.addManagerSignature(managerSignature, contract_id, manager_id);
+            WebContext context = new WebContext(request, response, servletContext);
+            context.setVariable("contract", contract);
+            String contractHtml = templateEngine.process("contractTemplate", context);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            HtmlConverter.convertToPdf(contractHtml, baos);
+            contractService.fillPDF(contract, baos);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Le id du contrat n'existe pas"));
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseMessage("Signature fait"));
+    }
 }

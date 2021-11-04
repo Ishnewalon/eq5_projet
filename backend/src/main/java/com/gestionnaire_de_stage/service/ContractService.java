@@ -7,6 +7,7 @@ import com.gestionnaire_de_stage.repository.ContractRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.persistence.Id;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.List;
@@ -53,6 +54,14 @@ public class ContractService {
             throw new IdDoesNotExistException();
         }
         return contractRepository.getAllByOffer_CreatorIdAndAndMonitorSignatureNullAndManagerSignatureNotNull(monitor_id);
+    }
+
+    public Contract getContractById(Long contract_id) throws IdDoesNotExistException {
+        Assert.isTrue(contract_id != null, "L'id du contrat ne peut pas être null");
+        if (isContractIdNotValid(contract_id)) {
+            throw new IdDoesNotExistException();
+        }
+        return contractRepository.getContractById(contract_id);
     }
 
     public Contract fillPDF(Contract contract, ByteArrayOutputStream baos) {
