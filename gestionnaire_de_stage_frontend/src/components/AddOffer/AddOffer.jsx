@@ -1,32 +1,43 @@
 import React, {useState} from "react";
 import FieldAddress from "../Fields/FieldAddress";
-import OfferService from "../../services/offer-service";
+import {createOffer} from "../../services/offer-service";
 import {DepartmentEnum} from "../../enums/Departement";
-import authService from "../../services/auth-service";
 import OfferDTO from "../../models/OfferDTO";
+import {useAuth} from "../../services/use-auth";
 
 
 export default function AddOffer() {
-    const serviceOffer = OfferService
-    const serviceAuth = authService
+    let auth = useAuth();
     const [title, setTitle] = useState('')
     const [department, setDepartement] = useState(DepartmentEnum.info)
     const [description, setDescription] = useState('')
     const [address, setAddress] = useState('')
     const [salary, setSalary] = useState(0)
-    const [creator_email, setCreatorId] = useState(serviceAuth.isMonitor() ? serviceAuth.user.email : '')
+    const [creator_email, setCreatorId] = useState(auth.isMonitor() ? auth.user.email : '')
 
     const addOffer = () => {
         let offer = new OfferDTO(title, department, description, address, salary, creator_email)
-        serviceOffer.createOffer(offer).then()
+        createOffer(offer).then((b) => {
+            if (b === null)
+                return
+            setTitle()
+            setDescription('')
+            setDepartement(DepartmentEnum.info)
+            setAddress('')
+            setSalary(0)
+            setCreatorId(auth.isMonitor() ? auth.user.email : '')
+        })
     }
-    const x = <div className="col-md-6">
-        <label>Email</label>
-        <div className="input-group">
-            <input name="email" placeholder="Email" className="form-control" type="text"
-                   value={creator_email} onChange={(e) => setCreatorId(e.target.value)}/>
-        </div>
-    </div>
+
+    const monitorEmail = (
+        <div className="col-md-6">
+            <label>Email</label>
+            <div className="input-group">
+                <input name="email" placeholder="Email" className="form-control" type="text"
+                       value={creator_email} onChange={(e) => setCreatorId(e.target.value)}/>
+            </div>
+        </div>)
+
     return (<>
         <h2 className="text-center">Ajouter une offre de stage</h2>
         <div className="form-group row">
@@ -68,7 +79,7 @@ export default function AddOffer() {
                        value={salary} onChange={(e) => setSalary(e.target.value)}/>
             </div>
         </div>
-        {(serviceAuth.isManager()) ? x : <></>}
+        {(auth.isManager()) ? monitorEmail : <></>}
         <div className="form-group text-center">
             <label/>
             <div>

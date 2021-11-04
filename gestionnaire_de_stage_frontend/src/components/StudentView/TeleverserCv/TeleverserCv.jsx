@@ -2,21 +2,22 @@ import './TeleverserCv.css'
 import React, {useState} from "react";
 import Dropzone from "react-dropzone";
 import { uploadFile } from "../../../services/curriculum-service";
-import authService from "../../../services/auth-service";
+import {useAuth} from "../../../services/use-auth";
 
 export default function TeleverserCv() {
+    let auth = useAuth();
     const [fileNames, setFileNames] = useState([]);
     const handleDrop = acceptedFiles => {
         setFileNames(acceptedFiles.map(file => file.name));
         console.log(acceptedFiles)
-        uploadFile(acceptedFiles, authService.getUserId()).then()
+        uploadFile(acceptedFiles, auth.user.id).then()
     }
 
     return (
         <div>
             <Dropzone
                 onDrop={handleDrop}
-                accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                accept="application/pdf"
                 minSize={1024}
                 maxSize={3072000}
             >
@@ -34,7 +35,7 @@ export default function TeleverserCv() {
                             : "";
                     return (
                         <div>
-                                <h2 className={"text-center"}>Les fichiers acceptés sont de type <b>.PDF</b> ou <b>.DOCX</b>
+                                <h2 className={"text-center"}>Les fichiers acceptés sont de type <b>.PDF</b>
                                 </h2>
                                 <div
                                 {...getRootProps({

@@ -345,6 +345,7 @@ class OfferApplicationControllerTest {
         dummyCurriculum.setStudent(new Student());
         return dummyCurriculum;
     }
+
     private Student getDummyStudent() {
         Student dummyStudent = new Student();
         dummyStudent.setId(1L);

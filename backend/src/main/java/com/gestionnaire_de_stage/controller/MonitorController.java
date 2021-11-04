@@ -4,7 +4,6 @@ import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
-import com.gestionnaire_de_stage.repository.MonitorRepository;
 import com.gestionnaire_de_stage.service.MonitorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,9 +46,7 @@ public class MonitorController {
 
         try {
             Monitor monitor = monitorService.getOneByEmailAndPassword(email, password);
-            return ResponseEntity
-                    .status(HttpStatus.FOUND)
-                    .body(monitor);
+            return ResponseEntity.ok(monitor);
         } catch (EmailAndPasswordDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
