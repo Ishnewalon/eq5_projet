@@ -1,5 +1,5 @@
 import PdfDocumentViewer from "../PdfDocumentViewer/PdfDocumentViewer";
-import {useEffect, useReducer, useState} from "react";
+import {useEffect, useState} from "react";
 import {BsPenFill} from "react-icons/all";
 import Swal from "sweetalert2";
 import {managerSignContract} from "../../services/contrat-service";
@@ -24,11 +24,10 @@ export default function ContratSignature({userType, contract, removeContract}) {
         return new Blob([new Uint8Array(numBytes), {type: 'application/pdf'}]);
     }
 
-    const [pdf, setPdf] = useReducer(toPdfBlob, null);
+    const [pdf, setPdf] = useState(null);
 
     useEffect(() => {
-        setPdf(contract.contractPDF);
-        // eslint-disable-next-line
+        setPdf(toPdfBlob(contract.contractPDF));
     }, []);
 
     const startContract = (e) => {

@@ -6,10 +6,7 @@ import {UserType} from "../../enums/UserTypes";
 export default function ViewContractsToBeStarted() {
     const [contracts, setContracts] = useState([]);
 
-    useEffect(() => {
-        getAllContractsToBeStarted().then(contracts => setContracts(contracts));
-    }, []);
-
+    useEffect(() => getAllContractsToBeStarted().then(contracts => setContracts(contracts)), []);
 
     const removeContract = (contractId) => {
         const newContracts = contracts.filter(contract => contract.id !== contractId);

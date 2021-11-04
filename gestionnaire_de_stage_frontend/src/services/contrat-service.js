@@ -10,7 +10,7 @@ export async function managerSignContract(managerSignature, managerId, contractI
 }
 
 async function signContract(userType, signature, userId, contractId) {
-    return await fetch(`${url}/${userType}Sign/${signature}/${userId}/${contractId}`, requestInit(methods.GET)).then(
+    return await fetch(`${url}/${userType}Sign/${signature}/${userId}/${contractId}`, requestInit(methods.PUT)).then(
         response => {
             return response.json().then(
                 body => {
