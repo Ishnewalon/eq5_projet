@@ -274,7 +274,7 @@ class OfferApplicationControllerTest {
         UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(offerApplication.getId(), true);
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/applications/student/update_status")
+                        MockMvcRequestBuilders.post("/applications/student/update_status")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(MAPPER.writeValueAsString(updateStatusDTO)))
                 .andReturn();

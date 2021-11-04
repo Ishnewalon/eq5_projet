@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
@@ -84,5 +85,10 @@ public class OfferApplicationController {
                     .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity.ok(offerApplicationList);
+    }
+
+    @PostMapping("/student/update_status")
+    public ResponseEntity<?> updateStatus(@RequestBody UpdateStatusDTO updateStatusDTO) {
+        return ResponseEntity.ok(new ResponseMessage("Status changé, attendez la signature du contrat"));
     }
 }
