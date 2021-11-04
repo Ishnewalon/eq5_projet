@@ -51,9 +51,9 @@ public class ContractService {
         return contractRepository.save(contract);
     }
 
-    public Contract getContractById(Long id) {
+/*    public Contract getContractById(Long id) {
         return contractRepository.getContractById(id);
-    }
+    }*/
 
     private boolean isContractIdNotValid(Long contract_id) {
         return !contractRepository.existsById(contract_id);

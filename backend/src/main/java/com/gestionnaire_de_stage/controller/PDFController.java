@@ -1,4 +1,4 @@
-package com.gestionnaire_de_stage.controller;
+/*package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.model.Contract;
@@ -52,4 +52,4 @@ public class PDFController {
     }
 
 
-}
+}*/
