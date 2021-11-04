@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import {managerSignContract} from "../../services/contrat-service";
 import {UserType} from "../../enums/UserTypes";
 import {useAuth} from "../../services/use-auth";
-import {swalErr} from "../../utility";
 
 export default function ContratSignature({userType, contract, removeContract}){
 
@@ -15,8 +14,7 @@ export default function ContratSignature({userType, contract, removeContract}){
 
     const toPdfBlob = (pdfFile) => {
         if(!pdfFile) {
-            swalErr.fire({text: "No pdf file "})
-            return;
+            return null;
         }
         const decodedChars = atob(pdfFile);
         const numBytes = new Array(decodedChars.length);
