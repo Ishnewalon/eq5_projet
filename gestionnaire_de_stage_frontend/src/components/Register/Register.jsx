@@ -7,9 +7,9 @@ import Choice from "./Steps/StepChoices";
 import StepCegep from "./Steps/StepCegep";
 import {MonitorModel, Student, Supervisor} from "../../models/User";
 import {Step} from "../../enums/Steps";
-import {UserType} from "../../enums/UserTypes";
 import {useHistory} from "react-router-dom";
 import {useAuth} from "../../services/use-auth";
+import {UserType} from "../../enums/UserTypes";
 
 
 export default function Register() {

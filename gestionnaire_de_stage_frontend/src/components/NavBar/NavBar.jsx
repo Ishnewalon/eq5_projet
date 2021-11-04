@@ -35,7 +35,7 @@ export default function Navbar() {
 
 function NavItemSpecificForUser() {
     let auth = useAuth();
-    if (auth.isManager)
+    if (auth.isMonitor())
         return (
             <>
                 <li>

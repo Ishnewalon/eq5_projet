@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import ContractSignature from "../ContractSigning/ContratSignature";
 import {getAllContractsToBeStarted} from "../../services/contrat-service";
-import {UserType} from "../Register/Register";
+import {UserType} from "../../enums/UserTypes";
 
 export default function ViewContractsToBeStarted(){
     const [contracts, setContracts] = useState([]);
