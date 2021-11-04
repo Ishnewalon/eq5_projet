@@ -22,13 +22,13 @@ import static org.mockito.ArgumentMatchers.any;
 public class ContractServiceTest {
 
     @InjectMocks
-    ContractService contractService;
+    private ContractService contractService;
 
     @Mock
-    ContractRepository contractRepository;
+    private ContractRepository contractRepository;
 
     @Mock
-    ManagerService managerService;
+    private ManagerService managerService;
 
     @Test
     public void testGetAllByManagerSignatureNull() {
