@@ -33,7 +33,7 @@ public class ContractService {
         return contractRepository.getAllByManagerSignatureNull();
     }
 
-    public Contract addManagerSignature(String managerSignature, Long contract_id, Long manager_id) throws Exception {
+    public Contract addManagerSignature(String managerSignature, Long contract_id, Long manager_id) throws IllegalArgumentException, IdDoesNotExistException {
         Assert.isTrue(managerSignature != null, "Il faut une signature");
         Assert.isTrue(contract_id != null, "L'id du contrat ne peut pas être null");
         Assert.isTrue(manager_id != null, "L'id du gestionnaire ne peut pas être null");

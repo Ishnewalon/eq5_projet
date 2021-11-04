@@ -5,7 +5,6 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.service.ContractService;
 import com.itextpdf.html2pdf.HtmlConverter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +15,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.util.List;
 
 @RestController
@@ -24,14 +22,14 @@ import java.util.List;
 @RequestMapping("/contracts")
 public class ContractController {
 
-    @Autowired
-    ServletContext servletContext;
+    private final ServletContext servletContext;
 
     private final ContractService contractService;
 
     private final TemplateEngine templateEngine;
 
-    public ContractController(ContractService contractService, TemplateEngine templateEngine) {
+    public ContractController(ContractService contractService, TemplateEngine templateEngine, ServletContext servletContext) {
+        this.servletContext = servletContext;
         this.contractService = contractService;
         this.templateEngine = templateEngine;
     }
@@ -43,7 +41,7 @@ public class ContractController {
     }
 
     @PutMapping("/managerSign/{managerSignature}/{manager_id}/{contract_id}")
-    public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature, @PathVariable Long manager_id, @PathVariable Long contract_id) throws Exception{
+    public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature, @PathVariable Long manager_id, @PathVariable Long contract_id){
         try {
             Contract contract = contractService.addManagerSignature(managerSignature, contract_id, manager_id);
             WebContext context = new WebContext(request, response, servletContext);

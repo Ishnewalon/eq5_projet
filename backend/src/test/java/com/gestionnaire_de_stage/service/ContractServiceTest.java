@@ -158,17 +158,6 @@ public class ContractServiceTest {
         return dummyStudent;
     }
 
-    private Offer getDummyOffer() {
-        Offer dummyOffer = new Offer();
-        dummyOffer.setDepartment("Un departement");
-        dummyOffer.setAddress("ajsaodas");
-        dummyOffer.setId(1L);
-        dummyOffer.setDescription("oeinoiendw");
-        dummyOffer.setSalary(10);
-        dummyOffer.setTitle("oeinoiendw");
-        return dummyOffer;
-    }
-
     private Manager getDummyManager() {
         Manager dummyManager = new Manager();
         dummyManager.setPassword("Test1234");
