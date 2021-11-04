@@ -28,14 +28,14 @@ export default function StudentOfferApplicationList() {
     };
 
     return (<>
-        <h2 className="text-center mt-5 mb-3">Offer Applications</h2>
+        <h2 className="text-center mt-5 mb-3">Les status de mes applications</h2>
         <table className="table table-striped table-borderless text-center rounded shadow-lg">
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Offer</th>
+                <th scope="col">Offre</th>
                 <th scope="col">Status</th>
-                <th scope="col">Déclaration</th>
+                <th scope="col">Changement de mon status</th>
             </tr>
             </thead>
             <tbody>
@@ -51,7 +51,7 @@ export default function StudentOfferApplicationList() {
                                 trouvé
                             </button>
                             <button className="btn btn-outline-danger"
-                                    onClick={() => updateStatus(offerApplication.id, OfferApplicationStatus.STAGE_REFUSER)}>Refuser
+                                    onClick={() => updateStatus(offerApplication.id, OfferApplicationStatus.STAGE_REFUSER)}>Refusé
                             </button>
                         </div>
                     </td>

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
+import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
+import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
@@ -264,6 +266,24 @@ class OfferApplicationControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("L'étudiant n'existe pas");
+    }
+
+    @Test
+    public void testUpdateStatusIsAccepted() throws Exception {
+        OfferApplication offerApplication = getDummyOfferApp();
+        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(offerApplication.getId(), true);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/applications/student/update_status")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(updateStatusDTO)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Status changé, attendez la signature du contrat");
+
     }
 
     private OfferAppDTO getDummyOfferAppDto() {
