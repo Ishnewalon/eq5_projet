@@ -4,6 +4,7 @@ import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.repository.ContractRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -28,6 +29,9 @@ public class ContractService {
     }
 
     public Contract addManagerSignature(String managerSignature, Long contract_id, Long manager_id) throws Exception {
+        Assert.isTrue(managerSignature != null, "Il faut une signature");
+        Assert.isTrue(contract_id != null, "L'id du contrat ne peut pas être null");
+        Assert.isTrue(manager_id != null, "L'id du gestionnaire ne peut pas être null");
         Contract contract = contractRepository.getContractById(contract_id);
         contract.setManagerSignDate(LocalDate.now());
         contract.setManagerSignature(managerSignature);
@@ -36,6 +40,7 @@ public class ContractService {
     }
 
     public Contract fillPDF(Long contract_id) {
+        Assert.isTrue(contract_id != null, "L'id du contrat ne peut pas être null");
         Contract contract = contractRepository.getContractById(contract_id);
         final String uri = "http://127.0.0.1:8181/pdf/pdf/";
         RestTemplate restTemplate = new RestTemplate();

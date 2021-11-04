@@ -2,10 +2,7 @@ package com.gestionnaire_de_stage.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Data
@@ -13,7 +10,8 @@ import java.time.LocalDate;
 public class Contract {
 
     @Id
-    Long id;
+    @GeneratedValue
+    private Long id;
 
     private LocalDate managerSignDate;
 

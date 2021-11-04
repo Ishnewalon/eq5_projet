@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.ContractRepository;
+import com.gestionnaire_de_stage.repository.ManagerRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
 
@@ -25,6 +27,9 @@ public class ContractServiceTest {
     @Mock
     ContractRepository contractRepository;
 
+    @Mock
+    ManagerService managerService;
+
     @Test
     public void testGetAllByManagerSignatureNull() {
         when(contractRepository.getAllByManagerSignatureNull()).thenReturn(getDummyContractList());
@@ -34,15 +39,44 @@ public class ContractServiceTest {
         assertThat(actualContractList.size()).isEqualTo(getDummyContractList().size());
     }
 
-    /*@Test
-    public void testManagerSignContract_withValidEntries() throws Exception{
-        when(contractRepository.getContractByStudent_Matricule(any())).thenReturn(getDummyContract());
-        when(contractRepository.save(any())).thenReturn(getDummyContract());
+    @Test
+    public void testAddManagerSignature_withValidEntries() throws Exception {
+        String managerSignature = "Joe Janson";
+        Contract dummyContract = getDummyContract();
+        Long manager_id = 1L;
+        Manager dummyManager = getDummyManager();
+        when(contractRepository.getContractById(any())).thenReturn(dummyContract);
+        when(managerService.getOneByID(any())).thenReturn(dummyManager);
+        when(contractRepository.save(any())).thenReturn(getDummyFilledContract());
 
-        final Contract actualContract = contractService.managerSignContract(getDummyOfferApp());
+        Contract actualContract = contractService.addManagerSignature(managerSignature, dummyContract.getId(), manager_id);
+        assertThat(actualContract.getManager()).isEqualTo(dummyManager);
+    }
 
-        assertThat(actualContract.getStudent()).isEqualTo(getDummyStudent());
-    }*/
+    @Test
+    public void testAddManagerSignature_withNullManagerSignature() {
+        Contract dummyContract = getDummyContract();
+        Long manager_id = 1L;
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.addManagerSignature(null, dummyContract.getId(), manager_id));
+    }
+
+    @Test
+    public void testAddManagerSignature_withNullContractID() {
+        String managerSignature = "Joe Janson";
+        Long manager_id = 1L;
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.addManagerSignature(managerSignature, null, manager_id));
+    }
+
+    @Test
+    public void testAddManagerSignature_withNullManagerID() {
+        String managerSignature = "Joe Janson";
+        Contract dummyContract = getDummyContract();
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.addManagerSignature(managerSignature, dummyContract.getId(), null));
+    }
+
 
     private List<Contract> getDummyContractList() {
         List<Contract> dummyContractList = new ArrayList<>();
@@ -69,20 +103,14 @@ public class ContractServiceTest {
         return dummyContract;
     }
 
-    private OfferApplication getDummyOfferApp() {
-        OfferApplication dummyOfferApplicationDTO = new OfferApplication();
-        dummyOfferApplicationDTO.setOffer(getDummyOffer());
-        dummyOfferApplicationDTO.setCurriculum(getDummyCurriculum());
-        dummyOfferApplicationDTO.setId(1L);
-
-        return dummyOfferApplicationDTO;
-    }
-
-    private Curriculum getDummyCurriculum() {
-        Curriculum dummyCurriculum = new Curriculum();
-        dummyCurriculum.setId(1L);
-        dummyCurriculum.setStudent(getDummyStudent());
-        return dummyCurriculum;
+    private Contract getDummyFilledContract() {
+        Contract dummyContract = new Contract();
+        dummyContract.setManager(getDummyManager());
+        dummyContract.setManagerSignature("Joe Janson");
+        dummyContract.setId(1L);
+        dummyContract.setStudent(getDummyStudent());
+        dummyContract.setContractPDF(new byte[] {5, 1, 9, 2, 6});
+        return dummyContract;
     }
 
     private Student getDummyStudent() {
@@ -106,5 +134,15 @@ public class ContractServiceTest {
         dummyOffer.setSalary(10);
         dummyOffer.setTitle("oeinoiendw");
         return dummyOffer;
+    }
+
+    private Manager getDummyManager() {
+        Manager dummyManager = new Manager();
+        dummyManager.setPassword("Test1234");
+        dummyManager.setEmail("oussamakably@gmail.com");
+        dummyManager.setFirstName("Oussama");
+        dummyManager.setLastName("Kably");
+        dummyManager.setPhone("5143643320");
+        return dummyManager;
     }
 }
