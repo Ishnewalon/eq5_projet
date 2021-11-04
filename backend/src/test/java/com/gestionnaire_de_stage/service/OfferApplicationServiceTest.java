@@ -10,6 +10,7 @@ import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
+import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,7 +23,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,6 +36,8 @@ class OfferApplicationServiceTest {
     private OfferService offerService;
     @Mock
     private StudentService studentService;
+    @Mock
+    private StudentRepository studentRepository;
     @Mock
     private OfferApplicationRepository offerApplicationRepository;
 
@@ -119,12 +124,37 @@ class OfferApplicationServiceTest {
         String email = "americanm@email.com";
         when(offerApplicationRepository.existsByOffer_CreatorEmail(any()))
                 .thenReturn(true);
-        when(offerApplicationRepository.getAllByOffer_CreatorEmail(any()))
-                .thenReturn(getDummyOfferAppList());
+        when(offerApplicationRepository.getAllByOffer_CreatorEmail(email))
+                .thenReturn(offerApplicationList);
 
         List<OfferApplication> actualOfferAppList = offerApplicationService.getAllByOfferCreatorEmail(email);
 
         assertThat(actualOfferAppList.size()).isEqualTo(offerApplicationList.size());
+        assertThat(actualOfferAppList).isEqualTo(offerApplicationList);
+    }
+
+    @Test
+    void testGetAllByOfferStudentApplied() throws IdDoesNotExistException {
+        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
+        Student dummyStudent = getDummyStudent();
+        when(studentService.getOneByID(any())).thenReturn(dummyStudent);
+        when(offerApplicationRepository.getAllByCurriculum_StudentId(dummyStudent.getId()))
+                .thenReturn(offerApplicationList);
+
+        List<OfferApplication> actualOfferAppList = offerApplicationService
+                .getAllOffersStudentApplied(dummyStudent.getId());
+
+        assertThat(actualOfferAppList.size()).isEqualTo(offerApplicationList.size());
+        assertThat(actualOfferAppList).isEqualTo(offerApplicationList);
+    }
+
+    @Test
+    void testGetAllByOfferStudentApplied_withIdInvalid() throws IdDoesNotExistException {
+        Student dummyStudent = getDummyStudent();
+        when(studentService.getOneByID(any())).thenReturn(null);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerApplicationService.getAllOffersStudentApplied(dummyStudent.getId()));
     }
 
     @Test
@@ -173,6 +203,14 @@ class OfferApplicationServiceTest {
         dummyStudent.setMatricule("4673943");
         dummyStudent.setPrincipalCurriculum(new Curriculum());
         return dummyStudent;
+    }
+
+    private Curriculum getDummyCurriculum() {
+        Curriculum dummyCurriculum = new Curriculum();
+        dummyCurriculum.setId(1L);
+        dummyCurriculum.setName("Curriculum");
+        dummyCurriculum.setStudent(getDummyStudent());
+        return dummyCurriculum;
     }
 
     private List<OfferApplication> getDummyOfferAppList() {
