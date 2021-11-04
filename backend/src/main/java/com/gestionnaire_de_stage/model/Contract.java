@@ -7,7 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @Entity
@@ -30,6 +29,12 @@ public class Contract {
 
     @OneToOne
     private Student student;
+
+    @OneToOne
+    private Offer offer;
+
+    @OneToOne
+    private Manager manager;
 
     @Lob
     private byte[] contractPDF;

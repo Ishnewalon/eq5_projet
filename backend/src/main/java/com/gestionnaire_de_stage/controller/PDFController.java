@@ -50,4 +50,6 @@ public class PDFController {
         HtmlConverter.convertToPdf(contractHtml, new FileOutputStream("c:/permits/contract.pdf"));
         return ResponseEntity.ok().body(new ResponseMessage("It has been created"));
     }
+
+
 }

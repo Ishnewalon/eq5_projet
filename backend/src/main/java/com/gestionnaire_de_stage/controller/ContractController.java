@@ -27,12 +27,10 @@ public class ContractController {
         return ResponseEntity.ok(contractList);
     }
 
-   // @PostMapping("/managerSign")
-   // public ResponseEntity<?> managerSignContract(@RequestBody OfferApplication offerApplication) throws Exception{
-     @GetMapping("/managerSign")
-     public ResponseEntity<?> managerSignContract() throws Exception{
-      //  contractService.managerSignContract(offerApplication);
-        contractService.managerSignContract("1234567");
+    @GetMapping("/managerSign/{managerSignature}/{manager_id}/{contract_id}")
+    public ResponseEntity<?> managerSignContract(@PathVariable String managerSignature, @PathVariable Long manager_id, @PathVariable Long contract_id) throws Exception{
+        contractService.addManagerSignature(managerSignature, contract_id, manager_id);
+        contractService.fillPDF(contract_id);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseMessage("Signature fait"));

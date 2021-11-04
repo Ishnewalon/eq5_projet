@@ -57,7 +57,8 @@
 
             <p class=MsoNormal align=center style='text-align:center'><span lang=FR-CA
                                                                             style='font-size:12.0pt;line-height:107%;font-family:"Arial",sans-serif'>Le
-    gestionnaire de stage, [<span class=SpellE>nom_gestionnaire</span>]</span></p>
+                gestionnaire de stage, <span th:text="${contract.manager.firstName}"></span>
+                <span th:text="${contract.manager.lastName}"></span></span></p>
 
             <p class=MsoNormal align=center style='text-align:center'><span lang=FR-CA
                                                                             style='font-size:12.0pt;line-height:107%;font-family:"Arial",sans-serif'></span></p>
@@ -71,7 +72,8 @@
 
             <p class=MsoNormal align=center style='text-align:center'><span lang=FR-CA
                                                                             style='font-size:12.0pt;line-height:107%;font-family:"Arial",sans-serif'>L’employeur,
-    [<span class=SpellE>nom_employeur</span>]</span></p>
+    <span th:text="${contract.offer.creator.firstName}"></span>
+            <span th:text="${contract.offer.creator.lastName}"></span></span></p>
 
             <p class=MsoNormal align=center style='text-align:center'><span lang=FR-CA
                                                                             style='font-size:12.0pt;line-height:107%;font-family:"Arial",sans-serif'></span></p>
@@ -85,7 +87,8 @@
 
             <p class=MsoNormal align=center style='text-align:center'><span lang=FR-CA
                                                                             style='font-size:12.0pt;line-height:107%;font-family:"Arial",sans-serif'>L’étudiant(e),
-                <span th:text="${contract.student.firstName} ">nom_etudiant</span> <span th:text="${contract.student.lastName}"></span>,</span></p>
+                <span th:text="${contract.student.firstName} ">nom_etudiant</span>
+                <span th:text="${contract.student.lastName}"></span>,</span></p>
 
             <p class=MsoNormal align=center style='text-align:center'><span lang=FR-CA
                                                                             style='font-size:12.0pt;line-height:107%;font-family:"Arial",sans-serif'></span></p>
@@ -104,7 +107,7 @@
       #E7E6E6;mso-background-themecolor:background2;padding:2.85pt 5.4pt 2.85pt 5.4pt'>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><b><span
                                 lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>ENDROIT DU
-      STAGE></span></b></p>
+      STAGE</span></b></p>
                     </td>
                 </tr>
                 <tr style='mso-yfti-irow:1'>
@@ -114,7 +117,7 @@
       2.85pt 5.4pt 2.85pt 5.4pt'>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
                                 lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>Adresse&nbsp;:
-      [<span class=SpellE>offre_lieuStage</span>]</span></p>
+      <span th:text="${contract.offer.address}"></span></span></p>
                     </td>
                 </tr>
                 <tr style='mso-yfti-irow:2'>
@@ -188,7 +191,9 @@
       solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;padding:
       2.85pt 5.4pt 2.85pt 5.4pt'>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
-                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>Salaire horaire&nbsp;: [<span class=SpellE>offre_tauxHoraire</span>]<b></b></span></p>
+                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>Salaire horaire&nbsp;:
+                            <span th:text="${contract.offer.salary}"></span>
+                            <b></b></span></p>
                     </td>
                 </tr>
             </table>
@@ -218,8 +223,7 @@
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
                                 lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'></span></p>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
-                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>[<span
-                                class=SpellE><span class=GramE>offre</span>_description</span>]</span></p>
+                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'> <span th:text="${contract.offer.description}"></span> </span></p>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
                                 lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'></span></p>
                     </td>
@@ -301,8 +305,9 @@
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
                                 lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'></span></p>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
-                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>[<span
-                                class=SpellE><span class=GramE>signature</span>_etudiant</span>]</span></p>
+                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>
+                            <span style="font-style: italic" th:text="${contract.studentSignature != null} ? ${contract.studentSignature}"></span>
+                        </span></p>
                     </td>
                     <td width=288 valign=top style='width:215.75pt;border:none;border-bottom:
       solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;
@@ -310,8 +315,10 @@
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
                                 lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'></span></p>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
-                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>[<span
-                                class=SpellE><span class=GramE>date</span>_signature_etudiant</span>]</span></p>
+                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>
+                            <span th:text="${contract.studentSignDate != null} ? ${contract.studentSignDate}"></span>
+
+                        </span></p>
                     </td>
                 </tr>
                 <tr style='mso-yfti-irow:4'>
@@ -345,8 +352,9 @@
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
                                 lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'></span></p>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
-                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>[<span
-                                class=SpellE><span class=GramE>signature</span>_employeur</span>]</span></p>
+                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>
+                        <span style="font-style: italic" th:text="${contract.monitorSignature != null} ? ${contract.monitorSignature}"></span>
+                        </span></p>
                     </td>
                     <td width=288 valign=top style='width:215.75pt;border:none;border-bottom:
       solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;
@@ -354,16 +362,20 @@
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
                                 lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'></span></p>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
-                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>[<span
-                                class=SpellE><span class=GramE>date</span>_signature_employeur</span>]</span></p>
+                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>
+                            <span th:text="${contract.monitorSignDate != null} ? ${contract.monitorSignDate}"></span>
+                        </span></p>
                     </td>
                 </tr>
                 <tr style='mso-yfti-irow:7'>
                     <td width=288 valign=top style='width:215.75pt;border:none;mso-border-top-alt:
       solid windowtext .5pt;padding:1.4pt 5.4pt 1.4pt 5.4pt'>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
-                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>[<span
-                                class=SpellE><span class=GramE>nom</span>_employeur</span>]</span></p>
+                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>
+
+                            <span th:text="${contract.offer.creator.firstName}"></span>
+                            <span th:text="${contract.offer.creator.lastName}"></span>
+                        </span></p>
                     </td>
                     <td width=288 valign=top style='width:215.75pt;border:none;mso-border-top-alt:
       solid windowtext .5pt;padding:1.4pt 5.4pt 1.4pt 5.4pt'>
@@ -389,8 +401,9 @@
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
                                 lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'></span></p>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
-                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>[<span
-                                class=SpellE><span class=GramE>signature</span>_gestionnaire</span>]</span></p>
+                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>
+                            <span style="font-style: italic" th:text="${contract.managerSignature != null} ? ${contract.managerSignature}"></span>
+                        </span></p>
                     </td>
                     <td width=288 valign=top style='width:215.75pt;border:none;border-bottom:
       solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;
@@ -398,16 +411,20 @@
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
                                 lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'></span></p>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
-                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>[<span
-                                class=SpellE><span class=GramE>date</span>_signature_gestionnaire</span>]</span></p>
+                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>
+                            <span th:text="${contract.managerSignDate != null} ? ${contract.managerSignDate}"></span>
+
+                        </span></p>
                     </td>
                 </tr>
                 <tr style='mso-yfti-irow:10;mso-yfti-lastrow:yes'>
                     <td width=288 valign=top style='width:215.75pt;border:none;mso-border-top-alt:
       solid windowtext .5pt;padding:1.4pt 5.4pt 1.4pt 5.4pt'>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
-                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>[<span
-                                class=SpellE><span class=GramE>nom</span>_gestionnaire</span>]</span></p>
+                                lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>
+                            <span th:text="${contract.manager.firstName}"></span>
+                            <span th:text="${contract.manager.lastName}"></span>
+                        </span></p>
                     </td>
                     <td width=288 valign=top style='width:215.75pt;border:none;mso-border-top-alt:
       solid windowtext .5pt;padding:1.4pt 5.4pt 1.4pt 5.4pt'>

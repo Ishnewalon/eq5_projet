@@ -1,25 +1,11 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.model.Contract;
-import com.gestionnaire_de_stage.model.Curriculum;
-import com.gestionnaire_de_stage.model.OfferApplication;
-import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.ContractRepository;
-import com.itextpdf.html2pdf.ConverterProperties;
-import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.kernel.pdf.*;
-import com.itextpdf.layout.Document;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.nio.charset.StandardCharsets;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,32 +16,32 @@ public class ContractService {
 
     private final ContractRepository contractRepository;
 
-    public ContractService(ContractRepository contractRepository) {
+    private final ManagerService managerService;
+
+    public ContractService(ContractRepository contractRepository, ManagerService managerService) {
         this.contractRepository = contractRepository;
+        this.managerService = managerService;
     }
 
     public List<Contract> getAllUnsignedContracts() {
         return contractRepository.getAllByManagerSignatureNull();
     }
 
-    public Contract managerSignContract(String matricule) throws Exception{
-   // public Contract managerSignContract(OfferApplication offerApplication) throws Exception{
-       // Student student = getStudentFromCurriculum(offerApplication.getCurriculum());
-      //  Contract contract = contractRepository.getContractByStudent_Matricule(student.getMatricule());
-        Contract contract = contractRepository.getContractByStudent_Matricule(matricule);
+    public Contract addManagerSignature(String managerSignature, Long contract_id, Long manager_id) throws Exception {
+        Contract contract = contractRepository.getContractById(contract_id);
+        contract.setManagerSignDate(LocalDate.now());
+        contract.setManagerSignature(managerSignature);
+        contract.setManager(managerService.getOneByID(manager_id));
+        return contractRepository.save(contract);
+    }
+
+    public Contract fillPDF(Long contract_id) {
+        Contract contract = contractRepository.getContractById(contract_id);
         final String uri = "http://127.0.0.1:8181/pdf/pdf/";
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<byte[]> responseEntity = restTemplate.getForEntity(uri + contract.getId(), byte[].class);
         contract.setContractPDF(responseEntity.getBody());
-        contract.setManagerSignDate(LocalDate.now());
-       // contract.setContractPDF(createContractPDF(offerApplication));
-     //   contract.setContractPDF(createContractPDF(null, contract));
         return contractRepository.save(contract);
-    }
-
-    private Student getStudentFromCurriculum(Curriculum curriculum) {
-        Student student = curriculum.getStudent();
-        return student;
     }
 
     public Contract getContractById(Long id) {
