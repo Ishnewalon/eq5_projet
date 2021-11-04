@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
@@ -64,5 +65,9 @@ public class OfferApplicationService {
         if (studentService.getOneByID(idStudent) == null)
             throw new IdDoesNotExistException();
         return offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(Status.EN_ATTENTE_REPONSE, idStudent);
+    }
+
+    public boolean updateStatus(UpdateStatusDTO updateStatusDTO)  {
+        return false;
     }
 }

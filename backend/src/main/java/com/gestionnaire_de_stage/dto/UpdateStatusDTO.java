@@ -10,6 +10,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class UpdateStatusDTO {
     private Long idOfferApplied;
-    private boolean isAccepted;
+    private Boolean isAccepted;
 
 }

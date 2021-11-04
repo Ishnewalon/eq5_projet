@@ -89,6 +89,13 @@ public class OfferApplicationController {
 
     @PostMapping("/student/update_status")
     public ResponseEntity<?> updateStatus(@RequestBody UpdateStatusDTO updateStatusDTO) {
+        try {
+            offerApplicationService.updateStatus(updateStatusDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
         return ResponseEntity.ok(new ResponseMessage("Status changé, attendez la signature du contrat"));
     }
 }
