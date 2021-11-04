@@ -4,3 +4,5 @@ INSERT INTO OFFER VALUES(1, '1000, avenue Bouchard', now(), 'Informatique', 'Une
 INSERT INTO OFFER VALUES(2, '1000, avenue Bouchard', now(), 'Informatique', 'Une autre description', 28, 'Un autre titre', NULL, 2);
 INSERT INTO STUDENT VALUES(3, 'student@email.com', 'Imem', 'Belcadi', 'UnMotDePasse1234', '5141234567', '1100, avenue Bouchard', 'Lachine', 'Informatique', '1234567', 'H0H0H0', NULL);
 INSERT INTO SUPERVISOR VALUES(4, 'supervisor@email.com', 'Sup', 'ervisor', 'UnMotDePasse1234','5141234567', 'Informatique', '12345');
+INSERT INTO CURRICULUM VALUES(13, null, true, 'test.pdf', 'application/pdf', 3)
+INSERT INTO OFFER_APPLICATION VALUES(12, now(), 'EN_ATTENTE_REPONSE', 13, 1);

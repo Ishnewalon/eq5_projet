@@ -45,8 +45,6 @@ public class SupervisorService {
     public boolean assign(Student student, Supervisor supervisor){
         if (supervisor.getStudentList() == null)
             supervisor.setStudentList(new ArrayList<>());
-        if (supervisor.getStudentList().contains(student))
-            return false;
         supervisor.getStudentList().add(student);
         supervisorRepository.save(supervisor);
         return true;
