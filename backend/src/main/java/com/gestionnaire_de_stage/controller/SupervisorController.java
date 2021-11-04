@@ -70,7 +70,6 @@ public class SupervisorController {
 
     @PostMapping("/assign/student")
     public ResponseEntity<?> AssignSupervisor(@RequestBody AssignDto assignDto) {
-
         Student student;
         Supervisor supervisor;
         try {
