@@ -120,10 +120,8 @@ class OfferApplicationServiceTest {
     void testGetAllByOfferCreatorEmail_withValidEntries() throws EmailDoesNotExistException {
         List<OfferApplication> offerApplicationList = getDummyOfferAppList();
         String email = "americanm@email.com";
-        when(offerApplicationRepository.existsByOffer_CreatorEmail(any()))
-                .thenReturn(true);
-        when(offerApplicationRepository.getAllByOffer_CreatorEmail(email))
-                .thenReturn(offerApplicationList);
+        when(offerApplicationRepository.getAllByOffer_CreatorEmail(any()))
+                .thenReturn(getDummyOfferAppList());
 
         List<OfferApplication> actualOfferAppList = offerApplicationService.getAllByOfferCreatorEmail(email);
 
@@ -161,13 +159,6 @@ class OfferApplicationServiceTest {
                 () -> offerApplicationService.getAllByOfferCreatorEmail(null));
     }
 
-    @Test
-    void testGetAllByOfferCreatorEmail_withInvalidEmail() {
-        String email = "fredmerc@email.com";
-
-        assertThrows(EmailDoesNotExistException.class,
-                () -> offerApplicationService.getAllByOfferCreatorEmail(email));
-    }
 
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();

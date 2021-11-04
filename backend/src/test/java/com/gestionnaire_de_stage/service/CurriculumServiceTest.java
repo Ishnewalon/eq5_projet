@@ -142,13 +142,6 @@ public class CurriculumServiceTest {
     }
 
     @Test
-    public void testMapToCurriculumDTOList_withEmptyList() {
-        List<OfferApplication> offerApplicationList = new ArrayList<>();
-        assertThrows(IllegalArgumentException.class,
-                () -> curriculumService.mapToCurriculumDTOList(offerApplicationList));
-    }
-
-    @Test
     public void testFindAllCurriculumWithInvalidCurriculum() {
         List<Curriculum> dummyCurriculumList = getDummyCurriculumList();
         when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(dummyCurriculumList);

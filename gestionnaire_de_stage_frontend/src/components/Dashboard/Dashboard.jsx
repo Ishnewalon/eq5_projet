@@ -1,19 +1,17 @@
 import React from "react";
-import AuthService from "../../services/auth-service";
 import Monitor from "../Monitor/Monitor";
 import Manager from "../Manager/Manager";
 import StudentView from "../StudentView/StudentView";
 import SupervisorView from "../SupervisorView/SupervisorView";
-
+import {useAuth} from "../../services/use-auth";
 
 
 export default function Dashboard() {
-    const service = AuthService
-
+    let auth = useAuth();
     return (<>
-        {service.isMonitor() ? <Monitor/> : <></>}
-        {service.isManager() ? <Manager/> : <></>}
-        {service.isStudent() ? <StudentView/> : <></>}
-        {service.isSupervisor() ? <SupervisorView/> : <></>}
+        {auth.isMonitor() ? <Monitor/> : <></>}
+        {auth.isManager() ? <Manager/> : <></>}
+        {auth.isStudent() ? <StudentView/> : <></>}
+        {auth.isSupervisor() ? <SupervisorView/> : <></>}
     </>)
 }

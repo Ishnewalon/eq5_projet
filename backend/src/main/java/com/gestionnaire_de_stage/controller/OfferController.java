@@ -31,6 +31,7 @@ public class OfferController {
         this.monitorService = monitorService;
     }
 
+
     @PostMapping("/add")
     public ResponseEntity<?> addOffer(@RequestBody OfferDTO dto) {
         Offer offer = offerService.mapToOffer(dto);
@@ -58,14 +59,16 @@ public class OfferController {
 
     @GetMapping({"/", "/{department}"}) //TODO Handle exception
     public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {
-        if (department == null || department.isEmpty() || department.isBlank())
+        List<Offer> offers;
+        try {
+            offers = offerService.getOffersByDepartment(department);
+        } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Le département n'est pas précisé"));
+                    .body(new ResponseMessage(e.getMessage()));
+        }
 
-        List<Offer> offerDTOS = offerService.getOffersByDepartment(department);
-
-        return ResponseEntity.ok(offerDTOS);
+        return ResponseEntity.ok(offers);
     }
 
     @PostMapping("/validate")

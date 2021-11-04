@@ -54,10 +54,8 @@ public class OfferApplicationService {
         return offerApplicationRepository.save(offerApplication);
     }
 
-    public List<OfferApplication> getAllByOfferCreatorEmail(String email) throws EmailDoesNotExistException {
+    public List<OfferApplication> getAllByOfferCreatorEmail(String email) {
         Assert.isTrue(email != null, "Le courriel ne peut pas être null");
-        if (isEmailInvalid(email))
-            throw new EmailDoesNotExistException();
         return offerApplicationRepository.getAllByOffer_CreatorEmail(email);
     }
 
@@ -66,9 +64,5 @@ public class OfferApplicationService {
         if (studentService.getOneByID(idStudent) == null)
             throw new IdDoesNotExistException();
         return offerApplicationRepository.getAllByCurriculum_StudentId(idStudent);
-    }
-
-    private boolean isEmailInvalid(String email) {
-        return !offerApplicationRepository.existsByOffer_CreatorEmail(email);
     }
 }

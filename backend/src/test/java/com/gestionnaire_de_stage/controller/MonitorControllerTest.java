@@ -93,7 +93,7 @@ public class MonitorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         Monitor actualMonitor = MAPPER.readValue(response.getContentAsString(), Monitor.class);
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.FOUND.value());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualMonitor.getLastName()).isEqualTo("tata");
     }
 

@@ -196,21 +196,6 @@ class OfferApplicationControllerTest {
         assertThat(response.getContentAsString()).contains("Le courriel ne peut pas être null");
     }
 
-    @Test
-    public void testViewStudentsAppliedOffer_withInvalidEmail() throws Exception {
-        String email = "rolling@email.com";
-        when(offerApplicationService.getAllByOfferCreatorEmail(any()))
-                .thenThrow(new EmailDoesNotExistException());
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/applications/applicants/{}", email)
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le courriel n'existe pas");
-    }
 
     @Test
     public void testViewStudentsAppliedOffer_withEmptyList() throws Exception {
