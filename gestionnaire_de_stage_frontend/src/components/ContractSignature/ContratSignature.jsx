@@ -4,13 +4,11 @@ import {BsPenFill} from "react-icons/all";
 import Swal from "sweetalert2";
 import {managerSignContract, monitorSignContract} from "../../services/contrat-service";
 import {UserType} from "../../enums/UserTypes";
-import {useAuth} from "../../services/use-auth";
 
-export default function ContratSignature({userType, contract, removeContract}) {
+export default function ContratSignature({userId, userType, contract, removeContract}) {
 
-    const auth = useAuth();
 
-    const [signature, setSignature] = useState(undefined);
+    const [signature, setSignature] = useState('');
 
     const toPdfBlob = (pdfFile) => {
         if (!pdfFile)
@@ -32,7 +30,7 @@ export default function ContratSignature({userType, contract, removeContract}) {
 
     const startContract = (e) => {
         e.preventDefault();
-        if (!signature && signature === '') {
+        if (!signature || signature === '') {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -41,12 +39,12 @@ export default function ContratSignature({userType, contract, removeContract}) {
             return;
         }
         if (userType === UserType.MANAGER[0])
-            managerSignContract(signature, auth.user.id, contract.id).then(isSigned => {
+            managerSignContract(signature, userId, contract.id).then(isSigned => {
                 if (isSigned)
                     removeContract(contract.id);
             });
         else if(userType === UserType.MONITOR[0])
-            monitorSignContract(signature, auth.user.id, contract.id).then(isSigned => {
+            monitorSignContract(signature, userId, contract.id).then(isSigned => {
                 if (isSigned)
                     removeContract(contract.id);
             });

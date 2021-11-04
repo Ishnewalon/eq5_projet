@@ -45,16 +45,16 @@ export default function PdfDocumentViewer({file}) {
                             >
                             <Page pageNumber={pageNumber}/>
                         </Document>
-                        <p className={'text-center mt-2 border border-white p-2'}>{numPages > 0 ? `Page ${pageNumber} of ${numPages}` : 'Aucune pages'}</p>
+                        <p className={'text-center mt-2 border border-white p-2'}>{numPages > 0 ? `Page ${pageNumber} de ${numPages}` : 'Aucune pages'}</p>
                         <div className={"d-flex justify-content-between"}>
                             <button
                                 type="button"
                                 className={"btn btn-primary"}
                                 id="previousBtn"
-                                onClick={(e) => goToPreviousPage(e)}>Previous
+                                onClick={(e) => goToPreviousPage(e)}>Précédent
                             </button>
                             <button type="button" className={"btn btn-primary "} onClick={(e) => goToNextPage(e)}
-                                    id="nextBtn">Next
+                                    id="nextBtn">Prochain
                             </button>
                         </div>
                         </div>

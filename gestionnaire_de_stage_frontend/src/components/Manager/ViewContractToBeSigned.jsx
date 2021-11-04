@@ -7,6 +7,7 @@ import {useAuth} from "../../services/use-auth";
 export default function ViewContractToBeSigned({userType}) {
     const [contracts, setContracts] = useState([]);
     const auth = useAuth();
+
     useEffect(() => {
         if (userType === UserType.MANAGER[0])
             getAllContractsToBeStarted().then(contracts => setContracts(contracts));
@@ -20,10 +21,9 @@ export default function ViewContractToBeSigned({userType}) {
     };
 
     return <>
-        <h2 className="text-center">Signature des contrats</h2>
         {
             contracts.length > 0 ?
-                contracts.map((contract, index) => <ContractSignature key={index} removeContract={removeContract}
+                contracts.map((contract, index) => <ContractSignature key={index} userId={auth.user.id} removeContract={removeContract}
                                                                       userType={userType}
                                                                       contract={contract}/>)
                 :
