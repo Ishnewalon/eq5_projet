@@ -10,11 +10,17 @@ export default function ViewContractsToBeStarted(){
         getAllContractsToBeStarted().then(contracts => setContracts(contracts));
     }, []);
 
+
+    const removeContract = (contractId) => {
+        const newContracts = contracts.filter(contract => contract.id !== contractId);
+        setContracts(newContracts);
+    };
+
     return <>
-        <h2 className="text-center">Démarrage du processus de la signature des contrats</h2>
+        <h2 className="text-center">Signature des contrats</h2>
         {
         contracts.length > 0 ?
-            contracts.map((contract, index) => <ContractSignature key={index} userType={UserType.MANAGER[0]} contract={contract} />)
+            contracts.map((contract, index) => <ContractSignature key={index} removeContract={removeContract} userType={UserType.MANAGER[0]} contract={contract} />)
             :
             <div className={"d-flex justify-content-center align-items-center"}>
                 <p className={"text-center border border-white rounded p-2 mt-3"}>Aucun contrat à signer pour le moment</p>
