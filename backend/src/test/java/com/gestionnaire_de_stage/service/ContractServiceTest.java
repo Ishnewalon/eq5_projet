@@ -22,13 +22,13 @@ import static org.mockito.ArgumentMatchers.any;
 public class ContractServiceTest {
 
     @InjectMocks
-    ContractService contractService;
+    private ContractService contractService;
 
     @Mock
-    ContractRepository contractRepository;
+    private ContractRepository contractRepository;
 
     @Mock
-    ManagerService managerService;
+    private ManagerService managerService;
 
     @Test
     public void testGetAllByManagerSignatureNull() {
@@ -43,7 +43,7 @@ public class ContractServiceTest {
     public void testAddManagerSignature_withValidEntries() throws Exception {
         String managerSignature = "Joe Janson";
         Contract dummyContract = getDummyContract();
-        Long manager_id = 1L;
+        long manager_id = 1L;
         Manager dummyManager = getDummyManager();
         when(contractRepository.existsById(any())).thenReturn(true);
         when(contractRepository.getContractById(any())).thenReturn(dummyContract);
@@ -57,7 +57,7 @@ public class ContractServiceTest {
     @Test
     public void testAddManagerSignature_withNullManagerSignature() {
         Contract dummyContract = getDummyContract();
-        Long manager_id = 1L;
+        long manager_id = 1L;
         assertThrows(IllegalArgumentException.class,
                 () -> contractService.addManagerSignature(null, dummyContract.getId(), manager_id));
     }
@@ -65,7 +65,7 @@ public class ContractServiceTest {
     @Test
     public void testAddManagerSignature_withNullContractID() {
         String managerSignature = "Joe Janson";
-        Long manager_id = 1L;
+        long manager_id = 1L;
         assertThrows(IllegalArgumentException.class,
                 () -> contractService.addManagerSignature(managerSignature, null, manager_id));
     }
@@ -82,7 +82,7 @@ public class ContractServiceTest {
     public void testAddManagerSignature_withInvalidContractID() {
         String managerSignature = "Joe Janson";
         Contract dummyContract = getDummyContract();
-        Long manager_id = 1L;
+        long manager_id = 1L;
         when(contractRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
@@ -103,6 +103,7 @@ public class ContractServiceTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantConditions")
     public void testFillPDF_withNullContractId() {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         assertThrows(IllegalArgumentException.class,
