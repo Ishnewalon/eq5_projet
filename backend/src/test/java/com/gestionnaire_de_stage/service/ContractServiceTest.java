@@ -166,6 +166,16 @@ public class ContractServiceTest {
                 () -> contractService.addMonitorSignature(monitorSignature, null));
     }
 
+    @Test
+    public void testAddMonitorSignature_withInvalidContractID() {
+        String monitorSignature = "Joe Janson";
+        long contract_id = 1L;
+        when(contractRepository.existsById(any())).thenReturn(false);
+        assertThrows(IdDoesNotExistException.class,
+                () -> contractService.addMonitorSignature(monitorSignature, contract_id));
+
+    }
+
   /*  @Test
     public void testGetContractById_withValidEntries() throws Exception {
         Contract dummyContract = getDummyContract();

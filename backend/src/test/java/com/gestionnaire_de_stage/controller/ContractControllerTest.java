@@ -52,7 +52,7 @@ public class ContractControllerTest {
     }
 
     @Test
-    public void testCreateContractPDF_withValidEntries() throws Exception {
+    public void testSignContractPDFManager_withValidEntries() throws Exception {
         String managerSignature = "Joe Janson";
         Contract dummyContract = getDummyContract();
         long manager_id = 1L;
@@ -73,7 +73,7 @@ public class ContractControllerTest {
     }
 
     @Test
-    public void testCreateContractPDF_withNullEntries() throws Exception {
+    public void testSignContractPDFManager_withNullEntries() throws Exception {
         String managerSignature = "Joe Janson";
         Contract dummyContract = getDummyContract();
         long manager_id = 1L;
@@ -93,7 +93,7 @@ public class ContractControllerTest {
     }
 
     @Test
-    public void testCreateContractPDF_withInvalidEntries() throws Exception {
+    public void testSignContractPDFManager_withInvalidEntries() throws Exception {
         String managerSignature = "Joe Janson";
         Contract dummyContract = getDummyContract();
         long manager_id = 1L;
@@ -159,6 +159,64 @@ public class ContractControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Le id du moniteur n'existe pas");
+    }
+
+    @Test
+    public void testSignContractPDFMonitor_withValidEntries() throws Exception {
+        String monitorSignature = "Jon Tralala";
+        Contract dummyContract = getDummyContract();
+        String uri = "/contracts/monitorSign/" + monitorSignature
+                + "/" + dummyContract.getId();
+        when(contractService.addMonitorSignature(any(),any()))
+                .thenReturn(dummyContract);
+        when(contractService.fillPDF(any(), any())).thenReturn(dummyContract);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.put(uri)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Signature fait");
+    }
+
+    @Test
+    public void testSignContractPDFMonitor_withNullEntries() throws Exception {
+        String monitorSignature = "Jon Tralala";
+        Contract dummyContract = getDummyContract();
+        String uri = "/contracts/monitorSign/" + monitorSignature
+                + "/" + dummyContract.getId();
+        when(contractService.addMonitorSignature(any(),any()))
+                .thenThrow(new IllegalArgumentException("La signature et l'id du contrat ne peuvent être null"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.put(uri)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("La signature et l'id du contrat ne peuvent être null");
+    }
+
+    @Test
+    public void testSignContractPDFMonitor_withInvalidEntries() throws Exception {
+        String monitorSignature = "Jon Tralala";
+        Contract dummyContract = getDummyContract();
+        String uri = "/contracts/monitorSign/" + monitorSignature
+                + "/" + dummyContract.getId();
+        when(contractService.addMonitorSignature(any(),any()))
+                .thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.put(uri)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Le id du contrat n'existe pas");
     }
 
     private Contract getDummyContract() {
