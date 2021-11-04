@@ -52,7 +52,7 @@ public class ContractController {
             String contractHtml = templateEngine.process("test", context);
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            HtmlConverter.convertToPdf(contractHtml, new FileOutputStream("c:/permits/contract.pdf"));
+            HtmlConverter.convertToPdf(contractHtml, baos);
             contractService.fillPDF(contract, baos);
         } catch (IllegalArgumentException e) {
             return ResponseEntity
