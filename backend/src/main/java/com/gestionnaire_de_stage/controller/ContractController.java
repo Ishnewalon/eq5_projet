@@ -42,7 +42,7 @@ public class ContractController {
         return ResponseEntity.ok(contractList);
     }
 
-    @GetMapping("/managerSign/{managerSignature}/{manager_id}/{contract_id}")
+    @PutMapping("/managerSign/{managerSignature}/{manager_id}/{contract_id}")
     public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature, @PathVariable Long manager_id, @PathVariable Long contract_id) throws Exception{
         try {
             Contract contract = contractService.addManagerSignature(managerSignature, contract_id, manager_id);
