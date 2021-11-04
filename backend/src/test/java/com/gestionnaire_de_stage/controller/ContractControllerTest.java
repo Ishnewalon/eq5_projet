@@ -129,6 +129,37 @@ public class ContractControllerTest {
         assertThat(actualContractList.size()).isEqualTo(dummyContractList.size());
     }
 
+    @Test
+    public void testGetContractReadySignMonitor_withNullMonitorId() throws Exception {
+        Monitor dummyMonitor = getDummyMonitor();
+        when(contractService.getAllUnsignedContractForMonitor(any()))
+                .thenThrow(new IllegalArgumentException("L'id du moniteur ne peut pas être null"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/contracts/monitor/" + dummyMonitor.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'id du moniteur ne peut pas être null");
+    }
+
+    @Test
+    public void testGetContractReadySignMonitor_withInvalidMonitorId() throws Exception {
+        Monitor dummyMonitor = getDummyMonitor();
+        when(contractService.getAllUnsignedContractForMonitor(any()))
+                .thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/contracts/monitor/" + dummyMonitor.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Le id du moniteur n'existe pas");
+    }
 
     private Contract getDummyContract() {
         Contract dummyContract = new Contract();
