@@ -1,23 +1,23 @@
 import './Login.css'
 import React, {useState} from "react";
-import AuthService from "../../services/auth-service";
 import FieldPassword from "../Fields/FieldPassword";
 import FieldEmail from "../Fields/FieldEmail";
 import {useHistory} from "react-router-dom";
 import {UserType} from "../../enums/UserTypes";
+import {useAuth} from "../../services/use-auth";
 
 
 export default function Login() {
     const history = useHistory();
-    const service = AuthService
+    let auth = useAuth();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [userType, setUserType] = useState(UserType.MONITOR[0])
 
     const connect = (e) => {
         e.preventDefault()
-        service.signIn(userType, email, password).then((v) => {
-            if (service.isAuthenticated())
+        auth.signIn(userType, email, password).then(() => {
+            if (auth.user)
                 history.push('/')
         })
     }

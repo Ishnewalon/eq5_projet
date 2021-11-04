@@ -9,11 +9,12 @@ import {MonitorModel, Student, Supervisor} from "../../models/User";
 import {Step} from "../../enums/Steps";
 import {UserType} from "../../enums/UserTypes";
 import {useHistory} from "react-router-dom";
-import AuthService from "../../services/auth-service";
+import {useAuth} from "../../services/use-auth";
 
 
 export default function Register() {
     let history = useHistory();
+    let auth = useAuth();
     const [step, setStep] = useState(Step.CHOICE)
     const [previousStep, setPrevStep] = useState([])
     const [userType, setUserType] = useState(null)
@@ -73,15 +74,15 @@ export default function Register() {
         let user = null
         if (userType === UserType.STUDENT) {
             user = new Student(email, password, lastName, firstName, phone, matricule);
-            AuthService.signupStudent(user).then(() => history.push("/login"));
+            auth.signupStudent(user).then(() => history.push("/login"));
         }
         if (userType === UserType.SUPERVISOR) {
             user = new Supervisor(email, password, lastName, firstName, phone, matricule);
-            AuthService.signupSupervisor(user).then(() => history.push("/login"))
+            auth.signupSupervisor(user).then(() => history.push("/login"))
         }
         if (userType === UserType.MONITOR) {
             user = new MonitorModel(email, password, lastName, firstName, phone, companyName, address, city, postalCode);
-            AuthService.signupMonitor(user).then(() => history.push("/login"))
+            auth.signupMonitor(user).then(() => history.push("/login"))
         }
 
     }

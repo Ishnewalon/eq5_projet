@@ -1,15 +1,15 @@
 import React from 'react';
-import AuthService from "../../../services/auth-service";
 import {applyToOffer} from "../../../services/offerAppService";
 import OfferApp from "../../../models/OfferApp";
 import PreviewOffer from "../../PreviewOffer/PreviewOffer";
+import {useAuth} from "../../../services/use-auth";
 
 export default function ApplyOnOffer({offer}) {
-
+    let auth = useAuth();
     const apply = offerId => e => {
         e.preventDefault();
 
-        applyToOffer(new OfferApp(offerId, AuthService.getUserId())).then();
+        applyToOffer(new OfferApp(offerId, auth.user.id)).then();
     }
 
     return (

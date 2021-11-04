@@ -1,47 +1,41 @@
 import './App.css';
-import {BrowserRouter as Router, Link, Switch} from "react-router-dom";
-import UnprotectedRoute from "./components/UnprotectedRoute/UnprotectedRoute";
-import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Register from "./components/Register/Register";
-import Login from "./components/Login/Login";
 import React from "react";
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import Navbar from "./components/NavBar/NavBar";
+import {AuthProvider, RequireAuth, RequireNoAuth} from "./services/use-auth";
+import Login from "./components/Login/Login";
 
 function App() {
 
-    return <Router>
-        <nav>
-            <ul>
-                <li>
-                    <Link to="/">Accueil</Link>
-                </li>
-                <li>
-                    <Link to="/login">Se connecter</Link>
-                </li>
-                <li>
-                    <Link to="/register">Cree un compte</Link>
-                </li>
-                <li>
-                    <Link to="/dashboard">Dash</Link>
-                </li>
-            </ul>
+    return <AuthProvider>
+        <Router>
+            <Navbar/>
+            <div className="container">
+                <Switch>
+                    <Route exact path="/dashboard">
+                        <RequireAuth>
+                            <Dashboard/>
+                        </RequireAuth>
+                    </Route>
+                    <Route exact path="/register">
+                        <RequireNoAuth>
+                            <Register/>
+                        </RequireNoAuth>
+                    </Route>
+                    <Route exact path="/login">
+                        <RequireNoAuth>
+                            <Login/>
+                        </RequireNoAuth>
+                    </Route>
 
-        </nav>
-        <div className="container">
-            <Switch>
-                <UnprotectedRoute exact path="/login"
-                                  component={Login}/>
-                <UnprotectedRoute exact path="/register"
-                                  component={Register}/>
-                <ProtectedRoute exact path="/dashboard"
-                                component={Dashboard}/>
-            </Switch>
-        </div>
-    </Router>
-
+                </Switch>
+            </div>
+        </Router>
+    </AuthProvider>
 }
 
 export default App;

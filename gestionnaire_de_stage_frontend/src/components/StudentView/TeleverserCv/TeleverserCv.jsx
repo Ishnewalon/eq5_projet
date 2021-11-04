@@ -2,14 +2,15 @@ import './TeleverserCv.css'
 import React, {useState} from "react";
 import Dropzone from "react-dropzone";
 import { uploadFile } from "../../../services/curriculum-service";
-import authService from "../../../services/auth-service";
+import {useAuth} from "../../../services/use-auth";
 
 export default function TeleverserCv() {
+    let auth = useAuth();
     const [fileNames, setFileNames] = useState([]);
     const handleDrop = acceptedFiles => {
         setFileNames(acceptedFiles.map(file => file.name));
         console.log(acceptedFiles)
-        uploadFile(acceptedFiles, authService.getUserId()).then()
+        uploadFile(acceptedFiles, auth.user.id).then()
     }
 
     return (

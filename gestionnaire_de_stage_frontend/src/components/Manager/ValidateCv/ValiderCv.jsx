@@ -11,7 +11,6 @@ export default function ValiderCv() {
     useEffect(() => {
         getCurriculumWithInvalidCV()
             .then(curriculumList => {
-                console.log(curriculumList);
                 setCurriculumList(curriculumList)
             })
             .catch(e => {

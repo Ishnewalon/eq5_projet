@@ -13,7 +13,6 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
     useEffect(() => {
         getCurriculumWithValidCV()
             .then(cvList => {
-                console.log(cvList)
                 setCvList(cvList)
             })
             .catch(e => {
@@ -22,7 +21,6 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
             });
         getSupervisors()
             .then(supervisorList => {
-                console.log(supervisorList);
                 setSupervisorList(supervisorList)
                 setSupervisorId(supervisorList[0].id)
             })

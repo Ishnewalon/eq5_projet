@@ -2,30 +2,30 @@ import React, {useState} from "react";
 import FieldAddress from "../Fields/FieldAddress";
 import {createOffer} from "../../services/offer-service";
 import {DepartmentEnum} from "../../enums/Departement";
-import authService from "../../services/auth-service";
 import OfferDTO from "../../models/OfferDTO";
+import {useAuth} from "../../services/use-auth";
 
 
 export default function AddOffer() {
-    const serviceAuth = authService
+    let auth = useAuth();
     const [title, setTitle] = useState('')
     const [department, setDepartement] = useState(DepartmentEnum.info)
     const [description, setDescription] = useState('')
     const [address, setAddress] = useState('')
     const [salary, setSalary] = useState(0)
-    const [creator_email, setCreatorId] = useState(serviceAuth.isMonitor() ? serviceAuth.user.email : '')
+    const [creator_email, setCreatorId] = useState(auth.isMonitor() ? auth.user.email : '')
 
     const addOffer = () => {
         let offer = new OfferDTO(title, department, description, address, salary, creator_email)
         createOffer(offer).then((b) => {
             if (b === null)
                 return
-            setTitle('')
+            setTitle()
             setDescription('')
             setDepartement(DepartmentEnum.info)
             setAddress('')
             setSalary(0)
-            setCreatorId(serviceAuth.isMonitor() ? serviceAuth.user.email : '')
+            setCreatorId(auth.isMonitor() ? auth.user.email : '')
         })
     }
 
@@ -79,7 +79,7 @@ export default function AddOffer() {
                        value={salary} onChange={(e) => setSalary(e.target.value)}/>
             </div>
         </div>
-        {(serviceAuth.isManager()) ? monitorEmail : <></>}
+        {(auth.isManager()) ? monitorEmail : <></>}
         <div className="form-group text-center">
             <label/>
             <div>

@@ -2,7 +2,6 @@ import './ReviewOffers.css'
 import React, {useEffect, useState} from 'react';
 import {getAllOffersInvalid} from '../../../services/offer-service';
 import ValidateOffer from "../ValidateOffer/ValidateOffer";
-import {swalErr} from "../../../utility";
 
 export default function ReviewOffers() {
 
@@ -15,7 +14,6 @@ export default function ReviewOffers() {
             .catch(e => {
                 setOffers([]);
                 console.error(e);
-                swalErr.fire({text: e}).then();
             })
     }, [])
 
