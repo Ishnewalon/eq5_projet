@@ -1,12 +1,18 @@
 import {useEffect, useState} from "react";
-import ContractSignature from "../ContractSigning/ContratSignature";
-import {getAllContractsToBeStarted} from "../../services/contrat-service";
+import ContractSignature from "../ContractSignature/ContratSignature";
+import {getAllContractsToBeSignedForMonitor, getAllContractsToBeStarted} from "../../services/contrat-service";
 import {UserType} from "../../enums/UserTypes";
+import {useAuth} from "../../services/use-auth";
 
-export default function ViewContractsToBeStarted() {
+export default function ViewContractToBeSigned({userType}) {
     const [contracts, setContracts] = useState([]);
-
-    useEffect(() => getAllContractsToBeStarted().then(contracts => setContracts(contracts)), []);
+    const auth = useAuth();
+    useEffect(() => {
+        if (userType === UserType.MANAGER[0])
+            getAllContractsToBeStarted().then(contracts => setContracts(contracts));
+        if (userType === UserType.MONITOR[0])
+            getAllContractsToBeSignedForMonitor(auth.user.id).then(contracts => setContracts(contracts))
+    }, []);
 
     const removeContract = (contractId) => {
         const newContracts = contracts.filter(contract => contract.id !== contractId);
@@ -18,7 +24,7 @@ export default function ViewContractsToBeStarted() {
         {
             contracts.length > 0 ?
                 contracts.map((contract, index) => <ContractSignature key={index} removeContract={removeContract}
-                                                                      userType={UserType.MANAGER[0]}
+                                                                      userType={userType}
                                                                       contract={contract}/>)
                 :
                 <div className={"d-flex justify-content-center align-items-center"}>
