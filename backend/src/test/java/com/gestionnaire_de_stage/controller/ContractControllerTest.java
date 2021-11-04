@@ -112,6 +112,22 @@ public class ContractControllerTest {
         assertThat(response.getContentAsString()).contains("Le id du contrat n'existe pas");
     }
 
+    @Test
+    public void testGetContractReadySignMonitor_withValidEntries() throws Exception {
+        List<Contract> dummyContractList = getDummyContractList();
+        Monitor dummyMonitor = getDummyMonitor();
+        when(contractService.getAllUnsignedContractForMonitor(any())).thenReturn(dummyContractList);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/contracts/monitor/" + dummyMonitor.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        List<Contract> actualContractList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualContractList.size()).isEqualTo(dummyContractList.size());
+    }
     private Contract getDummyContract() {
         Contract dummyContract = new Contract();
         dummyContract.setId(1L);

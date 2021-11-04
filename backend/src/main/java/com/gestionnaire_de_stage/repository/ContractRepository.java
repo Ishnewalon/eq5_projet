@@ -11,4 +11,5 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
     List<Contract> getAllByManagerSignatureNull();
     Contract getContractByStudent_Matricule(String matricule);
     Contract getContractById(Long id);
+    List<Contract> getAllByOffer_CreatorIdAndAndMonitorSignatureNull(Long id);
 }

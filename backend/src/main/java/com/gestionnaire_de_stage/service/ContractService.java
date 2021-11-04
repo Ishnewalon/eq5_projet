@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Contract;
+import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.repository.ContractRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -18,9 +19,14 @@ public class ContractService {
 
     private final ManagerService managerService;
 
-    public ContractService(ContractRepository contractRepository, ManagerService managerService) {
+    private final MonitorService monitorService;
+
+    public ContractService(ContractRepository contractRepository,
+                           ManagerService managerService,
+                           MonitorService monitorService) {
         this.contractRepository = contractRepository;
         this.managerService = managerService;
+        this.monitorService = monitorService;
     }
 
     public List<Contract> getAllUnsignedContracts() {
@@ -39,6 +45,11 @@ public class ContractService {
         contract.setManagerSignature(managerSignature);
         contract.setManager(managerService.getOneByID(manager_id));
         return contractRepository.save(contract);
+    }
+
+    public List<Contract> getAllUnsignedContractForMonitor(Long monitor_id) throws Exception {
+        Monitor monitor = monitorService.getOneByID(monitor_id);
+        return contractRepository.getAllByOffer_CreatorIdAndAndMonitorSignatureNull(monitor_id);
     }
 
     public Contract fillPDF(Contract contract, ByteArrayOutputStream baos) {

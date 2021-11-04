@@ -66,4 +66,17 @@ public class ContractController {
                 .status(HttpStatus.OK)
                 .body(new ResponseMessage("Signature fait"));
     }
+
+/*    @GetMapping("/monitor/{monitor_id}")
+    public ResponseEntity<?> ContractNeedsMonitorSignature(@PathVariable Long monitor_id) {
+        try {
+            List<Contract> contractList = contractService.getAllUnsignedContractForMonitor(monitor_id);
+        } catch (IllegalArgumentException e) {
+
+        } catch (IdDoesNotExistException e) {
+
+        }
+
+        return ResponseEntity.ok(contractList);
+    }*/
 }
