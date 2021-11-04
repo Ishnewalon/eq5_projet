@@ -249,18 +249,55 @@ class OfferApplicationControllerTest {
     }
 
     @Test
-    void testSetInterviewDate_withNullIDs() {
+    void testSetInterviewDate_withNullIDs() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
+        OfferApplication offerApplication = getDummyOfferApp();
+        when(offerApplicationService.setInterviewDate(any(), any()))
+                .thenThrow(new IllegalArgumentException("L'id de l'offre ne peut pas être null"));
 
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/applications/setdate/" + offerApplication.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(LocalDateTime.now())))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'id de l'offre ne peut pas être null");
     }
 
     @Test
-    void testSetInterviewDate_withOfferAppIdNotExist() {
+    void testSetInterviewDate_withOfferAppIdNotExist() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
+        when(offerApplicationService.setInterviewDate(any(), any()))
+                .thenThrow(IdDoesNotExistException.class);
 
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/applications/setdate/" + 3L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(LocalDateTime.now())))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Impossible de trouver l'offre avec cette ID!");
     }
 
     @Test
-    void testSetInterviewDate_withDateInvalid() {
+    void testSetInterviewDate_withDateInvalid() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
+        when(offerApplicationService.setInterviewDate(any(), any()))
+                .thenThrow(DateNotValidException.class);
 
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/applications/setdate/" + 3L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(LocalDateTime.now())))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("La date entrée est invalide!");
     }
 
     private OfferAppDTO getDummyOfferAppDto() {
