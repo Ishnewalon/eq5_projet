@@ -5,11 +5,11 @@ import {UserType} from "../enums/UserTypes";
 
 const url = `${urlBackend}/contracts`;
 
-export async function managerSignContract(managerSignature, managerId, contractId){
+export async function managerSignContract(managerSignature, managerId, contractId) {
     return await signContract(UserType.MANAGER[0], managerSignature, managerId, contractId);
 }
 
-async function signContract(userType, signature,  userId, contractId){
+async function signContract(userType, signature, userId, contractId) {
     return await fetch(`${url}/${userType}Sign/${signature}/${userId}/${contractId}`, requestInit(methods.GET)).then(
         response => {
             return response.json().then(
@@ -28,7 +28,7 @@ async function signContract(userType, signature,  userId, contractId){
     );
 }
 
-export async function getAllContractsToBeStarted(){
+export async function getAllContractsToBeStarted() {
     return await fetch(`${url}/ready_to_sign`, requestInit(methods.GET)).then(res => res.json());
 }
 

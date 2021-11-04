@@ -6,19 +6,19 @@ import {managerSignContract} from "../../services/contrat-service";
 import {UserType} from "../../enums/UserTypes";
 import {useAuth} from "../../services/use-auth";
 
-export default function ContratSignature({userType, contract, removeContract}){
+export default function ContratSignature({userType, contract, removeContract}) {
 
     const auth = useAuth();
 
     const [signature, setSignature] = useState(undefined);
 
     const toPdfBlob = (pdfFile) => {
-        if(!pdfFile) {
+        if (!pdfFile)
             return null;
-        }
+
         const decodedChars = atob(pdfFile);
         const numBytes = new Array(decodedChars.length);
-        for (let i = 0; i < numBytes.length ; i++)
+        for (let i = 0; i < numBytes.length; i++)
             numBytes[i] = decodedChars.charCodeAt(i);
 
         return new Blob([new Uint8Array(numBytes), {type: 'application/pdf'}]);
@@ -33,7 +33,7 @@ export default function ContratSignature({userType, contract, removeContract}){
 
     const startContract = (e) => {
         e.preventDefault();
-        if(!signature && signature === ''){
+        if (!signature && signature === '') {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -41,9 +41,9 @@ export default function ContratSignature({userType, contract, removeContract}){
             });
             return;
         }
-        if(userType === UserType.MANAGER[0])
+        if (userType === UserType.MANAGER[0])
             managerSignContract(signature, auth.user.id, contract.id).then(isSigned => {
-                if(isSigned)
+                if (isSigned)
                     removeContract(contract.id);
             });
     }
@@ -54,10 +54,13 @@ export default function ContratSignature({userType, contract, removeContract}){
             <form onSubmit={startContract}>
                 <div className={'input-group'}>
                     <label>Signature</label>
-                    <input type="text" placeholder="Entrez votre signature" className="w-100 form-control" onChange={e => setSignature(e.target.value)}/>
+                    <input type="text" placeholder="Entrez votre signature" className="w-100 form-control"
+                           onChange={e => setSignature(e.target.value)}/>
                 </div>
-                <h6 className="text-white text-center mt-3">En appuyant sur envoyer, vous confirmez avoir lu le contrat et que la signature entré correspond à la votre.</h6>
-                <button id="invalidateContractBtn" className="btn btn-primary fw-bold w-100 mb-4 mt-0" type="submit">Signer le contrat <BsPenFill/></button>
+                <h6 className="text-white text-center mt-3">En appuyant sur envoyer, vous confirmez avoir lu le contrat
+                    et que la signature entré correspond à la votre.</h6>
+                <button id="invalidateContractBtn" className="btn btn-primary fw-bold w-100 mb-4 mt-0"
+                        type="submit">Signer le contrat <BsPenFill/></button>
             </form>
         </div>
     </div>
