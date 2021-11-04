@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.service.ContractService;
@@ -29,10 +30,20 @@ public class ContractController {
 
     @GetMapping("/managerSign/{managerSignature}/{manager_id}/{contract_id}")
     public ResponseEntity<?> managerSignContract(@PathVariable String managerSignature, @PathVariable Long manager_id, @PathVariable Long contract_id) throws Exception{
-        contractService.addManagerSignature(managerSignature, contract_id, manager_id);
-        contractService.fillPDF(contract_id);
+        try {
+            Contract contract = contractService.addManagerSignature(managerSignature, contract_id, manager_id);
+            contractService.fillPDF(contract);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body(new ResponseMessage("Signature fait"));
     }
 }

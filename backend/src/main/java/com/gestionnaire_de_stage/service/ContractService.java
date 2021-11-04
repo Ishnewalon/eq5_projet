@@ -44,9 +44,8 @@ public class ContractService {
         return contractRepository.save(contract);
     }
 
-    public Contract fillPDF(Long contract_id) {
-        Assert.isTrue(contract_id != null, "L'id du contrat ne peut pas être null");
-        Contract contract = contractRepository.getContractById(contract_id);
+    public Contract fillPDF(Contract contract) {
+        Assert.isTrue(contract != null, "Le contract ne peut pas être null");
         final String uri = "http://127.0.0.1:8181/pdf/pdf/";
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<byte[]> responseEntity = restTemplate.getForEntity(uri + contract.getId(), byte[].class);

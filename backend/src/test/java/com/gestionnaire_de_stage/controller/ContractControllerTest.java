@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,26 +50,37 @@ public class ContractControllerTest {
         assertThat(actualContractList.size()).isEqualTo(dummyContractList.size());
     }
 
-/*    @Test
+    @Test
     public void testCreateContractPDF_withValidEntries() throws Exception {
-        OfferApplication dummyOfferApplication = getDummyOfferApp();
-        when(contractService.managerSignContract(any())).thenReturn(getDummyContract());
+        String managerSignature = "Joe Janson";
+        Contract dummyContract = getDummyContract();
+        Long manager_id = 1L;
+        String uri = "/contracts/managerSign/" + managerSignature
+                + "/" + dummyContract.getId() + "/" + manager_id;
+        when(contractService.addManagerSignature(any(),any(),any()))
+                .thenReturn(dummyContract);
+        when(contractService.fillPDF(any())).thenReturn(dummyContract);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/contracts/managerSign")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(dummyOfferApplication)))
+                MockMvcRequestBuilders.get(uri)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString()).contains("Signature fait");
-    }*/
+    }
+
+
 
     private Contract getDummyContract() {
         Contract dummyContract = new Contract();
         dummyContract.setId(1L);
         dummyContract.setStudent(new Student());
+        dummyContract.setOffer(getDummyOffer());
+        dummyContract.setManager(getDummyManager());
+        dummyContract.setManagerSignature("Joe Janson");
+        dummyContract.setManagerSignDate(LocalDate.now());
         return dummyContract;
     }
 
@@ -87,15 +99,6 @@ public class ContractControllerTest {
         return dummyContractList;
     }
 
-    private OfferApplication getDummyOfferApp() {
-        OfferApplication dummyOfferApplicationDTO = new OfferApplication();
-        dummyOfferApplicationDTO.setOffer(getDummyOffer());
-        dummyOfferApplicationDTO.setCurriculum(new Curriculum());
-        dummyOfferApplicationDTO.setId(1L);
-
-        return dummyOfferApplicationDTO;
-    }
-
     private Offer getDummyOffer() {
         Offer dummyOffer = new Offer();
         dummyOffer.setDepartment("Un departement");
@@ -104,6 +107,27 @@ public class ContractControllerTest {
         dummyOffer.setDescription("oeinoiendw");
         dummyOffer.setSalary(10);
         dummyOffer.setTitle("oeinoiendw");
+        dummyOffer.setCreator(getDummyMonitor());
         return dummyOffer;
+    }
+
+    private Monitor getDummyMonitor() {
+        Monitor dummyMonitor = new Monitor();
+        dummyMonitor.setId(1L);
+        dummyMonitor.setLastName("toto");
+        dummyMonitor.setFirstName("titi");
+        dummyMonitor.setEmail("toto@gmail.com");
+        dummyMonitor.setPassword("testPassword");
+        return dummyMonitor;
+    }
+
+    private Manager getDummyManager() {
+        Manager dummyManager = new Manager();
+        dummyManager.setPassword("Test1234");
+        dummyManager.setEmail("oussamakably@gmail.com");
+        dummyManager.setFirstName("Oussama");
+        dummyManager.setLastName("Kably");
+        dummyManager.setPhone("5143643320");
+        return dummyManager;
     }
 }
