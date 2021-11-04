@@ -73,4 +73,21 @@ public class OfferApplicationController {
         }
         return ResponseEntity.ok(curriculumDTOList);
     }
+
+    @GetMapping("/applicants/student/{id}")
+    public ResponseEntity<?> getAllOffersApplied(@PathVariable Long id) {
+        List<OfferApplication> offerApplicationList;
+        try {
+            offerApplicationList = offerApplicationService.getAllOffersStudentApplied(id);
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("L'étudiant n'existe pas"));
+        } catch (IllegalArgumentException e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+        return ResponseEntity.ok(offerApplicationList);
+    }
 }

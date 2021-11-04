@@ -13,9 +13,8 @@ import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OfferApplicationService {
@@ -38,7 +37,7 @@ public class OfferApplicationService {
         Student student = studentService.getOneByID(idStudent);
         Curriculum curriculum = student.getPrincipalCurriculum();
 
-        if(curriculum == null)
+        if (curriculum == null)
             throw new StudentHasNoCurriculumException();
 
         if (offer.isEmpty())
@@ -62,7 +61,7 @@ public class OfferApplicationService {
         return offerApplicationRepository.getAllByOffer_CreatorEmail(email);
     }
 
-    public List<OfferApplication> getAllOffersStudentApplied(Long idStudent) throws IdDoesNotExistException {
+    public List<OfferApplication> getAllOffersStudentApplied(Long idStudent) throws IdDoesNotExistException, IllegalArgumentException {
         Assert.isTrue(idStudent != null, "L'id de l'étudiant ne peut pas être null");
         if (studentService.getOneByID(idStudent) == null)
             throw new IdDoesNotExistException();
