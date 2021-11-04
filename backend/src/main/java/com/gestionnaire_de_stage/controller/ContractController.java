@@ -17,6 +17,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.util.List;
 
 @RestController
@@ -42,7 +43,7 @@ public class ContractController {
         return ResponseEntity.ok(contractList);
     }
 
-    @PostMapping("/managerSign/{managerSignature}/{manager_id}/{contract_id}")
+    @GetMapping("/managerSign/{managerSignature}/{manager_id}/{contract_id}")
     public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature, @PathVariable Long manager_id, @PathVariable Long contract_id) throws Exception{
         try {
             Contract contract = contractService.addManagerSignature(managerSignature, contract_id, manager_id);
@@ -51,7 +52,7 @@ public class ContractController {
             String contractHtml = templateEngine.process("test", context);
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            HtmlConverter.convertToPdf(contractHtml, baos);
+            HtmlConverter.convertToPdf(contractHtml, new FileOutputStream("c:/permits/contract.pdf"));
             contractService.fillPDF(contract, baos);
         } catch (IllegalArgumentException e) {
             return ResponseEntity
