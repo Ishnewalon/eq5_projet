@@ -23,9 +23,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -103,7 +101,7 @@ class OfferApplicationServiceTest {
         when(offerService.findOfferById(any())).thenReturn(Optional.of(dummyOffer));
 
         assertThrows(StudentHasNoCurriculumException.class,
-                () -> offerApplicationService.create( dummyOffer.getId(), dummyStudent.getId()));
+                () -> offerApplicationService.create(dummyOffer.getId(), dummyStudent.getId()));
     }
 
     @Test
