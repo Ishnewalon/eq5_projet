@@ -50,6 +50,7 @@ public class ContractServiceTest {
         Contract dummyContract = getDummyContract();
         Long manager_id = 1L;
         Manager dummyManager = getDummyManager();
+        when(contractRepository.existsById(any())).thenReturn(true);
         when(contractRepository.getContractById(any())).thenReturn(dummyContract);
         when(managerService.getOneByID(any())).thenReturn(dummyManager);
         when(contractRepository.save(any())).thenReturn(getDummyFilledContract());
