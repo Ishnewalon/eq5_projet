@@ -112,7 +112,7 @@ public class ContractServiceTest {
     }
 
     @Test
-    public void testgetAllUnsignedContractForMonitor_withValidEntries() throws Exception {
+    public void testGetAllUnsignedContractForMonitor_withValidEntries() throws Exception {
         List<Contract> dummyContractList = getDummyContractList();
         long monitor_id = 1L;
         when(monitorService.isIdInvalid(any())).thenReturn(false);
@@ -126,19 +126,81 @@ public class ContractServiceTest {
     }
 
     @Test
-    public void testgetAllUnsignedContractForMonitor_withNullMonitorID() {
+    public void testGetAllUnsignedContractForMonitor_withNullMonitorID() {
         assertThrows(IllegalArgumentException.class,
                 () -> contractService.getAllUnsignedContractForMonitor(null));
     }
 
     @Test
-    public void testgetAllUnsignedContractForMonitor_withInvalidMonitorID() {
+    public void testGetAllUnsignedContractForMonitor_withInvalidMonitorID() {
         long monitor_id = 1L;
         when(monitorService.isIdInvalid(any())).thenReturn(true);
 
         assertThrows(IdDoesNotExistException.class,
                 () -> contractService.getAllUnsignedContractForMonitor(monitor_id));
     }
+
+    @Test
+    public void testAddMonitorSignature_validValidEntries() throws Exception {
+        String monitorSignature = "Joe Janson";
+        Contract dummyContract = getDummyContract();
+        when(contractRepository.existsById(any())).thenReturn(true);
+        when(contractRepository.getContractById(any())).thenReturn(dummyContract);
+        when(contractRepository.save(any())).thenReturn(getDummyFilledContract());
+
+        Contract actualContract = contractService.addMonitorSignature(monitorSignature, dummyContract.getId());
+        assertThat(actualContract.getStudent().getFirstName()).isEqualTo(dummyContract.getStudent().getFirstName());
+    }
+
+    @Test
+    public void testAddMonitorSignature_withNullMonitorSignature() {
+        Contract dummyContract = getDummyContract();
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.addMonitorSignature(null, dummyContract.getId()));
+    }
+
+    @Test
+    public void testAddMonitorSignature_withNullContractID() {
+        String monitorSignature = "Joe Janson";
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.addMonitorSignature(monitorSignature, null));
+    }
+
+    @Test
+    public void testAddMonitorSignature_withInvalidContractID() {
+        String monitorSignature = "Joe Janson";
+        long contract_id = 1L;
+        when(contractRepository.existsById(any())).thenReturn(false);
+        assertThrows(IdDoesNotExistException.class,
+                () -> contractService.addMonitorSignature(monitorSignature, contract_id));
+
+    }
+
+  /*  @Test
+    public void testGetContractById_withValidEntries() throws Exception {
+        Contract dummyContract = getDummyContract();
+        when(contractRepository.existsById(any())).thenReturn(true);
+        when(contractRepository.getContractById(any())).thenReturn(dummyContract);
+
+        Contract actualContract = contractService.getContractById(dummyContract.getId());
+
+        assertThat(actualContract.getStudent().getFirstName()).isEqualTo(dummyContract.getStudent().getFirstName());
+    }
+
+    @Test
+    public void testGetContractById_withNullContractId() {
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.getContractById(null));
+    }
+
+    @Test
+    public void testGetContractById_withInvalidContractId() {
+        Contract dummyContract = getDummyContract();
+        when(contractRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> contractService.getContractById(dummyContract.getId()));
+    }*/
 
     private List<Contract> getDummyContractList() {
         List<Contract> dummyContractList = new ArrayList<>();
