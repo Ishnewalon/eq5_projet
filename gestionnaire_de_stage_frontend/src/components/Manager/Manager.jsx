@@ -4,7 +4,7 @@ import ReviewOffers from "./ReviewOffers/ReviewOffers";
 import ViewOffers from "./ViewOffers/ViewOffers";
 import ValiderCv from "./ValidateCv/ValiderCv";
 import LinkSupervisorToStudent from "./LinkSupervisorToStudent/LinkSupervisorToStudent";
-import ManagerStartContract from "./ContractSigning/ManagerStartContract";
+import ViewContractsToBeStarted from "./ViewContractsToBeStarted";
 
 export default function Manager() {
     return (<>
@@ -24,7 +24,7 @@ export default function Manager() {
                 <LinkSupervisorToStudent/>
             </div>
             <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-                <ManagerStartContract />
+                <ViewContractsToBeStarted />
             </div>
         </>
     )

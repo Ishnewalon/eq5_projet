@@ -38,26 +38,6 @@ class OfferAppService {
             offerApp.idOffer &&
             offerApp.idStudent;
     }
-
-    async getAllApplicantsReadyToSign() {
-        return await fetch(`${this.url}/ready_to_be_signed`, requestInit(methods.GET)).then(res => res.json()).then(res => {
-            if(res.message) {
-                swalErr().fire({text: res.message});
-                return Promise.any([]);
-            }
-            return res;
-        });
-    }
-
-    async managerStartContract(contract) {
-        return await fetch(`${this.url}/start_signature`, requestInit(methods.GET)).then(res => res.json()).then(res => {
-            if(res.message){
-                swalErr().fire({text: res.message});
-                return Promise.any(contract);
-            }
-            return res;
-        });
-    }
 }
 
 const offerAppService = new OfferAppService();
