@@ -10,8 +10,6 @@ export default function ViewOffersAndApply() {//TODO: remove Offer after applied
     useEffect(() => {
         getAllOffersByDepartment(auth.user.department)
             .then(offers => {
-                console.log(offers)
-
                 setOffers(offers)
             })
             .catch(e => {

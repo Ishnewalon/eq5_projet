@@ -16,10 +16,7 @@ export default function Navbar() {
                                 <Link className="nav-link" to="/dashboard">Compte ({auth.user.firstName})</Link>
                                 <button onClick={() => auth.signOut()}>Se déconnecter</button>
                             </li>
-                            {auth.isMonitor() || auth.isManager() ?
-                                <li>
-                                    <Link className="nav-link" to="/dashboard/offres/ajouter">Ajouter des offres</Link>
-                                </li> : <></>}
+                            <NavItemSpecificForUser/>
                         </>
                     ) : (<>
                             <li className="nav-item">
@@ -34,4 +31,44 @@ export default function Navbar() {
             </div>
         </nav>
     );
+}
+
+function NavItemSpecificForUser() {
+    let auth = useAuth();
+    if (auth.isManager)
+        return (
+            <>
+                <li>
+                    <Link className="nav-link" to="/dashboard/offres/ajouter">Ajouter des offres</Link>
+                </li>
+                <li>
+                    <Link className="nav-link" to="/dashboard/applications">Applications</Link>
+                </li>
+            </>
+        )
+    if (auth.isManager())
+        return (<>
+            <li>
+                <Link className="nav-link" to="/dashboard/offres/ajouter">Ajouter des offres</Link>
+            </li>
+            <li>
+                <Link className="nav-link" to="/dashboard/offres">Offres valides</Link>
+            </li>
+            <li>
+                <Link className="nav-link" to="/dashboard/offres/review">Validation Offre</Link>
+            </li>
+            <li>
+                <Link className="nav-link" to="/dashboard/students/applied">Assossier</Link>
+            </li>
+        </>)
+    if (auth.isStudent())
+        return <>
+            <li>
+                <Link className="nav-link" to="/dashboard/televerser">Téléverser CV</Link>
+            </li>
+            <li>
+                <Link className="nav-link" to="/dashboard/offres">Offres</Link>
+            </li>
+        </>
+    return <></>
 }

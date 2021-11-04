@@ -16,17 +16,17 @@ function App() {
             <Navbar/>
             <div className="container">
                 <Switch>
-                    <Route exact path="/dashboard">
+                    <Route path="/dashboard">
                         <RequireAuth>
                             <Dashboard/>
                         </RequireAuth>
                     </Route>
-                    <Route exact path="/register">
+                    <Route path="/register">
                         <RequireNoAuth>
                             <Register/>
                         </RequireNoAuth>
                     </Route>
-                    <Route exact path="/login">
+                    <Route path="/login">
                         <RequireNoAuth>
                             <Login/>
                         </RequireNoAuth>
