@@ -65,7 +65,8 @@ public class OfferService {
         return offerRepository.save(offer);
     }
 
-    public List<Offer> getOffersByDepartment(String department) {
+    public List<Offer> getOffersByDepartment(String department) throws IllegalArgumentException {
+        Assert.isTrue(department != null, "Le département est null ou vide");
         return offerRepository.findAllByDepartmentIgnoreCaseAndValidIsTrue(department);
     }
 
@@ -84,11 +85,13 @@ public class OfferService {
     public Offer validation(ValidationOffer validationOffer) throws IdDoesNotExistException, OfferAlreadyTreatedException {
         Assert.isTrue(validationOffer.getId() != null, "L'id est null");
         if (!offerRepository.existsById(validationOffer.getId())) throw new IdDoesNotExistException();
-        if (offerRepository.existsByIdAndValidNotNull(validationOffer.getId())) throw new OfferAlreadyTreatedException();
+        if (offerRepository.existsByIdAndValidNotNull(validationOffer.getId()))
+            throw new OfferAlreadyTreatedException();
 
         Offer offer = offerRepository.getById(validationOffer.getId());
         offer.setValid(validationOffer.isValid());
 
         return offerRepository.save(offer);
     }
+
 }

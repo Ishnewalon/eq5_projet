@@ -8,7 +8,10 @@ import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
-import com.gestionnaire_de_stage.model.*;
+import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.model.OfferApplication;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.CurriculumService;
 import com.gestionnaire_de_stage.service.OfferApplicationService;
 import org.junit.jupiter.api.Test;
@@ -23,7 +26,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -172,7 +174,8 @@ class OfferApplicationControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<CurriculumDTO> actualCurriculumDTOs = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<CurriculumDTO> actualCurriculumDTOs = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualCurriculumDTOs.size()).isEqualTo(3);
     }
@@ -184,8 +187,8 @@ class OfferApplicationControllerTest {
                 .thenThrow(new IllegalArgumentException("Le courriel ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/applications/applicants/{}", email)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/applications/applicants/{}", email)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -193,21 +196,6 @@ class OfferApplicationControllerTest {
         assertThat(response.getContentAsString()).contains("Le courriel ne peut pas être null");
     }
 
-    @Test
-    public void testViewStudentsAppliedOffer_withInvalidEmail() throws Exception {
-        String email = "rolling@email.com";
-        when(offerApplicationService.getAllByOfferCreatorEmail(any()))
-                .thenThrow(new EmailDoesNotExistException());
-
-        MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/applications/applicants/{}", email)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le courriel n'existe pas");
-    }
 
     @Test
     public void testViewStudentsAppliedOffer_withEmptyList() throws Exception {
@@ -219,8 +207,8 @@ class OfferApplicationControllerTest {
                 .thenThrow(new IllegalArgumentException("La liste d'offre ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/applications/applicants/{}", email)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/applications/applicants/{}", email)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -276,6 +264,7 @@ class OfferApplicationControllerTest {
         dummyCurriculum.setStudent(new Student());
         return dummyCurriculum;
     }
+
     private Student getDummyStudent() {
         Student dummyStudent = new Student();
         dummyStudent.setId(1L);

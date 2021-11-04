@@ -101,3 +101,14 @@ Adapt color to bg-dark
     color: var(--color-primary) !important;
 }
 
+button {
+    padding: 10px 30px 10px;
+    border: 1px solid #cdd6e0ff;
+    letter-spacing: 1px;
+    cursor: pointer;
+    background-color: #dc7718ff;
+}
+
+button:hover {
+    background-color: #b05f13;
+}
