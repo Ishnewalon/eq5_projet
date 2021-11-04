@@ -28,7 +28,7 @@ export function RequireAuth({children}) {
 export function RequireNoAuth({children}) {
     let auth = useAuth();
 
-    if (auth.user) return <Redirect to="/"/>
+    if (auth.user) return <Redirect to="/dashboard"/>
 
     return children;
 }
@@ -96,23 +96,14 @@ function useProvideAuth() {
                 return response.json().then(
                     body => {
                         if (response.status === 200) {
-                            setUser(body)
                             if (userType === UserType.MONITOR[0]) {
-                                setUser(previous => {
-                                    return Object.setPrototypeOf(previous, MonitorModel.prototype)
-                                })
+                                setUser(Object.setPrototypeOf(body, MonitorModel.prototype))
                             } else if (userType === UserType.STUDENT[0]) {
-                                setUser(previous => {
-                                    return Object.setPrototypeOf(previous, Student.prototype)
-                                })
+                                setUser(Object.setPrototypeOf(body, Student.prototype))
                             } else if (userType === UserType.SUPERVISOR[0]) {
-                                setUser(previous => {
-                                    return Object.setPrototypeOf(previous, Supervisor.prototype)
-                                })
+                                setUser(Object.setPrototypeOf(body, Supervisor.prototype))
                             } else if (userType === UserType.MANAGER[0]) {
-                                setUser(previous => {
-                                    return Object.setPrototypeOf(previous, ManagerModel.prototype)
-                                })
+                                setUser(Object.setPrototypeOf(body, ManagerModel.prototype))
                             }
                             toast.fire({title: "Connexion réussie!"}).then()
                             return true
