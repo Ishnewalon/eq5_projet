@@ -36,6 +36,20 @@ export async function getAllApplicants(email) {
         });
 }
 
+export async function getStudentApplications(id) {
+    return await fetch(`${urlBackend}/applications/applicants/student/${id}`, requestInit(methods.GET)).then(
+        response => {
+            return response.json().then((body) => {
+                if (response.status === 200)
+                    return body;
+                if (response.status === 400)
+                    toastErr.fire({title: body.message})
+                return Promise.any([]);
+            })
+        }
+    );
+}
+
 function _isApplicationValid(offerApp) {
     return offerApp instanceof OfferApp &&
         offerApp.idOffer &&
