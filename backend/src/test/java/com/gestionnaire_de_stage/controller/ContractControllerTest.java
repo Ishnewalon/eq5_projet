@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.service.ContractService;
 import org.junit.jupiter.api.Test;
@@ -71,7 +72,45 @@ public class ContractControllerTest {
         assertThat(response.getContentAsString()).contains("Signature fait");
     }
 
+    @Test
+    public void testCreateContractPDF_withNullEntries() throws Exception {
+        String managerSignature = "Joe Janson";
+        Contract dummyContract = getDummyContract();
+        Long manager_id = 1L;
+        String uri = "/contracts/managerSign/" + managerSignature
+                + "/" + dummyContract.getId() + "/" + manager_id;
+        when(contractService.addManagerSignature(any(),any(),any()))
+                .thenThrow(new IllegalArgumentException("La signature, l'id du contrat et du gestionnaire ne peuvent être null"));
 
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get(uri)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("La signature, l'id du contrat et du gestionnaire ne peuvent être null");
+    }
+
+    @Test
+    public void testCreateContractPDF_withInvalidEntries() throws Exception {
+        String managerSignature = "Joe Janson";
+        Contract dummyContract = getDummyContract();
+        Long manager_id = 1L;
+        String uri = "/contracts/managerSign/" + managerSignature
+                + "/" + dummyContract.getId() + "/" + manager_id;
+        when(contractService.addManagerSignature(any(),any(),any()))
+                .thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get(uri)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Le id du contrat n'existe pas");
+    }
 
     private Contract getDummyContract() {
         Contract dummyContract = new Contract();

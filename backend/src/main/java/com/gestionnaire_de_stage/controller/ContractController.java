@@ -40,7 +40,7 @@ public class ContractController {
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
+                    .body(new ResponseMessage("Le id du contrat n'existe pas"));
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
