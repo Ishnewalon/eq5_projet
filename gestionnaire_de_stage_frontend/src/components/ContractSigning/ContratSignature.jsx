@@ -1,13 +1,14 @@
 import PdfDocumentViewer from "../PdfDocumentViewer/PdfDocumentViewer";
 import {useEffect, useState} from "react";
-import authService from "../../services/auth-service";
 import {BsPenFill} from "react-icons/all";
 import Swal from "sweetalert2";
 import {managerSignContract} from "../../services/contrat-service";
-import {UserType} from "../Register/Register";
+import {UserType} from "../../enums/UserTypes";
+import {useAuth} from "../../services/use-auth";
 
 export default function ContratSignature({userType, contract}){
 
+    const auth = useAuth();
     const [signature, setSignature] = useState('');
     const [pdf, setPdf] = useState(null);
 
@@ -26,7 +27,7 @@ export default function ContratSignature({userType, contract}){
             return;
         }
         if(userType === UserType.MANAGER[0])
-            managerSignContract(signature, authService.getUserId(), contract.id).then();
+            managerSignContract(signature, auth.user.id, contract.id).then();
     }
 
     const toPdfBlob = (file) => {
