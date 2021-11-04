@@ -82,7 +82,7 @@ public class SupervisorController {
         }
         boolean assign = supervisorService.assign(student, supervisor);
 
-        String response = assign ? "Assignement fait!" : "Assignement rejeté!";
+        String response = assign ? "Assignement fait!" : "Assignement rejeté, l'étudiant est déjà assigner!";
         return ResponseEntity.ok(new ResponseMessage(response));
     }
 }

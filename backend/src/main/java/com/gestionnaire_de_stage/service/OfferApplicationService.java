@@ -63,6 +63,6 @@ public class OfferApplicationService {
         Assert.isTrue(idStudent != null, "L'id de l'étudiant ne peut pas être null");
         if (studentService.getOneByID(idStudent) == null)
             throw new IdDoesNotExistException();
-        return offerApplicationRepository.getAllByCurriculum_StudentId(idStudent);
+        return offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(Status.EN_ATTENTE_REPONSE, idStudent);
     }
 }

@@ -134,7 +134,7 @@ class OfferApplicationServiceTest {
         List<OfferApplication> offerApplicationList = getDummyOfferAppList();
         Student dummyStudent = getDummyStudent();
         when(studentService.getOneByID(any())).thenReturn(dummyStudent);
-        when(offerApplicationRepository.getAllByCurriculum_StudentId(dummyStudent.getId()))
+        when(offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(Status.EN_ATTENTE_REPONSE, dummyStudent.getId()))
                 .thenReturn(offerApplicationList);
 
         List<OfferApplication> actualOfferAppList = offerApplicationService

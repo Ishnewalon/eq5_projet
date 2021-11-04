@@ -14,9 +14,9 @@ export default function Navbar() {
                     {auth.user ? (<>
                             <li className="nav-item">
                                 <Link className="nav-link" to="/dashboard">Compte ({auth.user.firstName})</Link>
-                                <button onClick={() => auth.signOut()}>Se déconnecter</button>
                             </li>
                             <NavItemSpecificForUser/>
+                            <button onClick={() => auth.signOut()}>Se déconnecter</button>
                         </>
                     ) : (<>
                             <li className="nav-item">
