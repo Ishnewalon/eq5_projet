@@ -9,6 +9,10 @@ export async function managerSignContract(managerSignature, managerId, contractI
     return await signContract(UserType.MANAGER[0], managerSignature, managerId, contractId);
 }
 
+export async function monitorSignContract(monitorSignature, monitorId, contractId) {
+    return await signContract(UserType.MONITOR[0], monitorSignature, monitorId, contractId);
+}
+
 async function signContract(userType, signature, userId, contractId) {
     return await fetch(`${url}/${userType}Sign/${signature}/${userId}/${contractId}`, requestInit(methods.PUT)).then(
         response => {
@@ -30,5 +34,20 @@ async function signContract(userType, signature, userId, contractId) {
 
 export async function getAllContractsToBeStarted() {
     return await fetch(`${url}/ready_to_sign`, requestInit(methods.GET)).then(res => res.json());
+}
+
+export async function getAllContractsToBeSignedForMonitor(monitorId) {
+    return await fetch(`${url}/monitor/${monitorId}`, requestInit(methods.GET)).then(response => {
+            return response.json().then(
+                body => {
+                    if (response.ok) {
+                        return body;
+                    } else {
+                        swalErr.fire({text: body.message})
+                        return Promise.any([]);
+                    }
+                })
+        }, err => console.error(err)
+    );
 }
 

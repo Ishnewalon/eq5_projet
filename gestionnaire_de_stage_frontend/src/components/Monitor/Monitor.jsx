@@ -2,6 +2,8 @@ import React from "react";
 import AddOffer from "../AddOffer/AddOffer";
 import ViewAppliedStudents from "./ViewAppliedStudents/ViewAppliedStudents";
 import {Route, useRouteMatch} from "react-router-dom";
+import ViewContractToBeSigned from "../Manager/ViewContractToBeSigned";
+import {UserType} from "../../enums/UserTypes";
 
 export default function Monitor() {
     let {path} = useRouteMatch();
@@ -16,5 +18,6 @@ export default function Monitor() {
                 <ViewAppliedStudents/>
             </div>
         </Route>
+        <ViewContractToBeSigned userType={UserType.MONITOR[0]}/>
     </>;
 }
