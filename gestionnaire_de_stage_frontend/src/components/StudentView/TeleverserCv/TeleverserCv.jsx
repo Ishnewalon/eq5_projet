@@ -17,7 +17,7 @@ export default function TeleverserCv() {
         <div>
             <Dropzone
                 onDrop={handleDrop}
-                accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                accept="application/pdf"
                 minSize={1024}
                 maxSize={3072000}
             >
@@ -35,7 +35,7 @@ export default function TeleverserCv() {
                             : "";
                     return (
                         <div>
-                                <h2 className={"text-center"}>Les fichiers acceptés sont de type <b>.PDF</b> ou <b>.DOCX</b>
+                                <h2 className={"text-center"}>Les fichiers acceptés sont de type <b>.PDF</b>
                                 </h2>
                                 <div
                                 {...getRootProps({

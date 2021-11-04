@@ -31,7 +31,6 @@ function App() {
                             <Login/>
                         </RequireNoAuth>
                     </Route>
-
                 </Switch>
             </div>
         </Router>

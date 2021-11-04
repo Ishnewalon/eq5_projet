@@ -11,11 +11,16 @@ export default function Navbar() {
                     <li className="nav-item">
                         <Link className="nav-link" to="/">Accueil</Link>
                     </li>
-                    {auth.user ? (
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/dashboard">Compte ({auth.user.firstName})</Link>
-                            <button onClick={() => auth.signOut()}>Se déconnecter</button>
-                        </li>
+                    {auth.user ? (<>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/dashboard">Compte ({auth.user.firstName})</Link>
+                                <button onClick={() => auth.signOut()}>Se déconnecter</button>
+                            </li>
+                            {auth.isMonitor() || auth.isManager() ?
+                                <li>
+                                    <Link className="nav-link" to="/dashboard/offres/ajouter">Ajouter des offres</Link>
+                                </li> : <></>}
+                        </>
                     ) : (<>
                             <li className="nav-item">
                                 <Link className="nav-link" to="/login">Se connecter</Link>

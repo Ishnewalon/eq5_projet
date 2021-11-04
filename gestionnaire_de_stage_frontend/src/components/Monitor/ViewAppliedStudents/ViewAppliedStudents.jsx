@@ -13,7 +13,7 @@ export default function ViewAppliedStudents() {//TODO: list of curriculum with a
         getAllApplicants(auth.user.email).then(v => {
             setStudents(v)
         })
-    });
+    },[auth.user.email]);
 
     return <div className=''>
         <div className={'d-flex justify-content-center align-items-center'}>

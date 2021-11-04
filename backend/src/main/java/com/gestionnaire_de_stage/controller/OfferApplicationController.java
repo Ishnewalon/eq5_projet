@@ -3,7 +3,6 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
@@ -62,10 +61,6 @@ public class OfferApplicationController {
         try {
             offerApplicationList = offerApplicationService.getAllByOfferCreatorEmail(email);
             curriculumDTOList = curriculumService.mapToCurriculumDTOList(offerApplicationList);
-        } catch (EmailDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le courriel n'existe pas"));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()

@@ -18,7 +18,7 @@ export default function ViewOffersAndApply() {//TODO: remove Offer after applied
                 setOffers([])
                 console.error(e);
             });
-    })
+    }, [auth.user.department]);
 
 
     return (

@@ -98,11 +98,17 @@ function useProvideAuth() {
                         if (response.status === 200) {
                             setUser(body)
                             if (userType === UserType.MONITOR[0]) {
-                                Object.setPrototypeOf(user, MonitorModel.prototype)
+                                setUser(previous => {
+                                    return Object.setPrototypeOf(previous, MonitorModel.prototype)
+                                })
                             } else if (userType === UserType.STUDENT[0]) {
-                                Object.setPrototypeOf(user, Student.prototype)
+                                setUser(previous => {
+                                    return Object.setPrototypeOf(previous, Student.prototype)
+                                })
                             } else if (userType === UserType.SUPERVISOR[0]) {
-                                Object.setPrototypeOf(user, Supervisor.prototype)
+                                setUser(previous => {
+                                    return Object.setPrototypeOf(previous, Supervisor.prototype)
+                                })
                             } else if (userType === UserType.MANAGER[0]) {
                                 setUser(previous => {
                                     return Object.setPrototypeOf(previous, ManagerModel.prototype)
