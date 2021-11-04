@@ -95,6 +95,10 @@ public class OfferApplicationController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Offre non existante!"));
         }
         return ResponseEntity.ok(new ResponseMessage("Status changé, attendez la signature du contrat"));
     }

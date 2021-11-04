@@ -14,6 +14,7 @@ import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Id;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,7 +68,7 @@ public class OfferApplicationService {
         return offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(Status.EN_ATTENTE_REPONSE, idStudent);
     }
 
-    public boolean updateStatus(UpdateStatusDTO updateStatusDTO)  {
+    public boolean updateStatus(UpdateStatusDTO updateStatusDTO) throws IdDoesNotExistException {
         return false;
     }
 }
