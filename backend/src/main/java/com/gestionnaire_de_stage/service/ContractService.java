@@ -3,12 +3,8 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.repository.ContractRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.web.client.RestTemplate;
-
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
