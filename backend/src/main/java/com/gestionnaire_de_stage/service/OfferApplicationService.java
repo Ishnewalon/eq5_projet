@@ -73,6 +73,7 @@ public class OfferApplicationService {
             throw new DateNotValidException();
 
         OfferApplication offerApplication = offerApplicationRepository.getById(offerAppID);
+        offerApplication.setStatus(Status.EN_ATTENTE_ENTREVUE);
         offerApplication.setInterviewDate(date);
 
         return offerApplicationRepository.save(offerApplication);
