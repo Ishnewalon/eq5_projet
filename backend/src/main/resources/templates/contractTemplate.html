@@ -139,13 +139,20 @@
       2.85pt 5.4pt 2.85pt 5.4pt'>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
                                 lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>Date de
-      début&nbsp;: [<span class=SpellE>date_debut</span>]</span></p>
+      début&nbsp;:
+                        <span th:text="${contract.offer.dateDebut}"></span>
+                        </span></p>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
                                 lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>Date de
-      fin&nbsp;: [<span class=SpellE>date_fin</span>]</span></p>
+      fin&nbsp;:
+                            <span th:text="${contract.offer.dateFin}">
+
+                            </span></span></p>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
                                 lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>Nombre
-      total de semaines&nbsp;: [<span class=SpellE>nb_semaine</span>]</span></p>
+      total de semaines&nbsp;:
+                        <span th:text="${contract.offer.nbSemaine}"></span>
+                        </span></p>
                     </td>
                 </tr>
                 <tr style='mso-yfti-irow:4'>
@@ -167,10 +174,14 @@
       2.85pt 5.4pt 2.85pt 5.4pt;height:31.85pt'>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
                                 lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>Horaire de
-      travail: [horaire]</span></p>
+      travail:
+                            <span th:text="${contract.offer.horaireTravail}"></span>
+                        </span></p>
                         <p class=MsoNormal style='margin-bottom:0cm;line-height:normal'><span
                                 lang=FR-CA style='font-size:12.0pt;font-family:"Arial",sans-serif'>Nombre
-      total d’heures par semaine&nbsp;: [<span class=SpellE>nb_heure</span>]</span></p>
+      total d’heures par semaine&nbsp;:
+                        <span th:text="${contract.offer.nbHeureSemaine}"></span>
+                        </span></p>
                     </td>
                 </tr>
                 <tr style='mso-yfti-irow:6'>
