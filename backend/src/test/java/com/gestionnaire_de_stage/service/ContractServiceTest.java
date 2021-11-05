@@ -33,6 +33,9 @@ public class ContractServiceTest {
     @Mock
     private MonitorService monitorService;
 
+    @Mock
+    private StudentService studentService;
+
     @Test
     public void testGetAllByManagerSignatureNull() {
         when(contractRepository.getAllByManagerSignatureNull()).thenReturn(getDummyContractList());
@@ -174,6 +177,33 @@ public class ContractServiceTest {
         assertThrows(IdDoesNotExistException.class,
                 () -> contractService.addMonitorSignature(monitorSignature, contract_id));
 
+    }
+
+    @Test
+    public void testGetContractByStudentId_withValidEntries() throws Exception {
+        Contract dummyContract = getDummyContract();
+        when(studentService.isIDNotValid(any())).thenReturn(false);
+        when(contractRepository.getContractByStudentId(any())).thenReturn(dummyContract);
+
+        Contract actualContract = contractService.getContractByStudentId(dummyContract.getStudent().getId());
+
+        assertThat(actualContract.getStudent().getFirstName()).isEqualTo(dummyContract.getStudent().getFirstName());
+
+    }
+
+    @Test
+    public void testGetContractByStudentId_withNullStudentId() throws Exception {
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.getContractByStudentId(null));
+    }
+
+    @Test
+    public void testGetContractByStudentId_withInvalidStudentId() throws Exception {
+        Contract dummyContract = getDummyContract();
+        when(studentService.isIDNotValid(any())).thenReturn(true);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> contractService.getContractByStudentId(dummyContract.getStudent().getId()));
     }
 
   /*  @Test

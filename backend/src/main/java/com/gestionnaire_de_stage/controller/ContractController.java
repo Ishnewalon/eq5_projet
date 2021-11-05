@@ -108,4 +108,23 @@ public class ContractController {
                 .status(HttpStatus.OK)
                 .body(new ResponseMessage("Signature fait"));
     }
+
+    @GetMapping("/monitor/{monitor_id}")
+    public ResponseEntity<?> ContractNeedsStudentSignature(@PathVariable Long student_id) {
+        Contract contract;
+        try {
+            contract = contractService.getContractByStudentId(student_id);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Le id de l'étudiant n'existe pas"));
+        }
+
+        return ResponseEntity.ok(contract);
+    }
+
 }

@@ -22,12 +22,16 @@ public class ContractService {
 
     private final MonitorService monitorService;
 
+    private final StudentService studentService;
+
     public ContractService(ContractRepository contractRepository,
                            ManagerService managerService,
-                           MonitorService monitorService) {
+                           MonitorService monitorService,
+                           StudentService studentService) {
         this.contractRepository = contractRepository;
         this.managerService = managerService;
         this.monitorService = monitorService;
+        this.studentService = studentService;
     }
 
     public List<Contract> getAllUnsignedContracts() {
@@ -74,6 +78,14 @@ public class ContractService {
         contract.setMonitorSignDate(LocalDate.now());
         contract.setMonitorSignature(monitorSignature);
         return contractRepository.save(contract);
+    }
+
+    public Contract getContractByStudentId(Long student_id) throws IdDoesNotExistException {
+        Assert.isTrue(student_id != null, "L'id de l'étudiant ne peut pas être null");
+        if (studentService.isIDNotValid(student_id)) {
+            throw new IdDoesNotExistException();
+        }
+        return contractRepository.getContractByStudentId(student_id);
     }
 
     public Contract fillPDF(Contract contract, ByteArrayOutputStream baos) {
