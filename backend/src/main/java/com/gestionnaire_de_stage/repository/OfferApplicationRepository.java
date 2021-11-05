@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.repository;
 
+import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
@@ -10,4 +11,5 @@ public interface OfferApplicationRepository extends JpaRepository<OfferApplicati
     boolean existsByOfferAndCurriculum(Offer offer, Curriculum curriculum);
 
     List<OfferApplication> getAllByOffer_CreatorEmail(String email);
+    List<OfferApplication> getAllByStatusAndCurriculum_StudentId(Status status, Long id);
 }

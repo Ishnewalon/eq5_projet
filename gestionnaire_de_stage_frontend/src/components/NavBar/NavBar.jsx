@@ -14,9 +14,9 @@ export default function Navbar() {
                     {auth.user ? (<>
                             <li className="nav-item">
                                 <Link className="nav-link" to="/dashboard">Compte ({auth.user.firstName})</Link>
-                                <button onClick={() => auth.signOut()}>Se déconnecter</button>
                             </li>
                             <NavItemSpecificForUser/>
+                            <button onClick={() => auth.signOut()}>Se déconnecter</button>
                         </>
                     ) : (<>
                             <li className="nav-item">
@@ -81,6 +81,11 @@ function NavItemSpecificForUser() {
             <li>
                 <Link className="nav-link" to="/dashboard/voir_mon_contrat">Voir Contrat</Link>
             </li>
+            <li>
+                <Link className="nav-link" to="/dashboard/view/status">Mes applications</Link>
+            </li>
         </>
+    if (auth.isSupervisor())
+        return <></>
     return <></>
 }
