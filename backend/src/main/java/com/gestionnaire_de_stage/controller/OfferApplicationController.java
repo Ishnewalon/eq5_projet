@@ -65,10 +65,6 @@ public class OfferApplicationController {
         try {
             offerApplicationList = offerApplicationService.getAllByOfferCreatorEmail(email);
             curriculumDTOList = curriculumService.mapToCurriculumDTOList(offerApplicationList);
-        } catch (EmailDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le courriel n'existe pas"));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()

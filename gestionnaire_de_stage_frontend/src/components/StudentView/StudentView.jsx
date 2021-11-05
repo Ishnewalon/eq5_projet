@@ -19,7 +19,7 @@ export default function StudentView() {
                     <ViewOffersAndApply/>
                 </div>
             </Route>
-            <AppliedOn></AppliedOn>
+            <AppliedOn/>
             <Route exact path={`${path}/view/status`}>
                 <div>
                     <StudentOfferApplicationList/>
