@@ -288,25 +288,6 @@ class OfferApplicationControllerTest {
     }
 
     @Test
-    public void testUpdateStatusIsAccepted_withIsAcceptedNull() throws Exception {
-        OfferApplication offerApplication = getDummyOfferApp();
-        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(offerApplication.getId(), null);
-        when(offerApplicationService.updateStatus(any()))
-                .thenThrow(new IllegalArgumentException("La valeur ne peut pas être null"));
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/applications/student/update_status")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(MAPPER.writeValueAsString(updateStatusDTO)))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-
-        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("La valeur ne peut pas être null");
-    }
-
-    @Test
     public void testUpdateStatusIsAccepted_withIdNull() throws Exception {
         UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(null, true);
         when(offerApplicationService.updateStatus(any()))

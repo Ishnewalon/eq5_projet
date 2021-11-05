@@ -2,7 +2,6 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.enums.Status;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
@@ -14,7 +13,6 @@ import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Id;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,12 +69,12 @@ public class OfferApplicationService {
     public boolean updateStatus(UpdateStatusDTO updateStatusDTO) throws IdDoesNotExistException {
         Assert.isTrue(updateStatusDTO.getIdOfferApplied() != null, "L'id de l'offre ne peut pas être null");
         OfferApplication offerApplication = offerApplicationRepository.getById(updateStatusDTO.getIdOfferApplied());
-        if (updateStatusDTO.getIsAccepted()) {
+        if (updateStatusDTO.isAccepted()) {
             offerApplication.setStatus(Status.STAGE_TROUVE);
         } else {
-            offerApplication.setStatus(Status.STAGE_REFUSER);
+            offerApplication.setStatus(Status.STAGE_REFUSE);
         }
         offerApplicationRepository.save(offerApplication);
-        return updateStatusDTO.getIsAccepted();
+        return updateStatusDTO.isAccepted();
     }
 }

@@ -3,5 +3,5 @@ export const OfferApplicationStatus = {
     EN_ATTENTE_ENTREVUE: "En attente d'entrevue",
     EN_ATTENTE_REPONSE: "En attente de réponse",
     STAGE_TROUVE: "Stage trouvé",
-    STAGE_REFUSER: "Stage refusé",
+    STAGE_REFUSE: "Stage refusé",
 }

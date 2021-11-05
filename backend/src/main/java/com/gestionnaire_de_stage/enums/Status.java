@@ -5,5 +5,5 @@ public enum Status {
     EN_ATTENTE_ENTREVUE,
     EN_ATTENTE_REPONSE,
     STAGE_TROUVE,
-    STAGE_REFUSER
+    STAGE_REFUSE
 }
