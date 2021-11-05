@@ -22,12 +22,16 @@ public class ContractService {
 
     private final MonitorService monitorService;
 
+    private final StudentService studentService;
+
     public ContractService(ContractRepository contractRepository,
                            ManagerService managerService,
-                           MonitorService monitorService) {
+                           MonitorService monitorService,
+                           StudentService studentService) {
         this.contractRepository = contractRepository;
         this.managerService = managerService;
         this.monitorService = monitorService;
+        this.studentService = studentService;
     }
 
     public List<Contract> getAllUnsignedContracts() {
@@ -73,6 +77,26 @@ public class ContractService {
         Contract contract = contractRepository.getContractById(contract_id);
         contract.setMonitorSignDate(LocalDate.now());
         contract.setMonitorSignature(monitorSignature);
+        return contractRepository.save(contract);
+    }
+
+    public Contract getContractByStudentId(Long student_id) throws IdDoesNotExistException {
+        Assert.isTrue(student_id != null, "L'id de l'étudiant ne peut pas être null");
+        if (studentService.isIDNotValid(student_id)) {
+            throw new IdDoesNotExistException();
+        }
+        return contractRepository.getContractByStudentId(student_id);
+    }
+
+    public Contract addStudentSignature(String studentSignature, Long contract_id) throws IdDoesNotExistException {
+        Assert.isTrue(studentSignature != null, "Il faut une signature");
+        Assert.isTrue(contract_id != null, "L'id du contrat ne peut pas être null");
+        if (isContractIdNotValid(contract_id)) {
+            throw new IdDoesNotExistException();
+        }
+        Contract contract = contractRepository.getContractById(contract_id);
+        contract.setStudentSignDate(LocalDate.now());
+        contract.setStudentSignature(studentSignature);
         return contractRepository.save(contract);
     }
 

@@ -108,4 +108,48 @@ public class ContractController {
                 .status(HttpStatus.OK)
                 .body(new ResponseMessage("Signature fait"));
     }
+
+    @GetMapping("/student/{student_id}")
+    public ResponseEntity<?> ContractNeedsStudentSignature(@PathVariable Long student_id) {
+        Contract contract;
+        try {
+            contract = contractService.getContractByStudentId(student_id);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Le id de l'étudiant n'existe pas"));
+        }
+
+        return ResponseEntity.ok(contract);
+    }
+
+    @PutMapping("/studentSign/{studentSignature}/{contract_id}")
+    public ResponseEntity<?> studentSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String studentSignature, @PathVariable Long contract_id){
+        try {
+            Contract contract = contractService.addStudentSignature(studentSignature, contract_id);
+            WebContext context = new WebContext(request, response, servletContext);
+            context.setVariable("contract", contract);
+            String contractHtml = templateEngine.process("contractTemplate", context);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            HtmlConverter.convertToPdf(contractHtml, baos);
+            contractService.fillPDF(contract, baos);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Le id du contrat n'existe pas"));
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseMessage("Signature fait"));
+    }
+
 }
