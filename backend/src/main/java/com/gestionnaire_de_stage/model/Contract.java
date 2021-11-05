@@ -17,7 +17,7 @@ public class Contract {
 
     private LocalDate monitorSignDate;
 
-    private LocalDate StudentSignDate;
+    private LocalDate studentSignDate;
 
     private String managerSignature;
 
