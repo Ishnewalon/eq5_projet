@@ -5,25 +5,20 @@ import {UserType} from "../enums/UserTypes";
 
 const url = `${urlBackend}/contracts`;
 
-export async function managerSignContract(managerSignature, managerId, contractId) {
-    return await signContract(UserType.MANAGER[0], managerSignature, managerId, contractId);
+export async function managerSignContract(managerSignature, contractId) {
+    return await signContract(UserType.MANAGER[0], managerSignature, contractId);
 }
 
 export async function monitorSignContract(monitorSignature, contractId) {
-    return await signContract(UserType.MONITOR[0], monitorSignature, undefined, contractId);
+    return await signContract(UserType.MONITOR[0], monitorSignature, contractId);
 }
 
 export async function studentSignContract(studentSignature, contractId){
-    return await signContract(UserType.STUDENT[0], studentSignature, undefined, contractId);
+    return await signContract(UserType.STUDENT[0], studentSignature, contractId);
 }
 
-async function signContract(userType, signature, userId, contractId) {
-    let urlToAccess = `${url}/${userType}Sign/${signature}`;
-
-    if(userId)
-        urlToAccess += `/${userId}`;
-
-    return await fetch(`${urlToAccess}/${contractId}`, requestInit(methods.PUT)).then(
+async function signContract(userType, signature, contractId) {
+    return await fetch(`${url}/${userType}Sign/${signature}/${contractId}`, requestInit(methods.PUT)).then(
         response => {
             return response.json().then(
                 body => {
