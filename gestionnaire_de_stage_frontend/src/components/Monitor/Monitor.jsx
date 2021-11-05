@@ -2,7 +2,7 @@ import React from "react";
 import AddOffer from "../AddOffer/AddOffer";
 import ViewAppliedStudents from "./ViewAppliedStudents/ViewAppliedStudents";
 import {Route, useRouteMatch} from "react-router-dom";
-import ViewContractToBeSigned from "../Manager/ViewContractToBeSigned";
+import ViewContractsToBeSigned from "../Manager/ViewContractsToBeSigned";
 import {UserType} from "../../enums/UserTypes";
 
 export default function Monitor() {
@@ -20,7 +20,7 @@ export default function Monitor() {
         </Route>
         <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
             <h1 className='text-center'>Contrats d'étudiants à valider</h1>
-            <ViewContractToBeSigned userType={UserType.MONITOR[0]}/>
+            <ViewContractsToBeSigned userType={UserType.MONITOR[0]}/>
         </div>
     </>;
 }

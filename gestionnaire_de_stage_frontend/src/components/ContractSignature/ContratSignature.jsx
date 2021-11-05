@@ -2,7 +2,7 @@ import PdfDocumentViewer from "../PdfDocumentViewer/PdfDocumentViewer";
 import {useEffect, useState} from "react";
 import {BsPenFill} from "react-icons/all";
 import Swal from "sweetalert2";
-import {managerSignContract, monitorSignContract} from "../../services/contrat-service";
+import {managerSignContract, monitorSignContract, studentSignContract} from "../../services/contrat-service";
 import {UserType} from "../../enums/UserTypes";
 
 export default function ContratSignature({userId, userType, contract, removeContract}) {
@@ -44,6 +44,11 @@ export default function ContratSignature({userId, userType, contract, removeCont
             });
         else if(userType === UserType.MONITOR[0])
             monitorSignContract(signature, contract.id).then(isSigned => {
+                if (isSigned)
+                    removeContract(contract.id);
+            });
+        else if(userType === UserType.STUDENT[0])
+            studentSignContract(signature, contract.id).then(isSigned => {
                 if (isSigned)
                     removeContract(contract.id);
             });

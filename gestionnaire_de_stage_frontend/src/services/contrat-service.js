@@ -13,6 +13,10 @@ export async function monitorSignContract(monitorSignature, contractId) {
     return await signContract(UserType.MONITOR[0], monitorSignature, undefined, contractId);
 }
 
+export async function studentSignContract(studentSignature, contractId){
+    return await signContract(UserType.STUDENT[0], studentSignature, undefined, contractId);
+}
+
 async function signContract(userType, signature, userId, contractId) {
     let urlToAccess = `${url}/${userType}Sign/${signature}`;
 
@@ -54,5 +58,19 @@ export async function getAllContractsToBeSignedForMonitor(monitorId) {
                 })
         }, err => console.error(err)
     );
+}
+
+export async function getContractForStudent(userId){
+    return await fetch(`${url}/student/${userId}`, requestInit(methods.GET)).then(response => {
+        return response.json().then(
+            body => {
+                if (response.ok) {
+                    return body;
+                } else {
+                    swalErr.fire({text: body.message})
+                    return Promise.any([]);
+                }
+            })
+    }, err => console.error(err));
 }
 
