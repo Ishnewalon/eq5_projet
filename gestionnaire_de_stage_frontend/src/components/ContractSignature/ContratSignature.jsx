@@ -26,7 +26,7 @@ export default function ContratSignature({userType, contract, removeContract}) {
 
     useEffect(() => {
         setPdf(toPdfBlob(contract.contractPDF));
-    }, []);
+    }, [contract.contractPDF]);
 
     const startContract = (e) => {
         e.preventDefault();

@@ -44,6 +44,9 @@ function NavItemSpecificForUser() {
                 <li>
                     <Link className="nav-link" to="/dashboard/applications">Applications</Link>
                 </li>
+                <li>
+                    <Link className="nav-link" to="/dashboard/voir/futures_stagiaires">Contrats à valider</Link>
+                </li>
             </>
         )
     if (auth.isManager())
@@ -61,7 +64,10 @@ function NavItemSpecificForUser() {
                 <Link className="nav-link" to="/dashboard/curriculum/review">Valider Cv</Link>
             </li>
             <li>
-                <Link className="nav-link" to="/dashboard/students/applied">Assossier</Link>
+                <Link className="nav-link" to="/dashboard/students/applied">Associer</Link>
+            </li>
+            <li>
+                <Link className="nav-link" to="/dashboard/contrats/a_signer">Contrats à valider</Link>
             </li>
         </>)
     if (auth.isStudent())
@@ -71,6 +77,9 @@ function NavItemSpecificForUser() {
             </li>
             <li>
                 <Link className="nav-link" to="/dashboard/offres">Offres</Link>
+            </li>
+            <li>
+                <Link className="nav-link" to="/dashboard/voir_mon_contrat">Voir Contrat</Link>
             </li>
         </>
     return <></>

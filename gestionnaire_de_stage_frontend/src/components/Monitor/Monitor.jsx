@@ -18,9 +18,11 @@ export default function Monitor() {
                 <ViewAppliedStudents/>
             </div>
         </Route>
-        <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-            <h1 className='text-center'>Contrats d'étudiants à valider</h1>
-            <ViewContractsToBeSigned userType={UserType.MONITOR[0]}/>
-        </div>
+        <Route exact path={`${path}/voir/futures_stagiaires`}>
+            <div className="container bg-dark px-3 py-4 rounded mt-5">
+                <h1 className='text-center'>Contrats de futures stagiaires à valider</h1>
+                <ViewContractsToBeSigned userType={UserType.MONITOR[0]}/>
+            </div>
+        </Route>
     </>;
 }

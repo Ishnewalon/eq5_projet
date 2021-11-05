@@ -36,9 +36,11 @@ export default function Manager() {
                     <LinkSupervisorToStudent/>
                 </div>
             </Route>
-            <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-                <ViewContractsToBeSigned userType={UserType.MANAGER[0]} />
-            </div>
+            <Route exact path={`${path}/contrats/a_signer`}>
+                <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+                    <ViewContractsToBeSigned userType={UserType.MANAGER[0]}/>
+                </div>
+            </Route>
         </>
     )
 }

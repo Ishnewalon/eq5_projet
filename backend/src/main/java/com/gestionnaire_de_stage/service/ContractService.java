@@ -2,12 +2,10 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Contract;
-import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.repository.ContractRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.persistence.Id;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.List;
@@ -18,18 +16,14 @@ public class ContractService {
 
     private final ContractRepository contractRepository;
 
-    private final ManagerService managerService;
-
     private final MonitorService monitorService;
 
     private final StudentService studentService;
 
     public ContractService(ContractRepository contractRepository,
-                           ManagerService managerService,
                            MonitorService monitorService,
                            StudentService studentService) {
         this.contractRepository = contractRepository;
-        this.managerService = managerService;
         this.monitorService = monitorService;
         this.studentService = studentService;
     }
@@ -41,10 +35,11 @@ public class ContractService {
     public Contract addManagerSignature(String managerSignature, Long contract_id) throws IllegalArgumentException, IdDoesNotExistException {
         Assert.isTrue(managerSignature != null, "Il faut une signature");
         Assert.isTrue(contract_id != null, "L'id du contrat ne peut pas être null");
-        if (isContractIdNotValid(contract_id)) {
+        if (isContractIdNotValid(contract_id))
             throw new IdDoesNotExistException();
-        }
-        Contract contract = contractRepository.getContractById(contract_id);
+
+        Contract contract = contractRepository.getContractByIdAndManagerSignatureNullAndMonitorSignatureNullAndStudentSignatureNull(contract_id);
+
         contract.setManagerSignDate(LocalDate.now());
         contract.setManagerSignature(managerSignature);
         return contractRepository.save(contract);
@@ -55,7 +50,7 @@ public class ContractService {
         if (monitorService.isIdInvalid(monitor_id)) {
             throw new IdDoesNotExistException();
         }
-        return contractRepository.getAllByOffer_CreatorIdAndAndMonitorSignatureNullAndManagerSignatureNotNull(monitor_id);
+        return contractRepository.getAllByOffer_CreatorIdAndMonitorSignatureNullAndManagerSignatureNotNull(monitor_id);
     }
 
     public Contract addMonitorSignature(String monitorSignature, Long contract_id) throws IllegalArgumentException, IdDoesNotExistException {
@@ -64,7 +59,7 @@ public class ContractService {
         if (isContractIdNotValid(contract_id)) {
             throw new IdDoesNotExistException();
         }
-        Contract contract = contractRepository.getContractById(contract_id);
+        Contract contract = contractRepository.getContractByIdAndManagerSignatureNotNullAndMonitorSignatureNullAndStudentSignatureNull(contract_id);
         contract.setMonitorSignDate(LocalDate.now());
         contract.setMonitorSignature(monitorSignature);
         return contractRepository.save(contract);
@@ -75,7 +70,7 @@ public class ContractService {
         if (studentService.isIDNotValid(student_id)) {
             throw new IdDoesNotExistException();
         }
-        return contractRepository.getContractByStudentId(student_id);
+        return contractRepository.getContractByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNull(student_id);
     }
 
     public Contract addStudentSignature(String studentSignature, Long contract_id) throws IdDoesNotExistException {
@@ -84,7 +79,7 @@ public class ContractService {
         if (isContractIdNotValid(contract_id)) {
             throw new IdDoesNotExistException();
         }
-        Contract contract = contractRepository.getContractById(contract_id);
+        Contract contract = contractRepository.getContractByIdAndMonitorSignatureNotNullAndManagerSignatureNotNullAndStudentSignatureNull(contract_id);
         contract.setStudentSignDate(LocalDate.now());
         contract.setStudentSignature(studentSignature);
         return contractRepository.save(contract);
