@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.service.ContractService;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,7 @@ public class ContractControllerTest {
     public void testManagerStartContract() throws Exception {
         when(contractService.gsStartContract( any(), any())).thenReturn(getDummyContract());
         when(contractService.updateContract( any())).thenReturn(getDummyContract());
-
+//        when(contractService.doesStudentAlreadyHaveAContract(any())).thenReturn(false);
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -80,6 +81,20 @@ public class ContractControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("L'id de l'application ne peut pas être null!");
+    }
+    @Test
+    public void testManagerStartContract_whenStudentAlreadyHaveAContract() throws Exception {
+        when(contractService.gsStartContract( any(), any())).thenThrow(StudentAlreadyHaveAContractException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/contracts/start")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(new ContractStarterDto(null, 1L))))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'étudiant a déjà un contrat!");
     }
     @Test
     public void testManagerStartContract_whenIdOfferApplicationInvalid() throws Exception {

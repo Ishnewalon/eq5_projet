@@ -10,4 +10,6 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
     Contract getContractByStudentId(Long id);
     Contract getContractById(Long id);
     List<Contract> getAllByOffer_CreatorIdAndAndMonitorSignatureNullAndManagerSignatureNotNull(Long id);
+
+    boolean existsByStudentId(Long id);
 }

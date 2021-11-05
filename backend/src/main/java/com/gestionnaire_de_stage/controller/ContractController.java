@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
 import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.service.ContractService;
 import com.itextpdf.html2pdf.HtmlConverter;
@@ -42,7 +43,7 @@ public class ContractController {
     }
 
     @PutMapping("/managerSign/{managerSignature}/{contract_id}")
-    public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature,  @PathVariable Long contract_id){
+    public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addManagerSignature(managerSignature, contract_id);
             WebContext context = new WebContext(request, response, servletContext);
@@ -88,6 +89,10 @@ public class ContractController {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(new ResponseMessage("L'id du gestionnaire et de l'application doivent exister!"));
+        } catch (StudentAlreadyHaveAContractException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("L'étudiant a déjà un contrat!"));
         }
         return ResponseEntity.ok(new ResponseMessage("Création de contrat réussi!"));
     }
