@@ -102,5 +102,4 @@ public class OfferController {
         List<Offer> offers = offerService.getNotValidatedOffers();
         return ResponseEntity.ok(offers);
     }
-
 }
