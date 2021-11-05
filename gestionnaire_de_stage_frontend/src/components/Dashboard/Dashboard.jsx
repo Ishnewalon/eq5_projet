@@ -8,10 +8,15 @@ import {useAuth} from "../../services/use-auth";
 
 export default function Dashboard() {
     let auth = useAuth();
-    return (<>
-        {auth.isMonitor() ? <Monitor/> : <></>}
-        {auth.isManager() ? <Manager/> : <></>}
-        {auth.isStudent() ? <StudentView/> : <></>}
-        {auth.isSupervisor() ? <SupervisorView/> : <></>}
-    </>)
+
+    if (auth.isMonitor())
+        return <Monitor/>
+    if (auth.isManager())
+        return <Manager/>
+    if (auth.isStudent())
+        return <StudentView/>
+    if (auth.isSupervisor())
+        return <SupervisorView/>
+
+    return <></>
 }
