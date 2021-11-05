@@ -2,6 +2,11 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.enums.Status;
+import com.gestionnaire_de_stage.exception.*;
+import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.model.OfferApplication;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
@@ -15,6 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -239,6 +245,62 @@ class OfferApplicationServiceTest {
         assertThat(isAccepted).isFalse();
     }
 
+    @Test
+    void testSetInterviewDate_withValidIDs() throws Exception {
+        OfferApplication offerApplication = getDummyOfferApp();
+        when(offerApplicationRepository.existsById(any())).thenReturn(true);
+        when(offerApplicationRepository.getById(any())).thenReturn(offerApplication);
+        offerApplication.setInterviewDate(LocalDateTime.now());
+        when(offerApplicationRepository.save(any())).thenReturn(offerApplication);
+
+        OfferApplication actual = offerApplicationService.setInterviewDate(offerApplication.getId(), LocalDateTime.now().plusDays(1));
+
+        assertThat(actual).isEqualTo(offerApplication);
+    }
+
+    @Test
+    void testSetInterviewDate_withNullIDs() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.setInterviewDate(null, null));
+    }
+
+    @Test
+    void testSetInterviewDate_withOfferAppIdNotExist() {
+        when(offerApplicationRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerApplicationService.setInterviewDate(5L, LocalDateTime.now()));
+    }
+
+    @Test
+    void testSetInterviewDate_withDateInvalid() {
+        OfferApplication offerApplication = getDummyOfferApp();
+        when(offerApplicationRepository.existsById(any())).thenReturn(true);
+
+        assertThrows(DateNotValidException.class,
+                () -> offerApplicationService.setInterviewDate(
+                        offerApplication.getId(),
+                        LocalDateTime.now().minusDays(5)));
+    }
+
+    @Test
+    void testGetAllByOfferStatusAndStudentID_withValidEntries() {
+        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
+        when(offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(any(), any()))
+                .thenReturn(offerApplicationList);
+
+        List<OfferApplication> actualList = offerApplicationService.getAllByOfferStatusAndStudentID(Status.CV_ENVOYE, 1L);
+
+        assertThat(actualList.size()).isGreaterThan(1);
+        assertThat(actualList).isEqualTo(offerApplicationList);
+    }
+
+    @Test
+    void testGetAllByOfferStatusAndStudentID_withNullEntries() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.getAllByOfferStatusAndStudentID(null, null));
+    }
+
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();
         offerApplicationDTO.setOffer(getDummyOffer());
@@ -301,6 +363,7 @@ class OfferApplicationServiceTest {
         dummyOfferApplication.setOffer(getDummyOffer());
         dummyOfferApplication.setCurriculum(new Curriculum());
         dummyOfferApplication.setId(1L);
+        dummyOfferApplication.setStatus(Status.CV_ENVOYE);
         offerApplicationList.add(dummyOfferApplication);
 
         dummyOfferApplication.setId(2L);

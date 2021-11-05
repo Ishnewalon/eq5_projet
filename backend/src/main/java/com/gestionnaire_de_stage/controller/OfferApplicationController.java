@@ -3,6 +3,8 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.enums.Status;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
@@ -13,6 +15,7 @@ import com.gestionnaire_de_stage.service.OfferApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -56,7 +59,7 @@ public class OfferApplicationController {
     }
 
     @GetMapping("/applicants/{email}")
-    public ResponseEntity<?> viewApplicantList(@PathVariable String email) {//TODO: Return a list of curriculum with a list of applicants inside
+    public ResponseEntity<?> viewApplicantList(@PathVariable String email) {
         List<OfferApplication> offerApplicationList;
         List<CurriculumDTO> curriculumDTOList;
         try {
@@ -68,6 +71,38 @@ public class OfferApplicationController {
                     .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity.ok(curriculumDTOList);
+    }
+
+    @PostMapping("/setdate/{offerAppID}")
+    public ResponseEntity<?> setInterviewDate(@PathVariable Long offerAppID, @RequestBody LocalDateTime date) {
+        try{
+            OfferApplication offerApplication = offerApplicationService.setInterviewDate(offerAppID, date);
+            return ResponseEntity.ok(offerApplication);
+        } catch (DateNotValidException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("La date entrée est invalide!"));
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Impossible de trouver l'offre avec cette ID!"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+    }
+
+    @GetMapping("/all_applied_on/{studentID}")
+    public ResponseEntity<?> getAllByOfferStatusAndStudentID(@PathVariable Long studentID) {
+        try {
+            List<OfferApplication> offerApplicationList = offerApplicationService.getAllByOfferStatusAndStudentID(Status.CV_ENVOYE, studentID);
+            return ResponseEntity.ok(offerApplicationList);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
     }
 
     @GetMapping("/applicants/manager/{id}")

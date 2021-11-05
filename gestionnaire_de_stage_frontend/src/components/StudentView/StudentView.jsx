@@ -2,6 +2,7 @@ import React from "react";
 import TeleverserCv from "./TeleverserCv/TeleverserCv";
 import ViewOffersAndApply from "./ViewOffersAndApply/ViewOffersAndApply";
 import {Route, useRouteMatch} from "react-router-dom";
+import AppliedOn from "./AppliedOn/AppliedOn";
 import {ViewContract} from "./ViewContract";
 import StudentOfferApplicationList from "./StudentOfferApplication/StudentOfferApplicationList";
 
@@ -21,6 +22,11 @@ export default function StudentView() {
             <Route exact path={`${path}/view/status`}>
                 <div>
                     <StudentOfferApplicationList/>
+                </div>
+            </Route>
+            <Route exact path={`${path}/offer/setdate`}>
+                <div>
+                    <AppliedOn/>
                 </div>
             </Route>
             <Route exact path={`${path}/voir_mon_contrat`}>

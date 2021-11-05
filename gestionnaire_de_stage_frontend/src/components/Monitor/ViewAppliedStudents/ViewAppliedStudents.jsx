@@ -5,9 +5,7 @@ import {useAuth} from "../../../services/use-auth";
 
 export default function ViewAppliedStudents() {//TODO: list of curriculum with a list of applicants inside
     let auth = useAuth();
-
     const [students, setStudents] = useState([]);
-
 
     useEffect(() => {
         getAllApplicants(auth.user.email).then(v => {

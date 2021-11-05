@@ -2,8 +2,12 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
+import com.gestionnaire_de_stage.enums.Status;
+import com.gestionnaire_de_stage.exception.*;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
@@ -24,15 +28,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.CREATED;
-
+import static org.springframework.http.HttpStatus.*;
 
 @WebMvcTest(OfferApplicationController.class)
 class OfferApplicationControllerTest {
@@ -46,7 +49,7 @@ class OfferApplicationControllerTest {
     @MockBean
     private CurriculumService curriculumService;
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void testStudentApplyToOffer() throws Exception {
@@ -223,8 +226,7 @@ class OfferApplicationControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<CurriculumDTO> actualCurriculumDTOs = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
-        });
+        List<CurriculumDTO> actualCurriculumDTOs = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualCurriculumDTOs.size()).isEqualTo(3);
     }
@@ -236,15 +238,14 @@ class OfferApplicationControllerTest {
                 .thenThrow(new IllegalArgumentException("Le courriel ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/applications/applicants/{}", email)
-                                .contentType(MediaType.APPLICATION_JSON))
+                MockMvcRequestBuilders.get("/applications/applicants/{}", email)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Le courriel ne peut pas être null");
     }
-
 
     @Test
     public void testViewStudentsAppliedOffer_withEmptyList() throws Exception {
@@ -256,13 +257,117 @@ class OfferApplicationControllerTest {
                 .thenThrow(new IllegalArgumentException("La liste d'offre ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/applications/applicants/{}", email)
-                                .contentType(MediaType.APPLICATION_JSON))
+                MockMvcRequestBuilders.get("/applications/applicants/{}", email)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("La liste d'offre ne peut pas être vide");
+    }
+
+    @Test
+    void testSetInterviewDate_withValidIDs() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
+        OfferApplication offerApplication = getDummyOfferApp();
+        offerApplication.setInterviewDate(LocalDateTime.now());
+        when(offerApplicationService.setInterviewDate(any(), any()))
+                .thenReturn(offerApplication);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/applications/setdate/" + offerApplication.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(LocalDateTime.now())))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        final OfferApplication actual = MAPPER.readValue(response.getContentAsString(), OfferApplication.class);
+        assertThat(response.getStatus()).isEqualTo(OK.value());
+        assertThat(actual.getInterviewDate()).isEqualTo(offerApplication.getInterviewDate());
+    }
+
+    @Test
+    void testSetInterviewDate_withNullIDs() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
+        OfferApplication offerApplication = getDummyOfferApp();
+        when(offerApplicationService.setInterviewDate(any(), any()))
+                .thenThrow(new IllegalArgumentException("L'id de l'offre ne peut pas être null"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/applications/setdate/" + offerApplication.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(LocalDateTime.now())))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'id de l'offre ne peut pas être null");
+    }
+
+    @Test
+    void testSetInterviewDate_withOfferAppIdNotExist() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
+        when(offerApplicationService.setInterviewDate(any(), any()))
+                .thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/applications/setdate/" + 3L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(LocalDateTime.now())))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Impossible de trouver l'offre avec cette ID!");
+    }
+
+    @Test
+    void testSetInterviewDate_withDateInvalid() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
+        when(offerApplicationService.setInterviewDate(any(), any()))
+                .thenThrow(DateNotValidException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/applications/setdate/" + 3L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(LocalDateTime.now())))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("La date entrée est invalide!");
+    }
+
+    @Test
+    void testGetAllByOfferStatusAndStudentID_withValidEntries() throws Exception {
+        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
+        when(offerApplicationService.getAllByOfferStatusAndStudentID(any(), any()))
+                .thenReturn(offerApplicationList);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/applications/all_applied_on/" + 1L)
+                    .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        final List<OfferApplication> actualOfferApplicationList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        assertThat(response.getStatus()).isEqualTo(OK.value());
+        assertThat(actualOfferApplicationList.size()).isEqualTo(offerApplicationList.size());
+    }
+
+    @Test
+    void testGetAllByOfferStatusAndStudentID_withNullEntries() throws Exception {
+        when(offerApplicationService.getAllByOfferStatusAndStudentID(any(), any()))
+                .thenThrow(new IllegalArgumentException("L'id du student ne peut pas être null"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/applications/all_applied_on/" + 1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'id du student ne peut pas être null");
     }
 
     @Test
@@ -443,17 +548,18 @@ class OfferApplicationControllerTest {
 
     private List<OfferApplication> getDummyOfferAppList() {
         List<OfferApplication> offerApplicationList = new ArrayList<>();
-        OfferApplication dummyOfferApplicationDTO = new OfferApplication();
-        dummyOfferApplicationDTO.setOffer(getDummyOffer());
-        dummyOfferApplicationDTO.setCurriculum(getDummyCurriculum());
-        dummyOfferApplicationDTO.setId(1L);
-        offerApplicationList.add(dummyOfferApplicationDTO);
+        OfferApplication dummyOfferApplication = new OfferApplication();
+        dummyOfferApplication.setOffer(getDummyOffer());
+        dummyOfferApplication.setCurriculum(getDummyCurriculum());
+        dummyOfferApplication.setId(1L);
+        dummyOfferApplication.setStatus(Status.CV_ENVOYE);
+        offerApplicationList.add(dummyOfferApplication);
 
-        dummyOfferApplicationDTO.setId(2L);
-        offerApplicationList.add(dummyOfferApplicationDTO);
+        dummyOfferApplication.setId(2L);
+        offerApplicationList.add(dummyOfferApplication);
 
-        dummyOfferApplicationDTO.setId(3L);
-        offerApplicationList.add(dummyOfferApplicationDTO);
+        dummyOfferApplication.setId(3L);
+        offerApplicationList.add(dummyOfferApplication);
 
         return offerApplicationList;
     }
