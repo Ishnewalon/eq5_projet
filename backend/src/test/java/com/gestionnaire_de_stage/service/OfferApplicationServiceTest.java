@@ -162,6 +162,30 @@ class OfferApplicationServiceTest {
                 () -> offerApplicationService.getAllByOfferCreatorEmail(null));
     }
 
+    @Test
+    void testGetOneById() throws IdDoesNotExistException {
+        OfferApplication offerApplication = getDummyOfferApp();
+        when(offerApplicationRepository.existsById(any())).thenReturn(false);
+        when(offerApplicationRepository.getById(any())).thenReturn(offerApplication);
+
+        OfferApplication actualOfferApp = offerApplicationService.getOneById(offerApplication.getId());
+
+        assertThat(actualOfferApp).isEqualTo(offerApplication);
+    }
+
+    @Test
+    void testGetOneById_whenIdNull() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.getOneById(null));
+    }
+    @Test
+    void testGetOneById_whenIdInvalid() {
+        when(offerApplicationRepository.existsById(any())).thenReturn(true);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerApplicationService.getOneById(1L));
+    }
+
 
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();

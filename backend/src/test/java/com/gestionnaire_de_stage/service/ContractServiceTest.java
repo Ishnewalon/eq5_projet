@@ -10,11 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.thymeleaf.TemplateEngine;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +18,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,8 +25,6 @@ public class ContractServiceTest {
 
     @InjectMocks
     private ContractService contractService;
-    @InjectMocks
-    private TemplateEngine templateEngine;
 
     @Mock
     private ContractRepository contractRepository;
@@ -46,10 +39,6 @@ public class ContractServiceTest {
     private StudentService studentService;
     @Mock
     private OfferApplicationService offerApplicationService;
-    @Autowired
-    private HttpServletRequest request;
-    @Autowired
-    private HttpServletResponse httpServletResponse;
 
     @Test
     public void testGetAllByManagerSignatureNull() {
@@ -118,11 +107,20 @@ public class ContractServiceTest {
         when(managerService.getOneByID(any())).thenReturn(dummyManager);
         when(offerApplicationService.getOneById(any())).thenReturn(dummyOfferApplication);
         when(contractRepository.save(any())).thenReturn(dummyFilledContract);
-        when(templateEngine.process(anyString(), any())).thenReturn("<h1>Butter dawg :)</h1>");
 
-        Contract contract = contractService.gsStartContract(request, httpServletResponse, new ContractStarterDto(dummyManager.getId(), dummyOfferApplication.getId()));
+        Contract contract = contractService.gsStartContract(getDummyContract(), new ContractStarterDto(dummyManager.getId(), dummyOfferApplication.getId()));
 
         assertThat(contract.getId()).isEqualTo(dummyFilledContract.getId());
+    }
+
+    @Test
+    void testUpdateContract() {
+        Contract dummyFilledContract = getDummyFilledContract();
+        when(contractRepository.save(any())).thenReturn(dummyFilledContract);
+
+        Contract contract = contractService.updateContract(getDummyContract());
+
+        assertThat(contract).isEqualTo(dummyFilledContract);
     }
 
 

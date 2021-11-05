@@ -40,7 +40,8 @@ public class ContractControllerTest {
 
     @Test
     public void testManagerStartContract() throws Exception {
-        when(contractService.gsStartContract(any(), any(), any())).thenReturn(new Contract());
+        when(contractService.gsStartContract( any(), any())).thenReturn(getDummyContract());
+        when(contractService.updateContract( any())).thenReturn(getDummyContract());
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
@@ -54,7 +55,7 @@ public class ContractControllerTest {
     }
     @Test
     public void testManagerStartContract_whenContractStarterIdManagerNull() throws Exception {
-        when(contractService.gsStartContract(any(), any(), any())).thenThrow(new IllegalArgumentException("L'id du gestionnaire ne peut pas être null!"));
+        when(contractService.gsStartContract(any(), any())).thenThrow(new IllegalArgumentException("L'id du gestionnaire ne peut pas être null!"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
@@ -68,7 +69,7 @@ public class ContractControllerTest {
     }
     @Test
     public void testManagerStartContract_whenIdOfferApplicationNull() throws Exception {
-        when(contractService.gsStartContract(any(), any(), any())).thenThrow(new IllegalArgumentException("L'id de l'application ne peut pas être null!"));
+        when(contractService.gsStartContract( any(), any())).thenThrow(new IllegalArgumentException("L'id de l'application ne peut pas être null!"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
@@ -82,7 +83,7 @@ public class ContractControllerTest {
     }
     @Test
     public void testManagerStartContract_whenIdOfferApplicationInvalid() throws Exception {
-        when(contractService.gsStartContract(any(), any(), any())).thenThrow(IdDoesNotExistException.class);
+        when(contractService.gsStartContract( any(), any())).thenThrow(IdDoesNotExistException.class);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")

@@ -74,8 +74,4 @@ public class OfferApplicationService {
             throw new IdDoesNotExistException();
         return offerApplicationRepository.getById(idOfferApplication);
     }
-
-    public boolean isIDNotValid(Long idOfferApplication) {
-        return !offerApplicationRepository.existsById(idOfferApplication);
-    }
 }

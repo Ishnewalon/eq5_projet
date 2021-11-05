@@ -69,7 +69,17 @@ public class ContractController {
     @PostMapping("/start")
     public ResponseEntity<?> createContract(HttpServletRequest request, HttpServletResponse response, @RequestBody ContractStarterDto contractStarterDto) {
         try {
-            contractService.gsStartContract(request, response, contractStarterDto);
+            Contract contract = new Contract();
+            contract = contractService.gsStartContract(contract, contractStarterDto);
+
+            WebContext context = new WebContext(request, response, servletContext);
+            context.setVariable("contract", contract);
+
+            String contractHtml = templateEngine.process("contractTemplate", context);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            HtmlConverter.convertToPdf(contractHtml, baos);
+            contract.setContractPDF(baos.toByteArray());
+            contractService.updateContract(contract);
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
