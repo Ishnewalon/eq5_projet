@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.service.ContractService;
@@ -34,6 +35,26 @@ public class ContractControllerTest {
     private ContractService contractService;
 
     private final ObjectMapper MAPPER = new ObjectMapper();
+
+
+    @Test
+    public void testGsStartContract() throws Exception {
+        when(contractService.gsStartContract(any())).thenReturn(true);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/applications/contract/start")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(getDummyContractStarter())))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    private ContractStarterDto getDummyContractStarter() {
+        return null;
+    }
+
 
     @Test
     public void testGetContractReadySign_withValidEntries() throws Exception {

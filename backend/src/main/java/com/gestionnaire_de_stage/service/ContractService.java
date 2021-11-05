@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.repository.ContractRepository;
@@ -51,4 +52,7 @@ public class ContractService {
         return !contractRepository.existsById(contract_id);
     }
 
+    public boolean gsStartContract(ContractStarterDto contractStarterDto) {
+        return false;
+    }
 }

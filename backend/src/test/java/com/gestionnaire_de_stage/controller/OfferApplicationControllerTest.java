@@ -154,7 +154,6 @@ class OfferApplicationControllerTest {
         assertThat(response.getContentAsString()).contains("Vous devez d'abord ajouter un curriculum!");
     }
 
-    /////////////////////
     @Test
     public void testGetOffersApplicationStageTrouver() throws Exception {
         List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
@@ -205,7 +204,6 @@ class OfferApplicationControllerTest {
         assertThat(response.getContentAsString()).contains("Le gestionnaire n'existe pas!");
     }
 
-    ////////
     @Test
     public void testViewStudentsAppliedOffer_withValidEntries() throws Exception {
         List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
