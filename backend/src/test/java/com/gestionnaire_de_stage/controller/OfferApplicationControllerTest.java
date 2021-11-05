@@ -10,10 +10,7 @@ import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
-import com.gestionnaire_de_stage.model.Curriculum;
-import com.gestionnaire_de_stage.model.Offer;
-import com.gestionnaire_de_stage.model.OfferApplication;
-import com.gestionnaire_de_stage.model.Student;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.service.CurriculumService;
 import com.gestionnaire_de_stage.service.OfferApplicationService;
 import org.junit.jupiter.api.Test;
@@ -158,6 +155,56 @@ class OfferApplicationControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Vous devez d'abord ajouter un curriculum!");
+    }
+
+    @Test
+    public void testGetOffersApplicationStageTrouver() throws Exception {
+        List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
+        Manager dummyManager = getDummyManager();
+        when(offerApplicationService.getOffersApplicationsStageTrouver(any())).thenReturn(offerApplicationsList);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/applications/applicants/manager/" + dummyManager.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        List<OfferApplication> actualList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualList.size()).isEqualTo(offerApplicationsList.size());
+    }
+
+    @Test
+    public void testGetOffersApplicationStageTrouver_withIdNull() throws Exception {
+        Manager dummyManager = getDummyManager();
+        when(offerApplicationService.getOffersApplicationsStageTrouver(any()))
+                .thenThrow(new IllegalArgumentException("L'id du gestionnaire ne peut pas être null!"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/applications/applicants/manager/" + dummyManager.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'id du gestionnaire ne peut pas être null!");
+    }
+
+    @Test
+    public void testGetOffersApplicationStageTrouver_withInvalidId() throws Exception {
+        Manager dummyManager = getDummyManager();
+        when(offerApplicationService.getOffersApplicationsStageTrouver(any()))
+                .thenThrow(new IdDoesNotExistException());
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/applications/applicants/manager/" + dummyManager.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Le gestionnaire n'existe pas!");
     }
 
     @Test
@@ -382,6 +429,16 @@ class OfferApplicationControllerTest {
         dummyStudent.setDepartment("info");
         dummyStudent.setMatricule("4673943");
         return dummyStudent;
+    }
+
+    private Manager getDummyManager() {
+        Manager dummyManager = new Manager();
+        dummyManager.setId(1L);
+        dummyManager.setLastName("Candle");
+        dummyManager.setFirstName("Tea");
+        dummyManager.setEmail("admin@admin.com");
+        dummyManager.setPassword("admin");
+        return dummyManager;
     }
 
     private List<OfferApplication> getDummyOfferAppList() {

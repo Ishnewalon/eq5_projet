@@ -3,7 +3,9 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.service.ContractService;
 import org.junit.jupiter.api.Test;
@@ -35,6 +37,81 @@ public class ContractControllerTest {
     private ContractService contractService;
 
     private final ObjectMapper MAPPER = new ObjectMapper();
+
+
+    @Test
+    public void testManagerStartContract() throws Exception {
+        when(contractService.gsStartContract( any(), any())).thenReturn(getDummyContract());
+        when(contractService.updateContract( any())).thenReturn(getDummyContract());
+//        when(contractService.doesStudentAlreadyHaveAContract(any())).thenReturn(false);
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/contracts/start")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(new ContractStarterDto(1L, 1L))))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Création de contrat réussi!");
+    }
+    @Test
+    public void testManagerStartContract_whenContractStarterIdManagerNull() throws Exception {
+        when(contractService.gsStartContract(any(), any())).thenThrow(new IllegalArgumentException("L'id du gestionnaire ne peut pas être null!"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/contracts/start")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(new ContractStarterDto(1L, null))))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'id du gestionnaire ne peut pas être null!");
+    }
+    @Test
+    public void testManagerStartContract_whenIdOfferApplicationNull() throws Exception {
+        when(contractService.gsStartContract( any(), any())).thenThrow(new IllegalArgumentException("L'id de l'application ne peut pas être null!"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/contracts/start")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(new ContractStarterDto(null, 1L))))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'id de l'application ne peut pas être null!");
+    }
+    @Test
+    public void testManagerStartContract_whenStudentAlreadyHaveAContract() throws Exception {
+        when(contractService.gsStartContract( any(), any())).thenThrow(StudentAlreadyHaveAContractException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/contracts/start")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(new ContractStarterDto(null, 1L))))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'étudiant a déjà un contrat!");
+    }
+    @Test
+    public void testManagerStartContract_whenIdOfferApplicationInvalid() throws Exception {
+        when(contractService.gsStartContract( any(), any())).thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/contracts/start")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(new ContractStarterDto(1L, 1L))))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'id du gestionnaire et de l'application doivent exister!");
+    }
+
+
 
     @Test
     public void testGetContractReadySign_withValidEntries() throws Exception {

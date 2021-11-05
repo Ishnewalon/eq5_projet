@@ -13,7 +13,7 @@ export default function ViewContractsToBeSigned({userType}) {
             getAllContractsToBeStarted().then(contracts => setContracts(contracts));
         if (userType === UserType.MONITOR[0])
             getAllContractsToBeSignedForMonitor(auth.user.id).then(contracts => setContracts(contracts))
-    }, [userType, auth.user.id]);
+    }, [auth.user.id, userType]);
 
     const removeContract = (contractId) => {
         const newContracts = contracts.filter(contract => contract.id !== contractId);

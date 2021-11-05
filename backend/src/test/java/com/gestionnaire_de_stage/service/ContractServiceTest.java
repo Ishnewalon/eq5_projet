@@ -1,9 +1,10 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.dto.ContractStarterDto;
+import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.model.Contract;
-import com.gestionnaire_de_stage.model.Manager;
-import com.gestionnaire_de_stage.model.Student;
+import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.ContractRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,10 +31,15 @@ public class ContractServiceTest {
     private ContractRepository contractRepository;
 
     @Mock
+    private ManagerService managerService;
+
+    @Mock
     private MonitorService monitorService;
 
     @Mock
     private StudentService studentService;
+    @Mock
+    private OfferApplicationService offerApplicationService;
 
     @Test
     public void testGetAllByManagerSignatureNull() {
@@ -80,6 +86,44 @@ public class ContractServiceTest {
         assertThrows(IdDoesNotExistException.class,
                 () -> contractService.addManagerSignature(managerSignature, dummyContract.getId()));
     }
+
+    @Test
+    public void testGsStartContract() throws Exception {
+        Manager dummyManager = getDummyManager();
+        OfferApplication dummyOfferApplication = getDummyOfferApplication();
+        Contract dummyFilledContract = getDummyFilledContract();
+        when(managerService.getOneByID(any())).thenReturn(dummyManager);
+        when(offerApplicationService.getOneById(any())).thenReturn(dummyOfferApplication);
+        when(contractRepository.save(any())).thenReturn(dummyFilledContract);
+        when(contractService.doesStudentAlreadyHaveAContract(any())).thenReturn(false);
+
+        Contract contract = contractService.gsStartContract(getDummyContract(), new ContractStarterDto(dummyManager.getId(), dummyOfferApplication.getId()));
+
+        assertThat(contract.getId()).isEqualTo(dummyFilledContract.getId());
+    }
+
+    @Test
+    public void testGsStartContract_whenStudentAlreadyHaveAContract() throws Exception {
+        Manager dummyManager = getDummyManager();
+        OfferApplication dummyOfferApplication = getDummyOfferApplication();
+        when(managerService.getOneByID(any())).thenReturn(dummyManager);
+        when(offerApplicationService.getOneById(any())).thenReturn(dummyOfferApplication);
+        when(contractService.doesStudentAlreadyHaveAContract(any())).thenReturn(true);
+
+        assertThrows(StudentAlreadyHaveAContractException.class,
+                () -> contractService.gsStartContract(getDummyContract(), new ContractStarterDto(dummyManager.getId(), dummyOfferApplication.getId())));
+    }
+
+    @Test
+    void testUpdateContract() {
+        Contract dummyFilledContract = getDummyFilledContract();
+        when(contractRepository.save(any())).thenReturn(dummyFilledContract);
+
+        Contract contract = contractService.updateContract(getDummyContract());
+
+        assertThat(contract).isEqualTo(dummyFilledContract);
+    }
+
 
     @Test
     public void testFillPDF_withValidEntries() {
@@ -250,6 +294,39 @@ public class ContractServiceTest {
         dummyContract.setId(1L);
         dummyContract.setStudent(getDummyStudent());
         return dummyContract;
+    }
+
+    private OfferApplication getDummyOfferApplication() {
+        OfferApplication offerApplicationDTO = new OfferApplication();
+        offerApplicationDTO.setOffer(getDummyOffer());
+        offerApplicationDTO.setCurriculum(getDummyCurriculum());
+        offerApplicationDTO.setId(1L);
+        offerApplicationDTO.setStatus(Status.CV_ENVOYE);
+
+        return offerApplicationDTO;
+    }
+
+    private Curriculum getDummyCurriculum() {
+        Student dummyStudent = new Student();
+        dummyStudent.setId(1L);
+
+        return new Curriculum(
+                "fileName",
+                "content type",
+                "test".getBytes(),
+                dummyStudent
+        );
+    }
+
+    private Offer getDummyOffer() {
+        Offer dummyOffer = new Offer();
+        dummyOffer.setDepartment("Un departement");
+        dummyOffer.setAddress("ajsaodas");
+        dummyOffer.setId(1L);
+        dummyOffer.setDescription("oeinoiendw");
+        dummyOffer.setSalary(10);
+        dummyOffer.setTitle("oeinoiendw");
+        return dummyOffer;
     }
 
     private Contract getDummyFilledContract() {

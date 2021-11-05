@@ -1,11 +1,15 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.model.Contract;
+import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
+import com.gestionnaire_de_stage.model.*;;
 import com.gestionnaire_de_stage.repository.ContractRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.thymeleaf.TemplateEngine;
 
+import javax.persistence.Id;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.List;
@@ -16,16 +20,24 @@ public class ContractService {
 
     private final ContractRepository contractRepository;
 
+    private final ManagerService managerService;
+
     private final MonitorService monitorService;
 
     private final StudentService studentService;
 
+    private final OfferApplicationService offerApplicationService;
+
     public ContractService(ContractRepository contractRepository,
+                           ManagerService managerService,
                            MonitorService monitorService,
-                           StudentService studentService) {
+                           StudentService studentService,
+                           OfferApplicationService offerApplicationService) {
         this.contractRepository = contractRepository;
+        this.managerService = managerService;
         this.monitorService = monitorService;
         this.studentService = studentService;
+        this.offerApplicationService = offerApplicationService;
     }
 
     public List<Contract> getAllUnsignedContracts() {
@@ -95,4 +107,26 @@ public class ContractService {
         return !contractRepository.existsById(contract_id);
     }
 
+    public Contract gsStartContract(Contract contract, ContractStarterDto contractStarterDto) throws IdDoesNotExistException, IllegalArgumentException, StudentAlreadyHaveAContractException {
+        Manager manager = managerService.getOneByID(contractStarterDto.getIdManager());
+        contract.setManager(manager);
+
+        OfferApplication offerApplication = offerApplicationService.getOneById(contractStarterDto.getIdOfferApplication());
+        contract.setOffer(offerApplication.getOffer());
+        Curriculum curriculum = offerApplication.getCurriculum();
+        Student student = curriculum.getStudent();
+        if (doesStudentAlreadyHaveAContract(student.getId()))
+            throw new StudentAlreadyHaveAContractException();
+        contract.setStudent(student);
+
+        return contractRepository.save(contract);
+    }
+
+    public boolean doesStudentAlreadyHaveAContract(Long id) {
+        return contractRepository.existsByStudentId(id);
+    }
+
+    public Contract updateContract(Contract contract) {
+        return contractRepository.save(contract);
+    }
 }
