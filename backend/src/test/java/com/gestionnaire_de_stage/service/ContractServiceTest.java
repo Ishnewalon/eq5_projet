@@ -1,5 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.dto.ContractStarterDto;
+import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.ContractRepository;
@@ -8,21 +10,28 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.thymeleaf.TemplateEngine;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ContractServiceTest {
 
     @InjectMocks
     private ContractService contractService;
+    @InjectMocks
+    private TemplateEngine templateEngine;
 
     @Mock
     private ContractRepository contractRepository;
@@ -35,6 +44,12 @@ public class ContractServiceTest {
 
     @Mock
     private StudentService studentService;
+    @Mock
+    private OfferApplicationService offerApplicationService;
+    @Autowired
+    private HttpServletRequest request;
+    @Autowired
+    private HttpServletResponse httpServletResponse;
 
     @Test
     public void testGetAllByManagerSignatureNull() {
@@ -94,6 +109,22 @@ public class ContractServiceTest {
         assertThrows(IdDoesNotExistException.class,
                 () -> contractService.addManagerSignature(managerSignature, dummyContract.getId(), manager_id));
     }
+
+    @Test
+    public void testGsStartContract() throws Exception {
+        Manager dummyManager = getDummyManager();
+        OfferApplication dummyOfferApplication = getDummyOfferApplication();
+        Contract dummyFilledContract = getDummyFilledContract();
+        when(managerService.getOneByID(any())).thenReturn(dummyManager);
+        when(offerApplicationService.getOneById(any())).thenReturn(dummyOfferApplication);
+        when(contractRepository.save(any())).thenReturn(dummyFilledContract);
+        when(templateEngine.process(anyString(), any())).thenReturn("<h1>Butter dawg :)</h1>");
+
+        Contract contract = contractService.gsStartContract(request, httpServletResponse, new ContractStarterDto(dummyManager.getId(), dummyOfferApplication.getId()));
+
+        assertThat(contract.getId()).isEqualTo(dummyFilledContract.getId());
+    }
+
 
     @Test
     public void testFillPDF_withValidEntries() {
@@ -286,13 +317,34 @@ public class ContractServiceTest {
         return dummyContract;
     }
 
+    private OfferApplication getDummyOfferApplication() {
+        OfferApplication offerApplicationDTO = new OfferApplication();
+        offerApplicationDTO.setOffer(getDummyOffer());
+        offerApplicationDTO.setCurriculum(new Curriculum());
+        offerApplicationDTO.setId(1L);
+        offerApplicationDTO.setStatus(Status.CV_ENVOYE);
+
+        return offerApplicationDTO;
+    }
+
+    private Offer getDummyOffer() {
+        Offer dummyOffer = new Offer();
+        dummyOffer.setDepartment("Un departement");
+        dummyOffer.setAddress("ajsaodas");
+        dummyOffer.setId(1L);
+        dummyOffer.setDescription("oeinoiendw");
+        dummyOffer.setSalary(10);
+        dummyOffer.setTitle("oeinoiendw");
+        return dummyOffer;
+    }
+
     private Contract getDummyFilledContract() {
         Contract dummyContract = new Contract();
         dummyContract.setManager(getDummyManager());
         dummyContract.setManagerSignature("Joe Janson");
         dummyContract.setId(1L);
         dummyContract.setStudent(getDummyStudent());
-        dummyContract.setContractPDF(new byte[] {5, 1, 9, 2, 6});
+        dummyContract.setContractPDF(new byte[]{5, 1, 9, 2, 6});
         return dummyContract;
     }
 

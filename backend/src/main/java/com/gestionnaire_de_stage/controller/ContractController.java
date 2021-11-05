@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Contract;
@@ -15,7 +16,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -42,7 +42,7 @@ public class ContractController {
     }
 
     @PutMapping("/managerSign/{managerSignature}/{manager_id}/{contract_id}")
-    public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature, @PathVariable Long manager_id, @PathVariable Long contract_id){
+    public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature, @PathVariable Long manager_id, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addManagerSignature(managerSignature, contract_id, manager_id);
             WebContext context = new WebContext(request, response, servletContext);
@@ -66,6 +66,22 @@ public class ContractController {
                 .body(new ResponseMessage("Signature fait"));
     }
 
+    @PostMapping("/start")
+    public ResponseEntity<?> createContract(HttpServletRequest request, HttpServletResponse response, @RequestBody ContractStarterDto contractStarterDto) {
+        try {
+            contractService.gsStartContract(request, response, contractStarterDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseMessage("L'id du gestionnaire et de l'application doivent exister!"));
+        }
+        return ResponseEntity.ok(new ResponseMessage("Création de contrat réussi!"));
+    }
+
     @GetMapping("/monitor/{monitor_id}")
     public ResponseEntity<?> ContractNeedsMonitorSignature(@PathVariable Long monitor_id) {
         List<Contract> contractList;
@@ -85,7 +101,7 @@ public class ContractController {
     }
 
     @PutMapping("/monitorSign/{monitorSignature}/{contract_id}")
-    public ResponseEntity<?> monitorSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String monitorSignature, @PathVariable Long contract_id){
+    public ResponseEntity<?> monitorSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String monitorSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addMonitorSignature(monitorSignature, contract_id);
             WebContext context = new WebContext(request, response, servletContext);
@@ -128,7 +144,7 @@ public class ContractController {
     }
 
     @PutMapping("/studentSign/{studentSignature}/{contract_id}")
-    public ResponseEntity<?> studentSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String studentSignature, @PathVariable Long contract_id){
+    public ResponseEntity<?> studentSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String studentSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addStudentSignature(studentSignature, contract_id);
             WebContext context = new WebContext(request, response, servletContext);

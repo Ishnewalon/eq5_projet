@@ -3,12 +3,18 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Contract;
-import com.gestionnaire_de_stage.model.Monitor;
+import com.gestionnaire_de_stage.model.Manager;
+import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.repository.ContractRepository;
+import com.itextpdf.html2pdf.HtmlConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 
-import javax.persistence.Id;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.List;
@@ -24,15 +30,21 @@ public class ContractService {
     private final MonitorService monitorService;
 
     private final StudentService studentService;
+    private final TemplateEngine templateEngine;
+    private final OfferApplicationService offerApplicationService;
+    private final ServletContext servletContext;
 
     public ContractService(ContractRepository contractRepository,
                            ManagerService managerService,
                            MonitorService monitorService,
-                           StudentService studentService) {
+                           StudentService studentService, TemplateEngine templateEngine, OfferApplicationService offerApplicationService, ServletContext servletContext) {
         this.contractRepository = contractRepository;
         this.managerService = managerService;
         this.monitorService = monitorService;
         this.studentService = studentService;
+        this.templateEngine = templateEngine;
+        this.offerApplicationService = offerApplicationService;
+        this.servletContext = servletContext;
     }
 
     public List<Contract> getAllUnsignedContracts() {
@@ -111,7 +123,24 @@ public class ContractService {
         return !contractRepository.existsById(contract_id);
     }
 
-    public boolean gsStartContract(ContractStarterDto contractStarterDto) {
-        return false;
+    public Contract gsStartContract(HttpServletRequest request, HttpServletResponse response, ContractStarterDto contractStarterDto) throws IdDoesNotExistException, IllegalArgumentException{
+        Contract contract = new Contract();
+
+        Manager manager = managerService.getOneByID(contractStarterDto.getIdManager());
+        contract.setManager(manager);
+
+        OfferApplication oneById = offerApplicationService.getOneById(contractStarterDto.getIdOfferApplication());
+        contract.setOffer(oneById.getOffer());
+
+        WebContext context = new WebContext(request, response, servletContext);
+        context.setVariable("contract", contract);
+        String contractHtml = templateEngine.process("contractTemplate", context);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        HtmlConverter.convertToPdf(contractHtml, baos);
+        contract.setContractPDF(baos.toByteArray());
+
+        return contractRepository.save(contract)
+                ;
     }
 }
