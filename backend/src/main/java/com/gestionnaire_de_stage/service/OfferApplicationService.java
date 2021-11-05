@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
@@ -38,7 +39,7 @@ public class OfferApplicationService {
         Student student = studentService.getOneByID(idStudent);
         Curriculum curriculum = student.getPrincipalCurriculum();
 
-        if (curriculum == null)
+        if(curriculum == null)
             throw new StudentHasNoCurriculumException();
 
         if (offer.isEmpty())
@@ -73,5 +74,24 @@ public class OfferApplicationService {
         if (offerApplicationRepository.existsById(idOfferApplication))
             throw new IdDoesNotExistException();
         return offerApplicationRepository.getById(idOfferApplication);
+    }
+
+    public List<OfferApplication> getAllOffersStudentApplied(Long idStudent) throws IdDoesNotExistException, IllegalArgumentException {
+        Assert.isTrue(idStudent != null, "L'id de l'étudiant ne peut pas être null");
+        if (studentService.getOneByID(idStudent) == null)
+            throw new IdDoesNotExistException();
+        return offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(Status.EN_ATTENTE_REPONSE, idStudent);
+    }
+
+    public boolean updateStatus(UpdateStatusDTO updateStatusDTO) throws IdDoesNotExistException {
+        Assert.isTrue(updateStatusDTO.getIdOfferApplied() != null, "L'id de l'offre ne peut pas être null");
+        OfferApplication offerApplication = offerApplicationRepository.getById(updateStatusDTO.getIdOfferApplied());
+        if (updateStatusDTO.isAccepted()) {
+            offerApplication.setStatus(Status.STAGE_TROUVE);
+        } else {
+            offerApplication.setStatus(Status.STAGE_REFUSE);
+        }
+        offerApplicationRepository.save(offerApplication);
+        return updateStatusDTO.isAccepted();
     }
 }

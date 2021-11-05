@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
@@ -84,5 +85,40 @@ public class OfferApplicationController {
                     .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity.ok(offerApplicationList);
+    }
+
+    @GetMapping("/applicants/student/{id}")
+    public ResponseEntity<?> getAllOffersApplied(@PathVariable Long id) {
+        List<OfferApplication> offerApplicationList;
+        try {
+            offerApplicationList = offerApplicationService.getAllOffersStudentApplied(id);
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("L'étudiant n'existe pas"));
+        } catch (IllegalArgumentException e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+        return ResponseEntity.ok(offerApplicationList);
+    }
+
+    @PostMapping("/student/update_status")
+    public ResponseEntity<?> updateStatus(@RequestBody UpdateStatusDTO updateStatusDTO) {
+        boolean isAccepted;
+        try {
+            isAccepted = offerApplicationService.updateStatus(updateStatusDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Offre non existante!"));
+        }
+        String message = isAccepted ? "Status changé, attendez la signature du contrat" : "Status changé, stage refusé";
+        return ResponseEntity.ok(new ResponseMessage(message));
     }
 }

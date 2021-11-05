@@ -181,6 +181,7 @@ public class MonitorServiceTest {
         assertThrows(EmailAndPasswordDoesNotExistException.class,
                 () -> monitorService.getOneByEmailAndPassword(dummyMonitor.getEmail(), dummyMonitor.getPassword()));
     }
+
     @Test
     public void testGetOneByEmail_withValidEmail() throws EmailDoesNotExistException {
         Monitor monitor = getDummyMonitor();
