@@ -61,7 +61,7 @@ function NavItemSpecificForUser() {
                 <Link className="nav-link" to="/dashboard/curriculum/review">Valider Cv</Link>
             </li>
             <li>
-                <Link className="nav-link" to="/dashboard/students/applied">Assossier</Link>
+                <Link className="nav-link" to="/dashboard/students/applied">Associer</Link>
             </li>
         </>)
     if (auth.isStudent())
@@ -71,6 +71,9 @@ function NavItemSpecificForUser() {
             </li>
             <li>
                 <Link className="nav-link" to="/dashboard/offres">Offres</Link>
+            </li>
+            <li>
+                <Link className="nav-link" to="/dashboard/view/status">Mes applications</Link>
             </li>
         </>
     return <></>

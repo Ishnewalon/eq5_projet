@@ -8,7 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "./components/NavBar/NavBar";
 import {AuthProvider, RequireAuth, RequireNoAuth} from "./services/use-auth";
 import Login from "./components/Login/Login";
-import StudentOfferApplicationList from "./components/StudentOfferApplicationList";
 
 function App() {
 
@@ -33,7 +32,6 @@ function App() {
                         </RequireNoAuth>
                     </Route>
                 </Switch>
-                <StudentOfferApplicationList/>
             </div>
         </Router>
     </AuthProvider>

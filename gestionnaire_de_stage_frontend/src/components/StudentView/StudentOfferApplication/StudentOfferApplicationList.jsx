@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {useAuth} from "../services/use-auth";
-import {getStudentApplications, setApplicationsStatusWhenEnAttenteDeReponse} from "../services/offerAppService";
+import {useAuth} from "../../../services/use-auth";
+import {getStudentApplications, setApplicationsStatusWhenEnAttenteDeReponse} from "../../../services/offerAppService";
 
 export default function StudentOfferApplicationList() {
     const [offerApplications, setOfferApplications] = useState([])
@@ -28,7 +28,7 @@ export default function StudentOfferApplicationList() {
 
     return (<>
         <h2 className="text-center mt-5 mb-3">Les status de mes applications</h2>
-        <table className="table table-striped table-borderless text-center rounded shadow-lg">
+        <table className="table table-light table-striped table-borderless text-center rounded-3 shadow-lg">
             <thead>
             <tr>
                 <th scope="col">#</th>
