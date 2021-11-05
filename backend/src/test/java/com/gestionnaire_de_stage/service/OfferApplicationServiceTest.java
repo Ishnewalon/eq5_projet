@@ -13,8 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -172,6 +170,18 @@ class OfferApplicationServiceTest {
                         LocalDateTime.now().minusDays(5)));
     }
 
+    @Test
+    void testGetAllByOfferStatusAndStudentID_withValidEntries() {
+        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
+        when(offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(any(), any()))
+                .thenReturn(offerApplicationList);
+
+        List<OfferApplication> actualList = offerApplicationService.getAllByOfferStatusAndStudentID(Status.CV_ENVOYE, 1L);
+
+        assertThat(actualList.size()).isGreaterThan(1);
+        assertThat(actualList).isEqualTo(offerApplicationList);
+    }
+
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();
         offerApplicationDTO.setOffer(getDummyOffer());
@@ -212,6 +222,7 @@ class OfferApplicationServiceTest {
         dummyOfferApplication.setOffer(getDummyOffer());
         dummyOfferApplication.setCurriculum(new Curriculum());
         dummyOfferApplication.setId(1L);
+        dummyOfferApplication.setStatus(Status.CV_ENVOYE);
         offerApplicationList.add(dummyOfferApplication);
 
         dummyOfferApplication.setId(2L);

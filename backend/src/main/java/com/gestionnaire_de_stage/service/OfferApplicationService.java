@@ -11,7 +11,6 @@ import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
 import java.util.List;
 
@@ -57,6 +56,12 @@ public class OfferApplicationService {
             throw new EmailDoesNotExistException();
         return offerApplicationRepository.getAllByOffer_CreatorEmail(email);
     }
+
+    public List<OfferApplication> getAllByOfferStatusAndStudentID(Status status, Long studentID) {
+
+        return offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(status, studentID);
+    }
+
 
     public OfferApplication setInterviewDate(Long offerAppID, LocalDateTime date) throws IdDoesNotExistException, DateNotValidException, IllegalArgumentException {
         Assert.isTrue(offerAppID != null, "L'id de l'offre ne peut pas être null");

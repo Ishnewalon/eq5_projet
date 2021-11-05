@@ -29,7 +29,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.*;
 
-
 @WebMvcTest(OfferApplicationController.class)
 class OfferApplicationControllerTest {
 

@@ -2,7 +2,6 @@ import {methods, requestInit, urlBackend} from "./serviceUtils";
 import {swalErr, toast, toastErr} from "../utility";
 import OfferApp from "../models/OfferApp";
 
-
 export async function applyToOffer(offerApp) {//TODO: Should not be able to apply when his curriculum is not valid
     if (!_isApplicationValid(offerApp))
         return;
