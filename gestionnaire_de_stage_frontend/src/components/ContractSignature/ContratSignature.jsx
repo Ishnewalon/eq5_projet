@@ -25,6 +25,7 @@ export default function ContratSignature({userId, userType, contract, removeCont
 
     useEffect(() => {
         setPdf(toPdfBlob(contract.contractPDF));
+        // eslint-disable-next-line
     }, []);
 
     const startContract = (e) => {

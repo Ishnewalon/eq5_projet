@@ -13,6 +13,7 @@ export default function ViewContractToBeSigned({userType}) {
             getAllContractsToBeStarted().then(contracts => setContracts(contracts));
         if (userType === UserType.MONITOR[0])
             getAllContractsToBeSignedForMonitor(auth.user.id).then(contracts => setContracts(contracts))
+        // eslint-disable-next-line
     }, []);
 
     const removeContract = (contractId) => {
