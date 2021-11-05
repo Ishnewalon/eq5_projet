@@ -14,6 +14,6 @@ export function ViewContract(){
 
 
     return <>
-        <ContratSignature contract={contract} userType={UserType.STUDENT[0]} userId={auth.user.id} />
+        {contract && <ContratSignature contract={contract} userType={UserType.STUDENT[0]} userId={auth.user.id} />}
     </>
 }

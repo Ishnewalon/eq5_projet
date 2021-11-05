@@ -8,6 +8,7 @@ import {UserType} from "../../enums/UserTypes";
 export default function ContratSignature({userId, userType, contract, removeContract}) {
 
     const [signature, setSignature] = useState('');
+    const [signed, setSigned ] = useState(false);
 
     const toPdfBlob = (pdfFile) => {
         if (!pdfFile)
@@ -41,21 +42,23 @@ export default function ContratSignature({userId, userType, contract, removeCont
             managerSignContract(signature, userId, contract.id).then(isSigned => {
                 if (isSigned)
                     removeContract(contract.id);
+                setSigned(isSigned)
             });
         else if(userType === UserType.MONITOR[0])
             monitorSignContract(signature, contract.id).then(isSigned => {
                 if (isSigned)
                     removeContract(contract.id);
+                setSigned(isSigned)
             });
         else if(userType === UserType.STUDENT[0])
             studentSignContract(signature, contract.id).then(isSigned => {
-                if (isSigned)
-                    removeContract(contract.id);
+                setSigned(isSigned)
             });
     }
 
     return <div className={"container bg-secondary my-2"}>
-        <div className="d-flex justify-content-between flex-column">
+        { !signed ?
+            <div className="d-flex justify-content-between flex-column">
             <PdfDocumentViewer file={pdf}/>
             <form onSubmit={startContract}>
                 <div className={'input-group'}>
@@ -68,6 +71,7 @@ export default function ContratSignature({userId, userType, contract, removeCont
                 <button id="invalidateContractBtn" className="btn btn-primary fw-bold w-100 mb-4 mt-0"
                         type="submit">Signer le contrat <BsPenFill/></button>
             </form>
-        </div>
+        </div> : <h6 className="text-white text-center p-3">Vous avez signé le contrat.</h6>
+        }
     </div>
 }
