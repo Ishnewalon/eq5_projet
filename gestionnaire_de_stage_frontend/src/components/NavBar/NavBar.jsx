@@ -9,21 +9,21 @@ export default function Navbar() {
             <div className="container-fluid">
                 <ul className="navbar-nav">
                     <li className="nav-item">
-                        <Link className="nav-link" to="/">Accueil</Link>
+                        <Link className="nav-link text-white" to="/">Accueil</Link>
                     </li>
                     {auth.user ? (<>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/dashboard">Compte ({auth.user.firstName})</Link>
+                                <Link className="nav-link text-white" to="/dashboard">Compte ({auth.user.firstName})</Link>
                             </li>
                             <NavItemSpecificForUser/>
-                            <button onClick={() => auth.signOut()}>Se déconnecter</button>
+                            <button className="fw-bold" onClick={() => auth.signOut()}>Se déconnecter</button>
                         </>
                     ) : (<>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/login">Se connecter</Link>
+                                <Link className="nav-link text-white" to="/login">Se connecter</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/register">Créer un compte</Link>
+                                <Link className="nav-link text-white" to="/register">Créer un compte</Link>
                             </li>
                         </>
                     )}
@@ -39,56 +39,56 @@ function NavItemSpecificForUser() {
         return (
             <>
                 <li>
-                    <Link className="nav-link" to="/dashboard/offres/ajouter">Ajouter des offres</Link>
+                    <Link className="nav-link text-white" to="/dashboard/offres/ajouter">Ajouter des offres</Link>
                 </li>
                 <li>
-                    <Link className="nav-link" to="/dashboard/applications">Applications</Link>
+                    <Link className="nav-link text-white" to="/dashboard/applications">Applications</Link>
                 </li>
                 <li>
-                    <Link className="nav-link" to="/dashboard/voir/futures_stagiaires">Contrats à valider</Link>
+                    <Link className="nav-link text-white" to="/dashboard/voir/futures_stagiaires">Contrats à valider</Link>
                 </li>
             </>
         )
     if (auth.isManager())
         return (<>
             <li>
-                <Link className="nav-link" to="/dashboard/offres/ajouter">Ajouter des offres</Link>
+                <Link className="nav-link text-white" to="/dashboard/offres/ajouter">Ajouter des offres</Link>
             </li>
             <li>
-                <Link className="nav-link" to="/dashboard/offres">Offres valides</Link>
+                <Link className="nav-link text-white" to="/dashboard/offres">Offres valides</Link>
             </li>
             <li>
-                <Link className="nav-link" to="/dashboard/offres/review">Validation Offre</Link>
+                <Link className="nav-link text-white" to="/dashboard/offres/review">Validation Offre</Link>
             </li>
             <li>
-                <Link className="nav-link" to="/dashboard/curriculum/review">Valider Cv</Link>
+                <Link className="nav-link text-white" to="/dashboard/curriculum/review">Valider Cv</Link>
             </li>
             <li>
-                <Link className="nav-link" to="/dashboard/students/start">Commencer signature</Link>
+                <Link className="nav-link text-white" to="/dashboard/students/start">Commencer signature</Link>
             </li>
             <li>
-                <Link className="nav-link" to="/dashboard/students/applied">Associer</Link>
+                <Link className="nav-link text-white" to="/dashboard/students/applied">Associer</Link>
             </li>
             <li>
-                <Link className="nav-link" to="/dashboard/contrats/a_signer">Contrats à valider</Link>
+                <Link className="nav-link text-white" to="/dashboard/contrats/a_signer">Contrats à valider</Link>
             </li>
         </>)
     if (auth.isStudent())
         return <>
             <li>
-                <Link className="nav-link" to="/dashboard/televerser">Téléverser CV</Link>
+                <Link className="nav-link text-white" to="/dashboard/televerser">Téléverser CV</Link>
             </li>
             <li>
-                <Link className="nav-link" to="/dashboard/offres">Offres</Link>
+                <Link className="nav-link text-white" to="/dashboard/offres">Offres</Link>
             </li>
             <li>
-                <Link className="nav-link" to="/dashboard/voir_mon_contrat">Voir Contrat</Link>
+                <Link className="nav-link text-white" to="/dashboard/voir_mon_contrat">Voir Contrat</Link>
             </li>
             <li>
-                <Link className="nav-link" to="/dashboard/view/status">Mes applications</Link>
+                <Link className="nav-link text-white" to="/dashboard/view/status">Mes applications</Link>
             </li>
             <li>
-                <Link className="nav-link" to="/dashboard/offer/setdate">Ajouter une date d'entrevue</Link>
+                <Link className="nav-link text-white" to="/dashboard/offer/setdate">Ajouter une date d'entrevue</Link>
             </li>
         </>
     if (auth.isSupervisor())
