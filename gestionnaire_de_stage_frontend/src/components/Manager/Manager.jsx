@@ -3,8 +3,10 @@ import AddOffer from "../AddOffer/AddOffer";
 import ReviewOffers from "./ReviewOffers/ReviewOffers";
 import ViewOffers from "./ViewOffers/ViewOffers";
 import ValiderCv from "./ValidateCv/ValiderCv";
+import ViewContractsToBeSigned from "./ViewContractsToBeSigned";
 import LinkSupervisorToStudent from "./LinkSupervisorToStudent/LinkSupervisorToStudent";
 import {Route, useRouteMatch} from "react-router-dom";
+import {UserType} from "../../enums/UserTypes";
 
 export default function Manager() {
     const {path} = useRouteMatch();
@@ -33,8 +35,10 @@ export default function Manager() {
                 <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
                     <LinkSupervisorToStudent/>
                 </div>
-
             </Route>
+            <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+                <ViewContractsToBeSigned userType={UserType.MANAGER[0]} />
+            </div>
         </>
     )
 }
