@@ -79,5 +79,7 @@ function NavItemSpecificForUser() {
                 <Link className="nav-link" to="/dashboard/view/status">Mes applications</Link>
             </li>
         </>
+    if (auth.isSupervisor())
+        return <></>
     return <></>
 }
