@@ -51,7 +51,6 @@ export async function getStudentApplications(id) {
 }
 
 export async function setApplicationsStatusWhenEnAttenteDeReponse(idOfferApp, isAccepted) {
-    console.log(idOfferApp, isAccepted);
     return await fetch(`${urlBackend}/applications/student/update_status`, requestInit(methods.POST, {
         idOfferApplied: idOfferApp,
         isAccepted: isAccepted

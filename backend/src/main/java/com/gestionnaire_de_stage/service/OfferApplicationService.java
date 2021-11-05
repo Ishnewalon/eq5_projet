@@ -23,11 +23,14 @@ public class OfferApplicationService {
 
     private final OfferApplicationRepository offerApplicationRepository;
     private final OfferService offerService;
+    private final ManagerService managerService;
     private final StudentService studentService;
 
-    public OfferApplicationService(OfferApplicationRepository offerApplicationRepository, OfferService offerService, StudentService studentService) {
+
+    public OfferApplicationService(OfferApplicationRepository offerApplicationRepository, OfferService offerService, ManagerService managerService, StudentService studentService) {
         this.offerApplicationRepository = offerApplicationRepository;
         this.offerService = offerService;
+        this.managerService = managerService;
         this.studentService = studentService;
     }
 
@@ -37,7 +40,7 @@ public class OfferApplicationService {
         Student student = studentService.getOneByID(idStudent);
         Curriculum curriculum = student.getPrincipalCurriculum();
 
-        if (curriculum == null)
+        if(curriculum == null)
             throw new StudentHasNoCurriculumException();
 
         if (offer.isEmpty())
@@ -86,6 +89,21 @@ public class OfferApplicationService {
     private boolean isDateInvalid(LocalDateTime date) {
         return !date.isAfter(LocalDateTime.now())||
                 !date.isBefore(LocalDateTime.now().plusMonths(2));
+    }
+
+    public List<OfferApplication> getOffersApplicationsStageTrouver(Long id) throws IdDoesNotExistException {
+        Assert.isTrue(id != null, "L'id du gestionnaire ne peut pas être null!");
+        if (managerService.isIDNotValid(id))
+            throw new IdDoesNotExistException();
+
+        return offerApplicationRepository.getAllByStatus(Status.STAGE_TROUVE);
+    }
+
+    public OfferApplication getOneById(Long idOfferApplication) throws IdDoesNotExistException {
+        Assert.isTrue(idOfferApplication != null, "L'id de l'application ne peut pas être null");
+        if (!offerApplicationRepository.existsById(idOfferApplication))
+            throw new IdDoesNotExistException();
+        return offerApplicationRepository.getById(idOfferApplication);
     }
 
     public List<OfferApplication> getAllOffersStudentApplied(Long idStudent) throws IdDoesNotExistException, IllegalArgumentException {

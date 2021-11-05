@@ -105,6 +105,23 @@ public class OfferApplicationController {
         }
     }
 
+    @GetMapping("/applicants/manager/{id}")
+    public ResponseEntity<?> getOffersApplicationsStageTrouver(@PathVariable Long id) {
+        List<OfferApplication> offerApplicationList;
+        try {
+            offerApplicationList = offerApplicationService.getOffersApplicationsStageTrouver(id);
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Le gestionnaire n'existe pas!"));
+        } catch (IllegalArgumentException e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+        return ResponseEntity.ok(offerApplicationList);
+    }
+
     @GetMapping("/applicants/student/{id}")
     public ResponseEntity<?> getAllOffersApplied(@PathVariable Long id) {
         List<OfferApplication> offerApplicationList;
