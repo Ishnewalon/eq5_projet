@@ -89,8 +89,9 @@ public class OfferApplicationController {
 
     @PostMapping("/student/update_status")
     public ResponseEntity<?> updateStatus(@RequestBody UpdateStatusDTO updateStatusDTO) {
+        boolean isAccepted;
         try {
-            offerApplicationService.updateStatus(updateStatusDTO);
+            isAccepted = offerApplicationService.updateStatus(updateStatusDTO);
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
@@ -100,6 +101,7 @@ public class OfferApplicationController {
                     .badRequest()
                     .body(new ResponseMessage("Offre non existante!"));
         }
-        return ResponseEntity.ok(new ResponseMessage("Status changé, attendez la signature du contrat"));
+        String message = isAccepted ? "Status changé, attendez la signature du contrat" : "Status changé, stage refusé";
+        return ResponseEntity.ok(new ResponseMessage(message));
     }
 }

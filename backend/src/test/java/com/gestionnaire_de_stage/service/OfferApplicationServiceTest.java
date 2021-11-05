@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
@@ -159,6 +160,29 @@ class OfferApplicationServiceTest {
                 () -> offerApplicationService.getAllByOfferCreatorEmail(null));
     }
 
+    @Test
+    public void testUpdateStatus_withTrue() throws IdDoesNotExistException {
+        OfferApplication dummyOfferApplication = getDummyOfferApp();
+        dummyOfferApplication.setStatus(Status.EN_ATTENTE_REPONSE);
+        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), true);
+        when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
+
+        offerApplicationService.updateStatus(updateStatusDTO);
+
+        assertThat(dummyOfferApplication.getStatus()).isEqualTo(Status.STAGE_TROUVE);
+    }
+
+    @Test
+    public void testUpdateStatus_withFalse() throws IdDoesNotExistException {
+        OfferApplication dummyOfferApplication = getDummyOfferApp();
+        dummyOfferApplication.setStatus(Status.EN_ATTENTE_REPONSE);
+        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), false);
+        when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
+
+        offerApplicationService.updateStatus(updateStatusDTO);
+
+        assertThat(dummyOfferApplication.getStatus()).isEqualTo(Status.STAGE_REFUSER);
+    }
 
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();
@@ -192,6 +216,10 @@ class OfferApplicationServiceTest {
         dummyStudent.setMatricule("4673943");
         dummyStudent.setPrincipalCurriculum(new Curriculum());
         return dummyStudent;
+    }
+
+    private UpdateStatusDTO getDummuyUpdateStatusDTO(){
+      return new UpdateStatusDTO(1L, true);
     }
 
     private Curriculum getDummyCurriculum() {

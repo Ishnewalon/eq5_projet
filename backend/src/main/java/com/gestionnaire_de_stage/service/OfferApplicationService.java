@@ -69,6 +69,13 @@ public class OfferApplicationService {
     }
 
     public boolean updateStatus(UpdateStatusDTO updateStatusDTO) throws IdDoesNotExistException {
-        return false;
+        Assert.isTrue(updateStatusDTO.getIdOfferApplied() != null, "L'id de l'offre ne peut pas être null");
+        OfferApplication offerApplication = offerApplicationRepository.getById(updateStatusDTO.getIdOfferApplied());
+        if (updateStatusDTO.getIsAccepted()) {
+            offerApplication.setStatus(Status.STAGE_TROUVE);
+        } else {
+            offerApplication.setStatus(Status.STAGE_REFUSER);
+        }
+        return updateStatusDTO.getIsAccepted();
     }
 }
