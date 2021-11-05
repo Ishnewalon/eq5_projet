@@ -5,18 +5,52 @@
         <h2>Inscription Étudiant</h2>
       </div>
       <div>
+        <input name="matricule" v-model="matricule" type="text" placeholder="Matricule" required/>
         <input name="firstName" v-model="firstName" type="text" placeholder="Prénom" required/>
         <input name="lastName" v-model="lastName" type="text" placeholder="Nom" required/>
         <input name="email" v-model="email" type="email" placeholder="E-mail" required/>
-        <input name="username" v-model="username" type="number" placeholder="Téléphone" required/>
+        <input name="phone" v-model="phone" type="number" placeholder="Téléphone" required/>
         <input name="password" v-model="password" type="password" placeholder="Mot de passe" required/>
       </div>
       <div>
-        <button>S'inscrire</button>
+        <button  @click='registerStudent()'>S'inscrire</button>
       </div>
     </form>
   </div>
 </template>
+
+<script>
+  export default {
+    name: 'RegisterStudent',
+    data() {
+      return {
+        student : {
+          email: '',
+          password: '',
+          lastName: '',
+          firstName: '',
+          phone: '',
+          matricule: '',
+          departement: 'informatique',
+        }
+      }
+    },
+    methods: {
+      registerStudent() {
+        this.$emit('registerStudent', this.student);
+        // this.clearForm()
+      },
+      clearForm() {
+        this.matricule = '';
+        this.firstName = "";
+        this.lastName = "";
+        this.email = "";
+        this.phone = "";
+        this.password = "";
+      }
+    }
+  }
+</script>
 
 <style scoped>
 input {

@@ -162,10 +162,7 @@ public class StudentControllerTest {
         dummyStudent.setPhone("514-546-2375");
         dummyStudent.setEmail("clip@gmail.com");
         dummyStudent.setPassword("thiswilldo");
-        dummyStudent.setAddress("758 George");
-        dummyStudent.setCity("LaSalle");
         dummyStudent.setDepartment("Informatique");
-        dummyStudent.setPostalCode("H5N 9F2");
         dummyStudent.setMatricule("1740934");
 
         return dummyStudent;

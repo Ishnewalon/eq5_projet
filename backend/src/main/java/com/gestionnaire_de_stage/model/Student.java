@@ -26,12 +26,6 @@ public class Student extends User {
     @NotNull
     private String department;
 
-    private String address;
-
-    private String city;
-
-    private String postalCode;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Curriculum principalCurriculum;
