@@ -1,16 +1,14 @@
 import PdfDocumentViewer from "../PdfDocumentViewer/PdfDocumentViewer";
-import {useEffect, useReducer, useState} from "react";
+import {useEffect, useState} from "react";
 import {BsPenFill} from "react-icons/all";
 import Swal from "sweetalert2";
-import {managerSignContract} from "../../services/contrat-service";
+import {managerSignContract, monitorSignContract, studentSignContract} from "../../services/contrat-service";
 import {UserType} from "../../enums/UserTypes";
-import {useAuth} from "../../services/use-auth";
 
-export default function ContratSignature({userType, contract, removeContract}) {
+export default function ContratSignature({userId, userType, contract, removeContract}) {
 
-    const auth = useAuth();
-
-    const [signature, setSignature] = useState(undefined);
+    const [signature, setSignature] = useState('');
+    const [signed, setSigned ] = useState(false);
 
     const toPdfBlob = (pdfFile) => {
         if (!pdfFile)
@@ -24,16 +22,15 @@ export default function ContratSignature({userType, contract, removeContract}) {
         return new Blob([new Uint8Array(numBytes), {type: 'application/pdf'}]);
     }
 
-    const [pdf, setPdf] = useReducer(toPdfBlob, null);
+    const [pdf, setPdf] = useState(null);
 
     useEffect(() => {
-        setPdf(contract.contractPDF);
-        // eslint-disable-next-line
+        setPdf(toPdfBlob(contract.contractPDF));
     }, []);
 
     const startContract = (e) => {
         e.preventDefault();
-        if (!signature && signature === '') {
+        if (!signature || signature === '') {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -42,14 +39,26 @@ export default function ContratSignature({userType, contract, removeContract}) {
             return;
         }
         if (userType === UserType.MANAGER[0])
-            managerSignContract(signature, auth.user.id, contract.id).then(isSigned => {
+            managerSignContract(signature, userId, contract.id).then(isSigned => {
                 if (isSigned)
                     removeContract(contract.id);
+                setSigned(isSigned)
+            });
+        else if(userType === UserType.MONITOR[0])
+            monitorSignContract(signature, contract.id).then(isSigned => {
+                if (isSigned)
+                    removeContract(contract.id);
+                setSigned(isSigned)
+            });
+        else if(userType === UserType.STUDENT[0])
+            studentSignContract(signature, contract.id).then(isSigned => {
+                setSigned(isSigned)
             });
     }
 
     return <div className={"container bg-secondary my-2"}>
-        <div className="d-flex justify-content-between flex-column">
+        { !signed ?
+            <div className="d-flex justify-content-between flex-column">
             <PdfDocumentViewer file={pdf}/>
             <form onSubmit={startContract}>
                 <div className={'input-group'}>
@@ -62,6 +71,7 @@ export default function ContratSignature({userType, contract, removeContract}) {
                 <button id="invalidateContractBtn" className="btn btn-primary fw-bold w-100 mb-4 mt-0"
                         type="submit">Signer le contrat <BsPenFill/></button>
             </form>
-        </div>
+        </div> : <h6 className="text-white text-center p-3">Vous avez signé le contrat.</h6>
+        }
     </div>
 }
