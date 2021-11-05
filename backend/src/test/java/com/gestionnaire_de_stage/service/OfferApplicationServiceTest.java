@@ -117,6 +117,8 @@ class OfferApplicationServiceTest {
     void testGetAllByOfferCreatorEmail_withValidEntries() throws EmailDoesNotExistException {
         List<OfferApplication> offerApplicationList = getDummyOfferAppList();
         String email = "americanm@email.com";
+        when(offerApplicationRepository.existsByOffer_CreatorEmail(any()))
+                .thenReturn(true);
         when(offerApplicationRepository.getAllByOffer_CreatorEmail(any()))
                 .thenReturn(getDummyOfferAppList());
 

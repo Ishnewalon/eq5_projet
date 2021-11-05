@@ -22,13 +22,11 @@ public class OfferApplicationService {
     private final OfferService offerService;
     private final StudentService studentService;
 
-
     public OfferApplicationService(OfferApplicationRepository offerApplicationRepository, OfferService offerService, StudentService studentService) {
         this.offerApplicationRepository = offerApplicationRepository;
         this.offerService = offerService;
         this.studentService = studentService;
     }
-
 
     public OfferApplication create(Long idOffer, Long idStudent) throws StudentAlreadyAppliedToOfferException, IdDoesNotExistException, IllegalArgumentException, StudentHasNoCurriculumException {
         Assert.isTrue(idOffer != null, "L'id de l'offre ne peut pas être null");
