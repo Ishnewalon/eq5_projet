@@ -119,10 +119,9 @@ public class ContractControllerTest {
     public void testSignContractPDFManager_withValidEntries() throws Exception {
         String managerSignature = "Joe Janson";
         Contract dummyContract = getDummyContract();
-        long manager_id = 1L;
         String uri = "/contracts/managerSign/" + managerSignature
-                + "/" + dummyContract.getId() + "/" + manager_id;
-        when(contractService.addManagerSignature(any(), any(), any()))
+                + "/" + dummyContract.getId();
+        when(contractService.addManagerSignature(any(),any()))
                 .thenReturn(dummyContract);
         when(contractService.fillPDF(any(), any())).thenReturn(dummyContract);
 
@@ -140,10 +139,9 @@ public class ContractControllerTest {
     public void testSignContractPDFManager_withNullEntries() throws Exception {
         String managerSignature = "Joe Janson";
         Contract dummyContract = getDummyContract();
-        long manager_id = 1L;
         String uri = "/contracts/managerSign/" + managerSignature
-                + "/" + dummyContract.getId() + "/" + manager_id;
-        when(contractService.addManagerSignature(any(), any(), any()))
+                + "/" + dummyContract.getId();
+        when(contractService.addManagerSignature(any(),any()))
                 .thenThrow(new IllegalArgumentException("La signature, l'id du contrat et du gestionnaire ne peuvent être null"));
 
         MvcResult mvcResult = mockMvc.perform(
@@ -160,10 +158,9 @@ public class ContractControllerTest {
     public void testSignContractPDFManager_withInvalidEntries() throws Exception {
         String managerSignature = "Joe Janson";
         Contract dummyContract = getDummyContract();
-        long manager_id = 1L;
         String uri = "/contracts/managerSign/" + managerSignature
-                + "/" + dummyContract.getId() + "/" + manager_id;
-        when(contractService.addManagerSignature(any(), any(), any()))
+                + "/" + dummyContract.getId();
+        when(contractService.addManagerSignature(any(),any()))
                 .thenThrow(IdDoesNotExistException.class);
 
         MvcResult mvcResult = mockMvc.perform(

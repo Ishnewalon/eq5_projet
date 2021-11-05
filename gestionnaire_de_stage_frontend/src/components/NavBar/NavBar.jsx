@@ -58,6 +58,9 @@ function NavItemSpecificForUser() {
                 <Link className="nav-link" to="/dashboard/offres/review">Validation Offre</Link>
             </li>
             <li>
+                <Link className="nav-link" to="/dashboard/curriculum/review">Valider Cv</Link>
+            </li>
+            <li>
                 <Link className="nav-link" to="/dashboard/students/applied">Assossier</Link>
             </li>
         </>)

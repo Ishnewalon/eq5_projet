@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import {managerSignContract, monitorSignContract, studentSignContract} from "../../services/contrat-service";
 import {UserType} from "../../enums/UserTypes";
 
-export default function ContratSignature({userId, userType, contract, removeContract}) {
+export default function ContratSignature({userType, contract, removeContract}) {
 
     const [signature, setSignature] = useState('');
     const [signed, setSigned ] = useState(false);
@@ -39,7 +39,7 @@ export default function ContratSignature({userId, userType, contract, removeCont
             return;
         }
         if (userType === UserType.MANAGER[0])
-            managerSignContract(signature, userId, contract.id).then(isSigned => {
+            managerSignContract(signature, contract.id).then(isSigned => {
                 if (isSigned)
                     removeContract(contract.id);
                 setSigned(isSigned)

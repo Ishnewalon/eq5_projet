@@ -23,7 +23,7 @@ export default function ViewContractsToBeSigned({userType}) {
     return <>
         {
             contracts.length > 0 ?
-                contracts.map((contract, index) => <ContractSignature key={index} userId={auth.user.id} removeContract={removeContract}
+                contracts.map((contract, index) => <ContractSignature key={index} removeContract={removeContract}
                                                                       userType={userType}
                                                                       contract={contract}/>)
                 :
