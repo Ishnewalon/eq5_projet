@@ -70,7 +70,6 @@ public class SupervisorController {
 
     @PostMapping("/assign/student")
     public ResponseEntity<?> AssignSupervisor(@RequestBody AssignDto assignDto) {
-
         Student student;
         Supervisor supervisor;
         try {
@@ -83,7 +82,7 @@ public class SupervisorController {
         }
         boolean assign = supervisorService.assign(student, supervisor);
 
-        String response = assign ? "Assignement fait!" : "Assignement rejeté!";
+        String response = assign ? "Assignement fait!" : "Assignement rejeté, l'étudiant est déjà assigné!";
         return ResponseEntity.ok(new ResponseMessage(response));
     }
 }

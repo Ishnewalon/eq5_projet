@@ -1,7 +1,11 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.*;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
+import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OfferApplicationService {
@@ -33,7 +38,7 @@ public class OfferApplicationService {
         Student student = studentService.getOneByID(idStudent);
         Curriculum curriculum = student.getPrincipalCurriculum();
 
-        if(curriculum == null)
+        if (curriculum == null)
             throw new StudentHasNoCurriculumException();
 
         if (offer.isEmpty())
@@ -85,6 +90,26 @@ public class OfferApplicationService {
         return !date.isAfter(LocalDateTime.now())||
                 !date.isBefore(LocalDateTime.now().plusMonths(2));
     }
+
+    public List<OfferApplication> getAllOffersStudentApplied(Long idStudent) throws IdDoesNotExistException, IllegalArgumentException {
+        Assert.isTrue(idStudent != null, "L'id de l'étudiant ne peut pas être null");
+        if (studentService.getOneByID(idStudent) == null)
+            throw new IdDoesNotExistException();
+        return offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(Status.EN_ATTENTE_REPONSE, idStudent);
+    }
+
+    public boolean updateStatus(UpdateStatusDTO updateStatusDTO) throws IdDoesNotExistException {
+        Assert.isTrue(updateStatusDTO.getIdOfferApplied() != null, "L'id de l'offre ne peut pas être null");
+        OfferApplication offerApplication = offerApplicationRepository.getById(updateStatusDTO.getIdOfferApplied());
+        if (updateStatusDTO.isAccepted()) {
+            offerApplication.setStatus(Status.STAGE_TROUVE);
+        } else {
+            offerApplication.setStatus(Status.STAGE_REFUSE);
+        }
+        offerApplicationRepository.save(offerApplication);
+        return updateStatusDTO.isAccepted();
+    }
+}
 
     private boolean isEmailInvalid(String email) {
         return !offerApplicationRepository.existsByOffer_CreatorEmail(email);

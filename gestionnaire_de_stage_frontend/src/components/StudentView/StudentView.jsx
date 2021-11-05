@@ -3,6 +3,8 @@ import TeleverserCv from "./TeleverserCv/TeleverserCv";
 import ViewOffersAndApply from "./ViewOffersAndApply/ViewOffersAndApply";
 import {Route, useRouteMatch} from "react-router-dom";
 import AppliedOn from "./AppliedOn/AppliedOn";
+import {ViewContract} from "./ViewContract";
+import StudentOfferApplicationList from "./StudentOfferApplication/StudentOfferApplicationList";
 
 export default function StudentView() {
     let {path} = useRouteMatch();
@@ -18,6 +20,14 @@ export default function StudentView() {
                 </div>
             </Route>
             <AppliedOn></AppliedOn>
+            <Route exact path={`${path}/view/status`}>
+                <div>
+                    <StudentOfferApplicationList/>
+                </div>
+            </Route>
+            <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+                <ViewContract/>
+            </div>
         </>
     )
 }
