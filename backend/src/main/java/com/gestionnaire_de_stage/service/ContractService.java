@@ -88,6 +88,18 @@ public class ContractService {
         return contractRepository.getContractByStudentId(student_id);
     }
 
+    public Contract addStudentSignature(String studentSignature, Long contract_id) throws IdDoesNotExistException {
+        Assert.isTrue(studentSignature != null, "Il faut une signature");
+        Assert.isTrue(contract_id != null, "L'id du contrat ne peut pas être null");
+        if (isContractIdNotValid(contract_id)) {
+            throw new IdDoesNotExistException();
+        }
+        Contract contract = contractRepository.getContractById(contract_id);
+        contract.setStudentSignDate(LocalDate.now());
+        contract.setStudentSignature(studentSignature);
+        return contractRepository.save(contract);
+    }
+
     public Contract fillPDF(Contract contract, ByteArrayOutputStream baos) {
         Assert.isTrue(contract != null, "Le contract ne peut pas être null");
         contract.setContractPDF(baos.toByteArray());
