@@ -75,6 +75,9 @@ function NavItemSpecificForUser() {
             <li>
                 <Link className="nav-link" to="/dashboard/view/status">Mes applications</Link>
             </li>
+            <li>
+                <Link className="nav-link" to="/dashboard/offer/setdate">Ajouter une date d'entrevue</Link>
+            </li>
         </>
     return <></>
 }

@@ -18,11 +18,17 @@ export default function AppliedOn() {
             });
     }, [auth.user.id]);
 
+    const setOfferValidated = (id) => {
+        setOffers(prevOffers =>
+            prevOffers.filter(items => items.id !== id)
+        )
+    }
+
     return (
         <div className='container'>
             <h2 className="text-center">Ajouter vos dates d'entrevue</h2>
             <ul>
-                {offers.map((offer, index) => <li key={index}><SetInterviewDate offerApp={offer} studentID={auth.user.id}/></li>)}
+                {offers.map((offer, index) => <li key={index}><SetInterviewDate offerApp={offer} removeOffer={setOfferValidated}/></li>)}
             </ul>
         </div>
     )

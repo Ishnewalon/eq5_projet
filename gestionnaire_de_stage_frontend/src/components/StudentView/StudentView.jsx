@@ -19,10 +19,14 @@ export default function StudentView() {
                     <ViewOffersAndApply/>
                 </div>
             </Route>
-            <AppliedOn/>
             <Route exact path={`${path}/view/status`}>
                 <div>
                     <StudentOfferApplicationList/>
+                </div>
+            </Route>
+            <Route exact path={`${path}/offer/setdate`}>
+                <div>
+                    <AppliedOn/>
                 </div>
             </Route>
             <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">

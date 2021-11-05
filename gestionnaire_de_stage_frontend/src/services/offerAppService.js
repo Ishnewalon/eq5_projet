@@ -75,6 +75,7 @@ export async function setInterview(offerAppID, date) {
         response => {
             return response.json().then((body) => {
                 if (response.status === 200) {
+                    toast.fire({title: "Date Ajoutée!"})
                     return body;
                 }
                 if (response.status === 400) {
