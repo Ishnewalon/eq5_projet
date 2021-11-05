@@ -220,8 +220,8 @@ public class ContractControllerTest {
         assertThat(response.getContentAsString()).contains("Le id du contrat n'existe pas");
     }
 
-/*    @Test
-    public void testContractNeedsStudentSignature() throws Exception {
+    @Test
+    public void testContractNeedsStudentSignature_withValidEntries() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
         Contract dummyContract = getDummyContract();
         long student_id = 1L;
@@ -236,7 +236,99 @@ public class ContractControllerTest {
         Contract actualContract = MAPPER.readValue(response.getContentAsString(), Contract.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualContract.getStudent().getFirstName()).isEqualTo(dummyContract.getStudent().getFirstName());
-    }*/
+    }
+
+    @Test
+    public void testContractNeedsStudentSignature_withNullStudentId() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
+        Contract dummyContract = getDummyContract();
+        long student_id = 1L;
+        when(contractService.getContractByStudentId(any())).thenThrow(new IllegalArgumentException("La signature et l'id du contrat ne peuvent être null"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/contracts/student/" + student_id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("La signature et l'id du contrat ne peuvent être null");
+    }
+
+    @Test
+    public void testContractNeedsStudentSignature_withInvalidStudentId() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
+        Contract dummyContract = getDummyContract();
+        long student_id = 1L;
+        when(contractService.getContractByStudentId(any())).thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/contracts/student/" + student_id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Le id de l'étudiant n'existe pas");
+    }
+
+    @Test
+    public void testSignContractPDFStudent_withValidEntries() throws Exception {
+        String studentSignature = "Tired Human";
+        Contract dummyContract = getDummyContract();
+        String uri = "/contracts/studentSign/" + studentSignature
+                + "/" + dummyContract.getId();
+        when(contractService.addStudentSignature(any(),any()))
+                .thenReturn(dummyContract);
+        when(contractService.fillPDF(any(), any())).thenReturn(dummyContract);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.put(uri)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Signature fait");
+    }
+
+    @Test
+    public void testSignContractPDFStudent_withNullEntries() throws Exception {
+        String studentSignature = "Tired Human";
+        Contract dummyContract = getDummyContract();
+        String uri = "/contracts/studentSign/" + studentSignature
+                + "/" + dummyContract.getId();
+        when(contractService.addStudentSignature(any(),any()))
+                .thenThrow(new IllegalArgumentException("La signature et l'id du contrat ne peuvent être null"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.put(uri)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("La signature et l'id du contrat ne peuvent être null");
+    }
+
+    @Test
+    public void testSignContractPDFStudent_withInvalidEntries() throws Exception {
+        String studentSignature = "Tired Human";
+        Contract dummyContract = getDummyContract();
+        String uri = "/contracts/studentSign/" + studentSignature
+                + "/" + dummyContract.getId();
+        when(contractService.addStudentSignature(any(),any()))
+                .thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.put(uri)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Le id du contrat n'existe pas");
+    }
 
     private Contract getDummyContract() {
         Contract dummyContract = new Contract();
