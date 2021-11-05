@@ -1,7 +1,6 @@
 package com.gestionnaire_de_stage.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.gestionnaire_de_stage.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

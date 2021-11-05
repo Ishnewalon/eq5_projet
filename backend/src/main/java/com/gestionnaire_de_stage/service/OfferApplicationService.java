@@ -76,6 +76,7 @@ public class OfferApplicationService {
         } else {
             offerApplication.setStatus(Status.STAGE_REFUSER);
         }
+        offerApplicationRepository.save(offerApplication);
         return updateStatusDTO.getIsAccepted();
     }
 }
