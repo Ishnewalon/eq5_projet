@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.service.CurriculumService;
@@ -10,7 +11,6 @@ import com.gestionnaire_de_stage.service.OfferApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -86,6 +86,18 @@ public class OfferApplicationController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Impossible de trouver l'offre avec cette ID!"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+    }
+
+    @GetMapping("/all_applied_on/{studentID}")
+    public ResponseEntity<?> getAllByOfferStatusAndStudentID(@PathVariable Long studentID) {
+        try {
+            List<OfferApplication> offerApplicationList = offerApplicationService.getAllByOfferStatusAndStudentID(Status.CV_ENVOYE, studentID);
+            return ResponseEntity.ok(offerApplicationList);
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()

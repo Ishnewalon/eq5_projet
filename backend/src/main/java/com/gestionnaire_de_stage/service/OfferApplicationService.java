@@ -57,11 +57,12 @@ public class OfferApplicationService {
         return offerApplicationRepository.getAllByOffer_CreatorEmail(email);
     }
 
-    public List<OfferApplication> getAllByOfferStatusAndStudentID(Status status, Long studentID) {
+    public List<OfferApplication> getAllByOfferStatusAndStudentID(Status status, Long studentID) throws IllegalArgumentException {
+        Assert.isTrue(studentID != null, "L'id du student ne peut pas être null");
+        Assert.isTrue(status != null, "Le status de l'offre ne peut pas être null");
 
         return offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(status, studentID);
     }
-
 
     public OfferApplication setInterviewDate(Long offerAppID, LocalDateTime date) throws IdDoesNotExistException, DateNotValidException, IllegalArgumentException {
         Assert.isTrue(offerAppID != null, "L'id de l'offre ne peut pas être null");

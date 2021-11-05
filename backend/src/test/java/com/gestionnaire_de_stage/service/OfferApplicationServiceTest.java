@@ -182,6 +182,12 @@ class OfferApplicationServiceTest {
         assertThat(actualList).isEqualTo(offerApplicationList);
     }
 
+    @Test
+    void testGetAllByOfferStatusAndStudentID_withNullEntries() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.getAllByOfferStatusAndStudentID(null, null));
+    }
+
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();
         offerApplicationDTO.setOffer(getDummyOffer());

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
+import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.service.CurriculumService;
@@ -296,6 +297,38 @@ class OfferApplicationControllerTest {
         assertThat(response.getContentAsString()).contains("La date entrée est invalide!");
     }
 
+    @Test
+    void testGetAllByOfferStatusAndStudentID_withValidEntries() throws Exception {
+        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
+        when(offerApplicationService.getAllByOfferStatusAndStudentID(any(), any()))
+                .thenReturn(offerApplicationList);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/applications/all_applied_on/" + 1L)
+                    .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        final List<OfferApplication> actualOfferApplicationList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        assertThat(response.getStatus()).isEqualTo(OK.value());
+        assertThat(actualOfferApplicationList.size()).isEqualTo(offerApplicationList.size());
+    }
+
+    @Test
+    void testGetAllByOfferStatusAndStudentID_withNullEntries() throws Exception {
+        when(offerApplicationService.getAllByOfferStatusAndStudentID(any(), any()))
+                .thenThrow(new IllegalArgumentException("L'id du student ne peut pas être null"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/applications/all_applied_on/" + 1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'id du student ne peut pas être null");
+    }
+
     private OfferAppDTO getDummyOfferAppDto() {
         OfferAppDTO offerAppDTO = new OfferAppDTO();
         offerAppDTO.setIdStudent(1L);
@@ -359,17 +392,18 @@ class OfferApplicationControllerTest {
 
     private List<OfferApplication> getDummyOfferAppList() {
         List<OfferApplication> offerApplicationList = new ArrayList<>();
-        OfferApplication dummyOfferApplicationDTO = new OfferApplication();
-        dummyOfferApplicationDTO.setOffer(getDummyOffer());
-        dummyOfferApplicationDTO.setCurriculum(getDummyCurriculum());
-        dummyOfferApplicationDTO.setId(1L);
-        offerApplicationList.add(dummyOfferApplicationDTO);
+        OfferApplication dummyOfferApplication = new OfferApplication();
+        dummyOfferApplication.setOffer(getDummyOffer());
+        dummyOfferApplication.setCurriculum(getDummyCurriculum());
+        dummyOfferApplication.setId(1L);
+        dummyOfferApplication.setStatus(Status.CV_ENVOYE);
+        offerApplicationList.add(dummyOfferApplication);
 
-        dummyOfferApplicationDTO.setId(2L);
-        offerApplicationList.add(dummyOfferApplicationDTO);
+        dummyOfferApplication.setId(2L);
+        offerApplicationList.add(dummyOfferApplication);
 
-        dummyOfferApplicationDTO.setId(3L);
-        offerApplicationList.add(dummyOfferApplicationDTO);
+        dummyOfferApplication.setId(3L);
+        offerApplicationList.add(dummyOfferApplication);
 
         return offerApplicationList;
     }
