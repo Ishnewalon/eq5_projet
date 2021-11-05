@@ -163,25 +163,25 @@ class OfferApplicationServiceTest {
     @Test
     public void testUpdateStatus_withTrue() throws IdDoesNotExistException {
         OfferApplication dummyOfferApplication = getDummyOfferApp();
-        dummyOfferApplication.setStatus(Status.EN_ATTENTE_REPONSE);
         UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), true);
         when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
+        when(offerApplicationRepository.save(any())).thenReturn(dummyOfferApplication);
 
-        offerApplicationService.updateStatus(updateStatusDTO);
+        boolean isAccepted =  offerApplicationService.updateStatus(updateStatusDTO);
 
-        assertThat(dummyOfferApplication.getStatus()).isEqualTo(Status.STAGE_TROUVE);
+        assertThat(isAccepted).isTrue();
     }
 
     @Test
     public void testUpdateStatus_withFalse() throws IdDoesNotExistException {
         OfferApplication dummyOfferApplication = getDummyOfferApp();
-        dummyOfferApplication.setStatus(Status.EN_ATTENTE_REPONSE);
         UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), false);
         when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
+        when(offerApplicationRepository.save(any())).thenReturn(dummyOfferApplication);
 
-        offerApplicationService.updateStatus(updateStatusDTO);
+        boolean isAccepted = offerApplicationService.updateStatus(updateStatusDTO);
 
-        assertThat(dummyOfferApplication.getStatus()).isEqualTo(Status.STAGE_REFUSER);
+        assertThat(isAccepted).isFalse();
     }
 
     private OfferApplication getDummyOfferApp() {

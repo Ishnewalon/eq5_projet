@@ -51,10 +51,11 @@ export async function getStudentApplications(id) {
     );
 }
 
-export async function setApplicationsStatusWhenEnAttenteDeReponse(idOfferApp, status) {
-    return await fetch(`${urlBackend}/applications/applicants/student/`, requestInit(methods.POST, {
-        idOfferApplication: idOfferApp,
-        status: status
+export async function setApplicationsStatusWhenEnAttenteDeReponse(idOfferApp, isAccepted) {
+    console.log(idOfferApp, isAccepted);
+    return await fetch(`${urlBackend}/applications/student/update_status`, requestInit(methods.POST, {
+        idOfferApplied: idOfferApp,
+        isAccepted: isAccepted
     })).then(
         response => {
             return response.json().then((body) => {

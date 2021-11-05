@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useAuth} from "../services/use-auth";
 import {getStudentApplications, setApplicationsStatusWhenEnAttenteDeReponse} from "../services/offerAppService";
-import {OfferApplicationStatus} from "../enums/OfferApplicationStatus";
 
 export default function StudentOfferApplicationList() {
     const [offerApplications, setOfferApplications] = useState([])
@@ -18,8 +17,8 @@ export default function StudentOfferApplicationList() {
     }, [auth.user])
 
 
-    const updateStatus = (idOfferApp, status) => {
-        setApplicationsStatusWhenEnAttenteDeReponse(idOfferApp, status).then((ok) => {
+    const updateStatus = (idOfferApp, isAccepted) => {
+        setApplicationsStatusWhenEnAttenteDeReponse(idOfferApp, isAccepted).then((ok) => {
             if (ok)
                 setOfferApplications((prevOffApp) => {
                     return prevOffApp.filter(offApp => offApp.id !== idOfferApp)
@@ -47,11 +46,10 @@ export default function StudentOfferApplicationList() {
                     <td>
                         <div className="btn-group">
                             <button className="btn btn-outline-success"
-                                    onClick={() => updateStatus(offerApplication.id, OfferApplicationStatus.STAGE_TROUVE)}>Stage
-                                trouvé
+                                    onClick={() => updateStatus(offerApplication.id, true)}>Trouvé
                             </button>
                             <button className="btn btn-outline-danger"
-                                    onClick={() => updateStatus(offerApplication.id, OfferApplicationStatus.STAGE_REFUSER)}>Refusé
+                                    onClick={() => updateStatus(offerApplication.id, false)}>Refusé
                             </button>
                         </div>
                     </td>
