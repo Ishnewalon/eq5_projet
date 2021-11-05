@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class Contract {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private LocalDate managerSignDate;

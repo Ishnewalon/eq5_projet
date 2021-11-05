@@ -27,7 +27,7 @@ export default function StudentOfferApplicationList() {
     };
 
     return (<>
-        <h2 className="text-center mt-5 mb-3">Les status de mes applications</h2>
+        <h1 className="text-center mt-5 mb-3">Les status de mes applications</h1>
         <table className="table table-light table-striped table-borderless text-center rounded-3 shadow-lg">
             <thead>
             <tr>
