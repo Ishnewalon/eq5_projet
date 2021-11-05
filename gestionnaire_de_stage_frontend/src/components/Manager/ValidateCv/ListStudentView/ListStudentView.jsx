@@ -9,19 +9,21 @@ export default function ListStudentView({cv}) {
     const {firstName, lastName} = cv.student;
 
     const downloadStudentCv = () => {
-        const {id}=cv
-        downloadCV(id).then(blob => {
-            let myUrl = URL.createObjectURL(blob);
+        const {id} = cv
+        downloadCV(id).then(
+            blob => {
+                let myUrl = URL.createObjectURL(blob);
 
-            let myFilename = firstName + "_" + lastName + "_" + id + ".pdf";
+                let myFilename = firstName + "_" + lastName + "_" + id + ".pdf";
 
-            const a = document.createElement('a')
-            a.href = myUrl
-            a.download = myFilename;
-            a.click();
-            URL.revokeObjectURL(myUrl)
-            toast.fire({title: 'Téléchargement en cours'}).then()
-        });
+                const a = document.createElement('a')
+                a.href = myUrl
+                a.download = myFilename;
+                a.click();
+                URL.revokeObjectURL(myUrl)
+                toast.fire({title: 'Téléchargement en cours'}).then()
+            }
+        );
     }
 
     return <div className="shadow-lg rounded-top p-3 mt-3 border-left border-right">

@@ -77,4 +77,8 @@ public class MonitorService {
     private boolean isEmailInvalid(String email) {
         return !monitorRepository.existsByEmail(email);
     }
+
+    public boolean isIdInvalid(Long id) {
+        return !monitorRepository.existsById(id);
+    }
 }

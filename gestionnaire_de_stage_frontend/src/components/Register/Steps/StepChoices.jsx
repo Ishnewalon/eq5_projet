@@ -1,5 +1,5 @@
-import {Step} from "../Register";
 import React from "react";
+import {Step} from "../../../enums/Steps";
 
 export default function Choice({nextStep}) {
     return (<>

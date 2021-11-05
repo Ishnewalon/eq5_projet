@@ -53,6 +53,11 @@ Custom BS
 .btn-primary {
     background: var(--color-primary) !important;
     border: var(--color-primary) !important;
+    padding: 10px 30px 10px;
+    border: 1px solid #cdd6e0ff;
+    letter-spacing: 1px;
+    cursor: pointer;
+    background-color: #dc7718ff;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
@@ -60,6 +65,7 @@ Custom BS
     border-color: rgba(var(--color-rgb-primary), 0.8) !important;
     box-shadow: 0 1px 1px rgba(var(--color-rgb-primary), 0.075) inset, 0 0 8px rgba(var(--color-rgb-primary), 0.6) !important;
     outline: 0 none !important;
+    background-color: #b05f13;
 }
 
 /*********************
@@ -100,4 +106,3 @@ Adapt color to bg-dark
 .text-primary {
     color: var(--color-primary) !important;
 }
-

@@ -2,8 +2,6 @@ import './ValiderCv.css'
 import React, {useEffect, useState} from "react";
 import {getCurriculumWithInvalidCV, validateCV} from "../../../services/curriculum-service";
 import ListStudentView from "./ListStudentView/ListStudentView";
-import {swalErr} from "../../../utility";
-import Swal from "sweetalert2";
 
 
 export default function ValiderCv() {
@@ -13,26 +11,20 @@ export default function ValiderCv() {
     useEffect(() => {
         getCurriculumWithInvalidCV()
             .then(curriculumList => {
-                console.log(curriculumList);
                 setCurriculumList(curriculumList)
             })
             .catch(e => {
                 setCurriculumList([])
                 console.error(e);
             });
-    },[])
+    }, [])
 
     const valideCV = (id, valid) => {
         validateCV(id, valid)
-            .then(responseMessage => {
-                setValid(valid)
-                Swal.fire({title: responseMessage.message, icon: valid ? 'success' : 'error'})
-                    .then();
-            })
-            .catch(e => {
-                console.trace(e)
-                swalErr(e).fire({}).then();
-            });
+            .then(() => {
+                    setValid(valid)
+                }, e => console.error(e)
+            );
 
     }
 
