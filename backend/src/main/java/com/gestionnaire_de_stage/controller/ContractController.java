@@ -109,7 +109,7 @@ public class ContractController {
                 .body(new ResponseMessage("Signature fait"));
     }
 
-    @GetMapping("/monitor/{monitor_id}")
+    @GetMapping("/student/{student_id}")
     public ResponseEntity<?> ContractNeedsStudentSignature(@PathVariable Long student_id) {
         Contract contract;
         try {

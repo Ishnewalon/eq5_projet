@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.service.ContractService;
@@ -218,6 +219,24 @@ public class ContractControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Le id du contrat n'existe pas");
     }
+
+/*    @Test
+    public void testContractNeedsStudentSignature() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
+        Contract dummyContract = getDummyContract();
+        long student_id = 1L;
+        when(contractService.getContractByStudentId(any())).thenReturn(dummyContract);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/contracts/student/" + student_id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        Contract actualContract = MAPPER.readValue(response.getContentAsString(), Contract.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualContract.getStudent().getFirstName()).isEqualTo(dummyContract.getStudent().getFirstName());
+    }*/
 
     private Contract getDummyContract() {
         Contract dummyContract = new Contract();
