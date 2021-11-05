@@ -3,7 +3,7 @@ import AddOffer from "../AddOffer/AddOffer";
 import ReviewOffers from "./ReviewOffers/ReviewOffers";
 import ViewOffers from "./ViewOffers/ViewOffers";
 import ValiderCv from "./ValidateCv/ValiderCv";
-import ViewContractToBeSigned from "./ViewContractToBeSigned";
+import ViewContractsToBeSigned from "./ViewContractsToBeSigned";
 import LinkSupervisorToStudent from "./LinkSupervisorToStudent/LinkSupervisorToStudent";
 import {Route, useRouteMatch} from "react-router-dom";
 import {UserType} from "../../enums/UserTypes";
@@ -37,7 +37,7 @@ export default function Manager() {
                 </div>
             </Route>
             <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-                <ViewContractToBeSigned userType={UserType.MANAGER[0]} />
+                <ViewContractsToBeSigned userType={UserType.MANAGER[0]} />
             </div>
         </>
     )

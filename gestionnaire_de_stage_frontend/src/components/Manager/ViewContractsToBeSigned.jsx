@@ -4,7 +4,7 @@ import {getAllContractsToBeSignedForMonitor, getAllContractsToBeStarted} from ".
 import {UserType} from "../../enums/UserTypes";
 import {useAuth} from "../../services/use-auth";
 
-export default function ViewContractToBeSigned({userType}) {
+export default function ViewContractsToBeSigned({userType}) {
     const [contracts, setContracts] = useState([]);
     const auth = useAuth();
 
