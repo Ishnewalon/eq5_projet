@@ -1,5 +1,5 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
-import {swalErr} from "../utility";
+import {swalErr, toast, toastErr} from "../utility";
 import Swal from "sweetalert2";
 import {UserType} from "../enums/UserTypes";
 
@@ -69,3 +69,35 @@ export async function getContractForStudent(userId){
     }, err => console.error(err));
 }
 
+export async function getAllOfferAppReadyToSign(idOfferApplication){
+    return await fetch(`${urlBackend}/applications/applicants/manager/${idOfferApplication}`, requestInit(methods.GET)).then(
+        response => {
+            return response.json().then((body) => {
+                if (response.status === 200)
+                    return body;
+                if (response.status === 400)
+                    toastErr.fire({title: body.message})
+                return Promise.any([]);
+            })
+        }, err => console.error(err)
+    );
+}
+
+export async function startSignerFetch(idOfferApplication, idManager) {
+    return await fetch(`${urlBackend}/contracts/start`, requestInit(methods.POST, {
+        idOfferApplication: idOfferApplication,
+        idManager: idManager
+    })).then(
+        response => {
+            return response.json().then((body) => {
+                if (response.status === 200) {
+                    toast.fire({title: body.message})
+                    return true;
+                }
+                if (response.status === 400)
+                    toastErr.fire({title: body.message})
+                return false;
+            })
+        }, err => console.error(err)
+    );
+}

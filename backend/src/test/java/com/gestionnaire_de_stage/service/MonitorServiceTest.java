@@ -207,6 +207,23 @@ public class MonitorServiceTest {
                 () -> monitorService.getOneByEmail(email));
     }
 
+    @Test
+    public void testIsIdInvalid_whenFalse(){
+        when(monitorRepository.existsById(any())).thenReturn(true);
+
+        boolean idInvalid = monitorService.isIdInvalid(1L);
+
+        assertThat(idInvalid).isFalse();
+    }
+    @Test
+    public void testIsIdInvalid_whenTrue(){
+        when(monitorRepository.existsById(any())).thenReturn(false);
+
+        boolean idInvalid = monitorService.isIdInvalid(1L);
+
+        assertThat(idInvalid).isTrue();
+    }
+
     private Monitor getDummyMonitor() {
         Monitor dummyMonitor = new Monitor();
         dummyMonitor.setId(1L);
@@ -247,4 +264,6 @@ public class MonitorServiceTest {
 
         return Arrays.asList(monitor1, monitor2, monitor3);
     }
+
+
 }

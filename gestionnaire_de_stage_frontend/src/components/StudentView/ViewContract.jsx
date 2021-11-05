@@ -10,7 +10,7 @@ export function ViewContract(){
 
     useEffect(() => {
         getContractForStudent(auth.user.id).then(contract => setContract(contract));
-    }, []);
+    }, [auth.user.id]);
 
 
     return <>
