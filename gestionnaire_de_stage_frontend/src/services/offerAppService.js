@@ -35,6 +35,36 @@ export async function getAllApplicants(email) {
         });
 }
 
+export async function setInterview(offerAppID, date) {
+    return await fetch(`${urlBackend}/applications/setdate/${offerAppID}`, requestInit(methods.POST, date)).then(
+        response => {
+            return response.json().then((body) => {
+                if (response.status === 200) {
+                    return body;
+                }
+                if (response.status === 400) {
+                    toastErr.fire({title: body.message})
+                }
+                return Promise.any([]);
+            })
+        });
+}
+
+export async function getAllOffersByStudentAppliedOn(studentID) {
+    return await fetch(`${urlBackend}/applications/all_applied_on/${studentID}`, requestInit(methods.GET)).then(
+        response => {
+            return response.json().then((body) => {
+                if (response.status === 200) {
+                    return body;
+                }
+                if (response.status === 400) {
+                    toastErr.fire({title: body.message})
+                }
+                return Promise.any([]);
+            })
+        });
+}
+
 function _isApplicationValid(offerApp) {
     return offerApp instanceof OfferApp &&
         offerApp.idOffer &&

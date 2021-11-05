@@ -2,6 +2,7 @@ import React from "react";
 import TeleverserCv from "./TeleverserCv/TeleverserCv";
 import ViewOffersAndApply from "./ViewOffersAndApply/ViewOffersAndApply";
 import {Route, useRouteMatch} from "react-router-dom";
+import AppliedOn from "./AppliedOn/AppliedOn";
 
 export default function StudentView() {
     let {path} = useRouteMatch();
@@ -16,6 +17,7 @@ export default function StudentView() {
                     <ViewOffersAndApply/>
                 </div>
             </Route>
+            <AppliedOn></AppliedOn>
         </>
     )
 }
