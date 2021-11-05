@@ -136,7 +136,7 @@ public class ContractControllerTest {
         Contract dummyContract = getDummyContract();
         String uri = "/contracts/managerSign/" + managerSignature
                 + "/" + dummyContract.getId();
-        when(contractService.addManagerSignature(any(),any()))
+        when(contractService.addManagerSignature(any(), any()))
                 .thenReturn(dummyContract);
         when(contractService.fillPDF(any(), any())).thenReturn(dummyContract);
 
@@ -156,7 +156,7 @@ public class ContractControllerTest {
         Contract dummyContract = getDummyContract();
         String uri = "/contracts/managerSign/" + managerSignature
                 + "/" + dummyContract.getId();
-        when(contractService.addManagerSignature(any(),any()))
+        when(contractService.addManagerSignature(any(), any()))
                 .thenThrow(new IllegalArgumentException("La signature, l'id du contrat et du gestionnaire ne peuvent être null"));
 
         MvcResult mvcResult = mockMvc.perform(
@@ -175,7 +175,7 @@ public class ContractControllerTest {
         Contract dummyContract = getDummyContract();
         String uri = "/contracts/managerSign/" + managerSignature
                 + "/" + dummyContract.getId();
-        when(contractService.addManagerSignature(any(),any()))
+        when(contractService.addManagerSignature(any(), any()))
                 .thenThrow(IdDoesNotExistException.class);
 
         MvcResult mvcResult = mockMvc.perform(
@@ -317,7 +317,6 @@ public class ContractControllerTest {
     @Test
     public void testContractNeedsStudentSignature_withNullStudentId() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
-        Contract dummyContract = getDummyContract();
         long student_id = 1L;
         when(contractService.getContractByStudentId(any())).thenThrow(new IllegalArgumentException("La signature et l'id du contrat ne peuvent être null"));
 
@@ -334,7 +333,6 @@ public class ContractControllerTest {
     @Test
     public void testContractNeedsStudentSignature_withInvalidStudentId() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
-        Contract dummyContract = getDummyContract();
         long student_id = 1L;
         when(contractService.getContractByStudentId(any())).thenThrow(IdDoesNotExistException.class);
 
