@@ -29,9 +29,11 @@ export default function StudentView() {
                     <AppliedOn/>
                 </div>
             </Route>
-            <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-                <ViewContract/>
-            </div>
+            <Route exact path={`${path}/voir_mon_contrat`}>
+                <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+                    <ViewContract/>
+                </div>
+            </Route>
         </>
     )
 }

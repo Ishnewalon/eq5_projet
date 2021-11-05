@@ -14,6 +14,6 @@ export function ViewContract(){
 
 
     return <>
-        {contract && <ContratSignature contract={contract} userType={UserType.STUDENT[0]}/>}
+        {contract ? <ContratSignature contract={contract} userType={UserType.STUDENT[0]}/> :<h6 className="text-white text-center p-3 bg-secondary">Vous avez aucun contrat à signer en ce-moment.</h6>}
     </>
 }

@@ -32,6 +32,9 @@ public class Contract {
     private Offer offer;
 
     @OneToOne
+    private Monitor monitor;
+
+    @OneToOne
     private Manager manager;
 
     @Lob
