@@ -41,10 +41,10 @@ public class ContractController {
         return ResponseEntity.ok(contractList);
     }
 
-    @PutMapping("/managerSign/{managerSignature}/{manager_id}/{contract_id}")
-    public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature, @PathVariable Long manager_id, @PathVariable Long contract_id){
+    @PutMapping("/managerSign/{managerSignature}/{contract_id}")
+    public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature,  @PathVariable Long contract_id){
         try {
-            Contract contract = contractService.addManagerSignature(managerSignature, contract_id, manager_id);
+            Contract contract = contractService.addManagerSignature(managerSignature, contract_id);
             WebContext context = new WebContext(request, response, servletContext);
             context.setVariable("contract", contract);
             String contractHtml = templateEngine.process("contractTemplate", context);
