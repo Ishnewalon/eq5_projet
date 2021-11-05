@@ -42,12 +42,13 @@ public class ContractControllerTest {
         when(contractService.getAllUnsignedContracts()).thenReturn(dummyContractList);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/contracts/ready_to_sign")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/contracts/ready_to_sign")
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Contract> actualContractList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<Contract> actualContractList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualContractList.size()).isEqualTo(dummyContractList.size());
     }
@@ -58,13 +59,13 @@ public class ContractControllerTest {
         Contract dummyContract = getDummyContract();
         String uri = "/contracts/managerSign/" + managerSignature
                 + "/" + dummyContract.getId();
-        when(contractService.addManagerSignature(any(),any()))
+        when(contractService.addManagerSignature(any(), any()))
                 .thenReturn(dummyContract);
         when(contractService.fillPDF(any(), any())).thenReturn(dummyContract);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.put(uri)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.put(uri)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -78,12 +79,12 @@ public class ContractControllerTest {
         Contract dummyContract = getDummyContract();
         String uri = "/contracts/managerSign/" + managerSignature
                 + "/" + dummyContract.getId();
-        when(contractService.addManagerSignature(any(),any()))
+        when(contractService.addManagerSignature(any(), any()))
                 .thenThrow(new IllegalArgumentException("La signature, l'id du contrat et du gestionnaire ne peuvent être null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.put(uri)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.put(uri)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -97,12 +98,12 @@ public class ContractControllerTest {
         Contract dummyContract = getDummyContract();
         String uri = "/contracts/managerSign/" + managerSignature
                 + "/" + dummyContract.getId();
-        when(contractService.addManagerSignature(any(),any()))
+        when(contractService.addManagerSignature(any(), any()))
                 .thenThrow(IdDoesNotExistException.class);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.put(uri)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.put(uri)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -117,12 +118,13 @@ public class ContractControllerTest {
         when(contractService.getAllUnsignedContractForMonitor(any())).thenReturn(dummyContractList);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/contracts/monitor/" + dummyMonitor.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/contracts/monitor/" + dummyMonitor.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Contract> actualContractList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<Contract> actualContractList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualContractList.size()).isEqualTo(dummyContractList.size());
     }
@@ -134,8 +136,8 @@ public class ContractControllerTest {
                 .thenThrow(new IllegalArgumentException("L'id du moniteur ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/contracts/monitor/" + dummyMonitor.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/contracts/monitor/" + dummyMonitor.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -150,8 +152,8 @@ public class ContractControllerTest {
                 .thenThrow(IdDoesNotExistException.class);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/contracts/monitor/" + dummyMonitor.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/contracts/monitor/" + dummyMonitor.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -165,13 +167,13 @@ public class ContractControllerTest {
         Contract dummyContract = getDummyContract();
         String uri = "/contracts/monitorSign/" + monitorSignature
                 + "/" + dummyContract.getId();
-        when(contractService.addMonitorSignature(any(),any()))
+        when(contractService.addMonitorSignature(any(), any()))
                 .thenReturn(dummyContract);
         when(contractService.fillPDF(any(), any())).thenReturn(dummyContract);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.put(uri)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.put(uri)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -185,12 +187,12 @@ public class ContractControllerTest {
         Contract dummyContract = getDummyContract();
         String uri = "/contracts/monitorSign/" + monitorSignature
                 + "/" + dummyContract.getId();
-        when(contractService.addMonitorSignature(any(),any()))
+        when(contractService.addMonitorSignature(any(), any()))
                 .thenThrow(new IllegalArgumentException("La signature et l'id du contrat ne peuvent être null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.put(uri)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.put(uri)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -204,12 +206,12 @@ public class ContractControllerTest {
         Contract dummyContract = getDummyContract();
         String uri = "/contracts/monitorSign/" + monitorSignature
                 + "/" + dummyContract.getId();
-        when(contractService.addMonitorSignature(any(),any()))
+        when(contractService.addMonitorSignature(any(), any()))
                 .thenThrow(IdDoesNotExistException.class);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.put(uri)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.put(uri)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -225,8 +227,8 @@ public class ContractControllerTest {
         when(contractService.getContractByStudentId(any())).thenReturn(dummyContract);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/contracts/student/" + student_id)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/contracts/student/" + student_id)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -238,13 +240,12 @@ public class ContractControllerTest {
     @Test
     public void testContractNeedsStudentSignature_withNullStudentId() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
-        Contract dummyContract = getDummyContract();
         long student_id = 1L;
         when(contractService.getContractByStudentId(any())).thenThrow(new IllegalArgumentException("La signature et l'id du contrat ne peuvent être null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/contracts/student/" + student_id)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/contracts/student/" + student_id)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -255,13 +256,12 @@ public class ContractControllerTest {
     @Test
     public void testContractNeedsStudentSignature_withInvalidStudentId() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
-        Contract dummyContract = getDummyContract();
         long student_id = 1L;
         when(contractService.getContractByStudentId(any())).thenThrow(IdDoesNotExistException.class);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/contracts/student/" + student_id)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/contracts/student/" + student_id)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -275,13 +275,13 @@ public class ContractControllerTest {
         Contract dummyContract = getDummyContract();
         String uri = "/contracts/studentSign/" + studentSignature
                 + "/" + dummyContract.getId();
-        when(contractService.addStudentSignature(any(),any()))
+        when(contractService.addStudentSignature(any(), any()))
                 .thenReturn(dummyContract);
         when(contractService.fillPDF(any(), any())).thenReturn(dummyContract);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.put(uri)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.put(uri)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -295,12 +295,12 @@ public class ContractControllerTest {
         Contract dummyContract = getDummyContract();
         String uri = "/contracts/studentSign/" + studentSignature
                 + "/" + dummyContract.getId();
-        when(contractService.addStudentSignature(any(),any()))
+        when(contractService.addStudentSignature(any(), any()))
                 .thenThrow(new IllegalArgumentException("La signature et l'id du contrat ne peuvent être null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.put(uri)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.put(uri)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -314,12 +314,12 @@ public class ContractControllerTest {
         Contract dummyContract = getDummyContract();
         String uri = "/contracts/studentSign/" + studentSignature
                 + "/" + dummyContract.getId();
-        when(contractService.addStudentSignature(any(),any()))
+        when(contractService.addStudentSignature(any(), any()))
                 .thenThrow(IdDoesNotExistException.class);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.put(uri)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.put(uri)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();

@@ -1,7 +1,6 @@
 package com.gestionnaire_de_stage.model;
 
 import com.gestionnaire_de_stage.enums.Status;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

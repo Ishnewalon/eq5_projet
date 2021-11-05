@@ -1,7 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.enums.Status;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
@@ -13,9 +12,8 @@ import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OfferApplicationService {
