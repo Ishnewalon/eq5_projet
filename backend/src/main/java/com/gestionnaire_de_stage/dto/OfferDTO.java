@@ -3,10 +3,10 @@ package com.gestionnaire_de_stage.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -33,4 +33,18 @@ public class OfferDTO {
     @NotBlank(message = "Le courriel est vide")
     private String creator_email;
 
+    @NotBlank(message = "La date de debut est vide")
+    private LocalDate dateDebut;
+
+    @NotBlank(message = "La date de fin est vide")
+    private LocalDate dateFin;
+
+    @NotBlank(message = "Le nombre de semaine est vide")
+    private String nbSemaine;
+
+    @NotBlank(message = "L'horaire de travail est vide")
+    private String horaireTravail;
+
+    @NotBlank(message = "Le nombre d'heure par semaine est vide")
+    private String nbHeureSemaine;
 }

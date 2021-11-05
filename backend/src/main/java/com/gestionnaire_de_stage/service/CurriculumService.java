@@ -5,7 +5,6 @@ import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
-import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
@@ -18,7 +17,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CurriculumService {
@@ -69,7 +67,6 @@ public class CurriculumService {
     }
 
     public List<CurriculumDTO> mapToCurriculumDTOList (List<OfferApplication> offerApplicationList) {
-        Assert.isTrue(!offerApplicationList.isEmpty(), "La liste d'offre ne peut pas être vide");
         List<CurriculumDTO> curriculumDTOList = new ArrayList<>();
         Student student;
         CurriculumDTO curriculumDTO = new CurriculumDTO();

@@ -1,28 +1,22 @@
-import React, {Component} from "react";
-import AuthService from "../../services/auth-service";
+import React from "react";
 import Monitor from "../Monitor/Monitor";
 import Manager from "../Manager/Manager";
-import StudentView from "../StudentView";
+import StudentView from "../StudentView/StudentView";
+import SupervisorView from "../SupervisorView/SupervisorView";
+import {useAuth} from "../../services/use-auth";
 
-function SupervisorView() {
-    return (<div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-        <h2>Vous êtes connecté!</h2>
-    </div>);
-}
 
-export default class Dashboard extends Component {
-    constructor(props) {
-        super(props);
-        this.service = AuthService
-    }
+export default function Dashboard() {
+    let auth = useAuth();
 
-    render() {
-        return (<>
-            {/*{JSON.stringify(this.service.user)}*/}
-            {this.service.isMonitor() ? <Monitor/> : <></>}
-            {this.service.isManager() ? <Manager/> : <></>}
-            {this.service.isStudent() ? <StudentView/> : <></>}
-            {this.service.isSupervisor() ? <SupervisorView/> : <></>}
-        </>)
-    }
+    if (auth.isMonitor())
+        return <Monitor/>
+    if (auth.isManager())
+        return <Manager/>
+    if (auth.isStudent())
+        return <StudentView/>
+    if (auth.isSupervisor())
+        return <SupervisorView/>
+
+    return <></>
 }

@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
@@ -91,6 +93,7 @@ public class CurriculumControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("IO Error: check file integrity!");
     }
+
     @Test
     public void uploadCurriculumTest_studentIdThrowsIdDoesNotExistException() throws Exception {
         Long studentId = 1L;
@@ -107,6 +110,7 @@ public class CurriculumControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Invalid Student ID");
     }
+
     @Test
     public void uploadCurriculumTest_idStudentNull() throws Exception {
         Long studentId = 1L;
@@ -123,6 +127,7 @@ public class CurriculumControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("L'étudiant est null");
     }
+
     @Test
     public void uploadCurriculumTest_idCurriculumNull() throws Exception {
         Long studentId = 1L;
@@ -143,8 +148,8 @@ public class CurriculumControllerTest {
 
     @Test
     public void testGetAllCurriculumNotValidatedYet_withValidList() throws Exception {
-        List<Curriculum> list = Arrays.asList(new Curriculum(), new Curriculum(), new Curriculum());
-        when(curriculumService.findAllCurriculumNotValidatedYet()).thenReturn(list);
+        List<Curriculum> dummyList = Arrays.asList(new Curriculum(), new Curriculum(), new Curriculum());
+        when(curriculumService.findAllCurriculumNotValidatedYet()).thenReturn(dummyList);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/curriculum/invalid/students")
@@ -152,10 +157,19 @@ public class CurriculumControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Curriculum> actualCurriculumList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        List<Curriculum> returnedList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
         });
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualCurriculumList).isEqualTo(list);
+
+        for (int i = 0; i < dummyList.size(); i++) {
+            assertThat(returnedList.get(i).getIsValid()).isEqualTo(dummyList.get(i).getIsValid());
+            assertThat(returnedList.get(i).getName()).isEqualTo(dummyList.get(i).getName());
+            assertThat(returnedList.get(i).getStudent()).isEqualTo(dummyList.get(i).getStudent());
+            assertThat(returnedList.get(i).getId()).isEqualTo(dummyList.get(i).getId());
+            assertThat(returnedList.get(i).getData()).isEqualTo(dummyList.get(i).getData());
+            assertThat(returnedList.get(i).getType()).isEqualTo(dummyList.get(i).getType());
+        }
 
     }
 
@@ -172,7 +186,7 @@ public class CurriculumControllerTest {
         List<Curriculum> actualCurriculumList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
         });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualCurriculumList).isEqualTo(Collections.emptyList());
+        assertThat(actualCurriculumList).isEmpty();
 
     }
 
@@ -181,11 +195,10 @@ public class CurriculumControllerTest {
         Curriculum cv1 = new Curriculum();
         Curriculum cv2 = new Curriculum();
         Curriculum cv3 = new Curriculum();
-        cv1.setIsValid(true);
-        cv2.setIsValid(true);
-        cv3.setIsValid(true);
-        List<Curriculum> list = Arrays.asList(cv1, cv2, cv3);
-        when(curriculumService.findAllCurriculumValidated()).thenReturn(list);
+
+        List<Curriculum> dummyList = Stream.of(cv1, cv2, cv3).peek(c -> c.setIsValid(true)).collect(Collectors.toList());
+
+        when(curriculumService.findAllCurriculumValidated()).thenReturn(dummyList);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/curriculum/valid/students")
@@ -193,11 +206,19 @@ public class CurriculumControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Curriculum> actualCurriculumList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        List<Curriculum> returnedList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
         });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualCurriculumList).isEqualTo(list);
 
+        assertThat(returnedList.size()).isEqualTo(dummyList.size());
+        for (int i = 0; i < dummyList.size(); i++) {
+            assertThat(returnedList.get(i).getIsValid()).isEqualTo(dummyList.get(i).getIsValid());
+            assertThat(returnedList.get(i).getName()).isEqualTo(dummyList.get(i).getName());
+            assertThat(returnedList.get(i).getStudent()).isEqualTo(dummyList.get(i).getStudent());
+            assertThat(returnedList.get(i).getId()).isEqualTo(dummyList.get(i).getId());
+            assertThat(returnedList.get(i).getData()).isEqualTo(dummyList.get(i).getData());
+            assertThat(returnedList.get(i).getType()).isEqualTo(dummyList.get(i).getType());
+        }
     }
 
     @Test
@@ -213,7 +234,7 @@ public class CurriculumControllerTest {
         List<Curriculum> actualCurriculumList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
         });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualCurriculumList).isEqualTo(Collections.emptyList());
+        assertThat(actualCurriculumList).isEmpty();
 
     }
 

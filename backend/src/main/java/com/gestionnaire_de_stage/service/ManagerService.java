@@ -28,7 +28,7 @@ public class ManagerService {
     }
 
     public Manager getOneByID(Long aLong) throws IdDoesNotExistException {
-        Assert.isTrue(aLong != null, "Id est null");
+        Assert.isTrue(aLong != null, "L'id du gestionnaire ne peut pas être null!");
         if (isIDNotValid(aLong)) {
             throw new IdDoesNotExistException();
         }
@@ -68,7 +68,7 @@ public class ManagerService {
         return manager.getEmail() != null && managerRepository.existsByEmail(manager.getEmail());
     }
 
-    private boolean isIDNotValid(Long id) {
+    public boolean isIDNotValid(Long id) {
         return !managerRepository.existsById(id);
     }
 

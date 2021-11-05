@@ -1,71 +1,60 @@
 import './Login.css'
-import React, {Component} from "react";
-import {UserType} from "../Register/Register";
-import AuthService from "../../services/auth-service";
-import {FieldPassword} from "../Fields/FieldPassword";
+import React, {useState} from "react";
+import FieldPassword from "../Fields/FieldPassword";
+import FieldEmail from "../Fields/FieldEmail";
+import {useHistory} from "react-router-dom";
+import {UserType} from "../../enums/UserTypes";
+import {useAuth} from "../../services/use-auth";
 
 
-export default class Login extends Component {
+export default function Login() {
+    const history = useHistory();
+    let auth = useAuth();
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [userType, setUserType] = useState(UserType.MONITOR[0])
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: '',
-            password: '',
-            userType: UserType.MONITOR[0]
-        }
-        this.service = AuthService
-    }
-
-    handleChange = input => e => {
+    const connect = (e) => {
         e.preventDefault()
-        this.setState({[input]: e.target.value});
-    }
-    connect = (e) => {
-        e.preventDefault()
-        this.service.signIn(this.state.userType, this.state.email, this.state.password).then(() => {
-            if (this.service.isAuthenticated())
-                this.props.history.push('/')
+        auth.signIn(userType, email, password).then(() => {
+            if (auth.user)
+                history.push('/')
         })
     }
 
-    render() {
-        return (<>
-                <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-                    <h2 className="text-center">Se connecter</h2>
-                    <div className="form-group">
-                        <label>Type d'utilisateur</label>
-                        <div className="input-group">
-                            <select className="form-control" name="choice" id="userTypes"
-                                    onChange={this.handleChange('userType')}>
-                                <option defaultChecked={true} value={UserType.MONITOR[0]}>{UserType.MONITOR[1]}</option>
-                                <option value={UserType.SUPERVISOR[0]}>{UserType.SUPERVISOR[1]}</option>
-                                <option value={UserType.STUDENT[0]}>{UserType.STUDENT[1]}</option>
-                                <option value={UserType.MANAGER[0]}>{UserType.MANAGER[1]}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <div className="col-md-6">
-                            <label>Email</label>
-                            <div className="input-group">
-                                <input name="email" placeholder="Email" className="form-control" type="text"
-                                       value={this.state.email} onChange={this.handleChange('email')}/>
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <FieldPassword password={this.state.password} label="Mot de passe"
-                                           placeholder="Votre mot de passe"
-                                           handleChange={this.handleChange('password')}/>
-                        </div>
-                    </div>
-                    <div className="form-group text-center">
-                        <label/>
-                        <button className="btn btn-primary" type={"button"} onClick={this.connect}>Connexion</button>
+
+    return (<>
+            <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+                <h2 className="text-center">Se connecter</h2>
+                <div className="form-group">
+                    <label>Type d'utilisateur</label>
+                    <div className="input-group">
+                        <select className="form-control" name="choice" id="userTypes"
+                                onChange={(e) => setUserType(e.target.value)}>
+                            <option defaultChecked={true} value={UserType.MONITOR[0]}>{UserType.MONITOR[1]}</option>
+                            <option value={UserType.SUPERVISOR[0]}>{UserType.SUPERVISOR[1]}</option>
+                            <option value={UserType.STUDENT[0]}>{UserType.STUDENT[1]}</option>
+                            <option value={UserType.MANAGER[0]}>{UserType.MANAGER[1]}</option>
+                        </select>
                     </div>
                 </div>
-            </>
-        )
-    }
+                <div className="form-group row">
+                    <div className="col-md-6">
+                        <FieldEmail email={email} label="Email" placeholder="Votre Email"
+                                    handleChanges={(e) => setEmail(e.target.value)}/>
+                    </div>
+                    <div className="col-md-6">
+                        <FieldPassword password={password} label="Mot de passe"
+                                       placeholder="Votre mot de passe"
+                                       handleChange={(e) => setPassword(e.target.value)}/>
+                    </div>
+                </div>
+                <div className="form-group text-center">
+                    <label/>
+                    <button className="btn btn-primary btn-login" type={"button"} onClick={connect}>Connexion</button>
+                </div>
+            </div>
+        </>
+    )
 }
 

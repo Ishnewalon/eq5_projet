@@ -1,6 +1,5 @@
 package com.gestionnaire_de_stage.dto;
 
-import com.gestionnaire_de_stage.model.Offer;
 import lombok.Data;
 
 import javax.persistence.Lob;

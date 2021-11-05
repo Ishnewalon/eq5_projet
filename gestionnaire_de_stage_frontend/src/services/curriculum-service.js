@@ -1,4 +1,5 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
+import {toast} from "../utility";
 
 export async function uploadFile(file, id) {
     let formData = new FormData();
@@ -32,9 +33,18 @@ export async function validateCV(id, valid) {
         id,
         valid
     };
-    const response = await fetch(`${urlBackend}/curriculum/validate`,
-        requestInit(methods.POST, obj));
-    return await response.json();
+    return await fetch(`${urlBackend}/curriculum/validate`, requestInit(methods.POST, obj)).then(
+        response => {
+            return response.json().then(
+                body => {
+                    if (response.status === 200)
+                        toast.fire({title: body.message, icon: 'success'})
+                    else if (response.status === 400)
+                        toast.fire({title: body.message, icon: 'error'})
+                }
+            )
+        }
+    );
 }
 
 export async function downloadCV(id) {
