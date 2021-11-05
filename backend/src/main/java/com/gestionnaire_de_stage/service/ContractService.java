@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Contract;
+import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.repository.ContractRepository;
@@ -113,8 +114,10 @@ public class ContractService {
         Manager manager = managerService.getOneByID(contractStarterDto.getIdManager());
         contract.setManager(manager);
 
-        OfferApplication oneById = offerApplicationService.getOneById(contractStarterDto.getIdOfferApplication());
-        contract.setOffer(oneById.getOffer());
+        OfferApplication offerApplication = offerApplicationService.getOneById(contractStarterDto.getIdOfferApplication());
+        contract.setOffer(offerApplication.getOffer());
+        Curriculum curriculum = offerApplication.getCurriculum();
+        contract.setStudent(curriculum.getStudent());
 
         return contractRepository.save(contract);
     }

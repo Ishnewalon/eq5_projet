@@ -194,7 +194,7 @@ class OfferApplicationServiceTest {
     @Test
     void testGetOneById() throws IdDoesNotExistException {
         OfferApplication offerApplication = getDummyOfferApp();
-        when(offerApplicationRepository.existsById(any())).thenReturn(false);
+        when(offerApplicationRepository.existsById(any())).thenReturn(true);
         when(offerApplicationRepository.getById(any())).thenReturn(offerApplication);
 
         OfferApplication actualOfferApp = offerApplicationService.getOneById(offerApplication.getId());
@@ -209,7 +209,7 @@ class OfferApplicationServiceTest {
     }
     @Test
     void testGetOneById_whenIdInvalid() {
-        when(offerApplicationRepository.existsById(any())).thenReturn(true);
+        when(offerApplicationRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
                 () -> offerApplicationService.getOneById(1L));
