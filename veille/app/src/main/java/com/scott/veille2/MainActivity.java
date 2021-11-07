@@ -37,6 +37,10 @@ public class MainActivity extends AppCompatActivity implements OnItemSelectedLis
         setupSpinner();
     }
 
+    private void setupLoginListener() {
+
+    }
+
     private void setupSpinner() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.user_array , android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
