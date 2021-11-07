@@ -5,10 +5,12 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.scott.veille2.model.User;
 
 public class RequestSingleton {
     private static RequestSingleton instance;
     private RequestQueue requestQueue;
+    private User user;
     private static Context ctx;
 
     private RequestSingleton(Context context) {
@@ -32,5 +34,17 @@ public class RequestSingleton {
 
     public <T> void addToRequestQueue(Request<T> request) {
         getRequestQueue().add(request);
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void clearUser() {
+        this.user = null;
     }
 }

@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Veille2"
         android:usesCleartextTraffic="true">
-        <activity android:name=".StudentDashboard"></activity>
+        <activity android:name=".ManagerDashboard"></activity>
+        <activity android:name=".MonitorDashboard" />
+        <activity android:name=".StudentDashboard" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

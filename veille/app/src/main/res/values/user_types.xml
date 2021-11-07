@@ -3,6 +3,6 @@
     <string-array name="user_array">
         <item>student</item>
         <item>manager</item>
-        <item>supervisor</item>
+        <item>monitor</item>
     </string-array>
 </resources>

@@ -2,6 +2,7 @@ package com.scott.veille2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.scott.veille2.service.IRequestListener;
 import com.scott.veille2.service.LoginService;
 
 import static android.widget.AdapterView.*;
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements OnItemSelectedLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loginService = new LoginService(this);
+        loginService = new LoginService(this, setupLoginListener());
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
@@ -37,8 +39,22 @@ public class MainActivity extends AppCompatActivity implements OnItemSelectedLis
         setupSpinner();
     }
 
-    private void setupLoginListener() {
-
+    private IRequestListener setupLoginListener() {
+        return (isSuccessful) -> {
+            if (isSuccessful){
+                switch (userSelection){
+                    case "student" :
+                        startActivity(new Intent(MainActivity.this, StudentDashboard.class));
+                        break;
+                    case "manager" :
+                        startActivity(new Intent(MainActivity.this, ManagerDashboard.class));
+                        break;
+                    case "monitor" :
+                        startActivity(new Intent(MainActivity.this, MonitorDashboard.class));
+                        break;
+                }
+            }
+        };
     }
 
     private void setupSpinner() {
