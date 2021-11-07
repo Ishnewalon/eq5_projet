@@ -33,11 +33,11 @@ public class LoginService implements IServiceUtil {
                     RequestSingleton
                             .getInstance(context.getApplicationContext())
                             .setUser(buildUserFromJson(response));
-                    listener.processFinished(true);
+                    listener.processFinished(true, response.toString());
                 },
                 error -> {
                     Toast.makeText(context, "Imposible de vous connecter!",  Toast.LENGTH_SHORT).show();
-                    listener.processFinished(false);
+                    listener.processFinished(false, error.getMessage());
                 });
 
         RequestSingleton

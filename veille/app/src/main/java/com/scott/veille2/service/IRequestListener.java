@@ -1,6 +1,6 @@
 package com.scott.veille2.service;
 
-public interface IRequestListener {
+public interface IRequestListener <T> {
 
-    void processFinished(boolean isSuccessful);
+    void processFinished(boolean isSuccessful, T response);
 }

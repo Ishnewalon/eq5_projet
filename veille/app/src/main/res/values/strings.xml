@@ -2,4 +2,5 @@
     <string name="app_name">Veille2</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="student_name">%1$s, %2$s</string>
 </resources>
