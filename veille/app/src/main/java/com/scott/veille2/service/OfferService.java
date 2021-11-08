@@ -5,8 +5,10 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.scott.veille2.RequestSingleton;
 import com.scott.veille2.model.Offer;
+import com.scott.veille2.model.OfferAppDTO;
 import com.scott.veille2.model.User;
 
 import org.json.JSONArray;
@@ -42,6 +44,34 @@ public class OfferService implements IServiceUtil {
         RequestSingleton
                 .getInstance(context.getApplicationContext())
                 .addToRequestQueue(jsonArrayRequest);
+    }
+
+    public void applyOnOffer(IRequestListener<String> listener, long studentID, long offerID) {
+        String url = API_URL + "/applications/apply";
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("idOffer", offerID);
+            jsonObject.put("idStudent", studentID);
+        }catch (JSONException e){
+            return;
+        }
+
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                jsonObject,
+                response -> {
+                    listener.processFinished(true, response.toString());
+                },
+                error -> {
+                    listener.processFinished(false, error.getMessage());
+                });
+
+        RequestSingleton
+                .getInstance(context.getApplicationContext())
+                .addToRequestQueue(jsonObjectRequest);
     }
 
     private List<Offer> buildListFromJson(JSONArray jsonArray) {
