@@ -24,11 +24,12 @@ import axios from 'axios'
 import {createRouter, createWebHistory} from "vue-router";
 import router from "../../router";
 import Home from "../HelloWorld"
+
 export default {
   name: 'RegisterSupervisor',
-  data: function() {
+  data: function () {
     return {
-      supervisor : {
+      supervisor: {
         email: '',
         password: '',
         lastName: '',
@@ -49,7 +50,7 @@ export default {
               history: createWebHistory,
               routes: [{path: `/home`, component: Home}]
             })
-            router.push({path:`/home`})
+            router.push({path: `/home`})
           })
           .catch((error) => {
             console.log(error)
@@ -70,12 +71,12 @@ input {
   box-sizing: border-box;
 }
 
-button{
+button {
   background-color: transparent;
   border: 1px solid black;
   box-sizing: border-box;
   color: #00132C;
-  font-family: "Avenir Next LT W01 Bold",sans-serif;
+  font-family: "Avenir Next LT W01 Bold", sans-serif;
   font-size: 16px;
   font-weight: 700;
   line-height: 24px;

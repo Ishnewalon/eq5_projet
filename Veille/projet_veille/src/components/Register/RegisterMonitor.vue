@@ -5,22 +5,70 @@
         <h2>Inscription Moniteur</h2>
       </div>
       <div>
-        <input name="firstName" v-model="firstName" type="text" placeholder="Prénom" required/>
-        <input name="lastName" v-model="lastName" type="text" placeholder="Nom" required/>
-        <input name="email" v-model="email" type="email" placeholder="E-mail" required/>
-        <input name="username" v-model="username" type="number" placeholder="Téléphone" required/>
-        <input name="companyName" v-model="companyName" type="text" placeholder="Nom de la compagnie" required/>
-        <input name="city" v-model="city" type="text" placeholder="Ville" required/>
-        <input name="companyAddress" v-model="companyAddress" type="text" placeholder="Adresse de la compagnie" required/>
-        <input name="postalCode" v-model="postalCode" type="text" placeholder="Code postale" required/>
-        <input name="password" v-model="password" type="password" placeholder="Mot de passe" required/>
+        <input name="matricule" v-model.lazy="monitor.matricule" type="text" placeholder="Matricule" required/>
+        <input name="firstName" v-model.lazy="monitor.firstName" type="text" placeholder="Prénom" required/>
+        <input name="lastName" v-model.lazy="monitor.lastName" type="text" placeholder="Nom" required/>
+        <input name="email" v-model.lazy="monitor.email" type="email" placeholder="E-mail" required/>
+        <input name="phone" v-model.lazy="monitor.username" type="number" placeholder="Téléphone" required/>
+        <input name="companyName" v-model.lazy="monitor.companyName" type="text" placeholder="Nom de la compagnie" required/>
+        <input name="city" v-model.lazy="monitor.city" type="text" placeholder="Ville" required/>
+        <input name="companyAddress" v-model.lazy="monitor.companyAddress" type="text" placeholder="Adresse de la compagnie"
+               required/>
+        <input name="postalCode" v-model.lazy="monitor.postalCode" type="text" placeholder="Code postale" required/>
+        <input name="password" v-model.lazy="monitor.password" type="password" placeholder="Mot de passe" required/>
       </div>
       <div>
-        <button>S'inscrire</button>
+        <button v-on:click="RegisterMonitor">S'inscrire</button>
       </div>
     </form>
   </div>
 </template>
+
+
+<script>
+import axios from 'axios'
+import {createRouter, createWebHistory} from "vue-router";
+import router from "../../router";
+import Home from "../HelloWorld"
+
+export default {
+  name: 'RegisterSupervisor',
+  data: function () {
+    return {
+      monitor: {
+        email: '',
+        password: '',
+        lastName: '',
+        firstName: '',
+        phone: '',
+        matricule: '',
+        companyName: '',
+        city: '',
+        companyAddress: '',
+        postalCode: '',
+        department: 'informatique',
+      }
+    }
+  },
+  methods: {
+    RegisterMonitor(error) {
+      error.preventDefault();
+      axios.post("http://localhost:8181/monitor/signup", this.monitor)
+          .then((response) => {
+            sessionStorage.setItem(this.monitor.email, JSON.stringify(response.data));
+            createRouter({
+              history: createWebHistory,
+              routes: [{path: `/home`, component: Home}]
+            })
+            router.push({path: `/home`})
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+    }
+  },
+}
+</script>
 
 <style scoped>
 input {
@@ -33,12 +81,12 @@ input {
   box-sizing: border-box;
 }
 
-button{
+button {
   background-color: transparent;
   border: 1px solid black;
   box-sizing: border-box;
   color: #00132C;
-  font-family: "Avenir Next LT W01 Bold",sans-serif;
+  font-family: "Avenir Next LT W01 Bold", sans-serif;
   font-size: 16px;
   font-weight: 700;
   line-height: 24px;
