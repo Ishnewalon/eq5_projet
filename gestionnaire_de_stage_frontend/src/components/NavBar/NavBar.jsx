@@ -72,6 +72,9 @@ function NavItemSpecificForUser() {
             <li>
                 <Link className="nav-link text-white" to="/dashboard/contrats/a_signer">Contrats à valider</Link>
             </li>
+            <li>
+                <Link className='nav-link text-white' to='/dashboard/contracts/signed'>Contrats signé</Link>
+            </li>
         </>)
     if (auth.isStudent())
         return <>

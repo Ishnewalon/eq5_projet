@@ -101,3 +101,7 @@ export async function startSignerFetch(idOfferApplication, idManager) {
         }, err => console.error(err)
     );
 }
+
+export async function getAllSignedContractsForManager(idManager){
+    return await fetch(`${urlBackend}/contracts/manager/signed/${idManager}`, requestInit(methods.GET)).then(res => res.json());
+}

@@ -8,6 +8,7 @@ import LinkSupervisorToStudent from "./LinkSupervisorToStudent/LinkSupervisorToS
 import {Route, useRouteMatch} from "react-router-dom";
 import {UserType} from "../../enums/UserTypes";
 import ViewStartContrat from "./StartContrat/ViewStartContrat";
+import ViewSignedContracts from "../ViewSignedContracts/ViewSignedContracts";
 
 export default function Manager() {
     const {path} = useRouteMatch();
@@ -45,6 +46,11 @@ export default function Manager() {
             <Route exact path={`${path}/contrats/a_signer`}>
                 <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
                     <ViewContractsToBeSigned userType={UserType.MANAGER[0]}/>
+                </div>
+            </Route>
+            <Route exact path={`${path}/contracts/signed`}>
+                <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+                    <ViewSignedContracts userType={UserType.MANAGER[0]}/>
                 </div>
             </Route>
         </>
