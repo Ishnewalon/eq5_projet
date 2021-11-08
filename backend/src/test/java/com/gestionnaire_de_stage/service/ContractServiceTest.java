@@ -12,8 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -269,6 +271,34 @@ public class ContractServiceTest {
 
         assertThrows(IdDoesNotExistException.class,
                 () -> contractService.addStudentSignature(studentSignature, dummyContract.getId()));
+    }
+
+
+    @Test
+    public void testGetAllSignedContracts_withExistentId()  {
+        List<Contract> dummyContractList = getDummyContractList();
+        when(contractRepository.getAllByManager_IdAndManagerSignatureNotNull(any())).thenReturn(dummyContractList);
+
+        List<Contract> actualContractList = contractService.getAllSignedContractsByManager(1L);
+
+        assertThat(actualContractList)
+                .isNotEmpty()
+                .isEqualTo(dummyContractList);
+    }
+
+    @Test
+    public void testGetAllSignedContracts_withNonExistentId() {
+        when(contractRepository.getAllByManager_IdAndManagerSignatureNotNull(any())).thenReturn(Collections.emptyList());
+
+        List<Contract> allSignedContractsByManager = contractService.getAllSignedContractsByManager(1000L);
+
+        assertThat(allSignedContractsByManager).isEmpty();
+    }
+
+    @Test
+    public void testGetAllSignedContracts_withNullId(){
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.getAllSignedContractsByManager(null));
     }
 
     private List<Contract> getDummyContractList() {

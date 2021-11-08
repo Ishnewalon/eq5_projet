@@ -183,4 +183,9 @@ public class ContractController {
                 .body(new ResponseMessage("Signature fait"));
     }
 
+    @GetMapping("/manager/signed/{managerId}")
+    public ResponseEntity<?> getAllSignedContractsByManager(@PathVariable Long managerId) {
+        List<Contract> signedContractsByManager = contractService.getAllSignedContractsByManager(managerId);
+        return ResponseEntity.ok(signedContractsByManager);
+    }
 }

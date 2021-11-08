@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -402,6 +403,42 @@ public class ContractControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Le id du contrat n'existe pas");
+    }
+
+    @Test
+    public void testGetAllSignedContractsByManager_withExistentId() throws Exception {
+        List<Contract> dummyContracts = getDummyContractList();
+        when(contractService.getAllSignedContractsByManager(any())).thenReturn(dummyContracts);
+        MvcResult mvcResult = mockMvc.perform(
+            MockMvcRequestBuilders.get("/contracts/manager/signed/" + 100L)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+
+        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+
+        assertThat(returnedContracts)
+                .isNotEmpty()
+                .isEqualTo(dummyContracts);
+    }
+
+    @Test
+    public void testGetAllSignedContractsByManager_withNonExistentId() throws Exception{
+        when(contractService.getAllSignedContractsByManager(any())).thenReturn(Collections.emptyList());
+
+        long nonExistentId = 1000L;
+        MvcResult mvcResult = mockMvc.perform(
+            MockMvcRequestBuilders.get("/contracts/manager/signed/" + nonExistentId)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+
+        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        assertThat(returnedContracts).isEmpty();
     }
 
     private Contract getDummyContract() {
