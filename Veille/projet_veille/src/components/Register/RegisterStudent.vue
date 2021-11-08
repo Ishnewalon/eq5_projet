@@ -40,7 +40,8 @@ export default {
     }
   },
   methods: {
-    registerStudent() {
+    registerStudent(error) {
+      error.preventDefault();
       axios.post("http://localhost:8181/student/signup", this.student)
           .then((response) => {
             sessionStorage.setItem(this.student.email, JSON.stringify(response.data));

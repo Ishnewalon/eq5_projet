@@ -5,18 +5,59 @@
         <h2>Inscription Superviseur</h2>
       </div>
       <div>
-        <input name="firstName" v-model="firstName" type="text" placeholder="Prénom" required/>
-        <input name="lastName" v-model="lastName" type="text" placeholder="Nom" required/>
-        <input name="email" v-model="email" type="email" placeholder="E-mail" required/>
-        <input name="username" v-model="username" type="number" placeholder="Téléphone" required/>
-        <input name="password" v-model="password" type="password" placeholder="Mot de passe" required/>
+        <input name="matricule" v-model.lazy="supervisor.matricule" type="text" placeholder="Matricule" required/>
+        <input name="firstName" v-model.lazy="supervisor.firstName" type="text" placeholder="Prénom" required/>
+        <input name="lastName" v-model.lazy="supervisor.lastName" type="text" placeholder="Nom" required/>
+        <input name="email" v-model.lazy="supervisor.email" type="email" placeholder="E-mail" required/>
+        <input name="username" v-model.lazy="supervisor.username" type="text" placeholder="Téléphone" required/>
+        <input name="password" v-model.lazy="supervisor.password" type="password" placeholder="Mot de passe" required/>
       </div>
       <div>
-        <button>S'inscrire</button>
+        <button v-on:click="RegisterSupervisor">S'inscrire</button>
       </div>
     </form>
   </div>
 </template>
+
+<script>
+import axios from 'axios'
+import {createRouter, createWebHistory} from "vue-router";
+import router from "../../router";
+import Home from "../HelloWorld"
+export default {
+  name: 'RegisterSupervisor',
+  data: function() {
+    return {
+      supervisor : {
+        email: '',
+        password: '',
+        lastName: '',
+        firstName: '',
+        phone: '',
+        matricule: '',
+        department: 'informatique',
+      }
+    }
+  },
+  methods: {
+    RegisterSupervisor(error) {
+      error.preventDefault();
+      axios.post("http://localhost:8181/supervisor/signup", this.supervisor)
+          .then((response) => {
+            sessionStorage.setItem(this.supervisor.email, JSON.stringify(response.data));
+            createRouter({
+              history: createWebHistory,
+              routes: [{path: `/home`, component: Home}]
+            })
+            router.push({path:`/home`})
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+    }
+  },
+}
+</script>
 
 <style scoped>
 input {
