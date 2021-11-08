@@ -13,7 +13,8 @@ export default function Navbar() {
                     </li>
                     {auth.user ? (<>
                             <li className="nav-item">
-                                <Link className="nav-link text-white" to="/dashboard">Compte ({auth.user.firstName})</Link>
+                                <Link className="nav-link text-white" to="/dashboard">Compte
+                                    ({auth.user.firstName})</Link>
                             </li>
                             <NavItemSpecificForUser/>
                             <button className="fw-bold" onClick={() => auth.signOut()}>Se déconnecter</button>
@@ -45,7 +46,8 @@ function NavItemSpecificForUser() {
                     <Link className="nav-link text-white" to="/dashboard/applications">Applications</Link>
                 </li>
                 <li>
-                    <Link className="nav-link text-white" to="/dashboard/voir/futures_stagiaires">Contrats à valider</Link>
+                    <Link className="nav-link text-white" to="/dashboard/voir/futures_stagiaires">Contrats à
+                        valider</Link>
                 </li>
             </>
         )
@@ -71,6 +73,9 @@ function NavItemSpecificForUser() {
             </li>
             <li>
                 <Link className="nav-link text-white" to="/dashboard/contrats/a_signer">Contrats à valider</Link>
+            </li>
+            <li>
+                <Link className="nav-link text-white" to="/dashboard/rapports">Rapports</Link>
             </li>
         </>)
     if (auth.isStudent())
