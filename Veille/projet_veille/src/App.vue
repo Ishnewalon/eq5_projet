@@ -3,6 +3,8 @@
     <router-link to="/">Home</router-link>
     |
     <router-link to="/register">Inscription</router-link>
+    |
+    <router-link to="/login">Connexion</router-link>
   </div>
   <router-view/>
 </template>
