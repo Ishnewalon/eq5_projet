@@ -1,5 +1,5 @@
 import React from "react";
-import FieldAddress from "../../Fields/FieldAddress";
+import FieldAddress from "../../SharedComponents/Fields/FieldAddress";
 import {toastErr} from "../../../utility";
 import {UserType} from "../../../enums/UserTypes";
 import {Step} from "../../../enums/Steps";
