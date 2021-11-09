@@ -34,11 +34,11 @@ public class CurriculumController {
         } catch (IOException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("IO Error: check file integrity!"));
+                    .body(new ResponseMessage("IO Error: check file integrity!"));//FIXME: Change message
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Invalid Student ID"));
+                    .body(new ResponseMessage("Invalid Student ID"));//FIXME: Change message
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
@@ -46,7 +46,7 @@ public class CurriculumController {
         }
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ResponseMessage("File Uploaded Successfully"));
+                .body(new ResponseMessage("File Uploaded Successfully"));//FIXME: Change message
     }
 
     @GetMapping("/invalid/students")
@@ -64,7 +64,7 @@ public class CurriculumController {
     @PostMapping("/validate")
     public ResponseEntity<?> validate(@RequestBody ValidationCurriculum validationCurriculum) {
         try {
-            curriculumService.validate(validationCurriculum.getId(), validationCurriculum.isValid());
+            curriculumService.validate(validationCurriculum.getId(), validationCurriculum.isValid());//FIXME: Change pour objet
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
@@ -82,7 +82,7 @@ public class CurriculumController {
         return ResponseEntity.ok(new ResponseMessage(response));
     }
 
-    @GetMapping({"/download", "/download/{idCurriculum}"})
+    @GetMapping({"/download", "/download/{idCurriculum}"})//FIXME: Handle differently the url
     public ResponseEntity<?> downloadById(@PathVariable(required = false) Long idCurriculum) {
         System.out.println(idCurriculum);
         Curriculum oneById;

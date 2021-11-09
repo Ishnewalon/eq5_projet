@@ -57,11 +57,11 @@ public class OfferController {
                 .body(offer);
     }
 
-    @GetMapping({"/", "/{department}"}) //TODO Handle exception
-    public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {
+    @GetMapping({"/", "/{department}"}) //FIXME Handle exception
+    public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {//TODO get the student ID instead of the department
         List<Offer> offers;
         try {
-            offers = offerService.getOffersByDepartment(department);
+            offers = offerService.getOffersByDepartment(department);//TODO: get only offers non applied
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
