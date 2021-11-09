@@ -28,7 +28,7 @@ class OfferService {
 
 
     async promisedReturn(response, successMessage, defaultValue){
-        return response.json().then(value => {
+        return await response.json().then(value => {
                 if (value.message) {
                     Swal.fire({
                         title: value.message,

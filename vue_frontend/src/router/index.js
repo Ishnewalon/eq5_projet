@@ -31,7 +31,8 @@ const routes = [
   {
     path:'/logged-in',
     name: 'Connecté',
-    component: LoggedIn
+    component: LoggedIn,
+    beforeEnter: guardRoute
   },
   {
     path:'/register/supervisor',
