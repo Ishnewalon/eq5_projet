@@ -14,7 +14,7 @@
       </div>
       <div>
         <br/>
-        <button v-on:click='registerStudent()'>S'inscrire</button>
+        <button v-on:click='registerStudent'>S'inscrire</button>
       </div>
     </form>
   </div>
@@ -24,7 +24,7 @@
 import axios from 'axios'
 import {createRouter, createWebHistory} from "vue-router";
 import router from "../../router";
-import Home from "../HelloWorld"
+import Login from "../Login/Login";
 
 export default {
   name: 'RegisterStudent',
@@ -50,9 +50,9 @@ export default {
               sessionStorage.setItem(this.student.email, JSON.stringify(response.data));
               createRouter({
                 history: createWebHistory,
-                routes: [{path: `/home`, component: Home}]
+                routes: [{path: `/login`, component: Login}]
               })
-              router.push({path: `/home`})
+              router.push({path: `/login`})
             })
             .catch((error) => {
               console.log(error)

@@ -9,7 +9,7 @@
         <input name="firstName" v-model.lazy="supervisor.firstName" type="text" placeholder="Prénom" required/>
         <input name="lastName" v-model.lazy="supervisor.lastName" type="text" placeholder="Nom" required/>
         <input name="email" v-model.lazy="supervisor.email" type="email" placeholder="E-mail" required/>
-        <input name="username" v-model.lazy="supervisor.username" type="text" placeholder="Téléphone" required/>
+        <input name="phone" v-model.lazy="supervisor.phone" type="text" placeholder="Téléphone" required/>
         <input name="password" v-model.lazy="supervisor.password" type="password" placeholder="Mot de passe" required/>
       </div>
       <div>
@@ -24,7 +24,7 @@
 import axios from 'axios'
 import {createRouter, createWebHistory} from "vue-router";
 import router from "../../router";
-import Home from "../HelloWorld"
+import Login from "../Login/Login";
 
 export default {
   name: 'RegisterSupervisor',
@@ -50,9 +50,9 @@ export default {
               sessionStorage.setItem(this.supervisor.email, JSON.stringify(response.data));
               createRouter({
                 history: createWebHistory,
-                routes: [{path: `/home`, component: Home}]
+                routes: [{path: `/login`, component: Login}]
               })
-              router.push({path: `/home`})
+              router.push({path: `/login`})
             })
             .catch((error) => {
               console.log(error)

@@ -10,9 +10,11 @@
         <input name="lastName" v-model.lazy="monitor.lastName" type="text" placeholder="Nom" required/>
         <input name="email" v-model.lazy="monitor.email" type="email" placeholder="E-mail" required/>
         <input name="phone" v-model.lazy="monitor.username" type="number" placeholder="Téléphone" required/>
-        <input name="companyName" v-model.lazy="monitor.companyName" type="text" placeholder="Nom de la compagnie" required/>
+        <input name="companyName" v-model.lazy="monitor.companyName" type="text" placeholder="Nom de la compagnie"
+               required/>
         <input name="city" v-model.lazy="monitor.city" type="text" placeholder="Ville" required/>
-        <input name="companyAddress" v-model.lazy="monitor.companyAddress" type="text" placeholder="Adresse de la compagnie"
+        <input name="companyAddress" v-model.lazy="monitor.companyAddress" type="text"
+               placeholder="Adresse de la compagnie"
                required/>
         <input name="postalCode" v-model.lazy="monitor.postalCode" type="text" placeholder="Code postale" required/>
         <input name="password" v-model.lazy="monitor.password" type="password" placeholder="Mot de passe" required/>
@@ -30,7 +32,7 @@
 import axios from 'axios'
 import {createRouter, createWebHistory} from "vue-router";
 import router from "../../router";
-import Home from "../HelloWorld"
+import Login from "../Login/Login";
 
 export default {
   name: 'RegisterSupervisor',
@@ -59,9 +61,9 @@ export default {
             sessionStorage.setItem(this.monitor.email, JSON.stringify(response.data));
             createRouter({
               history: createWebHistory,
-              routes: [{path: `/home`, component: Home}]
+              routes: [{path: `/login`, component: Login}]
             })
-            router.push({path: `/home`})
+            router.push({path: `/login`})
           })
           .catch((error) => {
             console.log(error)
@@ -109,7 +111,7 @@ export default {
         return false
       }
       if (!this.monitor.postalCode) {
-        alert( 'Code postal est vide')
+        alert('Code postal est vide')
         return false
       }
       if (!this.monitor.companyName.match(/^[a-zA-Z0-9]+$/)) {
