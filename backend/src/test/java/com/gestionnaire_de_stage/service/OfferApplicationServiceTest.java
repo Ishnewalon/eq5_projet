@@ -301,6 +301,18 @@ class OfferApplicationServiceTest {
                 () -> offerApplicationService.getAllByOfferStatusAndStudentID(null, null));
     }
 
+    @Test
+    void testGetAllBySupervisorId() {
+        List<OfferApplication> dummyOfferAppList = getDummyOfferAppList();
+        long supervisor_id = 1L;
+        when(offerApplicationRepository.getAllByCurriculum_Student_Supervisor_Id(any())).thenReturn(dummyOfferAppList);
+
+        List<OfferApplication> actualOfferAppList = offerApplicationService.getAllBySupervisorId(supervisor_id);
+
+        assertThat(actualOfferAppList).isEqualTo(dummyOfferAppList);
+        assertThat(actualOfferAppList.size()).isEqualTo(dummyOfferAppList.size());
+    }
+
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();
         offerApplicationDTO.setOffer(getDummyOffer());

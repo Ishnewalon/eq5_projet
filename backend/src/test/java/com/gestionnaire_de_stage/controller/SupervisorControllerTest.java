@@ -196,13 +196,13 @@ public class SupervisorControllerTest {
                 })).isEqualTo(list);
 
     }
-
-/*    @Test
+/*
+    @Test
     public void testGetAllStudentsStatus() throws Exception {
         Supervisor dummySupervisor = getDummySupervisor();
         List<OfferApplication> dummyOfferAppList = getDummyOfferAppList();
         when(supervisorService.getOneByID(any())).thenReturn(dummySupervisor);
-        when(supervisorService.getStudentsStatus.thenReturn(dummyOfferAppList);
+        when(supervisorService.getStudentsStatus(any())).thenReturn(dummyOfferAppList);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/getStudentsStatus/" + dummySupervisor.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();

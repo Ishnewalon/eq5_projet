@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
+import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
@@ -69,6 +70,10 @@ public class SupervisorService {
         }
         return supervisorRepository.findSupervisorByEmailAndPassword(email, password);
     }
+
+/*    public List<OfferApplication> getStudentsStatus(Supervisor supervisor) {
+        List<OfferApplication> offerApplicationList =
+    }*/
 
     private boolean isNotValid(Supervisor supervisor) {
         return supervisor.getEmail() != null &&
