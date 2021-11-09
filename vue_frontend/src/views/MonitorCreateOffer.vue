@@ -1,84 +1,78 @@
 <template>
-  <h2 class="text-center">Ajouter une offre de stage</h2>
-  <div class="form-group row">
-    <div class="col-md-6">
-      <label>Titre</label>
-      <div>
+  <div class="container bg-secondary text-white p-3 rounded shadow">
+    <h2 class="text-center">Ajouter une offre de stage</h2>
+    <div class="form-group row">
+      <div class="col-md-6">
+        <label>Titre</label>
+        <div>
+          <div class="input-group">
+            <input name="title" placeholder="Titre" class="form-control" type="text"
+                   v-model="this.title"/>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label>Département</label>
         <div class="input-group">
-          <input name="title" placeholder="Titre" class="form-control" type="text"
-                 v-model="this.title"/>
+          <select v-model="dep" class="form-control"  id="userTypes">
+            <option>informatique</option>
+            <option>Art et Cinemas</option>
+          </select>
         </div>
       </div>
     </div>
-    <div class="col-md-6">
-      <label>Département</label>
+    <div class="form-group">
+      <label>Description</label>
       <div class="input-group">
-        <select v-model="departement" class="form-control" name="choice" id="userTypes">
-          <option v-bind:value="Departement.info">{{Departement.info}}</option>
-          <option v-bind:value="Departement.art">{{Departement.art}}</option>
-        </select>
+        <input name="description" placeholder="Description" class="form-control" type="text"
+               v-model="this.description"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Adresse ou le stage se situe</label>
+      <div class="input-group">
+        <input type="text" v-model="this.address" class="form-control"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Salaire</label>
+      <div class="input-group">
+        <input name="salaire" placeholder="Salaire" class="form-control" type="number" v-model="this.salary"/>
+      </div>
+    </div>
+    <div class="form-group text-center">
+      <label/>
+      <div>
+        <button class="btn btn-primary" type="button" @click.prevent="this.addOffer">Créer offre</button>
       </div>
     </div>
   </div>
-  <div class="form-group">
-    <label>Description</label>
-    <div class="input-group">
-      <input name="description" placeholder="Description" class="form-control" type="text"
-      v-model="this.description" />
-    </div>
-  </div>
-  <div class="form-group">
-    <label>Adresse ou le stage se situe</label>
-    <div class="input-group">
-      <input type="text" class="form-control"/>
-    </div>
-  </div>
-  <div class="form-group">
-    <label>Salaire</label>
-    <div class="input-group">
-      <input name="salaire" placeholder="Salaire" class="form-control" type="number"  v-model="this.salary"/>
-    </div>
-  </div>
- <div v-if="service.isManager()">
-   <div class="col-md-6">
-     <div class="input-group">
-       <label>Email</label>
-       <input name="email" placeholder="Email" class="form-control" type="text" v-model="this.creator_email"/>
-     </div>
-   </div>
- </div>
-<div class="form-group text-center">
-<label/>
-<div>
-  <button class="btn btn-primary" type="button" @click.prevent="this.addOffer">Ajouter</button>
-</div>
-</div>
 </template>
 
 <script>
-import authService from '../services/auth-service';
-import {DepartmentEnum} from '../models/departement';
 import OfferDTO from "../models/OfferDTO";
 import offerService from "../services/offer-service";
 import Swal from "sweetalert2";
+
 export default {
   name: "MonitorCreateOffer",
-  data(){
+  data() {
     return {
-      service: authService,
       title: '',
       creator_email: '',
       salary: 0,
       description: '',
-      departement: '',
-      Departement: DepartmentEnum
+      dep: '',
+      address: ''
     };
   },
-  methods:{
-    addOffer(){
+  methods: {
+    addOffer: function () {
       let allFieldsFilled = true;
-      this.creator_email = this.service.getEmail();
+      this.creator_email = JSON.parse(localStorage.getItem('user')).email || '';
+
       for (const prop in this) {
+        console.log(prop, this[prop]);
         if (prop === '' || this[prop] === '' || this[prop] === null) {
           Swal.fire({
             title: 'Oops...',
@@ -90,8 +84,8 @@ export default {
         }
       }
 
-      if (allFieldsFilled){
-        let offer = new OfferDTO(this.title, this.department, this.description, this.address, this.salary, this.creator_email);
+      if (allFieldsFilled) {
+        let offer = new OfferDTO(this.title, this.dep, this.description, this.address, this.salary, this.creator_email);
         offerService.createOffer(offer);
       }
     }

@@ -1,7 +1,7 @@
-import {ManagerModel, MonitorModel, Student, Supervisor} from "@/models/User";
+import {ManagerModel, MonitorModel, Student, Supervisor} from "../models/User";
 import {methods, requestInit, urlBackend} from "./serviceUtils";
 import Swal from "sweetalert2";
-import router from "@/router";
+import router from "../router";
 
 class AuthService {
     isAuthenticated() {
@@ -160,11 +160,6 @@ class AuthService {
     getUserId() {
         if (this.isAuthenticated())
             return parseInt(JSON.parse(localStorage.getItem("user")).id);
-    }
-
-
-    getEmail() {
-        return this.isAuthenticated() ? JSON.parse(localStorage.getItem("user")).email : null;
     }
 }
 
