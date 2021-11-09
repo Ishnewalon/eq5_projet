@@ -66,6 +66,7 @@ function NavItemSpecificForUser() {
         </ThisIsAListItem>
     if (auth.isSupervisor())
         return <ThisIsAListItem>
+
         </ThisIsAListItem>
     return <></>
 }
