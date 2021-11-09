@@ -8,6 +8,7 @@ import RegisterMonitor from "../views/RegisterMonitor";
 import TeleverserCv from "../views/TeleverserCv";
 import authService from "../services/auth-service";
 import MonitorCreateOffer from "../views/MonitorCreateOffer";
+import ManagerCreateOffer from "../views/ManagerCreateOffer";
 
 
 function guardRoute(to, from, next) {
@@ -57,8 +58,15 @@ const routes = [
     },
     {
         path: '/monitor/create_offer',
-        name: 'Créer une offre',
-        component: MonitorCreateOffer
+        name: 'Créer une offre en tant que Moniteur',
+        component: MonitorCreateOffer,
+        beforeEnter: guardRoute
+    },
+    {
+        path: '/manager/create_offer',
+        name: 'Créer une offre en tant que Gestionnaire',
+        component: ManagerCreateOffer,
+        beforeEnter: guardRoute
     }
 ]
 
