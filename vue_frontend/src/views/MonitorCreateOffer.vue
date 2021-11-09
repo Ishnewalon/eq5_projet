@@ -14,7 +14,7 @@
       <div class="col-md-6">
         <label>Département</label>
         <div class="input-group">
-          <select v-model="dep" class="form-control"  id="userTypes">
+          <select v-model="dep" class="form-control" id="userTypes">
             <option>informatique</option>
             <option>Art et Cinemas</option>
           </select>
