@@ -16,17 +16,15 @@
         </button>
       </div>
       <div>
-        <form>
-          <div class="form-group">
-            <input type="email" class="form-control" id="email" v-model.lazy="this.user.email" placeholder="Email">
-          </div>
-          <div class="form-group">
-            <input type="password" class="form-control" id="password" v-model.lazy="this.user.password"
-                   placeholder="Mot de passe">
-          </div>
-          <br/>
-          <button type="submit" v-on:click="login" class="btn btn-primary">Connexion</button>
-        </form>
+        <div class="form-group">
+          <input type="email" class="form-control" id="email" v-model.lazy="this.user.email" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" id="password" v-model.lazy="this.user.password"
+                 placeholder="Mot de passe">
+        </div>
+        <br/>
+        <button type="submit" v-on:click="login" class="btn btn-primary">Connexion</button>
       </div>
     </div>
   </div>
@@ -36,6 +34,7 @@
 import axios from "axios";
 import {createRouter, createWebHistory} from "vue-router";
 import router from "../../router";
+import Dashboard from "../Dashboard";
 
 export default {
   name: 'login',
@@ -66,12 +65,18 @@ export default {
     login() {
       axios.get("http://localhost:8181/" + this.getCurrentLogin() + "/" + this.user.email + "/" + this.user.password)
           .then((response) => {
+            if (response.status !== 200) {
+              alert("Identifiants incorrects")
+            }
             console.log(response)
             createRouter({
               history: createWebHistory,
-              routes: [{path: `/`, component: () => import('../../components/HelloWorld.vue')}]
+              routes: [{path: `/dashboard`, component: Dashboard}]
             })
-            router.push({path: `/`})
+            router.push({path: `/dashboard`})
+          })
+          .catch((error) => {
+            console.log(error)
           })
     }
   }
