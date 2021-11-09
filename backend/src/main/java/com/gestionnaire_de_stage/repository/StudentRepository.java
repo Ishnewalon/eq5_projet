@@ -13,5 +13,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     Student findStudentByEmailAndPassword(String email, String password);
 
-    List<Student> getAllByPrincipalCurriculum_IsValidAndSupervisorNull(boolean isValid);
+    List<Student> getAllByPrincipalCurriculum_IsValidAndSupervisorNull(Boolean isValid);
 }
