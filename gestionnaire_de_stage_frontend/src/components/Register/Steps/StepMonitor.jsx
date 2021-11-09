@@ -1,8 +1,10 @@
 import React from "react";
-import FieldAddress from "../../Fields/FieldAddress";
+import FieldAddress from "../../SharedComponents/Fields/FieldAddress";
 import {toastErr} from "../../../utility";
 import {UserType} from "../../../enums/UserTypes";
 import {Step} from "../../../enums/Steps";
+import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
 
 const regexCodePostal = /^([A-Za-z]\s?[0-9]){3}$/;
 
@@ -54,35 +56,29 @@ export default function StepMonitor({
     }
 
     return (<>
-        <div className="form-group row">
-            <div className="col-md-6">
-                <label>Nom de la compagnie</label>
-                <div className="input-group">
-                    <input name="companyName" placeholder="Nom de compagnie" className="form-control"
-                           type="text"
-                           value={companyName} onChange={handleChange}/>
-                </div>
-            </div>
-            <div className="col-md-6">
-                <label>Ville</label>
-                <div>
-                    <div className="input-group">
-                        <input name="city" placeholder="Ville" className="form-control" type="text"
-                               value={city} onChange={handleChange}/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div className="form-group">
+        <FormGroup>
+            <label>Nom de la compagnie</label>
+            <InputGroup>
+                <input name="companyName" placeholder="Nom de compagnie"
+                       type="text"
+                       value={companyName} onChange={handleChange}/>
+            </InputGroup>
+            <label>Ville</label>
+            <InputGroup>
+                <input name="city" placeholder="Ville" type="text"
+                       value={city} onChange={handleChange}/>
+            </InputGroup>
+        </FormGroup>
+        <FormGroup>
             <FieldAddress label="Adresse de la compagnie" address={address} handleChange={handleChange}/>
-        </div>
-        <div className="form-group">
+        </FormGroup>
+        <FormGroup>
             <label>Code Postale</label>
-            <div className="input-group">
-                <input name="postalCode" placeholder="XXX 123" className="form-control" type="text"
+            <InputGroup>
+                <input name="postalCode" placeholder="XXX 123" type="text"
                        value={postalCode} onChange={handleChange}/>
-            </div>
-        </div>
+            </InputGroup>
+        </FormGroup>
         <div className="form-group text-center">
             <label/>
             <div>

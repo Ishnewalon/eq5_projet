@@ -1,6 +1,15 @@
 import React from "react";
+import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {Route, useRouteMatch} from "react-router-dom";
+import {useAuth} from "../../services/use-auth";
+
 export default function SupervisorView() {
-    return (<div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+    const {path} = useRouteMatch();
+    let auth = useAuth();
+    return (<ContainerBox>
         <h2>Vous êtes connecté!</h2>
-    </div>);
+        <Route exact path={`${path}`}>
+            <h1 className="text-center">Bonjour {auth.user.firstName}!</h1>
+        </Route>
+    </ContainerBox>);
 }

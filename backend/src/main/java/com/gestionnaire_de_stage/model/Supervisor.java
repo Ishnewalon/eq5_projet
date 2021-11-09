@@ -24,5 +24,5 @@ public class Supervisor extends User {
     private String department;
 
     @OneToMany
-    private List<Student> studentList;
+    private List<Student> studentList;//MAYBE: put it in student instead of supervisor
 }

@@ -3,7 +3,7 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
-import com.gestionnaire_de_stage.model.*;;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.ContractRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -112,7 +112,7 @@ public class ContractService {
         contract.setManager(manager);
 
         OfferApplication offerApplication = offerApplicationService.getOneById(contractStarterDto.getIdOfferApplication());
-        //TODO : set status
+        //TODO : cant start when student already have a contract
         contract.setOffer(offerApplication.getOffer());
         Curriculum curriculum = offerApplication.getCurriculum();
         Student student = curriculum.getStudent();

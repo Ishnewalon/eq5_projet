@@ -14,7 +14,7 @@ import java.util.Date;
 @Entity
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Offer {
+public class Offer {//TODO : session
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

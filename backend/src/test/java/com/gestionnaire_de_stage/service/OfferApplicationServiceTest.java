@@ -228,9 +228,9 @@ class OfferApplicationServiceTest {
         when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
         when(offerApplicationRepository.save(any())).thenReturn(dummyOfferApplication);
 
-        boolean isAccepted =  offerApplicationService.updateStatus(updateStatusDTO);
+        String message =  offerApplicationService.updateStatus(updateStatusDTO);
 
-        assertThat(isAccepted).isTrue();
+        assertThat(message).contains("Status changé, attendez la signature du contrat");
     }
 
     @Test
@@ -240,9 +240,9 @@ class OfferApplicationServiceTest {
         when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
         when(offerApplicationRepository.save(any())).thenReturn(dummyOfferApplication);
 
-        boolean isAccepted = offerApplicationService.updateStatus(updateStatusDTO);
+        String isAccepted = offerApplicationService.updateStatus(updateStatusDTO);
 
-        assertThat(isAccepted).isFalse();
+        assertThat(isAccepted).contains("Status changé, stage refusé");
     }
 
     @Test
