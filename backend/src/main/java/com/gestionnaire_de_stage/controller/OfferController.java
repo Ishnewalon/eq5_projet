@@ -7,9 +7,7 @@ import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
-import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
-import com.gestionnaire_de_stage.service.MonitorService;
 import com.gestionnaire_de_stage.service.OfferService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,23 +20,18 @@ import java.util.List;
 @CrossOrigin
 public class OfferController {
 
-    private final MonitorService monitorService;
-
     private final OfferService offerService;
 
-    public OfferController(MonitorService monitorService, OfferService offerService) {
+    public OfferController(OfferService offerService) {
         this.offerService = offerService;
-        this.monitorService = monitorService;
     }
 
 
     @PostMapping("/add")
     public ResponseEntity<?> addOffer(@RequestBody OfferDTO dto) {
-        Offer offer = offerService.mapToOffer(dto);
+        Offer offer;
         try {
-            Monitor monitor = monitorService.getOneByEmail(dto.getCreator_email());
-            offer.setCreator(monitor);
-            offer = offerService.create(offer);
+            offer = offerService.create(dto);
         } catch (IllegalArgumentException ie) {
             return ResponseEntity
                     .badRequest()
