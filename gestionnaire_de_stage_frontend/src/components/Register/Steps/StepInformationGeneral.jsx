@@ -1,5 +1,5 @@
 import React from "react";
-import FieldEmail from "../../Fields/FieldEmail";
+import FieldEmail from "../../SharedComponents/Fields/FieldEmail";
 import {Step} from "../../../enums/Steps";
 import {toastErr} from "../../../utility";
 

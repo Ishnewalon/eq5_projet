@@ -28,7 +28,7 @@ export async function getCurriculumWithValidCV() {
     return await response.json();
 }
 
-export async function validateCV(id, valid) {
+export async function validateCurriculum(id, valid) {
     let obj = {
         id,
         valid

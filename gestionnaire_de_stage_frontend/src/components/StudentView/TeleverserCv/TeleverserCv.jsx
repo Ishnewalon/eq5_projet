@@ -1,7 +1,6 @@
-import './TeleverserCv.css'
 import React, {useState} from "react";
 import Dropzone from "react-dropzone";
-import { uploadFile } from "../../../services/curriculum-service";
+import {uploadFile} from "../../../services/curriculum-service";
 import {useAuth} from "../../../services/use-auth";
 
 export default function TeleverserCv() {
@@ -35,9 +34,9 @@ export default function TeleverserCv() {
                             : "";
                     return (
                         <div>
-                                <h2 className={"text-center"}>Les fichiers acceptés sont de type <b>.PDF</b>
-                                </h2>
-                                <div
+                            <h2 className={"text-center"}>Les fichiers acceptés sont de type <b>.PDF</b>
+                            </h2>
+                            <div
                                 {...getRootProps({
                                     className: `dropzone ${additionalClass}`
                                 })}

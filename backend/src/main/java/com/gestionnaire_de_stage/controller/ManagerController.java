@@ -26,11 +26,11 @@ public class ManagerController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));
+                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));//FIXME: Change message
         } catch (EmailAndPasswordDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
+                    .body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));//FIXME: Change message
         }
     }
 }

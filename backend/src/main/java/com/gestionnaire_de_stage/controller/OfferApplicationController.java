@@ -32,10 +32,10 @@ public class OfferApplicationController {
         this.curriculumService = curriculumService;
     }
 
-    @PostMapping("/apply")
-    public ResponseEntity<?> studentApplyToOffer(@RequestBody OfferAppDTO offerAppDTO) {
+    @PostMapping("/apply")//SESSION : check if offer is not outdated
+    public ResponseEntity<?> studentApplyToOffer(@RequestBody OfferAppDTO offerAppDTO) {//TODO : Check if student has valid curriculum
         try {
-            offerApplicationService.create(offerAppDTO.getIdOffer(), offerAppDTO.getIdStudent());
+            offerApplicationService.create(offerAppDTO.getIdOffer(), offerAppDTO.getIdStudent());//FIXME: Change to offerAppDTO
         } catch (StudentAlreadyAppliedToOfferException err) {
             return ResponseEntity
                     .badRequest()
@@ -63,20 +63,20 @@ public class OfferApplicationController {
         List<OfferApplication> offerApplicationList;
         List<CurriculumDTO> curriculumDTOList;
         try {
-            offerApplicationList = offerApplicationService.getAllByOfferCreatorEmail(email);
+            offerApplicationList = offerApplicationService.getAllByOfferCreatorEmail(email);//SESSION : get only offer of current session or future
             curriculumDTOList = curriculumService.mapToCurriculumDTOList(offerApplicationList);
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
         }
-        return ResponseEntity.ok(curriculumDTOList);
+        return ResponseEntity.ok(curriculumDTOList);//TODO: Send list offer with list of cv_applicants
     }
 
     @PostMapping("/setdate/{offerAppID}")
     public ResponseEntity<?> setInterviewDate(@PathVariable Long offerAppID, @RequestBody LocalDateTime date) {
         try{
-            OfferApplication offerApplication = offerApplicationService.setInterviewDate(offerAppID, date);
+            OfferApplication offerApplication = offerApplicationService.setInterviewDate(offerAppID, date);//SESSION : check if offer is not outdated
             return ResponseEntity.ok(offerApplication);
         } catch (DateNotValidException e) {
             return ResponseEntity
@@ -93,7 +93,7 @@ public class OfferApplicationController {
         }
     }
 
-    @GetMapping("/all_applied_on/{studentID}")
+    @GetMapping("/all_applied_on/{studentID}")//SESSION : get offers of current session and future
     public ResponseEntity<?> getAllByOfferStatusAndStudentID(@PathVariable Long studentID) {
         try {
             List<OfferApplication> offerApplicationList = offerApplicationService.getAllByOfferStatusAndStudentID(Status.CV_ENVOYE, studentID);
@@ -109,7 +109,7 @@ public class OfferApplicationController {
     public ResponseEntity<?> getOffersApplicationsStageTrouver(@PathVariable Long id) {
         List<OfferApplication> offerApplicationList;
         try {
-            offerApplicationList = offerApplicationService.getOffersApplicationsStageTrouver(id);
+            offerApplicationList = offerApplicationService.getOffersApplicationsStageTrouver(id);//SESSION : get application of current session and future
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
@@ -126,7 +126,7 @@ public class OfferApplicationController {
     public ResponseEntity<?> getAllOffersApplied(@PathVariable Long id) {
         List<OfferApplication> offerApplicationList;
         try {
-            offerApplicationList = offerApplicationService.getAllOffersStudentApplied(id);
+            offerApplicationList = offerApplicationService.getAllOffersStudentApplied(id);//SESSION : get offers of current session and future
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
@@ -141,9 +141,9 @@ public class OfferApplicationController {
 
     @PostMapping("/student/update_status")
     public ResponseEntity<?> updateStatus(@RequestBody UpdateStatusDTO updateStatusDTO) {
-        boolean isAccepted;
+        String message;
         try {
-            isAccepted = offerApplicationService.updateStatus(updateStatusDTO);
+            message = offerApplicationService.updateStatus(updateStatusDTO);
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
@@ -153,7 +153,6 @@ public class OfferApplicationController {
                     .badRequest()
                     .body(new ResponseMessage("Offre non existante!"));
         }
-        String message = isAccepted ? "Status changé, attendez la signature du contrat" : "Status changé, stage refusé";
         return ResponseEntity.ok(new ResponseMessage(message));
     }
 }

@@ -22,7 +22,4 @@ public class Supervisor extends User {
 
     @NotNull
     private String department;
-
-    @OneToMany
-    private List<Student> studentList;
 }

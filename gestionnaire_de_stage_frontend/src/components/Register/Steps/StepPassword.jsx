@@ -1,5 +1,5 @@
 import React from "react";
-import FieldPassword from "../../Fields/FieldPassword";
+import FieldPassword from "../../SharedComponents/Fields/FieldPassword";
 
 export default function StepPassword({prevStep, endThis, handleChange, password}) {
 
