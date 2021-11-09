@@ -3,9 +3,11 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ValidationOffer;
+import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
+import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.repository.OfferRepository;
 import org.springframework.data.domain.Example;
@@ -20,9 +22,11 @@ import java.util.stream.Collectors;
 public class OfferService {
 
     private final OfferRepository offerRepository;
+    private final MonitorService monitorService;
 
-    public OfferService(OfferRepository offerRepository) {
+    public OfferService(OfferRepository offerRepository, MonitorService monitorService) {
         this.offerRepository = offerRepository;
+        this.monitorService = monitorService;
     }
 
     public Offer mapToOffer(OfferDTO dto) {
@@ -58,10 +62,14 @@ public class OfferService {
         return offers.stream().map(this::mapToOfferDTO).collect(Collectors.toList());
     }
 
-    public Offer create(Offer offer) throws IllegalArgumentException, OfferAlreadyExistsException {
-        Assert.isTrue(offer != null, "Offre est null");
+    public Offer create(OfferDTO offerDto) throws IllegalArgumentException, OfferAlreadyExistsException, EmailDoesNotExistException {
+        Assert.isTrue(offerDto != null, "Offre est null");
+        Offer offer = mapToOffer(offerDto);
         if (offerRepository.findOne(Example.of(offer)).isPresent())
             throw new OfferAlreadyExistsException();
+
+        Monitor monitor = monitorService.getOneByEmail(offerDto.getCreator_email());
+        offer.setCreator(monitor);
         return offerRepository.save(offer);
     }
 

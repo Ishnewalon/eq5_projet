@@ -3,9 +3,9 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.enums.Status;
-import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
+import com.gestionnaire_de_stage.enums.Status;
+import com.gestionnaire_de_stage.exception.DateNotValidException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
@@ -75,7 +75,7 @@ public class OfferApplicationController {
 
     @PostMapping("/setdate/{offerAppID}")
     public ResponseEntity<?> setInterviewDate(@PathVariable Long offerAppID, @RequestBody LocalDateTime date) {
-        try{
+        try {
             OfferApplication offerApplication = offerApplicationService.setInterviewDate(offerAppID, date);//SESSION : check if offer is not outdated
             return ResponseEntity.ok(offerApplication);
         } catch (DateNotValidException e) {
@@ -114,7 +114,7 @@ public class OfferApplicationController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Le gestionnaire n'existe pas!"));
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
@@ -131,7 +131,7 @@ public class OfferApplicationController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("L'étudiant n'existe pas"));
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
