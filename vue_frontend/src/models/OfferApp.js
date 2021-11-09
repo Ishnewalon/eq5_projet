@@ -1,4 +1,4 @@
-export default class OfferApp{
+export default class OfferApp {
     idOffer
     idStudent
 

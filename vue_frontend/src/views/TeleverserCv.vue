@@ -16,17 +16,17 @@ import authService from "../services/auth-service";
 
 export default {
   name: "TeleverserCv",
-  data(){
+  data() {
     return {
       cv: null
     };
   },
-  methods:{
-    setFile:function(event){
+  methods: {
+    setFile: function (event) {
       this.cv = event.target.files[0];
     },
-    uploadCv:function(){
-      if(this.cv !== undefined && this.cv != null) {
+    uploadCv: function () {
+      if (this.cv !== undefined && this.cv != null) {
         uploadFile(this.cv, authService.getUserId()).then(() => {
           Swal.fire({
             title: "Fichier téléversé",
@@ -34,7 +34,7 @@ export default {
             icon: "success"
           });
         });
-      }else{
+      } else {
         Swal.fire({
           title: "Erreur",
           text: "Vous devez choisir un fichier",

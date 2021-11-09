@@ -33,7 +33,8 @@
         <option>Arts et cinéma</option>
       </select>
     </div>
-    <button class="btn rounded bg-success mt-3 text-white fw-bold w-100" type="button"  v-on:click="submit">Submit</button>
+    <button class="btn rounded bg-success mt-3 text-white fw-bold w-100" type="button" v-on:click="submit">Submit
+    </button>
   </div>
 </template>
 

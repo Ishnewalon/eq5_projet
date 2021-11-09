@@ -27,7 +27,7 @@ export default {
     this.loadOffers();
   },
   methods: {
-    loadOffers:  () => {
+    loadOffers: () => {
       offerService.getAllOffers().then(offers => (this.offers = offers))
           .catch(e => {
             console.trace(e);

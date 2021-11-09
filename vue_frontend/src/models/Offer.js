@@ -1,4 +1,4 @@
-export default class Offer{
+export default class Offer {
     title
     department
     description

@@ -1,4 +1,3 @@
-
 export const urlBackend = 'http://localhost:8181'
 export const methods = {
     POST: 'POST',
@@ -21,7 +20,7 @@ export const requestInit = (method, body) => {
     return value
 }
 
-export const  requestInitBlob = (method, body) =>{
+export const requestInitBlob = (method, body) => {
     let value = {
         method: method,
         mode: 'cors', // no-cors, *cors, same-origin

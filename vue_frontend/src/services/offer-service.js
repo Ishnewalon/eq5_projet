@@ -18,38 +18,38 @@ class OfferService {
 
     async getAllOffers() {
         const response = await fetch(`${urlBackend}/offers`, requestInit(methods.GET));
-        return await this.promisedReturn(response, undefined,[]);
+        return await this.promisedReturn(response, undefined, []);
     }
 
     async validateOffer(offer) {
         const response = await fetch(`${urlBackend}/offers/validate`, requestInit(methods.PUT, offer));
-        return await this.promisedReturn(response, 'Offre validé',[]);
+        return await this.promisedReturn(response, 'Offre validé', []);
     }
 
 
-    async promisedReturn(response, successMessage, defaultValue){
+    async promisedReturn(response, successMessage, defaultValue) {
         return await response.json().then(value => {
-                if (value.message) {
-                    Swal.fire({
-                        title: value.message,
-                        icon:'error'
-                    });
-                    if(defaultValue)
-                        return Promise.any(defaultValue);
-                }
-                if(successMessage){
-                    Swal.fire({
-                        title: successMessage,
-                        icon: 'success'
-                    });
-                }
-                return value
-            }).catch(err=>
+            if (value.message) {
                 Swal.fire({
-                    title: err,
+                    title: value.message,
                     icon: 'error'
-                })
-            );
+                });
+                if (defaultValue)
+                    return Promise.any(defaultValue);
+            }
+            if (successMessage) {
+                Swal.fire({
+                    title: successMessage,
+                    icon: 'success'
+                });
+            }
+            return value
+        }).catch(err =>
+            Swal.fire({
+                title: err,
+                icon: 'error'
+            })
+        );
     }
 }
 

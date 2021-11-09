@@ -6,8 +6,7 @@
         <label>Titre</label>
         <div>
           <div class="input-group">
-            <input name="title" placeholder="Titre" class="form-control" type="text"
-                   v-model="this.title"/>
+            <input name="title" placeholder="Titre" class="form-control" type="text" v-model="this.title"/>
           </div>
         </div>
       </div>

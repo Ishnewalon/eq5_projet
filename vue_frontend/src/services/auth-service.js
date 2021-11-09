@@ -128,7 +128,7 @@ class AuthService {
                 }
 
                 localStorage.setItem("user", JSON.stringify(value))
-                Swal.fire({title:"Connexion réussie!", icon: 'success'});
+                Swal.fire({title: "Connexion réussie!", icon: 'success'});
                 console.log(value)
                 router.push("/logged-in")
             },
@@ -138,7 +138,7 @@ class AuthService {
         )
     }
 
-     async getSupervisors() {
+    async getSupervisors() {
         const response = await fetch(`${urlBackend}/supervisor`, requestInit(methods.GET));
         return await response.json();
     }

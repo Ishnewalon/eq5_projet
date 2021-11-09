@@ -1,11 +1,11 @@
-export default class CurriculumDto{
+export default class CurriculumDto {
     firstName
     lastName
     fileName
     offerDTO
     file
 
-    constructor($firstName,$lastName,$fileName,$offerDTO,$file) {
+    constructor($firstName, $lastName, $fileName, $offerDTO, $file) {
         this.firstName = $firstName;
         this.lastName = $lastName;
         this.fileName = $fileName;

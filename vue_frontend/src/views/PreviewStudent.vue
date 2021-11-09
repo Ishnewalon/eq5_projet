@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="col-12 col-sm-6">
-        <PreviewOffer v-bind:offer="dto.offerDTO" />
+        <PreviewOffer v-bind:offer="dto.offerDTO"/>
       </div>
     </div>
   </div>
@@ -19,6 +19,7 @@
 <script>
 import CurriculumDto from "../models/CurriculumDto";
 import PreviewOffer from "../views/PreviewOffer";
+
 export default {
   name: "PreviewStudent",
   props: {
@@ -26,7 +27,7 @@ export default {
       type: CurriculumDto
     }
   },
-  components:{
+  components: {
     PreviewOffer
   },
   methods: {

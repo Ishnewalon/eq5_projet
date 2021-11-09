@@ -21,10 +21,10 @@ class OfferAppService {
     async getAllApplicants(email) {
         return await fetch(`${urlBackend}/applications/applicants/${email}`, requestInit(methods.GET))
             .then(res => {
-                if(res.status === 400) {
+                if (res.status === 400) {
                     res.json().then(err => Swal.fire({title: err.message, icon: 'error'}))
                     return Promise.any([]);
-                }else{
+                } else {
                     return res.json();
                 }
             });

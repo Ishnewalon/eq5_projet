@@ -1,11 +1,13 @@
 <template>
   <header>
-    <Navbar />
+    <Navbar/>
   </header>
   <router-view/>
 </template>
 
 <style>
+
+@import '~bootstrap/dist/css/bootstrap.min.css';
 
 :root {
   --color-dark: #192024;
@@ -45,13 +47,13 @@ code {
 Custom BS
 *********/
 .btn {
-  padding: 8px 20px!important;
+  padding: 8px 20px !important;
   border-radius: 0 !important;
   overflow: hidden;
 }
 
 .link, .btn-link {
-  font-weight: bold!important;
+  font-weight: bold !important;
   color: var(--color-primary) !important;
 }
 
@@ -110,9 +112,7 @@ Adapt color to bg-dark
   color: var(--color-primary) !important;
 }
 
-@import '~bootstrap/dist/css/bootstrap.min.css';
-
-a{
+a {
   color: #42b983;
   font-weight: bold;
   text-decoration: none;
@@ -120,6 +120,7 @@ a{
 </style>
 <script>
 import Navbar from "./views/Navbar";
+
 export default {
   components: {Navbar}
 }
