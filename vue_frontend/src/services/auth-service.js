@@ -163,6 +163,9 @@ class AuthService {
     }
 
 
+    getEmail() {
+        return this.isAuthenticated() ? JSON.parse(localStorage.getItem("user")).email : null;
+    }
 }
 
 const authService = new AuthService();

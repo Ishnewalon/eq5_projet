@@ -21,3 +21,18 @@ export const requestInit = (method, body) => {
     return value
 }
 
+export const  requestInitBlob = (method, body) =>{
+    let value = {
+        method: method,
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/octet-stream'
+        }
+    }
+    if (method === methods.POST || method === methods.PUT)
+        value['body'] = JSON.stringify(body)
+    return value
+}
+

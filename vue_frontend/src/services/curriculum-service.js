@@ -2,7 +2,7 @@ import {methods, requestInit, urlBackend} from "./serviceUtils";
 
 export async function uploadFile(file, id) {
     let formData = new FormData();
-    formData.append("file", file[0]);
+    formData.append("file", file);
 
     const response = await fetch(`${urlBackend}/curriculum/upload?id=${id}`, {
         mode: 'cors',

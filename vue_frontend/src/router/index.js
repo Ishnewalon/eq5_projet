@@ -1,10 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Register from "../views/Register";
 import Login from "../views/Login";
-import LoggedIn from "@/views/LoggedIn";
-import RegisterStudent from "@/views/RegisterStudent";
-import RegisterSupervisor from "@/views/RegisterSupervisor";
-import RegisterMonitor from "@/views/RegisterMonitor";
+import LoggedIn from "../views/LoggedIn";
+import RegisterStudent from "../views/RegisterStudent";
+import RegisterSupervisor from "../views/RegisterSupervisor";
+import RegisterMonitor from "../views/RegisterMonitor";
+import TeleverserCv from "../views/TeleverserCv";
+import authService from "../services/auth-service";
+import MonitorCreateOffer from "../views/MonitorCreateOffer";
+
+
+function guardRoute(to, from, next){
+    if(!authService.isAuthenticated())
+        next('/login');
+    else
+        next();
+}
 
 const routes = [
   {
@@ -36,6 +47,17 @@ const routes = [
     path:'/register/monitor',
     name: 'Inscription monitor',
     component: RegisterMonitor
+  },
+  {
+    path: '/televerser_cv',
+    name: 'Televerser CV',
+    component: TeleverserCv,
+    beforeEnter: guardRoute
+  },
+  {
+    path: '/monitor/create_offer',
+    name: 'Créer une offre',
+    component: MonitorCreateOffer
   }
 ]
 
