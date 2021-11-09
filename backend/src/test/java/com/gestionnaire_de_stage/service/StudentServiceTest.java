@@ -271,7 +271,7 @@ public class StudentServiceTest {
     @Test
     public void testGetAllUnassignedStudents() {
         List<Student> dummyStudentList = getDummyStudentList();
-        when(studentRepository.getAllByPrincipalCurriculum_IsValidAndSupervisorNull()).thenReturn(dummyStudentList);
+        when(studentRepository.getAllByPrincipalCurriculum_IsValidAndSupervisorNull(true)).thenReturn(dummyStudentList);
 
         List<Student> actualStudentList = studentService.getAllUnassignedStudents();
 

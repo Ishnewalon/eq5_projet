@@ -88,7 +88,7 @@ public class StudentService {
     }
 
     public List<Student> getAllUnassignedStudents() {
-        return studentRepository.getAllByPrincipalCurriculum_IsValidAndSupervisorNull();
+        return studentRepository.getAllByPrincipalCurriculum_IsValidAndSupervisorNull(true);
     }
 
     public boolean assign(Student student, Supervisor supervisor){
