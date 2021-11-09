@@ -3,7 +3,7 @@
     <form action="" class="bg-dark p-4 rounded" @submit.prevent="login">
       <div class="form-group">
         <label>Type d'utilisateur</label>
-        <select v-model="userType" id="" class="form-select">
+        <select v-model="userType" class="form-select">
           <option disabled selected>Choissisez un type d'utilisateur</option>
           <option>monitor</option>
           <option>student</option>
@@ -13,13 +13,13 @@
       </div>
       <div class="form-group mt-2">
         <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" v-model="email">
+        <input id="email" v-model="email" class="form-control" type="email">
       </div>
       <div class="form-group mt-2">
         <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" v-model="password">
+        <input id="password" v-model="password" class="form-control" type="password">
       </div>
-      <button type="submit" class="btn bg-primary btn-primary mt-4 rounded w-100 fw-bold" @click.prevent="login">Login
+      <button class="btn bg-primary btn-primary mt-4 rounded w-100 fw-bold" type="submit" @click.prevent="login">Login
       </button>
     </form>
   </div>

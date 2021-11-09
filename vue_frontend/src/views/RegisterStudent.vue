@@ -3,46 +3,46 @@
     <h2>Student Register</h2>
     <div class="form-group mt-2">
       <label for="firstName">First Name</label>
-      <input type="text" class="form-control" id="firstName" v-model="firstName" placeholder="Enter first name">
+      <input id="firstName" v-model="firstName" class="form-control" placeholder="Enter first name" type="text">
     </div>
     <div class="form-group mt-2">
-      <label>Matricule</label>
-      <input type="text" class="form-control" v-model="matricule" placeholder="Enter matricule">
+      <label for="matricule">Matricule</label>
+      <input id="matricule" v-model="matricule" class="form-control" placeholder="Enter matricule" type="text">
     </div>
     <div class="form-group mt-2">
       <label for="lastName">Last Name</label>
-      <input type="text" class="form-control" id="lastName" v-model="lastName" placeholder="Enter last name">
+      <input id="lastName" v-model="lastName" class="form-control" placeholder="Enter last name" type="text">
     </div>
     <div class="form-group mt-2">
       <label for="email">Email address</label>
-      <input type="email" class="form-control" id="email" v-model="email" placeholder="Enter email">
+      <input id="email" v-model="email" class="form-control" placeholder="Enter email" type="email">
     </div>
     <div class="form-group mt-2">
       <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" v-model="password" placeholder="Password">
+      <input id="password" v-model="password" class="form-control" placeholder="Password" type="password">
     </div>
     <div class="form-group mt-2">
       <label for="phone">Phone</label>
-      <input type="text" class="form-control" id="phone" v-model="phone" placeholder="Phone">
+      <input id="phone" v-model="phone" class="form-control" placeholder="Phone" type="text">
     </div>
     <div class="form-group mt-2">
       <label for="address">Address</label>
-      <input type="text" class="form-control" id="address" v-model="address" placeholder="Address">
+      <input id="address" v-model="address" class="form-control" placeholder="Address" type="text">
     </div>
     <div class="form-group mt-2">
       <label for="city">City</label>
-      <input type="text" class="form-control" id="city" v-model="city" placeholder="City">
+      <input id="city" v-model="city" class="form-control" placeholder="City" type="text">
     </div>
     <div class="form-group mt-2">
       <label>Departement</label>
-      <select id="dep" class="form-select" v-model="department">
+      <select v-model="department" class="form-select">
         <option>informatique</option>
         <option>Arts et cinéma</option>
       </select>
     </div>
     <div class="form-group mt-2">
       <label for="zip">Code postal</label>
-      <input type="text" class="form-control" id="zip" v-model="postalCode" placeholder="Code postal">
+      <input id="zip" v-model="postalCode" class="form-control" placeholder="Code postal" type="text">
     </div>
     <button class="btn rounded bg-success mt-3 text-white fw-bold w-100" type="button" v-on:click="submit">Submit
     </button>

@@ -6,14 +6,14 @@
         <label>Titre</label>
         <div>
           <div class="input-group">
-            <input name="title" placeholder="Titre" class="form-control" type="text" v-model="this.title"/>
+            <input v-model="this.title" class="form-control" name="title" placeholder="Titre" type="text"/>
           </div>
         </div>
       </div>
       <div class="col-md-6">
         <label>Département</label>
         <div class="input-group">
-          <select v-model="dep" class="form-control" id="userTypes">
+          <select v-model="dep" class="form-control">
             <option>informatique</option>
             <option>Art et Cinemas</option>
           </select>
@@ -23,20 +23,20 @@
     <div class="form-group">
       <label>Description</label>
       <div class="input-group">
-        <input name="description" placeholder="Description" class="form-control" type="text"
-               v-model="this.description"/>
+        <input v-model="this.description" class="form-control" name="description" placeholder="Description"
+               type="text"/>
       </div>
     </div>
     <div class="form-group">
       <label>Adresse ou le stage se situe</label>
       <div class="input-group">
-        <input type="text" v-model="this.address" class="form-control"/>
+        <input v-model="this.address" class="form-control" type="text"/>
       </div>
     </div>
     <div class="form-group">
       <label>Salaire</label>
       <div class="input-group">
-        <input name="salaire" placeholder="Salaire" class="form-control" type="number" v-model="this.salary"/>
+        <input v-model="this.salary" class="form-control" name="salaire" placeholder="Salaire" type="number"/>
       </div>
     </div>
     <div class="form-group text-center">

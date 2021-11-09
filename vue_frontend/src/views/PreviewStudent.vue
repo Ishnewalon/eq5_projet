@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-center align-items-center flex-column p-3 shadow h-100">
           <h4 class="p-2 rounded bg-secondary fw-bold text-white">{{ `${dto.firstName}, ${dto.lastName}` }} </h4>
           <div class="d-flex justify-content-center align-items-center badge bg-primary text-wrap h2">
-            <a v-on:click="openFile" target="_blank" class="ms-2 text-white">{{ dto.fileName }}</a>
+            <a class="ms-2 text-white" target="_blank" v-on:click="openFile">{{ dto.fileName }}</a>
           </div>
         </div>
       </div>
