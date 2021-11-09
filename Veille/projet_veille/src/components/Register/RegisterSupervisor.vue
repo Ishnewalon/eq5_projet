@@ -13,6 +13,7 @@
         <input name="password" v-model.lazy="supervisor.password" type="password" placeholder="Mot de passe" required/>
       </div>
       <div>
+        <br/>
         <button v-on:click="RegisterSupervisor">S'inscrire</button>
       </div>
     </form>

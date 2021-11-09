@@ -18,6 +18,7 @@
         <input name="password" v-model.lazy="monitor.password" type="password" placeholder="Mot de passe" required/>
       </div>
       <div>
+        <br/>
         <button v-on:click="RegisterMonitor">S'inscrire</button>
       </div>
     </form>
