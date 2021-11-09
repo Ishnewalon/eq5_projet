@@ -87,7 +87,7 @@ public class SupervisorController {
         return ResponseEntity.ok(new ResponseMessage(response));
     }
 
-    /*@GetMapping("/getStudentsStatus/{supervisor_id}")
+    @GetMapping("/getStudentsStatus/{supervisor_id}")
     public ResponseEntity<?> getAllStudentsStatus(@PathVariable Long supervisor_id) {
         Supervisor supervisor;
         List<OfferApplication> offerApplicationList;
@@ -101,5 +101,5 @@ public class SupervisorController {
         }
         return ResponseEntity
                 .ok(offerApplicationList);
-    }*/
+    }
 }
