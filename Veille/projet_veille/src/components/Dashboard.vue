@@ -23,9 +23,11 @@ export default {
 </script>
 
 <style scoped>
-
+h1 + span{
+  text-transform: uppercase;
+}
 span{
-  color: red;
+  color:  rgba(64, 255, 169, 0.74);
   text-transform: uppercase;
 }
 </style>
