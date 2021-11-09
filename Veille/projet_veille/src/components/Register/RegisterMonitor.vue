@@ -65,6 +65,61 @@ export default {
           .catch((error) => {
             console.log(error)
           });
+    },
+    verification() {
+      if (!this.monitor.firstName) {
+        alert("Le champs prénom est vide")
+        return false
+      }
+      if (!this.monitor.lastName) {
+        alert("Le champs nom est vide")
+        return false
+      }
+      if (!this.monitor.email) {
+        alert("Le champs courriel est vide")
+        return false
+      }
+      if (!this.monitor.phone) {
+        alert("Le champs numéro de téléphone est vide")
+        return false
+      }
+      if (!this.monitor.firstName.match(/^[a-zA-Z\-\s]+$/)) {
+        alert("Le champs prénom est invalide")
+        return false;
+      }
+      if (!this.monitor.lastName.match(/^[a-zA-Z\-\s]+$/)) {
+        alert("Le champs nom est invalide")
+        return false;
+      }
+      if (this.monitor.matricule.length !== 5) {
+        alert("Le matricule doit contenir 7 chiffres");
+        return false;
+      }
+      if (!this.monitor.companyName) {
+        alert('Nom de compagnie est vide')
+        return false
+      }
+      if (!this.monitor.city) {
+        alert('Nom de ville est vide')
+        return false
+      }
+      if (!this.monitor.companyAddress) {
+        alert("L'adresse est vide")
+        return false
+      }
+      if (!this.monitor.postalCode) {
+        alert( 'Code postal est vide')
+        return false
+      }
+      if (!this.monitor.companyName.match(/^[a-zA-Z0-9]+$/)) {
+        alert('Nom de compagnie est invalide')
+        return false;
+      }
+      if (!this.monitor.city.match(/^[a-zA-Z]+$/)) {
+        alert('Nom de ville est invalide')
+        return false;
+      }
+      return true;
     }
   },
 }

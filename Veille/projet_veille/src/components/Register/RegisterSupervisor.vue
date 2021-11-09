@@ -43,18 +43,51 @@ export default {
   methods: {
     RegisterSupervisor(error) {
       error.preventDefault();
-      axios.post("http://localhost:8181/supervisor/signup", this.supervisor)
-          .then((response) => {
-            sessionStorage.setItem(this.supervisor.email, JSON.stringify(response.data));
-            createRouter({
-              history: createWebHistory,
-              routes: [{path: `/home`, component: Home}]
+      if (this.verification()) {
+        axios.post("http://localhost:8181/supervisor/signup", this.supervisor)
+            .then((response) => {
+              sessionStorage.setItem(this.supervisor.email, JSON.stringify(response.data));
+              createRouter({
+                history: createWebHistory,
+                routes: [{path: `/home`, component: Home}]
+              })
+              router.push({path: `/home`})
             })
-            router.push({path: `/home`})
-          })
-          .catch((error) => {
-            console.log(error)
-          });
+            .catch((error) => {
+              console.log(error)
+            });
+      }
+    },
+    verification() {
+      if (this.supervisor.matricule.length !== 5) {
+        alert("Le matricule doit contenir 5 chiffres");
+        return false;
+      }
+      if (!this.supervisor.firstName) {
+        alert("Le champs prénom est vide")
+        return false
+      }
+      if (!this.supervisor.lastName) {
+        alert("Le champs nom est vide")
+        return false
+      }
+      if (!this.supervisor.email) {
+        alert("Le champs courriel est vide")
+        return false
+      }
+      if (!this.supervisor.phone) {
+        alert("Le champs numéro de téléphone est vide")
+        return false
+      }
+      if (!this.supervisor.firstName.match(/^[a-zA-Z\-\s]+$/)) {
+        alert("Le champs prénom est invalide")
+        return false;
+      }
+      if (!this.supervisor.lastName.match(/^[a-zA-Z\-\s]+$/)) {
+        alert("Le champs nom est invalide")
+        return false;
+      }
+      return true;
     }
   },
 }

@@ -13,7 +13,7 @@
         <input name="password" v-model.lazy="student.password" type="password" placeholder="Mot de passe" required/>
       </div>
       <div>
-        <button  v-on:click='registerStudent()'>S'inscrire</button>
+        <button v-on:click='registerStudent()'>S'inscrire</button>
       </div>
     </form>
   </div>
@@ -24,11 +24,12 @@ import axios from 'axios'
 import {createRouter, createWebHistory} from "vue-router";
 import router from "../../router";
 import Home from "../HelloWorld"
+
 export default {
   name: 'RegisterStudent',
-  data: function() {
+  data: function () {
     return {
-      student : {
+      student: {
         email: '',
         password: '',
         lastName: '',
@@ -41,21 +42,55 @@ export default {
   },
   methods: {
     registerStudent(error) {
-      error.preventDefault();
-      axios.post("http://localhost:8181/student/signup", this.student)
-          .then((response) => {
-            sessionStorage.setItem(this.student.email, JSON.stringify(response.data));
-            createRouter({
-              history: createWebHistory,
-              routes: [{path: `/home`, component: Home}]
+      if (this.verification()) {
+        error.preventDefault();
+        axios.post("http://localhost:8181/student/signup", this.student)
+            .then((response) => {
+              sessionStorage.setItem(this.student.email, JSON.stringify(response.data));
+              createRouter({
+                history: createWebHistory,
+                routes: [{path: `/home`, component: Home}]
+              })
+              router.push({path: `/home`})
             })
-            router.push({path:`/home`})
-          })
-          .catch((error) => {
-            console.log(error)
-          });
+            .catch((error) => {
+              console.log(error)
+            });
+      }
+    },
+    verification() {
+      if (this.student.matricule.length !== 7) {
+        alert("Le matricule doit contenir 7 chiffres");
+        return false;
+      }
+      if (!this.student.firstName) {
+        alert("Le champs prénom est vide")
+        return false
+      }
+      if (!this.student.lastName) {
+        alert("Le champs nom est vide")
+        return false
+      }
+      if (!this.student.email) {
+        alert("Le champs courriel est vide")
+        return false
+      }
+      if (!this.student.phone) {
+        alert("Le champs numéro de téléphone est vide")
+        return false
+      }
+      if (!this.student.firstName.match(/^[a-zA-Z\-\s]+$/)) {
+        alert("Le champs prénom est invalide")
+        return false;
+      }
+      if (!this.student.lastName.match(/^[a-zA-Z\-\s]+$/)) {
+        alert("Le champs nom est invalide")
+        return false;
+      }
+      return true;
     }
   },
+
 }
 </script>
 
@@ -70,12 +105,12 @@ input {
   box-sizing: border-box;
 }
 
-button{
+button {
   background-color: transparent;
   border: 1px solid black;
   box-sizing: border-box;
   color: #00132C;
-  font-family: "Avenir Next LT W01 Bold",sans-serif;
+  font-family: "Avenir Next LT W01 Bold", sans-serif;
   font-size: 16px;
   font-weight: 700;
   line-height: 24px;
