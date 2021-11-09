@@ -5,6 +5,7 @@ import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
+import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.service.StudentService;
@@ -85,4 +86,20 @@ public class SupervisorController {
         String response = assign ? "Assignement fait!" : "Assignement rejeté, l'étudiant est déjà assigné!";
         return ResponseEntity.ok(new ResponseMessage(response));
     }
+
+/*    @GetMapping("/getStudentsStatus/{supervisor_id}")
+    public ResponseEntity<?> getAllStudentsStatus(@PathVariable Long supervisor_id) {
+        Supervisor supervisor;
+        List<OfferApplication> offerApplicationList;
+        try {
+            supervisor = supervisorService.getOneByID(supervisor_id);
+            offerApplicationList = supervisorService.getStudentsStatus(supervisor);
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
+        return ResponseEntity
+                .ok(offerApplicationList);
+    }*/
 }
