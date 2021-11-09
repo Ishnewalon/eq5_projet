@@ -60,4 +60,10 @@ public class StudentController {
     public List<Student> getAllStudents() {
         return studentService.getAll();
     }
+
+    @GetMapping("/needAssignement")
+    public ResponseEntity<?> getAllStudentsNotAssigned() {
+        List<Student> studentList = studentService.getAllUnassignedStudents();
+        return ResponseEntity.ok(studentList);
+    }
 }

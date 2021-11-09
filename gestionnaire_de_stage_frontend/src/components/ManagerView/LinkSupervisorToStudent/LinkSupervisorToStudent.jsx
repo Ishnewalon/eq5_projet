@@ -1,25 +1,25 @@
 import React, {useEffect, useState} from "react";
 import {getCurriculumWithValidCV} from "../../../services/curriculum-service";
-import {assignStudentToSupervisor, getSupervisors} from "../../../services/user-service";
+import {assignStudentToSupervisor, getSupervisors, getUnassignedStudents} from "../../../services/user-service";
 import {toast} from "../../../utility";
 import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
 import {Table} from "../../SharedComponents/Table/Table";
 
 export default function LinkSupervisorToStudent() {// TODO: field is linked to supervisor or something
 
-    const [cvList, setCvList] = useState([])
+    const [studentList, setStudentList] = useState([])
     const [supervisorList, setSupervisorList] = useState([])
     const [supervisorID, setSupervisorId] = useState(null)
 
     useEffect(() => {
-        getCurriculumWithValidCV()
-            .then(cvList => {
-                setCvList(cvList)
+        getUnassignedStudents()
+            .then(studentList => {
+                setStudentList(studentList)
             })
             .catch(e => {
-                setCvList([])
+                setStudentList([])
                 console.error(e);
-            });
+            })
         getSupervisors()
             .then(supervisorList => {
                 setSupervisorList(supervisorList)
@@ -54,11 +54,11 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
                 </tr>
                 </thead>
                 <tbody>
-                {cvList.map((cv, index) =>
+                {studentList.map((student, index) =>
 
                     <tr key={index}>
-                        <th scope="row">{cv.student.id}</th>
-                        <td>{cv.student.firstName} {cv.student.lastName}</td>
+                        <th scope="row">{student.id}</th>
+                        <td>{student.firstName} {student.lastName}</td>
                         <td>
                             <InputGroup>
                                 <select onChange={() => setSupervisorId('supervisorID')}>
@@ -71,7 +71,7 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
                             </InputGroup>
                         </td>
                         <td>
-                            <button className="btn btn-success" onClick={assign(cv.student.id)}>Accepter</button>
+                            <button className="btn btn-success" onClick={assign(student.id)}>Accepter</button>
                         </td>
                     </tr>
                 )}
