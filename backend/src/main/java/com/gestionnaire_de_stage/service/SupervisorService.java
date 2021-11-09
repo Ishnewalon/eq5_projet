@@ -42,13 +42,6 @@ public class SupervisorService {
         return supervisorRepository.findAll();
     }
 
-    public boolean assign(Student student, Supervisor supervisor){
-        if (supervisor.getStudentList() == null)
-            supervisor.setStudentList(new ArrayList<>());
-        supervisor.getStudentList().add(student);
-        supervisorRepository.save(supervisor);
-        return true;
-    }
 
     public Supervisor update(Supervisor supervisor, Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
