@@ -58,7 +58,7 @@ export default {
       error.preventDefault();
       axios.post("http://localhost:8181/monitor/signup", this.monitor)
           .then((response) => {
-            sessionStorage.setItem(this.monitor.email, JSON.stringify(response.data));
+            console.log(response);
             createRouter({
               history: createWebHistory,
               routes: [{path: `/login`, component: Login}]

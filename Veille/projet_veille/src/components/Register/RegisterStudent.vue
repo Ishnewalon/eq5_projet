@@ -47,7 +47,7 @@ export default {
         error.preventDefault();
         axios.post("http://localhost:8181/student/signup", this.student)
             .then((response) => {
-              sessionStorage.setItem(this.student.email, JSON.stringify(response.data));
+              console.log(response);
               createRouter({
                 history: createWebHistory,
                 routes: [{path: `/login`, component: Login}]

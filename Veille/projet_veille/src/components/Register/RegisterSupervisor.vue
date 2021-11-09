@@ -47,7 +47,7 @@ export default {
       if (this.verification()) {
         axios.post("http://localhost:8181/supervisor/signup", this.supervisor)
             .then((response) => {
-              sessionStorage.setItem(this.supervisor.email, JSON.stringify(response.data));
+              console.log(response);
               createRouter({
                 history: createWebHistory,
                 routes: [{path: `/login`, component: Login}]

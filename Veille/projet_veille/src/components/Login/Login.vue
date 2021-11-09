@@ -68,6 +68,7 @@ export default {
             if (response.status !== 200) {
               alert("Identifiants incorrects")
             }
+            sessionStorage.setItem("currentUser", JSON.stringify(response.data));
             console.log(response)
             createRouter({
               history: createWebHistory,
