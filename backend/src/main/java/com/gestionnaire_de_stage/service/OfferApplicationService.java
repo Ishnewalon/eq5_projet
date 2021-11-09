@@ -91,7 +91,7 @@ public class OfferApplicationService {
                 !date.isBefore(LocalDateTime.now().plusMonths(2));
     }
 
-    public List<OfferApplication> getOffersApplicationsStageTrouver(Long id) throws IdDoesNotExistException {
+    public List<OfferApplication> getOffersApplicationsStageTrouver(Long id) throws IdDoesNotExistException {//TODO combine with getAllOffersStudentApplied
         Assert.isTrue(id != null, "L'id du gestionnaire ne peut pas être null!");
         if (managerService.isIDNotValid(id))
             throw new IdDoesNotExistException();
@@ -113,7 +113,7 @@ public class OfferApplicationService {
         return offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(Status.EN_ATTENTE_REPONSE, idStudent);
     }
 
-    public boolean updateStatus(UpdateStatusDTO updateStatusDTO) throws IdDoesNotExistException {
+    public String updateStatus(UpdateStatusDTO updateStatusDTO) throws IdDoesNotExistException {
         Assert.isTrue(updateStatusDTO.getIdOfferApplied() != null, "L'id de l'offre ne peut pas être null");
         OfferApplication offerApplication = offerApplicationRepository.getById(updateStatusDTO.getIdOfferApplied());
         if (updateStatusDTO.isAccepted()) {
@@ -122,6 +122,6 @@ public class OfferApplicationService {
             offerApplication.setStatus(Status.STAGE_REFUSE);
         }
         offerApplicationRepository.save(offerApplication);
-        return updateStatusDTO.isAccepted();
+        return updateStatusDTO.isAccepted()?"Status changé, attendez la signature du contrat" : "Status changé, stage refusé";
     }
 }

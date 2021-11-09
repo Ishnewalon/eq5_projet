@@ -32,11 +32,11 @@ public class MonitorController {
         } catch (MonitorAlreadyExistsException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Ce courriel existe déjà!"));
+                    .body(new ResponseMessage("Erreur: Ce courriel existe déjà!"));//FIXME: Change message
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas être null"));
+                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas être null"));//FIXME: Change message
         }
     }
 
@@ -50,11 +50,11 @@ public class MonitorController {
         } catch (EmailAndPasswordDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
+                    .body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));//FIXME: Change message
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));
+                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));//FIXME: Change message
         }
     }
 }
