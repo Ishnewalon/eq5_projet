@@ -55,6 +55,7 @@ function NavItemSpecificForUser() {
             <Link to="/dashboard/students/start">Commencer signature</Link>
             <Link to="/dashboard/students/applied">Associer</Link>
             <Link to="/dashboard/contrats/a_signer">Contrats à valider</Link>
+            <Link to="/dashboard/session">Session</Link>
         </ThisIsAListItem>
     if (auth.isStudent())
         return <ThisIsAListItem>

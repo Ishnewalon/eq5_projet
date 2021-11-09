@@ -23,6 +23,8 @@ public class SessionService {
         if (sessionRepository.existsByDateDebutBetweenOrDateFinBetween(session.getDateDebut(), session.getDateFin(), session.getDateDebut(), session.getDateFin()))
             throw new SessionAlreadyExistException("Une Session existe déjà!");
 
+        session.setId(null);
+
         return sessionRepository.save(session);
     }
 }
