@@ -6,7 +6,7 @@ import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
 import {Table} from "../../SharedComponents/Table/Table";
 
 export default function LinkSupervisorToStudent() {// TODO: field is linked to supervisor or something
-    
+
     const [studentList, setStudentList] = useState([])
     const [supervisorList, setSupervisorList] = useState([])
     const [supervisorID, setSupervisorId] = useState(null)
