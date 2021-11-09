@@ -18,8 +18,12 @@ public class SupervisorService {
 
     private final SupervisorRepository supervisorRepository;
 
-    public SupervisorService(SupervisorRepository supervisorRepository) {
+    private final OfferApplicationService offerApplicationService;
+
+    public SupervisorService(SupervisorRepository supervisorRepository,
+                             OfferApplicationService offerApplicationService) {
         this.supervisorRepository = supervisorRepository;
+        this.offerApplicationService = offerApplicationService;
     }
 
     public Supervisor create(Supervisor supervisor) throws SupervisorAlreadyExistsException {
@@ -71,9 +75,10 @@ public class SupervisorService {
         return supervisorRepository.findSupervisorByEmailAndPassword(email, password);
     }
 
-/*    public List<OfferApplication> getStudentsStatus(Supervisor supervisor) {
-        List<OfferApplication> offerApplicationList =
-    }*/
+    public List<OfferApplication> getStudentsStatus(Supervisor supervisor) {
+        List<OfferApplication> offerApplicationList = offerApplicationService.getAllBySupervisorId(supervisor.getId());
+        return offerApplicationList;
+    }
 
     private boolean isNotValid(Supervisor supervisor) {
         return supervisor.getEmail() != null &&

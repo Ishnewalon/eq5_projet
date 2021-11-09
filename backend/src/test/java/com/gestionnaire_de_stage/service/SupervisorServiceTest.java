@@ -1,10 +1,10 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
-import com.gestionnaire_de_stage.model.Student;
-import com.gestionnaire_de_stage.model.Supervisor;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +27,9 @@ public class SupervisorServiceTest {
 
     @Mock
     SupervisorRepository supervisorRepository;
+
+    @Mock
+    OfferApplicationService offerApplicationService;
 
     @Test
     public void testCreate_withValidSupervisor() throws SupervisorAlreadyExistsException {
@@ -176,6 +179,18 @@ public class SupervisorServiceTest {
                 () -> supervisorService.getOneByEmailAndPassword(dummySupervisor.getEmail(), dummySupervisor.getPassword()));
     }
 
+    @Test
+    public void testGetStudentsStatus() {
+        Supervisor dummySupervisor = getDummySupervisor();
+        List<OfferApplication> dummyOfferAppList = getDummyOfferAppList();
+        when(offerApplicationService.getAllBySupervisorId(any())).thenReturn(dummyOfferAppList);
+
+        List<OfferApplication> actualOfferAppList = supervisorService.getStudentsStatus(dummySupervisor);
+
+        assertThat(actualOfferAppList).isEqualTo(dummyOfferAppList);
+        assertThat(actualOfferAppList.size()).isEqualTo(dummyOfferAppList.size());
+    }
+
     private Supervisor getDummySupervisor() {
         Supervisor dummySupervisor = new Supervisor();
         dummySupervisor.setId(1L);
@@ -188,25 +203,21 @@ public class SupervisorServiceTest {
         return dummySupervisor;
     }
 
-    private Student getDummyStudent() {
-        Student dummyStudent = new Student();
-        dummyStudent.setId(1L);
-        dummyStudent.setLastName("Candle");
-        dummyStudent.setFirstName("Tea");
-        dummyStudent.setEmail("cant@outlook.com");
-        dummyStudent.setPassword("cantPass");
-        dummyStudent.setDepartment("info");
-        dummyStudent.setMatricule("4673943");
-        return dummyStudent;
-    }
+    private List<OfferApplication> getDummyOfferAppList() {
+        List<OfferApplication> offerApplicationList = new ArrayList<>();
+        OfferApplication dummyOfferApplication = new OfferApplication();
+        dummyOfferApplication.setOffer(new Offer());
+        dummyOfferApplication.setCurriculum(new Curriculum());
+        dummyOfferApplication.setId(1L);
+        dummyOfferApplication.setStatus(Status.CV_ENVOYE);
+        offerApplicationList.add(dummyOfferApplication);
 
-    private List<Supervisor> getDummySupervisorList() {
-        List<Supervisor> dummySupervisorList = new ArrayList<>();
-        for (long id = 0; id < 3; id++) {
-            Supervisor dummySupervisor = getDummySupervisor();
-            dummySupervisor.setId(id);
-            dummySupervisorList.add(dummySupervisor);
-        }
-        return dummySupervisorList;
+        dummyOfferApplication.setId(2L);
+        offerApplicationList.add(dummyOfferApplication);
+
+        dummyOfferApplication.setId(3L);
+        offerApplicationList.add(dummyOfferApplication);
+
+        return offerApplicationList;
     }
 }
