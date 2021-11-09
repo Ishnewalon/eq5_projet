@@ -12,6 +12,12 @@
     <a>
       <router-link to="/dashboard">Dashboard</router-link>
     </a>
+    <a>
+      <router-link to="/monitor/create_offer">Créer une offre[moniteur]</router-link>
+    </a>
+    <a>
+      <router-link to="/manager/create_offer">Créer une offre [Gestionnaire]</router-link>
+    </a>
   </nav>
 </template>
 
