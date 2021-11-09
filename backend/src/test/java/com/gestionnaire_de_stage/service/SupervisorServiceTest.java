@@ -191,6 +191,17 @@ public class SupervisorServiceTest {
         assertThat(actualOfferAppList.size()).isEqualTo(dummyOfferAppList.size());
     }
 
+    @Test
+    public void testGetAll() {
+        List<Supervisor> dummySupervisorList = getDummySupervisorList();
+        when(supervisorRepository.findAll()).thenReturn(dummySupervisorList);
+
+        List<Supervisor> actualSupervisorList = supervisorService.getAll();
+
+        assertThat(actualSupervisorList).isEqualTo(dummySupervisorList);
+        assertThat(actualSupervisorList.size()).isEqualTo(dummySupervisorList.size());
+    }
+
     private Supervisor getDummySupervisor() {
         Supervisor dummySupervisor = new Supervisor();
         dummySupervisor.setId(1L);
@@ -201,6 +212,22 @@ public class SupervisorServiceTest {
         dummySupervisor.setDepartment("Comptabilité");
         dummySupervisor.setMatricule("04736");
         return dummySupervisor;
+    }
+
+    private List<Supervisor> getDummySupervisorList() {
+        List<Supervisor> dummySupervisorList = new ArrayList<>();
+        Supervisor dummySupervisor1 = getDummySupervisor();
+        dummySupervisorList.add(dummySupervisor1);
+
+        Supervisor dummySupervisor2 = getDummySupervisor();
+        dummySupervisor2.setId(2L);
+        dummySupervisorList.add(dummySupervisor2);
+
+        Supervisor dummySupervisor3 = getDummySupervisor();
+        dummySupervisor3.setId(3L);
+        dummySupervisorList.add(dummySupervisor3);
+
+        return dummySupervisorList;
     }
 
     private List<OfferApplication> getDummyOfferAppList() {

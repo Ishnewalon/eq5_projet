@@ -213,6 +213,32 @@ public class SupervisorControllerTest {
         assertThat(actualOfferAppList.size()).isEqualTo(dummyOfferAppList.size());
     }
 
+    @Test
+    public void testGetAllStudentsStatus_withNullSupervisorId() throws Exception {
+        Supervisor dummySupervisor = getDummySupervisor();
+        when(supervisorService.getOneByID(any())).thenThrow(new IllegalArgumentException("ID est null"));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/getStudentsStatus/" + dummySupervisor.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("ID est null");
+    }
+
+    @Test
+    public void testGetAllStudentsStatus_withInvalidSupervisorId() throws Exception {
+        Supervisor dummySupervisor = getDummySupervisor();
+        when(supervisorService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/getStudentsStatus/" + dummySupervisor.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Ce superviseur n'existe pas");
+    }
+
     private Supervisor getDummySupervisor() {
         Supervisor dummySupervisor = new Supervisor();
         dummySupervisor.setId(1L);

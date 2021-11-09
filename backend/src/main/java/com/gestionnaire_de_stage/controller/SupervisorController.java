@@ -97,8 +97,12 @@ public class SupervisorController {
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
+                    .body("Ce superviseur n'existe pas");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
                     .body(e.getMessage());
-        }
+    }
         return ResponseEntity
                 .ok(offerApplicationList);
     }
