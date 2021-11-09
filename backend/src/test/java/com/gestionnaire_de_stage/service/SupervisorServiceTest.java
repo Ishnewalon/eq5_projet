@@ -80,28 +80,6 @@ public class SupervisorServiceTest {
     }
 
     @Test
-    public void testGetAll() {
-        when(supervisorRepository.findAll()).thenReturn(getDummySupervisorList());
-
-        final List<Supervisor> actualSupervisorList = supervisorService.getAll();
-
-        assertThat(actualSupervisorList.size()).isEqualTo(3);
-        assertThat(actualSupervisorList.get(0).getFirstName()).isEqualTo("Harold");
-    }
-
-    @Test
-    public void testAssign(){
-        Supervisor supervisor = getDummySupervisor();
-        Student student = getDummyStudent();
-
-        supervisorService.assign(student, supervisor);
-
-        assertThat(supervisor.getStudentList().size()).isEqualTo(1);
-        assertThat(supervisor.getStudentList().get(0).getFirstName()).isEqualTo("Tea");
-    }
-
-
-    @Test
     public void testUpdate_withValidEntries() throws IdDoesNotExistException {
         Supervisor dummySupervisor = getDummySupervisor();
         when(supervisorRepository.existsById(any())).thenReturn(true);

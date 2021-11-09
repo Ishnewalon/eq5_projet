@@ -23,6 +23,6 @@ public class Supervisor extends User {
     @NotNull
     private String department;
 
-    @OneToMany
-    private List<Student> studentList;//MAYBE: put it in student instead of supervisor
+   /* @OneToMany
+    private List<Student> studentList;//MAYBE: put it in student instead of supervisor*/
 }

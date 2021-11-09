@@ -136,7 +136,7 @@ public class SupervisorControllerTest {
     @Test
     public void testAssign() throws Exception {
         AssignDto assignDto = new AssignDto(1L, 2L);
-        when(supervisorService.assign(any(), any())).thenReturn(true);
+        when(studentService.assign(any(), any())).thenReturn(true);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/supervisor/assign/student")

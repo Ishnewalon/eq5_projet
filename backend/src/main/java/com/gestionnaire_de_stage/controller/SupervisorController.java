@@ -80,7 +80,7 @@ public class SupervisorController {
                     .badRequest()
                     .body(new ResponseMessage("Erreur: Inexistant"));
         }
-        boolean assign = supervisorService.assign(student, supervisor);
+        boolean assign = studentService.assign(student, supervisor);
 
         String response = assign ? "Assignement fait!" : "Assignement rejeté, l'étudiant est déjà assigné!";
         return ResponseEntity.ok(new ResponseMessage(response));
