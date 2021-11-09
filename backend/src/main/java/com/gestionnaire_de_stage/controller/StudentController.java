@@ -61,8 +61,9 @@ public class StudentController {
         return studentService.getAll();
     }
 
-/*    @GetMapping("/needAssignement")
-    public ResponseEntity<?> allStudentsNotAssigned() {
-
-    }*/
+    @GetMapping("/needAssignement")
+    public ResponseEntity<?> getAllStudentsNotAssigned() {
+        List<Student> studentList = studentService.getAllUnassignedStudents();
+        return ResponseEntity.ok(studentList);
+    }
 }

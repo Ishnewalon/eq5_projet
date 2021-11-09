@@ -87,6 +87,10 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
+    public List<Student> getAllUnassignedStudents() {
+        return studentRepository.getAllByPrincipalCurriculum_IsValidAndSupervisorNull();
+    }
+
     public boolean assign(Student student, Supervisor supervisor){
         student.setSupervisor(supervisor);
         studentRepository.save(student);

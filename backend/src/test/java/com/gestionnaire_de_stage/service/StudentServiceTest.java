@@ -269,6 +269,16 @@ public class StudentServiceTest {
     }
 
     @Test
+    public void testGetAllUnassignedStudents() {
+        List<Student> dummyStudentList = getDummyStudentList();
+        when(studentRepository.getAllByPrincipalCurriculum_IsValidAndSupervisorNull()).thenReturn(dummyStudentList);
+
+        List<Student> actualStudentList = studentService.getAllUnassignedStudents();
+
+        assertThat(actualStudentList.size()).isEqualTo(dummyStudentList.size());
+    }
+
+    @Test
     void testAssign() {
         Student dummyStudent = getDummyStudent();
         Supervisor dummySupervisor = getDummySupervisor();
