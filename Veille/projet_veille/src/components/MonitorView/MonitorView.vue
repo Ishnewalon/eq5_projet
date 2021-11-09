@@ -2,7 +2,6 @@
   <div>
     <ul>
       <li v-for="(item, i) in this.liste" :key="i">
-        <p>test</p>
         {{ item.firstName }} {{ item.lastName }}
       </li>
     </ul>
@@ -20,7 +19,7 @@ export default {
     }
   },
   methods: {
-    getList: function () {
+    getList() {
       axios.get("http://localhost:8181/student").then((response) => {
         this.liste = response.data;
       }).catch(e => {

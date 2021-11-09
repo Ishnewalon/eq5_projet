@@ -1,12 +1,13 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link>
+    <router-link to="/home">Home </router-link>
     |
-    <router-link to="/register">Inscription</router-link>
+    <router-link to="/register"> Inscription </router-link>
     |
-    <router-link to="/login">Connexion</router-link>
+    <router-link to="/login"> Se connecter </router-link>
   </div>
   <router-view/>
+
 </template>
 
 <style>
@@ -17,6 +18,10 @@
 
 #nav {
   padding: 30px;
+  font-weight: bold;
+  font-size: 30px;
+  color: black;
+  text-decoration: none;
 }
 
 #nav a {
