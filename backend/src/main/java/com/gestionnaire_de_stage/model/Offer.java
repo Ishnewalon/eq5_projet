@@ -65,7 +65,8 @@ public class Offer {//TODO : session
     private String horaireTravail;
 
     private String nbHeureSemaine;
-
+    @OneToOne
+    private Session session;
     @Transient
     public String creatorEmail() {
         if (creator == null)
