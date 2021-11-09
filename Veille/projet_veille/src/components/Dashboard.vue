@@ -1,5 +1,5 @@
 <template>
-  <h1>VOUS ETES CONNECTE EN TANT QUE {{this.user.firstName}} {{this.user.lastName}} </h1>
+  <h1>VOUS ETES CONNECTE EN TANT QUE <span> {{this.user.firstName}} {{this.user.lastName}}</span> </h1>
   <button v-on:click="logout"> Se déconnecter</button><br><br>
   <router-link to="/monitor-view">Liste étudiants</router-link>
 
@@ -24,4 +24,8 @@ export default {
 
 <style scoped>
 
+span{
+  color: red;
+  text-transform: uppercase;
+}
 </style>

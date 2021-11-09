@@ -2,7 +2,9 @@
   <div>
     <div>
       <div>
-        <h1>Connexion</h1>
+        <h2>
+          <ins>Connexion</ins>
+        </h2>
       </div>
       <div id="div">
         <button v-bind:class="getCurrentLogin()==='student' ? 'btnSelected': 'btnSimple'"
