@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "./components/NavBar/NavBar";
 import {AuthProvider, RequireAuth, RequireNoAuth} from "./services/use-auth";
 import Login from "./components/Login/Login";
+import {ContainerBox} from "./components/SharedComponents/ContainerBox/ContainerBox";
 
 function App() {
 
@@ -23,12 +24,16 @@ function App() {
                     </Route>
                     <Route path="/register">
                         <RequireNoAuth>
-                            <Register/>
+                            <ContainerBox>
+                                <Register/>
+                            </ContainerBox>
                         </RequireNoAuth>
                     </Route>
                     <Route path="/login">
                         <RequireNoAuth>
-                            <Login/>
+                            <ContainerBox>
+                                <Login/>
+                            </ContainerBox>
                         </RequireNoAuth>
                     </Route>
                 </Switch>

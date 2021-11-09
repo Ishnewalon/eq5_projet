@@ -2,38 +2,34 @@ import React from "react";
 import TeleverserCv from "./TeleverserCv/TeleverserCv";
 import ViewOffersAndApply from "./ViewOffersAndApply/ViewOffersAndApply";
 import {Route, useRouteMatch} from "react-router-dom";
-import AppliedOn from "./AppliedOn/AppliedOn";
-import {ViewContract} from "./ViewContract";
-import StudentOfferApplicationList from "./StudentOfferApplication/StudentOfferApplicationList";
+import OfferApplicationListView from "./OfferApplicationListView/OfferApplicationListView";
+import {ContractView} from "../Contract/ContractView";
+import OfferApplicationSetFinalStatus from "./OfferApplicationSetFinalStatus/OfferApplicationSetFinalStatus";
+import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {useAuth} from "../../services/use-auth";
 
 export default function StudentView() {
     let {path} = useRouteMatch();
-    return (<>
+    let auth = useAuth();
+    return (<ContainerBox>
             <Route exact path={`${path}/televerser`}>
-                <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-                    <TeleverserCv/>
-                </div>
+                <TeleverserCv/>
             </Route>
             <Route exact path={`${path}/offres`}>
-                <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-                    <ViewOffersAndApply/>
-                </div>
+                <ViewOffersAndApply/>
             </Route>
             <Route exact path={`${path}/view/status`}>
-                <div>
-                    <StudentOfferApplicationList/>
-                </div>
+                <OfferApplicationSetFinalStatus/>
             </Route>
             <Route exact path={`${path}/offer/setdate`}>
-                <div>
-                    <AppliedOn/>
-                </div>
+                <OfferApplicationListView/>
             </Route>
             <Route exact path={`${path}/voir_mon_contrat`}>
-                <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
-                    <ViewContract/>
-                </div>
+                <ContractView/>
             </Route>
-        </>
+            <Route exact path={`${path}`}>
+                <h1 className="text-center">Bonjour {auth.user.firstName}!</h1>
+            </Route>
+        </ContainerBox>
     )
 }
