@@ -2,17 +2,26 @@ import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
 import {createSession} from "../../../services/session-service";
 import {useState} from "react";
+import {toastErr} from "../../../utility";
 
 export default function CreateSession() {
-    const [dateDebut, setDateDebut] = useState('');
-    const [dateFin, setDateFin] = useState('');
-    const [typeSession, setTypeSession] = useState('');
+    let currentYear = new Date().getFullYear();
+    let years = [];
+
+    const [year, setYear] = useState(currentYear);
+    const [typeSession, setTypeSession] = useState(null);
+
+    for (let i = 0; i < 3; i++)
+        years.push(currentYear + i);
 
     const onclick = () => {
+        if (!typeSession) {
+            toastErr.fire({title: "Le type de session doit être choisi"}).then()
+            return
+        }
         createSession({
             typeSession: typeSession,
-            dateDebut: dateDebut,
-            dateFin: dateFin,
+            year: year
 
         }).then();
     };
@@ -21,17 +30,13 @@ export default function CreateSession() {
         <h1 className="text-center">Ajouter une session</h1>
         <FormGroup>
             <>
-                <label>Date de début</label>
+                <label>Année</label>
                 <InputGroup>
-                    <input type="datetime-local" id="dateDebut" name="dateDebut"
-                           onChange={(e) => setDateDebut(e.target.value)}/>
-                </InputGroup>
-            </>
-            <>
-                <label>Date de fin</label>
-                <InputGroup>
-                    <input type="datetime-local" id="dateFin" name="dateFin"
-                           onChange={(e) => setDateFin(e.target.value)}/>
+                    <select onChange={(e) => setYear(e.target.value)}>
+                        {years.map((year) =>
+                            <option key={year} value={year}>{year}</option>
+                        )}
+                    </select>
                 </InputGroup>
             </>
             <>
