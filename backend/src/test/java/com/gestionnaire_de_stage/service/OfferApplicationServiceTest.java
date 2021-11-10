@@ -1,19 +1,26 @@
 package com.gestionnaire_de_stage.service;
 
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
+import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
+import com.gestionnaire_de_stage.enums.Status;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
+import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
+import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
+import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +39,10 @@ class OfferApplicationServiceTest {
     @Mock
     private StudentService studentService;
     @Mock
+    private StudentRepository studentRepository;
+    @Mock
+    private ManagerService managerService;
+    @Mock
     private OfferApplicationRepository offerApplicationRepository;
 
     @Test
@@ -46,6 +57,7 @@ class OfferApplicationServiceTest {
         OfferApplication actualOfferApplication = offerApplicationService.create(dummyOffer.getId(), dummyStudent.getId());
 
         assertThat(actualOfferApplication).isEqualTo(dummyOfferApplication);
+        assertThat(actualOfferApplication.getStatus()).isEqualTo(Status.CV_ENVOYE);
     }
 
     @Test
@@ -70,18 +82,32 @@ class OfferApplicationServiceTest {
 
     @Test
     void testCreate_withIdOfferNull() {
-        Offer dummyOffer = getDummyOffer();
-
-        assertThrows(IllegalArgumentException.class,
-                () -> offerApplicationService.create(null, dummyOffer.getId()));
-    }
-
-    @Test
-    void testCreate_withIdCurriculumNull() {
         Student dummyStudent = getDummyStudent();
 
         assertThrows(IllegalArgumentException.class,
                 () -> offerApplicationService.create(null, dummyStudent.getId()));
+    }
+
+    @Test
+    void testCreate_withIdStudentNull() throws IdDoesNotExistException {
+        Offer dummyOffer = getDummyOffer();
+        when(studentService.getOneByID(any())).thenThrow(IllegalArgumentException.class);
+        when(offerService.findOfferById(any())).thenReturn(Optional.of(dummyOffer));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.create(dummyOffer.getId(), null));
+    }
+
+    @Test
+    void testCreate_withCvNull() throws IdDoesNotExistException {
+        Offer dummyOffer = getDummyOffer();
+        Student dummyStudent = getDummyStudent();
+        dummyStudent.setPrincipalCurriculum(null);
+        when(studentService.getOneByID(any())).thenReturn(dummyStudent);
+        when(offerService.findOfferById(any())).thenReturn(Optional.of(dummyOffer));
+
+        assertThrows(StudentHasNoCurriculumException.class,
+                () -> offerApplicationService.create(dummyOffer.getId(), dummyStudent.getId()));
     }
 
     @Test
@@ -97,17 +123,72 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    void testGetAllByOfferCreatorEmail_withValidEntries() throws EmailDoesNotExistException {
+    void testGetOffersApplicationStageTrouver() throws IdDoesNotExistException {
+        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
+        Manager dummyManager = getDummyManager();
+        when(managerService.isIDNotValid(any())).thenReturn(false);
+        when(offerApplicationRepository.getAllByStatus(Status.STAGE_TROUVE))
+                .thenReturn(offerApplicationList);
+
+        List<OfferApplication> actualOfferAppList = offerApplicationService
+                .getOffersApplicationsStageTrouver(dummyManager.getId());
+
+        assertThat(actualOfferAppList.size()).isEqualTo(offerApplicationList.size());
+        assertThat(actualOfferAppList).isEqualTo(offerApplicationList);
+    }
+
+    @Test
+    void testGetOffersApplicationStageTrouver_withIdNull() {
+
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.getOffersApplicationsStageTrouver(null));
+    }
+
+    @Test
+    void testGetOffersApplicationStageTrouver_withIdInvalid() {
+        Manager dummyManager = getDummyManager();
+        when(managerService.isIDNotValid(any())).thenReturn(true);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerApplicationService.getOffersApplicationsStageTrouver(dummyManager.getId()));
+    }
+
+
+    @Test
+    void testGetAllByOfferCreatorEmail_withValidEntries() {
         List<OfferApplication> offerApplicationList = getDummyOfferAppList();
         String email = "americanm@email.com";
-        when(offerApplicationRepository.existsByOffer_CreatorEmail(any()))
-                .thenReturn(true);
         when(offerApplicationRepository.getAllByOffer_CreatorEmail(any()))
-                .thenReturn(getDummyOfferAppList());
+                .thenReturn(offerApplicationList);
 
         List<OfferApplication> actualOfferAppList = offerApplicationService.getAllByOfferCreatorEmail(email);
 
         assertThat(actualOfferAppList.size()).isEqualTo(offerApplicationList.size());
+        assertThat(actualOfferAppList).isEqualTo(offerApplicationList);
+    }
+
+    @Test
+    void testGetAllByOfferStudentApplied() throws IdDoesNotExistException {
+        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
+        Student dummyStudent = getDummyStudent();
+        when(studentService.getOneByID(any())).thenReturn(dummyStudent);
+        when(offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(Status.EN_ATTENTE_REPONSE, dummyStudent.getId()))
+                .thenReturn(offerApplicationList);
+
+        List<OfferApplication> actualOfferAppList = offerApplicationService
+                .getAllOffersStudentApplied(dummyStudent.getId());
+
+        assertThat(actualOfferAppList.size()).isEqualTo(offerApplicationList.size());
+        assertThat(actualOfferAppList).isEqualTo(offerApplicationList);
+    }
+
+    @Test
+    void testGetAllByOfferStudentApplied_withIdInvalid() throws IdDoesNotExistException {
+        Student dummyStudent = getDummyStudent();
+        when(studentService.getOneByID(any())).thenReturn(null);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerApplicationService.getAllOffersStudentApplied(dummyStudent.getId()));
     }
 
     @Test
@@ -117,11 +198,107 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    void testGetAllByOfferCreatorEmail_withInvalidEmail() {
-        String email = "fredmerc@email.com";
+    void testGetOneById() throws IdDoesNotExistException {
+        OfferApplication offerApplication = getDummyOfferApp();
+        when(offerApplicationRepository.existsById(any())).thenReturn(true);
+        when(offerApplicationRepository.getById(any())).thenReturn(offerApplication);
 
-        assertThrows(EmailDoesNotExistException.class,
-                () -> offerApplicationService.getAllByOfferCreatorEmail(email));
+        OfferApplication actualOfferApp = offerApplicationService.getOneById(offerApplication.getId());
+
+        assertThat(actualOfferApp).isEqualTo(offerApplication);
+    }
+
+    @Test
+    void testGetOneById_whenIdNull() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.getOneById(null));
+    }
+    @Test
+    void testGetOneById_whenIdInvalid() {
+        when(offerApplicationRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerApplicationService.getOneById(1L));
+    }
+
+    @Test
+    public void testUpdateStatus_withTrue() throws IdDoesNotExistException {
+        OfferApplication dummyOfferApplication = getDummyOfferApp();
+        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), true);
+        when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
+        when(offerApplicationRepository.save(any())).thenReturn(dummyOfferApplication);
+
+        boolean isAccepted =  offerApplicationService.updateStatus(updateStatusDTO);
+
+        assertThat(isAccepted).isTrue();
+    }
+
+    @Test
+    public void testUpdateStatus_withFalse() throws IdDoesNotExistException {
+        OfferApplication dummyOfferApplication = getDummyOfferApp();
+        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), false);
+        when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
+        when(offerApplicationRepository.save(any())).thenReturn(dummyOfferApplication);
+
+        boolean isAccepted = offerApplicationService.updateStatus(updateStatusDTO);
+
+        assertThat(isAccepted).isFalse();
+    }
+
+    @Test
+    void testSetInterviewDate_withValidIDs() throws Exception {
+        OfferApplication offerApplication = getDummyOfferApp();
+        when(offerApplicationRepository.existsById(any())).thenReturn(true);
+        when(offerApplicationRepository.getById(any())).thenReturn(offerApplication);
+        offerApplication.setInterviewDate(LocalDateTime.now());
+        when(offerApplicationRepository.save(any())).thenReturn(offerApplication);
+
+        OfferApplication actual = offerApplicationService.setInterviewDate(offerApplication.getId(), LocalDateTime.now().plusDays(1));
+
+        assertThat(actual).isEqualTo(offerApplication);
+    }
+
+    @Test
+    void testSetInterviewDate_withNullIDs() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.setInterviewDate(null, null));
+    }
+
+    @Test
+    void testSetInterviewDate_withOfferAppIdNotExist() {
+        when(offerApplicationRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerApplicationService.setInterviewDate(5L, LocalDateTime.now()));
+    }
+
+    @Test
+    void testSetInterviewDate_withDateInvalid() {
+        OfferApplication offerApplication = getDummyOfferApp();
+        when(offerApplicationRepository.existsById(any())).thenReturn(true);
+
+        assertThrows(DateNotValidException.class,
+                () -> offerApplicationService.setInterviewDate(
+                        offerApplication.getId(),
+                        LocalDateTime.now().minusDays(5)));
+    }
+
+    @Test
+    void testGetAllByOfferStatusAndStudentID_withValidEntries() {
+        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
+        when(offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(any(), any()))
+                .thenReturn(offerApplicationList);
+
+        List<OfferApplication> actualList = offerApplicationService.getAllByOfferStatusAndStudentID(Status.CV_ENVOYE, 1L);
+
+        assertThat(actualList.size()).isGreaterThan(1);
+        assertThat(actualList).isEqualTo(offerApplicationList);
+    }
+
+    @Test
+    void testGetAllByOfferStatusAndStudentID_withNullEntries() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.getAllByOfferStatusAndStudentID(null, null));
     }
 
     private OfferApplication getDummyOfferApp() {
@@ -129,6 +306,7 @@ class OfferApplicationServiceTest {
         offerApplicationDTO.setOffer(getDummyOffer());
         offerApplicationDTO.setCurriculum(new Curriculum());
         offerApplicationDTO.setId(1L);
+        offerApplicationDTO.setStatus(Status.CV_ENVOYE);
 
         return offerApplicationDTO;
     }
@@ -157,12 +335,35 @@ class OfferApplicationServiceTest {
         return dummyStudent;
     }
 
+    private Manager getDummyManager() {
+        Manager dummyManager = new Manager();
+        dummyManager.setId(1L);
+        dummyManager.setLastName("Candle");
+        dummyManager.setFirstName("Tea");
+        dummyManager.setEmail("admin@admin.com");
+        dummyManager.setPassword("admin");
+        return dummyManager;
+    }
+
+    private UpdateStatusDTO getDummuyUpdateStatusDTO(){
+      return new UpdateStatusDTO(1L, true);
+    }
+
+    private Curriculum getDummyCurriculum() {
+        Curriculum dummyCurriculum = new Curriculum();
+        dummyCurriculum.setId(1L);
+        dummyCurriculum.setName("Curriculum");
+        dummyCurriculum.setStudent(getDummyStudent());
+        return dummyCurriculum;
+    }
+
     private List<OfferApplication> getDummyOfferAppList() {
         List<OfferApplication> offerApplicationList = new ArrayList<>();
         OfferApplication dummyOfferApplication = new OfferApplication();
         dummyOfferApplication.setOffer(getDummyOffer());
         dummyOfferApplication.setCurriculum(new Curriculum());
         dummyOfferApplication.setId(1L);
+        dummyOfferApplication.setStatus(Status.CV_ENVOYE);
         offerApplicationList.add(dummyOfferApplication);
 
         dummyOfferApplication.setId(2L);

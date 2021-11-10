@@ -1,101 +1,94 @@
-import {Step} from "../Register";
-import React,{Component} from "react";
+import React from "react";
+import FieldEmail from "../../Fields/FieldEmail";
+import {Step} from "../../../enums/Steps";
+import {toastErr} from "../../../utility";
 
 // eslint-disable-next-line
 const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 const regexPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
-export default class StepInformationGeneral extends Component {
+export default function StepInformationGeneral({prevStep, nextStep, handleChange, lastName, firstName, email, phone}) {
 
-    previous = (e) => {
-        e.preventDefault();
-        this.props.prevStep();
+    const next = (val) => {
+        nextStep(val);
     }
-    continue = (val) => {
-        this.props.nextStep(val);
-    }
-
-    verification = () => {
-        if (!this.props.values.firstName) {
-            alert("Le champs prénom est vide")
+    const verification = (firstName, lastName, email, phone) => {
+        if (!firstName) {
+            toastErr.fire({title: "Le champs prénom est vide"}).then()
             return false
         }
-        if (!this.props.values.lastName) {
-            alert("Le champs nom est vide")
+        if (!lastName) {
+            toastErr.fire({title: "Le champs nom est vide"}).then()
             return false
         }
-        if (!this.props.values.email) {
-            alert("Le champs courriel est vide")
+        if (!email) {
+            toastErr.fire({title: "Le champs courriel est vide"}).then()
             return false
         }
-        if (!this.props.values.phone) {
-            alert("Le champs numéro de téléphone est vide")
+        if (!phone) {
+            toastErr.fire({title: "Le champs numéro de téléphone est vide"}).then()
             return false
         }
-        if (!this.props.values.firstName.match(/^[a-zA-Z\-\s]+$/)) {
-            alert("Le champs prénom est invalide")
+        if (!firstName.match(/^[a-zA-Z\-\s]+$/)) {
+            toastErr.fire({title: "Le champs prénom est invalide"}).then()
             return false;
         }
-        if (!this.props.values.lastName.match(/^[a-zA-Z\-\s]+$/)) {
-            alert("Le champs nom est invalide")
+        if (!lastName.match(/^[a-zA-Z\-\s]+$/)) {
+            toastErr.fire({title: "Le champs nom est invalide"}).then()
             return false;
         }
-        if (!regexEmail.test(this.props.values.email)) {
-            alert("Le champs courriel est invalide")
+        if (!regexEmail.test(email)) {
+            toastErr.fire({title: "Le champs courriel est invalide"}).then()
             return false;
         }
-        if (!regexPhone.test(this.props.values.phone)) {
-            alert("Le champs numéro de téléphone est invalide")
+        if (!regexPhone.test(phone)) {
+            toastErr.fire({title: "Le champs numéro de téléphone est invalide"}).then()
             return false;
         }
         return true;
     }
 
-    render() {
-        return (<div>
-            <div className="form-group row">
-                <div className="col-md-6">
-                    <label>Prénom</label>
-                    <div className="input-group">
-                        <input name="firstName" placeholder="Prenom" className="form-control" type="text"
-                               value={this.props.values.firstName} onChange={this.props.handleChange('firstName')}/>
-                    </div>
-                </div>
-                <div className="col-md-6">
-                    <label>Nom</label>
-                    <div>
-                        <div className="input-group">
-                            <input name="lastName" placeholder="Nom" className="form-control" type="text"
-                                   value={this.props.values.lastName} onChange={this.props.handleChange('lastName')}/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="form-group">
-                <label>E-Mail</label>
+    return (<>
+        <div className="form-group row">
+            <div className="col-md-6">
+                <label>Prénom</label>
                 <div className="input-group">
-                    <input name="email" placeholder="Adresse E-mail" className="form-control" type="email"
-                           value={this.props.values.email} onChange={this.props.handleChange("email")}/>
+                    <input name="firstName" placeholder="Prenom" className="form-control" type="text"
+                           value={firstName} onChange={handleChange}/>
                 </div>
             </div>
-            <div className="form-group">
-                <label>Téléphone</label>
-                <div className="input-group">
-                    <input name="contact_no" placeholder="000 000 000" className="form-control" type="tel"
-                           value={this.props.values.phone} onChange={this.props.handleChange('phone')}/>
-                </div>
-            </div>
-            <div className="form-group text-center">
-                <label/>
+            <div className="col-md-6">
+                <label>Nom</label>
                 <div>
-                    <button className="btn btn-primary" type={"button"} onClick={this.previous}>Précédent</button>
-                    <button className="btn btn-primary" type={"button"} onClick={() => {
-                        if (this.verification())
-                            this.continue(Step.PASSWORD)
-                    }}>Suivant
-                    </button>
+                    <div className="input-group">
+                        <input name="lastName" placeholder="Nom" className="form-control" type="text"
+                               value={lastName} onChange={handleChange}/>
+                    </div>
                 </div>
             </div>
-        </div>)
-    }
+        </div>
+        <div className="form-group">
+            <FieldEmail email={email} label="Email" placeholder="Votre Email"
+                        handleChanges={handleChange}/>
+        </div>
+        <div className="form-group">
+            <label>Téléphone</label>
+            <div className="input-group">
+                <input name="phone" placeholder="000 000 000" className="form-control" type="tel"
+                       value={phone} onChange={handleChange}/>
+            </div>
+        </div>
+        <div className="form-group text-center">
+            <label/>
+            <div>
+                <button className="btn btn-primary" type={"button"} onClick={prevStep}>Précédent</button>
+                <button className="btn btn-primary" type={"button"} onClick={() => {
+                    if (verification(firstName, lastName, email, phone))
+                        next(Step.PASSWORD)
+                }}>Suivant
+                </button>
+            </div>
+        </div>
+    </>)
+
 }

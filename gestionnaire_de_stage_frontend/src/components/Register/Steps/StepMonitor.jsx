@@ -1,96 +1,99 @@
-import {Step, UserType} from "../Register";
-import React,{Component} from "react";
-import {FieldAddress} from "../../Fields/FieldAddress";
+import React from "react";
+import FieldAddress from "../../Fields/FieldAddress";
+import {toastErr} from "../../../utility";
+import {UserType} from "../../../enums/UserTypes";
+import {Step} from "../../../enums/Steps";
 
 const regexCodePostal = /^([A-Za-z]\s?[0-9]){3}$/;
 
-export default class StepMonitor extends Component {
+export default function StepMonitor({
+                                        prevStep,
+                                        nextStep,
+                                        updateUserType,
+                                        handleChange,
+                                        companyName,
+                                        address,
+                                        postalCode,
+                                        city
+                                    }) {
 
-    previous = (e) => {
-        e.preventDefault();
-        this.props.prevStep();
+    const next = (val) => {
+        updateUserType(UserType.MONITOR);
+        nextStep(val);
     }
-
-    continue = (val) => {
-        this.props.updateUserType(UserType.MONITOR);
-        this.props.nextStep(val);
-    }
-
-    verification = () => {
-        if (!this.props.values.companyName) {
-            alert("Nom de compagnie est vide")
+    const verification = (companyName, city, address, postalCode) => {
+        if (!companyName) {
+            toastErr.fire({title: 'Nom de compagnie est vide'}).then()
             return false
         }
-        if (!this.props.values.city) {
-            alert("Nom de ville est vide")
+        if (!city) {
+            toastErr.fire({title: 'Nom de ville est vide'}).then()
             return false
         }
-        if (!this.props.values.address) {
-            alert("L'adresse est vide")
+        if (!address) {
+            toastErr.fire({title: "L'adresse est vide"}).then()
             return false
         }
-        if (!this.props.values.codePostal) {
-            alert("Code postal est vide")
+        if (!postalCode) {
+            toastErr.fire({title: 'Code postal est vide'}).then()
             return false
         }
-        if (!this.props.values.companyName.match(/^[a-zA-Z0-9]+$/)) {
-            alert("Nom de compagnie est invalide")
+        if (!companyName.match(/^[a-zA-Z0-9]+$/)) {
+            toastErr.fire({title: 'Nom de compagnie est invalide'}).then()
             return false;
         }
-        if (!this.props.values.city.match(/^[a-zA-Z]+$/)) {
-            alert("Nom de ville est invalide")
+        if (!city.match(/^[a-zA-Z]+$/)) {
+            toastErr.fire({title: 'Nom de ville est invalide'}).then()
             return false;
         }
-        if (!regexCodePostal.test(this.props.values.codePostal)) {
-            alert("Code postal est invalide")
+        if (!regexCodePostal.test(postalCode)) {
+            toastErr.fire({title: 'Code postal est invalide'}).then()
             return false;
         }
         return true;
     }
 
-    render() {
-        return (<div>
-            <div className="form-group row">
-                <div className="col-md-6">
-                    <label>Nom de la compagnie</label>
-                    <div className="input-group">
-                        <input name="companyName" placeholder="Nom de compagnie" className="form-control"
-                               type="text"
-                               value={this.props.values.companyName}
-                               onChange={this.props.handleChange('companyName')}/>
-                    </div>
-                </div>
-                <div className="col-md-6">
-                    <label>Ville</label>
-                    <div>
-                        <div className="input-group">
-                            <input name="city" placeholder="Ville" className="form-control" type="text"
-                                   value={this.props.values.city} onChange={this.props.handleChange('city')}/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="form-group">
-                <FieldAddress label="Adresse de la compagnie" address={this.props.values.address} handleChange={this.props.handleChange}/>
-            </div>
-            <div className="form-group">
-                <label>Code Postale</label>
+    return (<>
+        <div className="form-group row">
+            <div className="col-md-6">
+                <label>Nom de la compagnie</label>
                 <div className="input-group">
-                    <input name="codePostal" placeholder="XXX 123" className="form-control" type="text"
-                           value={this.props.values.codePostal} onChange={this.props.handleChange('codePostal')}/>
+                    <input name="companyName" placeholder="Nom de compagnie" className="form-control"
+                           type="text"
+                           value={companyName} onChange={handleChange}/>
                 </div>
             </div>
-            <div className="form-group text-center">
-                <label/>
+            <div className="col-md-6">
+                <label>Ville</label>
                 <div>
-                    <button className="btn btn-primary" type={"button"} onClick={this.previous}>Précédent
-                    </button>
-                    <button className="btn btn-primary" type={"button"} onClick={() => {
-                        if (this.verification()) this.continue(Step.GENERAL)
-                    }}>Suivant
-                    </button>
+                    <div className="input-group">
+                        <input name="city" placeholder="Ville" className="form-control" type="text"
+                               value={city} onChange={handleChange}/>
+                    </div>
                 </div>
             </div>
-        </div>)
-    }
+        </div>
+        <div className="form-group">
+            <FieldAddress label="Adresse de la compagnie" address={address} handleChange={handleChange}/>
+        </div>
+        <div className="form-group">
+            <label>Code Postale</label>
+            <div className="input-group">
+                <input name="postalCode" placeholder="XXX 123" className="form-control" type="text"
+                       value={postalCode} onChange={handleChange}/>
+            </div>
+        </div>
+        <div className="form-group text-center">
+            <label/>
+            <div>
+                <button className="btn btn-primary" type={"button"} onClick={prevStep}>Précédent
+                </button>
+                <button className="btn btn-primary" type={"button"} onClick={() => {
+                    if (verification(companyName, city, address, postalCode)) next(Step.GENERAL)
+                }}>Suivant
+                </button>
+            </div>
+        </div>
+    </>)
+
 }

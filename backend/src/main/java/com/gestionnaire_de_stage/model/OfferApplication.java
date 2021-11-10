@@ -1,19 +1,29 @@
 package com.gestionnaire_de_stage.model;
 
-import lombok.Data;
+import com.gestionnaire_de_stage.enums.Status;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class OfferApplication {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @ManyToOne
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @OneToOne
     private Offer offer;
 
-    @ManyToOne
+    @OneToOne
     private Curriculum curriculum;
+
+    private LocalDateTime interviewDate;
 }
+

@@ -90,11 +90,12 @@ public class StudentService {
         return student.getEmail() != null && studentRepository.existsByEmail(student.getEmail());
     }
 
-    private boolean isIDNotValid(Long id) {
+    public boolean isIDNotValid(Long id) {
         return !studentRepository.existsById(id);
     }
 
     private boolean isEmailAndPasswordValid(String email, String password) {
         return studentRepository.existsByEmailAndPassword(email, password);
     }
+
 }
