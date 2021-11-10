@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
+import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.StudentService;
 import org.junit.jupiter.api.Test;
@@ -137,6 +138,22 @@ public class StudentControllerTest {
         assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
     }
 
+    @Test
+    public void testSetPrincipalCurriculum_withValidEntries() throws Exception {
+        Student student = getDummyStudent();
+        Curriculum curriculum = getDummyCurriculum();
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/student/" + student.getId() + "/" + curriculum.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        Student actualStudent = MAPPER.readValue(response.getContentAsString(), Student.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualStudent.getLastName()).isEqualTo("Brawl");
+    }
+
 
     @Test
     public void testGetAllStudents() throws Exception {
@@ -183,5 +200,13 @@ public class StudentControllerTest {
         dummyStudent.setMatricule("1740934");
 
         return dummyStudent;
+    }
+
+    private Curriculum getDummyCurriculum() {
+        Curriculum curriculum = new Curriculum();
+        curriculum.setName("myFileeee");
+        curriculum.setType("pdf");
+        curriculum.setId(1L);
+        return curriculum;
     }
 }

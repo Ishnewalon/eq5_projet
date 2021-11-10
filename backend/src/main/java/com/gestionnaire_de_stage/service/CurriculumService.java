@@ -54,9 +54,7 @@ public class CurriculumService {
 
     public Curriculum create(Curriculum curriculum) throws IllegalArgumentException, IdDoesNotExistException {
         Assert.isTrue(curriculum != null, "Curriculum est null");
-        Curriculum updatedCurriculum = curriculumRepository.save(curriculum);
-        studentService.setPrincipalCurriculum(updatedCurriculum.getStudent(), updatedCurriculum.getId());
-        return updatedCurriculum;
+        return curriculumRepository.save(curriculum);
     }
 
     public Curriculum getOneByID(Long aLong) throws IdDoesNotExistException {
