@@ -2,14 +2,17 @@ import React from "react";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {Route, useRouteMatch} from "react-router-dom";
 import {useAuth} from "../../services/use-auth";
+import VisitForm from "./VisitForm/VisitForm";
 
 export default function SupervisorView() {
     const {path} = useRouteMatch();
     let auth = useAuth();
-    return (<ContainerBox>
-        <h2>Vous êtes connecté!</h2>
+    return <ContainerBox>
+        <Route exact= path={`${path}/form_visit_company`}>
+            <VisitForm/>
+        </Route>
         <Route exact path={`${path}`}>
             <h1 className="text-center">Bonjour {auth.user.firstName}!</h1>
         </Route>
-    </ContainerBox>);
+    </ContainerBox>;
 }

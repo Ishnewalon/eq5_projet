@@ -66,6 +66,7 @@ function NavItemSpecificForUser() {
         </ThisIsAListItem>
     if (auth.isSupervisor())
         return <ThisIsAListItem>
+            <Link to="/dashboard/form_visit_company">Formulaire de visite d'entreprise</Link>
         </ThisIsAListItem>
     return <></>
 }
