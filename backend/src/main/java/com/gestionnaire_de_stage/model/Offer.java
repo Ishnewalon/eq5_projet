@@ -8,13 +8,14 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Offer {//TODO : session
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Offer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,8 +66,10 @@ public class Offer {//TODO : session
     private String horaireTravail;
 
     private String nbHeureSemaine;
-    @OneToOne
+
+    @ManyToOne
     private Session session;
+
     @Transient
     public String creatorEmail() {
         if (creator == null)

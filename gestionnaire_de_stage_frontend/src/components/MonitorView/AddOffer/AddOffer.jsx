@@ -1,10 +1,12 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import FieldAddress from "../../SharedComponents/Fields/FieldAddress";
 import {createOffer} from "../../../services/offer-service";
 import {DepartmentEnum} from "../../../enums/Departement";
 import OfferDTO from "../../../models/OfferDTO";
 import {useAuth} from "../../../services/use-auth";
 import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
+import {getCurrentAndFutureSession} from "../../../services/session-service";
+import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 
 
 export default function AddOffer() {//TODO select session
@@ -15,18 +17,25 @@ export default function AddOffer() {//TODO select session
     const [address, setAddress] = useState('')
     const [salary, setSalary] = useState(0)
     const [creator_email, setCreatorId] = useState(auth.isMonitor() ? auth.user.email : '')
+    const [session_id, setSessionId] = useState(null)
+    const [sessions, setSessions] = useState([])
 
     const resetFields = () => {
-        setTitle()
+        setTitle('')
         setDescription('')
         setDepartement(DepartmentEnum.info)
         setAddress('')
         setSalary(0)
         setCreatorId(auth.isMonitor() ? auth.user.email : '')
     };
+    useEffect(()=>{
+        getCurrentAndFutureSession().then(res => {
+            setSessions(res)
+        })
+    }, [])
 
     const addOffer = () => {
-        let offer = new OfferDTO(title, department, description, address, salary, creator_email)
+        let offer = new OfferDTO(title, department, description, address, salary, creator_email, session_id)
         createOffer(offer).then((b) => {
             if (b === null)
                 return
@@ -64,6 +73,19 @@ export default function AddOffer() {//TODO select session
                 </InputGroup>
             </div>
         </div>
+        <FormGroup>
+            <>
+                <label className="label">Session</label>
+                <InputGroup>
+                    <select name="sessions" id="session"
+                            onChange={(e) => setSessionId(e.target.value)}>
+                        <option selected disabled>Choisisez une session</option>
+                        {sessions.map(session => <option
+                            value={session.id}>{session.typeSession + session.year}</option>)}
+                    </select>
+                </InputGroup>
+            </>
+        </FormGroup>
         <div className="form-group">
             <label className="label">Description</label>
             <InputGroup>
