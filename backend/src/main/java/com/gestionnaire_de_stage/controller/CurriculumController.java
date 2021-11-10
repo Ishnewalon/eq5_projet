@@ -84,7 +84,6 @@ public class CurriculumController {
 
     @GetMapping({"/download", "/download/{idCurriculum}"})//FIXME: Handle differently the url
     public ResponseEntity<?> downloadById(@PathVariable(required = false) Long idCurriculum) {
-        System.out.println(idCurriculum);
         Curriculum oneById;
         try {
             oneById = curriculumService.findOneById(idCurriculum);
