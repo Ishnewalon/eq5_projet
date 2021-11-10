@@ -10,12 +10,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.Year;
+import java.time.ZoneId;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,6 +30,11 @@ public class SessionServiceTest {
 
     @Mock
     private SessionRepository sessionRepository;
+    @Mock
+    private Clock clock;
+
+    private Clock fixedClock;
+
 
     @Test
     public void testCreateSession() throws Exception {
@@ -61,5 +70,54 @@ public class SessionServiceTest {
 
         assertThrows(IllegalArgumentException.class,
                 () -> sessionService.createSession(session), "L'année est obligatoire");
+    }
+
+    @Test
+    public void testGetActualAndFutureSessions() {
+        List<Session> dummySessions = getDummySessions();
+
+        fixedClock = Clock.fixed(LocalDate.of(2020, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+        when(sessionRepository.findAllByYearGreaterThanEqual(any())).thenReturn(dummySessions);
+
+        List<Session> actualAndFutureSessions = sessionService.getActualAndFutureSessions();
+
+        assertThat(actualAndFutureSessions).containsAll(dummySessions);
+    }
+
+    @Test
+    public void testGetActualAndFutureSessions_withoutWinterSessionOfCurrentYear() {
+        List<Session> dummySessions = getDummySessions();
+        fixedClock = Clock.fixed(LocalDate.of(2021, 6, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+        when(sessionRepository.findAllByYearGreaterThanEqual(any())).thenReturn(dummySessions);
+
+        List<Session> actualAndFutureSessions = sessionService.getActualAndFutureSessions();
+
+        assertThat(actualAndFutureSessions).containsExactlyInAnyOrder(dummySessions.get(1), dummySessions.get(2), dummySessions.get(3), dummySessions.get(4));
+    }
+
+    @Test
+    public void testGetActualAndFutureSessions_getOnlyFutureSessions() {
+        List<Session> dummySessions = getDummySessions();
+        fixedClock = Clock.fixed(LocalDate.of(2021, 10, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+        when(sessionRepository.findAllByYearGreaterThanEqual(any())).thenReturn(dummySessions);
+
+        List<Session> actualAndFutureSessions = sessionService.getActualAndFutureSessions();
+
+        assertThat(actualAndFutureSessions).containsAll(dummySessions);
+    }
+
+    private List<Session> getDummySessions() {
+        return List.of(
+                new Session(1L, TypeSession.HIVER, Year.of(2021)),
+                new Session(2L, TypeSession.ETE, Year.of(2021)),
+                new Session(3L, TypeSession.HIVER, Year.of(2022)),
+                new Session(4L, TypeSession.ETE, Year.of(2022)),
+                new Session(5L, TypeSession.HIVER, Year.of(2023)));
     }
 }

@@ -1,9 +1,11 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gestionnaire_de_stage.enums.TypeSession;
 import com.gestionnaire_de_stage.exception.SessionAlreadyExistException;
+import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.Session;
 import com.gestionnaire_de_stage.service.SessionService;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.time.Year;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -56,7 +59,7 @@ public class SessionControllerTest {
     @Test
     public void testCreateSession_whenSessionAlreadyExist() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
-        Session session = new Session(1L, TypeSession.HIVER,Year.now());
+        Session session = new Session(1L, TypeSession.HIVER, Year.now());
         when(sessionService.createSession(any())).thenThrow(new SessionAlreadyExistException("Une Session existe déjà!"));
 
         MvcResult mvcResult = mockMvc.perform(
@@ -105,4 +108,22 @@ public class SessionControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("L'année est obligatoire");
     }
+    @Test
+    public void testGetActualAndFutureSessions() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
+        List<Session> sessions = List.of(new Session(1L, TypeSession.HIVER, Year.of(2022)), new Session(2L, TypeSession.ETE, Year.of(2022)), new Session(3L, TypeSession.ETE, Year.of(2023)));
+        when(sessionService.getActualAndFutureSessions()).thenReturn(sessions);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/sessions")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        List<Session> returnedSessions = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(returnedSessions).isEqualTo(sessions);
+    }
+
 }

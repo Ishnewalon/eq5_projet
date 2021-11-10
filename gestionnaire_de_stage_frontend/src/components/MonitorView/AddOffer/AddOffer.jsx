@@ -7,7 +7,7 @@ import {useAuth} from "../../../services/use-auth";
 import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
 
 
-export default function AddOffer() {
+export default function AddOffer() {//TODO select session
     let auth = useAuth();
     const [title, setTitle] = useState('')
     const [department, setDepartement] = useState(DepartmentEnum.info)

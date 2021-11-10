@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Year;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -24,5 +25,18 @@ public class Session {
     @Enumerated(EnumType.STRING)
     private TypeSession typeSession;
     private Year year;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Session)) return false;
+        Session session = (Session) o;
+        return Objects.equals(getId(), session.getId()) && getTypeSession() == session.getTypeSession() && Objects.equals(getYear(), session.getYear());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getTypeSession(), getYear());
+    }
 }
 
