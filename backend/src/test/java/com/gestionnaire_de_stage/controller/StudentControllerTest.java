@@ -2,7 +2,9 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.exception.CurriculumNotValidException;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
@@ -24,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -142,18 +145,68 @@ public class StudentControllerTest {
     public void testSetPrincipalCurriculum_withValidEntries() throws Exception {
         Student student = getDummyStudent();
         Curriculum curriculum = getDummyCurriculum();
+        when(studentService.getOneByID(any())).thenReturn(student);
+        student.setPrincipalCurriculum(curriculum);
+        when(studentService.setPrincipalCurriculum(any(), any())).thenReturn(student);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/student/" + student.getId() + "/" + curriculum.getId())
+                MockMvcRequestBuilders.get("/student/setprincipal/" + student.getId() + "/" + curriculum.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        Student actualStudent = MAPPER.readValue(response.getContentAsString(), Student.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualStudent.getLastName()).isEqualTo("Brawl");
+        assertThat(response.getContentAsString()).contains("changer");
     }
 
+    @Test
+    void testSetPrincipalCurriculum_withNullEntries() throws Exception {
+        Student student = getDummyStudent();
+        Curriculum curriculum = getDummyCurriculum();
+        when(studentService.getOneByID(any())).thenThrow(new IllegalArgumentException("ID est null"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/student/setprincipal/" + student.getId() + "/" + curriculum.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("null");
+    }
+
+    @Test
+    void testSetPrincipalCurriculum_withEntriesNotExists() throws Exception {
+        Student student = getDummyStudent();
+        Curriculum curriculum = getDummyCurriculum();
+        when(studentService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/student/setprincipal/" + student.getId() + "/" + curriculum.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Les IDs ne peuvent pas être null");
+    }
+
+    @Test
+    void testSetPrincipalCurriculum_CurriculumInvalid() throws Exception {
+        Student student = getDummyStudent();
+        Curriculum curriculum = getDummyCurriculum();
+        when(studentService.getOneByID(any())).thenReturn(student);
+        when(studentService.setPrincipalCurriculum(any(), any())).thenThrow(CurriculumNotValidException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/student/setprincipal/" + student.getId() + "/" + curriculum.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Le curriculum doit etre valide");
+    }
 
     @Test
     public void testGetAllStudents() throws Exception {

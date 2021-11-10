@@ -58,16 +58,25 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("/{studentID}/{curriculumID}")
+    @GetMapping("/setprincipal/{studentID}/{curriculumID}")
     public ResponseEntity<?> setPrincipalCurriculum(@PathVariable long studentID, @PathVariable long curriculumID) {
         try {
             Student student = studentService.getOneByID(studentID);
-            student = studentService.setPrincipalCurriculum(student, curriculumID);
-            return ResponseEntity.ok(student);
-        } catch (IdDoesNotExistException | CurriculumNotValidException e) {
-            e.printStackTrace();
+            studentService.setPrincipalCurriculum(student, curriculumID);
+            return ResponseEntity.ok(new ResponseMessage("CV principal changer"));
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Les IDs ne peuvent pas être null"));
+        } catch (CurriculumNotValidException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Le curriculum doit etre valide"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
         }
-        return null;
     }
 
     @GetMapping
