@@ -14,8 +14,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.Year;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +25,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,6 +42,11 @@ public class OfferServiceTest {
 
     @Mock
     private SessionService sessionService;
+
+    @Mock
+    private Clock clock;
+
+    private Clock fixedClock;
 
     @Test
     public void testMapToOffer_withNullDto() {
@@ -181,6 +189,9 @@ public class OfferServiceTest {
     @Test
     public void testGetOffersByDepartment_withNoOffer() {
         String department = "myDepartmentWithNoOffer";
+        fixedClock = Clock.fixed(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
 
         List<Offer> actualOfferDtoList = offerService.getOffersByDepartment(department);
 
@@ -189,13 +200,44 @@ public class OfferServiceTest {
 
     @Test
     public void testGetOffersByDepartment() {
-        List<Offer> dummyOfferList = getDummyOfferList();
-        when(offerRepository.findAllByDepartmentIgnoreCaseAndValidIsTrue(any())).thenReturn(dummyOfferList);
+        List<Offer> dummyOfferList = getDummyOfferWithDifferentSession();
+        fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+        when(offerRepository.findAllByDepartmentIgnoreCaseAndValidIsTrueAndSession_YearGreaterThanEqual(any(),any())).thenReturn(dummyOfferList);
 
         List<Offer> actualOfferDtoList = offerService.getOffersByDepartment("Un departement");
 
         assertThat(actualOfferDtoList).isEqualTo(dummyOfferList);
     }
+    @Test
+    public void testGetOffersByDepartment_forNextYear() {
+        List<Offer> dummyOfferList = getDummyOfferWithDifferentSession();
+        fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 10, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+        when(offerRepository.findAllByDepartmentIgnoreCaseAndValidIsTrueAndSession_YearGreaterThanEqual(any(),any())).thenReturn(dummyOfferList);
+
+        List<Offer> actualOfferDtoList = offerService.getOffersByDepartment("Un departement");
+
+        assertThat(actualOfferDtoList).isEqualTo(dummyOfferList);
+    }
+    @Test
+    public void testGetOffersByDepartment_SummerAndFuture() {
+        List<Offer> dummyOfferList = getDummyOfferWithDifferentSession();
+        System.out.println(dummyOfferList.size());
+        fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 6, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+        when(offerRepository.findAllByDepartmentIgnoreCaseAndValidIsTrueAndSession_YearGreaterThanEqual(any(),any())).thenReturn(dummyOfferList);
+
+        List<Offer> actualOfferDtoList = offerService.getOffersByDepartment("Un departement");
+
+        System.out.println(actualOfferDtoList.size());
+        assertThat(actualOfferDtoList).containsExactlyInAnyOrder(dummyOfferList.get(0), dummyOfferList.get(1), dummyOfferList.get(2), dummyOfferList.get(3));
+    }
+
+
 
     @Test
     public void testGetOffersByDepartment_withNullDepartment() {
@@ -274,7 +316,19 @@ public class OfferServiceTest {
         dummyMonitor.setPassword("testPassword");
         return dummyMonitor;
     }
+    private List<Offer> getDummyOfferWithDifferentSession() {
+        List<Offer> dummyOfferList = getDummyOfferList();
 
+        Offer dummyOffer = getDummyOffer();
+        dummyOffer.getSession().setYear(Year.now().plusYears(1));
+        dummyOfferList.add(dummyOffer);
+
+        Offer dummyOffer2 = getDummyOffer();
+        dummyOffer2.getSession().setTypeSession(TypeSession.HIVER);
+        dummyOfferList.add(dummyOffer2);
+
+        return dummyOfferList;
+    }
     private OfferDTO getDummyOfferDto() {
         OfferDTO dummyOfferDTO = new OfferDTO();
         dummyOfferDTO.setCreator_email("thisemail@email.com");

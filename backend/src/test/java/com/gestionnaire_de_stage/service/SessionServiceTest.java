@@ -77,7 +77,7 @@ public class SessionServiceTest {
     public void testGetActualAndFutureSessions() {
         List<Session> dummySessions = getDummySessions();
 
-        fixedClock = Clock.fixed(LocalDate.of(2020, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
         doReturn(fixedClock.instant()).when(clock).instant();
         doReturn(fixedClock.getZone()).when(clock).getZone();
         when(sessionRepository.findAllByYearGreaterThanEqual(any())).thenReturn(dummySessions);
@@ -90,7 +90,7 @@ public class SessionServiceTest {
     @Test
     public void testGetActualAndFutureSessions_withoutWinterSessionOfCurrentYear() {
         List<Session> dummySessions = getDummySessions();
-        fixedClock = Clock.fixed(LocalDate.of(2021, 6, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 6, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
         doReturn(fixedClock.instant()).when(clock).instant();
         doReturn(fixedClock.getZone()).when(clock).getZone();
         when(sessionRepository.findAllByYearGreaterThanEqual(any())).thenReturn(dummySessions);
@@ -103,7 +103,7 @@ public class SessionServiceTest {
     @Test
     public void testGetActualAndFutureSessions_getOnlyFutureSessions() {
         List<Session> dummySessions = getDummySessions();
-        fixedClock = Clock.fixed(LocalDate.of(2021, 10, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 10, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
         doReturn(fixedClock.instant()).when(clock).instant();
         doReturn(fixedClock.getZone()).when(clock).getZone();
         when(sessionRepository.findAllByYearGreaterThanEqual(any())).thenReturn(dummySessions);
@@ -123,20 +123,21 @@ public class SessionServiceTest {
 
         assertThat(sessionFound).isEqualTo(session);
     }
+
     @Test
     void testGetOneBySessionId_whenSessionNonExistent() {
         when(sessionRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-                ()->sessionService.getOneBySessionId(1L));
+                () -> sessionService.getOneBySessionId(1L));
     }
 
     private List<Session> getDummySessions() {
         return List.of(
-                new Session(1L, TypeSession.HIVER, Year.of(2021)),
-                new Session(2L, TypeSession.ETE, Year.of(2021)),
-                new Session(3L, TypeSession.HIVER, Year.of(2022)),
-                new Session(4L, TypeSession.ETE, Year.of(2022)),
-                new Session(5L, TypeSession.HIVER, Year.of(2023)));
+                new Session(1L, TypeSession.HIVER, Year.now()),
+                new Session(2L, TypeSession.ETE, Year.now()),
+                new Session(3L, TypeSession.HIVER, Year.now().plusYears(1)),
+                new Session(4L, TypeSession.ETE, Year.now().plusYears(1)),
+                new Session(5L, TypeSession.HIVER, Year.now().plusYears(2)));
     }
 }

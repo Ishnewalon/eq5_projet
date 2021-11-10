@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ValidationOffer;
+import com.gestionnaire_de_stage.enums.TypeSession;
 import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
@@ -12,7 +13,10 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.time.Duration;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,11 +27,13 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final MonitorService monitorService;
     private final SessionService sessionService;
+    private final Clock clock;
 
-    public OfferService(OfferRepository offerRepository, MonitorService monitorService, SessionService sessionService) {
+    public OfferService(OfferRepository offerRepository, MonitorService monitorService, SessionService sessionService, Clock clock) {
         this.offerRepository = offerRepository;
         this.monitorService = monitorService;
         this.sessionService = sessionService;
+        this.clock = clock;
     }
 
     public Offer mapToOffer(OfferDTO dto) {
@@ -82,7 +88,21 @@ public class OfferService {
 
     public List<Offer> getOffersByDepartment(String department) throws IllegalArgumentException {
         Assert.isTrue(department != null, "Le département est null ou vide");
-        return offerRepository.findAllByDepartmentIgnoreCaseAndValidIsTrue(department);
+        int monthValue = LocalDate.now(clock).getMonthValue();
+
+        if (monthValue >= Month.SEPTEMBER.getValue())
+            return offerRepository.findAllByDepartmentIgnoreCaseAndValidIsTrueAndSession_YearGreaterThanEqual(department, Year.now().plusYears(1));
+
+        List<Offer> offers = offerRepository.findAllByDepartmentIgnoreCaseAndValidIsTrueAndSession_YearGreaterThanEqual(department, Year.now());
+
+        if (monthValue >= Month.MAY.getValue())
+            removeOffersOfWinter(offers);
+
+        return offers;
+    }
+
+    private void removeOffersOfWinter(List<Offer> offers) {
+        offers.removeIf(offer -> offer.getSession().getYear().equals(Year.now(clock)) && offer.getSession().getTypeSession() == TypeSession.HIVER);
     }
 
     public Optional<Offer> findOfferById(Long idOffer) {
