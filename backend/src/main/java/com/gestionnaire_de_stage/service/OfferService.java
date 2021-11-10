@@ -71,7 +71,7 @@ public class OfferService {
         return offers.stream().map(this::mapToOfferDTO).collect(Collectors.toList());
     }
 
-    public Offer create(OfferDTO offerDto) throws IllegalArgumentException, OfferAlreadyExistsException, EmailDoesNotExistException, SessionDoesNotExistException, IdDoesNotExistException {
+    public Offer create(OfferDTO offerDto) throws IllegalArgumentException, OfferAlreadyExistsException, EmailDoesNotExistException, IdDoesNotExistException {
         Assert.isTrue(offerDto != null, "Offre est null");
         Offer offer = mapToOffer(offerDto);
         if (offerRepository.findOne(Example.of(offer)).isPresent())
@@ -110,7 +110,17 @@ public class OfferService {
     }
 
     public List<Offer> getValidOffers() {
-        return offerRepository.findAllByValid(true);
+        int monthValue = LocalDate.now(clock).getMonthValue();
+
+        if (monthValue >= Month.SEPTEMBER.getValue())
+            return offerRepository.findAllByValidAndSession_YearGreaterThanEqual(true, Year.now().plusYears(1));
+
+        List<Offer> offers = offerRepository.findAllByValidAndSession_YearGreaterThanEqual(true, Year.now());
+
+        if (monthValue >= Month.MAY.getValue())
+            removeOffersOfWinter(offers);
+
+        return offers;
     }
 
     public List<Offer> getNotValidatedOffers() {

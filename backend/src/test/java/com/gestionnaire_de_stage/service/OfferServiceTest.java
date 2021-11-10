@@ -103,7 +103,7 @@ public class OfferServiceTest {
     }
 
     @Test
-    public void testCreateOffer_withValidOffer() throws OfferAlreadyExistsException, EmailDoesNotExistException, SessionDoesNotExistException, IdDoesNotExistException {
+    public void testCreateOffer_withValidOffer() throws OfferAlreadyExistsException, EmailDoesNotExistException, IdDoesNotExistException {
 
         Offer dummyOffer = getDummyOffer();
         when(offerRepository.save(any())).thenReturn(dummyOffer);
@@ -225,7 +225,6 @@ public class OfferServiceTest {
     @Test
     public void testGetOffersByDepartment_SummerAndFuture() {
         List<Offer> dummyOfferList = getDummyOfferWithDifferentSession();
-        System.out.println(dummyOfferList.size());
         fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 6, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
         doReturn(fixedClock.instant()).when(clock).instant();
         doReturn(fixedClock.getZone()).when(clock).getZone();
@@ -233,7 +232,6 @@ public class OfferServiceTest {
 
         List<Offer> actualOfferDtoList = offerService.getOffersByDepartment("Un departement");
 
-        System.out.println(actualOfferDtoList.size());
         assertThat(actualOfferDtoList).containsExactlyInAnyOrder(dummyOfferList.get(0), dummyOfferList.get(1), dummyOfferList.get(2), dummyOfferList.get(3));
     }
 
@@ -241,8 +239,6 @@ public class OfferServiceTest {
 
     @Test
     public void testGetOffersByDepartment_withNullDepartment() {
-        List<Offer> dummyOfferList = getDummyOfferList();
-
         assertThrows(IllegalArgumentException.class,
                 () -> offerService.getOffersByDepartment(null));
     }
@@ -260,12 +256,39 @@ public class OfferServiceTest {
 
     @Test
     void testGetValidOffers() {
-        List<Offer> dummyArrayOffer = getDummyArrayOffer();
-        when(offerRepository.findAllByValid(any())).thenReturn(dummyArrayOffer);
+        List<Offer> dummyArrayOffer = getDummyOfferWithDifferentSession();
+        fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+        when(offerRepository.findAllByValidAndSession_YearGreaterThanEqual(any(),any())).thenReturn(dummyArrayOffer);
 
         List<Offer> returnedOffers = offerService.getValidOffers();
 
         assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
+    }
+    @Test
+    void testGetValidOffers_forNextYear() {
+        List<Offer> dummyArrayOffer = getDummyOfferWithDifferentSession();
+        fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 10, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+        when(offerRepository.findAllByValidAndSession_YearGreaterThanEqual(any(),any())).thenReturn(dummyArrayOffer);
+
+        List<Offer> returnedOffers = offerService.getValidOffers();
+
+        assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
+    }
+    @Test
+    void testGetValidOffers_SummerAndFuture() {
+        List<Offer> dummyArrayOffer = getDummyOfferWithDifferentSession();
+        fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 6, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+        when(offerRepository.findAllByValidAndSession_YearGreaterThanEqual(any(),any())).thenReturn(dummyArrayOffer);
+
+        List<Offer> returnedOffers = offerService.getValidOffers();
+
+        assertThat(returnedOffers).containsExactlyInAnyOrder(dummyArrayOffer.get(0), dummyArrayOffer.get(1), dummyArrayOffer.get(2), dummyArrayOffer.get(3));
     }
 
     @Test

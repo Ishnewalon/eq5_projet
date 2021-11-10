@@ -11,7 +11,7 @@ import java.util.List;
 public interface OfferRepository extends JpaRepository<Offer, Long> {
     List<Offer> findAllByDepartmentIgnoreCaseAndValidIsTrueAndSession_YearGreaterThanEqual(String department, Year year);
 
-    List<Offer> findAllByValid(Boolean valid);
+    List<Offer> findAllByValidAndSession_YearGreaterThanEqual(Boolean valid, Year year);
 
     List<Offer> findAllByValidNull();
 

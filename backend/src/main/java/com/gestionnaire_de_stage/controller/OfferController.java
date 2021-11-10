@@ -29,7 +29,7 @@ public class OfferController {
         Offer offer;
         try {
             offer = offerService.create(dto);
-        } catch (IllegalArgumentException | SessionDoesNotExistException ie) {
+        } catch (IllegalArgumentException ie) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(ie.getMessage()));
