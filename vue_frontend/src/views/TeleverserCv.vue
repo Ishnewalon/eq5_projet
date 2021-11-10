@@ -32,7 +32,6 @@ export default {
   },
   methods: {
     dragAndDropResume: function (event) {
-      alert('drag');
       this.cv = event.dataTransfer.files[0];
     },
     setFile: function (event) {
