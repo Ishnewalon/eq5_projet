@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.enums.TypeSession;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SessionAlreadyExistException;
 import com.gestionnaire_de_stage.model.Session;
 import com.gestionnaire_de_stage.repository.SessionRepository;
@@ -110,6 +111,24 @@ public class SessionServiceTest {
         List<Session> actualAndFutureSessions = sessionService.getActualAndFutureSessions();
 
         assertThat(actualAndFutureSessions).containsAll(dummySessions);
+    }
+
+    @Test
+    void testGetOneBySessionId() throws IdDoesNotExistException {
+        Session session = new Session(1L, TypeSession.HIVER, Year.now());
+        when(sessionRepository.existsById(any())).thenReturn(true);
+        when(sessionRepository.getById(any())).thenReturn(session);
+
+        Session sessionFound = sessionService.getOneBySessionId(session.getId());
+
+        assertThat(sessionFound).isEqualTo(session);
+    }
+    @Test
+    void testGetOneBySessionId_whenSessionNonExistent() {
+        when(sessionRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class,
+                ()->sessionService.getOneBySessionId(1L));
     }
 
     private List<Session> getDummySessions() {

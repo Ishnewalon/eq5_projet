@@ -95,13 +95,13 @@ public class OfferServiceTest {
     }
 
     @Test
-    public void testCreateOffer_withValidOffer() throws OfferAlreadyExistsException, EmailDoesNotExistException, SessionDoesNotExistException {
+    public void testCreateOffer_withValidOffer() throws OfferAlreadyExistsException, EmailDoesNotExistException, SessionDoesNotExistException, IdDoesNotExistException {
 
         Offer dummyOffer = getDummyOffer();
-        dummyOffer.setId(null);
-        when(offerRepository.save(any())).thenReturn(getDummyOffer());
+        when(offerRepository.save(any())).thenReturn(dummyOffer);
         when(offerRepository.findOne(any())).thenReturn(Optional.empty());
         when(monitorService.getOneByEmail(any())).thenReturn(getDummyMonitor());
+        when(sessionService.getOneBySessionId(any())).thenReturn(dummyOffer.getSession());
         Offer actualOffer = offerService.create(getDummyOfferDto());
 
         assertThat(actualOffer).isNotNull();
@@ -259,6 +259,7 @@ public class OfferServiceTest {
         dummyOffer.setTitle("oeinoiendw");
         dummyOffer.setDateDebut(LocalDate.now());
         dummyOffer.setDateFin(LocalDate.now().plusMonths(1));
+        dummyOffer.setSession(getDummySession());
         return dummyOffer;
     }
 
@@ -284,6 +285,7 @@ public class OfferServiceTest {
         dummyOfferDTO.setDepartment("Department name");
         dummyOfferDTO.setDateDebut(LocalDate.now());
         dummyOfferDTO.setDateFin(LocalDate.now().plusMonths(1));
+        dummyOfferDTO.setIdSession(1L);
         return dummyOfferDTO;
     }
 

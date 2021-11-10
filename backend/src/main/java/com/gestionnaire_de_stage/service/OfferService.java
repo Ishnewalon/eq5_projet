@@ -65,7 +65,7 @@ public class OfferService {
         return offers.stream().map(this::mapToOfferDTO).collect(Collectors.toList());
     }
 
-    public Offer create(OfferDTO offerDto) throws IllegalArgumentException, OfferAlreadyExistsException, EmailDoesNotExistException, SessionDoesNotExistException {
+    public Offer create(OfferDTO offerDto) throws IllegalArgumentException, OfferAlreadyExistsException, EmailDoesNotExistException, SessionDoesNotExistException, IdDoesNotExistException {
         Assert.isTrue(offerDto != null, "Offre est null");
         Offer offer = mapToOffer(offerDto);
         if (offerRepository.findOne(Example.of(offer)).isPresent())
@@ -73,6 +73,10 @@ public class OfferService {
 
         Monitor monitor = monitorService.getOneByEmail(offerDto.getCreator_email());
         offer.setCreator(monitor);
+
+        Session session = sessionService.getOneBySessionId(offerDto.getIdSession());
+        offer.setSession(session);
+
         return offerRepository.save(offer);
     }
 

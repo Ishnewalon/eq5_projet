@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.enums.TypeSession;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SessionAlreadyExistException;
 import com.gestionnaire_de_stage.model.Session;
 import com.gestionnaire_de_stage.repository.SessionRepository;
@@ -51,5 +52,12 @@ public class SessionService {
         return sessions.stream()
                 .filter(session -> !(session.getTypeSession() == TypeSession.HIVER && session.getYear().equals(Year.now())))
                 .collect(Collectors.toList());
+    }
+
+    public Session getOneBySessionId(Long idSession) throws IdDoesNotExistException {
+        Assert.isTrue(idSession != null, "L'id de la session est obligatoire");
+        if (!sessionRepository.existsById(idSession))
+            throw new IdDoesNotExistException();
+        return sessionRepository.getById(idSession);
     }
 }
