@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
+import java.time.Year;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,9 +38,7 @@ public class SessionControllerTest {
     @Test
     public void testCreateSession() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
-        LocalDate dateDebut = LocalDate.now().minusDays(1);
-        LocalDate dateFin = LocalDate.now().plusDays(1);
-        Session session = new Session(1L, TypeSession.HIVER, dateDebut, dateFin);
+        Session session = new Session(1L, TypeSession.HIVER, Year.now());
         when(sessionService.createSession(any())).thenReturn(session);
 
         MvcResult mvcResult = mockMvc.perform(
@@ -57,9 +56,7 @@ public class SessionControllerTest {
     @Test
     public void testCreateSession_whenSessionAlreadyExist() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
-        LocalDate dateDebut = LocalDate.now().minusDays(1);
-        LocalDate dateFin = LocalDate.now().plusDays(1);
-        Session session = new Session(1L, TypeSession.HIVER, dateDebut, dateFin);
+        Session session = new Session(1L, TypeSession.HIVER,Year.now());
         when(sessionService.createSession(any())).thenThrow(new SessionAlreadyExistException("Une Session existe déjà!"));
 
         MvcResult mvcResult = mockMvc.perform(
@@ -76,9 +73,7 @@ public class SessionControllerTest {
     @Test
     public void testCreateSession_withTypeSessionNull() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
-        LocalDate dateDebut = LocalDate.now().minusDays(1);
-        LocalDate dateFin = LocalDate.now().plusDays(1);
-        Session session = new Session(1L, null, dateDebut, dateFin);
+        Session session = new Session(1L, null, Year.now());
         when(sessionService.createSession(any())).thenThrow(new IllegalArgumentException("Le type de session est obligatoire"));
 
         MvcResult mvcResult = mockMvc.perform(
@@ -92,30 +87,13 @@ public class SessionControllerTest {
         assertThat(response.getContentAsString()).contains("Le type de session est obligatoire");
     }
 
-    @Test
-    public void testCreateSession_withDateDebutNull() throws Exception {
-        MAPPER.registerModule(new JavaTimeModule());
-        LocalDate dateFin = LocalDate.now().plusDays(1);
-        Session session = new Session(1L, TypeSession.ETE, null, dateFin);
-        when(sessionService.createSession(any())).thenThrow(new IllegalArgumentException("La date de début est obligatoire"));
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/sessions")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(MAPPER.writeValueAsString(session)))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("La date de début est obligatoire");
-    }
 
     @Test
-    public void testCreateSession_withDateFinNull() throws Exception {
+    public void testCreateSession_withYearNull() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
         LocalDate dateDebut = LocalDate.now().plusDays(1);
-        Session session = new Session(1L, TypeSession.ETE, dateDebut, null);
-        when(sessionService.createSession(any())).thenThrow(new IllegalArgumentException("La date de fin est obligatoire"));
+        Session session = new Session(1L, TypeSession.ETE, null);
+        when(sessionService.createSession(any())).thenThrow(new IllegalArgumentException("L'année est obligatoire"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/sessions")
@@ -125,6 +103,6 @@ public class SessionControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("La date de fin est obligatoire");
+        assertThat(response.getContentAsString()).contains("L'année est obligatoire");
     }
 }

@@ -1,10 +1,15 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.SessionAlreadyExistException;
+import com.gestionnaire_de_stage.exception.SessionDoesNotExistException;
 import com.gestionnaire_de_stage.model.Session;
 import com.gestionnaire_de_stage.repository.SessionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
+import java.time.LocalDate;
+import java.time.Year;
+import java.util.List;
 
 @Service
 public class SessionService {
@@ -17,10 +22,8 @@ public class SessionService {
 
     public Session createSession(Session session) throws Exception {
         Assert.isTrue(session.getTypeSession() != null, "Le type de session est obligatoire");
-        Assert.isTrue(session.getDateDebut() != null, "La date de début est obligatoire");
-        Assert.isTrue(session.getDateFin() != null, "La date de fin est obligatoire");
-        Assert.isTrue(session.getDateDebut().isBefore(session.getDateFin()), "La date de début doit être antérieure à la date de fin");
-        if (sessionRepository.existsByDateDebutBetweenOrDateFinBetween(session.getDateDebut(), session.getDateFin(), session.getDateDebut(), session.getDateFin()))
+        Assert.isTrue(session.getYear() != null, "L'année est obligatoire");
+        if (sessionRepository.existsByTypeSessionAndYear(session.getTypeSession(), session.getYear()))
             throw new SessionAlreadyExistException("Une Session existe déjà!");
 
         session.setId(null);

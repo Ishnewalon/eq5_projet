@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.time.Year;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -28,10 +29,8 @@ public class SessionServiceTest {
 
     @Test
     public void testCreateSession() throws Exception {
-        LocalDate dateDebut = LocalDate.now().minusDays(1);
-        LocalDate dateFin = LocalDate.now().plusDays(1);
-        Session session = new Session(1L, TypeSession.HIVER, dateDebut, dateFin);
-        when(sessionRepository.existsByDateDebutBetweenOrDateFinBetween(any(), any(), any(), any())).thenReturn(false);
+        Session session = new Session(1L, TypeSession.HIVER, Year.now());
+        when(sessionRepository.existsByTypeSessionAndYear(any(), any())).thenReturn(false);
         when(sessionRepository.save(any())).thenReturn(session);
 
         Session sessionCreated = sessionService.createSession(session);
@@ -41,8 +40,8 @@ public class SessionServiceTest {
 
     @Test
     public void testCreateSession_whenSessionAlreadyExist() {
-        Session session = new Session(1L, TypeSession.HIVER, LocalDate.now(), LocalDate.now().plusDays(1));
-        when(sessionRepository.existsByDateDebutBetweenOrDateFinBetween(any(), any(), any(), any())).thenReturn(true);
+        Session session = new Session(1L, TypeSession.HIVER, Year.now());
+        when(sessionRepository.existsByTypeSessionAndYear(any(), any())).thenReturn(true);
 
         assertThrows(SessionAlreadyExistException.class,
                 () -> sessionService.createSession(session), "La session existe déjà");
@@ -50,32 +49,17 @@ public class SessionServiceTest {
 
     @Test
     public void testCreateSession_whenTypeNull() {
-        Session session = new Session(1L, null, LocalDate.now(), LocalDate.now().plusDays(1));
+        Session session = new Session(1L, null, Year.now());
 
         assertThrows(IllegalArgumentException.class,
                 () -> sessionService.createSession(session), "Le type de session est obligatoire");
     }
 
     @Test
-    public void testCreateSession_whenDateDebutNull() {
-        Session session = new Session(1L, TypeSession.ETE, null, LocalDate.now().plusDays(1));
+    public void testCreateSession_whenYearNull() {
+        Session session = new Session(1L, TypeSession.ETE, null);
 
         assertThrows(IllegalArgumentException.class,
-                () -> sessionService.createSession(session), "La date de début est obligatoire");
-    }
-
-    @Test
-    public void testCreateSession_whenDateFinNull() {
-        Session session = new Session(1L, TypeSession.ETE, LocalDate.now(), null);
-
-        assertThrows(IllegalArgumentException.class,
-                () -> sessionService.createSession(session), "La date de fin est obligatoire");
-    }
-    @Test
-    public void testCreateSession_whenDateDebutIsNotBeforeDateFin() {
-        Session session = new Session(1L, TypeSession.ETE, LocalDate.now(), LocalDate.now().minusDays(1));
-
-        assertThrows(IllegalArgumentException.class,
-                () -> sessionService.createSession(session), "La date de début doit être antérieure à la date de fin");
+                () -> sessionService.createSession(session), "L'année est obligatoire");
     }
 }

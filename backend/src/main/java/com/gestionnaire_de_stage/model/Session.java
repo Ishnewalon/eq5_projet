@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.Year;
 
 @Entity
 @Getter
@@ -23,7 +24,6 @@ public class Session {
     private Long id;
     @Enumerated(EnumType.STRING)
     private TypeSession typeSession;
-    private LocalDate dateDebut;
-    private LocalDate dateFin;
+    private Year year;
 }
 

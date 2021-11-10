@@ -2,12 +2,11 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ValidationOffer;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
-import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
+import com.gestionnaire_de_stage.enums.TypeSession;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.model.Session;
 import com.gestionnaire_de_stage.repository.OfferRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,9 @@ public class OfferServiceTest {
 
     @Mock
     private MonitorService monitorService;
+
+    @Mock
+    private SessionService sessionService;
 
     @Test
     public void testMapToOffer_withNullDto() {
@@ -91,13 +95,13 @@ public class OfferServiceTest {
     }
 
     @Test
-    public void testCreateOffer_withValidOffer() throws OfferAlreadyExistsException, EmailDoesNotExistException {
+    public void testCreateOffer_withValidOffer() throws OfferAlreadyExistsException, EmailDoesNotExistException, SessionDoesNotExistException {
+
         Offer dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
         when(offerRepository.save(any())).thenReturn(getDummyOffer());
         when(offerRepository.findOne(any())).thenReturn(Optional.empty());
         when(monitorService.getOneByEmail(any())).thenReturn(getDummyMonitor());
-
         Offer actualOffer = offerService.create(getDummyOfferDto());
 
         assertThat(actualOffer).isNotNull();
@@ -253,6 +257,8 @@ public class OfferServiceTest {
         dummyOffer.setDescription("oeinoiendw");
         dummyOffer.setSalary(10);
         dummyOffer.setTitle("oeinoiendw");
+        dummyOffer.setDateDebut(LocalDate.now());
+        dummyOffer.setDateFin(LocalDate.now().plusMonths(1));
         return dummyOffer;
     }
 
@@ -276,6 +282,8 @@ public class OfferServiceTest {
         dummyOfferDTO.setAddress("Addresse du cégep");
         dummyOfferDTO.setTitle("Offer title");
         dummyOfferDTO.setDepartment("Department name");
+        dummyOfferDTO.setDateDebut(LocalDate.now());
+        dummyOfferDTO.setDateFin(LocalDate.now().plusMonths(1));
         return dummyOfferDTO;
     }
 
@@ -287,5 +295,13 @@ public class OfferServiceTest {
             dummyArrayOffer.add(dummyOffer);
         }
         return dummyArrayOffer;
+    }
+
+    private Session getDummySession() {
+        Session session = new Session();
+        session.setId(1L);
+        session.setTypeSession(TypeSession.ETE);
+        session.setYear(Year.now());
+        return session;
     }
 }

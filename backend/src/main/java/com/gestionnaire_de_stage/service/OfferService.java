@@ -3,17 +3,16 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ValidationOffer;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
-import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.model.Session;
 import com.gestionnaire_de_stage.repository.OfferRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,10 +22,12 @@ public class OfferService {
 
     private final OfferRepository offerRepository;
     private final MonitorService monitorService;
+    private final SessionService sessionService;
 
-    public OfferService(OfferRepository offerRepository, MonitorService monitorService) {
+    public OfferService(OfferRepository offerRepository, MonitorService monitorService, SessionService sessionService) {
         this.offerRepository = offerRepository;
         this.monitorService = monitorService;
+        this.sessionService = sessionService;
     }
 
     public Offer mapToOffer(OfferDTO dto) {
@@ -39,6 +40,8 @@ public class OfferService {
         offer.setDescription(dto.getDescription());
         offer.setSalary(dto.getSalary());
         offer.setTitle(dto.getTitle());
+        offer.setDateDebut(dto.getDateDebut());
+        offer.setDateFin(dto.getDateFin());
         return offer;
     }
 
@@ -62,7 +65,7 @@ public class OfferService {
         return offers.stream().map(this::mapToOfferDTO).collect(Collectors.toList());
     }
 
-    public Offer create(OfferDTO offerDto) throws IllegalArgumentException, OfferAlreadyExistsException, EmailDoesNotExistException {
+    public Offer create(OfferDTO offerDto) throws IllegalArgumentException, OfferAlreadyExistsException, EmailDoesNotExistException, SessionDoesNotExistException {
         Assert.isTrue(offerDto != null, "Offre est null");
         Offer offer = mapToOffer(offerDto);
         if (offerRepository.findOne(Example.of(offer)).isPresent())

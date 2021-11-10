@@ -3,10 +3,7 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.dto.ValidationOffer;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
-import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.service.OfferService;
 import org.springframework.http.HttpStatus;
@@ -32,7 +29,7 @@ public class OfferController {
         Offer offer;
         try {
             offer = offerService.create(dto);
-        } catch (IllegalArgumentException ie) {
+        } catch (IllegalArgumentException | SessionDoesNotExistException ie) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(ie.getMessage()));
