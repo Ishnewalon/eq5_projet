@@ -66,6 +66,7 @@ function NavItemSpecificForUser() {
         </ThisIsAListItem>
     if (auth.isSupervisor())
         return <ThisIsAListItem>
+            <Link to="/dashboard/students/status">Status des étudiants</Link>
         </ThisIsAListItem>
     return <></>
 }

@@ -204,7 +204,7 @@ public class SupervisorControllerTest {
         when(supervisorService.getOneByID(any())).thenReturn(dummySupervisor);
         when(supervisorService.getStudentsStatus(any())).thenReturn(dummyOfferAppList);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/getStudentsStatus/" + dummySupervisor.getId())
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/studentsStatus/" + dummySupervisor.getId() )
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -218,7 +218,7 @@ public class SupervisorControllerTest {
         Supervisor dummySupervisor = getDummySupervisor();
         when(supervisorService.getOneByID(any())).thenThrow(new IllegalArgumentException("ID est null"));
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/getStudentsStatus/" + dummySupervisor.getId())
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/studentsStatus/" + dummySupervisor.getId() )
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -231,7 +231,7 @@ public class SupervisorControllerTest {
         Supervisor dummySupervisor = getDummySupervisor();
         when(supervisorService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/getStudentsStatus/" + dummySupervisor.getId())
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/studentsStatus/" + dummySupervisor.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();

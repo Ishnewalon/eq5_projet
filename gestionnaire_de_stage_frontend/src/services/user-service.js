@@ -21,6 +21,6 @@ export async function assignStudentToSupervisor(idStudent, idSupervisor) {//TODO
 }
 
 export async function getStudentsStatus(idSupervisor) {
-    const response = await fetch(`${urlBackend}/supervisor/studentStatus/${idSupervisor}`, requestInit(methods.GET));
+    const response = await fetch(`${urlBackend}/supervisor/studentsStatus/${idSupervisor}`, requestInit(methods.GET));
     return await response.json();
 }
