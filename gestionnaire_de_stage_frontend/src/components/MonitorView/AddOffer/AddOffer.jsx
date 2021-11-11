@@ -1,15 +1,12 @@
 import React, {useEffect, useState} from "react";
-import FieldAddress from "../../SharedComponents/Fields/FieldAddress";
-import {createOffer} from "../../../services/offer-service";
-import {DepartmentEnum} from "../../../enums/Departement";
-import OfferDTO from "../../../models/OfferDTO";
-import {useAuth} from "../../../services/use-auth";
 import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
+import {FormField} from "../../SharedComponents/FormField/FormField";
+import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {getCurrentAndFutureSession} from "../../../services/session-service";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 
 
-export default function AddOffer() {//TODO select session
+export default function AddOffer() {
     let auth = useAuth();
     const [title, setTitle] = useState('')
     const [department, setDepartement] = useState(DepartmentEnum.info)
@@ -28,7 +25,7 @@ export default function AddOffer() {//TODO select session
         setSalary(0)
         setCreatorId(auth.isMonitor() ? auth.user.email : '')
     };
-    useEffect(()=>{
+    useEffect(() => {
         getCurrentAndFutureSession().then(res => {
             setSessions(res)
         })
@@ -44,67 +41,60 @@ export default function AddOffer() {//TODO select session
     }
 
     const monitorEmail = (
-        <div className="col-md-6">
-            <label className="label">Email</label>
-            <InputGroup>
-                <input name="email" placeholder="Email" type="text"
-                       value={creator_email} onChange={(e) => setCreatorId(e.target.value)}/>
-            </InputGroup>
-        </div>)
+        <FormField>
+            <label>Email</label>
+            <input name="email" placeholder="Email" type="text"
+                   value={creator_email} onChange={(e) => setCreatorId(e.target.value)}/>
+        </FormField>
+    )
 
     return (<>
         <h2 className="text-center">Ajouter une offre de stage</h2>
-        <div className="form-group row">
-            <div className="col-md-6">
-                <label className="label">Titre</label>
-                <InputGroup>
-                    <input name="title" placeholder="Titre" type="text"
-                           value={title} onChange={(e) => setTitle(e.target.value)}/>
-                </InputGroup>
-            </div>
-            <div className="col-md-6">
-                <label className="label">Département</label>
-                <InputGroup>
-                    <select name="choice" id="userTypes"
-                            onChange={(e) => setDepartement(e.target.value)}>
-                        <option value={DepartmentEnum.info}>{DepartmentEnum.info}</option>
-                        <option value={DepartmentEnum.art}>{DepartmentEnum.art}</option>
-                    </select>
-                </InputGroup>
-            </div>
-        </div>
         <FormGroup>
-            <>
-                <label className="label">Session</label>
-                <InputGroup>
-                    <select name="sessions" id="session"
-                            onChange={(e) => setSessionId(e.target.value)}>
-                        <option selected disabled>Choisisez une session</option>
-                        {sessions.map(session => <option
-                            value={session.id}>{session.typeSession + session.year}</option>)}
-                    </select>
-                </InputGroup>
-            </>
+            <FormField>
+                <label>Titre</label>
+                <input name="title" placeholder="Titre" type="text"
+                       value={title} onChange={(e) => setTitle(e.target.value)}/>
+            </FormField>
+            <FormField>
+                <label>Département</label>
+                <select name="choice" id="userTypes"
+                        onChange={(e) => setDepartement(e.target.value)}>
+                    <option value={DepartmentEnum.info}>{DepartmentEnum.info}</option>
+                    <option value={DepartmentEnum.art}>{DepartmentEnum.art}</option>
+                </select>
+            </FormField>
         </FormGroup>
-        <div className="form-group">
-            <label className="label">Description</label>
-            <InputGroup>
+        <FormGroup>
+            <FormField>
+                <label className="label">Session</label>
+                <select name="sessions" id="session"
+                        onChange={(e) => setSessionId(e.target.value)}>
+                    <option selected disabled>Choisisez une session</option>
+                    {sessions.map(session => <option
+                        value={session.id}>{session.typeSession + session.year}</option>)}
+                </select>
+            </FormField>
+        </FormGroup>
+        <FormGroup>
+            <FormField>
+                <label>Description</label>
                 <input name="description" placeholder="Description" type="text"
                        value={description} onChange={(e) => setDescription(e.target.value)}/>
-            </InputGroup>
-        </div>
-        <div className="form-group">
+            </FormField>
+        </FormGroup>
+        <FormGroup>
             <FieldAddress label="Adresse ou le stage se situe" address={address}
                           handleChange={(e) => setAddress(e.target.value)}/>
-        </div>
-        <div className="form-group">
-            <label className="label">Salaire</label>
-            <InputGroup>
+        </FormGroup>
+        <FormGroup>
+            <FormField>
+                <label>Salaire</label>
                 <input name="salaire" placeholder="Salaire" type="number"
                        value={salary} onChange={(e) => setSalary(e.target.value)}/>
-            </InputGroup>
-        </div>
-        {(auth.isManager()) ? monitorEmail : <></>}
+            </FormField>
+            {(auth.isManager()) ? monitorEmail : <></>}
+        </FormGroup>
         <div className="form-group text-center">
             <button className="btn btn-primary" type={"button"} onClick={addOffer}>Ajouter</button>
         </div>

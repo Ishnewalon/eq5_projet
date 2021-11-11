@@ -3,7 +3,7 @@ import {UserType} from "../../../enums/UserTypes";
 import {Step} from "../../../enums/Steps";
 import {toastErr} from "../../../utility";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
-import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
+import {FormField} from "../../SharedComponents/FormField/FormField";
 
 export default function StepCegep({prevStep, nextStep, updateUserType, handleChange, matricule}) {
 
@@ -22,11 +22,11 @@ export default function StepCegep({prevStep, nextStep, updateUserType, handleCha
 
     return (<>
             <FormGroup>
+                <FormField>
                     <label>Matricule</label>
-                    <InputGroup>
-                        <input name="matricule" placeholder="Matricule" type="number"
-                               value={matricule} onChange={handleChange}/>
-                    </InputGroup>
+                    <input name="matricule" placeholder="Matricule" type="number"
+                           value={matricule} onChange={handleChange}/>
+                </FormField>
             </FormGroup>
             <div className="form-group text-center">
                 <label/>

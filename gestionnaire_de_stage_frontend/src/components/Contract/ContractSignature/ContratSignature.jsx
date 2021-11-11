@@ -4,7 +4,7 @@ import {BsPenFill} from "react-icons/all";
 import {managerSignContract, monitorSignContract, studentSignContract} from "../../../services/contrat-service";
 import {UserType} from "../../../enums/UserTypes";
 import {swalErr} from "../../../utility";
-import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
+import {FormField} from "../../SharedComponents/FormField/FormField";
 
 export default function ContratSignature({userType, contract, removeContract}) {
 
@@ -60,11 +60,11 @@ export default function ContratSignature({userType, contract, removeContract}) {
             <div className="d-flex justify-content-between flex-column">
                 <PdfDocumentViewer file={pdf}/>
                 <form onSubmit={startContract}>
-                    <InputGroup>
+                    <FormField>
                         <label>Signature</label>
                         <input type="text" placeholder="Entrez votre signature" className="w-100"
                                onChange={e => setSignature(e.target.value)}/>
-                    </InputGroup>
+                    </FormField>
                     <h6 className="text-white text-center mt-3">En appuyant sur envoyer, vous confirmez avoir lu le
                         contrat
                         et que la signature entré correspond à la votre.</h6>
