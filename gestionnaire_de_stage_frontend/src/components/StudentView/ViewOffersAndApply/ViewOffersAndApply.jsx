@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {getAllOffersByDepartment} from '../../../services/offer-service';
 import OfferApplication from "../OfferApplication/OfferApplication";
 import {useAuth} from "../../../services/use-auth";
-import {Table} from "../../SharedComponents/Table/Table";
 
 export default function ViewOffersAndApply() {//TODO: remove Offer after applied
     let auth = useAuth();
@@ -23,9 +22,6 @@ export default function ViewOffersAndApply() {//TODO: remove Offer after applied
     return (
         <div className='container'>
             <h2 className="text-center">Offres de Stage</h2>
-            <Table>
-
-            </Table>
             <ul>
                 {offers.map((offer, index) => <li key={index}><OfferApplication offer={offer}/></li>)}
             </ul>

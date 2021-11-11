@@ -1,31 +1,53 @@
 import React from "react";
 
 export function Table(props) {
-    const {children, className, thList} = props;
+    const {children, className} = props;
+    let tableRows = [];
+    let tableHeader;
+    if (!React.Children.toArray(children).find((child) => child.type.name === "TableHeader"))
+        throw new Error("Table must have a TableHeader");
+    // if (!React.Children.toArray(children).find((child) => child.type.name === "TableRow"))
+    //     throw new Error("Table must have at least one TableRow");
+
+    React.Children.toArray(children).forEach(child => {
+        if (child.type.name === "TableRow") {
+            tableRows.push(child);
+        }
+        if (child.type.name === "TableHeader") {
+            tableHeader = child;
+        }
+    });
     return (
         <table
             className={"table table-light table-striped table-borderless text-center rounded-3 shadow-lg " + className}>
             <thead>
-            <tr>
-                {thList.map((fieldName, index) => {
-                    return <th key={index} scope="col">{fieldName}</th>
-                })}
-            </tr>
+            {tableHeader}
             </thead>
             <tbody>
-            {React.Children.map(children, (child) => {
-                if (child.type === "tr") {
-                    return <TableRow>
-                        {child.props.children}
-                    </TableRow>
-                }
-            })}
+            {tableRows}
             </tbody>
         </table>
     );
 }
 
-function TableRow(props) {
+
+export function TableHeader(props) {
+    const {children} = props;
+    return <tr>
+        {
+            React.Children.map(children, (child, index) => {
+                return React.cloneElement(child,
+                    {
+                        key: {index},
+                        className: "",
+                        scope: "col"
+                    })
+            })
+        }
+    </tr>
+}
+
+export function TableRow(props) {
     const {children} = props;
     return <tr>
         {React.Children.map(children, (child, index) => {
