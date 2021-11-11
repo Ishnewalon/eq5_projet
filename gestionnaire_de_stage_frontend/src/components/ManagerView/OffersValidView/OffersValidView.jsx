@@ -22,7 +22,7 @@ export default function OffersValidView() {
             <h2 className="text-center">Offres de Stage</h2>
             <ul>
                 {offers.map((offer, index) =>
-                    <li key={index}>
+                    <li className={"mb-4"} key={index}>
                         <OfferView offer={offer}/>
                     </li>
                 )}

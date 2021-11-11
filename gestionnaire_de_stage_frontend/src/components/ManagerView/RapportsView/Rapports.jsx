@@ -1,6 +1,7 @@
 import OffersValidView from "../OffersValidView/OffersValidView";
 import OfferNotValidView from "../OffersNotValidView/OfferNotValidView";
 import {Link} from "react-router-dom";
+import StudentWithoutCvView from "../StudentWithoutCvView/StudentWithoutCvView";
 
 export function RapportOfferValid() {
     return (
@@ -15,6 +16,15 @@ export function RapportOfferInvalid() {
     return (
         <>
             <OfferNotValidView/>
+            <BtnBack/>
+        </>
+    );
+}
+
+export function RapportStudentWithoutCv() {
+    return (
+        <>
+            <StudentWithoutCvView/>
             <BtnBack/>
         </>
     );

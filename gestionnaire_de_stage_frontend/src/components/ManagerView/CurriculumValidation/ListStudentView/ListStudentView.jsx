@@ -20,7 +20,7 @@ export default function ListStudentView({cv}) {
                 a.href = myUrl
                 a.download = myFilename;
                 a.click();
-                URL.revokeObjectURL(myUrl)
+                URL.revokeObjectURL(myUrl);
                 toast.fire({title: 'Téléchargement en cours'}).then()
             }
         );

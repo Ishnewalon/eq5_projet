@@ -10,7 +10,7 @@ import StartContract from "./StartContract/StartContract";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useAuth} from "../../services/use-auth";
 import RapportsView from "./RapportsView/RapportsView";
-import {RapportOfferInvalid, RapportOfferValid} from "./RapportsView/Rapports";
+import {RapportOfferInvalid, RapportOfferValid, RapportStudentWithoutCv} from "./RapportsView/Rapports";
 
 export default function ManagerView() {
     const {path} = useRouteMatch();
@@ -45,6 +45,9 @@ export default function ManagerView() {
             </Route>
             <Route path={`${path}/rapports/2`}>
                 <RapportOfferInvalid/>
+            </Route>
+            <Route path={`${path}/rapports/3`}>
+                <RapportStudentWithoutCv/>
             </Route>
         </ContainerBox>
     )
