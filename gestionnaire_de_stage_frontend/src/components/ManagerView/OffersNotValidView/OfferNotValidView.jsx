@@ -20,6 +20,7 @@ export default function OfferNotValidView() {
     return (
         <div className='container'>
             <h2 className="text-center">Offres de Stage non validées</h2>
+            <br/>
             <ul>
                 {offers.map((offer, index) =>
                     <li key={index}>

@@ -21,6 +21,7 @@ export default function StudentWithoutCvView() {
     return (
         <div className='container'>
             <h2 className="text-center">Liste des étudiants sans Cv</h2>
+            <br/>
             {studentList.map((student, index) =>
                 <div key={index}>
                     <div className="shadow-lg rounded-top p-3 mt-3 border-left border-right">
