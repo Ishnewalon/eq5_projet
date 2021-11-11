@@ -305,7 +305,7 @@ class OfferApplicationServiceTest {
     void testGetAllBySupervisorId() {
         List<OfferApplication> dummyOfferAppList = getDummyOfferAppList();
         long supervisor_id = 1L;
-        when(offerApplicationRepository.getAllByCurriculum_Student_Supervisor_Id(any())).thenReturn(dummyOfferAppList);
+        when(offerApplicationRepository.findAllByCurriculum_Student_Supervisor_Id(any())).thenReturn(dummyOfferAppList);
 
         List<OfferApplication> actualOfferAppList = offerApplicationService.getAllBySupervisorId(supervisor_id);
 

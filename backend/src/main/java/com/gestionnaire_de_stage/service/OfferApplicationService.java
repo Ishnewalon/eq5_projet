@@ -126,6 +126,6 @@ public class OfferApplicationService {
     }
 
     public List<OfferApplication> getAllBySupervisorId(Long supervisor_id) {
-        return offerApplicationRepository.getAllByCurriculum_Student_Supervisor_Id(supervisor_id);
+        return offerApplicationRepository.findAllByCurriculum_Student_Supervisor_Id(supervisor_id);
     }
 }
