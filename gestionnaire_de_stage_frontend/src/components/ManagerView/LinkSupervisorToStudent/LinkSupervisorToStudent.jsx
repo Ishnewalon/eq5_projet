@@ -14,6 +14,7 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
         getUnassignedStudents()
             .then(studentList => {
                 setStudentList(studentList)
+                console.log(studentList)
             })
             .catch(e => {
                 setStudentList([])
@@ -43,24 +44,13 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
     return (
         <div>
             <h2 className="text-center">Attribuer des superviseurs aux étudiants</h2>
-            <Table className={"w-75 mx-auto"}>
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Étudiant</th>
-                    <th scope="col">Enseignant</th>
-                    <th scope="col">Accepter</th>
-                </tr>
-                </thead>
-                <tbody>
+            <Table className={"w-75 mx-auto"} thList={['#','Étudiant','Enseignant','Accepter']}>
                 {studentList.map((student, index) =>
-
                     <tr key={index}>
-                        <th scope="row">{student.id}</th>
+                        <th>{student.id}</th>
                         <td>{student.firstName} {student.lastName}</td>
                         <td>
                             <FormField>
-                                <label/>
                                 <select onChange={() => setSupervisorId('supervisorID')}>
                                     {supervisorList.map((supervisor, indexSupervisor) =>
                                         <option key={indexSupervisor} value={supervisor.id}>
@@ -75,7 +65,6 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
                         </td>
                     </tr>
                 )}
-                </tbody>
             </Table>
         </div>
     )
