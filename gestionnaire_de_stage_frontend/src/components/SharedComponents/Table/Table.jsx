@@ -6,16 +6,12 @@ export function Table(props) {
     let tableHeader;
     if (!React.Children.toArray(children).find((child) => child.type.name === "TableHeader"))
         throw new Error("Table must have a TableHeader");
-    // if (!React.Children.toArray(children).find((child) => child.type.name === "TableRow"))
-    //     throw new Error("Table must have at least one TableRow");
 
     React.Children.toArray(children).forEach(child => {
-        if (child.type.name === "TableRow") {
+        if (child.type.name === "TableRow")
             tableRows.push(child);
-        }
-        if (child.type.name === "TableHeader") {
+        if (child.type.name === "TableHeader")
             tableHeader = child;
-        }
     });
     return (
         <table

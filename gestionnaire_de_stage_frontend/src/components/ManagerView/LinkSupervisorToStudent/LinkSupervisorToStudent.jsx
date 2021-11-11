@@ -14,7 +14,6 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
         getUnassignedStudents()
             .then(studentList => {
                 setStudentList(studentList)
-                console.log(studentList)
             })
             .catch(e => {
                 setStudentList([])
