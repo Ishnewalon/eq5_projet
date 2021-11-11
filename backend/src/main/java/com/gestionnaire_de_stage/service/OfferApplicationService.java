@@ -2,7 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.enums.Status;
-import com.gestionnaire_de_stage.exception.*;
+import com.gestionnaire_de_stage.exception.DateNotValidException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
@@ -15,8 +15,8 @@ import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OfferApplicationService {
@@ -40,7 +40,7 @@ public class OfferApplicationService {
         Student student = studentService.getOneByID(idStudent);
         Curriculum curriculum = student.getPrincipalCurriculum();
 
-        if(curriculum == null)
+        if (curriculum == null)
             throw new StudentHasNoCurriculumException();
 
         if (offer.isEmpty())
@@ -53,6 +53,7 @@ public class OfferApplicationService {
         offerApplication.setOffer(offer.get());
         offerApplication.setCurriculum(student.getPrincipalCurriculum());
         offerApplication.setStatus(Status.CV_ENVOYE);
+        offerApplication.setSession(offer.get().getSession());
 
         return offerApplicationRepository.save(offerApplication);
     }
@@ -87,7 +88,7 @@ public class OfferApplicationService {
     }
 
     private boolean isDateInvalid(LocalDateTime date) {
-        return !date.isAfter(LocalDateTime.now())||
+        return !date.isAfter(LocalDateTime.now()) ||
                 !date.isBefore(LocalDateTime.now().plusMonths(2));
     }
 
@@ -122,6 +123,6 @@ public class OfferApplicationService {
             offerApplication.setStatus(Status.STAGE_REFUSE);
         }
         offerApplicationRepository.save(offerApplication);
-        return updateStatusDTO.isAccepted()?"Status changé, attendez la signature du contrat" : "Status changé, stage refusé";
+        return updateStatusDTO.isAccepted() ? "Status changé, attendez la signature du contrat" : "Status changé, stage refusé";
     }
 }

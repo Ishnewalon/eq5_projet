@@ -255,7 +255,7 @@ public class OfferServiceTest {
     }
 
     @Test
-    void testGetValidOffers() {
+    public void testGetValidOffers() {
         List<Offer> dummyArrayOffer = getDummyOfferWithDifferentSession();
         fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
         doReturn(fixedClock.instant()).when(clock).instant();
@@ -267,7 +267,7 @@ public class OfferServiceTest {
         assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
     }
     @Test
-    void testGetValidOffers_forNextYear() {
+    public void testGetValidOffers_forNextYear() {
         List<Offer> dummyArrayOffer = getDummyOfferWithDifferentSession();
         fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 10, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
         doReturn(fixedClock.instant()).when(clock).instant();
@@ -279,7 +279,7 @@ public class OfferServiceTest {
         assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
     }
     @Test
-    void testGetValidOffers_SummerAndFuture() {
+    public void testGetValidOffers_SummerAndFuture() {
         List<Offer> dummyArrayOffer = getDummyOfferWithDifferentSession();
         fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 6, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
         doReturn(fixedClock.instant()).when(clock).instant();
@@ -292,7 +292,7 @@ public class OfferServiceTest {
     }
 
     @Test
-    void testGetNotValidatedOffers() {
+    public void testGetNotValidatedOffers() {
         List<Offer> dummyArrayOffer = getDummyArrayOffer();
         when(offerRepository.findAllByValidNull()).thenReturn(dummyArrayOffer);
 

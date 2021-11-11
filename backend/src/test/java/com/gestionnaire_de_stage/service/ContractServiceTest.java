@@ -95,7 +95,7 @@ public class ContractServiceTest {
         when(managerService.getOneByID(any())).thenReturn(dummyManager);
         when(offerApplicationService.getOneById(any())).thenReturn(dummyOfferApplication);
         when(contractRepository.save(any())).thenReturn(dummyFilledContract);
-        when(contractService.doesStudentAlreadyHaveAContract(any())).thenReturn(false);
+        when(contractService.doesStudentAlreadyHaveAContract(any(),any())).thenReturn(false);
 
         Contract contract = contractService.gsStartContract(getDummyContract(), new ContractStarterDto(dummyManager.getId(), dummyOfferApplication.getId()));
 
@@ -108,7 +108,7 @@ public class ContractServiceTest {
         OfferApplication dummyOfferApplication = getDummyOfferApplication();
         when(managerService.getOneByID(any())).thenReturn(dummyManager);
         when(offerApplicationService.getOneById(any())).thenReturn(dummyOfferApplication);
-        when(contractService.doesStudentAlreadyHaveAContract(any())).thenReturn(true);
+        when(contractService.doesStudentAlreadyHaveAContract(any(),any())).thenReturn(true);
 
         assertThrows(StudentAlreadyHaveAContractException.class,
                 () -> contractService.gsStartContract(getDummyContract(), new ContractStarterDto(dummyManager.getId(), dummyOfferApplication.getId())));

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gestionnaire_de_stage.enums.TypeSession;
 import com.gestionnaire_de_stage.exception.SessionAlreadyExistException;
-import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.Session;
 import com.gestionnaire_de_stage.service.SessionService;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDate;
 import java.time.Year;
 import java.util.List;
 
@@ -94,7 +92,6 @@ public class SessionControllerTest {
     @Test
     public void testCreateSession_withYearNull() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
-        LocalDate dateDebut = LocalDate.now().plusDays(1);
         Session session = new Session(1L, TypeSession.ETE, null);
         when(sessionService.createSession(any())).thenThrow(new IllegalArgumentException("L'année est obligatoire"));
 
@@ -108,6 +105,7 @@ public class SessionControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("L'année est obligatoire");
     }
+
     @Test
     public void testGetActualAndFutureSessions() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());

@@ -112,19 +112,20 @@ public class ContractService {
         contract.setManager(manager);
 
         OfferApplication offerApplication = offerApplicationService.getOneById(contractStarterDto.getIdOfferApplication());
-        //TODO : cant start when student already have a contract
-        contract.setOffer(offerApplication.getOffer());
         Curriculum curriculum = offerApplication.getCurriculum();
         Student student = curriculum.getStudent();
-        if (doesStudentAlreadyHaveAContract(student.getId()))
+        if (doesStudentAlreadyHaveAContract(student.getId(), contract.getSession()))
             throw new StudentAlreadyHaveAContractException();
+
         contract.setStudent(student);
+        contract.setOffer(offerApplication.getOffer());
+        contract.setSession(offerApplication.getSession());
 
         return contractRepository.save(contract);
     }
 
-    public boolean doesStudentAlreadyHaveAContract(Long id) {
-        return contractRepository.existsByStudentId(id);
+    public boolean doesStudentAlreadyHaveAContract(Long id,Session session) {
+        return contractRepository.existsByStudentIdAndSession(id,session);
     }
 
     public Contract updateContract(Contract contract) {
