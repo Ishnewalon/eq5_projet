@@ -14,6 +14,7 @@ import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
 import com.gestionnaire_de_stage.repository.StudentRepository;
+import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,13 +40,11 @@ class OfferApplicationServiceTest {
     @Mock
     private StudentService studentService;
     @Mock
-    private StudentRepository studentRepository;
-    @Mock
     private ManagerService managerService;
     @Mock
     private OfferApplicationRepository offerApplicationRepository;
     @Mock
-    private SupervisorService supervisorService;
+    private SupervisorRepository supervisorRepository;
 
     @Test
     void testCreate() throws Exception {
@@ -307,7 +306,7 @@ class OfferApplicationServiceTest {
     void testGetAllBySupervisorId_withValidEntries() throws Exception {
         List<OfferApplication> dummyOfferAppList = getDummyOfferAppList();
         long supervisor_id = 1L;
-        when(supervisorService.isIdNotValid(any())).thenReturn(false);
+        when(supervisorRepository.existsById(any())).thenReturn(false);
         when(offerApplicationRepository.findAllByCurriculum_Student_Supervisor_Id(any())).thenReturn(dummyOfferAppList);
 
         List<OfferApplication> actualOfferAppList = offerApplicationService.getAllBySupervisorId(supervisor_id);
@@ -325,7 +324,7 @@ class OfferApplicationServiceTest {
     @Test
     void testGetAllBySupervisorId_withInvalidSupervisorId() {
         long supervisorId = 1L;
-        when(supervisorService.isIdNotValid(any())).thenReturn(true);
+        when(supervisorRepository.existsById(any())).thenReturn(true);
 
         assertThrows(IdDoesNotExistException.class,
                 () -> offerApplicationService.getAllBySupervisorId(supervisorId));
