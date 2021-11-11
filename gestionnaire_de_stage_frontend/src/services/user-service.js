@@ -19,3 +19,8 @@ export async function assignStudentToSupervisor(idStudent, idSupervisor) {//TODO
         requestInit(methods.POST, obj));
     return await response.json();
 }
+
+export async function getStudentsStatus(idSupervisor) {
+    const response = await fetch(`${urlBackend}/supervisor/students_status/${idSupervisor}`, requestInit(methods.GET));
+    return await response.json();
+}

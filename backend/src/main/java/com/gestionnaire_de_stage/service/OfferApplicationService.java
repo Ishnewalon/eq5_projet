@@ -25,13 +25,15 @@ public class OfferApplicationService {
     private final OfferService offerService;
     private final ManagerService managerService;
     private final StudentService studentService;
+    private final SupervisorService supervisorService;
 
 
-    public OfferApplicationService(OfferApplicationRepository offerApplicationRepository, OfferService offerService, ManagerService managerService, StudentService studentService) {
+    public OfferApplicationService(OfferApplicationRepository offerApplicationRepository, OfferService offerService, ManagerService managerService, StudentService studentService, SupervisorService supervisorService) {
         this.offerApplicationRepository = offerApplicationRepository;
         this.offerService = offerService;
         this.managerService = managerService;
         this.studentService = studentService;
+        this.supervisorService = supervisorService;
     }
 
     public OfferApplication create(Long idOffer, Long idStudent) throws StudentAlreadyAppliedToOfferException, IdDoesNotExistException, IllegalArgumentException, StudentHasNoCurriculumException {
@@ -123,5 +125,13 @@ public class OfferApplicationService {
         }
         offerApplicationRepository.save(offerApplication);
         return updateStatusDTO.isAccepted()?"Status changé, attendez la signature du contrat" : "Status changé, stage refusé";
+    }
+
+    public List<OfferApplication> getAllBySupervisorId(Long supervisor_id) throws IdDoesNotExistException {
+        Assert.isTrue(supervisor_id != null, "L'id du superviseur ne peut pas être null");
+        if(supervisorService.isIdNotValid(supervisor_id)) {
+            throw new IdDoesNotExistException();
+        }
+        return offerApplicationRepository.findAllByCurriculum_Student_Supervisor_Id(supervisor_id);
     }
 }
