@@ -1,11 +1,19 @@
-import {ContainerBox} from "../../SharedComponents/ContainerBox/ContainerBox";
+import OffersValidView from "../OffersValidView/OffersValidView";
+import OfferNotValidView from "../OffersNotValidView/OfferNotValidView";
 
 export function RapportOfferValid() {
     return (
-        <ContainerBox>
-            <h1>RapportOfferValid</h1>
-        </ContainerBox>
+        <>
+            <OffersValidView/>
+        </>
     );
 }
 
+export function RapportOfferInvalid() {
+    return (
+        <>
+            <OfferNotValidView/>
+        </>
+    );
+}
 

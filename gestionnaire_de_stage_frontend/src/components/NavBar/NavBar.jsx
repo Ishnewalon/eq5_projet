@@ -49,7 +49,6 @@ function NavItemSpecificForUser() {
     if (auth.isManager())
         return <ThisIsAListItem>
             <Link to="/dashboard/offres/ajouter">Ajouter des offres</Link>
-            <Link to="/dashboard/offres">Offres valides</Link>
             <Link to="/dashboard/offres/review">Validation Offre</Link>
             <Link to="/dashboard/curriculum/review">Valider Cv</Link>
             <Link to="/dashboard/students/start">Commencer signature</Link>
