@@ -10,11 +10,11 @@ export default function OfferValidationView() {
 
     const [offers, setOffers] = useState([])
     const [sessions, setSessions] = useState([]);
-    const [offersVisible, setOffersVisible] = useState([]);
+    const [visibles, setVisibles] = useState([]);
 
     const setMyVisible = (idSession) =>
         // eslint-disable-next-line
-        setOffersVisible(offers.filter(offer => offer.session.id == idSession))
+        setVisibles(offers.filter(offer => offer.session.id == idSession))
 
 
     useEffect(() => {
@@ -31,11 +31,8 @@ export default function OfferValidationView() {
         getCurrentAndFutureSession()
             .then(sessions => {
                 setSessions(sessions)
-                if (offers.length > 0) {
-                    // eslint-disable-next-line
-                    setOffersVisible(offers.filter(offer => offer.session.id == sessions[0].id))
-                    console.log('oui')
-                }
+                // eslint-disable-next-line
+                setVisibles(offers.filter(offer => offer.session.id == sessions[0].id))
             })
             .catch(e => {
                 setSessions([]);
@@ -62,7 +59,7 @@ export default function OfferValidationView() {
                     </FormField>
                 </FormGroup>
                 <ul>
-                    {offersVisible.map(offer =>
+                    {visibles.map(offer =>
                         <li key={offer.id}>
                             <OfferValidation offer={offer} removeFromList={setOfferValidated}/>
                         </li>
