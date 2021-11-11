@@ -3,7 +3,17 @@ import Swal from "sweetalert2";
 import {swalErr} from "../utility";
 
 export async function supervisorCreateForm(stage){
-    return await fetch(`${urlBackend}/stages/supervisor/fill_form`, requestInit(methods.POST, stage)).then(
+    return createForm('supervisor', stage);
+}
+
+
+export async function monitorCreateForm(stage){
+    return createForm('monitor', stage);
+}
+
+
+export async function createForm(userType, stage){
+    return await fetch(`${urlBackend}/stages/${userType}/fill_form`, requestInit(methods.POST, stage)).then(
         response => {
             return response.json().then(
                 body => {
