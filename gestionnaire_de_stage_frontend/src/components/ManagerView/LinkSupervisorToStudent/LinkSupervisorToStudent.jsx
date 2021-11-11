@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {getCurriculumWithValidCV} from "../../../services/curriculum-service";
 import {assignStudentToSupervisor, getSupervisors, getUnassignedStudents} from "../../../services/user-service";
 import {toast} from "../../../utility";
 import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
