@@ -49,12 +49,12 @@ function NavItemSpecificForUser() {
     if (auth.isManager())
         return <ThisIsAListItem>
             <Link to="/dashboard/offres/ajouter">Ajouter des offres</Link>
-            <Link to="/dashboard/offres">Offres valides</Link>
             <Link to="/dashboard/offres/review">Validation Offre</Link>
             <Link to="/dashboard/curriculum/review">Valider Cv</Link>
             <Link to="/dashboard/students/start">Commencer signature</Link>
             <Link to="/dashboard/students/applied">Associer</Link>
             <Link to="/dashboard/contrats/a_signer">Contrats à valider</Link>
+            <Link to="/dashboard/rapports">Rapports</Link>
         </ThisIsAListItem>
     if (auth.isStudent())
         return <ThisIsAListItem>
