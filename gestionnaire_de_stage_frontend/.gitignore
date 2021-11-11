@@ -16,6 +16,12 @@
 .env.test.local
 .env.production.local
 
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
