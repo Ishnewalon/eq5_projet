@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
 import {FormField} from "../../SharedComponents/FormField/FormField";
-import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {getCurrentAndFutureSession} from "../../../services/session-service";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {DepartmentEnum} from "../../../enums/Departement";
+import {useAuth} from "../../../services/use-auth";
+import {createOffer} from "../../../services/offer-service";
+import FieldAddress from "../../SharedComponents/Fields/FieldAddress";
+import OfferDTO from "../../../models/OfferDTO";
 
 
 export default function AddOffer() {
@@ -71,8 +74,8 @@ export default function AddOffer() {
                 <select name="sessions" id="session"
                         onChange={(e) => setSessionId(e.target.value)}>
                     <option selected disabled>Choisisez une session</option>
-                    {sessions.map(session => <option
-                        value={session.id}>{session.typeSession + session.year}</option>)}
+                    {sessions.map(session =>
+                        <option key={session.id} value={session.id}>{session.typeSession + session.year}</option>)}
                 </select>
             </FormField>
         </FormGroup>

@@ -2,10 +2,21 @@ import "./OfferValidationView.css"
 import React, {useEffect, useState} from 'react';
 import {getAllOffersInvalid, validateOffer} from '../../../services/offer-service';
 import OfferView from "../../OfferView/OfferView";
+import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FormField} from "../../SharedComponents/FormField/FormField";
+import {getCurrentAndFutureSession} from "../../../services/session-service";
 
 export default function OfferValidationView() {
 
     const [offers, setOffers] = useState([])
+    const [sessions, setSessions] = useState([]);
+    const [offersVisible, setOffersVisible] = useState([]);
+
+    const setMyVisible = (idSession) =>
+        // eslint-disable-next-line
+        setOffersVisible(offers.filter(offer => offer.session.id == idSession))
+
+
     useEffect(() => {
         getAllOffersInvalid()
             .then(offers => {
@@ -16,16 +27,42 @@ export default function OfferValidationView() {
                 console.error(e);
             })
     }, [])
+    useEffect(() => {
+        getCurrentAndFutureSession()
+            .then(sessions => {
+                setSessions(sessions)
+                if (offers.length > 0) {
+                    // eslint-disable-next-line
+                    setOffersVisible(offers.filter(offer => offer.session.id == sessions[0].id))
+                    console.log('oui')
+                }
+            })
+            .catch(e => {
+                setSessions([]);
+                console.error(e);
+            })
+    }, [offers])
 
     const setOfferValidated = (id) => {
         setOffers(offers.filter(items => items.id !== id))
     }
+
     return (
         <>
             <h1 className="text-center">Validation des offres</h1>
             <div className='container'>
+                <FormGroup>
+                    <FormField>
+                        <label/>
+                        <select onChange={(e) => setMyVisible(e.target.value)}>
+                            {sessions.map(session =>
+                                <option key={session.id}
+                                        value={session.id}>{session.typeSession + session.year}</option>)}
+                        </select>
+                    </FormField>
+                </FormGroup>
                 <ul>
-                    {offers.map(offer =>
+                    {offersVisible.map(offer =>
                         <li key={offer.id}>
                             <OfferValidation offer={offer} removeFromList={setOfferValidated}/>
                         </li>
