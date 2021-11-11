@@ -48,7 +48,8 @@ export default function MonitorVisitForm() {
         programme: '',
         commentaires_un: '',
         question_quatorze: '',
-        question_seize: ''
+        question_seize: '',
+        commentaires_deux: ''
     });
 
     const handleChange = (event) => {
@@ -252,6 +253,13 @@ export default function MonitorVisitForm() {
                     </select>
                 </FormField>
             </FormGroup>
+            <FormGroup>
+                <FormField>
+                    <label>Commentaires</label>
+                    <textarea required name='commentaires_deux' value={monitorVisitForm.commentaires_deux}
+                              onChange={e => handleChange(e)}/>
+                </FormField>
+            </FormGroup>
         </div>
         <hr/>
 
@@ -310,8 +318,8 @@ export default function MonitorVisitForm() {
                     </select>
                 </FormField>
                 <FormField>
-                    <label>Faire une bonne analyse des problèmes rencontrés</label>
-                    <select required name='question_dix' value={monitorVisitForm.question_dix}
+                    <label>Être respectueux envers les gens</label>
+                    <select required name='question_quinze' value={monitorVisitForm.question_quinze}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -319,6 +327,25 @@ export default function MonitorVisitForm() {
                         <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
                         <option value='NON_APPLICABLE'>N/A*</option>
                     </select>
+                </FormField>
+                <FormField>
+                    <label>Faire preuve d’écoute active en essayant de
+                        comprendre le point de vue de l’autre</label>
+                    <select required name='question_seize' value={monitorVisitForm.question_seize}
+                            onChange={e => handleChange(e)}>
+                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
+                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
+                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
+                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
+                        <option value='NON_APPLICABLE'>N/A*</option>
+                    </select>
+                </FormField>
+            </FormGroup>
+            <FormGroup>
+                <FormField>
+                    <label>Commentaires</label>
+                    <textarea required name='commentaires_deux' value={monitorVisitForm.commentaires_deux}
+                              onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
         </div>
