@@ -20,11 +20,10 @@ export default function StudentWithoutCvView() {
 
     return (
         <div className='container'>
-            <h2 className="text-center">Liste des étudiants sans Cv</h2>
-            <br/>
+            <h2 className="text-center mb-4">Liste des étudiants sans Cv</h2>
             {studentList.map((student, index) =>
                 <div key={index}>
-                    <div className="shadow-lg rounded-top p-3 mt-3 border-left border-right">
+                    <div className="shadow-lg rounded-top p-3 mt-3 mb-4 border-left border-right">
                         <div className={'d-flex align-items-center flex-column'}>
                             <h3 className={'d-inline-block text-dark'}>
                             <span className={"badge rounded-pill"}>
@@ -42,7 +41,6 @@ export default function StudentWithoutCvView() {
                             {/*<button className={"btn btn-primary"}>Notifiez</button>*/}
                         </div>
                     </div>
-                    <br/>
                 </div>)}
         </div>
     )

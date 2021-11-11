@@ -16,6 +16,5 @@ export default function OfferView({offer}) {
                 <p>{offer.description}</p>
             </div>
         </div>
-        <br/>
     </>
 }
