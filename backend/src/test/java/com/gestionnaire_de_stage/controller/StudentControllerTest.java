@@ -167,6 +167,20 @@ public class StudentControllerTest {
         assertThat(actualStudentList).isEqualTo(list);
     }
 
+    @Test
+    public void testGetAllStudentWithoutCv() throws Exception {
+        List<Student> list = Arrays.asList(new Student(), new Student());
+        when(studentService.getAllStudentWithoutCv()).thenReturn(Arrays.asList(new Student(), new Student()));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/no-cv")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        List<Student> actualStudentList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualStudentList).isEqualTo(list);
+    }
+
 
     private Student getDummyStudent() {
         Student dummyStudent = new Student();
