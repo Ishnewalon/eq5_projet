@@ -37,8 +37,6 @@ export default function StudentWithoutCvView() {
                             <h5 className={'d-inline-block'}>
                                 Adresse électronique: {student.email}
                             </h5>
-                            {/*NOTIFICATION*/}
-                            {/*<button className={"btn btn-primary"}>Notifiez</button>*/}
                         </div>
                     </div>
                 </div>)}
