@@ -79,8 +79,7 @@ public class SupervisorService {
         if (isIdNotValid(supervisor_id)) {
             throw new IdDoesNotExistException();
         }
-        List<OfferApplication> offerApplicationList = offerApplicationService.getAllBySupervisorId(supervisor_id);
-        return offerApplicationList;
+        return offerApplicationService.getAllBySupervisorId(supervisor_id);
     }
 
     private boolean isNotValid(Supervisor supervisor) {
