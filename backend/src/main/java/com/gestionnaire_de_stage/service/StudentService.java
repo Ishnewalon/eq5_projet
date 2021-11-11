@@ -91,6 +91,10 @@ public class StudentService {
         return studentRepository.getAllByPrincipalCurriculum_IsValidAndSupervisorNull(true);
     }
 
+    public List<Student> getAllStudentWithoutCv() {
+        return studentRepository.findAllByPrincipalCurriculumIsNull();
+    }
+
     public boolean assign(Student student, Supervisor supervisor){
         student.setSupervisor(supervisor);
         studentRepository.save(student);

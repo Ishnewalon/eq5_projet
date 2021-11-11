@@ -20,6 +20,15 @@ export function RapportOfferInvalid() {
     );
 }
 
+export function RapportStudentWithoutCv() {
+    return (
+        <>
+            <StudentWithoutCv/>
+            <BtnBack/>
+        </>
+    );
+}
+
 export function BtnBack() {
     return (
         <Link to="/dashboard/rapports" className="btn btn-primary">Retour</Link>
