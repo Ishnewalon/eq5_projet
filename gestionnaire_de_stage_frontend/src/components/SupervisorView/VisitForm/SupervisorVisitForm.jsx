@@ -4,7 +4,7 @@ import {useState} from "react";
 import {supervisorCreateForm} from "../../../services/stage-service";
 
 
-export default function VisitForm() {
+export default function SupervisorVisitForm() {
 
     const [visitForm, setVisitForm] = useState({
         entrepriseNom: '',

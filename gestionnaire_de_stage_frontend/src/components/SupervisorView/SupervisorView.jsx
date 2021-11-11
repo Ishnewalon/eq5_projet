@@ -2,7 +2,7 @@ import React from "react";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {Route, useRouteMatch} from "react-router-dom";
 import {useAuth} from "../../services/use-auth";
-import VisitForm from "./VisitForm/VisitForm";
+import SupervisorVisitForm from "./VisitForm/SupervisorVisitForm";
 import StudentStatusView from "./StudentStatusView/StudentStatusView";
 
 export default function SupervisorView() {
@@ -10,7 +10,7 @@ export default function SupervisorView() {
     let auth = useAuth();
     return (<ContainerBox>
         <Route exact path={`${path}/form_visit_company`}>
-            <VisitForm/>
+            <SupervisorVisitForm/>
         </Route>
         <Route exact path={`${path}/students/status`}>
             <StudentStatusView/>
