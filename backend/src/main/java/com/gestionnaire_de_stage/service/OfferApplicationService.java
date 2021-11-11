@@ -11,6 +11,7 @@ import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
+import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +26,15 @@ public class OfferApplicationService {
     private final OfferService offerService;
     private final ManagerService managerService;
     private final StudentService studentService;
+    private final SupervisorRepository supervisorRepository;
 
 
-    public OfferApplicationService(OfferApplicationRepository offerApplicationRepository, OfferService offerService, ManagerService managerService, StudentService studentService) {
+    public OfferApplicationService(OfferApplicationRepository offerApplicationRepository, OfferService offerService, ManagerService managerService, StudentService studentService, SupervisorRepository supervisorRepository) {
         this.offerApplicationRepository = offerApplicationRepository;
         this.offerService = offerService;
         this.managerService = managerService;
         this.studentService = studentService;
+        this.supervisorRepository = supervisorRepository;
     }
 
     public OfferApplication create(Long idOffer, Long idStudent) throws StudentAlreadyAppliedToOfferException, IdDoesNotExistException, IllegalArgumentException, StudentHasNoCurriculumException {
@@ -123,5 +126,13 @@ public class OfferApplicationService {
         }
         offerApplicationRepository.save(offerApplication);
         return updateStatusDTO.isAccepted()?"Status changé, attendez la signature du contrat" : "Status changé, stage refusé";
+    }
+
+    public List<OfferApplication> getAllBySupervisorId(Long supervisor_id) throws IdDoesNotExistException {
+        Assert.isTrue(supervisor_id != null, "L'id du superviseur ne peut pas être null");
+        if(supervisorRepository.existsById(supervisor_id)) {
+            throw new IdDoesNotExistException();
+        }
+        return offerApplicationRepository.findAllByCurriculum_Student_Supervisor_Id(supervisor_id);
     }
 }

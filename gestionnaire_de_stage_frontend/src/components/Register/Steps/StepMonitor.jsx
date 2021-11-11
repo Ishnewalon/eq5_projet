@@ -4,7 +4,7 @@ import {toastErr} from "../../../utility";
 import {UserType} from "../../../enums/UserTypes";
 import {Step} from "../../../enums/Steps";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
-import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
+import {FormField} from "../../SharedComponents/FormField/FormField";
 
 const regexCodePostal = /^([A-Za-z]\s?[0-9]){3}$/;
 
@@ -57,27 +57,27 @@ export default function StepMonitor({
 
     return (<>
         <FormGroup>
-            <label>Nom de la compagnie</label>
-            <InputGroup>
+            <FormField>
+                <label>Nom de la compagnie</label>
                 <input name="companyName" placeholder="Nom de compagnie"
                        type="text"
                        value={companyName} onChange={handleChange}/>
-            </InputGroup>
-            <label>Ville</label>
-            <InputGroup>
+            </FormField>
+            <FormField>
+                <label>Ville</label>
                 <input name="city" placeholder="Ville" type="text"
                        value={city} onChange={handleChange}/>
-            </InputGroup>
+            </FormField>
         </FormGroup>
         <FormGroup>
             <FieldAddress label="Adresse de la compagnie" address={address} handleChange={handleChange}/>
         </FormGroup>
         <FormGroup>
-            <label>Code Postale</label>
-            <InputGroup>
+            <FormField>
+                <label>Code Postale</label>
                 <input name="postalCode" placeholder="XXX 123" type="text"
                        value={postalCode} onChange={handleChange}/>
-            </InputGroup>
+            </FormField>
         </FormGroup>
         <div className="form-group text-center">
             <label/>
