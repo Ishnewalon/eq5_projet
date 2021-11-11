@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {assignStudentToSupervisor, getSupervisors, getUnassignedStudents} from "../../../services/user-service";
 import {toast} from "../../../utility";
-import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
+import {FormField} from "../../SharedComponents/FormField/FormField";
 import {Table} from "../../SharedComponents/Table/Table";
 
 export default function LinkSupervisorToStudent() {// TODO: field is linked to supervisor or something
@@ -59,7 +59,8 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
                         <th scope="row">{student.id}</th>
                         <td>{student.firstName} {student.lastName}</td>
                         <td>
-                            <InputGroup>
+                            <FormField>
+                                <label/>
                                 <select onChange={() => setSupervisorId('supervisorID')}>
                                     {supervisorList.map((supervisor, indexSupervisor) =>
                                         <option key={indexSupervisor} value={supervisor.id}>
@@ -67,7 +68,7 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
                                         </option>
                                     )}
                                 </select>
-                            </InputGroup>
+                            </FormField>
                         </td>
                         <td>
                             <button className="btn btn-success" onClick={assign(student.id)}>Accepter</button>
