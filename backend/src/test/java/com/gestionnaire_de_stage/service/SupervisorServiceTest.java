@@ -180,15 +180,30 @@ public class SupervisorServiceTest {
     }
 
     @Test
-    public void testGetStudentsStatus() {
+    public void testGetStudentsStatus_withValidEntries() throws Exception {
         Supervisor dummySupervisor = getDummySupervisor();
         List<OfferApplication> dummyOfferAppList = getDummyOfferAppList();
+        when(supervisorRepository.existsById(any())).thenReturn(true);
         when(offerApplicationService.getAllBySupervisorId(any())).thenReturn(dummyOfferAppList);
 
-        List<OfferApplication> actualOfferAppList = supervisorService.getStudentsStatus(dummySupervisor);
+        List<OfferApplication> actualOfferAppList = supervisorService.getStudentsStatus(dummySupervisor.getId());
 
         assertThat(actualOfferAppList).isEqualTo(dummyOfferAppList);
         assertThat(actualOfferAppList.size()).isEqualTo(dummyOfferAppList.size());
+    }
+
+    @Test
+    public void testGetStudentsStatus_withNullSupervisorId() {
+        assertThrows(IllegalArgumentException.class,
+                () -> supervisorService.getStudentsStatus(null));
+    }
+
+    @Test
+    public void testGetStudentsStatus_withInvalidSupervisorId() {
+        Supervisor dummySupervisor = getDummySupervisor();
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> supervisorService.getStudentsStatus(dummySupervisor.getId()));
     }
 
     @Test

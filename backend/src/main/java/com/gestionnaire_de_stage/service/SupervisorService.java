@@ -47,7 +47,6 @@ public class SupervisorService {
         return supervisorRepository.findAll();
     }
 
-
     public Supervisor update(Supervisor supervisor, Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         Assert.isTrue(supervisor != null, "Le superviseur est null");
@@ -75,8 +74,12 @@ public class SupervisorService {
         return supervisorRepository.findSupervisorByEmailAndPassword(email, password);
     }
 
-    public List<OfferApplication> getStudentsStatus(Supervisor supervisor) {
-        List<OfferApplication> offerApplicationList = offerApplicationService.getAllBySupervisorId(supervisor.getId());
+    public List<OfferApplication> getStudentsStatus(Long supervisor_id) throws IdDoesNotExistException {
+        Assert.isTrue(supervisor_id != null, "L'id ne peut pas être null");
+        if (isIdNotValid(supervisor_id)) {
+            throw new IdDoesNotExistException();
+        }
+        List<OfferApplication> offerApplicationList = offerApplicationService.getAllBySupervisorId(supervisor_id);
         return offerApplicationList;
     }
 
@@ -85,7 +88,7 @@ public class SupervisorService {
                 supervisorRepository.existsByEmail(supervisor.getEmail());
     }
 
-    private boolean isIdNotValid(Long id) {
+    public boolean isIdNotValid(Long id) {
         return !supervisorRepository.existsById(id);
     }
 

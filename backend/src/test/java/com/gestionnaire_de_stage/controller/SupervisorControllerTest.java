@@ -201,10 +201,9 @@ public class SupervisorControllerTest {
     public void testGetAllStudentsStatus_withValidEntries() throws Exception {
         Supervisor dummySupervisor = getDummySupervisor();
         List<OfferApplication> dummyOfferAppList = getDummyOfferAppList();
-        when(supervisorService.getOneByID(any())).thenReturn(dummySupervisor);
         when(supervisorService.getStudentsStatus(any())).thenReturn(dummyOfferAppList);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/studentsStatus/" + dummySupervisor.getId() )
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId() )
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -216,9 +215,9 @@ public class SupervisorControllerTest {
     @Test
     public void testGetAllStudentsStatus_withNullSupervisorId() throws Exception {
         Supervisor dummySupervisor = getDummySupervisor();
-        when(supervisorService.getOneByID(any())).thenThrow(new IllegalArgumentException("ID est null"));
+        when(supervisorService.getStudentsStatus(any())).thenThrow(new IllegalArgumentException("ID est null"));
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/studentsStatus/" + dummySupervisor.getId() )
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId() )
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -229,9 +228,9 @@ public class SupervisorControllerTest {
     @Test
     public void testGetAllStudentsStatus_withInvalidSupervisorId() throws Exception {
         Supervisor dummySupervisor = getDummySupervisor();
-        when(supervisorService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
+        when(supervisorService.getStudentsStatus(any())).thenThrow(IdDoesNotExistException.class);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/studentsStatus/" + dummySupervisor.getId())
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();

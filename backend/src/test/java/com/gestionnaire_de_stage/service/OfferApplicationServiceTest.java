@@ -44,6 +44,8 @@ class OfferApplicationServiceTest {
     private ManagerService managerService;
     @Mock
     private OfferApplicationRepository offerApplicationRepository;
+    @Mock
+    private SupervisorService supervisorService;
 
     @Test
     void testCreate() throws Exception {
@@ -302,15 +304,31 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    void testGetAllBySupervisorId() {
+    void testGetAllBySupervisorId_withValidEntries() throws Exception {
         List<OfferApplication> dummyOfferAppList = getDummyOfferAppList();
         long supervisor_id = 1L;
+        when(supervisorService.isIdNotValid(any())).thenReturn(false);
         when(offerApplicationRepository.findAllByCurriculum_Student_Supervisor_Id(any())).thenReturn(dummyOfferAppList);
 
         List<OfferApplication> actualOfferAppList = offerApplicationService.getAllBySupervisorId(supervisor_id);
 
         assertThat(actualOfferAppList).isEqualTo(dummyOfferAppList);
         assertThat(actualOfferAppList.size()).isEqualTo(dummyOfferAppList.size());
+    }
+
+    @Test
+    void testGetAllBySupervisorId_withNullSupervisorId() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.getAllBySupervisorId(null));
+    }
+
+    @Test
+    void testGetAllBySupervisorId_withInvalidSupervisorId() {
+        long supervisorId = 1L;
+        when(supervisorService.isIdNotValid(any())).thenReturn(true);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerApplicationService.getAllBySupervisorId(supervisorId));
     }
 
     private OfferApplication getDummyOfferApp() {

@@ -89,11 +89,9 @@ public class SupervisorController {
 
     @GetMapping("/students_status/{supervisor_id}")
     public ResponseEntity<?> getAllStudentsStatus(@PathVariable Long supervisor_id) {
-        Supervisor supervisor;
         List<OfferApplication> offerApplicationList;
         try {
-            supervisor = supervisorService.getOneByID(supervisor_id);
-            offerApplicationList = supervisorService.getStudentsStatus(supervisor);
+            offerApplicationList = supervisorService.getStudentsStatus(supervisor_id);
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
