@@ -1,7 +1,7 @@
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 import {useState} from "react";
-import {createStage} from "../../../services/stage-service";
+import {supervisorCreateForm} from "../../../services/stage-service";
 
 
 export default function VisitForm() {
@@ -71,7 +71,7 @@ export default function VisitForm() {
     const sendVisitForm = (e) => {
         e.preventDefault();
         convertAllNumberFieldsToNumbers();
-        createStage(visitForm).then();
+        supervisorCreateForm(visitForm).then();
     };
 
     return <form onSubmit={sendVisitForm}>
