@@ -9,7 +9,7 @@ export default function SupervisorView() {
     const {path} = useRouteMatch();
     let auth = useAuth();
     return (<ContainerBox>
-        <Route exact path={`${path}/form_visit_company`}>
+        <Route exact path={`${path}/supervisor_form_visit_company`}>
             <SupervisorVisitForm/>
         </Route>
         <Route exact path={`${path}/students/status`}>
