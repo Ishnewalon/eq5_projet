@@ -1,9 +1,11 @@
-export function Rapports1() {
-  return (
-    <div className="Rapports">
+import {ContainerBox} from "../../SharedComponents/ContainerBox/ContainerBox";
 
-    </div>
-  );
+export function RapportOfferValid() {
+    return (
+        <ContainerBox>
+            <h1>RapportOfferValid</h1>
+        </ContainerBox>
+    );
 }
 
 

@@ -10,6 +10,7 @@ import {UserType} from "../../enums/UserTypes";
 import StartContract from "./StartContract/StartContract";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useAuth} from "../../services/use-auth";
+import RapportsView from "./RapportsView/RapportsView";
 
 export default function ManagerView() {
     const {path} = useRouteMatch();
@@ -38,6 +39,9 @@ export default function ManagerView() {
             </Route>
             <Route exact path={`${path}`}>
                 <h1 className="text-center">Bonjour {auth.user.firstName}!</h1>
+            </Route>
+            <Route exact path={`${path}/rapports`}>
+                <RapportsView/>
             </Route>
         </ContainerBox>
     )
