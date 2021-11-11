@@ -1,6 +1,5 @@
 import React from 'react';
 import './OfferView.css';
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 
 export default function OfferView({offer}) {
     return <>
