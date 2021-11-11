@@ -14,32 +14,33 @@ export default function VisitForm() {
         zip: '',
         ville: '',
         nom_stagiaire: '',
-        date_stage: null,
+        date_stage: undefined,
         stageCourant: 1,
-        question_un: '',
-        question_deux: '',
-        question_trois: '',
+        question_un: 'TOTALEMENT_EN_ACCORD',
+        question_deux: 'TOTALEMENT_EN_ACCORD',
+        question_trois: 'TOTALEMENT_EN_ACCORD',
         nb_heures_mois_un: 0,
         nb_heures_mois_deux: 0,
         nb_heures_mois_trois: 0,
-        question_quatre: '',
-        question_cinq: '',
-        question_six: '',
-        question_sept: '',
+        question_quatre: 'TOTALEMENT_EN_ACCORD',
+        question_cinq: 'TOTALEMENT_EN_ACCORD',
+        question_six: 'TOTALEMENT_EN_ACCORD',
+        question_sept: 'TOTALEMENT_EN_ACCORD',
         salaire_stagiaire: 0,
-        question_huit: '',
-        question_neuf: '',
-        question_dix: '',
+        question_huit: 'TOTALEMENT_EN_ACCORD',
+        question_neuf: 'TOTALEMENT_EN_ACCORD',
+        question_dix: 'TOTALEMENT_EN_ACCORD',
         commentaires: '',
-        question_onze: '',
-        question_douze: '',
+        question_onze: 'Premier stage',
+        question_douze: 'Un stagiaire',
         question_treize: '',
         question_quatorze_heures_un_a: '',
         question_quatorze_heures_un_b: '',
         question_quatorze_heures_un_c: '',
         question_quatorze_heures_un_d: '',
         question_quatorze_heures_un_e: '',
-        question_quatorze_heures_un_f: ''
+        question_quatorze_heures_un_f: '',
+        question_quinze: ''
     });
 
     const handleChange = (event) => {
@@ -54,48 +55,62 @@ export default function VisitForm() {
         })
     }
 
+    function convertAllNumberFieldsToNumbers() {
+        Object.keys(visitForm).forEach(key => {
+            if (!isNaN(visitForm[key])) {
+                setVisitForm((prevalue) => {
+                    return {
+                        ...prevalue,
+                        [key]: parseInt(visitForm[key])
+                    }
+                })
+            }
+        })
+    }
+
     const sendVisitForm = (e) => {
         e.preventDefault();
-        console.log(JSON.stringify(visitForm, null, 2));
+        convertAllNumberFieldsToNumbers();
+
     };
 
     return <form onSubmit={sendVisitForm}>
-        <h1 className='text-center'>Évaluation de stage</h1>
+        <h1 className='text-center text-decoration-underline'>Évaluation de stage</h1>
         <div className='px-3 pb-3 pt-1 rounded'>
             <h4 className='mt-4 mb-0 text-decoration-underline'>Identification de l'entreprise</h4>
             <FormGroup>
                 <FormField>
                     <label>Nom de l'entreprise</label>
-                    <input type="text" name='entrepriseNom' value={visitForm.entrepriseNom} onChange={(e) => handleChange(e)} autoComplete='off' placeholder="Nom de l'entreprise"
+                    <input type="text" name='entrepriseNom' value={visitForm.entrepriseNom} onChange={e => handleChange(e)} autoComplete='off' placeholder="Nom de l'entreprise"
                            required/>
                 </FormField>
                 <FormField>
                     <label>Personne contact</label>
-                    <input type="text" name='personne_contact' value={visitForm.personne_contact} onChange={(e) => handleChange(e)} placeholder="Personne contact" required/>
+                    <input type="text" name='personne_contact' value={visitForm.personne_contact} onChange={e => handleChange(e)} placeholder="Personne contact" required/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>Téléphone</label>
-                    <input type="text" name='phone' value={visitForm.phone} onChange={(e) => handleChange(e)} autoComplete='off' placeholder="Téléphone" required/>
+                    <input type="text" name='phone' value={visitForm.phone} onChange={e => handleChange(e)} autoComplete='off' placeholder="Téléphone" required/>
                 </FormField>
                 <FormField>
                     <label>Télécopieur</label>
-                    <input type="text" name='telecopieur' value={visitForm.telecopieur} onChange={(e) => handleChange(e)} autoComplete='off' placeholder="Télécopieur" required/>
+                    <input type="text" name='telecopieur' value={visitForm.telecopieur} onChange={e => handleChange(e)} autoComplete='off' placeholder="Télécopieur" required/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>Adresse</label>
-                    <input type="text" name='adresse' value={visitForm.adresse} onChange={(e) => handleChange(e)} placeholder="Adresse" required/>
+                    <input type="text" name='adresse' value={visitForm.adresse} onChange={e => handleChange(e)} placeholder="Adresse" required/>
                 </FormField>
                 <FormField>
                     <label>Code postal</label>
-                    <input type="text" name='zip' value={visitForm.zip} onChange={(e) => handleChange(e)} placeholder="Code postal" required/>
+                    <input type="text" name='zip' value={visitForm.zip} onChange={e => handleChange(e)} placeholder="Code postal" required/>
                 </FormField>
                 <FormField>
                     <label>Ville</label>
-                    <input type="text" name='ville' value={visitForm.ville} onChange={(e) => handleChange(e)} placeholder="Ville" required/>
+                    <input type="text" name='ville' value={visitForm.ville} onChange={e => handleChange(e)} placeholder="Ville" required/>
                 </FormField>
             </FormGroup>
         </div>
@@ -130,7 +145,7 @@ export default function VisitForm() {
                 <FormField>
                     <label>Les tâches confiées au stagiaire sont conformes aux tâches annoncées dans l’entente de
                         stage?</label>
-                    <select required name='question_un' value={visitForm.question_un} onChange={(e) => handleChange(e)}>
+                    <select required name='question_un' value={visitForm.question_un} onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
                         <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
@@ -140,7 +155,7 @@ export default function VisitForm() {
                 </FormField>
                 <FormField>
                     <label>Des mesures d’accueil facilitent l’intégration du nouveau stagiaire?</label>
-                    <select required name='question_deux' value={visitForm.question_deux} onChange={(e) => handleChange(e)}>
+                    <select required name='question_deux' value={visitForm.question_deux} onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
                         <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
@@ -150,7 +165,7 @@ export default function VisitForm() {
                 </FormField>
                 <FormField>
                     <label>Le temps réel consacré à l’encadrement du stagiaire est suffisant?</label>
-                    <select required name='question_trois' value={visitForm.question_trois} onChange={(e) => handleChange(e)}>
+                    <select  required name='question_trois' value={visitForm.question_trois} onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
                         <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
@@ -162,21 +177,22 @@ export default function VisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Nombre d'heures pour le 1er mois?</label>
-                    <input type="number" min='0' max='240' name="nb_heures_mois_un" value={visitForm.nb_heures_mois_un} onChange={(e) => handleChange(e)} placeholder="Nombre d'heures" required/>
+                    <input type="number" min='0' max='240' name="nb_heures_mois_un" value={visitForm.nb_heures_mois_un} onChange={e => handleChange(e)} placeholder="Nombre d'heures" required/>
                 </FormField>
                 <FormField>
                     <label>Nombre d'heures pour le 2ième mois?</label>
-                    <input type="number" min='0' max='240' name='nb_heures_mois_deux' value={visitForm.nb_heures_mois_deux} onChange={(e) => handleChange(e)} placeholder="Nombre d'heures" required/>
+                    <input type="number" min='0' max='240' name='nb_heures_mois_deux' value={visitForm.nb_heures_mois_deux} onChange={e => handleChange(e)} placeholder="Nombre d'heures" required/>
                 </FormField>
                 <FormField>
                     <label>Nombre d'heures pour le 3ième mois?</label>
-                    <input type="number" max='240' name='nb_heures_mois_trois' min='0' value={visitForm.nb_heures_mois_trois} onChange={(e) => handleChange(e)} placeholder="Nombre d'heures" required/>
+                    <input type="number" max='240' name='nb_heures_mois_trois' min='0' value={visitForm.nb_heures_mois_trois} onChange={e => handleChange(e)} placeholder="Nombre d'heures" required/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>L’environnement de travail respecte les normes d’hygiène et de sécurité au travail?</label>
-                    <select required name='question_quatre' value={visitForm.question_quatre} onChange={(e) => handleChange(e)}>
+
+                    <select required name='question_quatre' value={visitForm.question_quatre} onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
                         <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
@@ -186,7 +202,7 @@ export default function VisitForm() {
                 </FormField>
                 <FormField>
                     <label>Le climat de travail est agréable?</label>
-                    <select required name='question_cinq' value={visitForm.question_cinq} onChange={(e) => handleChange(e)}>
+                    <select required name='question_cinq' value={visitForm.question_cinq} onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
                         <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
@@ -196,7 +212,7 @@ export default function VisitForm() {
                 </FormField>
                 <FormField>
                     <label>Le milieu de stage est accessible par transport en commun?</label>
-                    <select required name='question_six' value={visitForm.question_six} onChange={(e) => handleChange(e)}>
+                    <select required name='question_six' value={visitForm.question_six} onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
                         <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
@@ -208,7 +224,7 @@ export default function VisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Le salaire offert est intéressant pour le stagiaire?</label>
-                    <select required name='question_sept' value={visitForm.question_sept} onChange={(e) => handleChange(e)}>
+                    <select required name='question_sept' value={visitForm.question_sept} onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
                         <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
@@ -218,13 +234,13 @@ export default function VisitForm() {
                 </FormField>
                 <FormField>
                     <label>Préciser le salaire par heure</label>
-                    <input type="number" min='10' name='salaire_stagiaire' value={visitForm.salaire_stagiaire} onChange={(e) => handleChange(e)} />
+                    <input required type="number" min='10' name='salaire_stagiaire' value={visitForm.salaire_stagiaire} onChange={(e) => handleChange(e)} />
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>La communication avec le superviseur de stage facilite le déroulement du stage?</label>
-                    <select required name='question_huit' value={visitForm.question_huit} onChange={(e) => handleChange(e)}>
+                    <select required name='question_huit' value={visitForm.question_huit} onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
                         <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
@@ -234,7 +250,7 @@ export default function VisitForm() {
                 </FormField>
                 <FormField>
                     <label>L’équipement fourni est adéquat pour réaliser les tâches confiées?</label>
-                    <select required name='question_neuf' value={visitForm.question_neuf} onChange={(e) => handleChange(e)}>
+                    <select required name='question_neuf' value={visitForm.question_neuf} onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
                         <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
@@ -244,7 +260,7 @@ export default function VisitForm() {
                 </FormField>
                 <FormField>
                     <label>Le volume de travail est acceptable?</label>
-                    <select required name='question_dix' value={visitForm.question_dix} onChange={(e) => handleChange(e)}>
+                    <select required name='question_dix' value={visitForm.question_dix} onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
                         <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
@@ -256,17 +272,17 @@ export default function VisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Commentaires</label>
-                    <textarea required name='commentaires' value={visitForm.commentaires} onChange={(e) => handleChange(e)}/>
+                    <textarea  name='commentaires' value={visitForm.commentaires} onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
         </div>
         <hr/>
         <div className='px-3 pb-3 pt-1 rounded'>
-            <h4 className='fw-bold p-2 rounded mt-4 mb-0'>Observations générales</h4>
+            <h4 className='fw-bold p-2 rounded mt-4 mb-0 text-decoration-underline'>Observations générales</h4>
             <FormGroup>
                 <FormField>
                     <label>Ce milieu est à privilégier pour le stage</label>
-                    <select required name='question_onze' value={visitForm.question_onze} onChange={(e) => handleChange(e)}>
+                    <select required name='question_onze' value={visitForm.question_onze} onChange={e => handleChange(e)}>
                         <option value="Choisissez une option" selected disabled>Choisissez une option</option>
                         <option value='Premier stage'>Premier stage</option>
                         <option value='Deuxième stage'>Deuxième stage</option>
@@ -275,7 +291,7 @@ export default function VisitForm() {
                 <FormField>
                     <label>Ce milieu est ouvert à accueillir deux stagiaires
                     </label>
-                    <select required name='question_douze' value={visitForm.question_douze} onChange={(e) => handleChange(e)}>
+                    <select required name='question_douze' value={visitForm.question_douze} onChange={e => handleChange(e)}>
                         <option value="Choisissez une option" selected disabled>Choisissez une option</option>
                         <option value='Un stagiaire'>Un stagiaire</option>
                         <option value='Deux stagiaires'>Deux stagiaires</option>
@@ -328,9 +344,9 @@ export default function VisitForm() {
                 <>
                     <label/>
                     <div className='d-flex justify-content-around align-items-center flex-row'>
-                        <input type="radio" onChange={e => handleChange(e)} name='question_treize' value='Oui' required/>
+                        <input type="radio" onChange={e => handleChange(e)} name='question_quinze' value='Oui' required/>
                         <label>Oui</label>
-                        <input type="radio" onChange={e => handleChange(e)} name='question_treize' value='Non' required/>
+                        <input type="radio" onChange={e => handleChange(e)} name='question_quinze' value='Non' required/>
                         <label>Non</label>
                     </div>
                 </>
