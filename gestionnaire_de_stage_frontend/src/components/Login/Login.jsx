@@ -5,7 +5,7 @@ import FieldEmail from "../SharedComponents/Fields/FieldEmail";
 import {useHistory} from "react-router-dom";
 import {UserType} from "../../enums/UserTypes";
 import {useAuth} from "../../services/use-auth";
-import {InputGroup} from "../SharedComponents/InputGroup/InputGroup";
+import {FormField} from "../SharedComponents/FormField/FormField";
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 
 
@@ -32,16 +32,14 @@ export default function Login() {
     return (<>
             <h2 className="text-center">Se connecter</h2>
             <FormGroup>
-                <>
+                <FormField>
                     <label>Type d'utilisateur</label>
-                    <InputGroup>
-                        <select name="choice" id="userTypes"
-                                onChange={(e) => setUserType(e.target.value)}>
-                            {myTypes.map(type => <option key={type}
-                                                         value={UserType[type][0]}>{UserType[type][1]}</option>)}
-                        </select>
-                    </InputGroup>
-                </>
+                    <select name="choice" id="userTypes"
+                            onChange={(e) => setUserType(e.target.value)}>
+                        {myTypes.map(type => <option key={type}
+                                                     value={UserType[type][0]}>{UserType[type][1]}</option>)}
+                    </select>
+                </FormField>
             </FormGroup>
             <FormGroup>
                 <FieldEmail email={email} label="Email" placeholder="Votre Email"
