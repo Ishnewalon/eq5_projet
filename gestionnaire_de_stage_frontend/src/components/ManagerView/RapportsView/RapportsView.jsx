@@ -17,13 +17,6 @@ export default function RapportsView() {
                 </Link>
             </ContainerBox>
 
-            <ContainerBox>
-                <Link className={"text-white text-center fst-italic"} to="/dashboard/rapports/2">
-                    <h3>Rapport des offres non valides</h3>
-                </Link>
-            </ContainerBox>
-
-
         </>
 
     )
