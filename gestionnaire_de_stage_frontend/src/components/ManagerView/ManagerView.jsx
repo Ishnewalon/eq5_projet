@@ -11,6 +11,7 @@ import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useAuth} from "../../services/use-auth";
 import RapportsView from "./RapportsView/RapportsView";
 import {RapportOfferInvalid, RapportOfferValid} from "./RapportsView/Rapports";
+import StudentWithoutCvView from "./StudentWithoutCvView/StudentWithoutCvView";
 
 export default function ManagerView() {
     const {path} = useRouteMatch();
@@ -45,6 +46,9 @@ export default function ManagerView() {
             </Route>
             <Route path={`${path}/rapports/2`}>
                 <RapportOfferInvalid/>
+            </Route>
+            <Route path={`${path}/rapports/3`}>
+                <StudentWithoutCvView/>
             </Route>
         </ContainerBox>
     )
