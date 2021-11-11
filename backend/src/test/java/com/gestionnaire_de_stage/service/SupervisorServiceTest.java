@@ -26,10 +26,10 @@ public class SupervisorServiceTest {
     SupervisorService supervisorService;
 
     @Mock
-    SupervisorRepository supervisorRepository;
+    private SupervisorRepository supervisorRepository;
 
     @Mock
-    OfferApplicationService offerApplicationService;
+    private OfferApplicationService offerApplicationService;
 
     @Test
     public void testCreate_withValidSupervisor() throws SupervisorAlreadyExistsException {

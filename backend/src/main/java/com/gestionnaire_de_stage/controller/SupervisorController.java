@@ -87,7 +87,7 @@ public class SupervisorController {
         return ResponseEntity.ok(new ResponseMessage(response));
     }
 
-    @GetMapping("/studentsStatus/{supervisor_id}")
+    @GetMapping("/students_status/{supervisor_id}")
     public ResponseEntity<?> getAllStudentsStatus(@PathVariable Long supervisor_id) {
         Supervisor supervisor;
         List<OfferApplication> offerApplicationList;
