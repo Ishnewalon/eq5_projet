@@ -3,9 +3,11 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.ContractRepository;
+import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,8 +41,12 @@ public class ContractServiceTest {
 
     @Mock
     private StudentService studentService;
+
     @Mock
     private OfferApplicationService offerApplicationService;
+
+    @Mock
+    private StudentRepository studentRepository;
 
     @Test
     public void testGetAllByManagerSignatureNull() {
@@ -238,6 +244,34 @@ public class ContractServiceTest {
 
         assertThrows(IdDoesNotExistException.class,
                 () -> contractService.getContractByStudentId(dummyContract.getStudent().getId()));
+    }
+
+    @Test
+    public void testGetContractByStudentMatricule_withValidEntries() throws Exception {
+        Contract dummyContract = getDummyContract();
+        String matricule = "1234567";
+        when(studentRepository.existsByMatricule(any())).thenReturn(true);
+        when(contractRepository.getContractByStudent_Matricule(any())).thenReturn(dummyContract);
+
+        Contract actualContract = contractService.getContractByStudentMatricule(matricule);
+
+        assertThat(actualContract).isEqualTo(dummyContract);
+        assertThat(actualContract.getId()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testGetContractByStudentMatricule_withNullMatricule() {
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.getContractByStudentMatricule(null));
+    }
+
+    @Test
+    public void testGetContractByStudentMatricule_withInvalidMatricule() {
+        String matricule = "1234567";
+        when(studentRepository.existsByMatricule(any())).thenReturn(false);
+
+        assertThrows(MatriculeDoesNotExistException.class,
+                () -> contractService.getContractByStudentMatricule(matricule));
     }
 
     @Test
