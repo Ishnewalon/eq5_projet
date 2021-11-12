@@ -73,4 +73,6 @@ public class EvalMilieuStageDTO {
     String questionQuatorzeHeuresUnF;
 
     String questionQuinze;
+
+    String matricule;
 }
