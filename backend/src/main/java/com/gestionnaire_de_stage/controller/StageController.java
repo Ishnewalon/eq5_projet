@@ -19,6 +19,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/stages")
@@ -46,8 +47,9 @@ public class StageController {
     @PostMapping("/supervisor/fill_form")
     public ResponseEntity<?> fillEvalMilieuStage(@RequestBody EvalMilieuStageDTO evalMilieuStageDTO, HttpServletRequest request, HttpServletResponse response) {
         Stage stage = new Stage();
+        evalMilieuStageDTO.setSignatureDate(LocalDate.now());
         try {
-            stage.setContract(contractService.getContractByStudentMatricule(evalMilieuStageDTO.getMatricule()));
+            stage.setContract(contractService.getContractByStudentMatricule(evalMilieuStageDTO.getMatriculeEtudiant()));
             WebContext context = new WebContext(request, response, servletContext);
             context.setVariable("formInfo", evalMilieuStageDTO);
             String contractHtml = templateEngine.process("evalMilieuStage", context);

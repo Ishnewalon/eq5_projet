@@ -2,6 +2,8 @@ package com.gestionnaire_de_stage.dto;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class EvalMilieuStageDTO {
 
@@ -23,11 +25,12 @@ public class EvalMilieuStageDTO {
 
     String dateStage;
 
-    String stageCourant;
+    int stageCourant;
 
     String questionUn;
 
     String questionDeux;
+
     String questionTrois;
 
     int nbHeuresMoisUn;
@@ -74,5 +77,9 @@ public class EvalMilieuStageDTO {
 
     String questionQuinze;
 
-    String matricule;
+    String signatureSuperviseur;
+
+    String matriculeEtudiant;
+
+    LocalDate signatureDate;
 }
