@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {getStudentsWithoutCv} from "../../../services/user-service";
+import {getAllStudents} from "../../../services/user-service";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 
 
-export default function StudentWithoutCvView() {
+export default function StudentSignIn() {
 
     const [studentList, setStudentList] = useState([])
 
     useEffect(() => {
-        getStudentsWithoutCv()
+        getAllStudents()
             .then(studentList => {
                 setStudentList(studentList)
             })
@@ -21,7 +21,7 @@ export default function StudentWithoutCvView() {
 
     return (
         <div className='container'>
-            <h2 className="text-center mb-4">Liste des étudiants sans Cv</h2>
+            <h2 className="text-center mb-4">Liste des étudiants inscrits</h2>
             <Table className={"w-75 mx-auto"}>
                 <TableHeader>
                     <th>#</th>

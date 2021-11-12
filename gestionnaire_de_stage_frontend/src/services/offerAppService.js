@@ -17,7 +17,6 @@ export async function applyToOffer(offerApp) {//TODO: Should not be able to appl
                 }
             )
         });
-
 }
 
 export async function getAllApplicants(email) {
