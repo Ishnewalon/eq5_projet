@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferDTO;
+import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.*;
@@ -195,6 +196,15 @@ public class CurriculumServiceTest {
     public void testFindAllByStudent_withNullStudent() {
         assertThrows(IllegalArgumentException.class,
                 () -> curriculumService.findAllByStudent(null));
+    }
+
+    @Test
+    public void testCurriculumsToStudentCurriculumsDTO_withValidEntries() {
+        Student student = getDummyStudent();
+        List<Curriculum> curriculumList = getDummyCurriculumList();
+
+        StudentCurriculumsDTO actual = curriculumService.allCurriculumsByStudentAsStudentCurriculumsDTO(student);
+        assertThat(actual).isNotNull();
     }
 
     @Test

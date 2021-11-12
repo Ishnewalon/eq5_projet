@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferDTO;
+import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
@@ -102,6 +103,12 @@ public class CurriculumService {
         Assert.notNull(student, "L'etudiant ne peut pas être null");
 
         return curriculumRepository.findAllByStudent(student);
+    }
+
+    public StudentCurriculumsDTO allCurriculumsByStudentAsStudentCurriculumsDTO(Student student) {
+
+
+        return null;
     }
 
     public boolean validate(Long idCurriculum, boolean valid) throws
