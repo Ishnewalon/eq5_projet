@@ -1,13 +1,12 @@
-import './ValiderCv.css'
 import React, {useEffect, useState} from "react";
-import {getCurriculumWithInvalidCV, validateCurriculum} from "../../../services/curriculum-service";
-import ListStudentView from "./ListStudentView/ListStudentView";
+import {downloadCV, getCurriculumWithInvalidCV, validateCurriculum} from "../../../services/curriculum-service";
+import {toast} from "../../../utility";
+import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 
 
 export default function CurriculumValidation() {
 
     const [curriculumList, setCurriculumList] = useState([]);
-    const [valid, setValid] = useState(false);
     useEffect(() => {
         getCurriculumWithInvalidCV()
             .then(curriculumList => {
@@ -19,35 +18,61 @@ export default function CurriculumValidation() {
             });
     }, [])
 
-    const validateCv = (id, valid) => {
-        validateCurriculum(id, valid).then(
-            () => {
-                setValid(valid)
-            },
-            e => console.error(e)
-        );
 
+    const downloadStudentCv = (cv) => {
+        const {id} = cv
+        downloadCV(id).then(
+            blob => {
+                let myUrl = URL.createObjectURL(blob);
+
+                let myFilename = cv.student.firstName + "_" + cv.student.lastName + "_" + id + ".pdf";
+
+                const a = document.createElement('a')
+                a.href = myUrl
+                a.download = myFilename;
+                a.click();
+                URL.revokeObjectURL(myUrl);
+                toast.fire({title: 'Téléchargement en cours'}).then()
+            }
+        );
+    }
+
+
+    const validateCv = (id, valid) => {
+        validateCurriculum(id, valid).then();
     }
 
     return (
         <div className='container'>
             <h2 className="text-center">Liste des étudiants</h2>
-            {curriculumList.map((cv, index) =>
-                <div key={index}>
-                    <ul>
-                        <li><ListStudentView cv={cv}/></li>
-                    </ul>
-                    <div className={valid ? 'border-left border-success' : 'border-left border-danger'}>
-                        <div className="d-flex justify-content-between align-items-center">
-                            <button id="validateBtn" className="btn btn-success fw-bold text-white w-50"
-                                    onClick={() => validateCv(cv.id, true)}>Valide
+            <Table>
+                <TableHeader>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Télécharger CV</th>
+                    <th>Validation</th>
+                </TableHeader>
+
+                {curriculumList.map((cv, index) =>
+                    <TableRow key={index}>
+                        <td>{cv.student.lastName}</td>
+                        <td>{cv.student.firstName}</td>
+                        <td>
+                            <button className="btn btn-primary" onClick={() => downloadStudentCv(cv)}>Télécharger Cv
                             </button>
-                            <button id="invalidateBtn" className="btn btn-danger fw-bold text-white w-50"
-                                    onClick={() => validateCv(cv.id, false)}>Invalide
-                            </button>
-                        </div>
-                    </div>
-                </div>)}
+                        </td>
+                        <td>
+                            <div className="btn-group">
+                                <button className="btn btn-outline-success"
+                                        onClick={() => validateCv(cv.id, true)}>Valide
+                                </button>
+                                <button className="btn btn-outline-danger"
+                                        onClick={() => validateCv(cv.id, false)}>Invalide
+                                </button>
+                            </div>
+                        </td>
+                    </TableRow>)}
+            </Table>
         </div>
     )
 }

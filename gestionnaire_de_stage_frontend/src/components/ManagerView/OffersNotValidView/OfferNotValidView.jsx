@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {getAllOffersValid} from '../../../services/offer-service'
+import {getAllOffersInvalid} from '../../../services/offer-service'
 import OfferView from '../../OfferView/OfferView';
 
-export default function OffersValidView() {
+export default function OfferNotValidView() {
 
     const [offers, setOffers] = useState([])
     useEffect(() => {
-        getAllOffersValid()
+        getAllOffersInvalid()
             .then(offers => {
                 setOffers(offers)
             })
@@ -16,13 +16,13 @@ export default function OffersValidView() {
             });
     }, [])
 
-
+// TODO: show msg when no offers
     return (
         <div className='container'>
-            <h2 className="text-center">Offres de Stage</h2>
+            <h2 className="text-center mb-4">Offres de Stage non validées</h2>
             <ul>
                 {offers.map((offer, index) =>
-                    <li className={"mb-4"} key={index}>
+                    <li className={"mb-3"} key={index}>
                         <OfferView offer={offer}/>
                     </li>
                 )}

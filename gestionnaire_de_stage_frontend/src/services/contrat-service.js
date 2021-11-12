@@ -101,3 +101,15 @@ export async function startSignerFetch(idOfferApplication, idManager) {
         }, err => console.error(err)
     );
 }
+
+export async function getAllSignedContractsForManager(idManager){
+    return getAllSignedContracts(idManager, UserType.MANAGER[0]);
+}
+
+export async function getAllSignedContractsForMonitor(idMonitor){
+    return getAllSignedContracts(idMonitor, UserType.MONITOR[0]);
+}
+
+export async function getAllSignedContracts(id, userType){
+    return await fetch(`${urlBackend}/contracts/${userType}/signed/${id}`, requestInit(methods.GET)).then(res => res.json());
+}
