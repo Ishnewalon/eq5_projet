@@ -82,6 +82,13 @@ export default function SupervisorVisitForm() {
             <h4 className='mt-4 mb-0 text-decoration-underline'>Identification de l'entreprise</h4>
             <FormGroup>
                 <FormField>
+                    <label></label>
+                    <input type='number' min='0' name='matriculeEtudiant' value={visitForm.matriculeEtudiant}
+                           onChange={e => handleChange(e)} />
+                </FormField>
+            </FormGroup>
+            <FormGroup>
+                <FormField>
                     <label>Nom de l'entreprise</label>
                     <input type="text" name='entrepriseNom' value={visitForm.entrepriseNom}
                            onChange={e => handleChange(e)} autoComplete='off' placeholder="Nom de l'entreprise"
