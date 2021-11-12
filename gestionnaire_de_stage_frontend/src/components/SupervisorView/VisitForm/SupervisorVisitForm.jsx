@@ -8,7 +8,7 @@ export default function SupervisorVisitForm() {
 
     const [visitForm, setVisitForm] = useState({
         entrepriseNom: '',
-        matriculeEtudiant: 0,
+        matriculeEtudiant: '',
         signatureSuperviseur: '',
         personneContact: '',
         phone: '',
@@ -17,7 +17,7 @@ export default function SupervisorVisitForm() {
         zip: '',
         ville: '',
         nomStagiaire: '',
-        dateStage: undefined,
+        dateStage: '',
         stageCourant: 1,
         questionUn: 'TOTALEMENT_EN_ACCORD',
         questionDeux: 'TOTALEMENT_EN_ACCORD',
@@ -82,8 +82,8 @@ export default function SupervisorVisitForm() {
             <h4 className='mt-4 mb-0 text-decoration-underline'>Identification de l'entreprise</h4>
             <FormGroup>
                 <FormField>
-                    <label></label>
-                    <input type='number' min='0' name='matriculeEtudiant' value={visitForm.matriculeEtudiant}
+                    <label>Matricule Étudiant</label>
+                    <input type='text' pattern='^[0-9]{7}$' title='Il faut 7 chiffres pour la matricule étudiante' name='matriculeEtudiant' value={visitForm.matriculeEtudiant}
                            onChange={e => handleChange(e)} />
                 </FormField>
             </FormGroup>
