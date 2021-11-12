@@ -9,6 +9,7 @@ import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import com.gestionnaire_de_stage.repository.StudentRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -20,7 +21,7 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final CurriculumService curriculumService;
 
-    public StudentService(StudentRepository studentRepository, CurriculumService curriculumService) {
+    public StudentService(StudentRepository studentRepository, @Lazy CurriculumService curriculumService) {
         this.studentRepository = studentRepository;
         this.curriculumService = curriculumService;
     }
