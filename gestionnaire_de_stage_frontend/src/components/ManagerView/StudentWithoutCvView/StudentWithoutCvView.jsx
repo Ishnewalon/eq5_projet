@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {getStudentsWithoutCv} from "../../../services/user-service";
+import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 
 
 export default function StudentWithoutCvView() {
@@ -21,25 +22,22 @@ export default function StudentWithoutCvView() {
     return (
         <div className='container'>
             <h2 className="text-center mb-4">Liste des étudiants sans Cv</h2>
-            {studentList.map((student, index) =>
-                <div key={index}>
-                    <div className="shadow-lg rounded-top p-3 mt-3 mb-4 border-left border-right">
-                        <div className={'d-flex align-items-center flex-column'}>
-                            <h3 className={'d-inline-block text-dark'}>
-                            <span className={"badge rounded-pill"}>
-                                 {student.firstName} {student.lastName}
-                            </span>
-                            </h3>
-                            <h5 className={'d-inline-block'}>
-                                Matricule: {student.matricule}
-                            </h5>
-
-                            <h5 className={'d-inline-block'}>
-                                Adresse électronique: {student.email}
-                            </h5>
-                        </div>
-                    </div>
-                </div>)}
+            <Table className={"w-75 mx-auto"}>
+                <TableHeader>
+                    <th>#</th>
+                    <th>Étudiant</th>
+                    <th>Matricule</th>
+                    <th>Adresse électronique</th>
+                </TableHeader>
+                {studentList.map((student, index) =>
+                    <TableRow key={index}>
+                        <th>{student.id}</th>
+                        <td>{student.firstName} {student.lastName}</td>
+                        <td>{student.matricule}</td>
+                        <td>{student.email}</td>
+                    </TableRow>
+                )}
+            </Table>
         </div>
     )
 }
