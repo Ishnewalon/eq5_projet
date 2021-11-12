@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CurriculumService {
@@ -95,6 +96,12 @@ public class CurriculumService {
 
     public List<Curriculum> findAllCurriculumValidated() {
         return curriculumRepository.findAllByIsValidIsTrue();
+    }
+
+    public List<Curriculum> findAllByStudent(Student student) throws IllegalArgumentException {
+        Assert.notNull(student, "L'etudiant ne peut pas être null");
+
+        return curriculumRepository.findAllByStudent(student);
     }
 
     public boolean validate(Long idCurriculum, boolean valid) throws

@@ -181,7 +181,24 @@ public class CurriculumServiceTest {
     }
 
     @Test
-    void testValidate() throws Exception {
+    public void testFindAllByStudent_withValidStudent() {
+        List<Curriculum> curriculumList = getDummyCurriculumValidList();
+        Student student = getDummyStudent();
+        when(curriculumRepository.findAllByStudent(any())).thenReturn(curriculumList);
+
+        List<Curriculum> actualList = curriculumService.findAllByStudent(student);
+
+        assertThat(actualList).isEqualTo(curriculumList);;
+    }
+
+    @Test
+    public void testFindAllByStudent_withNullStudent() {
+        assertThrows(IllegalArgumentException.class,
+                () -> curriculumService.findAllByStudent(null));
+    }
+
+    @Test
+    public void testValidate() throws Exception {
         Curriculum curriculum = getDummyCurriculum();
         curriculum.setId(1L);
 
