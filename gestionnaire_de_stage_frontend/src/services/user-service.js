@@ -15,6 +15,11 @@ export async function getStudentsWithoutCv() {
     return await response.json();
 }
 
+export async function getAllStudents() {
+    const response = await fetch(`${urlBackend}/student`, requestInit(methods.GET));
+    return await response.json();
+}
+
 export async function assignStudentToSupervisor(idStudent, idSupervisor) {//TODO BACKEND cant assign twice
     let obj = {
         idStudent,
