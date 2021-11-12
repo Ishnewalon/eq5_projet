@@ -117,6 +117,7 @@ public class StageControllerTest {
         dummyEvalMilieuStageDTO.setDateStage("12-25-2022");
         dummyEvalMilieuStageDTO.setStageCourant(2);
         dummyEvalMilieuStageDTO.setMatriculeEtudiant("123463");
+        dummyEvalMilieuStageDTO.setSignatureSuperviseur("Rasputin Jkral");
 
         return dummyEvalMilieuStageDTO;
     }

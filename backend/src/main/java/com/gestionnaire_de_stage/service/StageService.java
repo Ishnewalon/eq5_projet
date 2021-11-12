@@ -1,6 +1,5 @@
 package com.gestionnaire_de_stage.service;
 
-import com.gestionnaire_de_stage.exception.StageAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
 import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.repository.StageRepository;
