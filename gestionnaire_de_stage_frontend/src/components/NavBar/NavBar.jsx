@@ -54,6 +54,7 @@ function NavItemSpecificForUser() {
             <Link to="/dashboard/students/start">Commencer signature</Link>
             <Link to="/dashboard/students/applied">Associer</Link>
             <Link to="/dashboard/contrats/a_signer">Contrats à valider</Link>
+            <Link to="/dashboard/manager/contracts/signed">Contrats signés</Link>
             <Link to="/dashboard/rapports">Rapports</Link>
         </ThisIsAListItem>
     if (auth.isStudent())
@@ -78,9 +79,6 @@ function ThisIsAListItem({children}) {
                 React.cloneElement(child, {
                     className: `${child.props.className ? child.props.className : ""} nav-link text-white`
                 })}
-            </li>
-            <li>
-                <Link className='nav-link text-white' to='/dashboard/contracts/signed'>Contrats signé</Link>
             </li>
         </>)
     });

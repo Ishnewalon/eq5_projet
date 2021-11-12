@@ -1,5 +1,5 @@
-import PdfDocumentViewer from "../../PdfDocumentViewer/PdfDocumentViewer";
-import {toPdfBlob} from "../../ContractSignature/ContratSignature";
+import PdfDocumentViewer from "../../SharedComponents/PdfDocumentViewer/PdfDocumentViewer";
+import {toPdfBlob} from '../../Contract/ContractSignature/ContratSignature';
 import {useEffect, useState} from "react";
 import {toast} from "../../../utility";
 import {FiDownload} from "react-icons/all";
@@ -9,7 +9,7 @@ export default function ViewSignedContract({contract}) {
 
     useEffect(() => setPdf(toPdfBlob(contract.contractPDF)), [contract.contractPDF]);
 
-    const _studentFullName = (student) => `${student.firstName} ${student.lastName}`;
+    const _studentFullName = student => `${student.firstName} ${student.lastName}`;
 
     const downloadPdf = () => {
         const link = document.createElement('a');
