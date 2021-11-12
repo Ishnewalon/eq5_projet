@@ -202,9 +202,31 @@ public class CurriculumServiceTest {
     public void testCurriculumsToStudentCurriculumsDTO_withValidEntries() {
         Student student = getDummyStudent();
         List<Curriculum> curriculumList = getDummyCurriculumList();
+        student.setPrincipalCurriculum(curriculumList.get(0));
+        when(curriculumRepository.findAllByStudent(any())).thenReturn(curriculumList);
 
         StudentCurriculumsDTO actual = curriculumService.allCurriculumsByStudentAsStudentCurriculumsDTO(student);
-        assertThat(actual).isNotNull();
+
+        assertThat(actual.getCurriculumList()).isEqualTo(curriculumList);
+        assertThat(actual.getPrincipal().isPresent());
+    }
+
+    @Test
+    public void testCurriculumsToStudentCurriculumsDTO_withNullStudent() {
+        assertThrows(IllegalArgumentException.class,
+                () -> curriculumService.allCurriculumsByStudentAsStudentCurriculumsDTO(null));
+    }
+
+    @Test
+    public void testCurriculumsToStudentCurriculumsDTO_withNoPrincipal() {
+        Student student = getDummyStudent();
+        List<Curriculum> curriculumList = getDummyCurriculumList();
+        when(curriculumRepository.findAllByStudent(any())).thenReturn(curriculumList);
+
+        StudentCurriculumsDTO actual = curriculumService.allCurriculumsByStudentAsStudentCurriculumsDTO(student);
+
+        assertThat(actual.getCurriculumList()).isEqualTo(curriculumList);
+        assertThat(actual.getPrincipal().isEmpty());
     }
 
     @Test

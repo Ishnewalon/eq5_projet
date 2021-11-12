@@ -105,10 +105,15 @@ public class CurriculumService {
         return curriculumRepository.findAllByStudent(student);
     }
 
-    public StudentCurriculumsDTO allCurriculumsByStudentAsStudentCurriculumsDTO(Student student) {
+    public StudentCurriculumsDTO allCurriculumsByStudentAsStudentCurriculumsDTO(Student student) throws IllegalArgumentException {
+        List<Curriculum> curriculumListByStudent = findAllByStudent(student);
+        Optional<Curriculum> principal;
 
+        int index = curriculumListByStudent.indexOf(student.getPrincipalCurriculum());
+        principal = curriculumListByStudent.contains(student.getPrincipalCurriculum())
+                ? Optional.of(curriculumListByStudent.get(index)) : Optional.empty();
 
-        return null;
+        return new StudentCurriculumsDTO(principal, curriculumListByStudent);
     }
 
     public boolean validate(Long idCurriculum, boolean valid) throws
