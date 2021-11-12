@@ -27,6 +27,12 @@ export default function RapportsView() {
                     <h3>Rapport des étudiants inscrits dans la plateforme</h3>
                 </Link>
             </ContainerBox>
+
+            <ContainerBox>
+                <Link className={"text-white text-center fst-italic"} to="/dashboard/rapports/5">
+                    <h3>Rapport des étudiants avec des Cv Invalides</h3>
+                </Link>
+            </ContainerBox>
         </>
 
     )
