@@ -7,4 +7,4 @@ INSERT INTO SUPERVISOR VALUES(4, 'supervisor@email.com', 'Sup', 'ervisor', 'UnMo
 INSERT INTO CURRICULUM VALUES(13, FILE_READ('src/main/resources/contratTemplate.pdf'), true, 'test.pdf', 'application/pdf', 3)
 INSERT INTO OFFER_APPLICATION VALUES(12, now(), 'EN_ATTENTE_REPONSE', 13, 1);
 INSERT INTO OFFER_APPLICATION VALUES(14, null, 'CV_ENVOYE', 13, 14);
--- INSERT INTO CONTRACT (ID, STUDENT_ID, OFFER_ID, CONTRACTPDF) VALUES (1, 3, 1, FILE_READ('src/main/resources/contratTemplate.pdf'));
+INSERT INTO CONTRACT (ID, STUDENT_ID, OFFER_ID, CONTRACTPDF) VALUES (1, 3, 1, FILE_READ('src/main/resources/contratTemplate.pdf'));
