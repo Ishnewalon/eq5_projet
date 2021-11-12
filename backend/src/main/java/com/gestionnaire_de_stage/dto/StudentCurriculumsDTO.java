@@ -2,18 +2,19 @@ package com.gestionnaire_de_stage.dto;
 
 import com.gestionnaire_de_stage.model.Curriculum;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Optional;
 
 @Data
+@NoArgsConstructor
 public class StudentCurriculumsDTO {
 
-    Optional<Curriculum> principal;
+    Curriculum principal;
 
     List<Curriculum> curriculumList;
 
-    public StudentCurriculumsDTO(Optional<Curriculum> principal, List<Curriculum> curriculumDTOS) {
+    public StudentCurriculumsDTO(Curriculum principal, List<Curriculum> curriculumDTOS) {
         this.principal = principal;
         this.curriculumList = curriculumDTOS;
     }

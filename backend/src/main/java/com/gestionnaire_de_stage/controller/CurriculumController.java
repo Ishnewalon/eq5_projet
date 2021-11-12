@@ -1,11 +1,14 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
 import com.gestionnaire_de_stage.dto.ValidationCurriculum;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.CurriculumService;
+import com.gestionnaire_de_stage.service.StudentService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,8 +23,11 @@ public class CurriculumController {
 
     private final CurriculumService curriculumService;
 
-    public CurriculumController(CurriculumService curriculumService) {
+    private final StudentService studentService;
+
+    public CurriculumController(CurriculumService curriculumService, StudentService studentService) {
         this.curriculumService = curriculumService;
+        this.studentService = studentService;
     }
 
     @PostMapping("/upload")
@@ -59,6 +65,23 @@ public class CurriculumController {
     public ResponseEntity<?> getAllCurriculumValidated() {
         List<Curriculum> curriculumList = curriculumService.findAllCurriculumValidated();
         return ResponseEntity.ok(curriculumList);
+    }
+
+    @GetMapping("/all_student/{studentID}")
+    public ResponseEntity<?> allCurriculumsByStudentAsStudentCurriculumsDTO(@PathVariable long studentID) throws IdDoesNotExistException {
+        try {
+            Student student = studentService.getOneByID(studentID);
+            StudentCurriculumsDTO studentCurriculumsDTO = curriculumService.allCurriculumsByStudentAsStudentCurriculumsDTO(student);
+            return ResponseEntity.ok(studentCurriculumsDTO);
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Invalid Student ID"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
     }
 
     @PostMapping("/validate")

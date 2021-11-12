@@ -107,11 +107,11 @@ public class CurriculumService {
 
     public StudentCurriculumsDTO allCurriculumsByStudentAsStudentCurriculumsDTO(Student student) throws IllegalArgumentException {
         List<Curriculum> curriculumListByStudent = findAllByStudent(student);
-        Optional<Curriculum> principal;
+        Curriculum principal;
 
         int index = curriculumListByStudent.indexOf(student.getPrincipalCurriculum());
         principal = curriculumListByStudent.contains(student.getPrincipalCurriculum())
-                ? Optional.of(curriculumListByStudent.get(index)) : Optional.empty();
+                ? curriculumListByStudent.get(index) : null;
 
         return new StudentCurriculumsDTO(principal, curriculumListByStudent);
     }

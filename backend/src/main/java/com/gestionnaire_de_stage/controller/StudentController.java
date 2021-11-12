@@ -71,7 +71,7 @@ public class StudentController {
         } catch (CurriculumNotValidException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Le curriculum doit etre valide"));
+                    .body(new ResponseMessage("1"));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
