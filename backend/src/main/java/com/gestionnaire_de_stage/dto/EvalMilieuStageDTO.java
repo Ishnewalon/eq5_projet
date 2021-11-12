@@ -3,7 +3,7 @@ package com.gestionnaire_de_stage.dto;
 import lombok.Data;
 
 @Data
-public class evalMilieuStageDTO {
+public class EvalMilieuStageDTO {
 
     String entrepriseNom;
 
