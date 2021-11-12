@@ -58,7 +58,7 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("/setprincipal/{studentID}/{curriculumID}")
+    @GetMapping("/set_principal/{studentID}/{curriculumID}")
     public ResponseEntity<?> setPrincipalCurriculum(@PathVariable long studentID, @PathVariable long curriculumID) {
         try {
             Student student = studentService.getOneByID(studentID);

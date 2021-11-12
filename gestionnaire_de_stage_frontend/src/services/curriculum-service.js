@@ -18,6 +18,18 @@ export async function uploadFile(file, id) {
     )
 }
 
+export async function getAllCurriculumsByStudentWithPrincipal(studentID) {
+    const response = await fetch(`${urlBackend}/curriculum/all_student/${studentID}`,
+        requestInit(methods.GET));
+    return await response.json();
+}
+
+export async function setPrincipalCurriculum(studentID, curriculumID) {
+    const response = await fetch(`${urlBackend}/student/set_principal/${studentID}/${curriculumID}`,
+        requestInit(methods.GET));
+    return await response.json();
+}
+
 export async function getCurriculumWithInvalidCV() {
     const response = await fetch(`${urlBackend}/curriculum/invalid/students`, requestInit(methods.GET));
     return await response.json();
