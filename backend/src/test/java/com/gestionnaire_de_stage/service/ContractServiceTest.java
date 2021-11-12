@@ -274,7 +274,7 @@ public class ContractServiceTest {
 
 
     @Test
-    public void testGetAllSignedContracts_withExistentId()  {
+    public void testGetAllSignedContracts_withExistentId() {
         List<Contract> dummyContractList = getDummyContractList();
         when(contractRepository.getAllByManager_IdAndManagerSignatureNotNull(any())).thenReturn(dummyContractList);
 
@@ -295,13 +295,13 @@ public class ContractServiceTest {
     }
 
     @Test
-    public void testGetAllSignedContracts_withNullId(){
+    public void testGetAllSignedContracts_withNullId() {
         assertThrows(IllegalArgumentException.class,
                 () -> contractService.getAllSignedContractsByManager(null));
     }
 
     @Test
-    public void testGetAllSignedContractsForMonitor_withExistentId()  {
+    public void testGetAllSignedContractsForMonitor_withExistentId() {
         List<Contract> dummyContractList = getDummyContractList();
         when(contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNull(any())).thenReturn(dummyContractList);
 
@@ -322,10 +322,40 @@ public class ContractServiceTest {
     }
 
     @Test
-    public void testGetAllSignedContractsForMonitor_withNullId(){
+    public void testGetAllSignedContractsForMonitor_withNullId() {
         assertThrows(IllegalArgumentException.class,
                 () -> contractService.getAllSignedContractsByMonitor(null));
     }
+
+    @Test
+    public void testGetSignedContractByStudent_withExistentId() throws IdDoesNotExistException {
+        Contract dummyContract = getDummyContract();
+        when(contractRepository.getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNotNull(any())).thenReturn(dummyContract);
+        when(studentService.isIDNotValid(any())).thenReturn(false);
+
+        Contract actualContract = contractService.getSignedContractByStudentId(1L);
+
+        assertThat(actualContract)
+                .isNotNull()
+                .isEqualTo(dummyContract);
+    }
+
+    @Test
+    public void testGetSignedContractByStudent_withNonExistendId() {
+        when(studentService.isIDNotValid(any())).thenReturn(true);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> contractService.getSignedContractByStudentId(1L)
+        );
+    }
+
+    @Test
+    public void testGetSignedContractByStudent_withNullId() {
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.getSignedContractByStudentId(null),
+                "L'id de l'étudiant ne peut pas être null");
+    }
+
 
     private List<Contract> getDummyContractList() {
         List<Contract> dummyContractList = new ArrayList<>();

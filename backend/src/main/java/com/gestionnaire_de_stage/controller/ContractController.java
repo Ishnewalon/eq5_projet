@@ -200,7 +200,7 @@ public class ContractController {
     public ResponseEntity<?> getSignedContractByStudent(@PathVariable Long student_id) {
         Contract studentContract;
         try {
-            studentContract = contractService.getContractByStudentId(student_id);
+            studentContract = contractService.getSignedContractByStudentId(student_id);
         } catch (IdDoesNotExistException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("Le id de l'étudiant n'existe pas"));
         }

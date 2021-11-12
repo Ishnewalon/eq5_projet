@@ -9,7 +9,7 @@ export default function StudentContractView(){
 
     useEffect(() => {
         getSignedContractForStudent(auth.user.id).then(contract => setContract(contract))
-    }, [contract, auth.user.id]);
+    }, [auth]);
 
     return (
         <div>
