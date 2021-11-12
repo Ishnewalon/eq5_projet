@@ -3,10 +3,7 @@ package com.gestionnaire_de_stage.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -18,5 +15,11 @@ public class Stage {
     private Long id;
 
     @OneToOne
-    Documents documents;
+    Contract contract;
+
+    @Lob
+    byte[] evalMilieuStage;
+
+    @Lob
+    byte[] evalStagiaire;
 }
