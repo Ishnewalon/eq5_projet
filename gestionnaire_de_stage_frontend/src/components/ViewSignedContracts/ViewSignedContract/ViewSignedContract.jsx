@@ -9,7 +9,7 @@ export default function ViewSignedContract({contract}) {
 
     useEffect(() => setPdf(toPdfBlob(contract.contractPDF)), [contract.contractPDF]);
 
-    const _studentFullName = student => `${student.firstName} ${student.lastName}`;
+    const studentFullName = student => `${student.firstName} ${student.lastName}`;
 
     const downloadPdf = () => {
         const link = document.createElement('a');
