@@ -25,7 +25,7 @@ export default function RapportsView() {
 
             <ContainerBox>
                 <Link className={"text-white text-center fst-italic"} to="/dashboard/rapports/4">
-                    <h3>Rapport des étudiants inscrient dans la plateforme</h3>
+                    <h3>Rapport des étudiants inscrits dans la plateforme</h3>
                 </Link>
             </ContainerBox>
         </>
