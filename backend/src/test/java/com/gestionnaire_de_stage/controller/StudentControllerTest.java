@@ -150,7 +150,7 @@ public class StudentControllerTest {
         when(studentService.setPrincipalCurriculum(any(), any())).thenReturn(student);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/student/setprincipal/" + student.getId() + "/" + curriculum.getId())
+                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -166,7 +166,7 @@ public class StudentControllerTest {
         when(studentService.getOneByID(any())).thenThrow(new IllegalArgumentException("ID est null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/student/setprincipal/" + student.getId() + "/" + curriculum.getId())
+                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -182,7 +182,7 @@ public class StudentControllerTest {
         when(studentService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/student/setprincipal/" + student.getId() + "/" + curriculum.getId())
+                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -199,7 +199,7 @@ public class StudentControllerTest {
         when(studentService.setPrincipalCurriculum(any(), any())).thenThrow(CurriculumNotValidException.class);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/student/setprincipal/" + student.getId() + "/" + curriculum.getId())
+                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 

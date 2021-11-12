@@ -1,5 +1,5 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
-import {toast} from "../utility";
+import {swalErr, toast} from "../utility";
 
 export async function uploadFile(file, id) {
     let formData = new FormData();
@@ -19,9 +19,21 @@ export async function uploadFile(file, id) {
 }
 
 export async function getAllCurriculumsByStudentWithPrincipal(studentID) {
-    const response = await fetch(`${urlBackend}/curriculum/all_student/${studentID}`,
-        requestInit(methods.GET));
-    return await response.json();
+    return  await fetch(`${urlBackend}/curriculum/all_student/${studentID}`,
+        requestInit(methods.GET)).then(
+        response => {
+            return response.json().then(
+                body => {
+                    if (response.status === 200) {
+                        return body
+                    }
+                    if (response.status === 400) {
+                        swalErr.fire({text: body.message})
+                    }
+                    return Promise.any([])
+                })
+        }, err => console.error(err)
+    );
 }
 
 export async function setPrincipalCurriculum(studentID, curriculumID) {
