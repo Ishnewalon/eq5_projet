@@ -6,24 +6,24 @@ import {UserType} from "../../../enums/UserTypes";
 import {swalErr} from "../../../utility";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 
+export const toPdfBlob = (pdfFile) => {
+    if (!pdfFile)
+        return null;
+
+    const decodedChars = atob(pdfFile);
+    const numBytes = new Array(decodedChars.length);
+    for (let i = 0; i < numBytes.length; i++)
+        numBytes[i] = decodedChars.charCodeAt(i);
+
+    return new Blob([new Uint8Array(numBytes), {type: 'application/pdf'}]);
+}
+
 export default function ContratSignature({userType, contract, removeContract}) {
 
     const [signature, setSignature] = useState('');
     const [signed, setSigned] = useState(false);
+
     const [pdf, setPdf] = useState(null);
-
-    const toPdfBlob = (pdfFile) => {
-        if (!pdfFile)
-            return null;
-
-        const decodedChars = atob(pdfFile);
-        const numBytes = new Array(decodedChars.length);
-        for (let i = 0; i < numBytes.length; i++)
-            numBytes[i] = decodedChars.charCodeAt(i);
-
-        return new Blob([new Uint8Array(numBytes), {type: 'application/pdf'}]);
-    }
-
 
     useEffect(() => {
         setPdf(toPdfBlob(contract.contractPDF));

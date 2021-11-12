@@ -1,5 +1,5 @@
 import './App.css';
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Register from "./components/Register/Register";
 import React from "react";
@@ -35,6 +35,9 @@ function App() {
                                 <Login/>
                             </ContainerBox>
                         </RequireNoAuth>
+                    </Route>
+                    <Route exact path="/">
+                        <Redirect to="/login"/>
                     </Route>
                 </Switch>
             </div>

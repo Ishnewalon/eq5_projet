@@ -295,6 +295,16 @@ public class StudentServiceTest {
     }
 
     @Test
+    public void testGetAllStudentWithInvalidCv() {
+        List<Student> dummyStudentList = getDummyStudentList();
+        when(studentRepository.findAllByPrincipalCurriculum_IsValid(any())).thenReturn(dummyStudentList);
+
+        List<Student> actualStudentList = studentService.getAllStudentWithInvalidCv();
+
+        assertThat(actualStudentList.size()).isEqualTo(dummyStudentList.size());
+    }
+
+    @Test
     void testAssign() {
         Student dummyStudent = getDummyStudent();
         Supervisor dummySupervisor = getDummySupervisor();

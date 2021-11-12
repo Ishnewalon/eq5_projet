@@ -2,10 +2,10 @@ import {Document, Page, pdfjs} from 'react-pdf';
 
 import {useEffect, useState} from "react";
 
-export default function PdfDocumentViewer({file}) {
+export default function PdfDocumentViewer({file, showContract= false}) {
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
-    const [show, setShow] = useState(false);
+    const [show, setShow] = useState(showContract);
 
     useEffect(() => {
         pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
