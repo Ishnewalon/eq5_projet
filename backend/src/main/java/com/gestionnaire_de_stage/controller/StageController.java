@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.EvalMilieuStageDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
+import com.gestionnaire_de_stage.exception.StageAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
 import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.model.Stage;
@@ -19,6 +20,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.time.LocalDate;
 
 @RestController
@@ -55,7 +58,7 @@ public class StageController {
             String contractHtml = templateEngine.process("evalMilieuStage", context);
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            HtmlConverter.convertToPdf(contractHtml, baos);
+            HtmlConverter.convertToPdf(contractHtml, new FileOutputStream("c:/permits/eval.pdf"));
             stageService.addEvalMilieuStage(stage, baos);
         } catch (MatriculeDoesNotExistException e) {
             return ResponseEntity
@@ -69,6 +72,8 @@ public class StageController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Le stage n'existe pas"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
         return ResponseEntity
                 .status(HttpStatus.OK)

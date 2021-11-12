@@ -18,7 +18,7 @@ public class StageService {
         this.stageRepository = stageRepository;
     }
 
-    public Stage create(Stage stage) throws StageAlreadyExistsException {
+    public Stage create(Stage stage) {
         Assert.isTrue(stage != null, "Le stage ne peut pas être null");
         return stageRepository.save(stage);
     }
@@ -30,6 +30,7 @@ public class StageService {
 
     public Stage addEvalMilieuStage(Stage stage, ByteArrayOutputStream baos) throws StageDoesNotExistException {
         Assert.isTrue(stage != null, "Le stage ne peut pas être null");
+        Stage newStage = create(stage);
         if (isNotValid(stage)) {
             throw new StageDoesNotExistException();
         }
