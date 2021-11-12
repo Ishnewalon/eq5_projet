@@ -1,6 +1,5 @@
 import {ContainerBox} from "../../SharedComponents/ContainerBox/ContainerBox";
 import {Link} from "react-router-dom";
-import "./RapportsView.css"
 
 export default function RapportsView() {
     return (<>
