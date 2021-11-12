@@ -48,7 +48,7 @@ public class StageController {
     }
 
     @PostMapping("/supervisor/fill_form")
-    public ResponseEntity<?> fillEvalMilieuStage(@RequestBody EvalMilieuStageDTO evalMilieuStageDTO, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<?> fillEvalMilieuStagePDF(@RequestBody EvalMilieuStageDTO evalMilieuStageDTO, HttpServletRequest request, HttpServletResponse response) {
         Stage stage = new Stage();
         evalMilieuStageDTO.setSignatureDate(LocalDate.now());
         try {
