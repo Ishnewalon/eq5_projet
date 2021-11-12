@@ -1,10 +1,10 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
-import com.gestionnaire_de_stage.model.Student;
-import com.gestionnaire_de_stage.model.Supervisor;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +26,10 @@ public class SupervisorServiceTest {
     SupervisorService supervisorService;
 
     @Mock
-    SupervisorRepository supervisorRepository;
+    private SupervisorRepository supervisorRepository;
+
+    @Mock
+    private OfferApplicationService offerApplicationService;
 
     @Test
     public void testCreate_withValidSupervisor() throws SupervisorAlreadyExistsException {
@@ -78,28 +81,6 @@ public class SupervisorServiceTest {
         assertThrows(IdDoesNotExistException.class,
                 () -> supervisorService.getOneByID(dummySupervisor.getId()));
     }
-
-    @Test
-    public void testGetAll() {
-        when(supervisorRepository.findAll()).thenReturn(getDummySupervisorList());
-
-        final List<Supervisor> actualSupervisorList = supervisorService.getAll();
-
-        assertThat(actualSupervisorList.size()).isEqualTo(3);
-        assertThat(actualSupervisorList.get(0).getFirstName()).isEqualTo("Harold");
-    }
-
-    @Test
-    public void testAssign(){
-        Supervisor supervisor = getDummySupervisor();
-        Student student = getDummyStudent();
-
-        supervisorService.assign(student, supervisor);
-
-        assertThat(supervisor.getStudentList().size()).isEqualTo(1);
-        assertThat(supervisor.getStudentList().get(0).getFirstName()).isEqualTo("Tea");
-    }
-
 
     @Test
     public void testUpdate_withValidEntries() throws IdDoesNotExistException {
@@ -198,6 +179,44 @@ public class SupervisorServiceTest {
                 () -> supervisorService.getOneByEmailAndPassword(dummySupervisor.getEmail(), dummySupervisor.getPassword()));
     }
 
+    @Test
+    public void testGetStudentsStatus_withValidEntries() throws Exception {
+        Supervisor dummySupervisor = getDummySupervisor();
+        List<OfferApplication> dummyOfferAppList = getDummyOfferAppList();
+        when(supervisorRepository.existsById(any())).thenReturn(true);
+        when(offerApplicationService.getAllBySupervisorId(any())).thenReturn(dummyOfferAppList);
+
+        List<OfferApplication> actualOfferAppList = supervisorService.getStudentsStatus(dummySupervisor.getId());
+
+        assertThat(actualOfferAppList).isEqualTo(dummyOfferAppList);
+        assertThat(actualOfferAppList.size()).isEqualTo(dummyOfferAppList.size());
+    }
+
+    @Test
+    public void testGetStudentsStatus_withNullSupervisorId() {
+        assertThrows(IllegalArgumentException.class,
+                () -> supervisorService.getStudentsStatus(null));
+    }
+
+    @Test
+    public void testGetStudentsStatus_withInvalidSupervisorId() {
+        Supervisor dummySupervisor = getDummySupervisor();
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> supervisorService.getStudentsStatus(dummySupervisor.getId()));
+    }
+
+    @Test
+    public void testGetAll() {
+        List<Supervisor> dummySupervisorList = getDummySupervisorList();
+        when(supervisorRepository.findAll()).thenReturn(dummySupervisorList);
+
+        List<Supervisor> actualSupervisorList = supervisorService.getAll();
+
+        assertThat(actualSupervisorList).isEqualTo(dummySupervisorList);
+        assertThat(actualSupervisorList.size()).isEqualTo(dummySupervisorList.size());
+    }
+
     private Supervisor getDummySupervisor() {
         Supervisor dummySupervisor = new Supervisor();
         dummySupervisor.setId(1L);
@@ -210,25 +229,37 @@ public class SupervisorServiceTest {
         return dummySupervisor;
     }
 
-    private Student getDummyStudent() {
-        Student dummyStudent = new Student();
-        dummyStudent.setId(1L);
-        dummyStudent.setLastName("Candle");
-        dummyStudent.setFirstName("Tea");
-        dummyStudent.setEmail("cant@outlook.com");
-        dummyStudent.setPassword("cantPass");
-        dummyStudent.setDepartment("info");
-        dummyStudent.setMatricule("4673943");
-        return dummyStudent;
-    }
-
     private List<Supervisor> getDummySupervisorList() {
         List<Supervisor> dummySupervisorList = new ArrayList<>();
-        for (long id = 0; id < 3; id++) {
-            Supervisor dummySupervisor = getDummySupervisor();
-            dummySupervisor.setId(id);
-            dummySupervisorList.add(dummySupervisor);
-        }
+        Supervisor dummySupervisor1 = getDummySupervisor();
+        dummySupervisorList.add(dummySupervisor1);
+
+        Supervisor dummySupervisor2 = getDummySupervisor();
+        dummySupervisor2.setId(2L);
+        dummySupervisorList.add(dummySupervisor2);
+
+        Supervisor dummySupervisor3 = getDummySupervisor();
+        dummySupervisor3.setId(3L);
+        dummySupervisorList.add(dummySupervisor3);
+
         return dummySupervisorList;
+    }
+
+    private List<OfferApplication> getDummyOfferAppList() {
+        List<OfferApplication> offerApplicationList = new ArrayList<>();
+        OfferApplication dummyOfferApplication = new OfferApplication();
+        dummyOfferApplication.setOffer(new Offer());
+        dummyOfferApplication.setCurriculum(new Curriculum());
+        dummyOfferApplication.setId(1L);
+        dummyOfferApplication.setStatus(Status.CV_ENVOYE);
+        offerApplicationList.add(dummyOfferApplication);
+
+        dummyOfferApplication.setId(2L);
+        offerApplicationList.add(dummyOfferApplication);
+
+        dummyOfferApplication.setId(3L);
+        offerApplicationList.add(dummyOfferApplication);
+
+        return offerApplicationList;
     }
 }

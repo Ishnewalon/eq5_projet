@@ -120,7 +120,7 @@ export default function Register() {
     }
     return (<>
         <div className="form-container">
-            <form className="bg-dark px-3 py-4 rounded shadow-lg mt-5" id="contact_form">
+            <form id="contact_form">
                 <fieldset>
                     <legend>
                         <center><h2>Inscription</h2></center>

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class OfferApplication {
+public class OfferApplication {//TODO : session
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;

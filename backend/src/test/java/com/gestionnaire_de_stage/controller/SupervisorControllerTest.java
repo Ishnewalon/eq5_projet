@@ -4,11 +4,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.AssignDto;
 import com.gestionnaire_de_stage.dto.ValidationCurriculum;
+import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
-import com.gestionnaire_de_stage.model.Student;
-import com.gestionnaire_de_stage.model.Supervisor;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import com.gestionnaire_de_stage.service.StudentService;
 import com.gestionnaire_de_stage.service.SupervisorService;
@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -136,7 +137,7 @@ public class SupervisorControllerTest {
     @Test
     public void testAssign() throws Exception {
         AssignDto assignDto = new AssignDto(1L, 2L);
-        when(supervisorService.assign(any(), any())).thenReturn(true);
+        when(studentService.assign(any(), any())).thenReturn(true);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/supervisor/assign/student")
@@ -196,6 +197,47 @@ public class SupervisorControllerTest {
 
     }
 
+    @Test
+    public void testGetAllStudentsStatus_withValidEntries() throws Exception {
+        Supervisor dummySupervisor = getDummySupervisor();
+        List<OfferApplication> dummyOfferAppList = getDummyOfferAppList();
+        when(supervisorService.getStudentsStatus(any())).thenReturn(dummyOfferAppList);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId() )
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        List<OfferApplication> actualOfferAppList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualOfferAppList.size()).isEqualTo(dummyOfferAppList.size());
+    }
+
+    @Test
+    public void testGetAllStudentsStatus_withNullSupervisorId() throws Exception {
+        Supervisor dummySupervisor = getDummySupervisor();
+        when(supervisorService.getStudentsStatus(any())).thenThrow(new IllegalArgumentException("ID est null"));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId() )
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("ID est null");
+    }
+
+    @Test
+    public void testGetAllStudentsStatus_withInvalidSupervisorId() throws Exception {
+        Supervisor dummySupervisor = getDummySupervisor();
+        when(supervisorService.getStudentsStatus(any())).thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Ce superviseur n'existe pas");
+    }
+
     private Supervisor getDummySupervisor() {
         Supervisor dummySupervisor = new Supervisor();
         dummySupervisor.setId(1L);
@@ -207,5 +249,31 @@ public class SupervisorControllerTest {
         dummySupervisor.setDepartment("Informatique");
         dummySupervisor.setMatricule("07485");
         return dummySupervisor;
+    }
+
+    private List<OfferApplication> getDummyOfferAppList() {
+        List<OfferApplication> dummyOfferAppList = new ArrayList<>();
+        OfferApplication dummyOfferApp1 = new OfferApplication();
+        dummyOfferApp1.setId(1L);
+        dummyOfferApp1.setOffer(new Offer());
+        dummyOfferApp1.setCurriculum(new Curriculum());
+        dummyOfferApp1.setStatus(Status.STAGE_TROUVE);
+        dummyOfferAppList.add(dummyOfferApp1);
+
+        OfferApplication dummyOfferApp2 = new OfferApplication();
+        dummyOfferApp2.setId(1L);
+        dummyOfferApp2.setOffer(new Offer());
+        dummyOfferApp2.setCurriculum(new Curriculum());
+        dummyOfferApp2.setStatus(Status.STAGE_REFUSE);
+        dummyOfferAppList.add(dummyOfferApp2);
+
+        OfferApplication dummyOfferApp3 = new OfferApplication();
+        dummyOfferApp3.setId(1L);
+        dummyOfferApp3.setOffer(new Offer());
+        dummyOfferApp3.setCurriculum(new Curriculum());
+        dummyOfferApp3.setStatus(Status.EN_ATTENTE_REPONSE);
+        dummyOfferAppList.add(dummyOfferApp3);
+
+        return dummyOfferAppList;
     }
 }

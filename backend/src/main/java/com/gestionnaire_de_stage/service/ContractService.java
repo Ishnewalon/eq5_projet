@@ -110,7 +110,7 @@ public class ContractService {
         contract.setManager(manager);
 
         OfferApplication offerApplication = offerApplicationService.getOneById(contractStarterDto.getIdOfferApplication());
-        //TODO : set status
+        //TODO : cant start when student already have a contract
         contract.setOffer(offerApplication.getOffer());
         Curriculum curriculum = offerApplication.getCurriculum();
         Student student = curriculum.getStudent();

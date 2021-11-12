@@ -5,6 +5,7 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
+import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.springframework.stereotype.Service;
@@ -84,6 +85,20 @@ public class StudentService {
 
         student.setPrincipalCurriculum(curriculum.get());
         return studentRepository.save(student);
+    }
+
+    public List<Student> getAllUnassignedStudents() {
+        return studentRepository.getAllByPrincipalCurriculum_IsValidAndSupervisorNull(true);
+    }
+
+    public List<Student> getAllStudentWithoutCv() {
+        return studentRepository.findAllByPrincipalCurriculumIsNull();
+    }
+
+    public boolean assign(Student student, Supervisor supervisor){
+        student.setSupervisor(supervisor);
+        studentRepository.save(student);
+        return true;
     }
 
     private boolean isNotValid(Student student) {

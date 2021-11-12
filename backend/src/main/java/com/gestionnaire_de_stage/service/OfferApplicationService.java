@@ -11,6 +11,7 @@ import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
+import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +26,15 @@ public class OfferApplicationService {
     private final OfferService offerService;
     private final ManagerService managerService;
     private final StudentService studentService;
+    private final SupervisorRepository supervisorRepository;
 
 
-    public OfferApplicationService(OfferApplicationRepository offerApplicationRepository, OfferService offerService, ManagerService managerService, StudentService studentService) {
+    public OfferApplicationService(OfferApplicationRepository offerApplicationRepository, OfferService offerService, ManagerService managerService, StudentService studentService, SupervisorRepository supervisorRepository) {
         this.offerApplicationRepository = offerApplicationRepository;
         this.offerService = offerService;
         this.managerService = managerService;
         this.studentService = studentService;
+        this.supervisorRepository = supervisorRepository;
     }
 
     public OfferApplication create(Long idOffer, Long idStudent) throws StudentAlreadyAppliedToOfferException, IdDoesNotExistException, IllegalArgumentException, StudentHasNoCurriculumException {
@@ -91,7 +94,7 @@ public class OfferApplicationService {
                 !date.isBefore(LocalDateTime.now().plusMonths(2));
     }
 
-    public List<OfferApplication> getOffersApplicationsStageTrouver(Long id) throws IdDoesNotExistException {
+    public List<OfferApplication> getOffersApplicationsStageTrouver(Long id) throws IdDoesNotExistException {//TODO combine with getAllOffersStudentApplied
         Assert.isTrue(id != null, "L'id du gestionnaire ne peut pas être null!");
         if (managerService.isIDNotValid(id))
             throw new IdDoesNotExistException();
@@ -113,7 +116,7 @@ public class OfferApplicationService {
         return offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(Status.EN_ATTENTE_REPONSE, idStudent);
     }
 
-    public boolean updateStatus(UpdateStatusDTO updateStatusDTO) throws IdDoesNotExistException {
+    public String updateStatus(UpdateStatusDTO updateStatusDTO) throws IdDoesNotExistException {
         Assert.isTrue(updateStatusDTO.getIdOfferApplied() != null, "L'id de l'offre ne peut pas être null");
         OfferApplication offerApplication = offerApplicationRepository.getById(updateStatusDTO.getIdOfferApplied());
         if (updateStatusDTO.isAccepted()) {
@@ -122,6 +125,14 @@ public class OfferApplicationService {
             offerApplication.setStatus(Status.STAGE_REFUSE);
         }
         offerApplicationRepository.save(offerApplication);
-        return updateStatusDTO.isAccepted();
+        return updateStatusDTO.isAccepted()?"Status changé, attendez la signature du contrat" : "Status changé, stage refusé";
+    }
+
+    public List<OfferApplication> getAllBySupervisorId(Long supervisor_id) throws IdDoesNotExistException {
+        Assert.isTrue(supervisor_id != null, "L'id du superviseur ne peut pas être null");
+        if(supervisorRepository.existsById(supervisor_id)) {
+            throw new IdDoesNotExistException();
+        }
+        return offerApplicationRepository.findAllByCurriculum_Student_Supervisor_Id(supervisor_id);
     }
 }

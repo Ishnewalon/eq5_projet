@@ -1,11 +1,9 @@
 import React from "react";
-import FieldEmail from "../../Fields/FieldEmail";
+import FieldEmail from "../../SharedComponents/Fields/FieldEmail";
 import {Step} from "../../../enums/Steps";
-import {toastErr} from "../../../utility";
+import {regexEmail, regexName, regexPhone, toastErr} from "../../../utility";
 
-// eslint-disable-next-line
-const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-const regexPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+
 
 export default function StepInformationGeneral({prevStep, nextStep, handleChange, lastName, firstName, email, phone}) {
 
@@ -29,11 +27,11 @@ export default function StepInformationGeneral({prevStep, nextStep, handleChange
             toastErr.fire({title: "Le champs numéro de téléphone est vide"}).then()
             return false
         }
-        if (!firstName.match(/^[a-zA-Z\-\s]+$/)) {
+        if (!regexName.test(firstName)) {
             toastErr.fire({title: "Le champs prénom est invalide"}).then()
             return false;
         }
-        if (!lastName.match(/^[a-zA-Z\-\s]+$/)) {
+        if (!regexName.test(lastName)) {
             toastErr.fire({title: "Le champs nom est invalide"}).then()
             return false;
         }
