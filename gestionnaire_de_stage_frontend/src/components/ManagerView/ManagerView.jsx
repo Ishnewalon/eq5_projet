@@ -10,14 +10,13 @@ import StartContract from "./StartContract/StartContract";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useAuth} from "../../services/use-auth";
 import RapportsView from "./RapportsView/RapportsView";
-import {RapportOfferInvalid, RapportOfferValid, RapportStudentWithoutCv} from "./RapportsView/Rapports";
-import ViewSignedContracts from '../ViewSignedContracts/ViewSignedContracts';
 import {
     RapportOfferInvalid,
     RapportOfferValid,
     RapportStudentSignIn,
     RapportStudentWithoutCv
 } from "./RapportsView/Rapports";
+import ViewSignedContracts from '../ViewSignedContracts/ViewSignedContracts';
 
 export default function ManagerView() {
     const {path} = useRouteMatch();
