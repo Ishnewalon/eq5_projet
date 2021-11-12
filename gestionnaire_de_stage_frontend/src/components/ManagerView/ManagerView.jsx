@@ -11,11 +11,18 @@ import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useAuth} from "../../services/use-auth";
 import RapportsView from "./RapportsView/RapportsView";
 import {RapportOfferInvalid, RapportOfferValid, RapportStudentWithoutCv} from "./RapportsView/Rapports";
+import ViewSignedContracts from '../ViewSignedContracts/ViewSignedContracts';
 
 export default function ManagerView() {
     const {path} = useRouteMatch();
     let auth = useAuth();
     return (<ContainerBox>
+            <Route exact path={`${path}`}>
+                <h1 className="text-center">Bonjour {auth.user.firstName}!</h1>
+            </Route>
+            <Route exact path={`${path}/manager/contracts/signed`}>
+                <ViewSignedContracts userType={UserType.MANAGER[0]}/>
+            </Route>
             <Route exact path={`${path}/offres/ajouter`}>
                 <AddOffer/>
             </Route>
@@ -33,9 +40,6 @@ export default function ManagerView() {
             </Route>
             <Route exact path={`${path}/contrats/a_signer`}>
                 <ContractsToBeSigned userType={UserType.MANAGER[0]}/>
-            </Route>
-            <Route exact path={`${path}`}>
-                <h1 className="text-center">Bonjour {auth.user.firstName}!</h1>
             </Route>
             <Route exact path={`${path}/rapports`}>
                 <RapportsView/>

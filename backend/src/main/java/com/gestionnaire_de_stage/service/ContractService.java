@@ -7,9 +7,7 @@ import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.ContractRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.thymeleaf.TemplateEngine;
 
-import javax.persistence.Id;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.List;
@@ -129,5 +127,15 @@ public class ContractService {
 
     public Contract updateContract(Contract contract) {
         return contractRepository.save(contract);
+    }
+
+    public List<Contract> getAllSignedContractsByManager(Long id) throws IllegalArgumentException {
+        Assert.isTrue(id != null, "L'id du manager ne peut pas être null");
+        return contractRepository.getAllByManager_IdAndManagerSignatureNotNull(id);
+    }
+
+    public List<Contract> getAllSignedContractsByMonitor(Long monitor_id) {
+        Assert.isTrue(monitor_id != null, "L'id du monitor ne peut pas être null");
+        return contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNull(monitor_id);
     }
 }
