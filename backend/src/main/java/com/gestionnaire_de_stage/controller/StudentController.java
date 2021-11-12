@@ -61,9 +61,14 @@ public class StudentController {
         return studentService.getAll();
     }
 
-    @GetMapping("/no-cv")
+    @GetMapping("/no_cv")
     public List<Student> getAllStudentsWithoutCv() {
         return studentService.getAllStudentWithoutCv();
+    }
+
+    @GetMapping("/cv_invalid")
+    public List<Student> getAllStudentsWithInvalidCv() {
+        return studentService.getAllStudentWithInvalidCv();
     }
 
     @GetMapping("/needAssignement")
