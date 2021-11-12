@@ -7,6 +7,7 @@ import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
 import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.service.ContractService;
 import com.itextpdf.html2pdf.HtmlConverter;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -187,5 +188,11 @@ public class ContractController {
     public ResponseEntity<?> getAllSignedContractsByManager(@PathVariable Long managerId) {
         List<Contract> signedContractsByManager = contractService.getAllSignedContractsByManager(managerId);
         return ResponseEntity.ok(signedContractsByManager);
+    }
+
+    @GetMapping("/monitor/signed/{monitor_id}")
+    public ResponseEntity<?> getAllSignedContractsByMonitor(@PathVariable Long monitor_id) {
+        List<Contract> allSignedContractsByMonitor = contractService.getAllSignedContractsByMonitor(monitor_id);
+        return ResponseEntity.ok(allSignedContractsByMonitor);
     }
 }

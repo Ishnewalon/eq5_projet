@@ -301,6 +301,33 @@ public class ContractServiceTest {
                 () -> contractService.getAllSignedContractsByManager(null));
     }
 
+    @Test
+    public void testGetAllSignedContractsForMonitor_withExistentId()  {
+        List<Contract> dummyContractList = getDummyContractList();
+        when(contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNull(any())).thenReturn(dummyContractList);
+
+        List<Contract> actualContractList = contractService.getAllSignedContractsByMonitor(1L);
+
+        assertThat(actualContractList)
+                .isNotEmpty()
+                .isEqualTo(dummyContractList);
+    }
+
+    @Test
+    public void testGetAllSignedContractsForMonitor_withNonExistentId() {
+        when(contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNull(any())).thenReturn(Collections.emptyList());
+
+        List<Contract> actualContractList = contractService.getAllSignedContractsByMonitor(1000L);
+
+        assertThat(actualContractList).isEmpty();
+    }
+
+    @Test
+    public void testGetAllSignedContractsForMonitor_withNullId(){
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.getAllSignedContractsByMonitor(null));
+    }
+
     private List<Contract> getDummyContractList() {
         List<Contract> dummyContractList = new ArrayList<>();
         Contract contract1 = new Contract();

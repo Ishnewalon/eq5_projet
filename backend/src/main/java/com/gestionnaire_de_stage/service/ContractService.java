@@ -133,4 +133,9 @@ public class ContractService {
         Assert.isTrue(id != null, "L'id du manager ne peut pas être null");
         return contractRepository.getAllByManager_IdAndManagerSignatureNotNull(id);
     }
+
+    public List<Contract> getAllSignedContractsByMonitor(Long monitor_id) {
+        Assert.isTrue(monitor_id != null, "L'id du monitor ne peut pas être null");
+        return contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNull(monitor_id);
+    }
 }

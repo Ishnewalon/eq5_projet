@@ -44,6 +44,7 @@ function NavItemSpecificForUser() {
                 <Link to="/dashboard/applications">Applications</Link>
                 <Link to="/dashboard/voir/futures_stagiaires">Contrats à
                     valider</Link>
+                <Link to="/dashboard/monitor/contracts/signed">Contrats signés</Link>
             </ThisIsAListItem>
         )
     if (auth.isManager())
