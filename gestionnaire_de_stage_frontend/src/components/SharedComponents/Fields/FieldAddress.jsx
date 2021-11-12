@@ -1,13 +1,13 @@
-import {InputGroup} from "../InputGroup/InputGroup";
+import {FormField} from "../FormField/FormField";
 
 export default function FieldAddress({label, address, handleChange}) {
 
-    return (<>
-        <label className="label">{label}</label>
-        <InputGroup>
+    return (
+        <FormField>
+            <label>{label}</label>
             <input name="address" placeholder="Rue, boulevard, avenue.." type="text" value={address}
                    onChange={handleChange}/>
-        </InputGroup>
-    </>);
+        </FormField>
+    );
 
 }

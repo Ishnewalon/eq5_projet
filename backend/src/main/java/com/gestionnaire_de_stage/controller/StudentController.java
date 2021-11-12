@@ -84,6 +84,11 @@ public class StudentController {
         return studentService.getAll();
     }
 
+    @GetMapping("/no-cv")
+    public List<Student> getAllStudentsWithoutCv() {
+        return studentService.getAllStudentWithoutCv();
+    }
+
     @GetMapping("/needAssignement")
     public ResponseEntity<?> getAllStudentsNotAssigned() {
         List<Student> studentList = studentService.getAllUnassignedStudents();

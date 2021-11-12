@@ -3,6 +3,7 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
+import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
@@ -17,8 +18,12 @@ public class SupervisorService {
 
     private final SupervisorRepository supervisorRepository;
 
-    public SupervisorService(SupervisorRepository supervisorRepository) {
+    private final OfferApplicationService offerApplicationService;
+
+    public SupervisorService(SupervisorRepository supervisorRepository,
+                             OfferApplicationService offerApplicationService) {
         this.supervisorRepository = supervisorRepository;
+        this.offerApplicationService = offerApplicationService;
     }
 
     public Supervisor create(Supervisor supervisor) throws SupervisorAlreadyExistsException {
@@ -41,7 +46,6 @@ public class SupervisorService {
     public List<Supervisor> getAll() {
         return supervisorRepository.findAll();
     }
-
 
     public Supervisor update(Supervisor supervisor, Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
@@ -70,12 +74,20 @@ public class SupervisorService {
         return supervisorRepository.findSupervisorByEmailAndPassword(email, password);
     }
 
+    public List<OfferApplication> getStudentsStatus(Long supervisor_id) throws IdDoesNotExistException {
+        Assert.isTrue(supervisor_id != null, "L'id ne peut pas être null");
+        if (isIdNotValid(supervisor_id)) {
+            throw new IdDoesNotExistException();
+        }
+        return offerApplicationService.getAllBySupervisorId(supervisor_id);
+    }
+
     private boolean isNotValid(Supervisor supervisor) {
         return supervisor.getEmail() != null &&
                 supervisorRepository.existsByEmail(supervisor.getEmail());
     }
 
-    private boolean isIdNotValid(Long id) {
+    public boolean isIdNotValid(Long id) {
         return !supervisorRepository.existsById(id);
     }
 
