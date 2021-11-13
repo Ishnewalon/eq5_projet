@@ -53,25 +53,7 @@ public class StageServiceTest {
         assertThrows(StageAlreadyExistsException.class,
                 () -> stageService.create(getDummyStage(), getDummyStudent().getMatricule()));
     }
-    //TODO Garder pour prochaine story
-   /* @Test
-    public void testGetStageByStudentMatricule_withValidEntries() throws Exception {
-        Stage dummyStage = getDummyStage();
-        String matricule = "1234567";
-        when(stageRepository.getStageByContractStudentMatricule(any())).thenReturn(dummyStage);
 
-        Stage actualStage = stageService.getStageByStudentMatricule(matricule);
-
-        assertThat(actualStage).isEqualTo(dummyStage);
-        assertThat(actualStage.getId()).isGreaterThan(0);
-    }
-
-    @Test
-    public void testGetStageByStudentMatricule_NullStudentMatricule() throws Exception {
-        assertThrows(IllegalArgumentException.class,
-                () -> stageService.getStageByStudentMatricule(null));
-    }
-*/
     @Test
     public void testAddEvalMilieuStage_withValidEntries() throws Exception {
         Stage dummyStage = getDummyStage();

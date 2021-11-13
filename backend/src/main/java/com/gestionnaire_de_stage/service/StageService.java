@@ -25,11 +25,6 @@ public class StageService {
         }
         return stageRepository.save(stage);
     }
-    //TODO Garder pour prochaine story
-/*    public Stage getStageByStudentMatricule(String matricule) {
-        Assert.isTrue(matricule != null, "La matricule ne peut pas être null");
-        return stageRepository.getStageByContractStudentMatricule(matricule);
-    }*/
 
     public Stage addEvalMilieuStage(Stage stage, ByteArrayOutputStream baos) throws StageDoesNotExistException {
         Assert.isTrue(stage != null, "Le stage ne peut pas être null");
