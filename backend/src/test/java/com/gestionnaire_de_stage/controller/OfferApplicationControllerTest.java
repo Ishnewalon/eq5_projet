@@ -421,6 +421,23 @@ class OfferApplicationControllerTest {
     }
 
     @Test
+    public void testGetAllOffersApp() throws Exception {
+        List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
+        when(offerApplicationService.getAllOffersApplication()).thenReturn(offerApplicationsList);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/applications")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        List<OfferApplication> actualList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualList.size()).isEqualTo(offerApplicationsList.size());
+    }
+
+    @Test
     public void testUpdateStatusIsAccepted() throws Exception {
         OfferApplication offerApplication = getDummyOfferApp();
         UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(offerApplication.getId(), true);

@@ -297,6 +297,18 @@ class OfferApplicationServiceTest {
     }
 
     @Test
+    public void testGetAllOffersApp() {
+        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
+        when(offerApplicationRepository.findAll()).thenReturn(offerApplicationList);
+
+        List<OfferApplication> actualList = offerApplicationService.getAllOffersApplication();
+
+        assertThat(actualList.size()).isGreaterThan(1);
+        assertThat(actualList.size()).isEqualTo(offerApplicationList.size());
+        assertThat(actualList).isEqualTo(offerApplicationList);
+    }
+
+    @Test
     void testGetAllByOfferStatusAndStudentID_withNullEntries() {
         assertThrows(IllegalArgumentException.class,
                 () -> offerApplicationService.getAllByOfferStatusAndStudentID(null, null));
