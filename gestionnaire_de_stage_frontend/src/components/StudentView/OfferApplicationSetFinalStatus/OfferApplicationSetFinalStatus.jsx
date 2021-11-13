@@ -38,7 +38,7 @@ export default function OfferApplicationSetFinalStatus() {
             </TableHeader>
             {offerApplications.map(offerApplication => (
                 <TableRow key={offerApplication.id}>
-                    <th>{offerApplication.id}</th>
+                    <td>{offerApplication.id}</td>
                     <td>{offerApplication.offer.title}</td>
                     <td>{offerApplication.status}</td>
                     <td>
