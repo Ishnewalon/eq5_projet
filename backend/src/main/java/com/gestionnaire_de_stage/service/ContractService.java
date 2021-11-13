@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
+import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
@@ -89,10 +90,13 @@ public class ContractService {
         return contractRepository.getContractByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNull(student_id);
     }
 
-    public Contract getContractByStudentMatricule(String matricule) throws MatriculeDoesNotExistException {
+    public Contract getContractByStudentMatricule(String matricule) throws MatriculeDoesNotExistException, ContractDoesNotExistException {
         Assert.isTrue(matricule != null, "La matricule ne peut pas être null");
         if (!studentRepository.existsByMatricule(matricule)) {
             throw new MatriculeDoesNotExistException();
+        }
+        if (isNotCreated(matricule)) {
+            throw new ContractDoesNotExistException();
         }
         return contractRepository.getContractByStudent_Matricule(matricule);
     }
@@ -151,5 +155,9 @@ public class ContractService {
     public List<Contract> getAllSignedContractsByMonitor(Long monitor_id) {
         Assert.isTrue(monitor_id != null, "L'id du monitor ne peut pas être null");
         return contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNull(monitor_id);
+    }
+
+    public boolean isNotCreated(String matricule) {
+        return !contractRepository.existsByStudentMatricule(matricule);
     }
 }

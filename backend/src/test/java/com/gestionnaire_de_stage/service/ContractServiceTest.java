@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.enums.Status;
+import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
@@ -251,6 +252,7 @@ public class ContractServiceTest {
         Contract dummyContract = getDummyContract();
         String matricule = "1234567";
         when(studentRepository.existsByMatricule(any())).thenReturn(true);
+        when(contractRepository.existsByStudentMatricule(any())).thenReturn(true);
         when(contractRepository.getContractByStudent_Matricule(any())).thenReturn(dummyContract);
 
         Contract actualContract = contractService.getContractByStudentMatricule(matricule);
@@ -273,6 +275,17 @@ public class ContractServiceTest {
         assertThrows(MatriculeDoesNotExistException.class,
                 () -> contractService.getContractByStudentMatricule(matricule));
     }
+
+    @Test
+    public void testGetContractByStudentMatricule_withInexistingContract() {
+        String matricule = "1234567";
+        when(studentRepository.existsByMatricule(any())).thenReturn(true);
+        when(contractRepository.existsByStudentMatricule(any())).thenReturn(false);
+
+        assertThrows(ContractDoesNotExistException.class,
+                () -> contractService.getContractByStudentMatricule(matricule));
+    }
+
 
     @Test
     public void testAddStudentSignature_withValidEntries() throws Exception {

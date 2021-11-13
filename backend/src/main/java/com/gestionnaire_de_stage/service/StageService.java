@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.StageAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
 import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.repository.StageRepository;
@@ -17,19 +18,21 @@ public class StageService {
         this.stageRepository = stageRepository;
     }
 
-    public Stage create(Stage stage) {
+    public Stage create(Stage stage, String matricule) throws StageAlreadyExistsException {
         Assert.isTrue(stage != null, "Le stage ne peut pas être null");
+        if (isNotAlreadyCreated(matricule)) {
+            throw new StageAlreadyExistsException();
+        }
         return stageRepository.save(stage);
     }
-
-    public Stage getStageByStudentMatricule(String matricule) {
+    //TODO Garder pour prochaine story
+/*    public Stage getStageByStudentMatricule(String matricule) {
         Assert.isTrue(matricule != null, "La matricule ne peut pas être null");
         return stageRepository.getStageByContractStudentMatricule(matricule);
-    }
+    }*/
 
     public Stage addEvalMilieuStage(Stage stage, ByteArrayOutputStream baos) throws StageDoesNotExistException {
         Assert.isTrue(stage != null, "Le stage ne peut pas être null");
-        Stage newStage = create(stage);
         if (isNotValid(stage)) {
             throw new StageDoesNotExistException();
         }
@@ -39,5 +42,9 @@ public class StageService {
 
     private boolean isNotValid(Stage stage) {
         return !stageRepository.existsById(stage.getId());
+    }
+
+    private boolean isNotAlreadyCreated(String matricule) {
+        return !stageRepository.existsByContractStudentMatricule(matricule);
     }
 }

@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.StageAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
 import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.model.Stage;
@@ -30,9 +31,10 @@ public class StageServiceTest {
     @Test
     public void testCreate_withValidEntries() throws Exception {
         Stage dummyStage = getDummyStage();
+        when(stageRepository.existsByContractStudentMatricule(any())).thenReturn(true);
         when(stageRepository.save(any())).thenReturn(dummyStage);
 
-        Stage actualStage = stageService.create(dummyStage);
+        Stage actualStage = stageService.create(dummyStage, getDummyStudent().getMatricule());
 
         assertThat(actualStage).isEqualTo(dummyStage);
         assertThat(actualStage.getId()).isGreaterThan(0);
@@ -41,10 +43,18 @@ public class StageServiceTest {
     @Test
     public void testCreate_withNullStage() {
         assertThrows(IllegalArgumentException.class,
-                () -> stageService.create(null));
+                () -> stageService.create(null, getDummyStudent().getMatricule()));
     }
 
     @Test
+    public void testCreate_withInvalidStage() {
+        when(stageRepository.existsByContractStudentMatricule(any())).thenReturn(false);
+
+        assertThrows(StageAlreadyExistsException.class,
+                () -> stageService.create(getDummyStage(), getDummyStudent().getMatricule()));
+    }
+    //TODO Garder pour prochaine story
+   /* @Test
     public void testGetStageByStudentMatricule_withValidEntries() throws Exception {
         Stage dummyStage = getDummyStage();
         String matricule = "1234567";
@@ -61,7 +71,7 @@ public class StageServiceTest {
         assertThrows(IllegalArgumentException.class,
                 () -> stageService.getStageByStudentMatricule(null));
     }
-
+*/
     @Test
     public void testAddEvalMilieuStage_withValidEntries() throws Exception {
         Stage dummyStage = getDummyStage();

@@ -2,7 +2,9 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.EvalMilieuStageDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
+import com.gestionnaire_de_stage.exception.StageAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
 import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.service.ContractService;
@@ -49,6 +51,7 @@ public class StageController {
         evalMilieuStageDTO.setSignatureDate(LocalDate.now());
         try {
             stage.setContract(contractService.getContractByStudentMatricule(evalMilieuStageDTO.getMatriculeEtudiant()));
+            stage = stageService.create(stage, evalMilieuStageDTO.getMatriculeEtudiant());
             WebContext context = new WebContext(request, response, servletContext);
             context.setVariable("formInfo", evalMilieuStageDTO);
             String contractHtml = templateEngine.process("evalMilieuStage", context);
@@ -68,6 +71,14 @@ public class StageController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Le stage n'existe pas"));
+        } catch (StageAlreadyExistsException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Le stage existe déjà"));
+        } catch (ContractDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Cet étudiant n'a pas de stage"));
         }
         return ResponseEntity
                 .status(HttpStatus.OK)

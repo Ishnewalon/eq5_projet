@@ -2,7 +2,9 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.EvalMilieuStageDTO;
+import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
+import com.gestionnaire_de_stage.exception.StageAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
 import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.model.Stage;
@@ -73,6 +75,22 @@ public class StageControllerTest {
     }
 
     @Test
+    public void testFillEvalMilieuStagePDF_withInexistantContract() throws Exception {
+        EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
+        when(contractService.getContractByStudentMatricule(any())).thenThrow(ContractDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(dummyEvalMilieuStageDTO)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Cet étudiant n'a pas de stage");
+    }
+
+    @Test
     public void testFillEvalMilieuStagePDF_withNullStage() throws Exception {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
         when(stageService.addEvalMilieuStage(any(),any())).thenThrow(new IllegalArgumentException("Le id du stage n'existe pas"));
@@ -102,6 +120,22 @@ public class StageControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Le stage n'existe pas");
+    }
+
+    @Test
+    public void testFillEvalMilieuStagePDF_withExistingStage() throws Exception {
+        EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
+        when(stageService.create(any(),any())).thenThrow(StageAlreadyExistsException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(dummyEvalMilieuStageDTO)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Le stage existe déjà");
     }
 
     private EvalMilieuStageDTO getDummyEvalMilieuStageDTO() {
