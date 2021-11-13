@@ -155,4 +155,9 @@ public class OfferApplicationController {
         }
         return ResponseEntity.ok(new ResponseMessage(message));
     }
+
+    @GetMapping()
+    public ResponseEntity<?> getAllOffersApplication() {
+        return ResponseEntity.ok(offerApplicationService.getAllOffersApplication());
+    }
 }

@@ -135,4 +135,8 @@ public class OfferApplicationService {
         }
         return offerApplicationRepository.findAllByCurriculum_Student_Supervisor_Id(supervisor_id);
     }
+
+    public List<OfferApplication> getAllOffersApplication() {
+        return offerApplicationRepository.findAll();
+    }
 }
