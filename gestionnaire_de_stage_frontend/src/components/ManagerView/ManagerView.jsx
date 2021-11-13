@@ -13,7 +13,7 @@ import RapportsView from "./RapportsView/RapportsView";
 import {
     RapportOfferInvalid,
     RapportOfferValid,
-    RapportStudentSignIn, RapportStudentWithInvalidCv,
+    RapportStudentSignIn, RapportStudentStatus, RapportStudentWithInvalidCv,
     RapportStudentWithoutCv
 } from "./RapportsView/Rapports";
 import ViewSignedContracts from '../ViewSignedContracts/ViewSignedContracts';
@@ -63,6 +63,9 @@ export default function ManagerView() {
             </Route>
             <Route path={`${path}/rapports/5`}>
                 <RapportStudentWithInvalidCv/>
+            </Route>
+            <Route path={`${path}/rapports/6`}>
+                <RapportStudentStatus/>
             </Route>
         </ContainerBox>
     )
