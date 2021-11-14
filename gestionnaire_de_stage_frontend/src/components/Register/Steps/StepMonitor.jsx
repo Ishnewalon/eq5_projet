@@ -97,35 +97,3 @@ export function verification(companyName, city, address, postalCode) {
     }
     return true;
 }
-
-function verification(companyName, city, address, postalCode) {
-    if (!companyName) {
-        toastErr.fire({title: 'Nom de compagnie est vide'}).then()
-        return false
-    }
-    if (!city) {
-        toastErr.fire({title: 'Nom de ville est vide'}).then()
-        return false
-    }
-    if (!address) {
-        toastErr.fire({title: "L'adresse est vide"}).then()
-        return false
-    }
-    if (!postalCode) {
-        toastErr.fire({title: 'Code postal est vide'}).then()
-        return false
-    }
-    if (!regexName.test(companyName)) {
-        toastErr.fire({title: 'Nom de compagnie est invalide'}).then()
-        return false;
-    }
-    if (!regexName.test(city)) {
-        toastErr.fire({title: 'Nom de ville est invalide'}).then()
-        return false;
-    }
-    if (!regexCodePostal.test(postalCode)) {
-        toastErr.fire({title: 'Code postal est invalide'}).then()
-        return false;
-    }
-    return true;
-}
