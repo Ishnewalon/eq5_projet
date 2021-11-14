@@ -22,7 +22,7 @@ export default function StepCegep({prevStep, nextStep, updateUserType, handleCha
 
     return (<>
             <FormGroup>
-                <FormField>
+                <FormField myFor="matricule">
                     <label>Matricule</label>
                     <input name="matricule" placeholder="Matricule" type="number"
                            value={matricule} onChange={handleChange}/>
