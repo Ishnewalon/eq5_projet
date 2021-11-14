@@ -10,41 +10,7 @@ export default function StepInformationGeneral({prevStep, nextStep, handleChange
     const next = (val) => {
         nextStep(val);
     }
-    const verification = (firstName, lastName, email, phone) => {
-        if (!firstName) {
-            toastErr.fire({title: "Le champs prénom est vide"}).then()
-            return false
-        }
-        if (!lastName) {
-            toastErr.fire({title: "Le champs nom est vide"}).then()
-            return false
-        }
-        if (!email) {
-            toastErr.fire({title: "Le champs courriel est vide"}).then()
-            return false
-        }
-        if (!phone) {
-            toastErr.fire({title: "Le champs numéro de téléphone est vide"}).then()
-            return false
-        }
-        if (!regexName.test(firstName)) {
-            toastErr.fire({title: "Le champs prénom est invalide"}).then()
-            return false;
-        }
-        if (!regexName.test(lastName)) {
-            toastErr.fire({title: "Le champs nom est invalide"}).then()
-            return false;
-        }
-        if (!regexEmail.test(email)) {
-            toastErr.fire({title: "Le champs courriel est invalide"}).then()
-            return false;
-        }
-        if (!regexPhone.test(phone)) {
-            toastErr.fire({title: "Le champs numéro de téléphone est invalide"}).then()
-            return false;
-        }
-        return true;
-    }
+
 
     return (<>
         <div className="form-group row">
@@ -89,4 +55,40 @@ export default function StepInformationGeneral({prevStep, nextStep, handleChange
         </div>
     </>)
 
+}
+
+function verification(firstName, lastName, email, phone) {
+    if (!firstName) {
+        toastErr.fire({title: "Le champs prénom est vide"}).then()
+        return false
+    }
+    if (!lastName) {
+        toastErr.fire({title: "Le champs nom est vide"}).then()
+        return false
+    }
+    if (!email) {
+        toastErr.fire({title: "Le champs courriel est vide"}).then()
+        return false
+    }
+    if (!phone) {
+        toastErr.fire({title: "Le champs numéro de téléphone est vide"}).then()
+        return false
+    }
+    if (!regexName.test(firstName)) {
+        toastErr.fire({title: "Le champs prénom est invalide"}).then()
+        return false;
+    }
+    if (!regexName.test(lastName)) {
+        toastErr.fire({title: "Le champs nom est invalide"}).then()
+        return false;
+    }
+    if (!regexEmail.test(email)) {
+        toastErr.fire({title: "Le champs courriel est invalide"}).then()
+        return false;
+    }
+    if (!regexPhone.test(phone)) {
+        toastErr.fire({title: "Le champs numéro de téléphone est invalide"}).then()
+        return false;
+    }
+    return true;
 }

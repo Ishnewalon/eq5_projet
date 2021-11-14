@@ -6,10 +6,10 @@ export default function Choice({nextStep}) {
         <div className="form-group text-center">
             <label/>
             <div>
-                <button className="btn btn-primary" type={"button"} onClick={() => nextStep(Step.CEGEP)
+                <button data-testid="cegep" className="btn btn-primary" type={"button"} onClick={() => nextStep(Step.CEGEP)
                 }>Membre du cégep
                 </button>
-                <button className="btn btn-primary" type={"button"} onClick={() => nextStep(Step.MONITOR)
+                <button data-testid="company" className="btn btn-primary" type={"button"} onClick={() => nextStep(Step.MONITOR)
                 }>Compagnie
                 </button>
             </div>

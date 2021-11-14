@@ -24,8 +24,6 @@ export default function StepMonitor({
         nextStep(val);
     }
 
-
-
     return (<>
         <FormGroup>
             <FormField>

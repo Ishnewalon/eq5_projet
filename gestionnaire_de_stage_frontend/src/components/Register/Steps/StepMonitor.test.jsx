@@ -1,3 +1,5 @@
+// noinspection JSCheckFunctionSignatures
+
 import {cleanup, render, screen} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import StepMonitor, {verification} from "./StepMonitor";
@@ -13,7 +15,6 @@ const mockFnNext = jest.fn();
 const mockFnUpdateType = jest.fn();
 const mockFnHandleChange = () => jest.fn((e) => {
     e.preventDefault();
-    myCompanyName = e.target.value;
 });
 
 jest.mock('../../SharedComponents/Fields/FieldAddress', () => () => 'myAddressComponents');
