@@ -24,6 +24,7 @@ public abstract class User implements Serializable {
         @JsonProperty("firstName") String firstName,
         @JsonProperty("email") String email,
         @JsonProperty("phone") String phone,
+        @JsonProperty("role") String role,
         @JsonProperty("password") String password
     ){
         this.id = id;
@@ -31,6 +32,7 @@ public abstract class User implements Serializable {
         this.firstName = firstName;
         this.email = email;
         this.phone = phone;
+        this.role = role;
         this.password = password;
     }
 
@@ -51,6 +53,7 @@ public abstract class User implements Serializable {
     private String email;
 
     private String phone;
+    private String role;
 
     @NotBlank
     @Size(min = 8, max = 64, message = "Le mot de passe doit contenir entre 8 et 64 caractères")
