@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <h1>PAGE D'ACCUEIL DU PROJET VEILLE</h1>
-  </div>
+    <div>
+        <h1>PAGE D'ACCUEIL DU PROJET VEILLE</h1>
+    </div>
 </template>
 
 <script>

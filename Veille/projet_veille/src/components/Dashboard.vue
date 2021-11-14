@@ -1,33 +1,40 @@
 <template>
-  <h1>VOUS ETES CONNECTE EN TANT QUE <span> {{this.user.firstName}} {{this.user.lastName}}</span> </h1>
-  <button v-on:click="logout"> Se déconnecter</button><br><br>
-  <router-link to="/monitor-view">Liste étudiants</router-link>
-
+    <h1>VOUS ETES CONNECTE EN TANT QUE <span> {{ this.user.role }}</span></h1>
+    <h2>Bienvenu <span> {{ this.user.lastName }} {{ this.user.firstName }}</span></h2>
+    <button v-on:click="logout"> Se déconnecter</button>
+    <br><br>
+    <div v-if="checkRole() === 'moniteur'">
+        <router-link to="/monitor-view">Liste étudiants</router-link>
+    </div>
 </template>
 
 <script>
 export default {
-  name: "Dashboard",
-  data: function () {
-    return {
-      user: sessionStorage.getItem("currentUser") != null ? JSON.parse(sessionStorage.getItem("currentUser")) : {},
+    name: "Dashboard",
+    data: function () {
+        return {
+            user: sessionStorage.getItem("currentUser") != null ? JSON.parse(sessionStorage.getItem("currentUser")) : {},
+        }
+    },
+    methods: {
+        logout: function () {
+            sessionStorage.removeItem("currentUser");
+            this.$router.push("/register");
+        },
+        checkRole: function () {
+            return this.user.role;
+        }
     }
-  },
-  methods: {
-    logout: function () {
-      sessionStorage.removeItem("currentUser");
-      this.$router.push("/register");
-    }
-  }
 }
 </script>
 
 <style scoped>
-h1 + span{
-  text-transform: uppercase;
+h2 span {
+    text-transform: capitalize;
 }
-span{
-  color:  rgba(64, 255, 169, 0.74);
-  text-transform: uppercase;
+
+h1 span {
+    color: rgba(66, 222, 152, 0.74);
+    text-transform: uppercase;
 }
 </style>
