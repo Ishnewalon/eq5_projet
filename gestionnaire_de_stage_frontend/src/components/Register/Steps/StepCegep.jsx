@@ -22,10 +22,9 @@ export default function StepCegep({prevStep, nextStep, updateUserType, handleCha
 
     return (<>
             <FormGroup>
-                <FormField>
-                    <label id="labelMatricule" htmlFor="matricule">Matricule</label>
-                    <input id="matricule" aria-labelledby="labelMatricule" data-testid="input-matricule"
-                           name="matricule" placeholder="Matricule" type="number"
+                <FormField myFor="matricule">
+                    <label>Matricule</label>
+                    <input data-testid="input-matricule" name="matricule" placeholder="Matricule" type="number"
                            value={matricule} onChange={handleChange}/>
                 </FormField>
             </FormGroup>
