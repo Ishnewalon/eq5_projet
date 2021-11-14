@@ -24,9 +24,8 @@ export default {
         uploadFile: function () {
             if (this.file) {
                 let file = new FormData();
-                file.append('cv', this.file);
-                let id = this.user.id;
-                axios.post(`http://localhost:8181/curriculum/upload?id=${id}`, file)
+                file.append('file', this.file);
+                axios.post(`http://localhost:8181/curriculum/upload?id=${this.user.id}`, file)
                     .then(() => alert("Cv téléversé avec succès"));
             } else {
                 alert('Veuillez choisir votre Cv');

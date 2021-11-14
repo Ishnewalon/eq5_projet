@@ -1,7 +1,11 @@
 <template>
     <div id="nav">
         <router-link to="/home">Home</router-link>
-        <span v-if="checkAuth()">
+        <span v-if="getUserRole() === 'etudiant'">
+            |
+            <router-link to="/upload-cv"> Televerser Cv</router-link>
+        </span>
+        <span v-if="!getUserRole()">
             |
             <router-link to="/register"> Inscription</router-link>
             |
@@ -11,6 +15,7 @@
             |
             <router-link v-on:click="logout" to="/register"> Se déconnecter</router-link>
         </span>
+
     </div>
     <router-view/>
 
@@ -27,10 +32,11 @@ export default {
             this.$router.push('/register');
             // location.reload();
         },
-        checkAuth: function () {
+        getUserRole: function () {
             if (sessionStorage.getItem("currentUser") == null) {
-                return true;
+                return false;
             }
+            return JSON.parse(sessionStorage.getItem("currentUser")).role;
         }
     }
 

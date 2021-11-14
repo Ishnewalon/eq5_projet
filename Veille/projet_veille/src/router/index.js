@@ -26,6 +26,11 @@ const routes = [
         path: '/monitor-view',
         name: 'MonitorView',
         component: () => import('../components/MonitorView/MonitorView')
+    },
+    {
+        path: '/upload-cv',
+        name: 'TeleverserCv',
+        component: () => import('../components/StudendView/TeleverserCv')
     }
 ]
 
