@@ -23,37 +23,8 @@ export default function StepMonitor({
         updateUserType(UserType.MONITOR);
         nextStep(val);
     }
-    const verification = (companyName, city, address, postalCode) => {
-        if (!companyName) {
-            toastErr.fire({title: 'Nom de compagnie est vide'}).then()
-            return false
-        }
-        if (!city) {
-            toastErr.fire({title: 'Nom de ville est vide'}).then()
-            return false
-        }
-        if (!address) {
-            toastErr.fire({title: "L'adresse est vide"}).then()
-            return false
-        }
-        if (!postalCode) {
-            toastErr.fire({title: 'Code postal est vide'}).then()
-            return false
-        }
-        if (!regexName.test(companyName)) {
-            toastErr.fire({title: 'Nom de compagnie est invalide'}).then()
-            return false;
-        }
-        if (!regexName.test(city)) {
-            toastErr.fire({title: 'Nom de ville est invalide'}).then()
-            return false;
-        }
-        if (!regexCodePostal.test(postalCode)) {
-            toastErr.fire({title: 'Code postal est invalide'}).then()
-            return false;
-        }
-        return true;
-    }
+
+
 
     return (<>
         <FormGroup>
@@ -75,7 +46,7 @@ export default function StepMonitor({
         <FormGroup>
             <FormField>
                 <label>Code Postale</label>
-                <input data-testid="codePostal" name="postalCode" placeholder="XXX 123" type="text"
+                <input data-testid="postalCode" name="postalCode" placeholder="XXX 123" type="text"
                        value={postalCode} onChange={handleChange}/>
             </FormField>
         </FormGroup>
@@ -96,37 +67,34 @@ export default function StepMonitor({
     </>)
 
 }
-export const verification = (companyName, city, address, codePostal) => {
+export function verification(companyName, city, address, postalCode) {
     if (!companyName) {
-        toast.fire({title: 'Nom de compagnie est vide', icon: 'error'}).then()
+        toastErr.fire({title: 'Nom de compagnie est vide'}).then()
         return false
     }
     if (!city) {
-        toast.fire({title: 'Nom de ville est vide', icon: 'error'}).then()
+        toastErr.fire({title: 'Nom de ville est vide'}).then()
         return false
     }
     if (!address) {
-        toast.fire({title: "L'adresse est vide", icon: 'error'}).then()
+        toastErr.fire({title: "L'adresse est vide"}).then()
         return false
     }
-    if (!codePostal) {
-        toast.fire({title: 'Code postal est vide', icon: 'error'}).then()
+    if (!postalCode) {
+        toastErr.fire({title: 'Code postal est vide'}).then()
         return false
     }
-    if (!companyName.match(/^[a-zA-Z0-9]+$/)) {
-        toast.fire({title: 'Nom de compagnie est invalide', icon: 'error'}).then()
+    if (!regexName.test(companyName)) {
+        toastErr.fire({title: 'Nom de compagnie est invalide'}).then()
         return false;
     }
-    if (!city.match(/^[a-zA-Z]+$/)) {
-        toast.fire({title: 'Nom de ville est invalide', icon: 'error'}).then()
+    if (!regexName.test(city)) {
+        toastErr.fire({title: 'Nom de ville est invalide'}).then()
         return false;
     }
-    if (!regexCodePostal.test(codePostal)) {
-        toast.fire({title: 'Code postal est invalide', icon: 'error'}).then()
+    if (!regexCodePostal.test(postalCode)) {
+        toastErr.fire({title: 'Code postal est invalide'}).then()
         return false;
     }
     return true;
-}
-export const service={
-    verification
 }

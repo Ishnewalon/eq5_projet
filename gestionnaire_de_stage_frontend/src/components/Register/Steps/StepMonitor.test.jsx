@@ -1,11 +1,13 @@
 import {cleanup, render, screen} from "@testing-library/react";
-import StepMonitor, {service, verification} from "./StepMonitor";
 import userEvent from "@testing-library/user-event";
+import StepMonitor, {verification} from "./StepMonitor";
 
-let myPostalCode = "postalll";
-let myAddress = "mon address";
-let myCompanyName = "name";
-let myCity = "ville";
+
+
+let myPostalCode = 'H0H0H0';
+let myAddress = '555 rue blabla';
+let myCompanyName = 'myBigCompagnie';
+let myCity = 'mtl';
 const mockFnPrev = jest.fn();
 const mockFnNext = jest.fn();
 const mockFnUpdateType = jest.fn();
@@ -14,12 +16,12 @@ const mockFnHandleChange = () => jest.fn((e) => {
     myCompanyName = e.target.value;
 });
 
-jest.mock('../../Fields/FieldAddress', () => () => 'myAddressComponents');
+jest.mock('../../SharedComponents/Fields/FieldAddress', () => () => 'myAddressComponents');
 
 beforeEach(() => {
     render(
         <StepMonitor prevStep={mockFnPrev} nextStep={mockFnNext} handleChange={mockFnHandleChange}
-                     updateUserType={mockFnUpdateType} codePostal={myPostalCode}
+                     updateUserType={mockFnUpdateType} postalCode={myPostalCode}
                      companyName={myCompanyName} city={myCity} address={myAddress}/>
     );
 });
@@ -32,21 +34,16 @@ afterEach(() => {
 test('loads and displays StepMonitor', () => {
     expect(screen.getByTestId("companyName")).toBeInTheDocument();
     expect(screen.getByTestId("input-city")).toBeInTheDocument();
-    expect(screen.getByTestId("codePostal")).toBeInTheDocument();
+    expect(screen.getByTestId("postalCode")).toBeInTheDocument();
     expect(screen.getByText("Suivant")).toBeInTheDocument();
     expect(screen.getByText("Précédent")).toBeInTheDocument();
     expect(screen.getByText("myAddressComponents")).toBeInTheDocument()
     expect(screen.getByTestId("input-city")).toHaveValue(myCity);
-    expect(screen.getByTestId("codePostal")).toHaveValue(myPostalCode);
+    expect(screen.getByTestId("postalCode")).toHaveValue(myPostalCode);
     expect(screen.getByTestId("companyName")).toHaveValue(myCompanyName);
 
 });
-
 test('click next', () => {
-    service.verification = jest.fn(() => {
-        return true;
-    });
-
     expect(mockFnNext).not.toHaveBeenCalled()
     userEvent.click(screen.getByText("Suivant"));
 
