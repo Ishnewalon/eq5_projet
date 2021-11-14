@@ -1,9 +1,12 @@
-import {Step, UserType} from "../Register";
 import React from "react";
-import FieldAddress from "../../Fields/FieldAddress";
-import {toast} from "../../../utility";
+import FieldAddress from "../../SharedComponents/Fields/FieldAddress";
+import {regexCodePostal, regexName, toastErr} from "../../../utility";
+import {UserType} from "../../../enums/UserTypes";
+import {Step} from "../../../enums/Steps";
+import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FormField} from "../../SharedComponents/FormField/FormField";
 
-const regexCodePostal = /^([A-Za-z]\s?[0-9]){3}$/;
+
 
 export default function StepMonitor({
                                         prevStep,
@@ -12,7 +15,7 @@ export default function StepMonitor({
                                         handleChange,
                                         companyName,
                                         address,
-                                        codePostal,
+                                        postalCode,
                                         city
                                     }) {
 
@@ -20,41 +23,62 @@ export default function StepMonitor({
         updateUserType(UserType.MONITOR);
         nextStep(val);
     }
-
+    const verification = (companyName, city, address, postalCode) => {
+        if (!companyName) {
+            toastErr.fire({title: 'Nom de compagnie est vide'}).then()
+            return false
+        }
+        if (!city) {
+            toastErr.fire({title: 'Nom de ville est vide'}).then()
+            return false
+        }
+        if (!address) {
+            toastErr.fire({title: "L'adresse est vide"}).then()
+            return false
+        }
+        if (!postalCode) {
+            toastErr.fire({title: 'Code postal est vide'}).then()
+            return false
+        }
+        if (!regexName.test(companyName)) {
+            toastErr.fire({title: 'Nom de compagnie est invalide'}).then()
+            return false;
+        }
+        if (!regexName.test(city)) {
+            toastErr.fire({title: 'Nom de ville est invalide'}).then()
+            return false;
+        }
+        if (!regexCodePostal.test(postalCode)) {
+            toastErr.fire({title: 'Code postal est invalide'}).then()
+            return false;
+        }
+        return true;
+    }
 
     return (<>
-        <div className="form-group row">
-            <div className="col-md-6">
+        <FormGroup>
+            <FormField>
                 <label>Nom de la compagnie</label>
-                <div className="input-group">
-                    <input data-testid="companyName" name="companyName" placeholder="Nom de compagnie"
-                           className="form-control"
-                           type="text"
-                           value={companyName} onChange={handleChange('companyName')}/>
-                </div>
-            </div>
-            <div className="col-md-6">
-                <label>Ville</label>
-                <div>
-                    <div className="input-group">
-                        <input data-testid="input-city" name="city" placeholder="Ville" className="form-control"
-                               type="text"
-                               value={city} onChange={handleChange('city')}/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div className="form-group">
-            <FieldAddress label="Adresse de la compagnie" address={address} handleChange={handleChange('address')}/>
-        </div>
-        <div className="form-group">
-            <label>Code Postale</label>
-            <div className="input-group">
-                <input data-testid="codePostal" name="codePostal" placeholder="XXX 123" className="form-control"
+                <input data-testid="companyName" name="companyName" placeholder="Nom de compagnie"
                        type="text"
-                       value={codePostal} onChange={handleChange('codePostal')}/>
-            </div>
-        </div>
+                       value={companyName} onChange={handleChange}/>
+            </FormField>
+            <FormField>
+                <label>Ville</label>
+                <input data-testid="input-city" name="city" placeholder="Ville" type="text"
+                       value={city} onChange={handleChange}/>
+            </FormField>
+        </FormGroup>
+        <FormGroup>
+            <FieldAddress label="Adresse de la compagnie" address={address} handleChange={handleChange}/>
+        </FormGroup>
+        <FormGroup>
+            <FormField>
+                <label>Code Postale</label>
+                <input data-testid="codePostal" name="postalCode" placeholder="XXX 123" type="text"
+                       value={postalCode} onChange={handleChange}/>
+            </FormField>
+        </FormGroup>
         <div className="form-group text-center">
             <label/>
             <div>
@@ -64,8 +88,7 @@ export default function StepMonitor({
                         }}>Précédent
                 </button>
                 <button data-testid="btn-next" className="btn btn-primary" type={"button"} onClick={() => {
-                    console.log("OUI")
-                    if (service.verification()) next(Step.GENERAL)
+                    if (verification(companyName, city, address, postalCode)) next(Step.GENERAL)
                 }}>Suivant
                 </button>
             </div>

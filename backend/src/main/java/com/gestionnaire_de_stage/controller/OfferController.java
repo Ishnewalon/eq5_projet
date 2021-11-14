@@ -7,9 +7,7 @@ import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
-import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
-import com.gestionnaire_de_stage.service.MonitorService;
 import com.gestionnaire_de_stage.service.OfferService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,22 +20,18 @@ import java.util.List;
 @CrossOrigin
 public class OfferController {
 
-    private final MonitorService monitorService;
-
     private final OfferService offerService;
 
-    public OfferController(MonitorService monitorService, OfferService offerService) {
+    public OfferController(OfferService offerService) {
         this.offerService = offerService;
-        this.monitorService = monitorService;
     }
+
 
     @PostMapping("/add")
     public ResponseEntity<?> addOffer(@RequestBody OfferDTO dto) {
-        Offer offer = offerService.mapToOffer(dto);
+        Offer offer;
         try {
-            Monitor monitor = monitorService.getOneByEmail(dto.getCreator_email());
-            offer.setCreator(monitor);
-            offer = offerService.create(offer);
+            offer = offerService.create(dto);
         } catch (IllegalArgumentException ie) {
             return ResponseEntity
                     .badRequest()
@@ -55,16 +49,19 @@ public class OfferController {
                 .status(HttpStatus.CREATED)
                 .body(offer);
     }
-    @GetMapping({"/", "/{department}"}) //TODO Handle exception
-    public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {
-        if (department == null || department.isEmpty() || department.isBlank())
+
+    @GetMapping({"/", "/{department}"}) //FIXME Handle exception
+    public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {//TODO get the student ID instead of the department
+        List<Offer> offers;
+        try {
+            offers = offerService.getOffersByDepartment(department);//TODO: get only offers non applied
+        } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Le département n'est pas précisé"));
+                    .body(new ResponseMessage(e.getMessage()));
+        }
 
-        List<Offer> offerDTOS = offerService.getOffersByDepartment(department);
-
-        return ResponseEntity.ok(offerDTOS);
+        return ResponseEntity.ok(offers);
     }
 
     @PostMapping("/validate")
@@ -86,15 +83,16 @@ public class OfferController {
                     .body(new ResponseMessage("Offre déjà traité!"));
         }
     }
+
     @GetMapping("/valid")
     public ResponseEntity<?> getValidOffers() {
         List<Offer> offers = offerService.getValidOffers();
         return ResponseEntity.ok(offers);
     }
+
     @GetMapping("/not_validated")
     public ResponseEntity<?> getNotValidatedOffers() {
         List<Offer> offers = offerService.getNotValidatedOffers();
         return ResponseEntity.ok(offers);
     }
-
 }

@@ -14,11 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -146,12 +142,6 @@ public class CurriculumServiceTest {
     }
 
     @Test
-    public void testMapToCurriculumDTOList_withEmptyList() {
-        List<OfferApplication> offerApplicationList = new ArrayList<>();
-        assertThrows(IllegalArgumentException.class,
-                () -> curriculumService.mapToCurriculumDTOList(offerApplicationList));
-    }
-    @Test
     public void testFindAllCurriculumWithInvalidCurriculum() {
         List<Curriculum> dummyCurriculumList = getDummyCurriculumList();
         when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(dummyCurriculumList);
@@ -189,6 +179,7 @@ public class CurriculumServiceTest {
 
         assertThat(curriculumList).isEmpty();
     }
+
     @Test
     void testValidate() throws Exception {
         Curriculum curriculum = getDummyCurriculum();

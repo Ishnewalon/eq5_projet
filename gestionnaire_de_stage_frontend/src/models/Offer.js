@@ -1,4 +1,4 @@
-export default class Offer{
+export default class Offer {
     title
     department
     description
@@ -6,9 +6,10 @@ export default class Offer{
     salary
     id
     creator
+    valid=true
 
 
-    constructor($id, $title, $department, $description, $address, $salary, $creator) {
+    constructor($id, $title, $department, $description, $address, $salary, $creator, $valid=true) {
         this.id = $id;
         this.title = $title;
         this.department = $department;
@@ -16,5 +17,6 @@ export default class Offer{
         this.address = $address;
         this.salary = $salary;
         this.creator = $creator;
+        this.valid = $valid;
     }
 }

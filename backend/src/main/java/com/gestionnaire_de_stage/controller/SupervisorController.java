@@ -5,6 +5,7 @@ import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
+import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.service.StudentService;
@@ -70,7 +71,6 @@ public class SupervisorController {
 
     @PostMapping("/assign/student")
     public ResponseEntity<?> AssignSupervisor(@RequestBody AssignDto assignDto) {
-
         Student student;
         Supervisor supervisor;
         try {
@@ -81,9 +81,27 @@ public class SupervisorController {
                     .badRequest()
                     .body(new ResponseMessage("Erreur: Inexistant"));
         }
-        boolean assign = supervisorService.assign(student, supervisor);
+        boolean assign = studentService.assign(student, supervisor);
 
-        String response = assign ? "Assignement fait!" : "Assignement rejeté!";
+        String response = assign ? "Assignement fait!" : "Assignement rejeté, l'étudiant est déjà assigné!";
         return ResponseEntity.ok(new ResponseMessage(response));
+    }
+
+    @GetMapping("/students_status/{supervisor_id}")
+    public ResponseEntity<?> getAllStudentsStatus(@PathVariable Long supervisor_id) {
+        List<OfferApplication> offerApplicationList;
+        try {
+            offerApplicationList = supervisorService.getStudentsStatus(supervisor_id);
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Ce superviseur n'existe pas");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+    }
+        return ResponseEntity
+                .ok(offerApplicationList);
     }
 }

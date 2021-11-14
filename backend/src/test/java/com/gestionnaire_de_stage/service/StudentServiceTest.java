@@ -5,6 +5,7 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
+import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.junit.jupiter.api.Test;
@@ -267,6 +268,47 @@ public class StudentServiceTest {
 
     }
 
+    @Test
+    public void testGetAllUnassignedStudents() {
+        List<Student> dummyStudentList = getDummyStudentList();
+        when(studentRepository.getAllByPrincipalCurriculum_IsValidAndSupervisorNull(true)).thenReturn(dummyStudentList);
+
+        List<Student> actualStudentList = studentService.getAllUnassignedStudents();
+
+        assertThat(actualStudentList.size()).isEqualTo(dummyStudentList.size());
+    }
+
+    @Test
+    public void testGetAllStudentWithoutCv() {
+        List<Student> dummyStudentList = getDummyStudentList();
+        when(studentRepository.findAllByPrincipalCurriculumIsNull()).thenReturn(dummyStudentList);
+
+        List<Student> actualStudentList = studentService.getAllStudentWithoutCv();
+
+        assertThat(actualStudentList.size()).isEqualTo(dummyStudentList.size());
+    }
+
+    @Test
+    public void testGetAllStudentWithInvalidCv() {
+        List<Student> dummyStudentList = getDummyStudentList();
+        when(studentRepository.findAllByPrincipalCurriculum_IsValid(any())).thenReturn(dummyStudentList);
+
+        List<Student> actualStudentList = studentService.getAllStudentWithInvalidCv();
+
+        assertThat(actualStudentList.size()).isEqualTo(dummyStudentList.size());
+    }
+
+    @Test
+    void testAssign() {
+        Student dummyStudent = getDummyStudent();
+        Supervisor dummySupervisor = getDummySupervisor();
+        when(studentRepository.save(any())).thenReturn(dummyStudent);
+
+        boolean isAssigned = studentService.assign(dummyStudent, dummySupervisor);
+
+        assertThat(isAssigned).isTrue();
+    }
+
     private Student getDummyStudent() {
         Student dummyStudent = new Student();
         dummyStudent.setId(1L);
@@ -299,5 +341,17 @@ public class StudentServiceTest {
             idIterator++;
         }
         return dummyStudentList;
+    }
+
+    private Supervisor getDummySupervisor() {
+        Supervisor dummySupervisor = new Supervisor();
+        dummySupervisor.setId(1L);
+        dummySupervisor.setLastName("Keys");
+        dummySupervisor.setFirstName("Harold");
+        dummySupervisor.setEmail("keyh@gmail.com");
+        dummySupervisor.setPassword("galaxy29");
+        dummySupervisor.setDepartment("Comptabilité");
+        dummySupervisor.setMatricule("04736");
+        return dummySupervisor;
     }
 }

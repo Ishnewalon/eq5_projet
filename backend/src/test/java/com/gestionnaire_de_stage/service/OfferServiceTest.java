@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ValidationOffer;
+import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
@@ -31,6 +32,9 @@ public class OfferServiceTest {
 
     @Mock
     private OfferRepository offerRepository;
+
+    @Mock
+    private MonitorService monitorService;
 
     @Test
     public void testMapToOffer_withNullDto() {
@@ -80,21 +84,21 @@ public class OfferServiceTest {
 
     @Test
     public void testCreateOffer_withExistingOffer() {
-        final Offer dummyOffer = getDummyOffer();
-        when(offerRepository.findOne(any())).thenReturn(Optional.of(dummyOffer));
+        when(offerRepository.findOne(any())).thenReturn(Optional.of(getDummyOffer()));
 
         assertThrows(OfferAlreadyExistsException.class,
-                () -> offerService.create(dummyOffer));
+                () -> offerService.create(getDummyOfferDto()));
     }
 
     @Test
-    public void testCreateOffer_withValidOffer() throws OfferAlreadyExistsException {
+    public void testCreateOffer_withValidOffer() throws OfferAlreadyExistsException, EmailDoesNotExistException {
         Offer dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
         when(offerRepository.save(any())).thenReturn(getDummyOffer());
         when(offerRepository.findOne(any())).thenReturn(Optional.empty());
+        when(monitorService.getOneByEmail(any())).thenReturn(getDummyMonitor());
 
-        Offer actualOffer = offerService.create(dummyOffer);
+        Offer actualOffer = offerService.create(getDummyOfferDto());
 
         assertThat(actualOffer).isNotNull();
         assertThat(actualOffer.getId())
@@ -122,7 +126,17 @@ public class OfferServiceTest {
         when(offerRepository.existsById(1L)).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-                () -> offerService.validation(new ValidationOffer(dummyOffer.getId(),false)));
+                () -> offerService.validation(new ValidationOffer(dummyOffer.getId(), false)));
+    }
+
+    @Test
+    public void testUpdateOffer_withOfferAlreadyTreated() {
+        Offer dummyOffer = getDummyOffer();
+        when(offerRepository.existsById(1L)).thenReturn(true);
+        when(offerRepository.existsByIdAndValidNotNull(any())).thenReturn(true);
+
+        assertThrows(OfferAlreadyTreatedException.class,
+                () -> offerService.validation(new ValidationOffer(dummyOffer.getId(), false)));
     }
 
     @Test
@@ -180,6 +194,14 @@ public class OfferServiceTest {
     }
 
     @Test
+    public void testGetOffersByDepartment_withNullDepartment() {
+        List<Offer> dummyOfferList = getDummyOfferList();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> offerService.getOffersByDepartment(null));
+    }
+
+    @Test
     public void testFindOfferById() {
         Offer dummyOffer = getDummyOffer();
         when(offerRepository.findById(any())).thenReturn(Optional.of(dummyOffer));
@@ -209,6 +231,7 @@ public class OfferServiceTest {
 
         assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
     }
+
 
     private List<Offer> getDummyOfferList() {
         List<Offer> dummyOfferList = new ArrayList<>();

@@ -1,5 +1,5 @@
 import React from "react";
-import FieldPassword from "../../Fields/FieldPassword";
+import FieldPassword from "../../SharedComponents/Fields/FieldPassword";
 
 export default function StepPassword({prevStep, endThis, handleChange, password}) {
 
@@ -7,7 +7,7 @@ export default function StepPassword({prevStep, endThis, handleChange, password}
             <div className="form-group row">
                 <div className="col-md-12">
                     <FieldPassword password={password} label="Mot de passe"
-                                   placeholder="Votre mot de passe" handleChange={handleChange('password')}/>
+                                   placeholder="Votre mot de passe" handleChange={handleChange}/>
                 </div>
 
                 {/* REVOIR LA CONFIRMATION DU MDP*/}

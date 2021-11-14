@@ -9,8 +9,6 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
 import com.gestionnaire_de_stage.model.Offer;
-import com.gestionnaire_de_stage.repository.OfferRepository;
-import com.gestionnaire_de_stage.service.MonitorService;
 import com.gestionnaire_de_stage.service.OfferService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,29 +31,18 @@ import static org.mockito.Mockito.when;
 @WebMvcTest(OfferController.class)
 public class OfferControllerTest {
 
-    @MockBean
-    private OfferRepository offerRepository;
-
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private OfferService offerService;
-
-    @MockBean
-    private MonitorService monitorService;
-
-
     private Offer dummyOffer;
-
-    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void testOfferCreate_withValidEntry() throws Exception {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
-        when(offerService.mapToOffer(any())).thenReturn(dummyOffer);
         when(offerService.create(any())).thenReturn(getDummyOffer());
 
         MvcResult mvcResult = mockMvc.perform(
@@ -74,7 +61,6 @@ public class OfferControllerTest {
 
     @Test
     public void testOfferCreate_withNullEntry() throws Exception {
-        when(offerService.mapToOffer(any())).thenReturn(new Offer());
         when(offerService.create(any())).thenThrow(new IllegalArgumentException("Offre est null"));
 
         MvcResult mvcResult = mockMvc.perform(
@@ -93,7 +79,6 @@ public class OfferControllerTest {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
-        when(offerService.mapToOffer(any())).thenReturn(dummyOffer);
         when(offerService.create(any())).thenThrow(new IllegalArgumentException("Le courriel de l'utilisateur ne peut être null"));
 
         MvcResult mvcResult = mockMvc.perform(
@@ -112,7 +97,6 @@ public class OfferControllerTest {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
-        when(offerService.mapToOffer(any())).thenReturn(dummyOffer);
         when(offerService.create(any())).thenThrow(new OfferAlreadyExistsException());
 
         MvcResult mvcResult = mockMvc.perform(
@@ -131,8 +115,7 @@ public class OfferControllerTest {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
-        when(offerService.mapToOffer(dummyOfferDTO)).thenReturn(dummyOffer);
-        when(monitorService.getOneByEmail(any())).thenThrow(new EmailDoesNotExistException());
+        when(offerService.create(any())).thenThrow(EmailDoesNotExistException.class);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/add")
@@ -216,8 +199,7 @@ public class OfferControllerTest {
     public void testGetOffersByDepartment() throws Exception {
         String department = "myDepartment";
         List<Offer> dummyArrayOffer = getDummyArrayOffer();
-        List<OfferDTO> mappedDTOS = offerService.mapArrayToOfferDTO(dummyArrayOffer);
-        when(offerRepository.findAllByDepartmentIgnoreCaseAndValidIsTrue(any())).thenReturn(dummyArrayOffer);
+        when(offerService.getOffersByDepartment(any())).thenReturn(dummyArrayOffer);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get(String.format("/offers/%s", department))
@@ -225,9 +207,9 @@ public class OfferControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<OfferDTO> returnedOfferDtos = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        List<Offer> returnedOffers = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
         });
-        assertThat(returnedOfferDtos).isEqualTo(mappedDTOS);
+        assertThat(returnedOffers).containsAll(dummyArrayOffer);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
     }
 
@@ -236,19 +218,20 @@ public class OfferControllerTest {
         String department = "myDepartmentWithNoOffer";
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get(String.format("/offers/%s", department))
+                        MockMvcRequestBuilders.get("/offers/{0}", department)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<OfferDTO> returnedOfferDtos = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        List<Offer> returnedOffers = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
         });
-        assertThat(returnedOfferDtos).isEmpty();
+        assertThat(returnedOffers).isEmpty();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
     }
 
     @Test
     public void testGetOffersByDepartment_withNoDepartment() throws Exception {
+        when(offerService.getOffersByDepartment(any())).thenThrow(new IllegalArgumentException("Le département n'est pas précisé"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/offers/")

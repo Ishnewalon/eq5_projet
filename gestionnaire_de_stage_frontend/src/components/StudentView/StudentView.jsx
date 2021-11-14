@@ -1,15 +1,35 @@
 import React from "react";
 import TeleverserCv from "./TeleverserCv/TeleverserCv";
 import ViewOffersAndApply from "./ViewOffersAndApply/ViewOffersAndApply";
+import {Route, useRouteMatch} from "react-router-dom";
+import OfferApplicationListView from "./OfferApplicationListView/OfferApplicationListView";
+import {ContractView} from "../Contract/ContractView";
+import OfferApplicationSetFinalStatus from "./OfferApplicationSetFinalStatus/OfferApplicationSetFinalStatus";
+import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {useAuth} from "../../services/use-auth";
 
 export default function StudentView() {
-    return (<>
-            <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+    let {path} = useRouteMatch();
+    let auth = useAuth();
+    return (<ContainerBox>
+            <Route exact path={`${path}/televerser`}>
                 <TeleverserCv/>
-            </div>
-            <div className="container bg-dark px-3 py-4 rounded shadow-lg mt-5">
+            </Route>
+            <Route exact path={`${path}/offres`}>
                 <ViewOffersAndApply/>
-            </div>
-        </>
+            </Route>
+            <Route exact path={`${path}/view/status`}>
+                <OfferApplicationSetFinalStatus/>
+            </Route>
+            <Route exact path={`${path}/offer/setdate`}>
+                <OfferApplicationListView/>
+            </Route>
+            <Route exact path={`${path}/voir_mon_contrat`}>
+                <ContractView/>
+            </Route>
+            <Route exact path={`${path}`}>
+                <h1 className="text-center">Bonjour {auth.user.firstName}!</h1>
+            </Route>
+        </ContainerBox>
     )
 }
