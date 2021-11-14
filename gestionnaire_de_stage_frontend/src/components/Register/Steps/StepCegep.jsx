@@ -2,6 +2,8 @@ import React from "react";
 import {UserType} from "../../../enums/UserTypes";
 import {Step} from "../../../enums/Steps";
 import {toastErr} from "../../../utility";
+import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FormField} from "../../SharedComponents/FormField/FormField";
 
 export default function StepCegep({prevStep, nextStep, updateUserType, handleChange, matricule}) {
 
@@ -19,15 +21,13 @@ export default function StepCegep({prevStep, nextStep, updateUserType, handleCha
     }
 
     return (<>
-            <div className="form-group row">
-                <div className="col-md-12">
+            <FormGroup>
+                <FormField>
                     <label>Matricule</label>
-                    <div className="input-group">
-                        <input name="matricule" placeholder="Matricule" className="form-control" type="number"
-                               value={matricule} onChange={handleChange}/>
-                    </div>
-                </div>
-            </div>
+                    <input name="matricule" placeholder="Matricule" type="number"
+                           value={matricule} onChange={handleChange}/>
+                </FormField>
+            </FormGroup>
             <div className="form-group text-center">
                 <label/>
                 <div>
