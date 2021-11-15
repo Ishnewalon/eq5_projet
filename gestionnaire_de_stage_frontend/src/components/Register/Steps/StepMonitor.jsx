@@ -1,12 +1,12 @@
 import React from "react";
 import FieldAddress from "../../SharedComponents/Fields/FieldAddress";
-import {toastErr} from "../../../utility";
+import {regexCodePostal, regexName, toastErr} from "../../../utility";
 import {UserType} from "../../../enums/UserTypes";
 import {Step} from "../../../enums/Steps";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
-import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
+import {FormField} from "../../SharedComponents/FormField/FormField";
 
-const regexCodePostal = /^([A-Za-z]\s?[0-9]){3}$/;
+
 
 export default function StepMonitor({
                                         prevStep,
@@ -23,61 +23,31 @@ export default function StepMonitor({
         updateUserType(UserType.MONITOR);
         nextStep(val);
     }
-    const verification = (companyName, city, address, postalCode) => {
-        if (!companyName) {
-            toastErr.fire({title: 'Nom de compagnie est vide'}).then()
-            return false
-        }
-        if (!city) {
-            toastErr.fire({title: 'Nom de ville est vide'}).then()
-            return false
-        }
-        if (!address) {
-            toastErr.fire({title: "L'adresse est vide"}).then()
-            return false
-        }
-        if (!postalCode) {
-            toastErr.fire({title: 'Code postal est vide'}).then()
-            return false
-        }
-        if (!companyName.match(/^[a-zA-Z0-9]+$/)) {
-            toastErr.fire({title: 'Nom de compagnie est invalide'}).then()
-            return false;
-        }
-        if (!city.match(/^[a-zA-Z]+$/)) {
-            toastErr.fire({title: 'Nom de ville est invalide'}).then()
-            return false;
-        }
-        if (!regexCodePostal.test(postalCode)) {
-            toastErr.fire({title: 'Code postal est invalide'}).then()
-            return false;
-        }
-        return true;
-    }
+
 
     return (<>
         <FormGroup>
-            <label>Nom de la compagnie</label>
-            <InputGroup>
+            <FormField myFor="companyName">
+                <label>Nom de la compagnie</label>
                 <input name="companyName" placeholder="Nom de compagnie"
                        type="text"
                        value={companyName} onChange={handleChange}/>
-            </InputGroup>
-            <label>Ville</label>
-            <InputGroup>
+            </FormField>
+            <FormField myFor="city">
+                <label>Ville</label>
                 <input name="city" placeholder="Ville" type="text"
                        value={city} onChange={handleChange}/>
-            </InputGroup>
+            </FormField>
         </FormGroup>
         <FormGroup>
             <FieldAddress label="Adresse de la compagnie" address={address} handleChange={handleChange}/>
         </FormGroup>
         <FormGroup>
-            <label>Code Postale</label>
-            <InputGroup>
+            <FormField myFor="postalCode">
+                <label>Code Postale</label>
                 <input name="postalCode" placeholder="XXX 123" type="text"
                        value={postalCode} onChange={handleChange}/>
-            </InputGroup>
+            </FormField>
         </FormGroup>
         <div className="form-group text-center">
             <label/>
@@ -92,4 +62,36 @@ export default function StepMonitor({
         </div>
     </>)
 
+}
+
+function verification(companyName, city, address, postalCode) {
+    if (!companyName) {
+        toastErr.fire({title: 'Nom de compagnie est vide'}).then()
+        return false
+    }
+    if (!city) {
+        toastErr.fire({title: 'Nom de ville est vide'}).then()
+        return false
+    }
+    if (!address) {
+        toastErr.fire({title: "L'adresse est vide"}).then()
+        return false
+    }
+    if (!postalCode) {
+        toastErr.fire({title: 'Code postal est vide'}).then()
+        return false
+    }
+    if (!regexName.test(companyName)) {
+        toastErr.fire({title: 'Nom de compagnie est invalide'}).then()
+        return false;
+    }
+    if (!regexName.test(city)) {
+        toastErr.fire({title: 'Nom de ville est invalide'}).then()
+        return false;
+    }
+    if (!regexCodePostal.test(postalCode)) {
+        toastErr.fire({title: 'Code postal est invalide'}).then()
+        return false;
+    }
+    return true;
 }

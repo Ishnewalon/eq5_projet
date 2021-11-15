@@ -4,26 +4,26 @@ import {BsPenFill} from "react-icons/all";
 import {managerSignContract, monitorSignContract, studentSignContract} from "../../../services/contrat-service";
 import {UserType} from "../../../enums/UserTypes";
 import {swalErr} from "../../../utility";
-import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
+import {FormField} from "../../SharedComponents/FormField/FormField";
+
+export const toPdfBlob = (pdfFile) => {
+    if (!pdfFile)
+        return null;
+
+    const decodedChars = atob(pdfFile);
+    const numBytes = new Array(decodedChars.length);
+    for (let i = 0; i < numBytes.length; i++)
+        numBytes[i] = decodedChars.charCodeAt(i);
+
+    return new Blob([new Uint8Array(numBytes), {type: 'application/pdf'}]);
+}
 
 export default function ContratSignature({userType, contract, removeContract}) {
 
     const [signature, setSignature] = useState('');
     const [signed, setSigned] = useState(false);
+
     const [pdf, setPdf] = useState(null);
-
-    const toPdfBlob = (pdfFile) => {
-        if (!pdfFile)
-            return null;
-
-        const decodedChars = atob(pdfFile);
-        const numBytes = new Array(decodedChars.length);
-        for (let i = 0; i < numBytes.length; i++)
-            numBytes[i] = decodedChars.charCodeAt(i);
-
-        return new Blob([new Uint8Array(numBytes), {type: 'application/pdf'}]);
-    }
-
 
     useEffect(() => {
         setPdf(toPdfBlob(contract.contractPDF));
@@ -60,11 +60,11 @@ export default function ContratSignature({userType, contract, removeContract}) {
             <div className="d-flex justify-content-between flex-column">
                 <PdfDocumentViewer file={pdf}/>
                 <form onSubmit={startContract}>
-                    <InputGroup>
+                    <FormField>
                         <label>Signature</label>
                         <input type="text" placeholder="Entrez votre signature" className="w-100"
                                onChange={e => setSignature(e.target.value)}/>
-                    </InputGroup>
+                    </FormField>
                     <h6 className="text-white text-center mt-3">En appuyant sur envoyer, vous confirmez avoir lu le
                         contrat
                         et que la signature entré correspond à la votre.</h6>

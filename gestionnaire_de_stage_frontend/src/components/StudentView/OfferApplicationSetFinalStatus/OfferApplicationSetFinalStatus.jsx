@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useAuth} from "../../../services/use-auth";
 import {getStudentApplications, setApplicationsStatusWhenEnAttenteDeReponse} from "../../../services/offerAppService";
+import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 
 export default function OfferApplicationSetFinalStatus() {
     const [offerApplications, setOfferApplications] = useState([])
@@ -28,19 +29,16 @@ export default function OfferApplicationSetFinalStatus() {
 
     return (<>
         <h1 className="text-center mt-5 mb-3">Les status de mes applications</h1>
-        <table className="table table-light table-striped table-borderless text-center rounded-3 shadow-lg">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Offre</th>
-                <th scope="col">Status</th>
-                <th scope="col">Changement de mon status</th>
-            </tr>
-            </thead>
-            <tbody>
+        <Table>
+            <TableHeader>
+                <th>#</th>
+                <th>Offre</th>
+                <th>Status</th>
+                <th>Changement de mon status</th>
+            </TableHeader>
             {offerApplications.map(offerApplication => (
-                <tr key={offerApplication.id}>
-                    <th scope="row">{offerApplication.id}</th>
+                <TableRow key={offerApplication.id}>
+                    <td>{offerApplication.id}</td>
                     <td>{offerApplication.offer.title}</td>
                     <td>{offerApplication.status}</td>
                     <td>
@@ -53,9 +51,8 @@ export default function OfferApplicationSetFinalStatus() {
                             </button>
                         </div>
                     </td>
-                </tr>
+                </TableRow>
             ))}
-            </tbody>
-        </table>
+        </Table>
     </>)
 }

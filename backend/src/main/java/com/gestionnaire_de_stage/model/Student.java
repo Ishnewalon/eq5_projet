@@ -31,6 +31,6 @@ public class Student extends User {
     @JsonIgnore
     private Curriculum principalCurriculum;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Supervisor supervisor;
 }

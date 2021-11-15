@@ -3,30 +3,30 @@ import {UserType} from "../../../enums/UserTypes";
 import {Step} from "../../../enums/Steps";
 import {toastErr} from "../../../utility";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
-import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
+import {FormField} from "../../SharedComponents/FormField/FormField";
 
 export default function StepCegep({prevStep, nextStep, updateUserType, handleChange, matricule}) {
 
     const next = (matricule, val) => {
-        if (matricule.length === 5)
-            updateUserType(UserType.SUPERVISOR)
-        else if (matricule.length === 7)
-            updateUserType(UserType.STUDENT)
-        else {
+        if (!matricule) {
             toastErr.fire({title: 'Matricule invalid!'}).then()
             return
         }
+        if (matricule.toString().length === 5)
+            updateUserType(UserType.SUPERVISOR)
+        else if (matricule.toString().length === 7)
+            updateUserType(UserType.STUDENT)
 
         nextStep(val);
     }
 
     return (<>
             <FormGroup>
+                <FormField myFor="matricule">
                     <label>Matricule</label>
-                    <InputGroup>
-                        <input name="matricule" placeholder="Matricule" type="number"
-                               value={matricule} onChange={handleChange}/>
-                    </InputGroup>
+                    <input name="matricule" placeholder="Matricule" type="number"
+                           value={matricule} onChange={handleChange}/>
+                </FormField>
             </FormGroup>
             <div className="form-group text-center">
                 <label/>

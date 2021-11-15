@@ -1,83 +1,40 @@
 import React from "react";
 import FieldEmail from "../../SharedComponents/Fields/FieldEmail";
 import {Step} from "../../../enums/Steps";
-import {toastErr} from "../../../utility";
+import {regexEmail, regexName, regexPhone, toastErr} from "../../../utility";
+import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FormField} from "../../SharedComponents/FormField/FormField";
 
-// eslint-disable-next-line
-const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-const regexPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
 export default function StepInformationGeneral({prevStep, nextStep, handleChange, lastName, firstName, email, phone}) {
 
     const next = (val) => {
         nextStep(val);
     }
-    const verification = (firstName, lastName, email, phone) => {
-        if (!firstName) {
-            toastErr.fire({title: "Le champs prénom est vide"}).then()
-            return false
-        }
-        if (!lastName) {
-            toastErr.fire({title: "Le champs nom est vide"}).then()
-            return false
-        }
-        if (!email) {
-            toastErr.fire({title: "Le champs courriel est vide"}).then()
-            return false
-        }
-        if (!phone) {
-            toastErr.fire({title: "Le champs numéro de téléphone est vide"}).then()
-            return false
-        }
-        if (!firstName.match(/^[a-zA-Z\-\s]+$/)) {
-            toastErr.fire({title: "Le champs prénom est invalide"}).then()
-            return false;
-        }
-        if (!lastName.match(/^[a-zA-Z\-\s]+$/)) {
-            toastErr.fire({title: "Le champs nom est invalide"}).then()
-            return false;
-        }
-        if (!regexEmail.test(email)) {
-            toastErr.fire({title: "Le champs courriel est invalide"}).then()
-            return false;
-        }
-        if (!regexPhone.test(phone)) {
-            toastErr.fire({title: "Le champs numéro de téléphone est invalide"}).then()
-            return false;
-        }
-        return true;
-    }
+
 
     return (<>
-        <div className="form-group row">
-            <div className="col-md-6">
+        <FormGroup>
+            <FormField myFor="firstName">
                 <label>Prénom</label>
-                <div className="input-group">
-                    <input name="firstName" placeholder="Prenom" className="form-control" type="text"
-                           value={firstName} onChange={handleChange}/>
-                </div>
-            </div>
-            <div className="col-md-6">
+                <input name="firstName" placeholder="Prenom" type="text" value={firstName} onChange={handleChange}/>
+            </FormField>
+            <FormField myFor="lastName">
                 <label>Nom</label>
-                <div>
-                    <div className="input-group">
-                        <input name="lastName" placeholder="Nom" className="form-control" type="text"
-                               value={lastName} onChange={handleChange}/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div className="form-group">
+                <input name="lastName" placeholder="Nom" type="text" value={lastName} onChange={handleChange}/>
+            </FormField>
+        </FormGroup>
+        <FormGroup>
             <FieldEmail email={email} label="Email" placeholder="Votre Email"
                         handleChanges={handleChange}/>
-        </div>
-        <div className="form-group">
-            <label>Téléphone</label>
-            <div className="input-group">
-                <input name="phone" placeholder="000 000 000" className="form-control" type="tel"
+        </FormGroup>
+        <FormGroup>
+            <FormField myFor="phone">
+                <label>Téléphone</label>
+                <input name="phone" placeholder="000 000 000" type="tel"
                        value={phone} onChange={handleChange}/>
-            </div>
-        </div>
+            </FormField>
+        </FormGroup>
         <div className="form-group text-center">
             <label/>
             <div>
@@ -91,4 +48,40 @@ export default function StepInformationGeneral({prevStep, nextStep, handleChange
         </div>
     </>)
 
+}
+
+function verification(firstName, lastName, email, phone) {
+    if (!firstName) {
+        toastErr.fire({title: "Le champs prénom est vide"}).then()
+        return false
+    }
+    if (!lastName) {
+        toastErr.fire({title: "Le champs nom est vide"}).then()
+        return false
+    }
+    if (!email) {
+        toastErr.fire({title: "Le champs courriel est vide"}).then()
+        return false
+    }
+    if (!phone) {
+        toastErr.fire({title: "Le champs numéro de téléphone est vide"}).then()
+        return false
+    }
+    if (!regexName.test(firstName)) {
+        toastErr.fire({title: "Le champs prénom est invalide"}).then()
+        return false;
+    }
+    if (!regexName.test(lastName)) {
+        toastErr.fire({title: "Le champs nom est invalide"}).then()
+        return false;
+    }
+    if (!regexEmail.test(email)) {
+        toastErr.fire({title: "Le champs courriel est invalide"}).then()
+        return false;
+    }
+    if (!regexPhone.test(phone)) {
+        toastErr.fire({title: "Le champs numéro de téléphone est invalide"}).then()
+        return false;
+    }
+    return true;
 }

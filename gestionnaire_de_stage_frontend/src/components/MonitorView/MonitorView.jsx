@@ -6,6 +6,7 @@ import ContractsToBeSigned from "../Contract/ContractsToBeSigned";
 import {UserType} from "../../enums/UserTypes";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useAuth} from "../../services/use-auth";
+import ViewSignedContracts from "../ViewSignedContracts/ViewSignedContracts";
 
 export default function MonitorView() {
     let {path} = useRouteMatch();
@@ -13,6 +14,9 @@ export default function MonitorView() {
     return <ContainerBox>
         <Route exact path={`${path}/offres/ajouter`}>
             <AddOffer/>
+        </Route>
+        <Route exact path={`${path}/monitor/contracts/signed`}>
+            <ViewSignedContracts userType={UserType.MONITOR[0]}/>
         </Route>
         <Route exact path={`${path}/applications`}>
             <ViewAppliedStudents/>

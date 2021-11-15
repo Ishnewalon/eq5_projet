@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {getCurriculumWithValidCV} from "../../../services/curriculum-service";
 import {assignStudentToSupervisor, getSupervisors, getUnassignedStudents} from "../../../services/user-service";
 import {toast} from "../../../utility";
-import {InputGroup} from "../../SharedComponents/InputGroup/InputGroup";
-import {Table} from "../../SharedComponents/Table/Table";
+import {FormField} from "../../SharedComponents/FormField/FormField";
+import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 
 export default function LinkSupervisorToStudent() {// TODO: field is linked to supervisor or something
 
@@ -45,22 +44,18 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
         <div>
             <h2 className="text-center">Attribuer des superviseurs aux étudiants</h2>
             <Table className={"w-75 mx-auto"}>
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Étudiant</th>
-                    <th scope="col">Enseignant</th>
-                    <th scope="col">Accepter</th>
-                </tr>
-                </thead>
-                <tbody>
+                <TableHeader>
+                    <th>#</th>
+                    <th>Étudiant</th>
+                    <th>Enseignant</th>
+                    <th>Accepter</th>
+                </TableHeader>
                 {studentList.map((student, index) =>
-
-                    <tr key={index}>
-                        <th scope="row">{student.id}</th>
+                    <TableRow key={index}>
+                        <th>{student.id}</th>
                         <td>{student.firstName} {student.lastName}</td>
                         <td>
-                            <InputGroup>
+                            <FormField>
                                 <select onChange={() => setSupervisorId('supervisorID')}>
                                     {supervisorList.map((supervisor, indexSupervisor) =>
                                         <option key={indexSupervisor} value={supervisor.id}>
@@ -68,14 +63,13 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
                                         </option>
                                     )}
                                 </select>
-                            </InputGroup>
+                            </FormField>
                         </td>
                         <td>
                             <button className="btn btn-success" onClick={assign(student.id)}>Accepter</button>
                         </td>
-                    </tr>
+                    </TableRow>
                 )}
-                </tbody>
             </Table>
         </div>
     )
