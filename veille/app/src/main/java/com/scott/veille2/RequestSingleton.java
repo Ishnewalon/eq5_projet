@@ -6,6 +6,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.scott.veille2.model.User;
+import com.scott.veille2.service.IServiceUtil;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RequestSingleton {
     private static RequestSingleton instance;
