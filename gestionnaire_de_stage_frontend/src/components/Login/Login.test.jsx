@@ -22,7 +22,7 @@ test('Login component', async () => {
     expect(screen.getByText("myPasswordComponents")).toBeInTheDocument()
 });
 
-test('Login', () => {
+test('call signIn', () => {
     let mockFnSignIn = jest.fn(() => Promise.resolve())
     useAuth.mockReturnValue({
         isAuthenticated: false,
