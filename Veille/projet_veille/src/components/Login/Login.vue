@@ -89,6 +89,7 @@ export default {
                         history: createWebHistory,
                         routes: [{path: `/dashboard`, component: Dashboard}]
                     })
+                    alert("Vous êtes connecté")
                     router.push({path: `/dashboard`})
                 })
                 .catch((error) => {

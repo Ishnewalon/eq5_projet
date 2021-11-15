@@ -1,8 +1,12 @@
 <template>
     <div>
+
         <h3>Cliquez ici pour televerser votre cv</h3>
+        <br/>
         <input accept="application/pdf" type="file" v-on:change="setFile($event)">
+        <br/>
         <button v-on:click="uploadFile">Envoyez votre cv</button>
+
     </div>
 </template>
 
@@ -29,6 +33,8 @@ export default {
                     method: "POST",
                     body: file
                 });
+                alert("Votre cv a bien été televersé");
+                await this.$router.push("/dashboard");
                 return response.json();
             } else {
                 alert('Veuillez choisir votre Cv');
