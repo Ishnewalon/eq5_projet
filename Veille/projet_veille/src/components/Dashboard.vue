@@ -5,6 +5,11 @@
     <div v-if="checkRole() === 'moniteur'">
         <router-link to="/monitor-view">Liste étudiants</router-link>
     </div>
+    <div  v-if="checkRole() === 'manager'">
+        <router-link to="/monitor-view">Liste étudiants</router-link>
+        <br/>
+        <router-link to="/ValidationCv">Validation Cv </router-link>
+    </div>
 </template>
 
 <script>

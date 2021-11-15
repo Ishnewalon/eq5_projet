@@ -1,6 +1,6 @@
 <template>
     <div id="nav">
-        <router-link to="/home">Home</router-link>
+        <router-link to="/home">Accueil</router-link>
         <span v-if="getUserRole() === 'etudiant'">
             |
             <router-link to="/upload-cv"> Televerser Cv</router-link>
