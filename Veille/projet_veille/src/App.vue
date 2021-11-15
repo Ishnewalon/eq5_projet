@@ -5,6 +5,16 @@
             |
             <router-link to="/upload-cv"> Televerser Cv</router-link>
         </span>
+        <span v-if="getUserRole() === 'manager'">
+            |
+            <router-link to="/ValidationCv">Valider cv</router-link>
+             |
+            <router-link to="/monitor-view">Liste étudiants</router-link>
+        </span>
+        <span v-if="getUserRole() === 'moniteur'">
+            |
+            <router-link to="/monitor-view">Liste étudiants</router-link>
+        </span>
         <span v-if="!getUserRole()">
             |
             <router-link to="/register"> Inscription</router-link>
