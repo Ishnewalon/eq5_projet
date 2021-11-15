@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default {
     name: "TeleverserCv",
@@ -21,12 +20,16 @@ export default {
         setFile: function (event) {
             this.file = event.target.files[0];
         },
-        uploadFile: function () {
+        uploadFile: async function () {
             if (this.file) {
                 let file = new FormData();
                 file.append('file', this.file);
-                axios.post(`http://localhost:8181/curriculum/upload?id=${this.user.id}`, file)
-                    .then(() => alert("Cv téléversé avec succès"));
+                const response = await fetch(`http://localhost:8181/curriculum/upload?id=${this.user.id}`, {
+                    mode: 'cors',
+                    method: "POST",
+                    body: file
+                });
+                return response.json();
             } else {
                 alert('Veuillez choisir votre Cv');
             }

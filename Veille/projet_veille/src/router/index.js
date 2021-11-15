@@ -30,7 +30,7 @@ const routes = [
     {
         path: '/upload-cv',
         name: 'TeleverserCv',
-        component: () => import('../components/StudendView/TeleverserCv')
+        component: () => import('../components/StudentView/TeleverserCv')
     }
 ]
 
