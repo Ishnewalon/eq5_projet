@@ -2,6 +2,7 @@ import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 import {useState} from "react";
 import {supervisorCreateForm} from "../../../services/stage-service";
+import Swal from "sweetalert2";
 
 
 export default function SupervisorVisitForm() {
@@ -36,7 +37,7 @@ export default function SupervisorVisitForm() {
         commentaires: '',
         questionOnze: 'Premier stage',
         questionDouze: 'Un stagiaire',
-        questionTreize: '',
+        questionTreize: 'Oui',
         questionQuatorzeHeuresUnA: '',
         questionQuatorzeHeuresUnB: '',
         questionQuatorzeHeuresUnC: '',
@@ -46,10 +47,10 @@ export default function SupervisorVisitForm() {
         questionQuinze: ''
     });
 
-    const handleChange = (event) => {
-        const {value, name} = event.target;
+    const handleChange = (e) => {
+        const {value, name} = e.target;
 
-        setVisitForm((prevalue) => {
+        setVisitForm(prevalue => {
             return {
                 ...prevalue,
                 [name]: value
@@ -57,7 +58,7 @@ export default function SupervisorVisitForm() {
         })
     }
 
-    function convertAllNumberFieldsToNumbers() {
+    const convertAllNumberFieldsToNumbers = () => {
         Object.keys(visitForm).forEach(key => {
             if (!isNaN(visitForm[key])) {
                 setVisitForm((prevalue) => {
@@ -70,10 +71,105 @@ export default function SupervisorVisitForm() {
         })
     }
 
+    const getAllFormErrors = () => {
+        const formErrors = {};
+        if (visitForm.matriculeEtudiant.trim().length === 0) {
+            formErrors.matriculeEtudiant ='La matricule de l\'étudiant est requis';
+        }
+
+        if (visitForm.entrepriseNom.trim().length === 0) {
+            formErrors.entrepriseNom= 'Le nom de l\'entreprise est requis';
+        }
+
+        if (visitForm.personneContact.trim().length === 0) {
+            formErrors.personneContact = 'La personne contact est requis';
+        }
+
+        if (visitForm.phone.trim().length === 0) {
+            formErrors.phone ='Le numéro de téléphone est requis';
+        }
+
+        if (visitForm.telecopieur.trim().length === 0) {
+            formErrors.telecopieur = 'Le numéro du télécopieur est requis';
+        }
+
+        if (visitForm.adresse.trim().length === 0) {
+            formErrors.adresse = 'L\'adresse est requis';
+        }
+
+        if (visitForm.zip.trim().length === 0) {
+            formErrors.zip = 'Le code postal est requis';
+        }
+
+        if (visitForm.ville.trim().length === 0) {
+            formErrors.ville = 'La ville est requis';
+        }
+
+        if (visitForm.nomStagiaire.trim().length === 0) {
+            formErrors.nomStagiaire ='Le nom du stagiaire est requis';
+        }
+
+        if (visitForm.dateStage.trim().length === 0) {
+            formErrors.dateStage = 'La date de stage est requis';
+        }
+
+        if (visitForm.nbHeuresMoisUn === 0) {
+            formErrors.nbHeuresMoisUn ='Le nombre d\'heures du premier mois est requis';
+        }
+
+        if (visitForm.nbHeuresMoisDeux === 0) {
+            formErrors.nbHeuresMoisDeux ='Le nombre d\'heures du deuxième mois est requis';
+        }
+
+        if (visitForm.nbHeuresMoisTrois === 0) {
+            formErrors.nbHeuresMoisTrois = 'Le nombre d\'heures du troisième mois est requis';
+        }
+
+        if (visitForm.salaireStagiaire === 0) {
+            formErrors.salaireStagiaire = 'Le salaire du stagiaire est requis';
+        }
+
+        if (visitForm.questionQuatorzeHeuresUnA.trim().length === 0) {
+            formErrors.questionQuatorzeHeuresUnA = '1. L\'heure de départ est requis';
+        }
+
+        if (visitForm.questionQuatorzeHeuresUnB.trim().length === 0) {
+            formErrors.questionQuatorzeHeuresUnB ='1. L\'heure de fin est requis';
+        }
+
+        if (visitForm.questionQuatorzeHeuresUnC.trim().length === 0) {
+            formErrors.questionQuatorzeHeuresUnC ='2. L\'heure de départ est requis';
+        }
+
+        if (visitForm.questionQuatorzeHeuresUnD.trim().length === 0) {
+            formErrors.questionQuatorzeHeuresUnD = '2. L\'heure de fin est requis';
+        }
+
+        if (visitForm.questionQuatorzeHeuresUnE.trim().length === 0) {
+            formErrors.questionQuatorzeHeuresUnE = '3. L\'heure de départ est requis';
+        }
+
+        if (visitForm.questionQuatorzeHeuresUnF.trim().length === 0) {
+            formErrors.questionQuatorzeHeuresUnF = '3. L\'heure de fin est requis';
+        }
+
+        if (visitForm.signatureSuperviseur.trim().length === 0) {
+            formErrors.signatureSuperviseur ='La signature du superviseur est requis';
+        }
+
+        return [Object.keys(formErrors), Object.values(formErrors)];
+    }
+
     const sendVisitForm = (e) => {
         e.preventDefault();
-        convertAllNumberFieldsToNumbers();
-        supervisorCreateForm(visitForm).then();
+        const [, values] = getAllFormErrors();
+
+        if (values.length === 0) {
+            convertAllNumberFieldsToNumbers();
+            supervisorCreateForm(visitForm).then(() => document.forms[0].reset());
+        }else{
+            Swal.fire({title:'Champ requis', text:`${values[0]} et ${values.length} autres...`, icon: 'error'} ).then();
+        }
     };
 
     return <form onSubmit={sendVisitForm}>
@@ -83,50 +179,49 @@ export default function SupervisorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Matricule Étudiant</label>
-                    <input type='text' pattern='^[0-9]{7}$' title='Il faut 7 chiffres pour la matricule étudiante' name='matriculeEtudiant' value={visitForm.matriculeEtudiant}
-                           onChange={e => handleChange(e)} />
+                    <input type='text' name='matriculeEtudiant' value={visitForm.matriculeEtudiant}
+                           onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>Nom de l'entreprise</label>
                     <input type="text" name='entrepriseNom' value={visitForm.entrepriseNom}
-                           onChange={e => handleChange(e)} autoComplete='off' placeholder="Nom de l'entreprise"
-                           required/>
+                           onChange={e => handleChange(e)} autoComplete='off' placeholder="Nom de l'entreprise" />
                 </FormField>
                 <FormField>
                     <label>Personne contact</label>
                     <input type="text" name='personneContact' value={visitForm.personneContact}
-                           onChange={e => handleChange(e)} placeholder="Personne contact" required/>
+                           onChange={e => handleChange(e)} placeholder="Personne contact"/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>Téléphone</label>
                     <input type="text" name='phone' value={visitForm.phone} onChange={e => handleChange(e)}
-                           autoComplete='off' placeholder="Téléphone" required/>
+                           autoComplete='off' placeholder="Téléphone"/>
                 </FormField>
                 <FormField>
                     <label>Télécopieur</label>
                     <input type="text" name='telecopieur' value={visitForm.telecopieur} onChange={e => handleChange(e)}
-                           autoComplete='off' placeholder="Télécopieur" required/>
+                           autoComplete='off' placeholder="Télécopieur"/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>Adresse</label>
                     <input type="text" name='adresse' value={visitForm.adresse} onChange={e => handleChange(e)}
-                           placeholder="Adresse" required/>
+                           placeholder="Adresse"/>
                 </FormField>
                 <FormField>
                     <label>Code postal</label>
                     <input type="text" name='zip' value={visitForm.zip} onChange={e => handleChange(e)}
-                           placeholder="Code postal" required/>
+                           placeholder="Code postal"/>
                 </FormField>
                 <FormField>
                     <label>Ville</label>
                     <input type="text" name='ville' value={visitForm.ville} onChange={e => handleChange(e)}
-                           placeholder="Ville" required/>
+                           placeholder="Ville"/>
                 </FormField>
             </FormGroup>
         </div>
@@ -137,20 +232,20 @@ export default function SupervisorVisitForm() {
                 <FormField>
                     <label>Nom du stagiaire</label>
                     <input type="text" name='nomStagiaire' value={visitForm.nomStagiaire}
-                           onChange={e => handleChange(e)} title='Entrez votre numéro de téléphone'
-                           placeholder="Entrez le nom du stagiare" required/>
+                           onChange={e => handleChange(e)}
+                           placeholder="Entrez le nom du stagiare"/>
                 </FormField>
                 <FormField>
                     <label>Date du stage</label>
                     <input type="date" name='dateStage' value={visitForm.dateStage} onChange={e => handleChange(e)}
-                           placeholder="Date du stage" required/>
+                           placeholder="Date du stage"/>
                 </FormField>
                 <>
                     <label className='d-flex justify-content-center'>Stage</label>
                     <div className='d-flex justify-content-around align-items-center flex-row'>
-                        <input type="radio" onChange={e => handleChange(e)} name='stage' value='1' required/>
+                        <input type="radio" onChange={e => handleChange(e)} name='stage' value='1'/>
                         <label>1</label>
-                        <input type="radio" onChange={e => handleChange(e)} name='stage' value='2' required/>
+                        <input type="radio" onChange={e => handleChange(e)} name='stage' value='2'/>
                         <label>2</label>
                     </div>
                 </>
@@ -163,7 +258,7 @@ export default function SupervisorVisitForm() {
                 <FormField>
                     <label>Les tâches confiées au stagiaire sont conformes aux tâches annoncées dans l’entente de
                         stage?</label>
-                    <select required name='questionUn' value={visitForm.questionUn} onChange={e => handleChange(e)}>
+                    <select name='questionUn' value={visitForm.questionUn} onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
                         <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
@@ -173,7 +268,7 @@ export default function SupervisorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>Des mesures d’accueil facilitent l’intégration du nouveau stagiaire?</label>
-                    <select required name='questionDeux' value={visitForm.questionDeux}
+                    <select name='questionDeux' value={visitForm.questionDeux}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -184,7 +279,7 @@ export default function SupervisorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>Le temps réel consacré à l’encadrement du stagiaire est suffisant?</label>
-                    <select required name='questionTrois' value={visitForm.questionTrois}
+                    <select name='questionTrois' value={visitForm.questionTrois}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -197,26 +292,26 @@ export default function SupervisorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Nombre d'heures pour le 1er mois?</label>
-                    <input type="number" min='0' max='240' name="nbHeuresMoisUn" value={visitForm.nbHeuresMoisUn}
-                           onChange={e => handleChange(e)} placeholder="Nombre d'heures" required/>
+                    <input type="number" name="nbHeuresMoisUn" value={visitForm.nbHeuresMoisUn}
+                           onChange={e => handleChange(e)} placeholder="Nombre d'heures"/>
                 </FormField>
                 <FormField>
                     <label>Nombre d'heures pour le 2ième mois?</label>
-                    <input type="number" min='0' max='240' name='nbHeuresMoisDeux'
+                    <input type="number" name='nbHeuresMoisDeux'
                            value={visitForm.nbHeuresMoisDeux} onChange={e => handleChange(e)}
-                           placeholder="Nombre d'heures" required/>
+                           placeholder="Nombre d'heures"/>
                 </FormField>
                 <FormField>
                     <label>Nombre d'heures pour le 3ième mois?</label>
-                    <input type="number" max='240' name='nbHeuresMoisTrois' min='0'
+                    <input type="number" name='nbHeuresMoisTrois'
                            value={visitForm.nbHeuresMoisTrois} onChange={e => handleChange(e)}
-                           placeholder="Nombre d'heures" required/>
+                           placeholder="Nombre d'heures"/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>L’environnement de travail respecte les normes d’hygiène et de sécurité au travail?</label>
-                    <select required name='questionQuatre' value={visitForm.questionQuatre}
+                    <select name='questionQuatre' value={visitForm.questionQuatre}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -227,7 +322,7 @@ export default function SupervisorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>Le climat de travail est agréable?</label>
-                    <select required name='questionCinq' value={visitForm.questionCinq}
+                    <select name='questionCinq' value={visitForm.questionCinq}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -238,7 +333,7 @@ export default function SupervisorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>Le milieu de stage est accessible par transport en commun?</label>
-                    <select required name='questionSix' value={visitForm.questionSix} onChange={e => handleChange(e)}>
+                    <select name='questionSix' value={visitForm.questionSix} onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
                         <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
@@ -250,7 +345,7 @@ export default function SupervisorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Le salaire offert est intéressant pour le stagiaire?</label>
-                    <select required name='questionSept' value={visitForm.questionSept}
+                    <select name='questionSept' value={visitForm.questionSept}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -261,14 +356,14 @@ export default function SupervisorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>Préciser le salaire par heure</label>
-                    <input required type="number" min='10' name='salaireStagiaire' value={visitForm.salaireStagiaire}
+                    <input type="number" name='salaireStagiaire' value={visitForm.salaireStagiaire}
                            onChange={(e) => handleChange(e)}/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>La communication avec le superviseur de stage facilite le déroulement du stage?</label>
-                    <select required name="questionHuit" value={visitForm.questionHuit}
+                    <select name="questionHuit" value={visitForm.questionHuit}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -279,7 +374,7 @@ export default function SupervisorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>L’équipement fourni est adéquat pour réaliser les tâches confiées?</label>
-                    <select required name='questionNeuf' value={visitForm.questionNeuf}
+                    <select name='questionNeuf' value={visitForm.questionNeuf}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -290,7 +385,7 @@ export default function SupervisorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>Le volume de travail est acceptable?</label>
-                    <select required name='questionDix' value={visitForm.questionDix} onChange={e => handleChange(e)}>
+                    <select name='questionDix' value={visitForm.questionDix} onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
                         <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
@@ -312,7 +407,7 @@ export default function SupervisorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Ce milieu est à privilégier pour le stage</label>
-                    <select required name='questionOnze' value={visitForm.questionOnze}
+                    <select name='questionOnze' value={visitForm.questionOnze}
                             onChange={e => handleChange(e)}>
                         <option value="Choisissez une option" selected disabled>Choisissez une option</option>
                         <option value='Premier stage'>Premier stage</option>
@@ -322,7 +417,7 @@ export default function SupervisorVisitForm() {
                 <FormField>
                     <label>Ce milieu est ouvert à accueillir deux stagiaires
                     </label>
-                    <select required name='questionDouze' value={visitForm.questionDouze}
+                    <select name='questionDouze' value={visitForm.questionDouze}
                             onChange={e => handleChange(e)}>
                         <option value="Choisissez une option" selected disabled>Choisissez une option</option>
                         <option value='Un stagiaire'>Un stagiaire</option>
@@ -336,10 +431,10 @@ export default function SupervisorVisitForm() {
                         un prochain stage</label>
                     <div className='d-flex justify-content-around align-items-center flex-row'>
                         <input type="radio" onChange={e => handleChange(e)} name='questionTreize' value='Oui'
-                               required/>
+                        />
                         <label>Oui</label>
                         <input type="radio" onChange={e => handleChange(e)} name='questionTreize' value='Non'
-                               required/>
+                        />
                         <label>Non</label>
                     </div>
                 </>
@@ -349,36 +444,36 @@ export default function SupervisorVisitForm() {
                 <FormField>
                     <label>De</label>
                     <input type="number" name="questionQuatorzeHeuresUnA"
-                           value={visitForm.questionQuatorzeHeuresUnA} onChange={e => handleChange(e)} required/>
+                           value={visitForm.questionQuatorzeHeuresUnA} onChange={e => handleChange(e)}/>
                 </FormField>
                 <FormField>
                     <label>À</label>
                     <input type="number" name="questionQuatorzeHeuresUnB"
-                           value={visitForm.questionQuatorzeHeuresUnB} onChange={e => handleChange(e)} required/>
+                           value={visitForm.questionQuatorzeHeuresUnB} onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>De</label>
                     <input type="number" name="questionQuatorzeHeuresUnC"
-                           value={visitForm.questionQuatorzeHeuresUnC} onChange={e => handleChange(e)} required/>
+                           value={visitForm.questionQuatorzeHeuresUnC} onChange={e => handleChange(e)}/>
                 </FormField>
                 <FormField>
                     <label>À</label>
                     <input type="number" name="questionQuatorzeHeuresUnD"
-                           value={visitForm.questionQuatorzeHeuresUnD} onChange={e => handleChange(e)} required/>
+                           value={visitForm.questionQuatorzeHeuresUnD} onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>De</label>
                     <input type="number" name="questionQuatorzeHeuresUnE"
-                           value={visitForm.questionQuatorzeHeuresUnE} onChange={e => handleChange(e)} required/>
+                           value={visitForm.questionQuatorzeHeuresUnE} onChange={e => handleChange(e)}/>
                 </FormField>
                 <FormField>
                     <label>À</label>
                     <input type="number" name="questionQuatorzeHeuresUnF"
-                           value={visitForm.questionQuatorzeHeuresUnF} onChange={e => handleChange(e)} required/>
+                           value={visitForm.questionQuatorzeHeuresUnF} onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
             <FormGroup>
@@ -386,10 +481,10 @@ export default function SupervisorVisitForm() {
                     <label/>
                     <div className='d-flex justify-content-around align-items-center flex-row'>
                         <input type="radio" onChange={e => handleChange(e)} name='questionQuinze' value='Oui'
-                               required/>
+                        />
                         <label>Oui</label>
                         <input type="radio" onChange={e => handleChange(e)} name='questionQuinze' value='Non'
-                               required/>
+                        />
                         <label>Non</label>
                     </div>
                 </>
@@ -397,7 +492,8 @@ export default function SupervisorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Signature de l'enseignant responsable du stagiaire</label>
-                    <input type="text" name="signatureSuperviseur" value={visitForm.signatureSuperviseur} onChange={e => handleChange(e)} required/>
+                    <input type="text" name="signatureSuperviseur" value={visitForm.signatureSuperviseur}
+                           onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
         </div>
