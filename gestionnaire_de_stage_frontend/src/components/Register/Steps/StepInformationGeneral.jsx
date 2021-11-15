@@ -50,7 +50,7 @@ export default function StepInformationGeneral({prevStep, nextStep, handleChange
 
 }
 
-function verification(firstName, lastName, email, phone) {
+export function verification(firstName, lastName, email, phone) {
     if (!firstName) {
         toastErr.fire({title: "Le champs prénom est vide"}).then()
         return false
