@@ -424,7 +424,7 @@ class OfferApplicationControllerTest {
     public void testUpdateStatusIsAccepted() throws Exception {
         OfferApplication offerApplication = getDummyOfferApp();
         UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(offerApplication.getId(), true);
-        when(offerApplicationService.updateStatus(any())).thenReturn(true);
+        when(offerApplicationService.updateStatus(any())).thenReturn("Status changé, attendez la signature du contrat");
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/student/update_status")

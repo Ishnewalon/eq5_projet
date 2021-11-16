@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {getAllOffersByDepartment} from '../../../services/offer-service';
-import ApplyOnOffer from "../ApplyOnOffer/ApplyOnOffer";
+import OfferApplication from "../OfferApplication/OfferApplication";
 import {useAuth} from "../../../services/use-auth";
 
 export default function ViewOffersAndApply() {//TODO: remove Offer after applied
@@ -23,7 +23,7 @@ export default function ViewOffersAndApply() {//TODO: remove Offer after applied
         <div className='container'>
             <h2 className="text-center">Offres de Stage</h2>
             <ul>
-                {offers.map((offer, index) => <li key={index}><ApplyOnOffer offer={offer}/></li>)}
+                {offers.map((offer, index) => <li key={index}><OfferApplication offer={offer}/></li>)}
             </ul>
         </div>
     );

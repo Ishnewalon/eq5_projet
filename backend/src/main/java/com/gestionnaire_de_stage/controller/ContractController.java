@@ -36,13 +36,13 @@ public class ContractController {
         this.templateEngine = templateEngine;
     }
 
-    @GetMapping("/ready_to_sign")
+    @GetMapping("/ready_to_sign")//SESSION : get only contract of current or futur session
     public ResponseEntity<?> contractsNeedSignature() {
         List<Contract> contractList = contractService.getAllUnsignedContracts();
         return ResponseEntity.ok(contractList);
     }
 
-    @PutMapping("/managerSign/{managerSignature}/{contract_id}")
+    @PutMapping("/managerSign/{managerSignature}/{contract_id}")//SESSION : sign only contract of current or futur session
     public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addManagerSignature(managerSignature, contract_id);
@@ -67,7 +67,7 @@ public class ContractController {
                 .body(new ResponseMessage("Signature fait"));
     }
 
-    @PostMapping("/start")
+    @PostMapping("/start")//SESSION : can start only contract of current or futur session
     public ResponseEntity<?> createContract(HttpServletRequest request, HttpServletResponse response, @RequestBody ContractStarterDto contractStarterDto) {
         try {
             Contract contract = new Contract();
@@ -97,7 +97,7 @@ public class ContractController {
         return ResponseEntity.ok(new ResponseMessage("Création de contrat réussi!"));
     }
 
-    @GetMapping("/monitor/{monitor_id}")
+    @GetMapping("/monitor/{monitor_id}")//SESSION : get only contract of current or futur session
     public ResponseEntity<?> ContractNeedsMonitorSignature(@PathVariable Long monitor_id) {
         List<Contract> contractList;
         try {
@@ -115,7 +115,7 @@ public class ContractController {
         return ResponseEntity.ok(contractList);
     }
 
-    @PutMapping("/monitorSign/{monitorSignature}/{contract_id}")
+    @PutMapping("/monitorSign/{monitorSignature}/{contract_id}")//SESSION : sign only contract of current or futur session
     public ResponseEntity<?> monitorSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String monitorSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addMonitorSignature(monitorSignature, contract_id);
@@ -140,7 +140,7 @@ public class ContractController {
                 .body(new ResponseMessage("Signature fait"));
     }
 
-    @GetMapping("/student/{student_id}")
+    @GetMapping("/student/{student_id}")//SESSION : get only contract of current or futur session
     public ResponseEntity<?> ContractNeedsStudentSignature(@PathVariable Long student_id) {
         Contract contract;
         try {
@@ -158,7 +158,7 @@ public class ContractController {
         return ResponseEntity.ok(contract);
     }
 
-    @PutMapping("/studentSign/{studentSignature}/{contract_id}")
+    @PutMapping("/studentSign/{studentSignature}/{contract_id}")//SESSION : sign only contract of current or futur session
     public ResponseEntity<?> studentSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String studentSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addStudentSignature(studentSignature, contract_id);
@@ -183,4 +183,15 @@ public class ContractController {
                 .body(new ResponseMessage("Signature fait"));
     }
 
+    @GetMapping("/manager/signed/{managerId}")
+    public ResponseEntity<?> getAllSignedContractsByManager(@PathVariable Long managerId) {
+        List<Contract> signedContractsByManager = contractService.getAllSignedContractsByManager(managerId);
+        return ResponseEntity.ok(signedContractsByManager);
+    }
+
+    @GetMapping("/monitor/signed/{monitor_id}")
+    public ResponseEntity<?> getAllSignedContractsByMonitor(@PathVariable Long monitor_id) {
+        List<Contract> allSignedContractsByMonitor = contractService.getAllSignedContractsByMonitor(monitor_id);
+        return ResponseEntity.ok(allSignedContractsByMonitor);
+    }
 }

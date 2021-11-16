@@ -3,13 +3,11 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
-import com.gestionnaire_de_stage.model.*;;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.ContractRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.thymeleaf.TemplateEngine;
 
-import javax.persistence.Id;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.List;
@@ -112,7 +110,7 @@ public class ContractService {
         contract.setManager(manager);
 
         OfferApplication offerApplication = offerApplicationService.getOneById(contractStarterDto.getIdOfferApplication());
-        //TODO : set status
+        //TODO : cant start when student already have a contract
         contract.setOffer(offerApplication.getOffer());
         Curriculum curriculum = offerApplication.getCurriculum();
         Student student = curriculum.getStudent();
@@ -129,5 +127,15 @@ public class ContractService {
 
     public Contract updateContract(Contract contract) {
         return contractRepository.save(contract);
+    }
+
+    public List<Contract> getAllSignedContractsByManager(Long id) throws IllegalArgumentException {
+        Assert.isTrue(id != null, "L'id du manager ne peut pas être null");
+        return contractRepository.getAllByManager_IdAndManagerSignatureNotNull(id);
+    }
+
+    public List<Contract> getAllSignedContractsByMonitor(Long monitor_id) {
+        Assert.isTrue(monitor_id != null, "L'id du monitor ne peut pas être null");
+        return contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNull(monitor_id);
     }
 }

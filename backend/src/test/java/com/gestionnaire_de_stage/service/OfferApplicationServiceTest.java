@@ -14,6 +14,7 @@ import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
 import com.gestionnaire_de_stage.repository.StudentRepository;
+import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,11 +40,11 @@ class OfferApplicationServiceTest {
     @Mock
     private StudentService studentService;
     @Mock
-    private StudentRepository studentRepository;
-    @Mock
     private ManagerService managerService;
     @Mock
     private OfferApplicationRepository offerApplicationRepository;
+    @Mock
+    private SupervisorRepository supervisorRepository;
 
     @Test
     void testCreate() throws Exception {
@@ -228,9 +229,9 @@ class OfferApplicationServiceTest {
         when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
         when(offerApplicationRepository.save(any())).thenReturn(dummyOfferApplication);
 
-        boolean isAccepted =  offerApplicationService.updateStatus(updateStatusDTO);
+        String message =  offerApplicationService.updateStatus(updateStatusDTO);
 
-        assertThat(isAccepted).isTrue();
+        assertThat(message).contains("Status changé, attendez la signature du contrat");
     }
 
     @Test
@@ -240,9 +241,9 @@ class OfferApplicationServiceTest {
         when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
         when(offerApplicationRepository.save(any())).thenReturn(dummyOfferApplication);
 
-        boolean isAccepted = offerApplicationService.updateStatus(updateStatusDTO);
+        String isAccepted = offerApplicationService.updateStatus(updateStatusDTO);
 
-        assertThat(isAccepted).isFalse();
+        assertThat(isAccepted).contains("Status changé, stage refusé");
     }
 
     @Test
@@ -299,6 +300,34 @@ class OfferApplicationServiceTest {
     void testGetAllByOfferStatusAndStudentID_withNullEntries() {
         assertThrows(IllegalArgumentException.class,
                 () -> offerApplicationService.getAllByOfferStatusAndStudentID(null, null));
+    }
+
+    @Test
+    void testGetAllBySupervisorId_withValidEntries() throws Exception {
+        List<OfferApplication> dummyOfferAppList = getDummyOfferAppList();
+        long supervisor_id = 1L;
+        when(supervisorRepository.existsById(any())).thenReturn(false);
+        when(offerApplicationRepository.findAllByCurriculum_Student_Supervisor_Id(any())).thenReturn(dummyOfferAppList);
+
+        List<OfferApplication> actualOfferAppList = offerApplicationService.getAllBySupervisorId(supervisor_id);
+
+        assertThat(actualOfferAppList).isEqualTo(dummyOfferAppList);
+        assertThat(actualOfferAppList.size()).isEqualTo(dummyOfferAppList.size());
+    }
+
+    @Test
+    void testGetAllBySupervisorId_withNullSupervisorId() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.getAllBySupervisorId(null));
+    }
+
+    @Test
+    void testGetAllBySupervisorId_withInvalidSupervisorId() {
+        long supervisorId = 1L;
+        when(supervisorRepository.existsById(any())).thenReturn(true);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerApplicationService.getAllBySupervisorId(supervisorId));
     }
 
     private OfferApplication getDummyOfferApp() {
