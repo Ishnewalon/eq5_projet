@@ -1,5 +1,5 @@
 <template>
-  <div class="border-left" v-bind:class="{'border-success': this.valid, 'border-danger': !this.valid }">
+  <div class="border-left bg-dark rounded" v-bind:class="{'border-success': this.valid, 'border-danger': !this.valid }">
     <PreviewOffer :offer="this.offer"/>
     <div class="d-flex justify-content-between align-items-center">
       <button id="validateBtn" class="btn btn-success fw-bold text-white w-50"
@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import Offer from '../models/offer';
+import Offer from '../models/Offer';
 import offerService from "../services/offer-service";
 import Swal from "sweetalert2";
-import PreviewOffer from '../views/PreviewOffer';
+import PreviewOffer from './PreviewOffer';
 
 export default {
   name: "ValidateOffer",
@@ -32,7 +32,7 @@ export default {
     PreviewOffer
   },
   methods: {
-    validateOffer: (offer, valid) => {
+    validateOffer(offer, valid){
       offer.valid = valid;
       offerService.validateOffer(this.offer).then(response => {
         if (response.message) {
@@ -46,6 +46,11 @@ export default {
 
         this.valid = valid;
         Swal.fire(valid ? 'Offre validée!' : 'Offre invalidée!', '', valid ? 'success' : 'error').then();
+
+        setTimeout(() => {
+          this.$destroy();
+          this.$el.parentNode.removeChild(this.$el);
+        }, 1000);
       });
     }
   }

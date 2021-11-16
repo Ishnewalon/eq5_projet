@@ -12,18 +12,34 @@
     <a>
       <router-link to="/dashboard">Dashboard</router-link>
     </a>
-    <a>
-      <router-link to="/monitor/create_offer">Créer une offre[moniteur]</router-link>
-    </a>
-    <a>
-      <router-link to="/manager/create_offer">Créer une offre [Gestionnaire]</router-link>
-    </a>
+    <div v-if="role === 'monitor'" class="d-inline">
+      <a>
+        <router-link to="/monitor/create_offer">Créer une offre</router-link>
+      </a>
+    </div>
+    <div v-else-if="role === 'manager'" class="d-inline">
+      <a>
+        <router-link to="/manager/create_offer">Créer une offre</router-link>
+      </a>
+      <a>
+        <router-link to="/manager/review_offers">Valider les offres</router-link>
+      </a>
+    </div>
   </nav>
 </template>
 
 <script>
+
 export default {
-  name: "Navbar"
+  name: "Navbar",
+  data(){
+    return {
+      role:''
+    }
+  },
+  created() {
+    this.role = localStorage.getItem('role') || '';
+  }
 }
 </script>
 

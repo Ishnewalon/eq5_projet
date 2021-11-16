@@ -17,12 +17,12 @@ class OfferService {
     }
 
     async getAllOffers() {
-        const response = await fetch(`${urlBackend}/offers`, requestInit(methods.GET));
+        const response = await fetch(`${urlBackend}/offers/not_validated`, requestInit(methods.GET));
         return await this.promisedReturn(response, undefined, []);
     }
 
     async validateOffer(offer) {
-        const response = await fetch(`${urlBackend}/offers/validate`, requestInit(methods.PUT, offer));
+        const response = await fetch(`${urlBackend}/offers/validate`, requestInit(methods.POST, offer));
         return await this.promisedReturn(response, 'Offre validé', []);
     }
 

@@ -1,4 +1,4 @@
-import {ManagerModel, MonitorModel, Student, Supervisor} from "../models/User";
+import {ManagerModel, MonitorModel, Student, Supervisor} from "@/models/User";
 import {methods, requestInit, urlBackend} from "./serviceUtils";
 import Swal from "sweetalert2";
 import router from "../router";
@@ -128,6 +128,7 @@ class AuthService {
                 }
 
                 localStorage.setItem("user", JSON.stringify(value))
+                localStorage.setItem("role", userType);
                 Swal.fire({title: "Connexion réussie!", icon: 'success'});
                 console.log(value)
                 router.push("/logged-in")

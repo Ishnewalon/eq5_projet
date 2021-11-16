@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <ul>
-      <li v-for="(offer, index) in offers" :key="index">
+    <ul class="list-inline">
+      <li v-for="(offer, index) in offers" :key="index" class="mb-4">
         <ValidateOffer :offer="offer"/>
       </li>
     </ul>
@@ -27,7 +27,7 @@ export default {
     this.loadOffers();
   },
   methods: {
-    loadOffers: () => {
+    loadOffers(){
       offerService.getAllOffers().then(offers => (this.offers = offers))
           .catch(e => {
             console.trace(e);

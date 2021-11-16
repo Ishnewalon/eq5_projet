@@ -9,6 +9,7 @@ import TeleverserCv from "../views/TeleverserCv";
 import authService from "../services/auth-service";
 import MonitorCreateOffer from "../views/MonitorCreateOffer";
 import ManagerCreateOffer from "../views/ManagerCreateOffer";
+import ReviewOffers from "../views/ReviewOffers";
 
 
 function guardRoute(to, from, next) {
@@ -66,6 +67,12 @@ const routes = [
         path: '/manager/create_offer',
         name: 'Créer une offre en tant que Gestionnaire',
         component: ManagerCreateOffer,
+        beforeEnter: guardRoute
+    },
+    {
+        path: '/manager/review_offers',
+        name: 'Valider les offres',
+        component: ReviewOffers,
         beforeEnter: guardRoute
     }
 ]
