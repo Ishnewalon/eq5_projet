@@ -6,6 +6,7 @@ import {FormField} from "../../SharedComponents/FormField/FormField";
 export default function EvaluationIntern() {
 
     const [monitorVisitForm, setMonitorVisitForm] = useState({
+        emailEtudiant: '',
         entrepriseNom: '',
         phone: '',
         nomStagiaire: '',
@@ -89,6 +90,14 @@ export default function EvaluationIntern() {
     return <form onSubmit={sendVisitForm}>
         <h1 className='text-center text-decoration-underline'>Fiche d'évaluation du stagiaire</h1>
         <div className='px-3 pb-3 pt-1'>
+            <FormGroup>
+                <FormField>
+                    <label>Email de l'élève</label>
+                    <input type="email" name='emailEtudiant' value={monitorVisitForm.emailEtudiant}
+                           onChange={e => handleChange(e)} autoComplete='off'
+                           placeholder="Nom de l'élève" title="Le email de l'élève est requis" required/>
+                </FormField>
+            </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>Nom de l'élève</label>
