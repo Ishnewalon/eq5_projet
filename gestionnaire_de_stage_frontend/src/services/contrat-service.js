@@ -103,13 +103,27 @@ export async function startSignerFetch(idOfferApplication, idManager) {
 }
 
 export async function getAllSignedContractsForManager(idManager){
-    return getAllSignedContracts(idManager, UserType.MANAGER[0]);
+    return await getOneOrMoreContracts(idManager, UserType.MANAGER[0]).then(res => res.json());
 }
 
 export async function getAllSignedContractsForMonitor(idMonitor){
-    return getAllSignedContracts(idMonitor, UserType.MONITOR[0]);
+    return await getOneOrMoreContracts(idMonitor, UserType.MONITOR[0]).then(res => res.json());
 }
 
-export async function getAllSignedContracts(id, userType){
-    return await fetch(`${urlBackend}/contracts/${userType}/signed/${id}`, requestInit(methods.GET)).then(res => res.json());
+export async function getSignedContractForStudent(idStudent){
+    return await getOneOrMoreContracts(idStudent, UserType.STUDENT[0]).then(
+        response => {
+            return response.json().then((body) => {
+                if (response.ok)
+                    return body;
+                else
+                    swalErr.fire({text: body.message})
+                return Promise.any(null);
+            })
+        }, err => console.error(err)
+    );
+}
+
+export async function getOneOrMoreContracts(id, userType){
+    return await fetch(`${urlBackend}/contracts/${userType}/signed/${id}`, requestInit(methods.GET));
 }
