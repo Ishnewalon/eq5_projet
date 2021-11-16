@@ -1,5 +1,5 @@
 <template>
-    <div id="nav">
+    <div id="nav" :key="componentKey">
         <router-link to="/home">Accueil</router-link>
         <span v-if="getUserRole() === 'etudiant'">
             |
@@ -35,18 +35,25 @@
 export default {
     name: 'App',
     data() {
+        return{
+            componentKey: 0
+        }
     },
     methods: {
         logout: function () {
             sessionStorage.removeItem("currentUser");
             this.$router.push('/register');
-            // location.reload();
+            this.forceRerender();
         },
         getUserRole: function () {
             if (sessionStorage.getItem("currentUser") == null) {
                 return false;
             }
             return JSON.parse(sessionStorage.getItem("currentUser")).role;
+        },
+        forceRerender() {
+            console.log(this.componentKey);
+            this.componentKey += 1;
         }
     }
 
