@@ -6,41 +6,44 @@ import {FormField} from "../../SharedComponents/FormField/FormField";
 export default function MonitorVisitForm() {
 
     const [monitorVisitForm, setMonitorVisitForm] = useState({
-        entreprise_nom: '',
+        entrepriseNom: '',
         phone: '',
-        nom_stagiaire: '',
-        question_un: 'TOTALEMENT_EN_ACCORD',
-        question_deux: 'TOTALEMENT_EN_ACCORD',
-        question_trois: 'TOTALEMENT_EN_ACCORD',
-        question_quatre: 'TOTALEMENT_EN_ACCORD',
-        question_cinq: 'TOTALEMENT_EN_ACCORD',
-        question_six: 'TOTALEMENT_EN_ACCORD',
-        question_sept: 'TOTALEMENT_EN_ACCORD',
-        question_huit: 'TOTALEMENT_EN_ACCORD',
-        question_neuf: 'TOTALEMENT_EN_ACCORD',
-        question_dix: 'TOTALEMENT_EN_ACCORD',
-        question_onze: 'TOTALEMENT_EN_ACCORD',
-        question_douze: 'TOTALEMENT_EN_ACCORD',
-        question_treize: 'TOTALEMENT_EN_ACCORD',
-        question_quatorze: 'TOTALEMENT_EN_ACCORD',
-        question_quinze: 'TOTALEMENT_EN_ACCORD',
-        question_seize: 'TOTALEMENT_EN_ACCORD',
-        programme_etudes: '',
-        appreciation_globale: 'DEPASSE_BEAUCOUP',
-        evaluation_discute_avec_etudiant: true,
-        commentaires_un: '',
-        commentaires_deux: '',
-        commentaires_trois: '',
-        commentaires_quatre: '',
-        commentaires_cinq: '',
-        entreprise_apprecie_etudiant: true,
-        nb_heures_reel_travail_etudiant: 0,
-        fonction_un: '',
-        fonction_deux:'',
-        formation_suffisante_commentaire: '',
+        nomStagiaire: '',
+        questionUn: 'TOTALEMENT_EN_ACCORD',
+        questionDeux: 'TOTALEMENT_EN_ACCORD',
+        questionTrois: 'TOTALEMENT_EN_ACCORD',
+        questionQuatre: 'TOTALEMENT_EN_ACCORD',
+        questionCinq: 'TOTALEMENT_EN_ACCORD',
+        questionSix: 'TOTALEMENT_EN_ACCORD',
+        questionSept: 'TOTALEMENT_EN_ACCORD',
+        questionHuit: 'TOTALEMENT_EN_ACCORD',
+        questionNeuf: 'TOTALEMENT_EN_ACCORD',
+        questionDix: 'TOTALEMENT_EN_ACCORD',
+        questionOnze: 'TOTALEMENT_EN_ACCORD',
+        questionDouze: 'TOTALEMENT_EN_ACCORD',
+        questionTreize: 'TOTALEMENT_EN_ACCORD',
+        questionQuatorze: 'TOTALEMENT_EN_ACCORD',
+        questionQuinze: 'TOTALEMENT_EN_ACCORD',
+        questionSeize: 'TOTALEMENT_EN_ACCORD',
+        questionDixSept: 'TOTALEMENT_EN_ACCORD',
+        questionDixHuit: 'TOTALEMENT_EN_ACCORD',
+        questionDixNeuf: 'TOTALEMENT_EN_ACCORD',
+        programmeEtudes: '',
+        appreciationGlobale: 'DEPASSE_BEAUCOUP',
+        evaluationDiscuteAvecEtudiant: true,
+        commentairesUn: '',
+        commentairesDeux: '',
+        commentairesTrois: '',
+        commentairesQuatre: '',
+        commentairesCinq: '',
+        entrepriseApprecieEtudiant: true,
+        nbHeuresReelTravailEtudiant: 0,
+        fonctionUn: '',
+        fonctionDeux:'',
+        formationSuffisanteCommentaire: '',
         nom: '',
-        date_signature: '',
-        monitor_signature: ''
+        dateSignature: '',
+        monitorSignature: ''
     });
 
     const handleChange = (event) => {
@@ -86,19 +89,19 @@ export default function MonitorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Nom de l'élève</label>
-                    <input type="text" name='nom_stagiaire' value={monitorVisitForm.nom_stagiaire}
+                    <input type="text" name='nomStagiaire' value={monitorVisitForm.nomStagiaire}
                            onChange={e => handleChange(e)} autoComplete='off'
                            placeholder="Nom de l'élève" title="Le nom de l'élève est requis" required/>
                 </FormField>
                 <FormField>
                     <label>Programme d'études</label>
-                    <input type="text" name='programme_etudes' value={monitorVisitForm.programme_etudes}
+                    <input type="text" name='programmeEtudes' value={monitorVisitForm.programmeEtudes}
                            onChange={e => handleChange(e)}
                            autoComplete='off' placeholder="Programme d'études" title="Le programme d'études est requis" required/>
                 </FormField>
                 <FormField>
                     <label>Nom de l'entreprise</label>
-                    <input type="text" name='entreprise_nom' value={monitorVisitForm.entreprise_nom}
+                    <input type="text" name='entrepriseNom' value={monitorVisitForm.entrepriseNom}
                            onChange={e => handleChange(e)} autoComplete='off' title="Le nom de l'entreprise est requis" placeholder="Nom de l'entreprise"
                            required/>
                 </FormField>
@@ -106,7 +109,7 @@ export default function MonitorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Fonction</label>
-                    <input type="text" name='fonction_un' value={monitorVisitForm.fonction_un}
+                    <input type="text" name='fonctionUn' value={monitorVisitForm.fonctionUn}
                            onChange={e => handleChange(e)} autoComplete='off' placeholder="Fonction" title="La fonction est requise"
                            required/>
                 </FormField>
@@ -125,7 +128,7 @@ export default function MonitorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Planifier et organiser son travail de façon efficace</label>
-                    <select required name='question_un' title="Le champ doit être rempli" value={monitorVisitForm.question_un}
+                    <select required name='questionUn' title="Le champ doit être rempli" value={monitorVisitForm.questionUn}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -137,7 +140,7 @@ export default function MonitorVisitForm() {
                 <FormField>
                     <label>Comprendre rapidement les directives relatives à son
                         travail</label>
-                    <select required name='question_deux' title="Le champ doit être rempli" value={monitorVisitForm.question_deux}
+                    <select required name='questionDeux' title="Le champ doit être rempli" value={monitorVisitForm.questionDeux}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -148,7 +151,7 @@ export default function MonitorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>Maintenir un rythme de travail soutenu</label>
-                    <select required name='question_trois' value={monitorVisitForm.question_trois}
+                    <select required name='questionTrois' value={monitorVisitForm.questionTrois}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -161,7 +164,7 @@ export default function MonitorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Établir ses priorités</label>
-                    <select required name='question_quatre' title="Le champ doit être rempli" value={monitorVisitForm.question_quatre}
+                    <select required name='questionQuatre' title="Le champ doit être rempli" value={monitorVisitForm.questionQuatre}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -172,7 +175,7 @@ export default function MonitorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>Respecter les échéanciers</label>
-                    <select required name='question_cinq' title="Le champ doit être rempli" value={monitorVisitForm.question_cinq}
+                    <select required name='questionCinq' title="Le champ doit être rempli" value={monitorVisitForm.questionCinq}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -185,7 +188,7 @@ export default function MonitorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Commentaires</label>
-                    <textarea name='commentaires_un' value={monitorVisitForm.commentaires_un}
+                    <textarea name='commentairesUn' value={monitorVisitForm.commentairesUn}
                               onChange={e => handleChange(e)} placeholder='Commentaires sur la productivité du stagiaire'/>
                 </FormField>
             </FormGroup>
@@ -197,7 +200,7 @@ export default function MonitorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Respecter les mandats qui lui ont été confiés</label>
-                    <select required name='question_six' title="Le champ doit être rempli" value={monitorVisitForm.question_six}
+                    <select required name='question_six' title="Le champ doit être rempli" value={monitorVisitForm.questionSix}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -209,7 +212,7 @@ export default function MonitorVisitForm() {
                 <FormField>
                     <label>Porter attention aux détails dans la réalisation de ses
                         tâches</label>
-                    <select required name='question_sept' title="Le champ doit être rempli" value={monitorVisitForm.question_sept}
+                    <select required name='questionSept' title="Le champ doit être rempli" value={monitorVisitForm.questionSept}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -220,7 +223,7 @@ export default function MonitorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>Vérifier son travail, s’assurer que rien n’a été oublié</label>
-                    <select required name='question_huit' title="Le champ doit être rempli" value={monitorVisitForm.question_huit}
+                    <select required name='questionHuit' title="Le champ doit être rempli" value={monitorVisitForm.questionHuit}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -233,7 +236,7 @@ export default function MonitorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Rechercher des occasions de se perfectionner</label>
-                    <select required name='question_neuf' title="Le champ doit être rempli" value={monitorVisitForm.question_neuf}
+                    <select required name='questionNeuf' title="Le champ doit être rempli" value={monitorVisitForm.questionNeuf}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -244,7 +247,7 @@ export default function MonitorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>Faire une bonne analyse des problèmes rencontrés</label>
-                    <select required name='question_dix' title="Le champ doit être rempli" value={monitorVisitForm.question_dix}
+                    <select required name='questionDix' title="Le champ doit être rempli" value={monitorVisitForm.questionDix}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -257,7 +260,7 @@ export default function MonitorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Commentaires</label>
-                    <textarea name='commentaires_deux'  value={monitorVisitForm.commentaires_deux} placeholder='Commentaires sur la qualité du travail du stagiaire'
+                    <textarea name='commentairesDeux'  value={monitorVisitForm.commentairesDeux} placeholder='Commentaires sur la qualité du travail du stagiaire'
                               onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
@@ -270,7 +273,7 @@ export default function MonitorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Établir facilement des contacts avec les gens</label>
-                    <select required name='question_onze' title="Le champ doit être rempli" value={monitorVisitForm.question_onze}
+                    <select required name='questionOnze' title="Le champ doit être rempli" value={monitorVisitForm.questionOnze}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -281,7 +284,7 @@ export default function MonitorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>Contribuer activement au travail d’équipe</label>
-                    <select required name='question_douze' value={monitorVisitForm.question_douze}
+                    <select required name='questionDouze' value={monitorVisitForm.questionDouze}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -292,7 +295,7 @@ export default function MonitorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>S’adapter facilement à la culture de l’entreprise</label>
-                    <select required name='question_treize' value={monitorVisitForm.question_treize}
+                    <select required name='questionTreize' value={monitorVisitForm.questionTreize}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -305,7 +308,7 @@ export default function MonitorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Accepter les critiques constructives</label>
-                    <select required name='question_quatorze' title="Le champ doit être rempli" value={monitorVisitForm.question_quatorze}
+                    <select required name='questionQuatorze' title="Le champ doit être rempli" value={monitorVisitForm.questionQuatorze}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -316,7 +319,7 @@ export default function MonitorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>Être respectueux envers les gens</label>
-                    <select required name='question_quinze' title="Le champ doit être rempli" value={monitorVisitForm.question_quinze}
+                    <select required name='questionQuinze' title="Le champ doit être rempli" value={monitorVisitForm.questionQuinze}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -328,7 +331,7 @@ export default function MonitorVisitForm() {
                 <FormField>
                     <label>Faire preuve d’écoute active en essayant de
                         comprendre le point de vue de l’autre</label>
-                    <select required name='question_seize' title="Le champ doit être rempli" value={monitorVisitForm.question_seize}
+                    <select required name='questionSeize' title="Le champ doit être rempli" value={monitorVisitForm.questionSeize}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -341,7 +344,7 @@ export default function MonitorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Commentaires</label>
-                    <textarea name='commentaires_trois' value={monitorVisitForm.commentaires_trois} placeholder='Commentaires sur les qualités des relations interpersonnelles du stagiaire'
+                    <textarea name='commentairesTrois' value={monitorVisitForm.commentairesTrois} placeholder='Commentaires sur les qualités des relations interpersonnelles du stagiaire'
                               onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
@@ -355,7 +358,7 @@ export default function MonitorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>Démontrer de l’intérêt et de la motivation au travail</label>
-                    <select required name='question_onze' title="Le champ doit être rempli" value={monitorVisitForm.question_onze}
+                    <select required name='questionDixSept' title="Le champ doit être rempli" value={monitorVisitForm.questionDixSept}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -366,7 +369,7 @@ export default function MonitorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>Exprimer clairement ses idées</label>
-                    <select required name='question_douze' title="Le champ doit être rempli" value={monitorVisitForm.question_douze}
+                    <select required name='questionDouze' title="Le champ doit être rempli" value={monitorVisitForm.questionDouze}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
@@ -377,7 +380,7 @@ export default function MonitorVisitForm() {
                 </FormField>
                 <FormField>
                     <label>Faire preuve d’initiative</label>
-                    <select required name='question_treize' title="Le champ doit être rempli" value={monitorVisitForm.question_treize}
+                    <select required name='questionTreize' title="Le champ doit être rempli" value={monitorVisitForm.questionTreize}
                             onChange={e => handleChange(e)}>
                         <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
                         <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
