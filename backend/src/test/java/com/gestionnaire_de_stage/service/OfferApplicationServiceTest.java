@@ -318,7 +318,7 @@ class OfferApplicationServiceTest {
     void testGetAllBySupervisorId_withValidEntries() throws Exception {
         List<OfferApplication> dummyOfferAppList = getDummyOfferAppList();
         long supervisor_id = 1L;
-        when(supervisorRepository.existsById(any())).thenReturn(false);
+        when(supervisorRepository.existsById(any())).thenReturn(true);
         when(offerApplicationRepository.findAllByCurriculum_Student_Supervisor_Id(any())).thenReturn(dummyOfferAppList);
 
         List<OfferApplication> actualOfferAppList = offerApplicationService.getAllBySupervisorId(supervisor_id);
@@ -336,7 +336,7 @@ class OfferApplicationServiceTest {
     @Test
     void testGetAllBySupervisorId_withInvalidSupervisorId() {
         long supervisorId = 1L;
-        when(supervisorRepository.existsById(any())).thenReturn(true);
+        when(supervisorRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
                 () -> offerApplicationService.getAllBySupervisorId(supervisorId));
