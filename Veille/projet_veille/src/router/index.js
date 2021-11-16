@@ -36,6 +36,11 @@ const routes = [
         path: '/ValidationCv',
         name: 'ValidationCv',
         component: () => import('../components/ManagerView/ValidationCv')
+    },
+    {
+        path: '/AddOffer',
+        name: 'AddOffer',
+        component: () => import('../components/ManagerView/AddOffer')
     }
 ]
 

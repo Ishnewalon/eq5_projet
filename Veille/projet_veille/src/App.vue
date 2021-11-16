@@ -8,8 +8,10 @@
         <span v-if="getUserRole() === 'manager'">
             |
             <router-link to="/ValidationCv">Valider cv</router-link>
-             |
+            |
             <router-link to="/monitor-view">Liste étudiants</router-link>
+            |
+            <router-link to="/AddOffer">Créer offre</router-link>
         </span>
         <span v-if="getUserRole() === 'moniteur'">
             |
