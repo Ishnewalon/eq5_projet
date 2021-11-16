@@ -68,7 +68,7 @@ public class CurriculumController {
     }
 
     @GetMapping("/all_student/{studentID}")
-    public ResponseEntity<?> allCurriculumsByStudentAsStudentCurriculumsDTO(@PathVariable long studentID) throws IdDoesNotExistException {
+    public ResponseEntity<?> allCurriculumsByStudentAsStudentCurriculumsDTO(@PathVariable long studentID) {
         try {
             Student student = studentService.getOneByID(studentID);
             StudentCurriculumsDTO studentCurriculumsDTO = curriculumService.allCurriculumsByStudentAsStudentCurriculumsDTO(student);

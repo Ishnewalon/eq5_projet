@@ -15,6 +15,8 @@ export default function StudentView() {
     return (<ContainerBox>
             <Route exact path={`${path}/televerser`}>
                 <TeleverserCv/>
+            </Route>
+            <Route exact path={`${path}/mes_cv`}>
                 <CurriculumTable />
             </Route>
             <Route exact path={`${path}/offres`}>

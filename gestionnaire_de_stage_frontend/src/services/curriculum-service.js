@@ -19,7 +19,7 @@ export async function uploadFile(file, id) {
 }
 
 export async function getAllCurriculumsByStudentWithPrincipal(studentID) {
-    return  await fetch(`${urlBackend}/curriculum/all_student/${studentID}`,
+    return await fetch(`${urlBackend}/curriculum/all_student/${studentID}`,
         requestInit(methods.GET)).then(
         response => {
             return response.json().then(
@@ -37,9 +37,22 @@ export async function getAllCurriculumsByStudentWithPrincipal(studentID) {
 }
 
 export async function setPrincipalCurriculum(studentID, curriculumID) {
-    const response = await fetch(`${urlBackend}/student/set_principal/${studentID}/${curriculumID}`,
-        requestInit(methods.GET));
-    return await response.json();
+    return  await fetch(`${urlBackend}/student/set_principal/${studentID}/${curriculumID}`,
+        requestInit(methods.GET)).then(
+        response => {
+            return response.json().then(
+                body => {
+                    if (response.status === 200) {
+                        toast.fire({title: "Curriculum Principal changer!", icon: 'success'})
+                        return body
+                    }
+                    if (response.status === 400) {
+                        swalErr.fire({text: body.message})
+                    }
+                    return Promise.any([])
+                })
+        }, err => console.error(err)
+    );
 }
 
 export async function getCurriculumWithInvalidCV() {

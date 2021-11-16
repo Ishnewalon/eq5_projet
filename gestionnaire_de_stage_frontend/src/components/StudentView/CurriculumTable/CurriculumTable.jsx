@@ -1,17 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {
-    downloadCV,
     getAllCurriculumsByStudentWithPrincipal,
     setPrincipalCurriculum
 } from "../../../services/curriculum-service";
 import {useAuth} from "../../../services/use-auth";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
-import {applyToOffer} from "../../../services/offerAppService";
-import OfferApp from "../../../models/OfferApp";
 
 export default function CurriculumTable() {
     let auth = useAuth();
-    const [curriculumsWithPrincipal, setCurriculumsWithPrincipal] = useState([]);
+    const [curriculumsWithPrincipal, setCurriculumsWithPrincipal] = useState({});
 
     useEffect(() => {
         getAllCurriculumsByStudentWithPrincipal(auth.user.id)
@@ -19,7 +16,7 @@ export default function CurriculumTable() {
                 setCurriculumsWithPrincipal(curriculums)
             })
             .catch(e => {
-                setCurriculumsWithPrincipal([])
+                setCurriculumsWithPrincipal({})
                 console.error(e);
             });
     }, [auth.user.id])
@@ -28,10 +25,41 @@ export default function CurriculumTable() {
         return curriculumsWithPrincipal.curriculumList ? curriculumsWithPrincipal.curriculumList : [];
     }
 
-    const setPrincipal = curriculumId => e => {
+    const setPrincipal = cv => e => {
         e.preventDefault();
 
-        setPrincipalCurriculum(auth.user.id, curriculumId).then();
+        setPrincipalCurriculum(auth.user.id, cv.id).then(
+            () => setCurriculumsWithPrincipal(prev => {
+                return {
+                    ...prev,
+                    ["principal"]: cv
+                }
+            })
+        );
+    }
+
+    const isPrincipal = (cv) => {
+        return cv.id === curriculumsWithPrincipal.principal.id;
+    }
+
+    const getStyle = (cv) => {
+        if (isPrincipal(cv)){
+            return "btn-secondary"
+        }else if (cv.isValid){
+            return "btn-success"
+        }else {
+            return "btn-danger"
+        }
+    }
+
+    const getText = (cv) => {
+        if (isPrincipal(cv)){
+            return "C.V. par defaut";
+        }else if (cv.isValid){
+            return "Définir comme principal";
+        }else {
+            return "C.V. est Invalide!";
+        }
     }
 
     return (
@@ -50,9 +78,9 @@ export default function CurriculumTable() {
                         <td>{cv.isValid ? "Valide" : "Invalide"}</td>
                         <td>
                             <div className="btn-group">
-                                <button className={"btn " + cv.isValid ? "btn-success" : "btn-danger"}
-                                        disabled={!cv.isValid}
-                                        onClick={setPrincipal(cv.id)}>Définir comme principal
+                                <button className={"btn " + (getStyle(cv))}
+                                        disabled={!cv.isValid || isPrincipal(cv)}
+                                        onClick={setPrincipal(cv)}>{getText(cv)}
                                 </button>
                             </div>
                         </td>
