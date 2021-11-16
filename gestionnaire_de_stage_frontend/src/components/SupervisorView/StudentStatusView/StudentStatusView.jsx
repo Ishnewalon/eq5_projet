@@ -20,19 +20,21 @@ export default function StudentStatusView() {
     }, [auth.user.id])
 
     return (
-        <div className='container'>
+        <div>
             <h2 className="text-center">Status des étudiants qui vous sont attribués</h2>
             <Table className={"w-75 mx-auto"}>
                 <TableHeader>
-                        <th>#</th>
-                        <th>Étudiant</th>
-                        <th>Offre</th>
-                        <th>Status</th>
+                    <th scope='col'>#</th>
+                    <th scope='col'>Étudiant</th>
+                    <th scope='col'>Matricule</th>
+                    <th scope='col'>Offre</th>
+                    <th scope='col'>Status</th>
                 </TableHeader>
                 {offerAppList.map((offerApp, index) =>
                     <TableRow key={index}>
                         <td>{offerApp.curriculum.student.id}</td>
                         <td>{offerApp.curriculum.student.firstName} {offerApp.curriculum.student.lastName}</td>
+                        <td>{offerApp.curriculum.student.matricule}</td>
                         <td>{offerApp.offer.title}</td>
                         <td>{offerApp.status}</td>
                     </TableRow>
