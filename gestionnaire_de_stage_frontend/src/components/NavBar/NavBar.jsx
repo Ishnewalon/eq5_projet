@@ -44,7 +44,7 @@ function NavItemSpecificForUser() {
                 <Link to="/dashboard/applications">Applications</Link>
                 <Link to="/dashboard/voir/futures_stagiaires">Contrats à
                     valider</Link>
-                <Link to="/dashboard/monitor_form_visit_company">Formulaire de visite d'entreprise</Link>
+                <Link to="/dashboard/monitor_eval_stagiaire">Formulaire d'évaluation de stagiaire</Link>
                 <Link to="/dashboard/monitor/contracts/signed">Contrats signés</Link>
             </ThisIsAListItem>
         )
