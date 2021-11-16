@@ -2,10 +2,13 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.enums.Status;
+import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.ContractRepository;
+import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,8 +42,12 @@ public class ContractServiceTest {
 
     @Mock
     private StudentService studentService;
+
     @Mock
     private OfferApplicationService offerApplicationService;
+
+    @Mock
+    private StudentRepository studentRepository;
 
     @Test
     public void testGetAllByManagerSignatureNull() {
@@ -240,6 +248,46 @@ public class ContractServiceTest {
     }
 
     @Test
+    public void testGetContractByStudentMatricule_withValidEntries() throws Exception {
+        Contract dummyContract = getDummyContract();
+        String matricule = "1234567";
+        when(studentRepository.existsByMatricule(any())).thenReturn(true);
+        when(contractRepository.existsByStudentMatricule(any())).thenReturn(true);
+        when(contractRepository.getContractByStudent_Matricule(any())).thenReturn(dummyContract);
+
+        Contract actualContract = contractService.getContractByStudentMatricule(matricule);
+
+        assertThat(actualContract).isEqualTo(dummyContract);
+        assertThat(actualContract.getId()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testGetContractByStudentMatricule_withNullMatricule() {
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.getContractByStudentMatricule(null));
+    }
+
+    @Test
+    public void testGetContractByStudentMatricule_withInvalidMatricule() {
+        String matricule = "1234567";
+        when(studentRepository.existsByMatricule(any())).thenReturn(false);
+
+        assertThrows(MatriculeDoesNotExistException.class,
+                () -> contractService.getContractByStudentMatricule(matricule));
+    }
+
+    @Test
+    public void testGetContractByStudentMatricule_withInexistingContract() {
+        String matricule = "1234567";
+        when(studentRepository.existsByMatricule(any())).thenReturn(true);
+        when(contractRepository.existsByStudentMatricule(any())).thenReturn(false);
+
+        assertThrows(ContractDoesNotExistException.class,
+                () -> contractService.getContractByStudentMatricule(matricule));
+    }
+
+
+    @Test
     public void testAddStudentSignature_withValidEntries() throws Exception {
         Contract dummyContract = getDummyContract();
         String studentSignature = "Dawn Soap";
@@ -269,6 +317,61 @@ public class ContractServiceTest {
 
         assertThrows(IdDoesNotExistException.class,
                 () -> contractService.addStudentSignature(studentSignature, dummyContract.getId()));
+    }
+
+
+    @Test
+    public void testGetAllSignedContracts_withExistentId()  {
+        List<Contract> dummyContractList = getDummyContractList();
+        when(contractRepository.getAllByManager_IdAndManagerSignatureNotNull(any())).thenReturn(dummyContractList);
+
+        List<Contract> actualContractList = contractService.getAllSignedContractsByManager(1L);
+
+        assertThat(actualContractList)
+                .isNotEmpty()
+                .isEqualTo(dummyContractList);
+    }
+
+    @Test
+    public void testGetAllSignedContracts_withNonExistentId() {
+        when(contractRepository.getAllByManager_IdAndManagerSignatureNotNull(any())).thenReturn(Collections.emptyList());
+
+        List<Contract> allSignedContractsByManager = contractService.getAllSignedContractsByManager(1000L);
+
+        assertThat(allSignedContractsByManager).isEmpty();
+    }
+
+    @Test
+    public void testGetAllSignedContracts_withNullId(){
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.getAllSignedContractsByManager(null));
+    }
+
+    @Test
+    public void testGetAllSignedContractsForMonitor_withExistentId()  {
+        List<Contract> dummyContractList = getDummyContractList();
+        when(contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNull(any())).thenReturn(dummyContractList);
+
+        List<Contract> actualContractList = contractService.getAllSignedContractsByMonitor(1L);
+
+        assertThat(actualContractList)
+                .isNotEmpty()
+                .isEqualTo(dummyContractList);
+    }
+
+    @Test
+    public void testGetAllSignedContractsForMonitor_withNonExistentId() {
+        when(contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNull(any())).thenReturn(Collections.emptyList());
+
+        List<Contract> actualContractList = contractService.getAllSignedContractsByMonitor(1000L);
+
+        assertThat(actualContractList).isEmpty();
+    }
+
+    @Test
+    public void testGetAllSignedContractsForMonitor_withNullId(){
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.getAllSignedContractsByMonitor(null));
     }
 
     private List<Contract> getDummyContractList() {

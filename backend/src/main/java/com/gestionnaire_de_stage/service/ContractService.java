@@ -1,15 +1,16 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
+import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.ContractRepository;
+import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.thymeleaf.TemplateEngine;
 
-import javax.persistence.Id;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,16 +29,20 @@ public class ContractService {
 
     private final OfferApplicationService offerApplicationService;
 
+    private final StudentRepository studentRepository;
+
     public ContractService(ContractRepository contractRepository,
                            ManagerService managerService,
                            MonitorService monitorService,
                            StudentService studentService,
-                           OfferApplicationService offerApplicationService) {
+                           OfferApplicationService offerApplicationService,
+                           StudentRepository studentRepository) {
         this.contractRepository = contractRepository;
         this.managerService = managerService;
         this.monitorService = monitorService;
         this.studentService = studentService;
         this.offerApplicationService = offerApplicationService;
+        this.studentRepository = studentRepository;
     }
 
     public List<Contract> getAllUnsignedContracts() {
@@ -85,6 +90,17 @@ public class ContractService {
         return contractRepository.getContractByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNull(student_id);
     }
 
+    public Contract getContractByStudentMatricule(String matricule) throws MatriculeDoesNotExistException, ContractDoesNotExistException {
+        Assert.isTrue(matricule != null, "La matricule ne peut pas être null");
+        if (!studentRepository.existsByMatricule(matricule)) {
+            throw new MatriculeDoesNotExistException();
+        }
+        if (isNotCreated(matricule)) {
+            throw new ContractDoesNotExistException();
+        }
+        return contractRepository.getContractByStudent_Matricule(matricule);
+    }
+
     public Contract addStudentSignature(String studentSignature, Long contract_id) throws IdDoesNotExistException {
         Assert.isTrue(studentSignature != null, "Il faut une signature");
         Assert.isTrue(contract_id != null, "L'id du contrat ne peut pas être null");
@@ -129,5 +145,19 @@ public class ContractService {
 
     public Contract updateContract(Contract contract) {
         return contractRepository.save(contract);
+    }
+
+    public List<Contract> getAllSignedContractsByManager(Long id) throws IllegalArgumentException {
+        Assert.isTrue(id != null, "L'id du manager ne peut pas être null");
+        return contractRepository.getAllByManager_IdAndManagerSignatureNotNull(id);
+    }
+
+    public List<Contract> getAllSignedContractsByMonitor(Long monitor_id) {
+        Assert.isTrue(monitor_id != null, "L'id du monitor ne peut pas être null");
+        return contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNull(monitor_id);
+    }
+
+    public boolean isNotCreated(String matricule) {
+        return !contractRepository.existsByStudentMatricule(matricule);
     }
 }

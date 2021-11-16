@@ -45,6 +45,7 @@ function NavItemSpecificForUser() {
                 <Link to="/dashboard/voir/futures_stagiaires">Contrats à
                     valider</Link>
                 <Link to="/dashboard/monitor_form_visit_company">Formulaire de visite d'entreprise</Link>
+                <Link to="/dashboard/monitor/contracts/signed">Contrats signés</Link>
             </ThisIsAListItem>
         )
     if (auth.isManager())
@@ -55,6 +56,7 @@ function NavItemSpecificForUser() {
             <Link to="/dashboard/students/start">Commencer signature</Link>
             <Link to="/dashboard/students/applied">Associer</Link>
             <Link to="/dashboard/contrats/a_signer">Contrats à valider</Link>
+            <Link to="/dashboard/manager/contracts/signed">Contrats signés</Link>
             <Link to="/dashboard/rapports">Rapports</Link>
         </ThisIsAListItem>
     if (auth.isStudent())
