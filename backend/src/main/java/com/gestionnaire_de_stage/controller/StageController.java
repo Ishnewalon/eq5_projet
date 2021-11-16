@@ -91,6 +91,9 @@ public class StageController {
         Stage stage;
         try {
             stage = stageService.getStageByStudentEmail(evalStagiaireDTO.getCourrielEtudiant());
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            stageService.addEvalStagiaire(stage, baos);
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
@@ -100,9 +103,6 @@ public class StageController {
                     .badRequest()
                     .body(new ResponseMessage("Le stage n'existe pas pour cette étudiant"));
         }
-
-
-        // stageService.addEvalStagiaire(stage, baos);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

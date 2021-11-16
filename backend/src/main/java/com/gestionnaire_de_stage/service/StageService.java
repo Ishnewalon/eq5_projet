@@ -43,6 +43,11 @@ public class StageService {
         return stageRepository.getByContractStudent_Email(email);
     }
 
+    public Stage addEvalStagiaire(Stage stage, ByteArrayOutputStream baos) {
+        stage.setEvalStagiaire(baos.toByteArray());
+        return stageRepository.save(stage);
+    }
+
     private boolean isNotValid(Stage stage) {
         return !stageRepository.existsById(stage.getId());
     }

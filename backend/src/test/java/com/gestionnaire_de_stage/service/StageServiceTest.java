@@ -106,6 +106,16 @@ public class StageServiceTest {
                 () -> stageService.getStageByStudentEmail(dummyEmail));
     }
 
+    @Test
+    public void testAddEvalStagiaire_withValidEntries() {
+        Stage dummyStage = getDummyStage();
+        when(stageRepository.save(any())).thenReturn(dummyStage);
+
+        Stage actualStage = stageService.addEvalStagiaire(dummyStage, new ByteArrayOutputStream());
+
+        assertThat(actualStage.getId()).isGreaterThan(0);
+    }
+
     private Stage getDummyStage() {
         Stage dummyStage = new Stage();
         dummyStage.setId(1L);

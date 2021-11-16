@@ -144,7 +144,7 @@ public class StageControllerTest {
         EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
         Stage dummyStage = getDummyStage();
         when(stageService.getStageByStudentEmail(any())).thenReturn(dummyStage);
-     //   when(stageService.addEvalStagiaire(any())).thenReturn(dummyStage);
+        when(stageService.addEvalStagiaire(any(), any())).thenReturn(dummyStage);
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/monitor/fill_form")
