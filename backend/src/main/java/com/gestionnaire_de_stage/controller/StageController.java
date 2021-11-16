@@ -103,7 +103,6 @@ public class StageController {
                     .badRequest()
                     .body(new ResponseMessage("Le stage n'existe pas pour cette étudiant"));
         }
-
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseMessage("Évaluation remplie!"));

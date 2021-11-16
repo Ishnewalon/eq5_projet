@@ -31,7 +31,7 @@ public class StageServiceTest {
     @Test
     public void testCreate_withValidEntries() throws Exception {
         Stage dummyStage = getDummyStage();
-        when(stageRepository.existsByContractStudentMatricule(any())).thenReturn(true);
+        when(stageRepository.existsByContract_StudentMatricule(any())).thenReturn(true);
         when(stageRepository.save(any())).thenReturn(dummyStage);
 
         Stage actualStage = stageService.create(dummyStage, getDummyStudent().getMatricule());
@@ -48,7 +48,7 @@ public class StageServiceTest {
 
     @Test
     public void testCreate_withInvalidStage() {
-        when(stageRepository.existsByContractStudentMatricule(any())).thenReturn(false);
+        when(stageRepository.existsByContract_StudentMatricule(any())).thenReturn(false);
 
         assertThrows(StageAlreadyExistsException.class,
                 () -> stageService.create(getDummyStage(), getDummyStudent().getMatricule()));
@@ -83,8 +83,8 @@ public class StageServiceTest {
     public void testGetStageByStudentEmail_withValidEntries() throws Exception {
         Stage dummyStage = getDummyStage();
         String dummyEmail = "like@email.com";
-        when(stageRepository.existsByContractStudent_Email(any())).thenReturn(true);
-        when(stageRepository.getByContractStudent_Email(any())).thenReturn(dummyStage);
+        when(stageRepository.existsByContract_StudentEmail(any())).thenReturn(true);
+        when(stageRepository.getByContract_StudentEmail(any())).thenReturn(dummyStage);
 
         Stage actualStage = stageService.getStageByStudentEmail(dummyEmail);
 
@@ -100,7 +100,7 @@ public class StageServiceTest {
     @Test
     public void testGetStageByStudentEmail_withInvalidEmail() {
         String dummyEmail = "like@email.com";
-        when(stageRepository.existsByContractStudent_Email(any())).thenReturn(false);
+        when(stageRepository.existsByContract_StudentEmail(any())).thenReturn(false);
 
         assertThrows(StageDoesNotExistException.class,
                 () -> stageService.getStageByStudentEmail(dummyEmail));

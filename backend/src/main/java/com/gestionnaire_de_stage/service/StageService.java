@@ -40,7 +40,7 @@ public class StageService {
         if (isNotAlreadyCreatedEmail(email)) {
             throw new StageDoesNotExistException();
         }
-        return stageRepository.getByContractStudent_Email(email);
+        return stageRepository.getByContract_StudentEmail(email);
     }
 
     public Stage addEvalStagiaire(Stage stage, ByteArrayOutputStream baos) throws StageDoesNotExistException {
@@ -57,10 +57,10 @@ public class StageService {
     }
 
     private boolean isNotAlreadyCreated(String matricule) {
-        return !stageRepository.existsByContractStudentMatricule(matricule);
+        return !stageRepository.existsByContract_StudentMatricule(matricule);
     }
 
     private boolean isNotAlreadyCreatedEmail(String email) {
-        return !stageRepository.existsByContractStudent_Email(email);
+        return !stageRepository.existsByContract_StudentEmail(email);
     }
 }
