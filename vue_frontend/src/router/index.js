@@ -95,6 +95,10 @@ const routes = [
         name: 'Valider les curriculums en tant que Gestionnaire',
         component: ManagerResumeValidation,
         beforeEnter: guardRoute
+    },
+    {
+        path: '/',
+        redirect: '/login'
     }
 ]
 

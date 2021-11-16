@@ -4,10 +4,12 @@
       <h2 class="text-center">Liste des étudiants</h2>
       <table class="table table-light bg-white table-striped table-borderless text-center rounded-3 shadow-lg">
         <thead class="table-dark bg-dark">
-        <th>Nom</th>
-        <th>Prénom</th>
-        <th>Télécharger CV</th>
-        <th>Validation</th>
+        <tr>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Télécharger CV</th>
+          <th>Validation</th>
+        </tr>
         </thead>
         <tbody>
         <tr v-for="(cv, index) in curriculumList" :key="index">
@@ -52,9 +54,7 @@ export default {
   },
   methods: {
     getCurriculumList() {
-      getCurriculumWithInvalidCV().then(response => {
-        this.curriculumList = response;
-      });
+      getCurriculumWithInvalidCV().then(response => this.curriculumList = response);
     },
     validateCv(id, isValid) {
       validateCV(id, isValid);
@@ -67,15 +67,15 @@ export default {
       const id = cv.id;
       downloadCV(id).then(
           blob => {
-            let myUrl = URL.createObjectURL(blob);
+            let blobUrl = URL.createObjectURL(blob);
 
-            let myFilename = `curriculum_${this.getFullName(cv.student)}.pdf`;
+            let adaptedCurriculumFilename = `curriculum_${this.getFullName(cv.student)}.pdf`;
 
             const a = document.createElement('a')
-            a.href = myUrl
-            a.download = myFilename;
+            a.href = blobUrl
+            a.download = adaptedCurriculumFilename;
             a.click();
-            URL.revokeObjectURL(myUrl);
+            URL.revokeObjectURL(blobUrl);
             Swal.fire({title: 'Téléchargement en cours', icon: 'success'}).then()
           }
       );

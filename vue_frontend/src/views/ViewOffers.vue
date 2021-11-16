@@ -17,10 +17,11 @@ import offerAppService from "@/services/offerAppService";
 import authService from "@/services/auth-service";
 import offerService from "@/services/offer-service";
 import OfferApp from "@/models/OfferApp";
+
 export default {
   name: "ViewOffers",
   components: {PreviewOffer},
-  data(){
+  data() {
     return {
       offers: []
     }
