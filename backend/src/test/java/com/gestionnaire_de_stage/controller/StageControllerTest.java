@@ -207,6 +207,24 @@ public class StageControllerTest {
         assertThat(response.getContentAsString()).contains("Le stage ne peut pas être null");
     }
 
+    @Test
+    public void testFillEvalStagiairePDF_withInvalidStage() throws Exception {
+        EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
+        Stage dummystage = getDummyStage();
+        when(stageService.getStageByStudentEmail(any())).thenReturn(dummystage);
+        when(stageService.addEvalStagiaire(any(), any())).thenThrow(StageDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/stages/monitor/fill_form")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Le stage n'existe pas pour cette étudiant");
+    }
+
     private EvalMilieuStageDTO getDummyEvalMilieuStageDTO() {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = new EvalMilieuStageDTO();
         dummyEvalMilieuStageDTO.setEntrepriseNom("La place");

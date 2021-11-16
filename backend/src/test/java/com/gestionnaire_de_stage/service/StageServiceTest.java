@@ -107,8 +107,9 @@ public class StageServiceTest {
     }
 
     @Test
-    public void testAddEvalStagiaire_withValidEntries() {
+    public void testAddEvalStagiaire_withValidEntries() throws Exception {
         Stage dummyStage = getDummyStage();
+        when(stageRepository.existsById(any())).thenReturn(true);
         when(stageRepository.save(any())).thenReturn(dummyStage);
 
         Stage actualStage = stageService.addEvalStagiaire(dummyStage, new ByteArrayOutputStream());
@@ -120,6 +121,15 @@ public class StageServiceTest {
     public void testAddEvalStagiaire_withNullStage() {
         assertThrows(IllegalArgumentException.class,
                 () -> stageService.addEvalStagiaire(null, new ByteArrayOutputStream()));
+    }
+
+    @Test
+    public void testAddEvalStagiaire_withInvalidStage() {
+        Stage dummyStage = getDummyStage();
+        when(stageRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(StageDoesNotExistException.class,
+                () -> stageService.addEvalStagiaire(dummyStage, new ByteArrayOutputStream()));
     }
 
     private Stage getDummyStage() {

@@ -43,8 +43,11 @@ public class StageService {
         return stageRepository.getByContractStudent_Email(email);
     }
 
-    public Stage addEvalStagiaire(Stage stage, ByteArrayOutputStream baos) {
+    public Stage addEvalStagiaire(Stage stage, ByteArrayOutputStream baos) throws StageDoesNotExistException {
         Assert.isTrue(stage != null, "Le stage ne peut pas être null");
+        if (isNotValid(stage)) {
+            throw new StageDoesNotExistException();
+        }
         stage.setEvalStagiaire(baos.toByteArray());
         return stageRepository.save(stage);
     }
