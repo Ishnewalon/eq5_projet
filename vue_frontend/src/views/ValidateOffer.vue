@@ -32,7 +32,7 @@ export default {
     PreviewOffer
   },
   methods: {
-    validateOffer(offer, valid){
+    validateOffer(offer, valid) {
       offer.valid = valid;
       offerService.validateOffer(this.offer).then(response => {
         if (response.message) {
@@ -47,10 +47,8 @@ export default {
         this.valid = valid;
         Swal.fire(valid ? 'Offre validée!' : 'Offre invalidée!', '', valid ? 'success' : 'error').then();
 
-        setTimeout(() => {
-          this.$destroy();
-          this.$el.parentNode.removeChild(this.$el);
-        }, 1000);
+        this.$destroy()
+        this.$el.parentNode.removeChild(this.$el);
       });
     }
   }
