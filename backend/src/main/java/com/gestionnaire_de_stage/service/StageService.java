@@ -35,8 +35,11 @@ public class StageService {
         return stageRepository.save(stage);
     }
 
-    public Stage getStageByStudentEmail(String email) {
+    public Stage getStageByStudentEmail(String email) throws StageDoesNotExistException {
         Assert.isTrue(email != null, "Le courriel ne peut pas être null");
+        if (isNotAlreadyCreatedEmail(email)) {
+            throw new StageDoesNotExistException();
+        }
         return stageRepository.getByContractStudent_Email(email);
     }
 
@@ -46,5 +49,9 @@ public class StageService {
 
     private boolean isNotAlreadyCreated(String matricule) {
         return !stageRepository.existsByContractStudentMatricule(matricule);
+    }
+
+    private boolean isNotAlreadyCreatedEmail(String email) {
+        return !stageRepository.existsByContractStudent_Email(email);
     }
 }

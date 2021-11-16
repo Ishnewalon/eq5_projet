@@ -158,7 +158,7 @@ public class StageControllerTest {
     }
 
     @Test
-    public void testFillEvalStagiairePDF_withStudentEmail() throws Exception {
+    public void testFillEvalStagiairePDF_withNullStudentEmail() throws Exception {
         EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
         when(stageService.getStageByStudentEmail(any())).thenThrow(new IllegalArgumentException("Le courriel de l'étudiant est null"));
 
@@ -171,6 +171,22 @@ public class StageControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Le courriel de l'étudiant est null");
+    }
+
+    @Test
+    public void testFillEvalStagiairePDF_withInvalidStudentEmail() throws Exception {
+        EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
+        when(stageService.getStageByStudentEmail(any())).thenThrow(StageDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/stages/monitor/fill_form")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Le stage n'existe pas pour cette étudiant");
     }
 
     private EvalMilieuStageDTO getDummyEvalMilieuStageDTO() {

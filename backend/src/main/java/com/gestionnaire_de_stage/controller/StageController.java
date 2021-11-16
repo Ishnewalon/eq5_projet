@@ -95,10 +95,14 @@ public class StageController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
+        } catch (StageDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("Le stage n'existe pas pour cette étudiant"));
         }
 
 
-       // stageService.addEvalStagiaire(stage, baos);
+        // stageService.addEvalStagiaire(stage, baos);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

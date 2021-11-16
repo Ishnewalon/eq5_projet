@@ -10,4 +10,6 @@ public interface StageRepository extends JpaRepository<Stage, Long> {
     boolean existsByContractStudentMatricule(String matricule);
 
     Stage getByContractStudent_Email(String email);
+
+    boolean existsByContractStudent_Email(String email);
 }

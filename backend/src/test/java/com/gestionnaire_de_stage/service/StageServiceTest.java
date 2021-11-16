@@ -80,9 +80,10 @@ public class StageServiceTest {
     }
 
     @Test
-    public void testGetStageByStudentEmail_withValidEntries() {
+    public void testGetStageByStudentEmail_withValidEntries() throws Exception {
         Stage dummyStage = getDummyStage();
         String dummyEmail = "like@email.com";
+        when(stageRepository.existsByContractStudent_Email(any())).thenReturn(true);
         when(stageRepository.getByContractStudent_Email(any())).thenReturn(dummyStage);
 
         Stage actualStage = stageService.getStageByStudentEmail(dummyEmail);
@@ -94,6 +95,15 @@ public class StageServiceTest {
     public void testGetStageByStudentEmail_withNullEmail() {
         assertThrows(IllegalArgumentException.class,
                 () -> stageService.getStageByStudentEmail(null));
+    }
+
+    @Test
+    public void testGetStageByStudentEmail_withInvalidEmail() {
+        String dummyEmail = "like@email.com";
+        when(stageRepository.existsByContractStudent_Email(any())).thenReturn(false);
+
+        assertThrows(StageDoesNotExistException.class,
+                () -> stageService.getStageByStudentEmail(dummyEmail));
     }
 
     private Stage getDummyStage() {
