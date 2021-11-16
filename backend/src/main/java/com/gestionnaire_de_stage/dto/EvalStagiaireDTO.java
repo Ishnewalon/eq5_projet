@@ -44,6 +44,12 @@ public class EvalStagiaireDTO {
 
     String questionSeize;
 
+    String questionDixSept;
+
+    String questionDixHuit;
+
+    String questionDixNeuf;
+
     String programmeEtudes;
 
     String appreciationGlobale;
@@ -62,7 +68,7 @@ public class EvalStagiaireDTO {
 
     boolean entrepriseApprecieEtudiant;
 
-    int nbHeuresReelTraailEtudiant;
+    int nbHeuresReelTravailEtudiant;
 
     String fonctionUn;
 
@@ -75,4 +81,6 @@ public class EvalStagiaireDTO {
     String dateSignature;
 
     String monitorSignature;
+
+    String courrielEtudiant;
 }

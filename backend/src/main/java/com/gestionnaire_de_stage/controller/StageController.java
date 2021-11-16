@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.EvalMilieuStageDTO;
+import com.gestionnaire_de_stage.dto.EvalStagiaireDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
@@ -80,6 +81,25 @@ public class StageController {
                     .badRequest()
                     .body(new ResponseMessage("Cet étudiant n'a pas de stage"));
         }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseMessage("Évaluation remplie!"));
+    }
+
+    @PostMapping("/monitor/fill_form")
+    public ResponseEntity<?> fillEvalStagiairePDF(@RequestBody EvalStagiaireDTO evalStagiaireDTO) {
+        Stage stage;
+        try {
+            stage = stageService.getStageByStudentEmail(evalStagiaireDTO.getCourrielEtudiant());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+
+
+       // stageService.addEvalStagiaire(stage, baos);
+
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseMessage("Évaluation remplie!"));

@@ -35,6 +35,11 @@ public class StageService {
         return stageRepository.save(stage);
     }
 
+    public Stage getStageByStudentEmail(String email) {
+        Assert.isTrue(email != null, "Le courriel ne peut pas être null");
+        return stageRepository.getByContractStudent_Email(email);
+    }
+
     private boolean isNotValid(Stage stage) {
         return !stageRepository.existsById(stage.getId());
     }

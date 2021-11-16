@@ -79,6 +79,23 @@ public class StageServiceTest {
                 () -> stageService.addEvalMilieuStage(getDummyStage(), new ByteArrayOutputStream()));
     }
 
+    @Test
+    public void testGetStageByStudentEmail_withValidEntries() {
+        Stage dummyStage = getDummyStage();
+        String dummyEmail = "like@email.com";
+        when(stageRepository.getByContractStudent_Email(any())).thenReturn(dummyStage);
+
+        Stage actualStage = stageService.getStageByStudentEmail(dummyEmail);
+
+        assertThat(actualStage.getId()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testGetStageByStudentEmail_withNullEmail() {
+        assertThrows(IllegalArgumentException.class,
+                () -> stageService.getStageByStudentEmail(null));
+    }
+
     private Stage getDummyStage() {
         Stage dummyStage = new Stage();
         dummyStage.setId(1L);

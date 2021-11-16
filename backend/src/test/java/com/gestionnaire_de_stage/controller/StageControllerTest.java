@@ -139,9 +139,11 @@ public class StageControllerTest {
         assertThat(response.getContentAsString()).contains("Le stage existe déjà");
     }
 
-  /*  @Test
+    @Test
     public void testFillEvalStagiairePDF_withValidEntries() throws Exception {
         EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
+        Stage dummyStage = getDummyStage();
+     //   when(stageService.addEvalStagiaire(any())).thenReturn(dummyStage);
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/monitor/fill_form")
@@ -152,7 +154,7 @@ public class StageControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString()).contains("Évaluation remplie!");
-    }*/
+    }
 
     private EvalMilieuStageDTO getDummyEvalMilieuStageDTO() {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = new EvalMilieuStageDTO();
@@ -200,6 +202,11 @@ public class StageControllerTest {
 
     private EvalStagiaireDTO getDummyEvalStagiaireDTO() {
         EvalStagiaireDTO dummyEvalStagiaireDTO = new EvalStagiaireDTO();
+        dummyEvalStagiaireDTO.setEntrepriseNom("Entreprise A");
+        dummyEvalStagiaireDTO.setNomStagiaire("Tom Thorough");
+        dummyEvalStagiaireDTO.setPhone("4327659465");
+        dummyEvalStagiaireDTO.setDateSignature("8-11-2021");
+        dummyEvalStagiaireDTO.setCourrielEtudiant("myemail@email.com");
 
         return dummyEvalStagiaireDTO;
     }
