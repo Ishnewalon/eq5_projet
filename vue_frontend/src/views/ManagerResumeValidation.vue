@@ -59,13 +59,17 @@ export default {
     validateCv(id, isValid) {
       validateCV(id, isValid);
     },
+    getFullName(student) {
+      const {lastName, firstName} = student;
+      return `${lastName}_${firstName}`;
+    },
     downloadStudentCv(cv) {
       const id = cv.id;
       downloadCV(id).then(
           blob => {
             let myUrl = URL.createObjectURL(blob);
 
-            let myFilename = cv?.student.firstName + "_" + cv?.student.lastName + "_" + id + ".pdf";
+            let myFilename = `${this.getFullName(cv.student)}_${id}.pdf`;
 
             const a = document.createElement('a')
             a.href = myUrl
