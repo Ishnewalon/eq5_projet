@@ -10,7 +10,12 @@ import StartContract from "./StartContract/StartContract";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useAuth} from "../../services/use-auth";
 import RapportsView from "./RapportsView/RapportsView";
-import {RapportOfferInvalid, RapportOfferValid, RapportStudentWithoutCv} from "./RapportsView/Rapports";
+import {
+    RapportOfferInvalid,
+    RapportOfferValid,
+    RapportStudentSignIn, RapportStudentWithInvalidCv,
+    RapportStudentWithoutCv
+} from "./RapportsView/Rapports";
 import ViewSignedContracts from '../ViewSignedContracts/ViewSignedContracts';
 
 export default function ManagerView() {
@@ -52,6 +57,12 @@ export default function ManagerView() {
             </Route>
             <Route path={`${path}/rapports/3`}>
                 <RapportStudentWithoutCv/>
+            </Route>
+            <Route path={`${path}/rapports/4`}>
+                <RapportStudentSignIn/>
+            </Route>
+            <Route path={`${path}/rapports/5`}>
+                <RapportStudentWithInvalidCv/>
             </Route>
         </ContainerBox>
     )

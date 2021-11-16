@@ -424,9 +424,9 @@ public class ContractControllerTest {
 
     @Test
     public void testGetAllSignedContractsByManager_withNonExistentId() throws Exception{
+        long nonExistentId = 1000L;
         when(contractService.getAllSignedContractsByManager(any())).thenReturn(Collections.emptyList());
 
-        long nonExistentId = 1000L;
         MvcResult mvcResult = mockMvc.perform(
             MockMvcRequestBuilders.get("/contracts/manager/signed/" + nonExistentId)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -450,6 +450,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(returnedContracts)
                 .isNotEmpty()
@@ -458,9 +459,9 @@ public class ContractControllerTest {
 
     @Test
     public void testGetAllSignedContractsByMonitor_withNonExistentId() throws Exception{
+        long nonExistentId = 1000L;
         when(contractService.getAllSignedContractsByManager(any())).thenReturn(Collections.emptyList());
 
-        long nonExistentId = 1000L;
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/contracts/monitor/signed/" + nonExistentId)
                                 .contentType(MediaType.APPLICATION_JSON))

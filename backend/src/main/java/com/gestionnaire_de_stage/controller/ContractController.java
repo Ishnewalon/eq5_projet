@@ -142,7 +142,7 @@ public class ContractController {
     }
 
     @GetMapping("/student/{student_id}")//SESSION : get only contract of current or futur session
-    public ResponseEntity<?> getContractByStudentId(@PathVariable Long student_id) {
+    public ResponseEntity<?> ContractNeedsStudentSignature(@PathVariable Long student_id) {
         Contract contract;
         try {
             contract = contractService.getContractByStudentId(student_id);
