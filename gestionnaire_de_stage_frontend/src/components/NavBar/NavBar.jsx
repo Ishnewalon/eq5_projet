@@ -65,7 +65,7 @@ function NavItemSpecificForUser() {
             <Link to="/dashboard/voir_mon_contrat">Voir Contrat</Link>
             <Link to="/dashboard/view/status">Mes applications</Link>
             <Link to="/dashboard/offer/setdate">Ajouter une date d'entrevue</Link>
-            <Link to="/dashboard/student/contract/signed">Contrat signé</Link>
+            <Link to="/dashboard/student/contract/signed">Voir contrat signé</Link>
         </ThisIsAListItem>
     if (auth.isSupervisor())
         return <ThisIsAListItem>
