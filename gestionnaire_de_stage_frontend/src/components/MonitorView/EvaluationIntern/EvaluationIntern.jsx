@@ -95,7 +95,7 @@ export default function EvaluationIntern() {
                     <label>Email de l'élève</label>
                     <input type="email" name='emailEtudiant' value={monitorVisitForm.emailEtudiant}
                            onChange={e => handleChange(e)} autoComplete='off'
-                           placeholder="Nom de l'élève" title="Le email de l'élève est requis" required/>
+                           placeholder="Email de l'élève" title="Le email de l'élève est requis" required/>
                 </FormField>
             </FormGroup>
             <FormGroup>
