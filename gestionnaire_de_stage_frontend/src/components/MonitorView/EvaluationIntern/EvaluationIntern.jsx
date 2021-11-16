@@ -3,7 +3,7 @@ import {monitorCreateForm} from "../../../services/stage-service";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 
-export default function EvaluationStagiaire() {
+export default function EvaluationIntern() {
 
     const [monitorVisitForm, setMonitorVisitForm] = useState({
         entrepriseNom: '',
