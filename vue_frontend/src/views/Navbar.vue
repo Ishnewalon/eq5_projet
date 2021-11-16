@@ -26,6 +26,9 @@
       <a>
         <router-link to="/student/view_offers">Voir les offres</router-link>
       </a>
+      <a>
+        <router-link to="/student/upload_resume">Téléverser cv</router-link>
+      </a>
     </div>
   </nav>
 </template>

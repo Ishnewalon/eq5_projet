@@ -16,8 +16,13 @@ class OfferService {
         return await this.promisedReturn(response, undefined, []);
     }
 
-    async getAllOffers() {
+    async getAllOffersNotValid() {
         const response = await fetch(`${urlBackend}/offers/not_validated`, requestInit(methods.GET));
+        return await this.promisedReturn(response, undefined, []);
+    }
+
+    async getAllOffersValid() {
+        const response = await fetch(`${urlBackend}/offers/valid`, requestInit(methods.GET));
         return await this.promisedReturn(response, undefined, []);
     }
 

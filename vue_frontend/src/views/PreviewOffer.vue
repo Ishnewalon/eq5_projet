@@ -1,5 +1,5 @@
 <template>
-  <div class="shadow-lg rounded-top p-3 border-left border-right border-light">
+  <div class="shadow-lg rounded-top p-3 border-left border-right border-light bg-dark">
     <div class="d-flex align-items-center flex-column">
       <h2 class="d-inline-block text-dark display-6 fst-italic">
         <span class="badge bg-secondary">{{ offer.title }}</span></h2>

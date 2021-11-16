@@ -10,6 +10,7 @@ import authService from "../services/auth-service";
 import MonitorCreateOffer from "../views/MonitorCreateOffer";
 import ManagerCreateOffer from "../views/ManagerCreateOffer";
 import ReviewOffers from "../views/ReviewOffers";
+import ViewOffers from "@/views/ViewOffers";
 
 
 function guardRoute(to, from, next) {
@@ -52,9 +53,15 @@ const routes = [
         component: RegisterMonitor
     },
     {
-        path: '/televerser_cv',
+        path: '/student/upload_resume',
         name: 'Televerser CV',
         component: TeleverserCv,
+        beforeEnter: guardRoute
+    },
+    {
+        path: '/student/view_offers',
+        name: 'Étudiant voit offres',
+        component: ViewOffers,
         beforeEnter: guardRoute
     },
     {

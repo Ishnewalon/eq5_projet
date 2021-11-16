@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     loadOffers(){
-      offerService.getAllOffers().then(offers => (this.offers = offers))
+      offerService.getAllOffersNotValid().then(offers => (this.offers = offers))
           .catch(e => {
             console.trace(e);
             Swal.fire({
