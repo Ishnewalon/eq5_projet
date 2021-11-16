@@ -87,7 +87,7 @@ public class ContractService {
         if (studentService.isIDNotValid(student_id)) {
             throw new IdDoesNotExistException();
         }
-        return contractRepository.getContractByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNull(student_id);
+        return contractRepository.getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNull(student_id);
     }
 
     public Contract getContractByStudentMatricule(String matricule) throws MatriculeDoesNotExistException, ContractDoesNotExistException {
@@ -155,6 +155,14 @@ public class ContractService {
     public List<Contract> getAllSignedContractsByMonitor(Long monitor_id) {
         Assert.isTrue(monitor_id != null, "L'id du monitor ne peut pas être null");
         return contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNull(monitor_id);
+    }
+
+    public Contract getSignedContractByStudentId(Long student_id) throws IdDoesNotExistException {
+        Assert.isTrue(student_id != null, "L'id de l'étudiant ne peut pas être null");
+        if (studentService.isIDNotValid(student_id)) {
+            throw new IdDoesNotExistException();
+        }
+        return contractRepository.getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNotNull(student_id);
     }
 
     public boolean isNotCreated(String matricule) {

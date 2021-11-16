@@ -408,7 +408,7 @@ public class ContractControllerTest {
     public void testGetAllSignedContractsByManager_withExistentId() throws Exception {
         List<Contract> dummyContracts = getDummyContractList();
         when(contractService.getAllSignedContractsByManager(any())).thenReturn(dummyContracts);
-        
+
         MvcResult mvcResult = mockMvc.perform(
             MockMvcRequestBuilders.get("/contracts/manager/signed/" + 100L)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -426,7 +426,7 @@ public class ContractControllerTest {
     public void testGetAllSignedContractsByManager_withNonExistentId() throws Exception{
         long nonExistentId = 1000L;
         when(contractService.getAllSignedContractsByManager(any())).thenReturn(Collections.emptyList());
-        
+
         MvcResult mvcResult = mockMvc.perform(
             MockMvcRequestBuilders.get("/contracts/manager/signed/" + nonExistentId)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -442,7 +442,7 @@ public class ContractControllerTest {
     public void testGetAllSignedContractsByMonitor_withExistentId() throws Exception {
         List<Contract> dummyContracts = getDummyContractList();
         when(contractService.getAllSignedContractsByMonitor(any())).thenReturn(dummyContracts);
-        
+
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/contracts/monitor/signed/" + 100L)
                                 .contentType(MediaType.APPLICATION_JSON))
@@ -450,6 +450,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(returnedContracts)
                 .isNotEmpty()
@@ -470,6 +471,41 @@ public class ContractControllerTest {
         List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(returnedContracts).isEmpty();
+    }
+
+    @Test
+    public void testGetSignedContractByStudent_withExistentId() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
+        Contract dummyContract = getDummyContract();
+        when(contractService.getSignedContractByStudentId(any())).thenReturn(dummyContract);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/contracts/student/signed/" + 100L)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        Contract returnedContract = MAPPER.readValue(response.getContentAsString(), Contract.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(returnedContract)
+                .isNotNull()
+                .isEqualTo(dummyContract);
+    }
+
+    @Test
+    public void testGetSignedContractByStudent_withNonExistentId() throws Exception{
+        MAPPER.registerModule(new JavaTimeModule());
+        when(contractService.getSignedContractByStudentId(any())).thenThrow(IdDoesNotExistException.class);
+
+        long nonExistentId = 1000L;
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/contracts/student/signed/" + nonExistentId)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Le id de l'étudiant n'existe pas");
     }
 
     private Contract getDummyContract() {
