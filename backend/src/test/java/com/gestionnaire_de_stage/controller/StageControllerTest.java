@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.EvalMilieuStageDTO;
+import com.gestionnaire_de_stage.dto.EvalStagiaireDTO;
 import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StageAlreadyExistsException;
@@ -138,6 +139,21 @@ public class StageControllerTest {
         assertThat(response.getContentAsString()).contains("Le stage existe déjà");
     }
 
+  /*  @Test
+    public void testFillEvalStagiairePDF_withValidEntries() throws Exception {
+        EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/stages/monitor/fill_form")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Évaluation remplie!");
+    }*/
+
     private EvalMilieuStageDTO getDummyEvalMilieuStageDTO() {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = new EvalMilieuStageDTO();
         dummyEvalMilieuStageDTO.setEntrepriseNom("La place");
@@ -180,5 +196,11 @@ public class StageControllerTest {
         dummyStudent.setDepartment("info");
         dummyStudent.setMatricule("4673943");
         return dummyStudent;
+    }
+
+    private EvalStagiaireDTO getDummyEvalStagiaireDTO() {
+        EvalStagiaireDTO dummyEvalStagiaireDTO = new EvalStagiaireDTO();
+
+        return dummyEvalStagiaireDTO;
     }
 }
