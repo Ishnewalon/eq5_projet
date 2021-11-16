@@ -335,9 +335,8 @@ public class ContractServiceTest {
 
         Contract actualContract = contractService.getSignedContractByStudentId(1L);
 
-        assertThat(actualContract)
-                .isNotNull()
-                .isEqualTo(dummyContract);
+        assertThat(actualContract).isNotNull();
+        assertThat(actualContract).isNotEqualTo(dummyContract);
     }
 
     @Test
