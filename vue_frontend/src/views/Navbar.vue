@@ -27,7 +27,9 @@
       <a>
         <router-link to="/manager/curriculums/validate">Valider les cv</router-link>
       </a>
-
+      <a>
+        <router-link to="/manager/start_contracts">Démarrage des contrats</router-link>
+      </a>
     </div>
     <div v-else-if="role === 'student'" class="d-inline">
       <a>

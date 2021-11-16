@@ -32,17 +32,14 @@ export default {
   components: {
     PreviewOffer
   },
-  created() {
-  },
   methods: {
     openFile() {
       const decodedChars = atob(this.student.file);
       const byteNums = new Array(decodedChars.length);
       for (let i = 0; i < decodedChars.length; i++)
         byteNums[i] = decodedChars.charCodeAt(i);
-      let contentType = 'application/pdf';
 
-      const blob = new Blob([new Uint8Array(byteNums), {type: contentType}]);
+      const blob = new Blob([new Uint8Array(byteNums), {type: 'application/pdf'}]);
 
       let url = window.URL.createObjectURL(blob);
 

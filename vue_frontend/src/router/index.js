@@ -13,6 +13,7 @@ import ReviewOffers from "../views/ReviewOffers";
 import ViewOffers from "@/views/ViewOffers";
 import ManagerResumeValidation from "@/views/ManagerResumeValidation";
 import ViewAppliedStudents from "@/views/ViewAppliedStudents";
+import StartContracts from "@/views/StartContracts";
 
 
 function guardRoute(to, from, next) {
@@ -94,6 +95,12 @@ const routes = [
         path: '/manager/curriculums/validate',
         name: 'Valider les curriculums en tant que Gestionnaire',
         component: ManagerResumeValidation,
+        beforeEnter: guardRoute
+    },
+    {
+        path: '/manager/start_contracts',
+        name:'Démarrage des contrats',
+        component: StartContracts,
         beforeEnter: guardRoute
     },
     {

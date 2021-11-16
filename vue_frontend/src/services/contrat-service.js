@@ -1,7 +1,6 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
-import {swalErr, toast, toastErr} from "../utility";
 import Swal from "sweetalert2";
-import {UserType} from "../enums/UserTypes";
+import {UserType} from "@/models/RegisterVars";
 
 const url = `${urlBackend}/contracts`;
 
@@ -27,7 +26,7 @@ async function signContract(userType, signature, contractId) {
                     }
 
                     if (response.status === 400) {
-                        swalErr.fire({text: body.message})
+                        Swal.fire({text: body.message, icon:'error'})
                     }
 
                     return response.ok;
@@ -47,7 +46,7 @@ export async function getAllContractsToBeSignedForMonitor(monitorId) {
                     if (response.ok) {
                         return body;
                     } else {
-                        swalErr.fire({text: body.message})
+                        Swal.fire({text: body.message, icon: 'error'})
                         return Promise.any([]);
                     }
                 })
@@ -62,7 +61,7 @@ export async function getContractForStudent(userId){
                 if (response.ok) {
                     return body;
                 } else {
-                    swalErr.fire({text: body.message})
+                    Swal.fire({text: body.message, icon: 'error'});
                     return Promise.any([]);
                 }
             })
@@ -73,10 +72,10 @@ export async function getAllOfferAppReadyToSign(idOfferApplication){
     return await fetch(`${urlBackend}/applications/applicants/manager/${idOfferApplication}`, requestInit(methods.GET)).then(
         response => {
             return response.json().then((body) => {
-                if (response.status === 200)
+                if (response.ok)
                     return body;
                 if (response.status === 400)
-                    toastErr.fire({title: body.message})
+                    Swal.fire({title: body.message, icon: 'error'})
                 return Promise.any([]);
             })
         }, err => console.error(err)
@@ -90,12 +89,12 @@ export async function startSignerFetch(idOfferApplication, idManager) {
     })).then(
         response => {
             return response.json().then((body) => {
-                if (response.status === 200) {
-                    toast.fire({title: body.message})
+                if (response.ok) {
+                    Swal.fire({title: body.message, icon:'success'})
                     return true;
                 }
                 if (response.status === 400)
-                    toastErr.fire({title: body.message})
+                    Swal.fire({title: body.message, icon:'error'})
                 return false;
             })
         }, err => console.error(err)
