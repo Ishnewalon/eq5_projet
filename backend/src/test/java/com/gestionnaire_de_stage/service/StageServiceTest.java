@@ -116,6 +116,12 @@ public class StageServiceTest {
         assertThat(actualStage.getId()).isGreaterThan(0);
     }
 
+    @Test
+    public void testAddEvalStagiaire_withNullStage() {
+        assertThrows(IllegalArgumentException.class,
+                () -> stageService.addEvalStagiaire(null, new ByteArrayOutputStream()));
+    }
+
     private Stage getDummyStage() {
         Stage dummyStage = new Stage();
         dummyStage.setId(1L);

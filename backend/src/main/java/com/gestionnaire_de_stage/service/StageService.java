@@ -44,6 +44,7 @@ public class StageService {
     }
 
     public Stage addEvalStagiaire(Stage stage, ByteArrayOutputStream baos) {
+        Assert.isTrue(stage != null, "Le stage ne peut pas être null");
         stage.setEvalStagiaire(baos.toByteArray());
         return stageRepository.save(stage);
     }
