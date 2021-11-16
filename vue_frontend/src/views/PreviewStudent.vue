@@ -3,14 +3,14 @@
     <div class="row">
       <div class="col-12 col-sm-6">
         <div class="d-flex justify-content-center align-items-center flex-column p-3 shadow h-100">
-          <h4 class="p-2 rounded bg-secondary fw-bold text-white">{{ `${dto.firstName}, ${dto.lastName}` }} </h4>
+          <h4 class="p-2 rounded bg-secondary fw-bold text-white">{{ `${student.firstName}, ${student.lastName}` }} </h4>
           <div class="d-flex justify-content-center align-items-center badge bg-primary text-wrap h2">
-            <a class="ms-2 text-white" target="_blank" v-on:click="openFile">{{ dto.fileName }}</a>
+            <a class="btn fw-bold ms-2 text-white" target="_blank" v-on:click="openFile">{{ student.fileName }}</a>
           </div>
         </div>
       </div>
       <div class="col-12 col-sm-6">
-        <PreviewOffer v-bind:offer="dto.offerDTO"/>
+        <PreviewOffer :offer="student.offerDTO"/>
       </div>
     </div>
   </div>
@@ -23,23 +23,22 @@ import PreviewOffer from "../views/PreviewOffer";
 export default {
   name: "PreviewStudent",
   props: {
-    dto: {
+    student: {
       type: CurriculumDto
     }
   },
   components: {
     PreviewOffer
   },
+  created() {
+  },
   methods: {
     openFile() {
-      const decodedChars = atob(this.dto.file);
+      const decodedChars = atob(this.student.file);
       const byteNums = new Array(decodedChars.length);
       for (let i = 0; i < decodedChars.length; i++)
         byteNums[i] = decodedChars.charCodeAt(i);
       let contentType = 'application/pdf';
-
-      if (this.dto.fileName.endsWith('docx'))
-        contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
       const blob = new Blob([new Uint8Array(byteNums), {type: contentType}]);
 
@@ -47,10 +46,9 @@ export default {
 
       const a = document.createElement('a')
       a.href = url
-      a.download = this.dto.fileName;
+      a.download = this.student.fileName;
       a.click();
       URL.revokeObjectURL(url)
-      alert('téléchargé')
     }
   }
 }

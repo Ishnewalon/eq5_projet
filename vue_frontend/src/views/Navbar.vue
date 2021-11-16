@@ -13,6 +13,9 @@
       <a>
         <router-link to="/monitor/create_offer">Créer une offre</router-link>
       </a>
+      <a>
+        <router-link to="/monitor/view_applied_students">Voir applicants</router-link>
+      </a>
     </div>
     <div v-else-if="role === 'manager'" class="d-inline">
       <a>
@@ -21,6 +24,10 @@
       <a>
         <router-link to="/manager/review_offers">Valider les offres</router-link>
       </a>
+      <a>
+        <router-link to="/manager/curriculums/validate">Valider les cv</router-link>
+      </a>
+
     </div>
     <div v-else-if="role === 'student'" class="d-inline">
       <a>

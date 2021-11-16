@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container bg-dark p-3 rounded">
     <div class="d-flex justify-content-center align-items-center">
       <h2 class="text-center">Applicants</h2>
       <h2 class="ms-2">
@@ -8,7 +8,7 @@
     </div>
     <div v-if="students.length > 0">
       <div v-for="(student, index) in students" :key="index">
-        <PreviewStudent v-bind:student="student"/>
+        <PreviewStudent :student="student"/>
       </div>
     </div>
     <div v-else class="d-flex justify-content-center align-items-center">
@@ -30,11 +30,10 @@ export default {
       students: []
     }
   },
-  props: {
-    email: String
-  },
   created() {
-    offerAppService.getAllApplicants(this.email).then(students => (this.students = students));
+    const email = JSON.parse(localStorage.getItem('user')).email;
+    offerAppService.getAllApplicants(email).then(students => (this.students = students));
+    console.log(JSON.stringify(this.students));
   },
   components: {
     PreviewStudent

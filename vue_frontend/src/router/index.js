@@ -11,6 +11,8 @@ import MonitorCreateOffer from "../views/MonitorCreateOffer";
 import ManagerCreateOffer from "../views/ManagerCreateOffer";
 import ReviewOffers from "../views/ReviewOffers";
 import ViewOffers from "@/views/ViewOffers";
+import ManagerResumeValidation from "@/views/ManagerResumeValidation";
+import ViewAppliedStudents from "@/views/ViewAppliedStudents";
 
 
 function guardRoute(to, from, next) {
@@ -71,6 +73,12 @@ const routes = [
         beforeEnter: guardRoute
     },
     {
+        path: '/monitor/view_applied_students',
+        name: 'Moniteur voit les étudiants qui lui ont postulés',
+        component: ViewAppliedStudents,
+        beforeEnter: guardRoute
+    },
+    {
         path: '/manager/create_offer',
         name: 'Créer une offre en tant que Gestionnaire',
         component: ManagerCreateOffer,
@@ -80,6 +88,12 @@ const routes = [
         path: '/manager/review_offers',
         name: 'Valider les offres',
         component: ReviewOffers,
+        beforeEnter: guardRoute
+    },
+    {
+        path: '/manager/curriculums/validate',
+        name: 'Valider les curriculums en tant que Gestionnaire',
+        component: ManagerResumeValidation,
         beforeEnter: guardRoute
     }
 ]
