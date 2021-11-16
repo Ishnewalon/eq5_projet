@@ -131,7 +131,7 @@ public class OfferApplicationService {
 
     public List<OfferApplication> getAllBySupervisorId(Long supervisor_id) throws IdDoesNotExistException {
         Assert.isTrue(supervisor_id != null, "L'id du superviseur ne peut pas être null");
-        if(supervisorRepository.existsById(supervisor_id)) {
+        if(!supervisorRepository.existsById(supervisor_id)) {
             throw new IdDoesNotExistException();
         }
         return offerApplicationRepository.findAllByCurriculum_Student_Supervisor_Id(supervisor_id);

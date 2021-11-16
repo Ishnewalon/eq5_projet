@@ -70,7 +70,8 @@ export default function Register() {
         })
     }
 
-    const endThis = () => {
+    const endThis = (e) => {
+        e.preventDefault();
         let user = null
         if (userType === UserType.STUDENT) {
             user = new Student(email, password, lastName, firstName, phone, matricule);
@@ -103,7 +104,7 @@ export default function Register() {
             show =
                 <StepMonitor prevStep={prevStep} nextStep={nextStep} updateUserType={updateUserType}
                              handleChange={handleChange}
-                             address={address} codePostal={postalCode} city={city} companyName={companyName}/>
+                             address={address} postalCode={postalCode} city={city} companyName={companyName}/>
             break;
         case Step.GENERAL:
             show = <StepInformationGeneral prevStep={prevStep} nextStep={nextStep}
@@ -111,7 +112,7 @@ export default function Register() {
                                            email={email} firstName={firstName} lastName={lastName} phone={phone}/>
             break;
         case Step.PASSWORD:
-            show = <StepPassword prevStep={prevStep} endThis={endThis} handleChange={handleChange}
+            show = <StepPassword prevStep={prevStep} handleChange={handleChange}
                                  password={password}/>
 
             break;
@@ -119,16 +120,14 @@ export default function Register() {
             break;
     }
     return (<>
-        <div className="form-container">
-            <form id="contact_form">
-                <fieldset>
-                    <legend>
-                        <center><h2>Inscription</h2></center>
-                    </legend>
-                    <br/>
-                    {show}
-                </fieldset>
-            </form>
-        </div>
+        <form className="form-container" onSubmit={endThis}>
+            <fieldset>
+                <legend>
+                    <h2 className="text-center">Inscription</h2>
+                </legend>
+                <br/>
+                {show}
+            </fieldset>
+        </form>
     </>);
 }
