@@ -69,7 +69,7 @@ export default {
           blob => {
             let myUrl = URL.createObjectURL(blob);
 
-            let myFilename = `${this.getFullName(cv.student)}_${id}.pdf`;
+            let myFilename = `curriculum_${this.getFullName(cv.student)}.pdf`;
 
             const a = document.createElement('a')
             a.href = myUrl
