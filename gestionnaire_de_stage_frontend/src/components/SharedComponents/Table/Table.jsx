@@ -28,8 +28,8 @@ export function Table(props) {
 }
 
 Table.propTypes = {
-    children: PropTypes.element.isRequired,
-    className: React.PropTypes.string
+    children: PropTypes.array.isRequired,
+    className: PropTypes.string
 };
 
 export function TableHeader(props) {
@@ -49,7 +49,7 @@ export function TableHeader(props) {
 }
 
 TableHeader.propTypes = {
-    children: PropTypes.element.isRequired,
+    children: PropTypes.array.isRequired,
 };
 
 export function TableRow(props) {
@@ -74,5 +74,5 @@ export function TableRow(props) {
 }
 
 TableRow.propTypes = {
-    children: PropTypes.element.isRequired,
+    children: PropTypes.array.isRequired,
 };
