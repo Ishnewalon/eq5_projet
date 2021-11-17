@@ -25,5 +25,8 @@ public class OfferApplication {//TODO : session
     private Curriculum curriculum;
 
     private LocalDateTime interviewDate;
+
+    @OneToOne
+    private Session session;
 }
 
