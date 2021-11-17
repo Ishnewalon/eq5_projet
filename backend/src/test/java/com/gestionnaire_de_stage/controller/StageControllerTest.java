@@ -275,7 +275,7 @@ public class StageControllerTest {
         dummyEvalStagiaireDTO.setNomStagiaire("Tom Thorough");
         dummyEvalStagiaireDTO.setPhone("4327659465");
         dummyEvalStagiaireDTO.setDateSignature("8-11-2021");
-        dummyEvalStagiaireDTO.setCourrielEtudiant("myemail@email.com");
+        dummyEvalStagiaireDTO.setEmailEtudiant("myemail@email.com");
 
         return dummyEvalStagiaireDTO;
     }

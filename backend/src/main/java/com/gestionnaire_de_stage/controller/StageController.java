@@ -21,6 +21,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.time.LocalDate;
 
 @RestController
@@ -87,11 +89,16 @@ public class StageController {
     }
 
     @PostMapping("/monitor/fill_form")
-    public ResponseEntity<?> fillEvalStagiairePDF(@RequestBody EvalStagiaireDTO evalStagiaireDTO) {
+    public ResponseEntity<?> fillEvalStagiairePDF(@RequestBody EvalStagiaireDTO evalStagiaireDTO, HttpServletRequest request, HttpServletResponse response) {
         Stage stage;
         try {
-            stage = stageService.getStageByStudentEmail(evalStagiaireDTO.getCourrielEtudiant());
+            stage = stageService.getStageByStudentEmail(evalStagiaireDTO.getEmailEtudiant());
+            WebContext context = new WebContext(request, response, servletContext);
+            context.setVariable("formInfo", evalStagiaireDTO);
+            String contractHtml = templateEngine.process("evalStagiaire", context);
+
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            HtmlConverter.convertToPdf(contractHtml,baos);
 
             stageService.addEvalStagiaire(stage, baos);
         } catch (IllegalArgumentException e) {
@@ -102,7 +109,7 @@ public class StageController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Le stage n'existe pas pour cette étudiant"));
-        }
+        } 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseMessage("Évaluation remplie!"));

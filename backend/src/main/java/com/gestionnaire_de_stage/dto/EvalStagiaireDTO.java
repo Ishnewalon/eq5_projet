@@ -1,7 +1,6 @@
 package com.gestionnaire_de_stage.dto;
 
 import lombok.Data;
-import java.time.LocalDate;
 
 @Data
 public class EvalStagiaireDTO {
@@ -50,6 +49,12 @@ public class EvalStagiaireDTO {
 
     String questionDixNeuf;
 
+    String questionVingt;
+
+    String questionVingtUn;
+
+    String questionVingtDeux;
+
     String programmeEtudes;
 
     String appreciationGlobale;
@@ -82,5 +87,5 @@ public class EvalStagiaireDTO {
 
     String monitorSignature;
 
-    String courrielEtudiant;
+    String emailEtudiant;
 }
