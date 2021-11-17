@@ -49,7 +49,7 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
                 <TableHeader>
                     <th>#</th>
                     <th>Étudiant</th>
-                    <th>Enseignant</th>
+                    <th>Superviseur</th>
                     <th>Accepter</th>
                 </TableHeader>
                 {studentList.map((student, index) =>

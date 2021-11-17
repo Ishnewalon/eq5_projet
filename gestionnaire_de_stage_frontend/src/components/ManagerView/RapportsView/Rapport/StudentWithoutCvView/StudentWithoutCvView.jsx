@@ -20,7 +20,7 @@ export default function StudentWithoutCvView() {
 
     if (studentList.length === 0) {
         return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
-            Aucun étudiant sans Cv
+            Tous les étudiants ont un CV
         </div>
     }
 

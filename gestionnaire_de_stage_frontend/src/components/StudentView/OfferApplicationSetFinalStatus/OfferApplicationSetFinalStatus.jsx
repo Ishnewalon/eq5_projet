@@ -29,7 +29,7 @@ export default function OfferApplicationSetFinalStatus() {
     };
 
     if (offerApplications.length === 0)
-        return <MessageNothingToShow message="Vous n'avez pas d'offre de stage qui attend une réponse"/>
+        return <MessageNothingToShow message="Vous n'avez pas d'offre de stage en attente de réponse"/>
 
     return (<>
         <Table>

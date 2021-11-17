@@ -58,7 +58,7 @@ export default function OfferNotValidView() {
                                 <OfferView offer={offer}/>
                             </li>
                         )) :
-                    <h3 className={"text-center mt-4"}>Aucune offre à afficher</h3>}
+                    <h3 className={"text-center mt-4"}>Toutes les offres sont validées</h3>}
             </ul>
         </div>
     )

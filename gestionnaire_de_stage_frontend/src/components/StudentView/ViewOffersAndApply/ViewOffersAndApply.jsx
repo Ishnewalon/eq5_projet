@@ -46,7 +46,7 @@ export default function ViewOffersAndApply() {
     }, [offers])
 
     if (offers.length === 0) {
-        return <MessageNothingToShow message="Au moment, aucune offre n'est disponible"/>
+        return <MessageNothingToShow message="Pour l'instant, aucune offre n'est disponible"/>
     }
 
     return (

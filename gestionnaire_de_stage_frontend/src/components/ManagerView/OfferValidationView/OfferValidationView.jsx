@@ -43,7 +43,7 @@ export default function OfferValidationView() {
         setOffers(prev => prev.filter(items => items.id !== id))
     }
     if (offers.length === 0)
-        return <MessageNothingToShow message="Aucun offres a valider pour le moment..."/>
+        return <MessageNothingToShow message="Aucune offres à valider pour le moment..."/>
     return (
         <>
             <div className='container'>

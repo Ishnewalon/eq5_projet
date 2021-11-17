@@ -16,7 +16,7 @@ export default function CreateSession() {
 
     const onclick = () => {
         if (!typeSession) {
-            toastErr.fire({title: "Le type de session doit être choisi"}).then()
+            toastErr.fire({title: "La période de la session doit être choisi"}).then()
             return
         }
         createSession({
@@ -46,7 +46,7 @@ export default function CreateSession() {
             </FormField>
         </FormGroup>
         <div className="text-center">
-            <button className="btn btn-primary mt-3" onClick={onclick}>Create Session</button>
+            <button className="btn btn-primary mt-3" onClick={onclick}>Créez la session</button>
 
         </div>
     </>

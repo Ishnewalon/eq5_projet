@@ -15,7 +15,7 @@ export function ContractView() {
 
 
     if (!contract)
-        return <MessageNothingToShow message="Vous avez aucun contrat à signer en ce-moment."/>
+        return <MessageNothingToShow message="Vous avez aucun contrat à signer en ce moment."/>
 
     return <>
         <ContratSignature contract={contract} userType={UserType.STUDENT[0]}/>

@@ -5,22 +5,24 @@ export default function RapportsView() {
     return (<>
             <CardsView>
                 <RapportCard title="Rapport des offres validées"
-                             description="Ma description"
+                             description="Liste de toutes les offres enregistrées et que vous avez validées"
                              to="/dashboard/rapports/1"/>
                 <RapportCard title="Rapport des offres non validées"
-                             description="Ma description"
+                             description="Liste de toutes les offres enregistrées et refusées"
                              to="/dashboard/rapports/2"/>
                 <RapportCard title="Rapport des étudiants sans Cv"
-                             description="Ma description"
+                             description="Liste des étudiants inscrits et qui n'ont pas encore téleverser de Cv"
                              to="/dashboard/rapports/3"/>
                 <RapportCard title="Rapport des étudiants inscrits dans la plateforme"
-                             description="Ma description"
+                             description=""
                              to="/dashboard/rapports/4"/>
                 <RapportCard title="Rapport des étudiants avec des Cv Invalides"
-                             description="Ma description"
+                             description="Liste des étudiants inscrits avec des cv invalides
+                             (Notifiez-les pour qu'ils renvoient un nouveau Cv)"
                              to="/dashboard/rapports/5"/>
                 <RapportCard title="Rapport des status de stage des étudiants"
-                             description="Ma description"
+                             description="Liste de tous les étudiants avec
+                              le nombre et les détails chacune de leurs d'application "
                              to="/dashboard/rapports/6"/>
             </CardsView>
         </>
