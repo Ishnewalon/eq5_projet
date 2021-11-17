@@ -53,9 +53,9 @@ function NavItemSpecificForUser() {
             <Link to="/dashboard/offres/review">Validation Offre</Link>
             <Link to="/dashboard/curriculum/review">Valider Cv</Link>
             <Link to="/dashboard/students/start">Commencer signature</Link>
-            <Link to="/dashboard/students/applied">Associer</Link>
+            <Link to="/dashboard/students/applied">Associer Superviseur</Link>
             <Link to="/dashboard/contrats/a_signer">Contrats à valider</Link>
-            <Link to="/dashboard/session">Gestion Session</Link>
+            <Link to="/dashboard/session">Gestion des session</Link>
             <Link to="/dashboard/manager/contracts/signed">Contrats signés</Link>
             <Link to="/dashboard/rapports">Rapports</Link>
         </ThisIsAListItem>

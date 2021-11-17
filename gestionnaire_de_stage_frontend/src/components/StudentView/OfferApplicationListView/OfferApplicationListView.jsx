@@ -58,7 +58,7 @@ function OfferApplicationSetInterviewDate({offerApp, removeOffer}) {
         e.preventDefault();
 
         if (date === '') {
-            swalErr.fire({title: "Vous devez selectionner une date!"}).then();
+            swalErr.fire({title: "Vous devez sélectionner une date!"}).then();
             return;
         }
 
@@ -80,7 +80,7 @@ function OfferApplicationSetInterviewDate({offerApp, removeOffer}) {
             </td>
             <td>
                 <button className="btn btn-primary" onClick={setInterviewDate(offerApp.id)}>
-                    Confirmer votre date d'entrevue
+                    Confirmez votre date d'entrevue
                 </button>
             </td>
         </TableRow>

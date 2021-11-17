@@ -21,7 +21,7 @@ export default function StudentStatusView() {
 
     if (offerAppList.length === 0) {
         return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
-            Aucune candidature
+            Aucune candidature...
         </div>
     }
     return (
