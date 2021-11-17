@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.List;
 
 
@@ -48,7 +49,7 @@ public class ContractService {
         if (isContractIdNotValid(contract_id))
             throw new IdDoesNotExistException();
 
-        Contract contract = contractRepository.getContractByIdAndManagerSignatureNullAndMonitorSignatureNullAndStudentSignatureNull(contract_id);
+        Contract contract = contractRepository.getContractByIdAndManagerSignatureNullAndMonitorSignatureNullAndStudentSignatureNullAndSession_YearGreaterThanEqual(contract_id, Year.now());
 
         contract.setManagerSignDate(LocalDate.now());
         contract.setManagerSignature(managerSignature);
@@ -60,7 +61,7 @@ public class ContractService {
         if (monitorService.isIdInvalid(monitor_id)) {
             throw new IdDoesNotExistException();
         }
-        return contractRepository.getAllByOffer_CreatorIdAndMonitorSignatureNullAndManagerSignatureNotNull(monitor_id);
+        return contractRepository.getAllByOffer_CreatorIdAndMonitorSignatureNullAndManagerSignatureNotNullAndSession_YearGreaterThanEqual(monitor_id,Year.now());
     }
 
     public Contract addMonitorSignature(String monitorSignature, Long contract_id) throws IllegalArgumentException, IdDoesNotExistException {
@@ -132,12 +133,12 @@ public class ContractService {
 
     public List<Contract> getAllSignedContractsByManager(Long id) throws IllegalArgumentException {
         Assert.isTrue(id != null, "L'id du manager ne peut pas être null");
-        return contractRepository.getAllByManager_IdAndManagerSignatureNotNull(id);
+        return contractRepository.getAllByManager_IdAndManagerSignatureNotNullAndSession_YearGreaterThanEqual(id,Year.now());
     }
 
     public List<Contract> getAllSignedContractsByMonitor(Long monitor_id) {
         Assert.isTrue(monitor_id != null, "L'id du monitor ne peut pas être null");
-        return contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNull(monitor_id);
+        return contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndSession_YearGreaterThanEqual(monitor_id,Year.now());
     }
 
     public Contract getSignedContractByStudentId(Long student_id) throws IdDoesNotExistException {
@@ -145,6 +146,6 @@ public class ContractService {
         if (studentService.isIDNotValid(student_id)) {
             throw new IdDoesNotExistException();
         }
-        return contractRepository.getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNotNull(student_id);
+        return contractRepository.getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNotNullAndSession_YearGreaterThanEqual(student_id,Year.now());
     }
 }

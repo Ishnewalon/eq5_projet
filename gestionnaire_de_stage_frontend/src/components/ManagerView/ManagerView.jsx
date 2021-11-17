@@ -10,14 +10,14 @@ import StartContract from "./StartContract/StartContract";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useAuth} from "../../services/use-auth";
 import RapportsView from "./RapportsView/RapportsView";
-import {RapportOfferInvalid, RapportOfferValid, RapportStudentWithoutCv} from "./RapportsView/Rapports";
-import CreateSession from "./CreateSession/CreateSession";
 import {
     RapportOfferInvalid,
     RapportOfferValid,
-    RapportStudentSignIn, RapportStudentWithInvalidCv,
+    RapportStudentSignIn,
+    RapportStudentWithInvalidCv,
     RapportStudentWithoutCv
 } from "./RapportsView/Rapports";
+import CreateSession from "./CreateSession/CreateSession";
 import ViewSignedContracts from '../ViewSignedContracts/ViewSignedContracts';
 
 export default function ManagerView() {

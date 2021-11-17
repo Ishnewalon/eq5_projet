@@ -57,7 +57,7 @@ public class ContractServiceTest {
         Contract dummyContract = getDummyContract();
         Manager dummyManager = getDummyManager();
         when(contractRepository.existsById(any())).thenReturn(true);
-        when(contractRepository.getContractByIdAndManagerSignatureNullAndMonitorSignatureNullAndStudentSignatureNull(any())).thenReturn(dummyContract);
+        when(contractRepository.getContractByIdAndManagerSignatureNullAndMonitorSignatureNullAndStudentSignatureNullAndSession_YearGreaterThanEqual(any(), any())).thenReturn(dummyContract);
         when(contractRepository.save(any())).thenReturn(getDummyFilledContract());
 
         Contract actualContract = contractService.addManagerSignature(managerSignature, dummyContract.getId());
@@ -96,7 +96,7 @@ public class ContractServiceTest {
         when(managerService.getOneByID(any())).thenReturn(dummyManager);
         when(offerApplicationService.getOneById(any())).thenReturn(dummyOfferApplication);
         when(contractRepository.save(any())).thenReturn(dummyFilledContract);
-        when(contractService.doesStudentAlreadyHaveAContract(any(),any())).thenReturn(false);
+        when(contractService.doesStudentAlreadyHaveAContract(any(), any())).thenReturn(false);
 
         Contract contract = contractService.gsStartContract(getDummyContract(), new ContractStarterDto(dummyManager.getId(), dummyOfferApplication.getId()));
 
@@ -109,7 +109,7 @@ public class ContractServiceTest {
         OfferApplication dummyOfferApplication = getDummyOfferApplication();
         when(managerService.getOneByID(any())).thenReturn(dummyManager);
         when(offerApplicationService.getOneById(any())).thenReturn(dummyOfferApplication);
-        when(contractService.doesStudentAlreadyHaveAContract(any(),any())).thenReturn(true);
+        when(contractService.doesStudentAlreadyHaveAContract(any(), any())).thenReturn(true);
 
         assertThrows(StudentAlreadyHaveAContractException.class,
                 () -> contractService.gsStartContract(getDummyContract(), new ContractStarterDto(dummyManager.getId(), dummyOfferApplication.getId())));
@@ -150,7 +150,7 @@ public class ContractServiceTest {
         List<Contract> dummyContractList = getDummyContractList();
         long monitor_id = 1L;
         when(monitorService.isIdInvalid(any())).thenReturn(false);
-        when(contractRepository.getAllByOffer_CreatorIdAndMonitorSignatureNullAndManagerSignatureNotNull(any()))
+        when(contractRepository.getAllByOffer_CreatorIdAndMonitorSignatureNullAndManagerSignatureNotNullAndSession_YearGreaterThanEqual(any(), any()))
                 .thenReturn(dummyContractList);
 
 
@@ -276,7 +276,7 @@ public class ContractServiceTest {
     @Test
     public void testGetAllSignedContracts_withExistentId() {
         List<Contract> dummyContractList = getDummyContractList();
-        when(contractRepository.getAllByManager_IdAndManagerSignatureNotNull(any())).thenReturn(dummyContractList);
+        when(contractRepository.getAllByManager_IdAndManagerSignatureNotNullAndSession_YearGreaterThanEqual(any(), any())).thenReturn(dummyContractList);
 
         List<Contract> actualContractList = contractService.getAllSignedContractsByManager(1L);
 
@@ -287,7 +287,7 @@ public class ContractServiceTest {
 
     @Test
     public void testGetAllSignedContracts_withNonExistentId() {
-        when(contractRepository.getAllByManager_IdAndManagerSignatureNotNull(any())).thenReturn(Collections.emptyList());
+        when(contractRepository.getAllByManager_IdAndManagerSignatureNotNullAndSession_YearGreaterThanEqual(any(), any())).thenReturn(Collections.emptyList());
 
         List<Contract> allSignedContractsByManager = contractService.getAllSignedContractsByManager(1000L);
 
@@ -303,7 +303,7 @@ public class ContractServiceTest {
     @Test
     public void testGetAllSignedContractsForMonitor_withExistentId() {
         List<Contract> dummyContractList = getDummyContractList();
-        when(contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNull(any())).thenReturn(dummyContractList);
+        when(contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndSession_YearGreaterThanEqual(any(), any())).thenReturn(dummyContractList);
 
         List<Contract> actualContractList = contractService.getAllSignedContractsByMonitor(1L);
 
@@ -314,7 +314,7 @@ public class ContractServiceTest {
 
     @Test
     public void testGetAllSignedContractsForMonitor_withNonExistentId() {
-        when(contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNull(any())).thenReturn(Collections.emptyList());
+        when(contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndSession_YearGreaterThanEqual(any(), any())).thenReturn(Collections.emptyList());
 
         List<Contract> actualContractList = contractService.getAllSignedContractsByMonitor(1000L);
 
@@ -330,7 +330,7 @@ public class ContractServiceTest {
     @Test
     public void testGetSignedContractByStudent_withExistentId() throws IdDoesNotExistException {
         Contract dummyContract = getDummyContract();
-        when(contractRepository.getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNotNull(any())).thenReturn(dummyContract);
+        when(contractRepository.getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNotNullAndSession_YearGreaterThanEqual(any(), any())).thenReturn(dummyContract);
         when(studentService.isIDNotValid(any())).thenReturn(false);
 
         Contract actualContract = contractService.getSignedContractByStudentId(1L);

@@ -15,7 +15,9 @@ import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +31,7 @@ public class OfferApplicationService {
     private final SupervisorRepository supervisorRepository;
 
 
-    public OfferApplicationService(OfferApplicationRepository offerApplicationRepository, OfferService offerService, ManagerService managerService, StudentService studentService, SupervisorRepository supervisorRepository) {
+    public OfferApplicationService(OfferApplicationRepository offerApplicationRepository, OfferService offerService, ManagerService managerService, StudentService studentService, SupervisorRepository supervisorRepository, Clock clock) {
         this.offerApplicationRepository = offerApplicationRepository;
         this.offerService = offerService;
         this.managerService = managerService;
@@ -100,7 +102,7 @@ public class OfferApplicationService {
         if (managerService.isIDNotValid(id))
             throw new IdDoesNotExistException();
 
-        return offerApplicationRepository.getAllByStatus(Status.STAGE_TROUVE);
+        return offerApplicationRepository.getAllByStatusAndSession_YearGreaterThanEqual(Status.STAGE_TROUVE, Year.now());
     }
 
     public OfferApplication getOneById(Long idOfferApplication) throws IdDoesNotExistException {
@@ -131,7 +133,7 @@ public class OfferApplicationService {
 
     public List<OfferApplication> getAllBySupervisorId(Long supervisor_id) throws IdDoesNotExistException {
         Assert.isTrue(supervisor_id != null, "L'id du superviseur ne peut pas être null");
-        if(!supervisorRepository.existsById(supervisor_id)) {
+        if (!supervisorRepository.existsById(supervisor_id)) {
             throw new IdDoesNotExistException();
         }
         return offerApplicationRepository.findAllByCurriculum_Student_Supervisor_Id(supervisor_id);

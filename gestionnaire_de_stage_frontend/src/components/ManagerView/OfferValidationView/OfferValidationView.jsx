@@ -13,8 +13,7 @@ export default function OfferValidationView() {
     const [visibles, setVisibles] = useState([]);
 
     const setMyVisible = (idSession) =>
-        // eslint-disable-next-line
-        setVisibles(offers.filter(offer => offer.session.id == idSession))
+        setVisibles(offers.filter(offer => offer.session.id === parseInt(idSession)))
 
 
     useEffect(() => {
@@ -31,8 +30,7 @@ export default function OfferValidationView() {
         getCurrentAndFutureSession()
             .then(sessions => {
                 setSessions(sessions)
-                // eslint-disable-next-line
-                setVisibles(offers.filter(offer => offer.session.id == sessions[0].id))
+                setVisibles(offers.filter(offer => offer.session.id === parseInt(sessions[0].id)))
             })
             .catch(e => {
                 setSessions([]);
