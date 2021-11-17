@@ -143,13 +143,9 @@
 				</tbody>
 			</table>
 			
-			<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;font-weight:bold;'>
-				* N/A = Non applicable
-			</p>
-			<br>
-		</div>
 
-		<div style='page-break-after: always;text-align:center;'>
+			<br>
+
 			<table style="border-collapse:separate;border:1pt solid windowtext;margin-left:auto;margin-right:auto;">
 				<tr>
 					<th colspan="6" style="border-bottom:1pt solid windowtext;">
@@ -161,92 +157,98 @@
 						</p>
 					</th>
 				</tr>
-					
+
 				<tbody>
-					<tr>
-						<td style='width:237.5pt;text-align:left;'>Le stagiaire a été en mesure de: </td>
-						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement en accord</td>
-						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt en accord</td>
-						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt en désaccord</td>
-						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement en désaccord</td>
-						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>N/A*</td>
-					</tr>
-					<tr>
-						<td>
-							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
-								a) Respecter les mandats qui lui ont été confiés
-							</p>
-						</td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailA" th:checked="${formInfo.questionSix == 'TOTALEMENT_EN_ACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailA" th:checked="${formInfo.questionSix == 'PLUTOT_EN_ACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailA" th:checked="${formInfo.questionSix == 'PLUTOT_EN_DESACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailA" th:checked="${formInfo.questionSix == 'TOTALEMENT_DESACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailA" th:checked="${formInfo.questionSix == 'NON_APPLICABLE'}"></td>
-					</tr>
-					<tr>
-						<td>
-							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
-								b) Porter attention aux détails dans la réalisation de ses tâches
-							</p>
-						</td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailB" th:checked="${formInfo.questionSept == 'TOTALEMENT_EN_ACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailB" th:checked="${formInfo.questionSept == 'PLUTOT_EN_ACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailB" th:checked="${formInfo.questionSept == 'PLUTOT_EN_DESACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailB" th:checked="${formInfo.questionSept == 'TOTALEMENT_DESACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailB" th:checked="${formInfo.questionSept == 'NON_APPLICABLE'}"></td>
-					</tr>
-					<tr>
-						<td>
-							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
-								c) Vérifier son travail, s'assurer que rien n'a été oublié
-							</p>
-						</td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailC" th:checked="${formInfo.questionHuit == 'TOTALEMENT_EN_ACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailC" th:checked="${formInfo.questionHuit == 'PLUTOT_EN_ACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailC" th:checked="${formInfo.questionHuit == 'PLUTOT_EN_DESACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailC" th:checked="${formInfo.questionHuit == 'TOTALEMENT_DESACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailC" th:checked="${formInfo.questionHuit == 'NON_APPLICABLE'}"></td>
-					</tr>
-					<tr>
-						<td>
-							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
-								d) Rechercher des occasions de se perfectionner
-							</p>
-						</td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailD" th:checked="${formInfo.questionNeuf == 'TOTALEMENT_EN_ACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailD" th:checked="${formInfo.questionNeuf == 'PLUTOT_EN_ACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailD" th:checked="${formInfo.questionNeuf == 'PLUTOT_EN_DESACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailD" th:checked="${formInfo.questionNeuf == 'TOTALEMENT_DESACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailD" th:checked="${formInfo.questionNeuf == 'NON_APPLICABLE'}"></td>
-					</tr>
-					<tr>
-						<td>
-							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
-								e) Faire une bonne analyse des problèmes rencontrés
-							</p>
-						</td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailE" th:checked="${formInfo.questionDix == 'TOTALEMENT_EN_ACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailE" th:checked="${formInfo.questionDix == 'PLUTOT_EN_ACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailE" th:checked="${formInfo.questionDix == 'PLUTOT_EN_DESACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailE" th:checked="${formInfo.questionDix == 'TOTALEMENT_DESACCORD'}"></td>
-						<td style='text-align: center;'><input type="radio" name="qualiteTravailE" th:checked="${formInfo.questionDix == 'NON_APPLICABLE'}"></td>
-					</tr>
-					
-					<tr>
-						<td colspan="6">
-							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;font-weight:bold;'>
-								Commentaire:
-							</p>
-							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
-								<span th:text="${formInfo.commentairesDeux}"></span>
-							</p>
-						</td>
-					</tr>
+				<tr>
+					<td style='width:237.5pt;text-align:left;'>Le stagiaire a été en mesure de: </td>
+					<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement en accord</td>
+					<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt en accord</td>
+					<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt en désaccord</td>
+					<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement en désaccord</td>
+					<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>N/A*</td>
+				</tr>
+				<tr>
+					<td>
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+							a) Respecter les mandats qui lui ont été confiés
+						</p>
+					</td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailA" th:checked="${formInfo.questionSix == 'TOTALEMENT_EN_ACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailA" th:checked="${formInfo.questionSix == 'PLUTOT_EN_ACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailA" th:checked="${formInfo.questionSix == 'PLUTOT_EN_DESACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailA" th:checked="${formInfo.questionSix == 'TOTALEMENT_DESACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailA" th:checked="${formInfo.questionSix == 'NON_APPLICABLE'}"></td>
+				</tr>
+				<tr>
+					<td>
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+							b) Porter attention aux détails dans la réalisation de ses tâches
+						</p>
+					</td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailB" th:checked="${formInfo.questionSept == 'TOTALEMENT_EN_ACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailB" th:checked="${formInfo.questionSept == 'PLUTOT_EN_ACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailB" th:checked="${formInfo.questionSept == 'PLUTOT_EN_DESACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailB" th:checked="${formInfo.questionSept == 'TOTALEMENT_DESACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailB" th:checked="${formInfo.questionSept == 'NON_APPLICABLE'}"></td>
+				</tr>
+				<tr>
+					<td>
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+							c) Vérifier son travail, s'assurer que rien n'a été oublié
+						</p>
+					</td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailC" th:checked="${formInfo.questionHuit == 'TOTALEMENT_EN_ACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailC" th:checked="${formInfo.questionHuit == 'PLUTOT_EN_ACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailC" th:checked="${formInfo.questionHuit == 'PLUTOT_EN_DESACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailC" th:checked="${formInfo.questionHuit == 'TOTALEMENT_DESACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailC" th:checked="${formInfo.questionHuit == 'NON_APPLICABLE'}"></td>
+				</tr>
+				<tr>
+					<td>
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+							d) Rechercher des occasions de se perfectionner
+						</p>
+					</td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailD" th:checked="${formInfo.questionNeuf == 'TOTALEMENT_EN_ACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailD" th:checked="${formInfo.questionNeuf == 'PLUTOT_EN_ACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailD" th:checked="${formInfo.questionNeuf == 'PLUTOT_EN_DESACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailD" th:checked="${formInfo.questionNeuf == 'TOTALEMENT_DESACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailD" th:checked="${formInfo.questionNeuf == 'NON_APPLICABLE'}"></td>
+				</tr>
+				<tr>
+					<td>
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+							e) Faire une bonne analyse des problèmes rencontrés
+						</p>
+					</td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailE" th:checked="${formInfo.questionDix == 'TOTALEMENT_EN_ACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailE" th:checked="${formInfo.questionDix == 'PLUTOT_EN_ACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailE" th:checked="${formInfo.questionDix == 'PLUTOT_EN_DESACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailE" th:checked="${formInfo.questionDix == 'TOTALEMENT_DESACCORD'}"></td>
+					<td style='text-align: center;'><input type="radio" name="qualiteTravailE" th:checked="${formInfo.questionDix == 'NON_APPLICABLE'}"></td>
+				</tr>
+
+				<tr>
+					<td colspan="6">
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;font-weight:bold;'>
+							Commentaire:
+						</p>
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+							<span th:text="${formInfo.commentairesDeux}"></span>
+						</p>
+					</td>
+				</tr>
 				</tbody>
 			</table>
-			
 			<br>
-			
+			<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;font-weight:bold;'>
+				* N/A = Non applicable
+			</p>
+			<br>
+
+		</div>
+
+		<div style='page-break-after: always;text-align:center;'>
 			<table style="border-collapse:separate;border:1pt solid windowtext;margin-left:auto;margin-right:auto;">
 				<tr>
 					<th colspan="6" style="border-bottom:1pt solid windowtext;">
@@ -352,6 +354,9 @@
 					</tr>
 				</tbody>
 			</table>
+
+			<br>
+
 			<table style="border-collapse:separate;border:1pt solid windowtext;margin-left:auto;margin-right:auto;">
 				<tr>
 					<th colspan="6" style="border-bottom:1pt solid windowtext;">
@@ -567,7 +572,7 @@
 			</table>
 			<br>
 			
-			<table style='border-collapse:seperate;border-spacing:75px 5px;margin-left:auto;margin-right:auto;'>
+			<table style='border-collapse:separate;border-spacing:75px 10px;margin-left:auto;margin-right:auto;'>
 				<tbody>
 					<tr>
 						<td style='width:200pt;'>
@@ -593,7 +598,6 @@
 							</p>
 						</td>
 					</tr>
-					
 					
 					<tr>
 						<td style='width:200pt;'>

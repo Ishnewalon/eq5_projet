@@ -49,11 +49,11 @@ public class EvalStagiaireDTO {
 
     String questionDixNeuf;
 
-    String questonVingt;
+    String questionVingt;
 
-    String questonVingtUn;
+    String questionVingtUn;
 
-    String questonVingtDeux;
+    String questionVingtDeux;
 
     String programmeEtudes;
 
