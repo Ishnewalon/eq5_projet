@@ -69,7 +69,7 @@ export default function CurriculumTable() {
 
     return (
         <div className='container'>
-            <h2 className="text-center">Vos Curriculums</h2>
+            <h2 className="text-center mb-4">Vos Curriculums</h2>
             <Table>
                 <TableHeader>
                     <th>Nom</th>
