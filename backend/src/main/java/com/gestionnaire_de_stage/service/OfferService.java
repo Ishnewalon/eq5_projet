@@ -4,7 +4,10 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ValidationOffer;
 import com.gestionnaire_de_stage.enums.TypeSession;
-import com.gestionnaire_de_stage.exception.*;
+import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
+import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.Session;
@@ -102,7 +105,11 @@ public class OfferService {
     }
 
     private void removeOffersOfWinter(List<Offer> offers) {
-        offers.removeIf(offer -> offer.getSession().getYear().equals(Year.now(clock)) && offer.getSession().getTypeSession() == TypeSession.HIVER);
+        offers.removeIf(offer -> {
+            Session session = offer.getSession();
+            return session.getYear().equals(Year.now(clock)) &&
+                    session.getTypeSession() == TypeSession.HIVER;
+        });
     }
 
     public Optional<Offer> findOfferById(Long idOffer) {
