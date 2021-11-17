@@ -522,7 +522,7 @@
 							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
 								Cette évaluation a été discutée avec le stagiaire :		
 								<span>
-									Oui <input type="radio" name="discute" th:checked="${formInfo.evaluationDiscuteAvecEtudiant}">		
+									Oui <input type="radio" name="discute" th:checked="${formInfo.evaluationDiscuteAvecEtudiant}">
 									Non	<input type="radio" name="discute" th:checked="${!formInfo.evaluationDiscuteAvecEtudiant}">
 								</span>
 							</p>
@@ -554,9 +554,9 @@
 				<tr>
 					<td >
 						<label>Oui</label>
-						<input type="radio" name="discute" th:checked="${formInfo.entrepriseApprecieEtudiant}">	
+						<input type="radio" name="entrepriseApprecie" th:checked="${formInfo.entrepriseApprecieEtudiant}">
 						<label>Non</label>
-						<input type="radio" name="discute" th:checked="${!formInfo.entrepriseApprecieEtudiant}">							
+						<input type="radio" name="entrepriseApprecie" th:checked="${!formInfo.entrepriseApprecieEtudiant}">
 					</td>
 				</tr>
 				<tr>
@@ -577,12 +577,12 @@
 					<tr>
 						<td style='width:200pt;'>
 							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
-								<span>${formInfo.nom}</span>
+								<span th:text="${formInfo.nom}"></span>
 							</p>
 						</td>
 						<td style='width:200pt;'>
 							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
-								<span>${formInfo.fonctionDeux}</span>
+								<span th:text="${formInfo.fonctionDeux}"></span>
 							</p>
 						</td>
 					</tr>
@@ -601,13 +601,13 @@
 					
 					<tr>
 						<td style='width:200pt;'>
-							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
-								<span>${formInfo.monitorSignature}</span>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;font-style: italic;'>
+								<span th:text="${formInfo.monitorSignature}"></span>
 							</p>
 						</td>
 						<td style='width:200pt;'>
 							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
-								<span>${formInfo.dateSignature}</span>
+								<span th:text="${formInfo.dateSignature}"></span>
 							</p>
 						</td>
 					</tr>

@@ -98,7 +98,7 @@ public class StageController {
             String contractHtml = templateEngine.process("evalStagiaire", context);
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            HtmlConverter.convertToPdf(contractHtml, new FileOutputStream("c:/permits/stagiaire.pdf"));
+            HtmlConverter.convertToPdf(contractHtml,baos);
 
             stageService.addEvalStagiaire(stage, baos);
         } catch (IllegalArgumentException e) {
@@ -109,9 +109,7 @@ public class StageController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Le stage n'existe pas pour cette étudiant"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        } 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseMessage("Évaluation remplie!"));
