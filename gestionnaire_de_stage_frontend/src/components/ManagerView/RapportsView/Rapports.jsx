@@ -4,10 +4,13 @@ import {Link} from "react-router-dom";
 import StudentWithoutCvView from "../StudentWithoutCvView/StudentWithoutCvView";
 import StudentSignIn from "../StudentSignIn/StudentSignIn";
 import StudentWithInvalidCv from "../StudentWithInvalidCv/StudentWithInvalidCv";
+import AllStudentStatusView from "../AllStudentStatusView/AllStudentStatusView";
+import React from "react";
 
 export function RapportOfferValid() {
     return (
         <>
+            <h2 className="text-center">Offres de Stage</h2>
             <OffersValidView/>
             <BtnBack/>
         </>
@@ -17,6 +20,7 @@ export function RapportOfferValid() {
 export function RapportOfferInvalid() {
     return (
         <>
+            <h2 className="text-center mb-4">Offres de Stage non validées</h2>
             <OfferNotValidView/>
             <BtnBack/>
         </>
@@ -26,6 +30,7 @@ export function RapportOfferInvalid() {
 export function RapportStudentWithoutCv() {
     return (
         <>
+            <h2 className="text-center mb-4">Liste des étudiants sans Cv</h2>
             <StudentWithoutCvView/>
             <BtnBack/>
         </>
@@ -35,15 +40,28 @@ export function RapportStudentWithoutCv() {
 export function RapportStudentSignIn() {
     return (
         <>
+            <h2 className="text-center mb-4">Liste des étudiants inscrits</h2>
             <StudentSignIn/>
             <BtnBack/>
         </>
     );
 }
+
 export function RapportStudentWithInvalidCv() {
     return (
         <>
+            <h2 className="text-center mb-4">Liste des étudiants avec des Cv Invalides</h2>
             <StudentWithInvalidCv/>
+            <BtnBack/>
+        </>
+    );
+}
+
+export function RapportStudentStatus() {
+    return (
+        <>
+            <h2 className="text-center">Status de tous les étudiants</h2>
+            <AllStudentStatusView/>
             <BtnBack/>
         </>
     );

@@ -7,12 +7,13 @@ import StudentStatusView from "./StudentStatusView/StudentStatusView";
 export default function SupervisorView() {
     const {path} = useRouteMatch();
     let auth = useAuth();
-    return (<ContainerBox>
-        <Route exact path={`${path}/students/status`}>
-            <StudentStatusView/>
-        </Route>
-        <Route exact path={`${path}`}>
-            <h1 className="text-center">Bonjour {auth.user.firstName}!</h1>
-        </Route>
-    </ContainerBox>);
+    return (
+        <ContainerBox>
+            <Route exact path={`${path}/students/status`}>
+                <StudentStatusView/>
+            </Route>
+            <Route exact path={`${path}`}>
+                <h1 className="text-center">Bonjour {auth.user.firstName}!</h1>
+            </Route>
+        </ContainerBox>);
 }
