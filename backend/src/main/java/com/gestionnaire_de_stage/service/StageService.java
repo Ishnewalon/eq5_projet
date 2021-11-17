@@ -65,6 +65,7 @@ public class StageService {
 
     private boolean isAlreadyCreated(String matricule) {
         return stageRepository.existsByContract_StudentMatriculeAndEvalMilieuStageNotNull(matricule);
+    }
 
     private boolean isNotAlreadyCreatedEmail(String email) {
         return !stageRepository.existsByContract_StudentEmail(email);
