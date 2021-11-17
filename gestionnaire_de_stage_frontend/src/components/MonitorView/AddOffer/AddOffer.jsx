@@ -1,11 +1,12 @@
-import React, {useState} from "react";
-import FieldAddress from "../../SharedComponents/Fields/FieldAddress";
-import {createOffer} from "../../../services/offer-service";
-import {DepartmentEnum} from "../../../enums/Departement";
-import OfferDTO from "../../../models/OfferDTO";
-import {useAuth} from "../../../services/use-auth";
+import React, {useEffect, useState} from "react";
 import {FormField} from "../../SharedComponents/FormField/FormField";
+import {getCurrentAndFutureSession} from "../../../services/session-service";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {DepartmentEnum} from "../../../enums/Departement";
+import {useAuth} from "../../../services/use-auth";
+import {createOffer} from "../../../services/offer-service";
+import FieldAddress from "../../SharedComponents/Fields/FieldAddress";
+import OfferDTO from "../../../models/OfferDTO";
 
 
 export default function AddOffer() {
@@ -16,18 +17,25 @@ export default function AddOffer() {
     const [address, setAddress] = useState('')
     const [salary, setSalary] = useState(0)
     const [creator_email, setCreatorId] = useState(auth.isMonitor() ? auth.user.email : '')
+    const [session_id, setSessionId] = useState(null)
+    const [sessions, setSessions] = useState([])
 
     const resetFields = () => {
-        setTitle()
+        setTitle('')
         setDescription('')
         setDepartement(DepartmentEnum.info)
         setAddress('')
         setSalary(0)
         setCreatorId(auth.isMonitor() ? auth.user.email : '')
     };
+    useEffect(() => {
+        getCurrentAndFutureSession().then(res => {
+            setSessions(res)
+        })
+    }, [])
 
     const addOffer = () => {
-        let offer = new OfferDTO(title, department, description, address, salary, creator_email)
+        let offer = new OfferDTO(title, department, description, address, salary, creator_email, session_id)
         createOffer(offer).then((b) => {
             if (b === null)
                 return
@@ -57,6 +65,17 @@ export default function AddOffer() {
                         onChange={(e) => setDepartement(e.target.value)}>
                     <option value={DepartmentEnum.info}>{DepartmentEnum.info}</option>
                     <option value={DepartmentEnum.art}>{DepartmentEnum.art}</option>
+                </select>
+            </FormField>
+        </FormGroup>
+        <FormGroup>
+            <FormField>
+                <label className="label">Session</label>
+                <select name="sessions" id="session"
+                        onChange={(e) => setSessionId(e.target.value)}>
+                    <option selected disabled>Choisisez une session</option>
+                    {sessions.map(session =>
+                        <option key={session.id} value={session.id}>{session.typeSession + session.year}</option>)}
                 </select>
             </FormField>
         </FormGroup>

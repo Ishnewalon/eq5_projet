@@ -32,7 +32,7 @@ public class OfferApplicationController {
         this.curriculumService = curriculumService;
     }
 
-    @PostMapping("/apply")//SESSION : check if offer is not outdated
+    @PostMapping("/apply")
     public ResponseEntity<?> studentApplyToOffer(@RequestBody OfferAppDTO offerAppDTO) {//TODO : Check if student has valid curriculum
         try {
             offerApplicationService.create(offerAppDTO.getIdOffer(), offerAppDTO.getIdStudent());//FIXME: Change to offerAppDTO
