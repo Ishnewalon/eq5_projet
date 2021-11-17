@@ -38,7 +38,6 @@ export default function OfferNotValidView() {
     }, [offers])
 
 
-// TODO: show msg when no offers
     return (
         <div className='container'>
             <FormGroup>

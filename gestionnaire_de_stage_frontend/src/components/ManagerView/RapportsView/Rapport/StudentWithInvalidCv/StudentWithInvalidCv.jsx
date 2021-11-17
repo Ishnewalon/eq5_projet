@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {getStudentsWithInvalidCv} from "../../../../../services/user-service";
 import {Table, TableHeader, TableRow} from "../../../../SharedComponents/Table/Table";
+import MessageNothingToShow from "../../../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 
 export default function StudentWithInvalidCv() {
@@ -19,9 +20,7 @@ export default function StudentWithInvalidCv() {
     }, [])
 
     if (studentList.length === 0) {
-        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
-            Tous les étudiants ont un CV valide
-        </div>
+        return <MessageNothingToShow message="Tous les étudiants ont un CV valide"/>
     }
 
     return (
