@@ -1,23 +1,37 @@
 import React, {useEffect, useState} from "react";
-import {getAllStudentsStatus} from "../../../services/user-service";
+import {getAllStudents} from "../../../services/user-service";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import {useAuth} from "../../../services/use-auth";
+import {getStudentApplications} from "../../../services/offerAppService";
 
 export default function AllStudentStatusView() {
 
-    const [offerAppList, setOfferAppList] = useState([])
+    const [studentList, setStudentList] = useState([])
+    const [offerList, setOfferList] = useState([])
     const auth = useAuth();
 
     useEffect(() => {
-        getAllStudentsStatus(auth.user.id)
-            .then(offerAppList => {
-                setOfferAppList(offerAppList)
+        getAllStudents(auth.user.id)
+            .then(studentList => {
+                setStudentList(studentList)
+                studentList.forEach(student => {
+                    getStudentApplications(student.id)
+                        .then(offerList => {
+                            setOfferList(prev => [...prev, offerList || []])
+                            console.log(offerList);
+                        })
+                        .catch(e => {
+                            setOfferList([])
+                            console.error(e);
+                        })
+                })
             })
             .catch(e => {
-                setOfferAppList([])
+                setStudentList([])
                 console.error(e);
             })
-    }, [auth.user.id])
+
+    }, [auth.user.id]);
 
     return (
         <div>
@@ -26,20 +40,17 @@ export default function AllStudentStatusView() {
                 <TableHeader>
                     <th>#</th>
                     <th>Étudiant</th>
-                    <th>Offre</th>
-                    <th>Status</th>
+                    <th>Nombre d'application</th>
                 </TableHeader>
 
-                {offerAppList.map((offerApp, index) =>
+                {studentList.map((student, index) =>
                     <TableRow key={index}>
-                        <td>{offerApp.curriculum.student.id}</td>
-                        <td>{offerApp.curriculum.student.firstName} {offerApp.curriculum.student.lastName}</td>
-                        <td>{offerApp.offer.title}</td>
-                        <td>{offerApp.status}</td>
+                        <td>{student.id}</td>
+                        <td>{student.firstName} {student.lastName}</td>
+                        <th>{offerList.length > 0 ? offerList[index].length : 0}</th>
                     </TableRow>
                 )}
             </Table>
         </div>
     )
-
 }

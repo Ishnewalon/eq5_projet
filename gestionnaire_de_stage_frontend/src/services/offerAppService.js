@@ -16,7 +16,8 @@ export async function applyToOffer(offerApp) {//TODO: Should not be able to appl
                         swalErr.fire({title: body.message})
                 }
             )
-        });
+        }
+    );
 }
 
 export async function getAllApplicants(email) {
@@ -81,7 +82,8 @@ export async function setInterview(offerAppID, date) {
                 }
                 return Promise.any([]);
             })
-        });
+        }
+    );
 }
 
 export async function getAllOffersByStudentAppliedOn(studentID) {
@@ -96,7 +98,8 @@ export async function getAllOffersByStudentAppliedOn(studentID) {
                 }
                 return Promise.any([]);
             })
-        });
+        }
+    );
 }
 
 function _isApplicationValid(offerApp) {
