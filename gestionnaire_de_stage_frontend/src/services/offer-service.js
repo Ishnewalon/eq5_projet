@@ -45,7 +45,7 @@ export async function getAllOffersByDepartment(department) {//TODO: send student
         response => {
             return response.json().then(
                 body => {
-                    if (response.status === 200) {
+                    if (response.ok) {
                         return body
                     }
                     if (response.status === 400) {
