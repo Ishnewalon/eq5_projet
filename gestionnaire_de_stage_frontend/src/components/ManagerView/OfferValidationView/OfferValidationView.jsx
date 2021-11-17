@@ -41,15 +41,17 @@ export default function OfferValidationView() {
     const removeFromList = (id) => {
         setOffers(prev => prev.filter(items => items.id !== id))
     }
-
+    if (offers.length === 0)
+        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
+            Aucun offres a valider pour le moment...
+        </div>
     return (
         <>
-            <h1 className="text-center">Validation des offres</h1>
             <div className='container'>
                 <FormGroup>
                     <FormField>
                         <label/>
-                        <select onChange={(e) => setMyVisible(e.target.value)}>
+                        <select className="mb-4" onChange={(e) => setMyVisible(e.target.value)}>
                             {sessions.map(session =>
                                 <option key={session.id}
                                         value={session.id}>{session.typeSession + session.year}</option>)}
@@ -75,11 +77,11 @@ function OfferValidation({offer, removeFromList}) {
     }
     return <>
         <OfferView offer={offer}/>
-        <div className="d-flex mb-3 justify-content-between align-items-center">
-            <button id="validateBtn" className="btn btn-success fw-bold text-white w-50"
+        <div className="d-flex mb-3 justify-content-between align-items-center mb-3">
+            <button id="validateBtn" className="btn btn-success fw-bold text-white w-50 border-success"
                     onClick={() => validate(offer, true)}>Valide
             </button>
-            <button id="invalidateBtn" className="btn btn-danger fw-bold text-white w-50"
+            <button id="invalidateBtn" className="btn btn-danger fw-bold text-white w-50 border-danger"
                     onClick={() => validate(offer, false)}>Invalide
             </button>
         </div>

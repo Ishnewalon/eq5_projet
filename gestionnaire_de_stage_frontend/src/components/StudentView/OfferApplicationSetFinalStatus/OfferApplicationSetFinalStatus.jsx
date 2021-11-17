@@ -27,8 +27,12 @@ export default function OfferApplicationSetFinalStatus() {
         })
     };
 
+    if (offerApplications.length === 0)
+        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
+            Vous n'avez pas d'offre d'emploi qui attend de votre réponse
+        </div>
+
     return (<>
-        <h1 className="text-center mt-5 mb-3">Les status de mes applications</h1>
         <Table>
             <TableHeader>
                 <th>#</th>

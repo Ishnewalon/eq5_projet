@@ -19,56 +19,95 @@ import {
 } from "./RapportsView/Rapports";
 import CreateSession from "./CreateSession/CreateSession";
 import ViewSignedContracts from '../ViewSignedContracts/ViewSignedContracts';
+import {Title} from "../SharedComponents/Title/Title";
 
 export default function ManagerView() {
     const {path} = useRouteMatch();
     let auth = useAuth();
-    return (<ContainerBox>
+    return (<>
             <Route exact path={`${path}`}>
-                <h1 className="text-center">Bonjour {auth.user.firstName}!</h1>
+                <Title>Bonjour {auth.user.firstName}!</Title>
             </Route>
             <Route exact path={`${path}/manager/contracts/signed`}>
-                <ViewSignedContracts userType={UserType.MANAGER[0]}/>
+                <Title>Contrats signés</Title>
+                <ContainerBox>
+                    <ViewSignedContracts userType={UserType.MANAGER[0]}/>
+                </ContainerBox>
             </Route>
             <Route exact path={`${path}/offres/ajouter`}>
-                <AddOffer/>
+                <Title>Ajouter une offre de stage</Title>
+                <ContainerBox>
+                    <AddOffer/>
+                </ContainerBox>
             </Route>
             <Route exact path={`${path}/offres/review`}>
-                <OfferValidationView/>
+                <Title>Validation des offres</Title>
+                <ContainerBox>
+                    <OfferValidationView/>
+                </ContainerBox>
             </Route>
             <Route exact path={`${path}/curriculum/review`}>
+                <Title>Validation des curriculums</Title>
                 <CurriculumValidation/>
             </Route>
             <Route path={`${path}/students/applied`}>
-                <LinkSupervisorToStudent/>
+                <Title>Attribuer des superviseurs aux étudiants</Title>
+                <ContainerBox>
+                    <LinkSupervisorToStudent/>
+                </ContainerBox>
             </Route>
             <Route path={`${path}/students/start`}>
-                <StartContract/>
+                <Title>Liste des applications prêtes à être signer</Title>
+                <ContainerBox>
+                    <StartContract/>
+                </ContainerBox>
             </Route>
             <Route exact path={`${path}/contrats/a_signer`}>
-                <ContractsToBeSigned userType={UserType.MANAGER[0]}/>
+                <Title>Contrats à signer</Title>
+                <ContainerBox>
+                    <ContractsToBeSigned userType={UserType.MANAGER[0]}/>
+                </ContainerBox>
             </Route>
             <Route exact path={`${path}/session`}>
-                <CreateSession/>
+                <Title>Ajouter une session</Title>
+                <ContainerBox>
+                    <CreateSession/>
+                </ContainerBox>
             </Route>
             <Route exact path={`${path}/rapports`}>
+                <Title>Rapports</Title>
                 <RapportsView/>
             </Route>
             <Route path={`${path}/rapports/1`}>
-                <RapportOfferValid/>
+                <Title>Offres de Stage</Title>
+                <ContainerBox>
+                    <RapportOfferValid/>
+                </ContainerBox>
             </Route>
             <Route path={`${path}/rapports/2`}>
-                <RapportOfferInvalid/>
+                <Title>Offres de Stage non validées</Title>
+                <ContainerBox>
+                    <RapportOfferInvalid/>
+                </ContainerBox>
             </Route>
             <Route path={`${path}/rapports/3`}>
-                <RapportStudentWithoutCv/>
+                <Title>Liste des étudiants sans Cv</Title>
+                <ContainerBox>
+                    <RapportStudentWithoutCv/>
+                </ContainerBox>
             </Route>
             <Route path={`${path}/rapports/4`}>
-                <RapportStudentSignIn/>
+                <Title>Liste des étudiants inscrits</Title>
+                <ContainerBox>
+                    <RapportStudentSignIn/>
+                </ContainerBox>
             </Route>
             <Route path={`${path}/rapports/5`}>
-                <RapportStudentWithInvalidCv/>
+                <Title>Liste des étudiants avec des Cv Invalides</Title>
+                <ContainerBox>
+                    <RapportStudentWithInvalidCv/>
+                </ContainerBox>
             </Route>
-        </ContainerBox>
+        </>
     )
 }

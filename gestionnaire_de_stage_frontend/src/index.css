@@ -46,7 +46,7 @@ Custom BS
     padding: 8px 20px !important;
     border-radius: 0 !important;
     overflow: hidden !important;
-    border: 1px solid #cdd6e0ff !important;
+    border: 1px solid #cdd6e0ff;
     letter-spacing: 1px !important;
     cursor: pointer !important;
 }
@@ -129,11 +129,5 @@ Adapt color to bg-dark
     margin-bottom: 20px;
 }
 
-.accept {
-    border-color: #107c10 !important;
-}
 
-.reject {
-    border-color: #d83b01 !important;
-}
 

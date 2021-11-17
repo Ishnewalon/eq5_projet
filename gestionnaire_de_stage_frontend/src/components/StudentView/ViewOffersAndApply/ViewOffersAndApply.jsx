@@ -42,11 +42,14 @@ export default function ViewOffersAndApply() {
             })
     }, [offers])
 
-
+    if (offers.length === 0) {
+        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
+            Au moment, aucune offre n'est disponible
+        </div>
+    }
 
     return (
-        <div className='container'>
-            <h2 className="text-center">Offres de Stage</h2>
+        <>
             <FormGroup>
                 <FormField>
                     <label/>
@@ -60,6 +63,6 @@ export default function ViewOffersAndApply() {
             <ul>
                 {visibleOffers.map((offer, index) => <li key={index}><OfferApplication offer={offer} removeFromList={removeFromList}/></li>)}
             </ul>
-        </div>
+        </>
     );
 }

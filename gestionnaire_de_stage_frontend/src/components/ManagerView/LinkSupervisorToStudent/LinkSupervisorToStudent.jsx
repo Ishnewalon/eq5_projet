@@ -39,10 +39,13 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
             }
         )
     }
+    if (studentList.length === 0)
+        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
+            Aucun étudiant à associer pour le moment...
+        </div>
 
     return (
         <div>
-            <h2 className="text-center">Attribuer des superviseurs aux étudiants</h2>
             <Table className={"w-75 mx-auto"}>
                 <TableHeader>
                     <th>#</th>

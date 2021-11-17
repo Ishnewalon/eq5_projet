@@ -15,12 +15,13 @@ export default function ViewSignedContracts({userType}) {
             getAllSignedContractsForMonitor(auth.user.id).then(contractList => setContractList(contractList));
     }, [auth.user.id, userType]);
 
+    if (contractList.length === 0)
+        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
+            Aucun contrat à afficher pour le moment...
+        </div>;
+
     return <>{
-        contractList.length > 0 ?
-            contractList.map((contract, index) => <div key={index}><ViewSignedContract contract={contract}/></div>) :
-            <div className={'bg-secondary d-flex align-items-center justify-content-center text-white'}>
-                <p className='mt-3'>Aucun contrat a afficher pour le moment...</p>
-            </div>
+        contractList.map((contract, index) => <div key={index}><ViewSignedContract contract={contract}/></div>)
     }</>
 }
 

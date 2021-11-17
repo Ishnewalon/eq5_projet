@@ -38,8 +38,7 @@ export default function OffersValidView() {
     }, [offers])
 
     return (
-        <div className='container'>
-            <h2 className="text-center">Offres de Stage</h2>
+        <>
             <FormGroup>
                 <FormField>
                     <label/>
@@ -57,7 +56,7 @@ export default function OffersValidView() {
                     </li>
                 )}
             </ul>
-        </div>
+        </>
     )
 }
 

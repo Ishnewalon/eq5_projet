@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ContractSignature from "./ContractSignature/ContratSignature";
 import {getAllContractsToBeSignedForMonitor, getAllContractsToBeStarted} from "../../services/contrat-service";
 import {UserType} from "../../enums/UserTypes";
@@ -21,12 +21,10 @@ export default function ContractsToBeSigned({userType}) {
     };
 
     if (contracts.length === 0)
-        return <>
-            <div className={"d-flex justify-content-center align-items-center"}>
-                <p className={"text-center border border-white rounded p-2 mt-3"}>Aucun contrat à signer pour le
-                    moment</p>
-            </div>
-        </>
+        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
+            Aucun contrat à signer pour le moment...
+        </div>
+
 
     return contracts.map((contract, index) =>
         <ContractSignature key={index} removeContract={removeContract} userType={userType}

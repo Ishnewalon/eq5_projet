@@ -19,9 +19,13 @@ export default function StudentStatusView() {
             })
     }, [auth.user.id])
 
+    if (offerAppList.length === 0) {
+        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
+            Aucune candidature
+        </div>
+    }
     return (
         <div>
-            <h2 className="text-center">Status des étudiants qui vous sont attribués</h2>
             <Table className={"w-75 mx-auto"}>
                 <TableHeader>
                     <th>#</th>

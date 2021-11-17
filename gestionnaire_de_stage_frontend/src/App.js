@@ -31,9 +31,8 @@ function App() {
                     </Route>
                     <Route path="/login">
                         <RequireNoAuth>
-                            <ContainerBox>
-                                <Login/>
-                            </ContainerBox>
+                            <h2 className="text-center mt-4">Se connecter</h2>
+                            <Login/>
                         </RequireNoAuth>
                     </Route>
                     <Route exact path="/">

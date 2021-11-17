@@ -21,7 +21,6 @@ export default function StudentWithoutCvView() {
 
     return (
         <div className='container'>
-            <h2 className="text-center mb-4">Liste des étudiants sans Cv</h2>
             <Table className={"w-75 mx-auto"}>
                 <TableHeader>
                     <th>#</th>

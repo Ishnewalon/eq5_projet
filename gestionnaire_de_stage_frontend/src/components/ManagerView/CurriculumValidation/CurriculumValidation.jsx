@@ -45,37 +45,38 @@ export default function CurriculumValidation() {
             () => removeFromList(id));
     }
 
-    return (
-        <div className='container'>
-            <h2 className="text-center">Liste des étudiants</h2>
-            <Table>
-                <TableHeader>
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Télécharger CV</th>
-                    <th>Validation</th>
-                </TableHeader>
-
-                {curriculumList.map((cv, index) =>
-                    <TableRow key={index}>
-                        <td>{cv.student.lastName}</td>
-                        <td>{cv.student.firstName}</td>
-                        <td>
-                            <button className="btn btn-primary" onClick={() => downloadStudentCv(cv)}>Télécharger Cv
-                            </button>
-                        </td>
-                        <td>
-                            <div className="btn-group">
-                                <button className="btn btn-outline-success"
-                                        onClick={() => validateCv(cv.id, true)}>Valide
-                                </button>
-                                <button className="btn btn-outline-danger"
-                                        onClick={() => validateCv(cv.id, false)}>Invalide
-                                </button>
-                            </div>
-                        </td>
-                    </TableRow>)}
-            </Table>
+    if (curriculumList.length === 0)
+        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
+            Aucun curriculum à valider pour le moment...
         </div>
+    return (
+        <Table>
+            <TableHeader>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Télécharger CV</th>
+                <th>Validation</th>
+            </TableHeader>
+
+            {curriculumList.map((cv, index) =>
+                <TableRow key={index}>
+                    <td>{cv.student.lastName}</td>
+                    <td>{cv.student.firstName}</td>
+                    <td>
+                        <button className="btn btn-primary" onClick={() => downloadStudentCv(cv)}>Télécharger Cv
+                        </button>
+                    </td>
+                    <td>
+                        <div className="btn-group">
+                            <button className="btn btn-outline-success"
+                                    onClick={() => validateCv(cv.id, true)}>Valide
+                            </button>
+                            <button className="btn btn-outline-danger"
+                                    onClick={() => validateCv(cv.id, false)}>Invalide
+                            </button>
+                        </div>
+                    </td>
+                </TableRow>)}
+        </Table>
     )
 }

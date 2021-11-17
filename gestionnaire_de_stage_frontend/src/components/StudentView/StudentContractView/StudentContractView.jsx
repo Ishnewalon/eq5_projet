@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {getSignedContractForStudent} from "../../../services/contrat-service";
 import {useAuth} from "../../../services/use-auth";
 
-export default function StudentContractView(){
+export default function StudentContractView() {
     const auth = useAuth();
     const [contract, setContract] = useState(null);
 
@@ -11,12 +11,10 @@ export default function StudentContractView(){
         getSignedContractForStudent(auth.user.id).then(contract => setContract(contract))
     }, [auth]);
 
-    return (
-        <div>
-            {contract ? <ViewSignedContract contract={contract}/> :
-            <div className={'bg-secondary d-flex align-items-center justify-content-center text-white'}>
-                <p className='mt-3'>Aucun contrat a été signé par vous...</p>
-            </div>}
+    if (!contract) {
+        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
+            Aucun contrat a été signé par vous...
         </div>
-    )
+    }
+    return <ViewSignedContract contract={contract}/>
 }

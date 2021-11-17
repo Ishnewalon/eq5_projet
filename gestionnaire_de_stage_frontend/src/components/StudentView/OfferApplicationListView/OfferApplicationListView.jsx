@@ -12,7 +12,6 @@ export default function OfferApplicationListView() {
         getAllOffersByStudentAppliedOn(auth.user.id)
             .then(offers => {
                 setOffers(offers);
-                console.log(offers.length);
             })
             .catch(e => {
                 setOffers([])
@@ -25,9 +24,12 @@ export default function OfferApplicationListView() {
             prevOffers.filter(items => items.id !== id)
         )
     }
-
+    if (offers.length === 0) {
+        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
+            Au moment, aucune offre n'a été trouvée...
+        </div>
+    }
     return <>
-        <h2 className="text-center">Ajouter vos dates d'entrevue</h2>
         <Table>
             <TableHeader>
                 <th>#</th>
@@ -78,7 +80,7 @@ function OfferApplicationSetInterviewDate({offerApp, removeOffer}) {
             </td>
             <td>
                 <button className="btn btn-primary" onClick={setInterviewDate(offerApp.id)}>
-                    Setter votre date d'entrevue
+                    Confirmer votre date d'entrevue
                 </button>
             </td>
         </TableRow>

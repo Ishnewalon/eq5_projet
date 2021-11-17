@@ -5,7 +5,7 @@ import {useAuth} from "../../services/use-auth";
 
 export default function Navbar() {
     return (
-        <nav className="navbar navbar-expand-sm bg-dark">
+        <nav className="navbar navbar-expand-sm bg-dark mb-4">
             <div className="container-fluid">
                 <ul className="navbar-nav">
                     <ThisIsAListItem>
