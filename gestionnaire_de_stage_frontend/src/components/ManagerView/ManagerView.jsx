@@ -13,9 +13,11 @@ import RapportsView from "./RapportsView/RapportsView";
 import {
     RapportOfferInvalid,
     RapportOfferValid,
-    RapportStudentSignIn, RapportStudentWithInvalidCv,
+    RapportStudentSignIn,
+    RapportStudentWithInvalidCv,
     RapportStudentWithoutCv
 } from "./RapportsView/Rapports";
+import CreateSession from "./CreateSession/CreateSession";
 import ViewSignedContracts from '../ViewSignedContracts/ViewSignedContracts';
 
 export default function ManagerView() {
@@ -45,6 +47,9 @@ export default function ManagerView() {
             </Route>
             <Route exact path={`${path}/contrats/a_signer`}>
                 <ContractsToBeSigned userType={UserType.MANAGER[0]}/>
+            </Route>
+            <Route exact path={`${path}/session`}>
+                <CreateSession/>
             </Route>
             <Route exact path={`${path}/rapports`}>
                 <RapportsView/>

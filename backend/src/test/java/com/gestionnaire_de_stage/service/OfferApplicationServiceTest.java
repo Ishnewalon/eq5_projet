@@ -2,18 +2,12 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.enums.Status;
-import com.gestionnaire_de_stage.exception.*;
-import com.gestionnaire_de_stage.model.Curriculum;
-import com.gestionnaire_de_stage.model.Offer;
-import com.gestionnaire_de_stage.model.OfferApplication;
-import com.gestionnaire_de_stage.model.Student;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
+import com.gestionnaire_de_stage.exception.DateNotValidException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
-import com.gestionnaire_de_stage.repository.StudentRepository;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -128,7 +123,7 @@ class OfferApplicationServiceTest {
         List<OfferApplication> offerApplicationList = getDummyOfferAppList();
         Manager dummyManager = getDummyManager();
         when(managerService.isIDNotValid(any())).thenReturn(false);
-        when(offerApplicationRepository.getAllByStatus(Status.STAGE_TROUVE))
+        when(offerApplicationRepository.getAllByStatusAndSession_YearGreaterThanEqual(Status.STAGE_TROUVE, Year.now()))
                 .thenReturn(offerApplicationList);
 
         List<OfferApplication> actualOfferAppList = offerApplicationService
@@ -173,7 +168,7 @@ class OfferApplicationServiceTest {
         List<OfferApplication> offerApplicationList = getDummyOfferAppList();
         Student dummyStudent = getDummyStudent();
         when(studentService.getOneByID(any())).thenReturn(dummyStudent);
-        when(offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(Status.EN_ATTENTE_REPONSE, dummyStudent.getId()))
+        when(offerApplicationRepository.getAllByStatusAndCurriculum_StudentIdAndSession_YearGreaterThanEqual(Status.EN_ATTENTE_REPONSE, dummyStudent.getId(), Year.now()))
                 .thenReturn(offerApplicationList);
 
         List<OfferApplication> actualOfferAppList = offerApplicationService
@@ -214,6 +209,7 @@ class OfferApplicationServiceTest {
         assertThrows(IllegalArgumentException.class,
                 () -> offerApplicationService.getOneById(null));
     }
+
     @Test
     void testGetOneById_whenIdInvalid() {
         when(offerApplicationRepository.existsById(any())).thenReturn(false);
@@ -229,7 +225,7 @@ class OfferApplicationServiceTest {
         when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
         when(offerApplicationRepository.save(any())).thenReturn(dummyOfferApplication);
 
-        String message =  offerApplicationService.updateStatus(updateStatusDTO);
+        String message = offerApplicationService.updateStatus(updateStatusDTO);
 
         assertThat(message).contains("Status changé, attendez la signature du contrat");
     }
@@ -287,7 +283,7 @@ class OfferApplicationServiceTest {
     @Test
     void testGetAllByOfferStatusAndStudentID_withValidEntries() {
         List<OfferApplication> offerApplicationList = getDummyOfferAppList();
-        when(offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(any(), any()))
+        when(offerApplicationRepository.getAllByStatusAndCurriculum_StudentIdAndSession_YearGreaterThanEqual(any(), any(), any()))
                 .thenReturn(offerApplicationList);
 
         List<OfferApplication> actualList = offerApplicationService.getAllByOfferStatusAndStudentID(Status.CV_ENVOYE, 1L);
@@ -307,7 +303,7 @@ class OfferApplicationServiceTest {
         List<OfferApplication> dummyOfferAppList = getDummyOfferAppList();
         long supervisor_id = 1L;
         when(supervisorRepository.existsById(any())).thenReturn(true);
-        when(offerApplicationRepository.findAllByCurriculum_Student_Supervisor_Id(any())).thenReturn(dummyOfferAppList);
+        when(offerApplicationRepository.findAllByCurriculum_Student_Supervisor_IdAndSession_YearGreaterThanEqual(any(), any())).thenReturn(dummyOfferAppList);
 
         List<OfferApplication> actualOfferAppList = offerApplicationService.getAllBySupervisorId(supervisor_id);
 
@@ -374,8 +370,8 @@ class OfferApplicationServiceTest {
         return dummyManager;
     }
 
-    private UpdateStatusDTO getDummuyUpdateStatusDTO(){
-      return new UpdateStatusDTO(1L, true);
+    private UpdateStatusDTO getDummuyUpdateStatusDTO() {
+        return new UpdateStatusDTO(1L, true);
     }
 
     private Curriculum getDummyCurriculum() {
