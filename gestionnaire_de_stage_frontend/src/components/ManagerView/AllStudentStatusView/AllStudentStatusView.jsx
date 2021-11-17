@@ -3,12 +3,14 @@ import {getAllStudents} from "../../../services/user-service";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import {useAuth} from "../../../services/use-auth";
 import {getStudentApplicationsOffer} from "../../../services/offerAppService";
+import {useHistory} from "react-router-dom";
 
 export default function AllStudentStatusView() {
 
     const [studentList, setStudentList] = useState([])
     const [offerList, setOfferList] = useState([])
-    const auth = useAuth();
+    const auth = useAuth()
+    const history = useHistory()
 
     useEffect(() => {
         getAllStudents(auth.user.id)
@@ -47,7 +49,13 @@ export default function AllStudentStatusView() {
                         <td>{student.firstName} {student.lastName}</td>
                         <td>{offerList.length > 0 ? offerList[index].length : 0}</td>
                         <td>
-                            <button className="btn btn-primary">Voir</button>
+                            <button className="btn btn-primary"
+                                    onClick={() => history.push({
+                                        pathname: "offer",
+                                        state: {student :student}
+                                    })}>
+                                Voir
+                            </button>
                         </td>
                     </TableRow>
                 )}

@@ -17,6 +17,7 @@ import {
     RapportStudentWithoutCv
 } from "./RapportsView/Rapports";
 import ViewSignedContracts from '../ViewSignedContracts/ViewSignedContracts';
+import OfferAppRapportView from "./AllStudentStatusView/OfferAppRapportView";
 
 export default function ManagerView() {
     const {path} = useRouteMatch();
@@ -67,6 +68,11 @@ export default function ManagerView() {
             <Route path={`${path}/rapports/6`}>
                 <RapportStudentStatus/>
             </Route>
+            <Route path={`${path}/rapports/offer`}>
+                <OfferAppRapportView/>
+            </Route>
+
+
         </ContainerBox>
     )
 }
