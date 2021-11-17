@@ -3,6 +3,7 @@ import {useAuth} from "../../../services/use-auth";
 import {useEffect, useState} from "react";
 import {getAllSignedContractsForManager, getAllSignedContractsForMonitor} from "../../../services/contrat-service";
 import {UserType} from "../../../enums/UserTypes";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function ViewSignedContracts({userType}) {
     const auth = useAuth();
@@ -16,9 +17,7 @@ export default function ViewSignedContracts({userType}) {
     }, [auth.user.id, userType]);
 
     if (contractList.length === 0)
-        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
-            Aucun contrat à afficher pour le moment...
-        </div>;
+        return <MessageNothingToShow message={"Aucun contrat à afficher pour le moment..."}/>;
 
     return <>{contractList.map((contract, index) =>
         <div key={index}>

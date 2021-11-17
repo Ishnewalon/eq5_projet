@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 export function Table(props) {
     const {children, className} = props;
@@ -26,6 +27,10 @@ export function Table(props) {
     );
 }
 
+Table.propTypes = {
+    children: PropTypes.element.isRequired,
+    className: React.PropTypes.string
+};
 
 export function TableHeader(props) {
     const {children} = props;
@@ -42,6 +47,10 @@ export function TableHeader(props) {
         }
     </tr>
 }
+
+TableHeader.propTypes = {
+    children: PropTypes.element.isRequired,
+};
 
 export function TableRow(props) {
     const {children} = props;
@@ -63,3 +72,7 @@ export function TableRow(props) {
         })}
     </tr>
 }
+
+TableRow.propTypes = {
+    children: PropTypes.element.isRequired,
+};
