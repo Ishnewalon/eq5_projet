@@ -11,6 +11,7 @@ export default function StudentWithoutCvView() {
         getStudentsWithoutCv()
             .then(studentList => {
                 setStudentList(studentList)
+                console.log(studentList)
             })
             .catch(e => {
                 setStudentList([])
@@ -21,23 +22,25 @@ export default function StudentWithoutCvView() {
 
     return (
         <div className='container'>
-            <h2 className="text-center mb-4">Liste des étudiants sans Cv</h2>
-            <Table className={"w-75 mx-auto"}>
-                <TableHeader>
-                    <th>#</th>
-                    <th>Étudiant</th>
-                    <th>Matricule</th>
-                    <th>Adresse électronique</th>
-                </TableHeader>
-                {studentList.map((student, index) =>
+            {studentList.length > 0 ?
+                <Table className={"w-75 mx-auto"}>
+                    <TableHeader>
+                        <th>#</th>
+                        <th>Étudiant</th>
+                        <th>Matricule</th>
+                        <th>Adresse électronique</th>
+                    </TableHeader>
+                    {studentList.map((student, index) =>
                     <TableRow key={index}>
                         <th>{student.id}</th>
                         <td>{student.firstName} {student.lastName}</td>
                         <td>{student.matricule}</td>
                         <td>{student.email}</td>
-                    </TableRow>
-                )}
-            </Table>
+                    </TableRow>)}
+                </Table>
+                :
+                <h3 className="text-center">Aucun étudiant sans Cv</h3>
+            }
         </div>
     )
 }
