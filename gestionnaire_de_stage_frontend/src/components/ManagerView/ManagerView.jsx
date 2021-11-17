@@ -13,8 +13,8 @@ import RapportsView from "./RapportsView/RapportsView";
 import {
     RapportOfferInvalid,
     RapportOfferValid,
-    RapportStudentSignIn, RapportStudentStatus, RapportStudentWithInvalidCv,
     RapportStudentSignIn,
+    RapportStudentStatus,
     RapportStudentWithInvalidCv,
     RapportStudentWithoutCv
 } from "./RapportsView/Rapports";

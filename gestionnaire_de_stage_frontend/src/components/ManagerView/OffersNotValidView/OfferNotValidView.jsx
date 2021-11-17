@@ -41,7 +41,6 @@ export default function OfferNotValidView() {
 // TODO: show msg when no offers
     return (
         <div className='container'>
-            <h2 className="text-center mb-4">Offres de Stage non validées</h2>
             <FormGroup>
                 <FormField>
                     <label/>
