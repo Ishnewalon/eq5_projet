@@ -42,14 +42,11 @@ export async function setPrincipalCurriculum(studentID, curriculumID) {
         response => {
             return response.json().then(
                 body => {
-                    if (response.status === 200) {
-                        toast.fire({title: "Curriculum Principal changer!", icon: 'success'})
-                        return body
-                    }
-                    if (response.status === 400) {
-                        swalErr.fire({text: body.message})
-                    }
-                    return Promise.any([])
+                    if (response.status === 200)
+                        toast.fire({title: body.message, icon: 'success'})
+                    else if (response.status === 400)
+                        toast.fire({title: body.message, icon: 'error'})
+                    return response.ok
                 })
         }, err => console.error(err)
     );

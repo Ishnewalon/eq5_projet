@@ -30,12 +30,15 @@ export default function CurriculumTable() {
         e.preventDefault();
 
         setPrincipalCurriculum(auth.user.id, cv.id).then(
-            () => setCurriculumsWithPrincipal(prev => {
-                return {
-                    ...prev,
-                    "principal": cv
-                }
-            })
+            (success) => {
+                if (success)
+                    setCurriculumsWithPrincipal(prev => {
+                        return {
+                            ...prev,
+                            "principal": cv
+                        }
+                    })
+            }
         );
     }
 
