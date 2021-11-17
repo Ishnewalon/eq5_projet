@@ -58,7 +58,7 @@ public class StudentService {
     public void deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (isIDNotValid(aLong)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Aucun étudiant trouvé pour cet ID");
         }
         studentRepository.deleteById(aLong);
     }
@@ -81,7 +81,7 @@ public class StudentService {
 
         if (curriculum.getIsValid() == null
                 || !curriculum.getIsValid())
-            throw new CurriculumNotValidException();
+            throw new CurriculumNotValidException("Le curriculum doit être valide");
 
         student.setPrincipalCurriculum(curriculum);
         return studentRepository.save(student);

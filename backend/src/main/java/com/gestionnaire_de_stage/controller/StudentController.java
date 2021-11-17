@@ -63,16 +63,8 @@ public class StudentController {
         try {
             Student student = studentService.getOneByID(studentID);
             studentService.setPrincipalCurriculum(student, curriculumID);
-            return ResponseEntity.ok(new ResponseMessage("CV principal changer"));
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Les IDs ne peuvent pas être null"));
-        } catch (CurriculumNotValidException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le curriculum doit etre valide"));
-        } catch (IllegalArgumentException e) {
+            return ResponseEntity.ok(new ResponseMessage("CV principal changé"));
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
