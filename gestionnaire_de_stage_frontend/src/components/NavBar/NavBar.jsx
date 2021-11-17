@@ -78,6 +78,7 @@ function NavItemSpecificForUser() {
 
 function ThisIsAListItem({children}) {
     return React.Children.map(children, (child) => {
+        // noinspection JSCheckFunctionSignatures
         return (<>
             <li className="nav-item">{
                 React.cloneElement(child, {

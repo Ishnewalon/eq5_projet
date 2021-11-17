@@ -25,7 +25,7 @@ export default function StudentWithInvalidCv() {
     }
 
     return (
-        <div className='container'>
+        <>
             <Table className={"w-75 mx-auto"}>
                 <TableHeader>
                     <th>#</th>
@@ -42,6 +42,6 @@ export default function StudentWithInvalidCv() {
                     </TableRow>
                 )}
             </Table>
-        </div>
+        </>
     )
 }

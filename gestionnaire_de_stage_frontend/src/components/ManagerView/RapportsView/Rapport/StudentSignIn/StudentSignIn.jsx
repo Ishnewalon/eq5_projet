@@ -24,7 +24,7 @@ export default function StudentSignIn() {
         </div>
     }
     return (
-        <div className='container'>
+        <>
             <Table className={"w-75 mx-auto"}>
                 <TableHeader>
                     <th>#</th>
@@ -41,6 +41,6 @@ export default function StudentSignIn() {
                     </TableRow>
                 )}
             </Table>
-        </div>
+        </>
     )
 }

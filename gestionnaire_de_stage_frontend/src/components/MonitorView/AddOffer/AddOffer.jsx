@@ -72,7 +72,7 @@ export default function AddOffer() {
                 <label className="label">Session</label>
                 <select name="sessions" id="session"
                         onChange={(e) => setSessionId(e.target.value)} defaultValue="">
-                    <option disabled value="">Choisisez une session</option>
+                    <option disabled value="">Choisissez une session</option>
                     {sessions.map(session =>
                         <option key={session.id} value={session.id}>{session.typeSession + session.year}</option>)}
                 </select>

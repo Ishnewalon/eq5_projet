@@ -22,7 +22,6 @@ export default function CreateSession() {
         createSession({
             typeSession: typeSession,
             year: year
-
         }).then();
     };
 
