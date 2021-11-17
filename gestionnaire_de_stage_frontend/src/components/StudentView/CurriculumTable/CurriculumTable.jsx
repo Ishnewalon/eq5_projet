@@ -19,10 +19,11 @@ export default function CurriculumTable() {
                 setCurriculumsWithPrincipal({})
                 console.error(e);
             });
-    }, [auth.user.id])
+    }, [auth.user.id]);
 
     const getCurriculumList = () => {
-        return curriculumsWithPrincipal.curriculumList ? curriculumsWithPrincipal.curriculumList : [];
+        return curriculumsWithPrincipal && curriculumsWithPrincipal.curriculumList
+            ? curriculumsWithPrincipal.curriculumList : [];
     }
 
     const setPrincipal = cv => e => {
@@ -32,17 +33,18 @@ export default function CurriculumTable() {
             () => setCurriculumsWithPrincipal(prev => {
                 return {
                     ...prev,
-                    ["principal"]: cv
+                    "principal": cv
                 }
             })
         );
     }
 
     const isPrincipal = (cv) => {
-        return cv.id === curriculumsWithPrincipal.principal.id;
+        return curriculumsWithPrincipal.principal &&
+            cv.id === curriculumsWithPrincipal.principal.id;
     }
 
-    const getStyle = (cv) => {
+    const getBtnStyle = (cv) => {
         if (isPrincipal(cv)){
             return "btn-secondary"
         }else if (cv.isValid){
@@ -52,7 +54,7 @@ export default function CurriculumTable() {
         }
     }
 
-    const getText = (cv) => {
+    const getBtnText = (cv) => {
         if (isPrincipal(cv)){
             return "C.V. par defaut";
         }else if (cv.isValid){
@@ -78,9 +80,9 @@ export default function CurriculumTable() {
                         <td>{cv.isValid ? "Valide" : "Invalide"}</td>
                         <td>
                             <div className="btn-group">
-                                <button className={"btn " + (getStyle(cv))}
+                                <button className={"btn " + (getBtnStyle(cv))}
                                         disabled={!cv.isValid || isPrincipal(cv)}
-                                        onClick={setPrincipal(cv)}>{getText(cv)}
+                                        onClick={setPrincipal(cv)}>{getBtnText(cv)}
                                 </button>
                             </div>
                         </td>

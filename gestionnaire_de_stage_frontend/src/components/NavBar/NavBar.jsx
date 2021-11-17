@@ -61,6 +61,7 @@ function NavItemSpecificForUser() {
     if (auth.isStudent())
         return <ThisIsAListItem>
             <Link to="/dashboard/televerser">Téléverser CV</Link>
+            <Link to="/dashboard/mes_cv">Mes CV</Link>
             <Link to="/dashboard/offres">Offres</Link>
             <Link to="/dashboard/voir_mon_contrat">Voir Contrat</Link>
             <Link to="/dashboard/view/status">Mes applications</Link>
