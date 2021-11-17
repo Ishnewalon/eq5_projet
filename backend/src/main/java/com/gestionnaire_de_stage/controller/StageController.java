@@ -57,10 +57,10 @@ public class StageController {
             stage = stageService.create(stage, evalMilieuStageDTO.getMatriculeEtudiant());
             WebContext context = new WebContext(request, response, servletContext);
             context.setVariable("formInfo", evalMilieuStageDTO);
-            String contractHtml = templateEngine.process("evalMilieuStage", context);
+            String evalMilieuStageHtml = templateEngine.process("evalMilieuStage", context);
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            HtmlConverter.convertToPdf(contractHtml, baos);
+            HtmlConverter.convertToPdf(evalMilieuStageHtml, baos);
             stageService.addEvalMilieuStage(stage, baos);
         } catch (MatriculeDoesNotExistException e) {
             return ResponseEntity
@@ -77,7 +77,7 @@ public class StageController {
         } catch (StageAlreadyExistsException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Le stage existe déjà"));
+                    .body(new ResponseMessage("Le stage existe déjà et une evaluation a déjà été fait"));
         } catch (ContractDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()

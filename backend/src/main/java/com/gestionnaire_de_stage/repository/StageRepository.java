@@ -5,7 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StageRepository extends JpaRepository<Stage, Long> {
 
-    boolean existsByContract_StudentMatricule(String matricule);
+    Stage getStageByContractStudentMatricule(String matricule);
+
+    boolean existsByContract_StudentMatriculeAndEvalMilieuStageNotNull(String matricule);
+
+    boolean existsByContract_StudentMatriculeAndEvalMilieuStageNull(String matricule);
 
     Stage getByContract_StudentEmail(String email);
 
