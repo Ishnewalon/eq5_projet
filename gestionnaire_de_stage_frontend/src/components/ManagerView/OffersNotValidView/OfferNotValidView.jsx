@@ -9,10 +9,10 @@ export default function OfferNotValidView() {
 
     const [offers, setOffers] = useState([])
     const [sessions, setSessions] = useState([]);
-    const [visibles, setVisibles] = useState([]);
+    const [visibleOffers, setVisibleOffers] = useState([]);
 
     const setMyVisible = (idSession) =>
-        setVisibles(offers.filter(offer => offer.session.id === parseInt(idSession)))
+        setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(idSession)))
 
     useEffect(() => {
         getAllOffersInvalid()
@@ -29,7 +29,7 @@ export default function OfferNotValidView() {
         getCurrentAndFutureSession()
             .then(sessions => {
                 setSessions(sessions)
-                setVisibles(offers.filter(offer => offer.session.id === parseInt(sessions[0].id)))
+                setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(sessions[0].id)))
             })
             .catch(e => {
                 setSessions([]);
@@ -53,7 +53,7 @@ export default function OfferNotValidView() {
                 </FormField>
             </FormGroup>
             <ul>
-                {visibles.map((offer, index) =>
+                {visibleOffers.map((offer, index) =>
                     <li className={"mb-3"} key={index}>
                         <OfferView offer={offer}/>
                     </li>
