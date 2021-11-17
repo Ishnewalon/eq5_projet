@@ -55,6 +55,7 @@ function NavItemSpecificForUser() {
             <Link to="/dashboard/students/start">Commencer signature</Link>
             <Link to="/dashboard/students/applied">Associer</Link>
             <Link to="/dashboard/contrats/a_signer">Contrats à valider</Link>
+            <Link to="/dashboard/session">Gestion Session</Link>
             <Link to="/dashboard/manager/contracts/signed">Contrats signés</Link>
             <Link to="/dashboard/rapports">Rapports</Link>
         </ThisIsAListItem>
@@ -66,6 +67,7 @@ function NavItemSpecificForUser() {
             <Link to="/dashboard/voir_mon_contrat">Voir Contrat</Link>
             <Link to="/dashboard/view/status">Mes applications</Link>
             <Link to="/dashboard/offer/setdate">Ajouter une date d'entrevue</Link>
+            <Link to="/dashboard/student/contract/signed">Voir contrat signé</Link>
         </ThisIsAListItem>
     if (auth.isSupervisor())
         return <ThisIsAListItem>

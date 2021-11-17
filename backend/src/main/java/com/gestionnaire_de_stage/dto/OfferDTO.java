@@ -47,4 +47,6 @@ public class OfferDTO {
 
     @NotBlank(message = "Le nombre d'heure par semaine est vide")
     private String nbHeureSemaine;
+
+    private Long idSession;
 }
