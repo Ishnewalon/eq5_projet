@@ -27,7 +27,7 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
 
     boolean existsByStudentMatricule(String matricule);
 
-    List<Contract> getAllByManager_IdAndManagerSignatureNotNull(Long id);
+    List<Contract> getAllByManager_IdAndManagerSignatureNotNullAndSession_YearGreaterThanEqual(Long manager_id, Year year);
 
     List<Contract> getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndSession_YearGreaterThanEqual(Long monitor_id, Year year);
     boolean existsByStudentIdAndSession(Long idStudent, Session session);

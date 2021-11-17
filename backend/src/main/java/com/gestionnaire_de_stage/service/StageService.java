@@ -20,8 +20,11 @@ public class StageService {
 
     public Stage create(Stage stage, String matricule) throws StageAlreadyExistsException {
         Assert.isTrue(stage != null, "Le stage ne peut pas être null");
-        if (isNotAlreadyCreated(matricule)) {
+        if (isAlreadyCreated(matricule)) {
             throw new StageAlreadyExistsException();
+        }
+        if (isAlreadyCreatedButNoEvalMilieu(matricule)) {
+            stage = stageRepository.getStageByContractStudentMatricule(matricule);
         }
         return stageRepository.save(stage);
     }
@@ -39,7 +42,11 @@ public class StageService {
         return !stageRepository.existsById(stage.getId());
     }
 
-    private boolean isNotAlreadyCreated(String matricule) {
-        return !stageRepository.existsByContractStudentMatricule(matricule);
+    private boolean isAlreadyCreatedButNoEvalMilieu(String matricule) {
+        return stageRepository.existsByContract_StudentMatriculeAndEvalMilieuStageNull(matricule);
+    }
+
+    private boolean isAlreadyCreated(String matricule) {
+        return stageRepository.existsByContract_StudentMatriculeAndEvalMilieuStageNotNull(matricule);
     }
 }

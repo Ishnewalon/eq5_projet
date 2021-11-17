@@ -135,7 +135,7 @@ public class StageControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le stage existe déjà");
+        assertThat(response.getContentAsString()).contains("Le stage existe déjà et une evaluation a déjà été fait");
     }
 
     private EvalMilieuStageDTO getDummyEvalMilieuStageDTO() {

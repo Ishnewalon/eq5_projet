@@ -31,7 +31,8 @@ public class StageServiceTest {
     @Test
     public void testCreate_withValidEntries() throws Exception {
         Stage dummyStage = getDummyStage();
-        when(stageRepository.existsByContractStudentMatricule(any())).thenReturn(true);
+        when(stageRepository.existsByContract_StudentMatriculeAndEvalMilieuStageNotNull(any())).thenReturn(false);
+        when(stageRepository.existsByContract_StudentMatriculeAndEvalMilieuStageNull(any())).thenReturn(false);
         when(stageRepository.save(any())).thenReturn(dummyStage);
 
         Stage actualStage = stageService.create(dummyStage, getDummyStudent().getMatricule());
@@ -48,10 +49,24 @@ public class StageServiceTest {
 
     @Test
     public void testCreate_withInvalidStage() {
-        when(stageRepository.existsByContractStudentMatricule(any())).thenReturn(false);
+        when(stageRepository.existsByContract_StudentMatriculeAndEvalMilieuStageNotNull(any())).thenReturn(true);
 
         assertThrows(StageAlreadyExistsException.class,
                 () -> stageService.create(getDummyStage(), getDummyStudent().getMatricule()));
+    }
+
+    @Test
+    public void testCreate_withExistingStagewithoutEval() throws Exception {
+        Stage dummyStage = getDummyStage();
+        when(stageRepository.existsByContract_StudentMatriculeAndEvalMilieuStageNotNull(any())).thenReturn(false);
+        when(stageRepository.existsByContract_StudentMatriculeAndEvalMilieuStageNull(any())).thenReturn(true);
+        when(stageRepository.getStageByContractStudentMatricule(any())).thenReturn(dummyStage);
+        when(stageRepository.save(any())).thenReturn(dummyStage);
+
+        Stage actualStage = stageService.create(dummyStage, getDummyStudent().getMatricule());
+
+        assertThat(actualStage).isEqualTo(dummyStage);
+        assertThat(actualStage.getId()).isGreaterThan(0);
     }
 
     @Test
