@@ -98,7 +98,7 @@ export default function AddOffer() {
             {(auth.isManager()) ? monitorEmail : <></>}
         </FormGroup>
         <div className="form-group text-center">
-            <button className="btn btn-primary" type={"button"} onClick={addOffer}>Ajouter</button>
+            <button className="btn btn-primary mt-3" type={"button"} onClick={addOffer}>Ajouter</button>
         </div>
     </>);
 }

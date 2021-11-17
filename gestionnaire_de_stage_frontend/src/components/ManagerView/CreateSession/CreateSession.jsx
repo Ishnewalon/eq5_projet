@@ -36,9 +36,9 @@ export default function CreateSession() {
                 </select>
             </FormField>
             <FormField>
-                <label>Type de session</label>
+                <label>Période de la session</label>
                 <select onChange={(e) => setTypeSession(e.target.value)} defaultValue="">
-                    <option disabled value="">Type de session</option>
+                    <option disabled value="">Période de la session</option>
                     <option value="HIVER">Session d'hiver</option>
                     <option value="ETE">Session d'été</option>
                 </select>
