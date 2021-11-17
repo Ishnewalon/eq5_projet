@@ -19,7 +19,7 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
 
     Contract getContractByIdAndManagerSignatureNullAndMonitorSignatureNullAndStudentSignatureNullAndSession_YearGreaterThanEqual(Long id, Year year);
 
-    Contract getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNull(Long student_id);
+    Contract getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNullAndSession_YearGreaterThanEqual(Long student_id, Year session_year);
 
 
     List<Contract> getAllByManager_IdAndManagerSignatureNotNullAndSession_YearGreaterThanEqual(Long manager_id, Year year);

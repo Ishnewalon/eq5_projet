@@ -15,7 +15,6 @@ import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
@@ -31,7 +30,7 @@ public class OfferApplicationService {
     private final SupervisorRepository supervisorRepository;
 
 
-    public OfferApplicationService(OfferApplicationRepository offerApplicationRepository, OfferService offerService, ManagerService managerService, StudentService studentService, SupervisorRepository supervisorRepository, Clock clock) {
+    public OfferApplicationService(OfferApplicationRepository offerApplicationRepository, OfferService offerService, ManagerService managerService, StudentService studentService, SupervisorRepository supervisorRepository) {
         this.offerApplicationRepository = offerApplicationRepository;
         this.offerService = offerService;
         this.managerService = managerService;
@@ -72,7 +71,7 @@ public class OfferApplicationService {
         Assert.isTrue(studentID != null, "L'id du student ne peut pas être null");
         Assert.isTrue(status != null, "Le status de l'offre ne peut pas être null");
 
-        return offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(status, studentID);
+        return offerApplicationRepository.getAllByStatusAndCurriculum_StudentIdAndSession_YearGreaterThanEqual(status, studentID, Year.now());
     }
 
     public OfferApplication setInterviewDate(Long offerAppID, LocalDateTime date) throws IdDoesNotExistException, DateNotValidException, IllegalArgumentException {
@@ -116,7 +115,7 @@ public class OfferApplicationService {
         Assert.isTrue(idStudent != null, "L'id de l'étudiant ne peut pas être null");
         if (studentService.getOneByID(idStudent) == null)
             throw new IdDoesNotExistException();
-        return offerApplicationRepository.getAllByStatusAndCurriculum_StudentId(Status.EN_ATTENTE_REPONSE, idStudent);
+        return offerApplicationRepository.getAllByStatusAndCurriculum_StudentIdAndSession_YearGreaterThanEqual(Status.EN_ATTENTE_REPONSE, idStudent, Year.now());
     }
 
     public String updateStatus(UpdateStatusDTO updateStatusDTO) throws IdDoesNotExistException {
@@ -136,6 +135,6 @@ public class OfferApplicationService {
         if (!supervisorRepository.existsById(supervisor_id)) {
             throw new IdDoesNotExistException();
         }
-        return offerApplicationRepository.findAllByCurriculum_Student_Supervisor_Id(supervisor_id);
+        return offerApplicationRepository.findAllByCurriculum_Student_Supervisor_IdAndSession_YearGreaterThanEqual(supervisor_id, Year.now());
     }
 }
