@@ -8,6 +8,7 @@ import OfferApplicationSetFinalStatus from "./OfferApplicationSetFinalStatus/Off
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useAuth} from "../../services/use-auth";
 import StudentContractView from "./StudentContractView/StudentContractView";
+import CurriculumTable from "./CurriculumTable/CurriculumTable";
 
 export default function StudentView() {
     let {path} = useRouteMatch();
@@ -15,6 +16,9 @@ export default function StudentView() {
     return (<ContainerBox>
             <Route exact path={`${path}/televerser`}>
                 <TeleverserCv/>
+            </Route>
+            <Route exact path={`${path}/mes_cv`}>
+                <CurriculumTable />
             </Route>
             <Route exact path={`${path}/offres`}>
                 <ViewOffersAndApply/>
