@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {getAllStudents} from "../../../services/user-service";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import {useAuth} from "../../../services/use-auth";
-import {getStudentApplications} from "../../../services/offerAppService";
+import {getStudentApplicationsOffer} from "../../../services/offerAppService";
 
 export default function AllStudentStatusView() {
 
@@ -15,10 +15,9 @@ export default function AllStudentStatusView() {
             .then(studentList => {
                 setStudentList(studentList)
                 studentList.forEach(student => {
-                    getStudentApplications(student.id)
+                    getStudentApplicationsOffer(student.id)
                         .then(offerList => {
                             setOfferList(prev => [...prev, offerList || []])
-                            console.log(offerList);
                         })
                         .catch(e => {
                             setOfferList([])
@@ -30,7 +29,6 @@ export default function AllStudentStatusView() {
                 setStudentList([])
                 console.error(e);
             })
-
     }, [auth.user.id]);
 
     return (
@@ -41,13 +39,16 @@ export default function AllStudentStatusView() {
                     <th>#</th>
                     <th>Étudiant</th>
                     <th>Nombre d'application</th>
+                    <th>Voir les applications</th>
                 </TableHeader>
-
                 {studentList.map((student, index) =>
                     <TableRow key={index}>
                         <td>{student.id}</td>
                         <td>{student.firstName} {student.lastName}</td>
-                        <th>{offerList.length > 0 ? offerList[index].length : 0}</th>
+                        <td>{offerList.length > 0 ? offerList[index].length : 0}</td>
+                        <td>
+                            <button className="btn btn-primary">Voir</button>
+                        </td>
                     </TableRow>
                 )}
             </Table>
