@@ -2,6 +2,7 @@ import ViewSignedContract from "../../Contract/ViewSignedContracts/ViewSignedCon
 import {useEffect, useState} from "react";
 import {getSignedContractForStudent} from "../../../services/contrat-service";
 import {useAuth} from "../../../services/use-auth";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function StudentContractView() {
     const auth = useAuth();
@@ -12,9 +13,7 @@ export default function StudentContractView() {
     }, [auth]);
 
     if (!contract) {
-        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
-            Aucun contrat a été signé par vous...
-        </div>
+        return <MessageNothingToShow message="Aucun contrat n'a été signé pour l'instant..."/>
     }
     return <ViewSignedContract contract={contract}/>
 }

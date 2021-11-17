@@ -5,6 +5,7 @@ import {managerSignContract, monitorSignContract, studentSignContract} from "../
 import {UserType} from "../../../enums/UserTypes";
 import {swalErr} from "../../../utility";
 import {FormField} from "../../SharedComponents/FormField/FormField";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export const toPdfBlob = (pdfFile) => {
     if (!pdfFile)
@@ -54,24 +55,26 @@ export default function ContratSignature({userType, contract, removeContract}) {
                 setSigned(isSigned)
             });
     }
-
+    if (!signed) {
+        return <MessageNothingToShow message="Vous avez signé le contrat."/>
+    }
     return <div className={"container bg-secondary my-2"}>
-        {!signed ?
-            <div className="d-flex justify-content-between flex-column">
-                <PdfDocumentViewer file={pdf}/>
-                <form onSubmit={startContract}>
-                    <FormField>
-                        <label>Signature</label>
-                        <input type="text" placeholder="Entrez votre signature" className="w-100"
-                               onChange={e => setSignature(e.target.value)}/>
-                    </FormField>
-                    <h6 className="text-white text-center mt-3">En appuyant sur envoyer, vous confirmez avoir lu le
-                        contrat
-                        et que la signature entré correspond à la votre.</h6>
-                    <button id="invalidateContractBtn" className="btn btn-primary fw-bold w-100 mb-4 mt-0"
-                            type="submit">Signer le contrat <BsPenFill/></button>
-                </form>
-            </div> : <h6 className="text-white text-center p-3">Vous avez signé le contrat.</h6>
-        }
+
+        <div className="d-flex justify-content-between flex-column">
+            <PdfDocumentViewer file={pdf}/>
+            <form onSubmit={startContract}>
+                <FormField>
+                    <label>Signature</label>
+                    <input type="text" placeholder="Entrez votre signature" className="w-100"
+                           onChange={e => setSignature(e.target.value)}/>
+                </FormField>
+                <h6 className="text-white text-center mt-3">En appuyant sur envoyer, vous confirmez avoir lu le
+                    contrat
+                    et que la signature entré correspond à la votre.</h6>
+                <button id="invalidateContractBtn" className="btn btn-primary fw-bold w-100 mb-4 mt-0"
+                        type="submit">Signer le contrat <BsPenFill/></button>
+            </form>
+        </div>
+
     </div>
 }

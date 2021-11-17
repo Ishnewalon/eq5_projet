@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useAuth} from "../../../services/use-auth";
 import {getStudentApplications, setApplicationsStatusWhenEnAttenteDeReponse} from "../../../services/offerAppService";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function OfferApplicationSetFinalStatus() {
     const [offerApplications, setOfferApplications] = useState([])
@@ -28,9 +29,7 @@ export default function OfferApplicationSetFinalStatus() {
     };
 
     if (offerApplications.length === 0)
-        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
-            Vous n'avez pas d'offre de stage qui attend une réponse
-        </div>
+        return <MessageNothingToShow message="Vous n'avez pas d'offre de stage qui attend une réponse"/>
 
     return (<>
         <Table>

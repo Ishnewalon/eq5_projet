@@ -18,7 +18,7 @@ export default function StudentWithInvalidCv() {
             })
     }, [])
 
-    if (studentList.length === 0){
+    if (studentList.length === 0) {
         return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
             Aucun étudiant avec un Cv invalide
         </div>

@@ -3,6 +3,7 @@ import {assignStudentToSupervisor, getSupervisors, getUnassignedStudents} from "
 import {toast} from "../../../utility";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function LinkSupervisorToStudent() {// TODO: field is linked to supervisor or something
 
@@ -40,9 +41,7 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
         )
     }
     if (studentList.length === 0)
-        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
-            Aucun étudiant à associer pour le moment...
-        </div>
+        return <MessageNothingToShow message="Aucun étudiant à associer pour le moment..."/>
 
     return (
         <div>

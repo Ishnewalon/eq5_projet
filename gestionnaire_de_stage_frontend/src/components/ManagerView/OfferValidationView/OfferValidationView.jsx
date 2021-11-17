@@ -5,6 +5,7 @@ import OfferView from "../../OfferView/OfferView";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 import {getCurrentAndFutureSession} from "../../../services/session-service";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function OfferValidationView() {
 
@@ -42,9 +43,7 @@ export default function OfferValidationView() {
         setOffers(prev => prev.filter(items => items.id !== id))
     }
     if (offers.length === 0)
-        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
-            Aucun offres a valider pour le moment...
-        </div>
+        return <MessageNothingToShow message="Aucun offres a valider pour le moment..."/>
     return (
         <>
             <div className='container'>

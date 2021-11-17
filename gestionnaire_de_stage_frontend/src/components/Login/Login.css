@@ -16,9 +16,11 @@ label {
 .filter-switch label {
     cursor: pointer;
 }
+
 .filter-switch-item input:checked + label {
     color: inherit;
 }
+
 .filter-switch-item input:not(:checked) + label {
     --bg-opacity: 0;
     box-shadow: none;

@@ -5,6 +5,7 @@ import {ContainerBox} from "../../SharedComponents/ContainerBox/ContainerBox";
 import {toast} from "../../../utility";
 import {AiOutlineFile} from "react-icons/all";
 import OfferView from "../../OfferView/OfferView";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function ViewAppliedStudents() {//TODO: list of curriculum with a list of applicants inside
     let auth = useAuth();
@@ -17,9 +18,7 @@ export default function ViewAppliedStudents() {//TODO: list of curriculum with a
     }, [auth.user.email]);
 
     if (students.length === 0) {
-        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
-            Au moment, aucun étudiant n'a postulé à cette offre
-        </div>
+        return <MessageNothingToShow message="Au moment, aucun étudiant n'a postulé à cette offre"/>
     }
 
 

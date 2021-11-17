@@ -22,7 +22,8 @@ export default function StudentView() {
                 </ContainerBox>
             </Route>
             <Route exact path={`${path}/mes_cv`}>
-                <CurriculumTable />
+                <Title>Vos Curriculums</Title>
+                <CurriculumTable/>
             </Route>
             <Route exact path={`${path}/offres`}>
                 <Title>Offres de stage</Title>

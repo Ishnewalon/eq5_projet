@@ -3,6 +3,7 @@ import {getAllOffersByStudentAppliedOn, setInterview} from "../../../services/of
 import {useAuth} from "../../../services/use-auth";
 import {swalErr} from "../../../utility";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function OfferApplicationListView() {
     let auth = useAuth();
@@ -24,11 +25,8 @@ export default function OfferApplicationListView() {
             prevOffers.filter(items => items.id !== id)
         )
     }
-    if (offers.length === 0) {
-        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
-            Au moment, aucune offre n'a été trouvée...
-        </div>
-    }
+    if (offers.length === 0)
+        return <MessageNothingToShow message="Au moment, aucune offre n'a été trouvée..."/>
     return <>
         <Table>
             <TableHeader>

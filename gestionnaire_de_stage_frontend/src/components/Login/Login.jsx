@@ -25,7 +25,7 @@ export default function Login() {
     }
 
     return (
-        <ContainerBox >
+        <ContainerBox>
             <FormGroup>
                 <ul className="nav nav-pills nav-fill w-50 mx-auto">
                     <li className="nav-item">

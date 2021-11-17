@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {downloadCV, getCurriculumWithInvalidCV, validateCurriculum} from "../../../services/curriculum-service";
 import {toast} from "../../../utility";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 
 export default function CurriculumValidation() {
@@ -46,9 +47,8 @@ export default function CurriculumValidation() {
     }
 
     if (curriculumList.length === 0)
-        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
-            Aucun curriculum à valider pour le moment...
-        </div>
+        return <MessageNothingToShow message="Aucun curriculum à valider pour le moment..."/>
+
     return (
         <Table>
             <TableHeader>

@@ -7,7 +7,6 @@ import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 
 
-
 export default function StepMonitor({
                                         prevStep,
                                         nextStep,

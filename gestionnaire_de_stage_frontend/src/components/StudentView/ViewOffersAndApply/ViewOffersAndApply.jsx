@@ -7,6 +7,7 @@ import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {applyToOffer} from "../../../services/offerAppService";
 import OfferApp from "../../../models/OfferApp";
 import OfferView from "../../OfferView/OfferView";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function ViewOffersAndApply() {
     let auth = useAuth();
@@ -45,9 +46,7 @@ export default function ViewOffersAndApply() {
     }, [offers])
 
     if (offers.length === 0) {
-        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
-            Au moment, aucune offre n'est disponible
-        </div>
+        return <MessageNothingToShow message="Au moment, aucune offre n'est disponible"/>
     }
 
     return (

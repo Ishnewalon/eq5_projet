@@ -3,6 +3,7 @@ import ContractSignature from "./ContractSignature/ContratSignature";
 import {getAllContractsToBeSignedForMonitor, getAllContractsToBeStarted} from "../../services/contrat-service";
 import {UserType} from "../../enums/UserTypes";
 import {useAuth} from "../../services/use-auth";
+import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function ContractsToBeSigned({userType}) {
     const [contracts, setContracts] = useState([]);
@@ -21,9 +22,7 @@ export default function ContractsToBeSigned({userType}) {
     };
 
     if (contracts.length === 0)
-        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
-            Aucun contrat à signer pour le moment...
-        </div>
+        return <MessageNothingToShow message="Aucun contrat à signer pour le moment..."/>
 
 
     return contracts.map((contract, index) =>

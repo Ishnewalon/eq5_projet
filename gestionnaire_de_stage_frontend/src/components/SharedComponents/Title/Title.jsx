@@ -8,6 +8,7 @@ export function Title(props) {
         props.children
     );
 }
+
 Title.propTypes = {
-    children: PropTypes.any.isRequired,
+    children: PropTypes.node.isRequired
 };
