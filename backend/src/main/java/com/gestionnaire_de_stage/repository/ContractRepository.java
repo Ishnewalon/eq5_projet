@@ -1,8 +1,10 @@
 package com.gestionnaire_de_stage.repository;
 
 import com.gestionnaire_de_stage.model.Contract;
+import com.gestionnaire_de_stage.model.Session;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.Year;
 import java.util.List;
 
 public interface ContractRepository extends JpaRepository<Contract, Long> {
@@ -11,13 +13,13 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
 
     Contract getContractByIdAndMonitorSignatureNotNullAndManagerSignatureNotNullAndStudentSignatureNull(Long id);
 
-    List<Contract> getAllByOffer_CreatorIdAndMonitorSignatureNullAndManagerSignatureNotNull(Long id);
+    List<Contract> getAllByOffer_CreatorIdAndMonitorSignatureNullAndManagerSignatureNotNullAndSession_YearGreaterThanEqual(Long offer_creator_id, Year year);
 
     Contract getContractByIdAndManagerSignatureNotNullAndMonitorSignatureNullAndStudentSignatureNull(Long id);
 
-    Contract getContractByIdAndManagerSignatureNullAndMonitorSignatureNullAndStudentSignatureNull(Long contract_id);
+    Contract getContractByIdAndManagerSignatureNullAndMonitorSignatureNullAndStudentSignatureNullAndSession_YearGreaterThanEqual(Long id, Year year);
 
-    Contract getContractByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNull(Long student_id);
+    Contract getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNullAndSession_YearGreaterThanEqual(Long student_id, Year session_year);
 
     Contract getContractByStudent_Matricule(String matricule);
 
@@ -27,5 +29,8 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
 
     List<Contract> getAllByManager_IdAndManagerSignatureNotNull(Long id);
 
-    List<Contract> getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNull(Long id);
+    List<Contract> getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndSession_YearGreaterThanEqual(Long monitor_id, Year year);
+    boolean existsByStudentIdAndSession(Long idStudent, Session session);
+
+    Contract getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNotNullAndSession_YearGreaterThanEqual(Long student_id, Year year);
 }

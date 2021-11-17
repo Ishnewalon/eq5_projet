@@ -39,4 +39,7 @@ public class Contract {//TODO: add fields session
 
     @Lob
     private byte[] contractPDF;
+
+    @OneToOne
+    private Session session;
 }

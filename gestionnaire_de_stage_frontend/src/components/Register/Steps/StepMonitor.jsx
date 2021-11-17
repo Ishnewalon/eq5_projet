@@ -23,47 +23,17 @@ export default function StepMonitor({
         updateUserType(UserType.MONITOR);
         nextStep(val);
     }
-    const verification = (companyName, city, address, postalCode) => {
-        if (!companyName) {
-            toastErr.fire({title: 'Nom de compagnie est vide'}).then()
-            return false
-        }
-        if (!city) {
-            toastErr.fire({title: 'Nom de ville est vide'}).then()
-            return false
-        }
-        if (!address) {
-            toastErr.fire({title: "L'adresse est vide"}).then()
-            return false
-        }
-        if (!postalCode) {
-            toastErr.fire({title: 'Code postal est vide'}).then()
-            return false
-        }
-        if (!regexName.test(companyName)) {
-            toastErr.fire({title: 'Nom de compagnie est invalide'}).then()
-            return false;
-        }
-        if (!regexName.test(city)) {
-            toastErr.fire({title: 'Nom de ville est invalide'}).then()
-            return false;
-        }
-        if (!regexCodePostal.test(postalCode)) {
-            toastErr.fire({title: 'Code postal est invalide'}).then()
-            return false;
-        }
-        return true;
-    }
+
 
     return (<>
         <FormGroup>
-            <FormField>
+            <FormField myFor="companyName">
                 <label>Nom de la compagnie</label>
                 <input name="companyName" placeholder="Nom de compagnie"
                        type="text"
                        value={companyName} onChange={handleChange}/>
             </FormField>
-            <FormField>
+            <FormField myFor="city">
                 <label>Ville</label>
                 <input name="city" placeholder="Ville" type="text"
                        value={city} onChange={handleChange}/>
@@ -73,7 +43,7 @@ export default function StepMonitor({
             <FieldAddress label="Adresse de la compagnie" address={address} handleChange={handleChange}/>
         </FormGroup>
         <FormGroup>
-            <FormField>
+            <FormField myFor="postalCode">
                 <label>Code Postale</label>
                 <input name="postalCode" placeholder="XXX 123" type="text"
                        value={postalCode} onChange={handleChange}/>
@@ -92,4 +62,36 @@ export default function StepMonitor({
         </div>
     </>)
 
+}
+
+function verification(companyName, city, address, postalCode) {
+    if (!companyName) {
+        toastErr.fire({title: 'Nom de compagnie est vide'}).then()
+        return false
+    }
+    if (!city) {
+        toastErr.fire({title: 'Nom de ville est vide'}).then()
+        return false
+    }
+    if (!address) {
+        toastErr.fire({title: "L'adresse est vide"}).then()
+        return false
+    }
+    if (!postalCode) {
+        toastErr.fire({title: 'Code postal est vide'}).then()
+        return false
+    }
+    if (!regexName.test(companyName)) {
+        toastErr.fire({title: 'Nom de compagnie est invalide'}).then()
+        return false;
+    }
+    if (!regexName.test(city)) {
+        toastErr.fire({title: 'Nom de ville est invalide'}).then()
+        return false;
+    }
+    if (!regexCodePostal.test(postalCode)) {
+        toastErr.fire({title: 'Code postal est invalide'}).then()
+        return false;
+    }
+    return true;
 }

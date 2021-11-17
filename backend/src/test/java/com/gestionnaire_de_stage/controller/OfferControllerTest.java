@@ -93,6 +93,23 @@ public class OfferControllerTest {
     }
 
     @Test
+    public void testOfferCreate_withInvalidId() throws Exception {
+        OfferDTO dummyOfferDTO = getDummyOfferDTO();
+        dummyOfferDTO.setIdSession(null);
+        when(offerService.create(any())).thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/offers/add")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyOfferDTO)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).containsIgnoringCase("L'id de la session n'existe pas");
+    }
+
+    @Test
     public void testOfferCreate_withAlreadyExistingOffer() throws Exception {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOffer = getDummyOffer();
