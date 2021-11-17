@@ -50,6 +50,7 @@ export default function EvaluationIntern() {
         monitorSignature: ''
     });
 
+
     const handleChange = (event) => {
         const {value, name} = event.target;
 
@@ -146,11 +147,9 @@ export default function EvaluationIntern() {
                     <select required name='questionUn' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionUn}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
@@ -159,22 +158,18 @@ export default function EvaluationIntern() {
                     <select required name='questionDeux' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionDeux}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
                     <label>Maintenir un rythme de travail soutenu</label>
                     <select required name='questionTrois' value={monitorVisitForm.questionTrois}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
             </FormGroup>
@@ -184,11 +179,9 @@ export default function EvaluationIntern() {
                     <select required name='questionQuatre' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionQuatre}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
@@ -196,11 +189,9 @@ export default function EvaluationIntern() {
                     <select required name='questionCinq' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionCinq}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
             </FormGroup>
@@ -223,11 +214,9 @@ export default function EvaluationIntern() {
                     <select required name='questionSix' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionSix}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
@@ -236,11 +225,9 @@ export default function EvaluationIntern() {
                     <select required name='questionSept' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionSept}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
@@ -248,11 +235,9 @@ export default function EvaluationIntern() {
                     <select required name='questionHuit' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionHuit}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
             </FormGroup>
@@ -262,11 +247,9 @@ export default function EvaluationIntern() {
                     <select required name='questionNeuf' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionNeuf}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
@@ -274,11 +257,9 @@ export default function EvaluationIntern() {
                     <select required name='questionDix' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionDix}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
             </FormGroup>
@@ -302,33 +283,27 @@ export default function EvaluationIntern() {
                     <select required name='questionOnze' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionOnze}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
                     <label>Contribuer activement au travail d’équipe</label>
                     <select required name='questionDouze' value={monitorVisitForm.questionDouze}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
                     <label>S’adapter facilement à la culture de l’entreprise</label>
                     <select required name='questionTreize' value={monitorVisitForm.questionTreize}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
             </FormGroup>
@@ -338,11 +313,9 @@ export default function EvaluationIntern() {
                     <select required name='questionQuatorze' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionQuatorze}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
@@ -350,11 +323,9 @@ export default function EvaluationIntern() {
                     <select required name='questionQuinze' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionQuinze}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
@@ -363,11 +334,9 @@ export default function EvaluationIntern() {
                     <select required name='questionSeize' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionSeize}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
             </FormGroup>
@@ -392,11 +361,9 @@ export default function EvaluationIntern() {
                     <select required name='questionDixSept' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionDixSept}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                            value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
@@ -404,11 +371,8 @@ export default function EvaluationIntern() {
                     <select required name='questionDixHuit' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionDixHuit}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index} value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
@@ -416,11 +380,8 @@ export default function EvaluationIntern() {
                     <select required name='questionDixNeuf' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionDixNeuf}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index} value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
             </FormGroup>
@@ -430,11 +391,8 @@ export default function EvaluationIntern() {
                     <select required name='questionVingt' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionVingt}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index} value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
@@ -443,11 +401,8 @@ export default function EvaluationIntern() {
                     <select required name='questionVingtUn' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionVingtUn}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index} value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
@@ -455,11 +410,8 @@ export default function EvaluationIntern() {
                     <select required name='questionVingtDeux' title="Le champ doit être rempli"
                             value={monitorVisitForm.questionVingtDeux}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot en désaccord</option>
-                        <option value='TOTALEMENT_EN_DESACCORD'>Totalement en désaccord</option>
-                        <option value='NON_APPLICABLE'>N/A*</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index} value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
             </FormGroup>
@@ -482,11 +434,8 @@ export default function EvaluationIntern() {
                     <select required title={'Le champ doit être rempli'} name='appreciationGlobale'
                             value={monitorVisitForm.appreciationGlobale}
                             onChange={e => handleChange(e)}>
-                        <option value="DEPASSE_BEAUCOUP">dépassent de beaucoup les attentes</option>
-                        <option value="DEPASSE">dépassent les attentes</option>
-                        <option value='REPOND_PLEINEMENT'>répondent pleinement aux attentes</option>
-                        <option value='REPOND_PARTIELLEMENT'>répondent partiellement aux attentes</option>
-                        <option value='REPOND_PAS'>répondent pas aux attentes</option>
+                        <option disabled value="">Choisiser une appréciation</option>
+                        {Object.values(choixAppreciation).map((c, index) => <option key={index} value={c[0]}>{c[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
@@ -542,12 +491,14 @@ export default function EvaluationIntern() {
             <FormGroup>
                 <FormField>
                     <label>Nom</label>
-                    <input required type="text" title='Le nom est requis' name='nom' placeholder='Nom' value={monitorVisitForm.nom}
+                    <input required type="text" title='Le nom est requis' name='nom' placeholder='Nom'
+                           value={monitorVisitForm.nom}
                            onChange={e => handleChange(e)}/>
                 </FormField>
                 <FormField>
                     <label>Fonction</label>
-                    <input required type="text" placeholder='Fonction' name='fonctionDeux' title='La fonction est requise'
+                    <input required type="text" placeholder='Fonction' name='fonctionDeux'
+                           title='La fonction est requise'
                            value={monitorVisitForm.fonctionDeux} onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
@@ -568,4 +519,27 @@ export default function EvaluationIntern() {
             </button>
         </div>
     </form>
+}
+const choixAccords = {
+    TOTALEMENT_EN_ACCORD: ["TOTALEMENT_EN_ACCORD", "Totalement en accord"],
+    PLUTOT_EN_ACCORD: ['PLUTOT_EN_ACCORD', 'Plûtot en accord'],
+    PLUTOT_EN_DESACCORD: ['PLUTOT_EN_DESACCORD', 'Plûtot en désaccord'],
+    TOTALEMENT_EN_DESACCORD: ['TOTALEMENT_EN_DESACCORD', 'Totalement en désaccord'],
+    NON_APPLICABLE: ['NON_APPLICABLE', 'N/A*']
+}
+
+const choixAppreciation = {
+    DEPASSE_BEAUCOUP : ['DEPASSE_BEAUCOUP', 'dépassent de beaucoup les attentes'],
+    DEPASSE: ['DEPASSE', 'dépassent les attentes'],
+    REPOND_PLEINEMENT : ['REPOND_PLEINEMENT', 'Répondent pleinement aux attentes'],
+    REPOND_PARTIELLEMENT : ['REPOND_PARTIELLEMENT', 'Répondent partiellement aux attentes'],
+    REPOND_PAS: ['REPOND_PAS', 'répondent pas aux attentes']
+}
+
+function verification() {
+
+}
+
+function verificationQuestion(question) {
+    return question !== ""
 }
