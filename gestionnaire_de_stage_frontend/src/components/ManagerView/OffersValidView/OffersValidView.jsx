@@ -19,13 +19,14 @@ export default function OffersValidView() {
 
     return (
         <div className='container'>
-            <h2 className="text-center">Offres de Stage</h2>
             <ul>
-                {offers.map((offer, index) =>
-                    <li className={"mb-4"} key={index}>
-                        <OfferView offer={offer}/>
-                    </li>
-                )}
+                {offers.length > 0 ? (
+                        offers.map((offer, index) =>
+                            <li className={"mb-4"} key={index}>
+                                <OfferView offer={offer}/>
+                            </li>
+                        )) :
+                    <h3 className={"text-center mt-4"}>Aucune offre à afficher</h3>}
             </ul>
         </div>
     )

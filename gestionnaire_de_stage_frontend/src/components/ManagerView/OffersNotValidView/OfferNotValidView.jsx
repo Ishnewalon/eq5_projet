@@ -16,16 +16,16 @@ export default function OfferNotValidView() {
             });
     }, [])
 
-// TODO: show msg when no offers
     return (
         <div className='container'>
-            <h2 className="text-center mb-4">Offres de Stage non validées</h2>
             <ul>
-                {offers.map((offer, index) =>
-                    <li className={"mb-3"} key={index}>
-                        <OfferView offer={offer}/>
-                    </li>
-                )}
+                {offers.length > 0 ? (
+                        offers.map((offer, index) =>
+                            <li className={"mb-4"} key={index}>
+                                <OfferView offer={offer}/>
+                            </li>
+                        )) :
+                    <h3 className={"text-center mt-4"}>Aucune offre à afficher</h3>}
             </ul>
         </div>
     )

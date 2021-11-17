@@ -15,10 +15,11 @@ export default function OfferAppRapportView() {
                 setOfferApplications(data)
             })
     }, [student.id])
+
     return (
-        <>
+        <div>
             <h1 className="text-center mt-5 mb-3">
-                Le status des applications de l'étudiant: {student.firstName} {student.lastName}
+                Le status des applications de: {student.firstName} {student.lastName}
             </h1>
             <Table>
                 <TableHeader>
@@ -35,5 +36,6 @@ export default function OfferAppRapportView() {
                 ))}
             </Table>
             <Link to="/dashboard/rapports/6" className="btn btn-primary">Retour</Link>
-        </>)
+        </div>
+    )
 }

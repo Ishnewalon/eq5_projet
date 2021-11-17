@@ -35,31 +35,33 @@ export default function AllStudentStatusView() {
 
     return (
         <div>
-            <h2 className="text-center">Status de tous les étudiants</h2>
-            <Table className={"w-75 mx-auto"}>
-                <TableHeader>
-                    <th>#</th>
-                    <th>Étudiant</th>
-                    <th>Nombre d'application</th>
-                    <th>Voir les applications</th>
-                </TableHeader>
-                {studentList.map((student, index) =>
-                    <TableRow key={index}>
-                        <td>{student.id}</td>
-                        <td>{student.firstName} {student.lastName}</td>
-                        <td>{offerList.length > 0 ? offerList[index].length : 0}</td>
-                        <td>
-                            <button className="btn btn-primary"
-                                    onClick={() => history.push({
-                                        pathname: "offer",
-                                        state: {student :student}
-                                    })}>
-                                Voir
-                            </button>
-                        </td>
-                    </TableRow>
-                )}
-            </Table>
+            {/* TODO UX A REVOIR SI LISTE VIDE*/}
+            {studentList.length > 0 ?
+                <Table className={"w-75 mx-auto"}>
+                    <TableHeader>
+                        <th>#</th>
+                        <th>Étudiant</th>
+                        <th>Nombre d'application</th>
+                        <th>Voir les applications</th>
+                    </TableHeader>
+                    {studentList.map((student, index) =>
+                        <TableRow key={index}>
+                            <td>{student.id}</td>
+                            <td>{student.firstName} {student.lastName}</td>
+                            <td>{offerList.length > 0 ? offerList[index].length : 0}</td>
+                            <td>
+                                <button className="btn btn-primary"
+                                        onClick={() => history.push({
+                                            pathname: "offer",
+                                            state: {student: student}
+                                        })}>
+                                    Voir
+                                </button>
+                            </td>
+                        </TableRow>
+                    )}
+                </Table> :
+                <h3>Aucun étudiant n'a appliqué</h3>}
         </div>
     )
 }
