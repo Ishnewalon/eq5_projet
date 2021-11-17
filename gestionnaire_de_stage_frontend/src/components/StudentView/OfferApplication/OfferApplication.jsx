@@ -4,12 +4,12 @@ import OfferApp from "../../../models/OfferApp";
 import OfferView from "../../OfferView/OfferView";
 import {useAuth} from "../../../services/use-auth";
 
-export default function OfferApplication({offer}) {
+export default function OfferApplication({offer, removeFromList}) {
     let auth = useAuth();
     const apply = offerId => e => {
         e.preventDefault();
-
-        applyToOffer(new OfferApp(offerId, auth.user.id)).then();
+        applyToOffer(new OfferApp(offerId, auth.user.id)).then(
+            () => removeFromList(offerId));
     }
 
     return (

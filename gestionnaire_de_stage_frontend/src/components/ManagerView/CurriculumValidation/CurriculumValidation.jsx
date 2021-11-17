@@ -18,7 +18,9 @@ export default function CurriculumValidation() {
             });
     }, [])
 
-
+    const removeFromList = (id) => {
+        setCurriculumList(prev => prev.filter(items => items.id !== id))
+    }
     const downloadStudentCv = (cv) => {
         const {id} = cv
         downloadCV(id).then(
@@ -39,7 +41,8 @@ export default function CurriculumValidation() {
 
 
     const validateCv = (id, valid) => {
-        validateCurriculum(id, valid).then();
+        validateCurriculum(id, valid).then(
+            () => removeFromList(id));
     }
 
     return (

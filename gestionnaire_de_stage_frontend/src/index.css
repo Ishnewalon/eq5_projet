@@ -31,18 +31,28 @@ code {
     monospace;
 }
 
+li {
+    list-style-type: none;
+}
+
+ul {
+    padding: 0;
+}
 
 /********
 Custom BS
 *********/
 .btn {
-    padding: 8px 20px!important;
+    padding: 8px 20px !important;
     border-radius: 0 !important;
-    overflow: hidden;
+    overflow: hidden !important;
+    border: 1px solid #cdd6e0ff !important;
+    letter-spacing: 1px !important;
+    cursor: pointer !important;
 }
 
 .link, .btn-link {
-    font-weight: bold!important;
+    font-weight: bold !important;
     color: var(--color-primary) !important;
 }
 
@@ -53,19 +63,15 @@ Custom BS
 .btn-primary {
     background: var(--color-primary) !important;
     border: var(--color-primary) !important;
-    padding: 10px 30px 10px;
-    border: 1px solid #cdd6e0ff;
-    letter-spacing: 1px;
-    cursor: pointer;
     background-color: #dc7718ff;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
     background: var(--color-primary-hover) !important;
+    background-color: #b05f13;
     border-color: rgba(var(--color-rgb-primary), 0.8) !important;
     box-shadow: 0 1px 1px rgba(var(--color-rgb-primary), 0.075) inset, 0 0 8px rgba(var(--color-rgb-primary), 0.6) !important;
     outline: 0 none !important;
-    background-color: #b05f13;
 }
 
 /*********************
@@ -73,6 +79,9 @@ Adapt color to bg-dark
 **********************/
 .bg-dark {
     background-color: var(--color-bg-dark) !important;
+}
+
+.bg-dark > h1, .bg-dark > h2, .bg-dark > h3, .bg-dark > h4, .bg-dark > h5, .bg-dark > h6 {
     color: var(--color-light) !important;
 }
 
@@ -99,6 +108,10 @@ Adapt color to bg-dark
     outline: 0 none !important;
 }
 
+.bg-light{
+    background-color: var(--color-light) !important;
+}
+
 .text-white {
     color: var(--color-light);
 }
@@ -123,9 +136,4 @@ Adapt color to bg-dark
 .reject {
     border-color: #d83b01 !important;
 }
-li {
-    list-style-type: none;
-}
-ul {
-    padding: 0;
-}
+

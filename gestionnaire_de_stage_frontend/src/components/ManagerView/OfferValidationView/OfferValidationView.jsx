@@ -38,8 +38,8 @@ export default function OfferValidationView() {
             })
     }, [offers])
 
-    const setOfferValidated = (id) => {
-        setOffers(offers.filter(items => items.id !== id))
+    const removeFromList = (id) => {
+        setOffers(prev => prev.filter(items => items.id !== id))
     }
 
     return (
@@ -59,7 +59,7 @@ export default function OfferValidationView() {
                 <ul>
                     {visibleOffers.map(offer =>
                         <li key={offer.id}>
-                            <OfferValidation offer={offer} removeFromList={setOfferValidated}/>
+                            <OfferValidation offer={offer} removeFromList={removeFromList}/>
                         </li>
                     )}
                 </ul>
@@ -71,8 +71,7 @@ export default function OfferValidationView() {
 function OfferValidation({offer, removeFromList}) {
     const validate = (offer, isValid) => {
         validateOffer(offer.id, isValid).then(
-            () => removeFromList(offer.id)
-        )
+            () => removeFromList(offer.id))
     }
     return <>
         <OfferView offer={offer}/>
