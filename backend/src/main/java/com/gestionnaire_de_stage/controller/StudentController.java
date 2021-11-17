@@ -76,4 +76,16 @@ public class StudentController {
         List<Student> studentList = studentService.getAllUnassignedStudents();
         return ResponseEntity.ok(studentList);
     }
+
+    @GetMapping("/not_evaluated")
+    public ResponseEntity<?> getAllStudentsNotYetEvaluated() {
+        return ResponseEntity.ok(
+                studentService.getAllStudentsNotYetEvaluated());
+    }
+
+    @GetMapping("/company_not_evaluated")
+    public ResponseEntity<?> getAllStudentsWithCompanyNotYetEvaluated() {
+        return ResponseEntity.ok(
+                studentService.getAllStudentsWithCompanyNotYetEvaluated());
+    }
 }

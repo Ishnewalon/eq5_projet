@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -193,6 +194,48 @@ public class StudentControllerTest {
         List<Student> actualStudentList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualStudentList).isEqualTo(list);
+    }
+
+    @Test
+    public void testGetAllStudentsNotYetEvaluated() throws Exception {
+        List<Student> dummyStudentList = getDummyStudentList();
+        when(studentService.getAllStudentsNotYetEvaluated()).thenReturn(dummyStudentList);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/not_evaluated")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        final List<Student> actualStudentList =
+                MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualStudentList.size()).isEqualTo(dummyStudentList.size());
+    }
+
+    @Test
+    public void testGetAllStudentsWithCompanyNotYetEvaluated() throws Exception {
+        List<Student> dummyStudentList = getDummyStudentList();
+        when(studentService.getAllStudentsWithCompanyNotYetEvaluated()).thenReturn(dummyStudentList);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/company_not_evaluated")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        final List<Student> actualStudentList =
+                MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualStudentList.size()).isEqualTo(dummyStudentList.size());
+    }
+
+    private List<Student> getDummyStudentList() {
+        List<Student> dummyStudentList = new ArrayList<>();
+        Long idIterator = 1L;
+        for (int i = 0; i < 3; i++) {
+            Student dummyStudent = getDummyStudent();
+            dummyStudent.setId(idIterator);
+            dummyStudentList.add(dummyStudent);
+            idIterator++;
+        }
+        return dummyStudentList;
     }
 
     private Student getDummyStudent() {
