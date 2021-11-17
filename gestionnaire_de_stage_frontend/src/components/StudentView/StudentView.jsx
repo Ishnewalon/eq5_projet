@@ -8,6 +8,7 @@ import OfferApplicationSetFinalStatus from "./OfferApplicationSetFinalStatus/Off
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useAuth} from "../../services/use-auth";
 import StudentContractView from "./StudentContractView/StudentContractView";
+import CurriculumTable from "./CurriculumTable/CurriculumTable";
 import {Title} from "../SharedComponents/Title/Title";
 
 export default function StudentView() {
@@ -19,6 +20,9 @@ export default function StudentView() {
                 <ContainerBox>
                     <TeleverserCv/>
                 </ContainerBox>
+            </Route>
+            <Route exact path={`${path}/mes_cv`}>
+                <CurriculumTable />
             </Route>
             <Route exact path={`${path}/offres`}>
                 <Title>Offres de stage</Title>
