@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Contrat de Stage</title>
+	</head>
+	<body>
+		<div style='page-break-after: always;text-align:center;'>
+			<h1 style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;text-transform:uppercase'>
+				fiche d'évalutation du stagiaire
+			</h1>
+			<br>
+			
+			<table style="border-collapse:collapse;border: 1pt solid windowtext;margin-left:auto;margin-right:auto;">
+				<tbody>
+					<tr>
+						<td style="width: 548pt;padding: 0cm 3.5pt;vertical-align: top;text-align: left;">
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;'>
+								Nom de l'élève : <span th:text="${formInfo.nomStagiaire}"></span>
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;'>
+								Programme d'études : <span th:text="${formInfo.programmeEtudes}"></span>
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;'>
+								Nom de l'entreprise : <span th:text="${formInfo.entrepriseNom}"></span>
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;'>
+								Nom du superviseur : <span th:text="${formInfo.nom}"></span>
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;'>
+								Fonction : <span th:text="${formInfo.fonctionUn}"></span>
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:3.0pt;margin-left:0cm;'>
+								Téléphone : <span th:text="${formInfo.phone}"></span>
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<br>
+			
+			<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;font-weight:bold;'>
+				Veuillez cocher les comportements observés chez le stagiaire et formuler des commentaires s’il y a lieu.
+			</p>
+			
+			<br>
+			
+			<table style="border-collapse:separate;border:1pt solid windowtext;margin-left:auto;margin-right:auto;">
+				<tr>
+					<th colspan="6" style="border-bottom:1pt solid windowtext;">
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;font-weight:bold;'>
+							1. Productivité
+						</p>
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+							Capacité d'optimiser son rendement au travail
+						</p>
+					</th>
+				</tr>
+					
+				<tbody>
+					<tr>
+						<td style='width:237.5pt;text-align:left;'>Le stagiaire a été en mesure de: </td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement en accord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt en accord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt en désaccord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement en désaccord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>N/A*</td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								a) Planifier et organiser son travail de façon efficace
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="productiviteA" th:checked="${formInfo.questionUn == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="productiviteA" th:checked="${formInfo.questionUn == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="productiviteA" th:checked="${formInfo.questionUn == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="productiviteA" th:checked="${formInfo.questionUn == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="productiviteA" th:checked="${formInfo.questionUn == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								b) Comprendre rapidement les directives relatives à son travail
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="productiviteB" th:checked="${formInfo.questionDeux == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="productiviteB" th:checked="${formInfo.questionDeux == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="productiviteB" th:checked="${formInfo.questionDeux == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="productiviteB" th:checked="${formInfo.questionDeux == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="productiviteB" th:checked="${formInfo.questionDeux == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								c) Maintenir un rythme de travail soutenu
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="productiviteC" th:checked="${formInfo.questionTrois == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="productiviteC" th:checked="${formInfo.questionTrois == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="productiviteC" th:checked="${formInfo.questionTrois == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="productiviteC" th:checked="${formInfo.questionTrois == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="productiviteC" th:checked="${formInfo.questionTrois == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								d) Établir ses priorités
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="productiviteD" th:checked="${formInfo.questionQuatre == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="productiviteD" th:checked="${formInfo.questionQuatre == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="productiviteD" th:checked="${formInfo.questionQuatre == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="productiviteD" th:checked="${formInfo.questionQuatre == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="productiviteD" th:checked="${formInfo.questionQuatre == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								e) Respecter ses échéanciers
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="productiviteE" th:checked="${formInfo.questionCinq == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="productiviteE" th:checked="${formInfo.questionCinq == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="productiviteE" th:checked="${formInfo.questionCinq == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="productiviteE" th:checked="${formInfo.questionCinq == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="productiviteE" th:checked="${formInfo.questionCinq == 'NON_APPLICABLE'}"></td>
+					</tr>
+					
+					<tr>
+						<td colspan="6">
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;font-weight:bold;'>
+								Commentaire:
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								<span th:text="${formInfo.commentairesUn}"></span>
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;font-weight:bold;'>
+				* N/A = Non applicable
+			</p>
+			<br>
+		</div>
+
+		<div style='page-break-after: always;text-align:center;'>
+			<table style="border-collapse:separate;border:1pt solid windowtext;margin-left:auto;margin-right:auto;">
+				<tr>
+					<th colspan="6" style="border-bottom:1pt solid windowtext;">
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;font-weight:bold;'>
+							2. Qualité du travail
+						</p>
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+							Capacité de s'acquitter des tâches sous sa responsabilité en s'imposant personnellement des normes de qualité
+						</p>
+					</th>
+				</tr>
+					
+				<tbody>
+					<tr>
+						<td style='width:237.5pt;text-align:left;'>Le stagiaire a été en mesure de: </td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement en accord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt en accord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt en désaccord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement en désaccord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>N/A*</td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								a) Respecter les mandats qui lui ont été confiés
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailA" th:checked="${formInfo.questionSix == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailA" th:checked="${formInfo.questionSix == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailA" th:checked="${formInfo.questionSix == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailA" th:checked="${formInfo.questionSix == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailA" th:checked="${formInfo.questionSix == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								b) Porter attention aux détails dans la réalisation de ses tâches
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailB" th:checked="${formInfo.questionSept == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailB" th:checked="${formInfo.questionSept == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailB" th:checked="${formInfo.questionSept == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailB" th:checked="${formInfo.questionSept == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailB" th:checked="${formInfo.questionSept == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								c) Vérifier son travail, s'assurer que rien n'a été oublié
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailC" th:checked="${formInfo.questionHuit == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailC" th:checked="${formInfo.questionHuit == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailC" th:checked="${formInfo.questionHuit == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailC" th:checked="${formInfo.questionHuit == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailC" th:checked="${formInfo.questionHuit == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								d) Rechercher des occasions de se perfectionner
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailD" th:checked="${formInfo.questionNeuf == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailD" th:checked="${formInfo.questionNeuf == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailD" th:checked="${formInfo.questionNeuf == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailD" th:checked="${formInfo.questionNeuf == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailD" th:checked="${formInfo.questionNeuf == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								e) Faire une bonne analyse des problèmes rencontrés
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailE" th:checked="${formInfo.questionDix == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailE" th:checked="${formInfo.questionDix == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailE" th:checked="${formInfo.questionDix == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailE" th:checked="${formInfo.questionDix == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteTravailE" th:checked="${formInfo.questionDix == 'NON_APPLICABLE'}"></td>
+					</tr>
+					
+					<tr>
+						<td colspan="6">
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;font-weight:bold;'>
+								Commentaire:
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								<span th:text="${formInfo.commentairesDeux}"></span>
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<br>
+			
+			<table style="border-collapse:separate;border:1pt solid windowtext;margin-left:auto;margin-right:auto;">
+				<tr>
+					<th colspan="6" style="border-bottom:1pt solid windowtext;">
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;font-weight:bold;'>
+							3. Qualités des relations interpersonnelles
+						</p>
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+							Capacité d’établir des interrelations harmonieuses dans son milieu de travail
+						</p>
+					</th>
+				</tr>
+					
+				<tbody>
+					<tr>
+						<td style='width:237.5pt;text-align:left;'>Le stagiaire a été en mesure de: </td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement en accord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt en accord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt en désaccord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement en désaccord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>N/A*</td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								a) Établir facilement des contacts avec les gens
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationA" th:checked="${formInfo.questionOnze == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationA" th:checked="${formInfo.questionOnze == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationA" th:checked="${formInfo.questionOnze == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationA" th:checked="${formInfo.questionOnze == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationA" th:checked="${formInfo.questionOnze == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								b) Contribuer activement au travail d'équipe
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationB" th:checked="${formInfo.questionDouze == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationB" th:checked="${formInfo.questionDouze == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationB" th:checked="${formInfo.questionDouze == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationB" th:checked="${formInfo.questionDouze == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationB" th:checked="${formInfo.questionDouze == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								c) S’adapter facilement à la culture de l’entreprise
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationC" th:checked="${formInfo.questionTreize == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationC" th:checked="${formInfo.questionTreize == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationC" th:checked="${formInfo.questionTreize == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationC" th:checked="${formInfo.questionTreize == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationC" th:checked="${formInfo.questionTreize == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								d) Accepter les critiques constructives
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationD" th:checked="${formInfo.questionQuatorze == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationD" th:checked="${formInfo.questionQuatorze == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationD" th:checked="${formInfo.questionQuatorze == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationD" th:checked="${formInfo.questionQuatorze == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationD" th:checked="${formInfo.questionQuatorze == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								e) Être respectueux envers les gens
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationE" th:checked="${formInfo.questionQuinze == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationE" th:checked="${formInfo.questionQuinze == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationE" th:checked="${formInfo.questionQuinze == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationE" th:checked="${formInfo.questionQuinze == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationE" th:checked="${formInfo.questionQuinze == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								f) Faire preuve d’écoute active en essayant de comprendre le point de vue de l’autre
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationF" th:checked="${formInfo.questionSeize == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationF" th:checked="${formInfo.questionSeize == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationF" th:checked="${formInfo.questionSeize == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationF" th:checked="${formInfo.questionSeize == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="qualiteRelationF" th:checked="${formInfo.questionSeize == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;font-weight:bold;'>
+								Commentaire:
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								<span th:text="${formInfo.commentairesTrois}"></span>
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table style="border-collapse:separate;border:1pt solid windowtext;margin-left:auto;margin-right:auto;">
+				<tr>
+					<th colspan="6" style="border-bottom:1pt solid windowtext;">
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;font-weight:bold;'>
+							4. Habiletés personnelles
+						</p>
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+							Capacité de faire preuve d’attitudes ou de comportements matures et responsables
+						</p>
+					</th>
+				</tr>
+					
+				<tbody>
+					<tr>
+						<td style='width:237.5pt;text-align:left;'>Le stagiaire a été en mesure de: </td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement en accord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt en accord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt en désaccord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement en désaccord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>N/A*</td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								a) Démontrer de l’intérêt et de la motivation au travail
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="habileteA" th:checked="${formInfo.questionDixSept == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteA" th:checked="${formInfo.questionDixSept == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteA" th:checked="${formInfo.questionDixSept == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteA" th:checked="${formInfo.questionDixSept == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteA" th:checked="${formInfo.questionDixSept == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								b) Exprimer clairement ses idées
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="habileteB" th:checked="${formInfo.questionDixHuit == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteB" th:checked="${formInfo.questionDixHuit == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteB" th:checked="${formInfo.questionDixHuit == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteB" th:checked="${formInfo.questionDixHuit == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteB" th:checked="${formInfo.questionDixHuit == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								c) Faire preuve d’initiative
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="habileteC" th:checked="${formInfo.questionDixNeuf == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteC" th:checked="${formInfo.questionDixNeuf == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteC" th:checked="${formInfo.questionDixNeuf == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteC" th:checked="${formInfo.questionDixNeuf == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteC" th:checked="${formInfo.questionDixNeuf == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								d) Travailler de façon sécuritaire
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="habileteD" th:checked="${formInfo.questionVingt == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteD" th:checked="${formInfo.questionVingt == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteD" th:checked="${formInfo.questionVingt == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteD" th:checked="${formInfo.questionVingt == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteD" th:checked="${formInfo.questionVingt == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								e) Démontrer un bon sens des responsabilités ne requérant qu’un minimum de supervision
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="habileteE" th:checked="${formInfo.questionVingtUn == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteE" th:checked="${formInfo.questionVingtUn == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteE" th:checked="${formInfo.questionVingtUn == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteE" th:checked="${formInfo.questionVingtUn == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteE" th:checked="${formInfo.questionVingtUn == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								f) Être ponctuel et assidu à son travail
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="habileteF" th:checked="${formInfo.questionVingtDeux == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteF" th:checked="${formInfo.questionVingtDeux == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteF" th:checked="${formInfo.questionVingtDeux == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteF" th:checked="${formInfo.questionVingtDeux == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="habileteF" th:checked="${formInfo.questionVingtDeux == 'NON_APPLICABLE'}"></td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;font-weight:bold;'>
+								Commentaire:
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+								<span th:text="${formInfo.commentairesQuatre}"></span>
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;font-weight:bold;'>
+				* N/A = Non applicable
+			</p>
+		</div>
+		<div style='page-break-after: always;text-align:center;'>
+			<table style="border-collapse:separate;border:1pt solid windowtext;margin-left:auto;margin-right:auto;text-align:left;">
+				<tr>
+					<th colspan="2" >
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;font-weight:bold;text-align:center;'>
+							Appréciation globale du stagiaire
+						</p>
+					</th>
+				</tr>
+					
+				<tbody>
+					<tr>
+						<td style='width:350pt;'>Les habiletés démontrées dépassent de beaucoup les attentes</td>
+						<td style='width:210pt;font-family:"Arial",sans-serif;'>
+							<input type="radio" name="appreciation" th:checked="${formInfo.appreciationGlobale == 'DEPASSE_BEAUCOUP'}">
+						</td>
+					</tr>
+					<tr>
+						<td style='width:350pt;'>Les habiletés démontrées dépassent les attentes</td>
+						<td style='width:210pt;font-family:"Arial",sans-serif;'>
+							<input type="radio" name="appreciation" th:checked="${formInfo.appreciationGlobale == 'DEPASSE'}">
+						</td>
+					</tr>
+					<tr>
+						<td style='width:350pt;'>Les habiletés démontrées répondent pleinement aux attentes</td>
+						<td style='width:210pt;font-family:"Arial",sans-serif;'>
+							<input type="radio" name="appreciation" th:checked="${formInfo.appreciationGlobale == 'REPOND_PLEINEMENT'}">
+						</td>
+					</tr>
+					<tr>
+						<td style='width:350pt;'>Les habiletés démontrées répondent partiellement aux attentes</td>
+						<td style='width:210pt;font-family:"Arial",sans-serif;'>
+							<input type="radio" name="appreciation" th:checked="${formInfo.appreciationGlobale == 'REPOND_PARTIELLEMENT'}">
+						</td>
+					</tr>
+					<tr>
+						<td style='width:350pt;'>Les habiletés démontrées ne répondent pas aux attentes</td>
+						<td style='width:210pt;font-family:"Arial",sans-serif;'>
+							<input type="radio" name="appreciation" th:checked="${formInfo.appreciationGlobale == 'REPOND_PAS'}">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;font-weight:bold;'>
+								Précisez votre appréciation:
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								<span th:text="${formInfo.commentairesCinq}"></span>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								Cette évaluation a été discutée avec le stagiaire :		
+								<span>
+									Oui <input type="radio" name="discute" th:checked="${formInfo.evaluationDiscuteAvecEtudiant}">		
+									Non	<input type="radio" name="discute" th:checked="${!formInfo.evaluationDiscuteAvecEtudiant}">
+								</span>
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<br>
+			
+			<table style="border-collapse:separate;border:1pt solid windowtext;margin-left:auto;margin-right:auto;text-align:left;">
+				<tr>
+					<td style="width: 565pt">
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+							Veuillez indiquer le nombre d’heures réel par semaine d’encadrement accordé au stagiaire :
+							<span th:text="${formInfo.nbHeuresReelTravailEtudiant}"></span>
+						</p>
+					</td>
+				</tr>
+			</table>
+		<br>
+		<table style="border-collapse:separate;border:1pt solid windowtext;margin-left:auto;margin-right:auto;text-align:center;">
+				<tr>
+					<td style="width:565pt">
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+							L’entreprise aimerait accueillir cet élève pour son prochain stage :
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td >
+						<label>Oui</label>
+						<input type="radio" name="discute" th:checked="${formInfo.entrepriseApprecieEtudiant}">	
+						<label>Non</label>
+						<input type="radio" name="discute" th:checked="${!formInfo.entrepriseApprecieEtudiant}">							
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+							La formation technique du stagiaire était-elle suffisante pour accomplir le mandat de stage?
+						</p>
+						<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;text-align:left;'>
+							<span th:text="${formInfo.formationSuffisanteCommentaire}"></span>
+						</p>
+					</td>
+				</tr>
+			</table>
+			<br>
+			
+			<table style='border-collapse:seperate;border-spacing:75px 5px;margin-left:auto;margin-right:auto;'>
+				<tbody>
+					<tr>
+						<td style='width:200pt;'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								<span>${formInfo.nom}</span>
+							</p>
+						</td>
+						<td style='width:200pt;'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								<span>${formInfo.fonctionDeux}</span>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td style='border-top:1pt solid black'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								Nom du moniteur
+							</p>
+						</td>
+						<td style='border-top:1pt solid black'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								Fonction
+							</p>
+						</td>
+					</tr>
+					
+					
+					<tr>
+						<td style='width:200pt;'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								<span>${formInfo.monitorSignature}</span>
+							</p>
+						</td>
+						<td style='width:200pt;'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								<span>${formInfo.dateSignature}</span>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td style='border-top:1pt solid black'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								Signature du moniteur
+							</p>
+						</td>
+						<td style='border-top:1pt solid black'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								Date
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		
+		</div>
+	</body>
+</html>

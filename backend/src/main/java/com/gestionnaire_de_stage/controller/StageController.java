@@ -90,7 +90,7 @@ public class StageController {
     public ResponseEntity<?> fillEvalStagiairePDF(@RequestBody EvalStagiaireDTO evalStagiaireDTO) {
         Stage stage;
         try {
-            stage = stageService.getStageByStudentEmail(evalStagiaireDTO.getCourrielEtudiant());
+            stage = stageService.getStageByStudentEmail(evalStagiaireDTO.getEmailEtudiant());
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
             stageService.addEvalStagiaire(stage, baos);
