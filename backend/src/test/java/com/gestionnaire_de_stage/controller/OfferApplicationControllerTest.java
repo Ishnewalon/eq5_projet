@@ -371,10 +371,10 @@ class OfferApplicationControllerTest {
     }
 
     @Test
-    public void testGetAllOffersByStudentsApplied() throws Exception {
+    public void testGetAllOffersByStudentsAppliedByStatus() throws Exception {
         List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
         Student dummyStudent = getDummyStudent();
-        when(offerApplicationService.getAllOffersStudentApplied(any())).thenReturn(offerApplicationsList);
+        when(offerApplicationService.getAllOffersStudentAppliedAndStatusWaiting(any())).thenReturn(offerApplicationsList);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/applications/applicants/student/" + dummyStudent.getId())
@@ -389,9 +389,9 @@ class OfferApplicationControllerTest {
     }
 
     @Test
-    public void testGetAllOffersByStudentApplied_withIdNull() throws Exception {
+    public void testGetAllOffersByStudentAppliedByStatus_withIdNull() throws Exception {
         Student dummyStudent = getDummyStudent();
-        when(offerApplicationService.getAllOffersStudentApplied(any()))
+        when(offerApplicationService.getAllOffersStudentAppliedAndStatusWaiting(any()))
                 .thenThrow(new IllegalArgumentException("L'id du student ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
@@ -405,9 +405,9 @@ class OfferApplicationControllerTest {
     }
 
     @Test
-    public void testGetAllOffersByStudentApplied_withInvalidId() throws Exception {
+    public void testGetAllOffersByStudentAppliedByStatus_withInvalidId() throws Exception {
         Student dummyStudent = getDummyStudent();
-        when(offerApplicationService.getAllOffersStudentApplied(any()))
+        when(offerApplicationService.getAllOffersStudentAppliedAndStatusWaiting(any()))
                 .thenThrow(new IdDoesNotExistException());
 
         MvcResult mvcResult = mockMvc.perform(
@@ -490,6 +490,56 @@ class OfferApplicationControllerTest {
 
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Offre non existante!");
+    }
+
+    @Test
+    public void testGetAllOffersByStudentsApplied() throws Exception {
+        List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
+        Student dummyStudent = getDummyStudent();
+        when(offerApplicationService.getAllOffersStudentApplied(any())).thenReturn(offerApplicationsList);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/applications/applicants/offerApp/student/" + dummyStudent.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        List<OfferApplication> actualList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualList.size()).isEqualTo(offerApplicationsList.size());
+    }
+
+    @Test
+    public void testGetAllOffersByStudentApplied_withIdNull() throws Exception {
+        Student dummyStudent = getDummyStudent();
+        when(offerApplicationService.getAllOffersStudentApplied(any()))
+                .thenThrow(new IllegalArgumentException("L'id du student ne peut pas être null"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/applications/applicants/offerApp/student/" + dummyStudent.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'id du student ne peut pas être null");
+    }
+
+    @Test
+    public void testGetAllOffersByStudentApplied_withInvalidId() throws Exception {
+        Student dummyStudent = getDummyStudent();
+        when(offerApplicationService.getAllOffersStudentApplied(any()))
+                .thenThrow(new IdDoesNotExistException());
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/applications/applicants/offerApp/student/" + dummyStudent.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'étudiant n'existe pas");
     }
 
     private OfferAppDTO getDummyOfferAppDto() {

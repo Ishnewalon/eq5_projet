@@ -169,7 +169,7 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    void testGetAllByOfferStudentApplied() throws IdDoesNotExistException {
+    void testGetAllByOfferStudentAppliedByStatus() throws IdDoesNotExistException {
         List<OfferApplication> offerApplicationList = getDummyOfferAppList();
         Student dummyStudent = getDummyStudent();
         when(studentService.getOneByID(any())).thenReturn(dummyStudent);
@@ -177,19 +177,19 @@ class OfferApplicationServiceTest {
                 .thenReturn(offerApplicationList);
 
         List<OfferApplication> actualOfferAppList = offerApplicationService
-                .getAllOffersStudentApplied(dummyStudent.getId());
+                .getAllOffersStudentAppliedAndStatusWaiting(dummyStudent.getId());
 
         assertThat(actualOfferAppList.size()).isEqualTo(offerApplicationList.size());
         assertThat(actualOfferAppList).isEqualTo(offerApplicationList);
     }
 
     @Test
-    void testGetAllByOfferStudentApplied_withIdInvalid() throws IdDoesNotExistException {
+    void testGetAllByOfferStudentApplied_withIdInvalidByStatus() throws IdDoesNotExistException {
         Student dummyStudent = getDummyStudent();
         when(studentService.getOneByID(any())).thenReturn(null);
 
         assertThrows(IdDoesNotExistException.class,
-                () -> offerApplicationService.getAllOffersStudentApplied(dummyStudent.getId()));
+                () -> offerApplicationService.getAllOffersStudentAppliedAndStatusWaiting(dummyStudent.getId()));
     }
 
     @Test
@@ -244,6 +244,30 @@ class OfferApplicationServiceTest {
         String isAccepted = offerApplicationService.updateStatus(updateStatusDTO);
 
         assertThat(isAccepted).contains("Status changé, stage refusé");
+    }
+
+    @Test
+    void testGetAllByOfferStudentApplied() throws IdDoesNotExistException {
+        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
+        Student dummyStudent = getDummyStudent();
+        when(studentService.getOneByID(any())).thenReturn(dummyStudent);
+        when(offerApplicationRepository.getAllByCurriculum_StudentId(dummyStudent.getId()))
+                .thenReturn(offerApplicationList);
+
+        List<OfferApplication> actualOfferAppList = offerApplicationService
+                .getAllOffersStudentApplied(dummyStudent.getId());
+
+        assertThat(actualOfferAppList.size()).isEqualTo(offerApplicationList.size());
+        assertThat(actualOfferAppList).isEqualTo(offerApplicationList);
+    }
+
+    @Test
+    void testGetAllByOfferStudentApplied_withIdInvalid() throws IdDoesNotExistException {
+        Student dummyStudent = getDummyStudent();
+        when(studentService.getOneByID(any())).thenReturn(null);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerApplicationService.getAllOffersStudentApplied(dummyStudent.getId()));
     }
 
     @Test

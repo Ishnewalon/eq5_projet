@@ -16,4 +16,5 @@ public interface OfferApplicationRepository extends JpaRepository<OfferApplicati
     List<OfferApplication> getAllByStatus(Status status);
     List<OfferApplication> getAllByStatusAndCurriculum_StudentId(Status status, Long id);
     List<OfferApplication> findAllByCurriculum_Student_Supervisor_Id(Long id);
+    List<OfferApplication> getAllByCurriculum_StudentId(Long id);
 }
