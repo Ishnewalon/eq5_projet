@@ -4,6 +4,7 @@ import {Table, TableHeader, TableRow} from "../../../../SharedComponents/Table/T
 import {useAuth} from "../../../../../services/use-auth";
 import {getStudentApplicationsOffer} from "../../../../../services/offerAppService";
 import {useHistory} from "react-router-dom";
+import MessageNothingToShow from "../../../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function AllStudentStatusView() {
 
@@ -33,35 +34,36 @@ export default function AllStudentStatusView() {
             })
     }, [auth.user.id]);
 
+    if (studentList.length === 0)
+        return <MessageNothingToShow message="Aucun étudiant n'a appliqué"/>
+
     return (
         <div>
             {/* TODO UX A REVOIR SI LISTE VIDE*/}
-            {studentList.length > 0 ?
-                <Table className={"w-75 mx-auto"}>
-                    <TableHeader>
-                        <th>#</th>
-                        <th>Étudiant</th>
-                        <th>Nombre d'application</th>
-                        <th>Voir les applications</th>
-                    </TableHeader>
-                    {studentList.map((student, index) =>
-                        <TableRow key={index}>
-                            <td>{student.id}</td>
-                            <td>{student.firstName} {student.lastName}</td>
-                            <td>{offerList.length > 0 ? offerList[index].length : 0}</td>
-                            <td>
-                                <button className="btn btn-primary"
-                                        onClick={() => history.push({
-                                            pathname: "offer",
-                                            state: {student: student}
-                                        })}>
-                                    Voir
-                                </button>
-                            </td>
-                        </TableRow>
-                    )}
-                </Table> :
-                <h3>Aucun étudiant n'a appliqué</h3>}
+            <Table className={"w-75 mx-auto"}>
+                <TableHeader>
+                    <th>#</th>
+                    <th>Étudiant</th>
+                    <th>Nombre d'application</th>
+                    <th>Voir les applications</th>
+                </TableHeader>
+                {studentList.map((student, index) =>
+                    <TableRow key={index}>
+                        <td>{student.id}</td>
+                        <td>{student.firstName} {student.lastName}</td>
+                        <td>{offerList.length > 0 ? offerList[index].length : 0}</td>
+                        <td>
+                            <button className="btn btn-primary"
+                                    onClick={() => history.push({
+                                        pathname: "offer",
+                                        state: {student: student}
+                                    })}>
+                                Voir
+                            </button>
+                        </td>
+                    </TableRow>
+                )}
+            </Table>
         </div>
     )
 }

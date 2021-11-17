@@ -9,6 +9,7 @@ export function Table(props) {
         throw new Error("Table must have a TableHeader");
 
     React.Children.toArray(children).forEach(child => {
+        // noinspection JSUnresolvedVariable
         if (child.type.name === "TableHeader")
             tableHeader = child;
         else
@@ -37,6 +38,7 @@ export function TableHeader(props) {
     return <tr>
         {
             React.Children.map(children, (child, index) => {
+                // noinspection JSCheckFunctionSignatures
                 return React.cloneElement(child,
                     {
                         key: {index},

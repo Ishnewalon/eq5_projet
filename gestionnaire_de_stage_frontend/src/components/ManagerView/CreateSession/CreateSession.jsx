@@ -22,7 +22,6 @@ export default function CreateSession() {
         createSession({
             typeSession: typeSession,
             year: year
-
         }).then();
     };
 
@@ -47,7 +46,6 @@ export default function CreateSession() {
         </FormGroup>
         <div className="text-center">
             <button className="btn btn-primary mt-3" onClick={onclick}>Create Session</button>
-
         </div>
     </>
 }

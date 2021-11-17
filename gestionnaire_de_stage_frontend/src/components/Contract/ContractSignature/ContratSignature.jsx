@@ -3,21 +3,10 @@ import {useEffect, useState} from "react";
 import {BsPenFill} from "react-icons/all";
 import {managerSignContract, monitorSignContract, studentSignContract} from "../../../services/contrat-service";
 import {UserType} from "../../../enums/UserTypes";
-import {swalErr} from "../../../utility";
+import {swalErr, toPdfBlob} from "../../../utility";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
-export const toPdfBlob = (pdfFile) => {
-    if (!pdfFile)
-        return null;
-
-    const decodedChars = atob(pdfFile);
-    const numBytes = new Array(decodedChars.length);
-    for (let i = 0; i < numBytes.length; i++)
-        numBytes[i] = decodedChars.charCodeAt(i);
-
-    return new Blob([new Uint8Array(numBytes), {type: 'application/pdf'}]);
-}
 
 export default function ContratSignature({userType, contract, removeContract}) {
 
@@ -51,9 +40,7 @@ export default function ContratSignature({userType, contract, removeContract}) {
                 setSigned(isSigned)
             });
         else if (userType === UserType.STUDENT[0])
-            studentSignContract(signature, contract.id).then(isSigned => {
-                setSigned(isSigned)
-            });
+            studentSignContract(signature, contract.id).then(isSigned => setSigned(isSigned));
     }
     if (!signed) {
         return <MessageNothingToShow message="Vous avez signé le contrat."/>
@@ -75,6 +62,5 @@ export default function ContratSignature({userType, contract, removeContract}) {
                         type="submit">Signer le contrat <BsPenFill/></button>
             </form>
         </div>
-
     </div>
 }

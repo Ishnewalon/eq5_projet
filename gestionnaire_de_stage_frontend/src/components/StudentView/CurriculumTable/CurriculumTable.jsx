@@ -56,7 +56,7 @@ export default function CurriculumTable() {
 
     const getBtnText = (cv) => {
         if (isPrincipal(cv)) {
-            return "C.V. par defaut";
+            return "C.V. par défaut";
         } else if (cv.isValid) {
             return "Définir comme principal";
         } else {

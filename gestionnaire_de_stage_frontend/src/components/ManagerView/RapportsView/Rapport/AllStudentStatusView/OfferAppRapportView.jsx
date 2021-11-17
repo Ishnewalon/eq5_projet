@@ -2,6 +2,7 @@ import {Link, useLocation} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {getStudentApplicationsOffer} from "../../../../../services/offerAppService";
 import {Table, TableHeader, TableRow} from "../../../../SharedComponents/Table/Table";
+import {Title} from "../../../../SharedComponents/Title/Title";
 
 export default function OfferAppRapportView() {
 
@@ -16,11 +17,10 @@ export default function OfferAppRapportView() {
             })
     }, [student.id])
 
-    return (
-        <div>
-            <h1 className="text-center mt-5 mb-3">
+    return (<>
+            <Title>
                 Le status des applications de: {student.firstName} {student.lastName}
-            </h1>
+            </Title>
             <Table>
                 <TableHeader>
                     <th>#</th>
@@ -36,6 +36,6 @@ export default function OfferAppRapportView() {
                 ))}
             </Table>
             <Link to="/dashboard/rapports/6" className="btn btn-primary">Retour</Link>
-        </div>
+        </>
     )
 }

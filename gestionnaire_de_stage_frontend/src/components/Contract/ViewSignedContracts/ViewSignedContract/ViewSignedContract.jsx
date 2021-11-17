@@ -1,7 +1,6 @@
 import PdfDocumentViewer from "../../../SharedComponents/PdfDocumentViewer/PdfDocumentViewer";
-import {toPdfBlob} from '../../ContractSignature/ContratSignature';
 import {useEffect, useState} from "react";
-import {toast} from "../../../../utility";
+import {toast, toPdfBlob} from "../../../../utility";
 import {FiDownload} from "react-icons/all";
 
 export default function ViewSignedContract({contract}) {
@@ -17,7 +16,7 @@ export default function ViewSignedContract({contract}) {
         link.download = `contrat_${studentFullName(contract.student)}.pdf`;
         link.click();
         window.URL.revokeObjectURL(link.href);
-        toast.fire({text: 'Contrat en cours de téléchargement'});
+        toast.fire({text: 'Contrat en cours de téléchargement'}).then();
     };
 
     return <div className='d-flex align-items-center justify-content-center flex-column'>

@@ -92,32 +92,22 @@ export default function ManagerView() {
             </Route>
             <Route path={`${path}/rapports/3`}>
                 <Title>Liste des étudiants sans Cv</Title>
-                <ContainerBox>
-                    <RapportStudentWithoutCv/>
-                </ContainerBox>
+                <RapportStudentWithoutCv/>
             </Route>
             <Route path={`${path}/rapports/4`}>
                 <Title>Liste des étudiants inscrits</Title>
-                <ContainerBox>
-                    <RapportStudentSignIn/>
-                </ContainerBox>
+                <RapportStudentSignIn/>
             </Route>
             <Route path={`${path}/rapports/5`}>
                 <Title>Liste des étudiants avec des Cv Invalides</Title>
-                <ContainerBox>
-                    <RapportStudentWithInvalidCv/>
-                </ContainerBox>
+                <RapportStudentWithInvalidCv/>
             </Route>
             <Route path={`${path}/rapports/6`}>
                 <Title>Status de tous les étudiants</Title>
-                <ContainerBox>
-                    <RapportStudentStatus/>
-                </ContainerBox>
+                <RapportStudentStatus/>
             </Route>
             <Route path={`${path}/rapports/offer`}>
-                <ContainerBox>
-                    <OfferAppRapportView/>
-                </ContainerBox>
+                <OfferAppRapportView/>
             </Route>
         </>
     )

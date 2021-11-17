@@ -62,9 +62,9 @@ export default function Register() {
         let value = event.target.value;
         let name = event.target.name;
 
-        setUserInfo((prevalue) => {
+        setUserInfo((prev) => {
             return {
-                ...prevalue,
+                ...prev,
                 [name]: value
             }
         })

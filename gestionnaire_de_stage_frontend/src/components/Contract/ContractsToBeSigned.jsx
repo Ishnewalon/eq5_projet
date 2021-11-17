@@ -17,8 +17,7 @@ export default function ContractsToBeSigned({userType}) {
     }, [auth.user.id, userType]);
 
     const removeContract = (contractId) => {
-        const newContracts = contracts.filter(contract => contract.id !== contractId);
-        setContracts(newContracts);
+        setContracts(prev => prev.filter(contract => contract.id !== contractId));
     };
 
     if (contracts.length === 0)
