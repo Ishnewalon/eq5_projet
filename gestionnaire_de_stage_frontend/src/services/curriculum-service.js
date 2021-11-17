@@ -1,5 +1,5 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
-import {toast} from "../utility";
+import {swalErr, toast} from "../utility";
 
 export async function uploadFile(file, id) {
     let formData = new FormData();
@@ -16,6 +16,40 @@ export async function uploadFile(file, id) {
             // return success
         }
     )
+}
+
+export async function getAllCurriculumsByStudentWithPrincipal(studentID) {
+    return await fetch(`${urlBackend}/curriculum/all_student/${studentID}`,
+        requestInit(methods.GET)).then(
+        response => {
+            return response.json().then(
+                body => {
+                    if (response.status === 200) {
+                        return body
+                    }
+                    if (response.status === 400) {
+                        swalErr.fire({text: body.message})
+                    }
+                    return Promise.any([])
+                })
+        }, err => console.error(err)
+    );
+}
+
+export async function setPrincipalCurriculum(studentID, curriculumID) {
+    return  await fetch(`${urlBackend}/student/set_principal/${studentID}/${curriculumID}`,
+        requestInit(methods.GET)).then(
+        response => {
+            return response.json().then(
+                body => {
+                    if (response.status === 200)
+                        toast.fire({title: body.message, icon: 'success'})
+                    else if (response.status === 400)
+                        toast.fire({title: body.message, icon: 'error'})
+                    return response.ok
+                })
+        }, err => console.error(err)
+    );
 }
 
 export async function getCurriculumWithInvalidCV() {
