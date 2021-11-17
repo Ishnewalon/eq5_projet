@@ -14,6 +14,7 @@ import {
     RapportOfferInvalid,
     RapportOfferValid,
     RapportStudentSignIn,
+    RapportStudentStatus,
     RapportStudentWithInvalidCv,
     RapportStudentWithoutCv
 } from "./RapportsView/Rapports";
@@ -21,7 +22,6 @@ import CreateSession from "./CreateSession/CreateSession";
 import ViewSignedContracts from '../ViewSignedContracts/ViewSignedContracts';
 import OfferAppRapportView from "./AllStudentStatusView/OfferAppRapportView";
 import {Title} from "../SharedComponents/Title/Title";
-    RapportStudentStatus,
 
 export default function ManagerView() {
     const {path} = useRouteMatch();
@@ -60,9 +60,7 @@ export default function ManagerView() {
             </Route>
             <Route path={`${path}/students/start`}>
                 <Title>Liste des applications prêtes à être signer</Title>
-                <ContainerBox>
-                    <StartContract/>
-                </ContainerBox>
+                <StartContract/>
             </Route>
             <Route exact path={`${path}/contrats/a_signer`}>
                 <Title>Contrats à signer</Title>
@@ -111,6 +109,7 @@ export default function ManagerView() {
                 </ContainerBox>
             </Route>
             <Route path={`${path}/rapports/6`}>
+                <Title>Status de tous les étudiants</Title>
                 <ContainerBox>
                     <RapportStudentStatus/>
                 </ContainerBox>

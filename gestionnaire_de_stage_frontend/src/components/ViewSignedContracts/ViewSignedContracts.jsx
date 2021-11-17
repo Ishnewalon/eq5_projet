@@ -20,8 +20,9 @@ export default function ViewSignedContracts({userType}) {
             Aucun contrat à afficher pour le moment...
         </div>;
 
-    return <>{
-        contractList.map((contract, index) => <div key={index}><ViewSignedContract contract={contract}/></div>)
-    }</>
+    return <>{contractList.map((contract, index) =>
+        <div key={index}>
+            <ViewSignedContract contract={contract}/>
+        </div>)}</>
 }
 

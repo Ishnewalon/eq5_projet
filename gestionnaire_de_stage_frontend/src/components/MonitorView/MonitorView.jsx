@@ -26,7 +26,7 @@ export default function MonitorView() {
             </ContainerBox>
         </Route>
         <Route exact path={`${path}/applications`}>
-            <Title>Applicants</Title>
+            <Title>Appliquants</Title>
             <ViewAppliedStudents/>
         </Route>
         <Route exact path={`${path}/voir/futures_stagiaires`}>

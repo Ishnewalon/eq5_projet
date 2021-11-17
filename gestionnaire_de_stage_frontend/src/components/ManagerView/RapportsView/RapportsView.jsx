@@ -1,4 +1,3 @@
-import {ContainerBox} from "../../SharedComponents/ContainerBox/ContainerBox";
 import {Link} from "react-router-dom";
 import React from "react";
 
@@ -20,18 +19,10 @@ export default function RapportsView() {
                 <RapportCard title="Rapport des étudiants avec des Cv Invalides"
                              description="Ma description"
                              to="/dashboard/rapports/5"/>
+                <RapportCard title="Rapport des status de stage des étudiants"
+                             description="Ma description"
+                             to="/dashboard/rapports/6"/>
             </CardsView>
-            <ContainerBox>
-                <Link className={"text-white text-center fst-italic"} to="/dashboard/rapports/5">
-                    <h3>Rapport des étudiants avec des Cv Invalides</h3>
-                </Link>
-            </ContainerBox>
-
-            <ContainerBox>
-                <Link className={"text-white text-center fst-italic"} to="/dashboard/rapports/6">
-                    <h3>Rapport des status de stage des étudiants</h3>
-                </Link>
-            </ContainerBox>
         </>
     )
 }
