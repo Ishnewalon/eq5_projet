@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {getStudentsWithInvalidCv} from "../../../services/user-service";
-import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
+import {getAllStudents} from "../../../../../services/user-service";
+import {Table, TableHeader, TableRow} from "../../../../SharedComponents/Table/Table";
 
 
-export default function StudentWithInvalidCv() {
+export default function StudentSignIn() {
 
     const [studentList, setStudentList] = useState([])
 
     useEffect(() => {
-        getStudentsWithInvalidCv()
+        getAllStudents()
             .then(studentList => {
                 setStudentList(studentList)
             })
@@ -18,12 +18,11 @@ export default function StudentWithInvalidCv() {
             })
     }, [])
 
-    if (studentList.length === 0){
+    if (studentList.length === 0) {
         return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
-            Aucun étudiant avec un Cv invalide
+            Aucun étudiant inscrit
         </div>
     }
-
     return (
         <div className='container'>
             <Table className={"w-75 mx-auto"}>

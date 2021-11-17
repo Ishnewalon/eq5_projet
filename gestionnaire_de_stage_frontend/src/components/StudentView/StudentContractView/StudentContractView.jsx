@@ -1,4 +1,4 @@
-import ViewSignedContract from "../../ViewSignedContracts/ViewSignedContract/ViewSignedContract";
+import ViewSignedContract from "../../Contract/ViewSignedContracts/ViewSignedContract/ViewSignedContract";
 import {useEffect, useState} from "react";
 import {getSignedContractForStudent} from "../../../services/contrat-service";
 import {useAuth} from "../../../services/use-auth";

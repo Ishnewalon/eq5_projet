@@ -17,10 +17,10 @@ import {
     RapportStudentStatus,
     RapportStudentWithInvalidCv,
     RapportStudentWithoutCv
-} from "./RapportsView/Rapports";
+} from "./RapportsView/Rapport/Rapports";
 import CreateSession from "./CreateSession/CreateSession";
-import ViewSignedContracts from '../ViewSignedContracts/ViewSignedContracts';
-import OfferAppRapportView from "./AllStudentStatusView/OfferAppRapportView";
+import ViewSignedContracts from '../Contract/ViewSignedContracts/ViewSignedContracts';
+import OfferAppRapportView from "./RapportsView/Rapport/AllStudentStatusView/OfferAppRapportView";
 import {Title} from "../SharedComponents/Title/Title";
 
 export default function ManagerView() {

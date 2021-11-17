@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {getAllOffersInvalid} from '../../../services/offer-service'
-import OfferView from '../../OfferView/OfferView';
-import {getCurrentAndFutureSession} from "../../../services/session-service";
-import {FormField} from "../../SharedComponents/FormField/FormField";
-import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {getAllOffersInvalid} from '../../../../../services/offer-service'
+import OfferView from '../../../../OfferView/OfferView';
+import {getCurrentAndFutureSession} from "../../../../../services/session-service";
+import {FormField} from "../../../../SharedComponents/FormField/FormField";
+import {FormGroup} from "../../../../SharedComponents/FormGroup/FormGroup";
 
 export default function OfferNotValidView() {
 

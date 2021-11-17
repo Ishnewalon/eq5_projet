@@ -1,10 +1,10 @@
-import OffersValidView from "../OffersValidView/OffersValidView";
-import OfferNotValidView from "../OffersNotValidView/OfferNotValidView";
+import OffersValidView from "./OffersValidView/OffersValidView";
+import OfferNotValidView from "./OffersNotValidView/OfferNotValidView";
 import {Link} from "react-router-dom";
-import StudentWithoutCvView from "../StudentWithoutCvView/StudentWithoutCvView";
-import StudentSignIn from "../StudentSignIn/StudentSignIn";
-import StudentWithInvalidCv from "../StudentWithInvalidCv/StudentWithInvalidCv";
-import AllStudentStatusView from "../AllStudentStatusView/AllStudentStatusView";
+import StudentWithoutCvView from "./StudentWithoutCvView/StudentWithoutCvView";
+import StudentSignIn from "./StudentSignIn/StudentSignIn";
+import StudentWithInvalidCv from "./StudentWithInvalidCv/StudentWithInvalidCv";
+import AllStudentStatusView from "./AllStudentStatusView/AllStudentStatusView";
 import React from "react";
 
 export function RapportOfferValid() {

@@ -1,7 +1,7 @@
-import PdfDocumentViewer from "../../SharedComponents/PdfDocumentViewer/PdfDocumentViewer";
-import {toPdfBlob} from '../../Contract/ContractSignature/ContratSignature';
+import PdfDocumentViewer from "../../../SharedComponents/PdfDocumentViewer/PdfDocumentViewer";
+import {toPdfBlob} from '../../ContractSignature/ContratSignature';
 import {useEffect, useState} from "react";
-import {toast} from "../../../utility";
+import {toast} from "../../../../utility";
 import {FiDownload} from "react-icons/all";
 
 export default function ViewSignedContract({contract}) {

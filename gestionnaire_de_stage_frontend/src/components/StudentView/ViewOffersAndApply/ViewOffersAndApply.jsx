@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {getAllOffersByDepartment} from '../../../services/offer-service';
-import OfferApplication from "../OfferApplication/OfferApplication";
 import {useAuth} from "../../../services/use-auth";
 import {getCurrentAndFutureSession} from "../../../services/session-service";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {applyToOffer} from "../../../services/offerAppService";
+import OfferApp from "../../../models/OfferApp";
+import OfferView from "../../OfferView/OfferView";
 
 export default function ViewOffersAndApply() {
     let auth = useAuth();
@@ -61,8 +63,31 @@ export default function ViewOffersAndApply() {
                 </FormField>
             </FormGroup>
             <ul>
-                {visibleOffers.map((offer, index) => <li key={index}><OfferApplication offer={offer} removeFromList={removeFromList}/></li>)}
+                {visibleOffers.map((offer, index) => <li key={index}><OfferApplication offer={offer}
+                                                                                       removeFromList={removeFromList}/>
+                </li>)}
             </ul>
         </>
     );
+}
+
+function OfferApplication({offer, removeFromList}) {
+    let auth = useAuth();
+    const apply = offerId => e => {
+        e.preventDefault();
+        applyToOffer(new OfferApp(offerId, auth.user.id)).then(
+            () => removeFromList(offerId));
+    }
+
+    return (
+        <div>
+            <OfferView offer={offer}/>
+            <div className="form-group text-center mt-2">
+                <label/>
+                <button className="btn btn-primary" onClick={apply(offer.id)}>Soumettre votre candidature
+                </button>
+            </div>
+        </div>
+    );
+
 }

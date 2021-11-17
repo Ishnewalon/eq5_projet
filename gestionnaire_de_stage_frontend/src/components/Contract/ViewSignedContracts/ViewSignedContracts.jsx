@@ -1,8 +1,8 @@
 import ViewSignedContract from "./ViewSignedContract/ViewSignedContract";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../../services/use-auth";
 import {useEffect, useState} from "react";
-import {getAllSignedContractsForManager, getAllSignedContractsForMonitor} from "../../services/contrat-service";
-import {UserType} from "../../enums/UserTypes";
+import {getAllSignedContractsForManager, getAllSignedContractsForMonitor} from "../../../services/contrat-service";
+import {UserType} from "../../../enums/UserTypes";
 
 export default function ViewSignedContracts({userType}) {
     const auth = useAuth();

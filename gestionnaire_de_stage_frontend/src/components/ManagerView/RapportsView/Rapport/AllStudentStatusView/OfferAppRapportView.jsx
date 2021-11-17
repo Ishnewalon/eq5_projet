@@ -1,7 +1,7 @@
 import {Link, useLocation} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {getStudentApplicationsOffer} from "../../../services/offerAppService";
-import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
+import {getStudentApplicationsOffer} from "../../../../../services/offerAppService";
+import {Table, TableHeader, TableRow} from "../../../../SharedComponents/Table/Table";
 
 export default function OfferAppRapportView() {
 

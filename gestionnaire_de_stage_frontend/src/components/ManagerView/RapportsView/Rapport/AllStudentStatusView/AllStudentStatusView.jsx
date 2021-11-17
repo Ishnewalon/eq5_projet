@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {getAllStudents} from "../../../services/user-service";
-import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
-import {useAuth} from "../../../services/use-auth";
-import {getStudentApplicationsOffer} from "../../../services/offerAppService";
+import {getAllStudents} from "../../../../../services/user-service";
+import {Table, TableHeader, TableRow} from "../../../../SharedComponents/Table/Table";
+import {useAuth} from "../../../../../services/use-auth";
+import {getStudentApplicationsOffer} from "../../../../../services/offerAppService";
 import {useHistory} from "react-router-dom";
 
 export default function AllStudentStatusView() {
