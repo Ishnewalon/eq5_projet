@@ -19,7 +19,9 @@ import {
 } from "./RapportsView/Rapports";
 import CreateSession from "./CreateSession/CreateSession";
 import ViewSignedContracts from '../ViewSignedContracts/ViewSignedContracts';
+import OfferAppRapportView from "./AllStudentStatusView/OfferAppRapportView";
 import {Title} from "../SharedComponents/Title/Title";
+    RapportStudentStatus,
 
 export default function ManagerView() {
     const {path} = useRouteMatch();
@@ -106,6 +108,16 @@ export default function ManagerView() {
                 <Title>Liste des étudiants avec des Cv Invalides</Title>
                 <ContainerBox>
                     <RapportStudentWithInvalidCv/>
+                </ContainerBox>
+            </Route>
+            <Route path={`${path}/rapports/6`}>
+                <ContainerBox>
+                    <RapportStudentStatus/>
+                </ContainerBox>
+            </Route>
+            <Route path={`${path}/rapports/offer`}>
+                <ContainerBox>
+                    <OfferAppRapportView/>
                 </ContainerBox>
             </Route>
         </>

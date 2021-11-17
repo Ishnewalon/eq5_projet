@@ -18,7 +18,11 @@ export default function StudentSignIn() {
             })
     }, [])
 
-
+    if (studentList.length === 0) {
+        return <div className={'bg-secondary d-flex py-3 align-items-center justify-content-center text-white'}>
+            Aucun étudiant inscrit
+        </div>
+    }
     return (
         <div className='container'>
             <Table className={"w-75 mx-auto"}>

@@ -52,11 +52,13 @@ export default function OfferNotValidView() {
                 </FormField>
             </FormGroup>
             <ul>
-                {visibleOffers.map((offer, index) =>
-                    <li className={"mb-3"} key={index}>
-                        <OfferView offer={offer}/>
-                    </li>
-                )}
+                {visibleOffers.length > 0 ? (
+                        visibleOffers.map((offer, index) =>
+                            <li className={"mb-4"} key={index}>
+                                <OfferView offer={offer}/>
+                            </li>
+                        )) :
+                    <h3 className={"text-center mt-4"}>Aucune offre à afficher</h3>}
             </ul>
         </div>
     )
