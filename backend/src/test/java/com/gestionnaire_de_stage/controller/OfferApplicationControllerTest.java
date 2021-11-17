@@ -5,12 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
-import com.gestionnaire_de_stage.enums.Status;
-import com.gestionnaire_de_stage.exception.*;
-import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.enums.Status;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
+import com.gestionnaire_de_stage.exception.DateNotValidException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
@@ -226,7 +223,8 @@ class OfferApplicationControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<CurriculumDTO> actualCurriculumDTOs = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<CurriculumDTO> actualCurriculumDTOs = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualCurriculumDTOs.size()).isEqualTo(3);
     }
@@ -238,8 +236,8 @@ class OfferApplicationControllerTest {
                 .thenThrow(new IllegalArgumentException("Le courriel ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/applications/applicants/{}", email)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/applications/applicants/{}", email)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -257,8 +255,8 @@ class OfferApplicationControllerTest {
                 .thenThrow(new IllegalArgumentException("La liste d'offre ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/applications/applicants/{}", email)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/applications/applicants/{}", email)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -275,9 +273,9 @@ class OfferApplicationControllerTest {
                 .thenReturn(offerApplication);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/applications/setdate/" + offerApplication.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(LocalDateTime.now())))
+                        MockMvcRequestBuilders.post("/applications/setdate/" + offerApplication.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(LocalDateTime.now())))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -294,9 +292,9 @@ class OfferApplicationControllerTest {
                 .thenThrow(new IllegalArgumentException("L'id de l'offre ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/applications/setdate/" + offerApplication.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(LocalDateTime.now())))
+                        MockMvcRequestBuilders.post("/applications/setdate/" + offerApplication.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(LocalDateTime.now())))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -311,9 +309,9 @@ class OfferApplicationControllerTest {
                 .thenThrow(IdDoesNotExistException.class);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/applications/setdate/" + 3L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(LocalDateTime.now())))
+                        MockMvcRequestBuilders.post("/applications/setdate/" + 3L)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(LocalDateTime.now())))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -328,9 +326,9 @@ class OfferApplicationControllerTest {
                 .thenThrow(DateNotValidException.class);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/applications/setdate/" + 3L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(LocalDateTime.now())))
+                        MockMvcRequestBuilders.post("/applications/setdate/" + 3L)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(LocalDateTime.now())))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -345,12 +343,13 @@ class OfferApplicationControllerTest {
                 .thenReturn(offerApplicationList);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/applications/all_applied_on/" + 1L)
-                    .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/applications/all_applied_on/" + 1L)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        final List<OfferApplication> actualOfferApplicationList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        final List<OfferApplication> actualOfferApplicationList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
         assertThat(response.getStatus()).isEqualTo(OK.value());
         assertThat(actualOfferApplicationList.size()).isEqualTo(offerApplicationList.size());
     }
@@ -361,8 +360,8 @@ class OfferApplicationControllerTest {
                 .thenThrow(new IllegalArgumentException("L'id du student ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/applications/all_applied_on/" + 1L)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/applications/all_applied_on/" + 1L)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -426,8 +425,8 @@ class OfferApplicationControllerTest {
         when(offerApplicationService.getAllOffersApplication()).thenReturn(offerApplicationsList);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/applications")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/applications")
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();

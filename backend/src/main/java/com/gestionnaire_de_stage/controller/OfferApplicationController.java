@@ -165,7 +165,7 @@ public class OfferApplicationController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("L'étudiant n'existe pas"));
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
