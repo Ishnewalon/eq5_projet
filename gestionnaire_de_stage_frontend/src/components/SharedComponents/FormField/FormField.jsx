@@ -1,28 +1,32 @@
 import React from "react";
 
-export function FormField({children}) {
-    let reactPortals = React.Children.toArray(children);
-    let input
-    if (reactPortals.find(p => p.type === "input" || p.type === "textarea" || p.type === "select" || p.type === "button" || p.type === "radio")) {
-        input = reactPortals.find(p => p.type === "input" || p.type === "textarea" || p.type === "select" || p.type === "button" || p.type === "radio");
-    } else {
+export function FormField(props) {
+    const {children, myFor} = props;
+    let childList = React.Children.toArray(children);
+    // noinspection JSUnresolvedVariable
+    let input = childList.find(p => p.type === "input" || p.type === "textarea" || p.type === "select" || p.type === "button" || p.type === "radio");
+    if (!input)
         throw new Error("FormField must have either an input, textarea, select, button or radio");
+    // noinspection JSUnresolvedVariable
+    let label = childList.find(p => p.type === "label")
+
+    let inputProps = {
+        className: `${input.props.className ? input.props.className : ""} form-control`
     }
-    let label
-    if (reactPortals.find(p => p.type === "label")) {
-        label = reactPortals.find(p => p.type === "label");
+    let labelProps = {
+        className: `${input.props.className ? input.props.className : ""} label`
+    }
+    if (myFor) {
+        inputProps.id = myFor
+        labelProps.htmlFor = myFor
     }
 
-
+    // noinspection JSCheckFunctionSignatures
     return <>
         {label ?
-            React.cloneElement(label, {
-                className: `${input.props.className ? input.props.className : ""} label`
-            }) : null}
+            React.cloneElement(label, labelProps) : null}
         <div className="input-group">
-            {React.cloneElement(input, {
-                className: `${input.props.className ? input.props.className : ""} form-control`
-            })}
+            {React.cloneElement(input, inputProps)}
         </div>
     </>
 

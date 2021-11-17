@@ -8,21 +8,21 @@ import {FormField} from "../../SharedComponents/FormField/FormField";
 export default function StepCegep({prevStep, nextStep, updateUserType, handleChange, matricule}) {
 
     const next = (matricule, val) => {
-        if (matricule.length === 5)
-            updateUserType(UserType.SUPERVISOR)
-        else if (matricule.length === 7)
-            updateUserType(UserType.STUDENT)
-        else {
+        if (!matricule) {
             toastErr.fire({title: 'Matricule invalid!'}).then()
             return
         }
+        if (matricule.toString().length === 5)
+            updateUserType(UserType.SUPERVISOR)
+        else if (matricule.toString().length === 7)
+            updateUserType(UserType.STUDENT)
 
         nextStep(val);
     }
 
     return (<>
             <FormGroup>
-                <FormField>
+                <FormField myFor="matricule">
                     <label>Matricule</label>
                     <input name="matricule" placeholder="Matricule" type="number"
                            value={matricule} onChange={handleChange}/>
