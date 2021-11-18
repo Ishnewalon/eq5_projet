@@ -5,19 +5,20 @@ import {Table, TableHeader, TableRow} from "../../../../SharedComponents/Table/T
 
 export default function StudentsNotYetEvaluated() {
 
-    const [studentList, setStudentList] = useState([])
+    const [studentMonitorOfferDtoList, setStudentMonitorOfferDtoList] = useState([])
+
     useEffect(() => {
         getAllStudentsNotYetEvaluated()
-            .then(studentList => {
-                setStudentList(studentList)
+            .then(dtoList => {
+                setStudentMonitorOfferDtoList(dtoList)
             })
             .catch(e => {
-                setStudentList([])
+                setStudentMonitorOfferDtoList([])
                 console.error(e);
             })
     }, []);
 
-    if (studentList.length === 0)
+    if (studentMonitorOfferDtoList.length === 0)
         return <MessageNothingToShow message="Tous les étudiants ont été évalués"/>
 
     return (
@@ -27,14 +28,16 @@ export default function StudentsNotYetEvaluated() {
                     <th>#</th>
                     <th>Étudiant</th>
                     <th>Matricule</th>
-                    <th>Superviseur</th>
+                    <th>Supervisor</th>
+                    <th>Date de fin de stage</th>
                 </TableHeader>
-                {studentList.map((student, index) =>
+                {studentMonitorOfferDtoList.map((dto, index) =>
                     <TableRow key={index}>
-                        <th>{student.id}</th>
-                        <td>{student.firstName} {student.lastName}</td>
-                        <td>{student.matricule}</td>
-                        <td>{student.supervisor.firstName} {student.supervisor.lastName}</td>
+                        <th>{dto.student.id}</th>
+                        <td>{dto.student.firstName} {dto.student.lastName}</td>
+                        <td>{dto.student.matricule}</td>
+                        <td>{dto.student.supervisor.firstName} {dto.student.supervisor.lastName}</td>
+                        <td>{dto.offer.dateFin}</td>
                     </TableRow>
                 )}
             </Table>
