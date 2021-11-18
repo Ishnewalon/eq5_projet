@@ -5,6 +5,7 @@ import OfferView from "../../OfferView/OfferView";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 import {getCurrentAndFutureSession} from "../../../services/session-service";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function OfferValidationView() {
 
@@ -38,18 +39,18 @@ export default function OfferValidationView() {
             })
     }, [offers])
 
-    const setOfferValidated = (id) => {
-        setOffers(offers.filter(items => items.id !== id))
+    const removeFromList = (id) => {
+        setOffers(prev => prev.filter(items => items.id !== id))
     }
-
+    if (offers.length === 0)
+        return <MessageNothingToShow message="Aucune offres à valider pour le moment..."/>
     return (
         <>
-            <h1 className="text-center">Validation des offres</h1>
             <div className='container'>
                 <FormGroup>
                     <FormField>
                         <label/>
-                        <select onChange={(e) => setMyVisible(e.target.value)}>
+                        <select className="mb-4" onChange={(e) => setMyVisible(e.target.value)}>
                             {sessions.map(session =>
                                 <option key={session.id}
                                         value={session.id}>{session.typeSession + session.year}</option>)}
@@ -59,7 +60,7 @@ export default function OfferValidationView() {
                 <ul>
                     {visibleOffers.map(offer =>
                         <li key={offer.id}>
-                            <OfferValidation offer={offer} removeFromList={setOfferValidated}/>
+                            <OfferValidation offer={offer} removeFromList={removeFromList}/>
                         </li>
                     )}
                 </ul>
@@ -71,16 +72,15 @@ export default function OfferValidationView() {
 function OfferValidation({offer, removeFromList}) {
     const validate = (offer, isValid) => {
         validateOffer(offer.id, isValid).then(
-            () => removeFromList(offer.id)
-        )
+            () => removeFromList(offer.id))
     }
     return <>
         <OfferView offer={offer}/>
-        <div className="d-flex mb-3 justify-content-between align-items-center">
-            <button id="validateBtn" className="btn btn-success fw-bold text-white w-50"
+        <div className="d-flex justify-content-between align-items-center mb-4">
+            <button id="validateBtn" className="btn btn-success fw-bold text-white w-50 border-success"
                     onClick={() => validate(offer, true)}>Valide
             </button>
-            <button id="invalidateBtn" className="btn btn-danger fw-bold text-white w-50"
+            <button id="invalidateBtn" className="btn btn-danger fw-bold text-white w-50 border-danger"
                     onClick={() => validate(offer, false)}>Invalide
             </button>
         </div>

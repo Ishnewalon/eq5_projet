@@ -1,7 +1,4 @@
-#validateBtn{
+#validateBtn {
     border-bottom-left-radius: 5px !important;
 }
 
-#invalidateBtn{
-    border-bottom-right-radius: 5px !important;
-}

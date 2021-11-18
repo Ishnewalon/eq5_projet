@@ -16,18 +16,16 @@ export default function CreateSession() {
 
     const onclick = () => {
         if (!typeSession) {
-            toastErr.fire({title: "Le type de session doit être choisi"}).then()
+            toastErr.fire({title: "La période de la session doit être choisi"}).then()
             return
         }
         createSession({
             typeSession: typeSession,
             year: year
-
         }).then();
     };
 
     return <>
-        <h1 className="text-center">Ajouter une session</h1>
         <FormGroup>
             <FormField>
                 <label>Année</label>
@@ -38,16 +36,16 @@ export default function CreateSession() {
                 </select>
             </FormField>
             <FormField>
-                <label>Type de session</label>
-                <select onChange={(e) => setTypeSession(e.target.value)}>
-                    <option selected disabled>Type de session</option>
+                <label>Période de la session</label>
+                <select onChange={(e) => setTypeSession(e.target.value)} defaultValue="">
+                    <option disabled value="">Période de la session</option>
                     <option value="HIVER">Session d'hiver</option>
                     <option value="ETE">Session d'été</option>
                 </select>
             </FormField>
         </FormGroup>
         <div className="text-center">
-            <button className="btn btn-primary mt-3" onClick={onclick}>Create Session</button>
+            <button className="btn btn-primary mt-3" onClick={onclick}>Créez la session</button>
 
         </div>
     </>

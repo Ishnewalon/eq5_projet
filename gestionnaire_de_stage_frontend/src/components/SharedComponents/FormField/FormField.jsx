@@ -14,7 +14,7 @@ export function FormField(props) {
         className: `${input.props.className ? input.props.className : ""} form-control`
     }
     let labelProps = {
-        className: `${input.props.className ? input.props.className : ""} label`
+        className: `${input.props.className ? input.props.className : ""} label text-white`
     }
     if (myFor) {
         inputProps.id = myFor

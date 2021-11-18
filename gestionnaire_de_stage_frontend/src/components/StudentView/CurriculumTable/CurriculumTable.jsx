@@ -1,8 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {
-    getAllCurriculumsByStudentWithPrincipal,
-    setPrincipalCurriculum
-} from "../../../services/curriculum-service";
+import {getAllCurriculumsByStudentWithPrincipal, setPrincipalCurriculum} from "../../../services/curriculum-service";
 import {useAuth} from "../../../services/use-auth";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 
@@ -48,28 +45,27 @@ export default function CurriculumTable() {
     }
 
     const getBtnStyle = (cv) => {
-        if (isPrincipal(cv)){
+        if (isPrincipal(cv)) {
             return "btn-secondary"
-        }else if (cv.isValid){
+        } else if (cv.isValid) {
             return "btn-success"
-        }else {
+        } else {
             return "btn-danger"
         }
     }
 
     const getBtnText = (cv) => {
-        if (isPrincipal(cv)){
-            return "C.V. par defaut";
-        }else if (cv.isValid){
+        if (isPrincipal(cv)) {
+            return "C.V. par défaut";
+        } else if (cv.isValid) {
             return "Définir comme principal";
-        }else {
+        } else {
             return "C.V. est Invalide!";
         }
     }
 
     return (
-        <div className='container'>
-            <h2 className="text-center mb-4">Vos Curriculums</h2>
+        <>
             <Table>
                 <TableHeader>
                     <th>Nom</th>
@@ -91,6 +87,6 @@ export default function CurriculumTable() {
                         </td>
                     </TableRow>)}
             </Table>
-        </div>
+        </>
     )
 }

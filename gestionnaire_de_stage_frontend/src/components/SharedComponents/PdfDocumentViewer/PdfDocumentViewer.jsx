@@ -2,12 +2,13 @@ import {Document, Page, pdfjs} from 'react-pdf';
 
 import {useEffect, useState} from "react";
 
-export default function PdfDocumentViewer({file, showContract= false}) {
+export default function PdfDocumentViewer({file, showContract = false}) {
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [show, setShow] = useState(showContract);
 
     useEffect(() => {
+        // noinspection JSUnresolvedVariable
         pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
     }, []);
 
@@ -38,25 +39,25 @@ export default function PdfDocumentViewer({file, showContract= false}) {
                     <div>
                         <div>
                             <Document
-                            file={file}
-                            onLoadSuccess={onDocumentLoad}
-                            onLoadError={alert}
+                                file={file}
+                                onLoadSuccess={onDocumentLoad}
+                                onLoadError={alert}
 
                             >
-                            <Page pageNumber={pageNumber}/>
-                        </Document>
-                        <p className={'text-center mt-2 border border-white p-2'}>{numPages > 0 ? `Page ${pageNumber} de ${numPages}` : 'Aucune pages'}</p>
-                        <div className={"d-flex justify-content-between"}>
-                            <button
-                                type="button"
-                                className={"btn btn-primary"}
-                                id="previousBtn"
-                                onClick={(e) => goToPreviousPage(e)}>Précédent
-                            </button>
-                            <button type="button" className={"btn btn-primary "} onClick={(e) => goToNextPage(e)}
-                                    id="nextBtn">Prochain
-                            </button>
-                        </div>
+                                <Page pageNumber={pageNumber}/>
+                            </Document>
+                            <p className={'text-center mt-2 border border-white p-2'}>{numPages > 0 ? `Page ${pageNumber} de ${numPages}` : 'Aucune pages'}</p>
+                            <div className={"d-flex justify-content-between"}>
+                                <button
+                                    type="button"
+                                    className={"btn btn-primary"}
+                                    id="previousBtn"
+                                    onClick={(e) => goToPreviousPage(e)}>Précédent
+                                </button>
+                                <button type="button" className={"btn btn-primary "} onClick={(e) => goToNextPage(e)}
+                                        id="nextBtn">Prochain
+                                </button>
+                            </div>
                         </div>
                     </div>
                     : <></>

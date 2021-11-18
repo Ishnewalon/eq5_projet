@@ -13,7 +13,7 @@ export default function TeleverserCv() {
     }
 
     return (
-        <div>
+        <div className="text-white">
             <Dropzone
                 onDrop={handleDrop}
                 accept="application/pdf"

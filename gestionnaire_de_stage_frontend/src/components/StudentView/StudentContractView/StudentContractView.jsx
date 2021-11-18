@@ -1,9 +1,10 @@
-import ViewSignedContract from "../../ViewSignedContracts/ViewSignedContract/ViewSignedContract";
+import ViewSignedContract from "../../Contract/ViewSignedContracts/ViewSignedContract/ViewSignedContract";
 import {useEffect, useState} from "react";
 import {getSignedContractForStudent} from "../../../services/contrat-service";
 import {useAuth} from "../../../services/use-auth";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
-export default function StudentContractView(){
+export default function StudentContractView() {
     const auth = useAuth();
     const [contract, setContract] = useState(null);
 
@@ -11,12 +12,8 @@ export default function StudentContractView(){
         getSignedContractForStudent(auth.user.id).then(contract => setContract(contract))
     }, [auth]);
 
-    return (
-        <div>
-            {contract ? <ViewSignedContract contract={contract}/> :
-            <div className={'bg-secondary d-flex align-items-center justify-content-center text-white'}>
-                <p className='mt-3'>Aucun contrat a été signé par vous...</p>
-            </div>}
-        </div>
-    )
+    if (!contract) {
+        return <MessageNothingToShow message="Aucun contrat n'a été signé pour l'instant..."/>
+    }
+    return <ViewSignedContract contract={contract}/>
 }

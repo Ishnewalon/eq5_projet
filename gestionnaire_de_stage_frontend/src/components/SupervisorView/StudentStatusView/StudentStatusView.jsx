@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {getStudentsStatus} from "../../../services/user-service";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import {useAuth} from "../../../services/use-auth";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function StudentStatusView() {
 
@@ -19,9 +20,11 @@ export default function StudentStatusView() {
             })
     }, [auth.user.id])
 
+    if (offerAppList.length === 0) {
+        return <MessageNothingToShow message="Aucune candidature..."/>
+    }
     return (
         <div>
-            <h2 className="text-center">Status des étudiants qui vous sont attribués</h2>
             <Table className={"w-75 mx-auto"}>
                 <TableHeader>
                     <th>#</th>
