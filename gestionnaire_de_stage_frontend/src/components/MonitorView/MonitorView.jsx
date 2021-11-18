@@ -6,7 +6,6 @@ import ContractsToBeSigned from "../Contract/ContractsToBeSigned";
 import {UserType} from "../../enums/UserTypes";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useAuth} from "../../services/use-auth";
-import ViewSignedContracts from "../ViewSignedContracts/ViewSignedContracts";
 import EvaluationIntern from "./EvaluationIntern/EvaluationIntern";
 import ViewSignedContracts from "../Contract/ViewSignedContracts/ViewSignedContracts";
 import {Title} from "../SharedComponents/Title/Title";

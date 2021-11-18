@@ -192,7 +192,7 @@ export default function SupervisorVisitForm() {
         }
     };
 
-    return <div>
+    return <div className={'text-white'}>
         <h1 className='text-center text-decoration-underline'>Évaluation de stage</h1>
         <div className='px-3 pb-3 pt-1 rounded'>
             <h4 className='mt-4 mb-0 text-decoration-underline'>Identification de l'entreprise</h4>
@@ -531,7 +531,7 @@ export default function SupervisorVisitForm() {
                             key={index}>{errors[key]}</li>)}
                     </ul>
                 </>
-                : <div></div>
+                : <></>
             }
         </div>
         <button onClick={sendEvaluation} className='btn btn-primary w-100 mt-4'>Créer un formulaire de visite</button>

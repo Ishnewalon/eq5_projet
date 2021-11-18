@@ -191,7 +191,7 @@ export default function EvaluationIntern() {
         }
     };
 
-    return <div>
+    return <div className={'text-white'}>
         <h1 className='text-center text-decoration-underline'>Fiche d'évaluation du stagiaire</h1>
         <div className='px-3 pb-3 pt-1'>
             <FormGroup>
@@ -655,7 +655,7 @@ export default function EvaluationIntern() {
                             key={index}>{errors[key]}</li>)}
                     </ul>
                 </>
-                : <div></div>
+                : <></>
             }
             <button onClick={sendVisitForm} className='btn btn-primary w-100 mt-4 rounded fw-bold'>Créer une évaluation
                 de stage

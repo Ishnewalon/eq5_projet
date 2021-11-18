@@ -4,6 +4,7 @@ import {useAuth} from "../../services/use-auth";
 import SupervisorVisitForm from "./VisitForm/SupervisorVisitForm";
 import StudentStatusView from "./StudentStatusView/StudentStatusView";
 import {Title} from "../SharedComponents/Title/Title";
+import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 
 export default function SupervisorView() {
     const {path} = useRouteMatch();
