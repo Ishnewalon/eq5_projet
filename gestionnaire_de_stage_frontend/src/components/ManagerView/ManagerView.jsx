@@ -14,7 +14,8 @@ import {
     RapportOfferInvalid,
     RapportOfferValid,
     RapportStudentSignIn,
-    RapportStudentStatus,
+    RapportStudentsNotYetEvaluated,
+    RapportStudentStatus, RapportStudentsWithCompanyNotYetEvaluated,
     RapportStudentWithInvalidCv,
     RapportStudentWithoutCv
 } from "./RapportsView/Rapport/Rapports";
@@ -105,6 +106,14 @@ export default function ManagerView() {
             <Route path={`${path}/rapports/6`}>
                 <Title>Status de tous les étudiants</Title>
                 <RapportStudentStatus/>
+            </Route>
+            <Route path={`${path}/rapports/7`}>
+                <Title>Les étudiants pas encore évalués</Title>
+                <RapportStudentsNotYetEvaluated/>
+            </Route>
+            <Route path={`${path}/rapports/7`}>
+                <Title>Les étudiants dont la compagnie n'a pas encore été évaluée</Title>
+                <RapportStudentsWithCompanyNotYetEvaluated/>
             </Route>
             <Route path={`${path}/rapports/offer`}>
                 <OfferAppRapportView/>
