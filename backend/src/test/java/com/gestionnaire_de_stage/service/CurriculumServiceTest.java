@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferDTO;
+import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.*;
@@ -181,7 +182,55 @@ public class CurriculumServiceTest {
     }
 
     @Test
-    void testValidate() throws Exception {
+    public void testFindAllByStudent_withValidStudent() {
+        List<Curriculum> curriculumList = getDummyCurriculumValidList();
+        Student student = getDummyStudent();
+        when(curriculumRepository.findAllByStudent(any())).thenReturn(curriculumList);
+
+        List<Curriculum> actualList = curriculumService.findAllByStudent(student);
+
+        assertThat(actualList).isEqualTo(curriculumList);;
+    }
+
+    @Test
+    public void testFindAllByStudent_withNullStudent() {
+        assertThrows(IllegalArgumentException.class,
+                () -> curriculumService.findAllByStudent(null));
+    }
+
+    @Test
+    public void testAllCurriculumsByStudentAsStudentCurriculumsDTO_withValidEntries() {
+        Student student = getDummyStudent();
+        List<Curriculum> curriculumList = getDummyCurriculumList();
+        student.setPrincipalCurriculum(curriculumList.get(0));
+        when(curriculumRepository.findAllByStudent(any())).thenReturn(curriculumList);
+
+        StudentCurriculumsDTO actual = curriculumService.allCurriculumsByStudentAsStudentCurriculumsDTO(student);
+
+        assertThat(actual.getCurriculumList()).isEqualTo(curriculumList);
+        assertThat(actual.getPrincipal()).isEqualTo(student.getPrincipalCurriculum());
+    }
+
+    @Test
+    public void testAllCurriculumsByStudentAsStudentCurriculumsDTO_withNullStudent() {
+        assertThrows(IllegalArgumentException.class,
+                () -> curriculumService.allCurriculumsByStudentAsStudentCurriculumsDTO(null));
+    }
+
+    @Test
+    public void testAllCurriculumsByStudentAsStudentCurriculumsDTO_withNoPrincipal() {
+        Student student = getDummyStudent();
+        List<Curriculum> curriculumList = getDummyCurriculumList();
+        when(curriculumRepository.findAllByStudent(any())).thenReturn(curriculumList);
+
+        StudentCurriculumsDTO actual = curriculumService.allCurriculumsByStudentAsStudentCurriculumsDTO(student);
+
+        assertThat(actual.getCurriculumList()).isEqualTo(curriculumList);
+        assertThat(actual.getPrincipal()).isNull();
+    }
+
+    @Test
+    public void testValidate() throws Exception {
         Curriculum curriculum = getDummyCurriculum();
         curriculum.setId(1L);
 

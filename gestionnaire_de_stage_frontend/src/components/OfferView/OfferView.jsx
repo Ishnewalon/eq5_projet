@@ -3,7 +3,7 @@ import './OfferView.css';
 
 export default function OfferView({offer}) {
     return <>
-        <div className="shadow-lg rounded-top p-3 border-left border-right border-light">
+        <div className="shadow-lg rounded-top p-3 border-left border-right border-light text-white">
             <div className={'d-flex align-items-center flex-column'}>
                 <h2 className={'d-inline-block text-dark display-6 fst-italic'}>
                     <span className={"badge bg-secondary"}>{offer.title}</span></h2>

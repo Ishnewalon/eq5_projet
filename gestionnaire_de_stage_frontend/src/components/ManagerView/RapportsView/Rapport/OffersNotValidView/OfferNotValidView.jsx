@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {getAllOffersValid} from '../../../services/offer-service'
-import OfferView from '../../OfferView/OfferView';
-import {getCurrentAndFutureSession} from "../../../services/session-service";
-import {FormField} from "../../SharedComponents/FormField/FormField";
-import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {getAllOffersInvalid} from '../../../../../services/offer-service'
+import OfferView from '../../../../OfferView/OfferView';
+import {getCurrentAndFutureSession} from "../../../../../services/session-service";
+import {FormField} from "../../../../SharedComponents/FormField/FormField";
+import {FormGroup} from "../../../../SharedComponents/FormGroup/FormGroup";
 
-export default function OffersValidView() {
+export default function OfferNotValidView() {
 
     const [offers, setOffers] = useState([])
     const [sessions, setSessions] = useState([]);
@@ -15,7 +15,7 @@ export default function OffersValidView() {
         setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(idSession)))
 
     useEffect(() => {
-        getAllOffersValid()
+        getAllOffersInvalid()
             .then(offers => {
                 setOffers(offers)
             })
@@ -37,6 +37,7 @@ export default function OffersValidView() {
             })
     }, [offers])
 
+
     return (
         <div className='container'>
             <FormGroup>
@@ -56,7 +57,7 @@ export default function OffersValidView() {
                                 <OfferView offer={offer}/>
                             </li>
                         )) :
-                    <h3 className={"text-center mt-4"}>Aucune offre à afficher</h3>}
+                    <h3 className={"text-center mt-4"}>Toutes les offres sont validées</h3>}
             </ul>
         </div>
     )

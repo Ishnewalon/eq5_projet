@@ -1,23 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import {getAllOffersByDepartment} from '../../../services/offer-service';
-import OfferApplication from "../OfferApplication/OfferApplication";
 import {useAuth} from "../../../services/use-auth";
 import {getCurrentAndFutureSession} from "../../../services/session-service";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {applyToOffer} from "../../../services/offerAppService";
+import OfferApp from "../../../models/OfferApp";
+import OfferView from "../../OfferView/OfferView";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
-export default function ViewOffersAndApply() {//TODO: remove Offer after applied
+export default function ViewOffersAndApply() {
     let auth = useAuth();
     const [offers, setOffers] = useState([])
     const [sessions, setSessions] = useState([]);
-    const [visibles, setVisibles] = useState([]);
-
+    const [visibleOffers, setVisibleOffers] = useState([]);
 
     const setMyVisible = (idSession) =>
-        // eslint-disable-next-line
-        setVisibles(offers.filter(offer => offer.session.id == idSession))
+        setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(idSession)))
 
-
+    const removeFromList = (id) => {
+        setOffers(prev => prev.filter(items => items.id !== id))
+    }
 
     useEffect(() => {
         getAllOffersByDepartment(auth.user.department)
@@ -34,8 +37,7 @@ export default function ViewOffersAndApply() {//TODO: remove Offer after applied
         getCurrentAndFutureSession()
             .then(sessions => {
                 setSessions(sessions)
-                // eslint-disable-next-line
-                setVisibles(offers.filter(offer => offer.session.id == sessions[0].id))
+                setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(sessions[0].id)))
             })
             .catch(e => {
                 setSessions([]);
@@ -43,11 +45,12 @@ export default function ViewOffersAndApply() {//TODO: remove Offer after applied
             })
     }, [offers])
 
-
+    if (offers.length === 0) {
+        return <MessageNothingToShow message="Pour l'instant, aucune offre n'est disponible"/>
+    }
 
     return (
-        <div className='container'>
-            <h2 className="text-center">Offres de Stage</h2>
+        <>
             <FormGroup>
                 <FormField>
                     <label/>
@@ -59,8 +62,31 @@ export default function ViewOffersAndApply() {//TODO: remove Offer after applied
                 </FormField>
             </FormGroup>
             <ul>
-                {visibles.map((offer, index) => <li key={index}><OfferApplication offer={offer}/></li>)}
+                {visibleOffers.map((offer, index) => <li key={index}><OfferApplication offer={offer}
+                                                                                       removeFromList={removeFromList}/>
+                </li>)}
             </ul>
+        </>
+    );
+}
+
+function OfferApplication({offer, removeFromList}) {
+    let auth = useAuth();
+    const apply = offerId => e => {
+        e.preventDefault();
+        applyToOffer(new OfferApp(offerId, auth.user.id)).then(
+            () => removeFromList(offerId));
+    }
+
+    return (
+        <div>
+            <OfferView offer={offer}/>
+            <div className="form-group text-center mt-2">
+                <label/>
+                <button className="btn btn-primary" onClick={apply(offer.id)}>Soumettre votre candidature
+                </button>
+            </div>
         </div>
     );
+
 }

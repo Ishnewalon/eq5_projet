@@ -1,8 +1,9 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ContractSignature from "./ContractSignature/ContratSignature";
 import {getAllContractsToBeSignedForMonitor, getAllContractsToBeStarted} from "../../services/contrat-service";
 import {UserType} from "../../enums/UserTypes";
 import {useAuth} from "../../services/use-auth";
+import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function ContractsToBeSigned({userType}) {
     const [contracts, setContracts] = useState([]);
@@ -16,17 +17,12 @@ export default function ContractsToBeSigned({userType}) {
     }, [auth.user.id, userType]);
 
     const removeContract = (contractId) => {
-        const newContracts = contracts.filter(contract => contract.id !== contractId);
-        setContracts(newContracts);
+        setContracts(prev => prev.filter(contract => contract.id !== contractId));
     };
 
     if (contracts.length === 0)
-        return <>
-            <div className={"d-flex justify-content-center align-items-center"}>
-                <p className={"text-center border border-white rounded p-2 mt-3"}>Aucun contrat à signer pour le
-                    moment</p>
-            </div>
-        </>
+        return <MessageNothingToShow message="Aucun contrat à signer pour le moment..."/>
+
 
     return contracts.map((contract, index) =>
         <ContractSignature key={index} removeContract={removeContract} userType={userType}

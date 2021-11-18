@@ -2,11 +2,14 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
 import com.gestionnaire_de_stage.dto.ValidationCurriculum;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.CurriculumService;
+import com.gestionnaire_de_stage.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -28,6 +31,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
@@ -39,6 +43,10 @@ public class CurriculumControllerTest {
 
     @MockBean
     private CurriculumService curriculumService;
+
+    @MockBean
+    private StudentService studentService;
+
     private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
@@ -408,6 +416,84 @@ public class CurriculumControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Curriculum non existant!");
+    }
+
+    @Test
+    public void testAllCurriculumsByStudentAsStudentCurriculumsDTO_withValidEntries() throws Exception {
+        Student student = getDummyStudent();
+        StudentCurriculumsDTO studentCurriculumsDTO = getDummyStudentCurriculumsDTO();
+        when(studentService.getOneByID(any()))
+                .thenReturn(student);
+        when(curriculumService.allCurriculumsByStudentAsStudentCurriculumsDTO(any()))
+                .thenReturn(studentCurriculumsDTO);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/curriculum/all_student/{studentID}", student.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        final StudentCurriculumsDTO actual = MAPPER.readValue(response.getContentAsString(), StudentCurriculumsDTO.class);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actual.getPrincipal().getId()).isEqualTo(studentCurriculumsDTO.getPrincipal().getId());
+    }
+
+    @Test
+    public void testAllCurriculumsByStudentAsStudentCurriculumsDTO_withNullStudent() throws Exception {
+        Student student = getDummyStudent();
+        when(studentService.getOneByID(any()))
+                .thenReturn(student);
+        when(curriculumService.allCurriculumsByStudentAsStudentCurriculumsDTO(any()))
+                .thenThrow(new IllegalArgumentException("L'etudiant ne peut pas être null"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/curriculum/all_student/{studentID}", student.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'etudiant ne peut pas être null");
+    }
+
+    @Test
+    public void testAllCurriculumsByStudentAsStudentCurriculumsDTO_withIdNotFound() throws Exception {
+        Student student = getDummyStudent();
+        when(studentService.getOneByID(any()))
+                .thenThrow(IdDoesNotExistException.class);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/curriculum/all_student/{studentID}", student.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Invalid Student ID");
+    }
+
+    private StudentCurriculumsDTO getDummyStudentCurriculumsDTO() {
+        return new StudentCurriculumsDTO(getDummyCurriculum(), getDummyCurriculumList());
+    }
+
+    private List<Curriculum> getDummyCurriculumList() {
+        Curriculum dummyCurriculum1 = getDummyCurriculum();
+        Curriculum dummyCurriculum2 = getDummyCurriculum();
+        Curriculum dummyCurriculum3 = getDummyCurriculum();
+
+        return Arrays.asList(dummyCurriculum1, dummyCurriculum2, dummyCurriculum3);
+    }
+
+    private Student getDummyStudent() {
+        Student dummyStudent = new Student();
+        dummyStudent.setId(1L);
+        dummyStudent.setLastName("Winter");
+        dummyStudent.setFirstName("Summer");
+        dummyStudent.setEmail("cant@outlook.com");
+        dummyStudent.setPassword("cantPass");
+        dummyStudent.setDepartment("info");
+        dummyStudent.setMatricule("4673943");
+        return dummyStudent;
     }
 
     Curriculum getDummyCurriculum() {

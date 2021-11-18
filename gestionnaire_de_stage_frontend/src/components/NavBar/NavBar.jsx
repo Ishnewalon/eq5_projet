@@ -5,7 +5,7 @@ import {useAuth} from "../../services/use-auth";
 
 export default function Navbar() {
     return (
-        <nav className="navbar navbar-expand-sm bg-dark">
+        <nav className="navbar navbar-expand-sm bg-dark mb-4">
             <div className="container-fluid">
                 <ul className="navbar-nav">
                     <ThisIsAListItem>
@@ -53,15 +53,16 @@ function NavItemSpecificForUser() {
             <Link to="/dashboard/offres/review">Validation Offre</Link>
             <Link to="/dashboard/curriculum/review">Valider Cv</Link>
             <Link to="/dashboard/students/start">Commencer signature</Link>
-            <Link to="/dashboard/students/applied">Associer</Link>
+            <Link to="/dashboard/students/applied">Associer Superviseur</Link>
             <Link to="/dashboard/contrats/a_signer">Contrats à valider</Link>
-            <Link to="/dashboard/session">Gestion Session</Link>
+            <Link to="/dashboard/session">Gestion des session</Link>
             <Link to="/dashboard/manager/contracts/signed">Contrats signés</Link>
             <Link to="/dashboard/rapports">Rapports</Link>
         </ThisIsAListItem>
     if (auth.isStudent())
         return <ThisIsAListItem>
             <Link to="/dashboard/televerser">Téléverser CV</Link>
+            <Link to="/dashboard/mes_cv">Mes CV</Link>
             <Link to="/dashboard/offres">Offres</Link>
             <Link to="/dashboard/voir_mon_contrat">Voir Contrat</Link>
             <Link to="/dashboard/view/status">Mes applications</Link>
@@ -77,6 +78,7 @@ function NavItemSpecificForUser() {
 
 function ThisIsAListItem({children}) {
     return React.Children.map(children, (child) => {
+        // noinspection JSCheckFunctionSignatures
         return (<>
             <li className="nav-item">{
                 React.cloneElement(child, {

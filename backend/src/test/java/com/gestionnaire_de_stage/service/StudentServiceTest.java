@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.CurriculumNotValidException;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
@@ -33,6 +34,8 @@ public class StudentServiceTest {
     StudentRepository studentRepository;
     @Mock
     CurriculumRepository curriculumRepository;
+    @Mock
+    CurriculumService curriculumService;
 
     @Test
     public void testCreate_withValidStudent() throws Exception {
@@ -205,20 +208,18 @@ public class StudentServiceTest {
     }
 
     @Test
-    void testSetPrincipalCurriculum() throws IdDoesNotExistException {
-        Curriculum dummyCurriculumOriginal = getDummyCurriculum();
-        Curriculum dummyCurriculum = getDummyCurriculum();
-        Student dummyStudent = getDummyStudent();
-        dummyCurriculum.setStudent(dummyStudent);
-        dummyCurriculumOriginal.setStudent(dummyStudent);
-        dummyStudent.setPrincipalCurriculum(dummyCurriculumOriginal);
-        when(studentRepository.findById(anyLong())).thenReturn(Optional.of(dummyStudent));
-        when(studentRepository.save(any())).thenReturn(dummyStudent);
-        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(dummyCurriculum));
+    void testSetPrincipalCurriculum() throws Exception {
+        Student student = getDummyStudent();
+        Curriculum curriculum = getDummyCurriculum();
+        when(studentRepository.getById(any())).thenReturn(student);
+        when(studentRepository.existsById(any())).thenReturn(true);
+        when(curriculumService.getOneByID(any())).thenReturn(curriculum);
+        student.setPrincipalCurriculum(curriculum);
+        when(studentRepository.save(any())).thenReturn(student);
 
-        Student actualStudent = studentService.setPrincipalCurriculum(dummyStudent, dummyCurriculum.getId());
+        Student actualStudent = studentService.setPrincipalCurriculum(getDummyStudent(), curriculum.getId());
 
-        assertThat(actualStudent.getPrincipalCurriculum()).isEqualTo(dummyCurriculum);
+        assertThat(actualStudent.getPrincipalCurriculum()).isEqualTo(curriculum);
     }
 
     @Test
@@ -238,33 +239,38 @@ public class StudentServiceTest {
     }
 
     @Test
-    void testSetPrincipalCurriculum_CurriculumNonExistant() {
-        Curriculum dummyCurriculumOriginal = getDummyCurriculum();
-        Curriculum dummyCurriculum = getDummyCurriculum();
-        Student dummyStudent = getDummyStudent();
-        dummyCurriculum.setStudent(dummyStudent);
-        dummyCurriculumOriginal.setStudent(dummyStudent);
-        dummyStudent.setPrincipalCurriculum(dummyCurriculumOriginal);
-        when(studentRepository.findById(anyLong())).thenReturn(Optional.of(dummyStudent));
-        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.empty());
+    void testSetPrincipalCurriculum_CurriculumNonExistant() throws Exception {
+        Student student = getDummyStudent();
+        Curriculum curriculum = getDummyCurriculum();
+        when(studentRepository.existsById(any())).thenReturn(true);
+        when(curriculumService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
 
         assertThrows(IdDoesNotExistException.class,
-                () -> studentService.setPrincipalCurriculum(dummyStudent, dummyCurriculum.getId()));
+                () -> studentService.setPrincipalCurriculum(student, curriculum.getId()));
     }
 
     @Test
     void testSetPrincipalCurriculum_StudentNonExistant() {
-        Curriculum dummyCurriculumOriginal = getDummyCurriculum();
-        Curriculum dummyCurriculum = getDummyCurriculum();
-        Student dummyStudent = getDummyStudent();
-        dummyCurriculum.setStudent(dummyStudent);
-        dummyCurriculumOriginal.setStudent(dummyStudent);
-        dummyStudent.setPrincipalCurriculum(dummyCurriculumOriginal);
-        when(studentRepository.findById(anyLong())).thenReturn(Optional.empty());
-        when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(dummyCurriculum));
+        Student student = getDummyStudent();
+        Curriculum curriculum = getDummyCurriculum();
+        when(studentRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-                () -> studentService.setPrincipalCurriculum(dummyStudent, dummyCurriculum.getId()));
+                () -> studentService.setPrincipalCurriculum(student, curriculum.getId()));
+
+    }
+
+    @Test
+    void testSetPrincipalCurriculum_CurriculumInvalid() throws IdDoesNotExistException {
+        Student student = getDummyStudent();
+        Curriculum curriculum = getDummyCurriculum();
+        curriculum.setIsValid(null);
+        when(studentRepository.existsById(any())).thenReturn(true);
+        when(studentRepository.getById(any())).thenReturn(student);
+        when(curriculumService.getOneByID(any())).thenReturn(curriculum);
+
+        assertThrows(CurriculumNotValidException.class,
+                () -> studentService.setPrincipalCurriculum(student, curriculum.getId()));
 
     }
 
@@ -345,6 +351,7 @@ public class StudentServiceTest {
     private Curriculum getDummyCurriculum() {
         Curriculum curriculum = new Curriculum();
         curriculum.setId(1L);
+        curriculum.setIsValid(true);
         curriculum.setData("test".getBytes());
         curriculum.setName("filename");
         curriculum.setName("pdffff");
