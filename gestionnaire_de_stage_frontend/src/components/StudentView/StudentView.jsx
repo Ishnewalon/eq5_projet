@@ -8,32 +8,52 @@ import OfferApplicationSetFinalStatus from "./OfferApplicationSetFinalStatus/Off
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useAuth} from "../../services/use-auth";
 import StudentContractView from "./StudentContractView/StudentContractView";
+import CurriculumTable from "./CurriculumTable/CurriculumTable";
+import {Title} from "../SharedComponents/Title/Title";
 
 export default function StudentView() {
     let {path} = useRouteMatch();
     let auth = useAuth();
-    return (<ContainerBox>
+    return (<>
             <Route exact path={`${path}/televerser`}>
-                <TeleverserCv/>
+                <Title>Téléverser mon CV</Title>
+                <ContainerBox>
+                    <TeleverserCv/>
+                </ContainerBox>
+            </Route>
+            <Route exact path={`${path}/mes_cv`}>
+                <Title>Vos Curriculums</Title>
+                <CurriculumTable/>
             </Route>
             <Route exact path={`${path}/offres`}>
-                <ViewOffersAndApply/>
+                <Title>Offres de stage</Title>
+                <ContainerBox>
+                    <ViewOffersAndApply/>
+                </ContainerBox>
             </Route>
             <Route exact path={`${path}/view/status`}>
+                <Title>Les status de mes applications</Title>
                 <OfferApplicationSetFinalStatus/>
             </Route>
             <Route exact path={`${path}/offer/setdate`}>
+                <Title>Ajouter vos dates d'entrevue</Title>
                 <OfferApplicationListView/>
             </Route>
             <Route exact path={`${path}/voir_mon_contrat`}>
-                <ContractView/>
+                <Title>Contrat à signer</Title>
+                <ContainerBox>
+                    <ContractView/>
+                </ContainerBox>
             </Route>
             <Route exact path={`${path}/student/contract/signed`}>
-                <StudentContractView/>
+                <Title>Mes contrats</Title>
+                <ContainerBox>
+                    <StudentContractView/>
+                </ContainerBox>
             </Route>
             <Route exact path={`${path}`}>
-                <h1 className="text-center">Bonjour {auth.user.firstName}!</h1>
+                <Title>Bonjour {auth.user.firstName}!</Title>
             </Route>
-        </ContainerBox>
+        </>
     )
 }

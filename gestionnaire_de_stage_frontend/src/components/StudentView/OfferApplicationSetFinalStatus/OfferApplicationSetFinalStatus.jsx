@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useAuth} from "../../../services/use-auth";
 import {getStudentApplications, setApplicationsStatusWhenEnAttenteDeReponse} from "../../../services/offerAppService";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function OfferApplicationSetFinalStatus() {
     const [offerApplications, setOfferApplications] = useState([])
@@ -27,8 +28,10 @@ export default function OfferApplicationSetFinalStatus() {
         })
     };
 
+    if (offerApplications.length === 0)
+        return <MessageNothingToShow message="Vous n'avez pas d'offre de stage en attente de réponse"/>
+
     return (<>
-        <h1 className="text-center mt-5 mb-3">Les status de mes applications</h1>
         <Table>
             <TableHeader>
                 <th>#</th>
@@ -38,7 +41,7 @@ export default function OfferApplicationSetFinalStatus() {
             </TableHeader>
             {offerApplications.map(offerApplication => (
                 <TableRow key={offerApplication.id}>
-                    <td>{offerApplication.id}</td>
+                    <th>{offerApplication.id}</th>
                     <td>{offerApplication.offer.title}</td>
                     <td>{offerApplication.status}</td>
                     <td>

@@ -2,8 +2,11 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.exception.CurriculumNotValidException;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
+import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.StudentService;
 import org.junit.jupiter.api.Test;
@@ -23,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -137,6 +141,75 @@ public class StudentControllerTest {
         assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
     }
 
+    @Test
+    public void testSetPrincipalCurriculum_withValidEntries() throws Exception {
+        Student student = getDummyStudent();
+        Curriculum curriculum = getDummyCurriculum();
+        when(studentService.getOneByID(any())).thenReturn(student);
+        student.setPrincipalCurriculum(curriculum);
+        when(studentService.setPrincipalCurriculum(any(), any())).thenReturn(student);
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("CV principal changé");
+    }
+
+    @Test
+    void testSetPrincipalCurriculum_withNullEntries() throws Exception {
+        Student student = getDummyStudent();
+        Curriculum curriculum = getDummyCurriculum();
+        when(studentService.getOneByID(any()))
+                .thenThrow(new IllegalArgumentException("ID est null"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("null");
+    }
+
+    @Test
+    void testSetPrincipalCurriculum_withEntriesNotExists() throws Exception {
+        Student student = getDummyStudent();
+        Curriculum curriculum = getDummyCurriculum();
+        when(studentService.getOneByID(any()))
+                .thenThrow(new IdDoesNotExistException("Aucun étudiant trouvé pour cet ID"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Aucun étudiant trouvé pour cet ID");
+    }
+
+    @Test
+    void testSetPrincipalCurriculum_CurriculumInvalid() throws Exception {
+        Student student = getDummyStudent();
+        Curriculum curriculum = getDummyCurriculum();
+        when(studentService.getOneByID(any())).thenReturn(student);
+        when(studentService.setPrincipalCurriculum(any(), any()))
+                .thenThrow(new CurriculumNotValidException("Le curriculum doit être valide"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Le curriculum doit être valide");
+    }
 
     @Test
     public void testGetAllStudents() throws Exception {
@@ -210,5 +283,13 @@ public class StudentControllerTest {
         dummyStudent.setMatricule("1740934");
 
         return dummyStudent;
+    }
+
+    private Curriculum getDummyCurriculum() {
+        Curriculum curriculum = new Curriculum();
+        curriculum.setName("myFileeee");
+        curriculum.setType("pdf");
+        curriculum.setId(1L);
+        return curriculum;
     }
 }

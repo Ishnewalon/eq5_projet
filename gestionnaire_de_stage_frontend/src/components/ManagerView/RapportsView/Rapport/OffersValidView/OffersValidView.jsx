@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {getAllOffersInvalid} from '../../../services/offer-service'
-import OfferView from '../../OfferView/OfferView';
-import {getCurrentAndFutureSession} from "../../../services/session-service";
-import {FormField} from "../../SharedComponents/FormField/FormField";
-import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {getAllOffersValid} from '../../../../../services/offer-service'
+import OfferView from '../../../../OfferView/OfferView';
+import {getCurrentAndFutureSession} from "../../../../../services/session-service";
+import {FormField} from "../../../../SharedComponents/FormField/FormField";
+import {FormGroup} from "../../../../SharedComponents/FormGroup/FormGroup";
 
-export default function OfferNotValidView() {
+export default function OffersValidView() {
 
     const [offers, setOffers] = useState([])
     const [sessions, setSessions] = useState([]);
@@ -15,7 +15,7 @@ export default function OfferNotValidView() {
         setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(idSession)))
 
     useEffect(() => {
-        getAllOffersInvalid()
+        getAllOffersValid()
             .then(offers => {
                 setOffers(offers)
             })
@@ -37,11 +37,8 @@ export default function OfferNotValidView() {
             })
     }, [offers])
 
-
-// TODO: show msg when no offers
     return (
-        <div className='container'>
-            <h2 className="text-center mb-4">Offres de Stage non validées</h2>
+        <>
             <FormGroup>
                 <FormField>
                     <label/>
@@ -53,13 +50,15 @@ export default function OfferNotValidView() {
                 </FormField>
             </FormGroup>
             <ul>
-                {visibleOffers.map((offer, index) =>
-                    <li className={"mb-3"} key={index}>
-                        <OfferView offer={offer}/>
-                    </li>
-                )}
+                {visibleOffers.length > 0 ? (
+                        visibleOffers.map((offer, index) =>
+                            <li className={"mb-4"} key={index}>
+                                <OfferView offer={offer}/>
+                            </li>
+                        )) :
+                    <h3 className={"text-center mt-4"}>Aucune offre valide à afficher</h3>}
             </ul>
-        </div>
+        </>
     )
 }
 

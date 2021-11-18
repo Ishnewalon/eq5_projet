@@ -1,17 +1,20 @@
-import React from "react";
+import React, {Children} from "react";
+import PropTypes from "prop-types";
 
 export function Table(props) {
     const {children, className} = props;
     let tableRows = [];
     let tableHeader;
-    if (!React.Children.toArray(children).find((child) => child.type.name === "TableHeader"))
+
+    let list = Children.toArray(children) || [];
+    if (!list.find(child => child.type.name === "TableHeader"))
         throw new Error("Table must have a TableHeader");
 
-    React.Children.toArray(children).forEach(child => {
-        if (child.type.name === "TableRow")
-            tableRows.push(child);
+    Children.map(children, child => {
         if (child.type.name === "TableHeader")
             tableHeader = child;
+        else
+            tableRows.push(child);
     });
     return (
         <table
@@ -26,12 +29,16 @@ export function Table(props) {
     );
 }
 
+Table.propTypes = {
+    children: PropTypes.array.isRequired,
+    className: PropTypes.string
+};
 
 export function TableHeader(props) {
     const {children} = props;
     return <tr>
         {
-            React.Children.map(children, (child, index) => {
+            React.Children.map(children || [], (child, index) => {
                 return React.cloneElement(child,
                     {
                         key: {index},
@@ -43,14 +50,17 @@ export function TableHeader(props) {
     </tr>
 }
 
+TableHeader.propTypes = {
+    children: PropTypes.array.isRequired,
+};
+
 export function TableRow(props) {
     const {children} = props;
     return <tr>
-        {React.Children.map(children, (child, index) => {
+        {React.Children.map(children, child => {
             if (child.type === 'th') {
                 return React.cloneElement(child,
                     {
-                        key: {index},
                         className: "",
                         scope: "row"
                     })
@@ -58,10 +68,13 @@ export function TableRow(props) {
             if (child.type === 'td') {
                 return React.cloneElement(child,
                     {
-                        key: {index},
                         className: ""
                     })
             }
         })}
     </tr>
 }
+
+TableRow.propTypes = {
+    children: PropTypes.array.isRequired,
+};

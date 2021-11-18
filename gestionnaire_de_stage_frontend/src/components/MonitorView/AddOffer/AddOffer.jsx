@@ -52,7 +52,6 @@ export default function AddOffer() {
     )
 
     return (<>
-        <h2 className="text-center">Ajouter une offre de stage</h2>
         <FormGroup>
             <FormField>
                 <label>Titre</label>
@@ -72,8 +71,8 @@ export default function AddOffer() {
             <FormField>
                 <label className="label">Session</label>
                 <select name="sessions" id="session"
-                        onChange={(e) => setSessionId(e.target.value)}>
-                    <option selected disabled>Choisisez une session</option>
+                        onChange={(e) => setSessionId(e.target.value)} defaultValue="">
+                    <option disabled value="">Choisissez une session</option>
                     {sessions.map(session =>
                         <option key={session.id} value={session.id}>{session.typeSession + session.year}</option>)}
                 </select>
@@ -99,7 +98,7 @@ export default function AddOffer() {
             {(auth.isManager()) ? monitorEmail : <></>}
         </FormGroup>
         <div className="form-group text-center">
-            <button className="btn btn-primary" type={"button"} onClick={addOffer}>Ajouter</button>
+            <button className="btn btn-primary mt-3" type={"button"} onClick={addOffer}>Ajouter</button>
         </div>
     </>);
 }

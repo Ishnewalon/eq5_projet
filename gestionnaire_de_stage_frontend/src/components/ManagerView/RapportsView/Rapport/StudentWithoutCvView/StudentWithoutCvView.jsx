@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from "react";
-import {getAllStudents} from "../../../services/user-service";
-import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
+import {getStudentsWithoutCv} from "../../../../../services/user-service";
+import {Table, TableHeader, TableRow} from "../../../../SharedComponents/Table/Table";
+import MessageNothingToShow from "../../../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 
-export default function StudentSignIn() {
+export default function StudentWithoutCvView() {
 
     const [studentList, setStudentList] = useState([])
 
     useEffect(() => {
-        getAllStudents()
+        getStudentsWithoutCv()
             .then(studentList => {
                 setStudentList(studentList)
             })
@@ -18,10 +19,12 @@ export default function StudentSignIn() {
             })
     }, [])
 
+    if (studentList.length === 0) {
+        return <MessageNothingToShow message="Tous les étudiants ont un CV"/>
+    }
 
     return (
-        <div className='container'>
-            <h2 className="text-center mb-4">Liste des étudiants inscrits</h2>
+        <>
             <Table className={"w-75 mx-auto"}>
                 <TableHeader>
                     <th>#</th>
@@ -38,6 +41,6 @@ export default function StudentSignIn() {
                     </TableRow>
                 )}
             </Table>
-        </div>
+        </>
     )
 }

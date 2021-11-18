@@ -3,6 +3,7 @@ import {assignStudentToSupervisor, getSupervisors, getUnassignedStudents} from "
 import {toast} from "../../../utility";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function LinkSupervisorToStudent() {// TODO: field is linked to supervisor or something
 
@@ -39,15 +40,16 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
             }
         )
     }
+    if (studentList.length === 0)
+        return <MessageNothingToShow message="Aucun étudiant à associer pour le moment..."/>
 
     return (
         <div>
-            <h2 className="text-center">Attribuer des superviseurs aux étudiants</h2>
             <Table className={"w-75 mx-auto"}>
                 <TableHeader>
                     <th>#</th>
                     <th>Étudiant</th>
-                    <th>Enseignant</th>
+                    <th>Superviseur</th>
                     <th>Accepter</th>
                 </TableHeader>
                 {studentList.map((student, index) =>

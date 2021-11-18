@@ -62,9 +62,9 @@ export default function Register() {
         let value = event.target.value;
         let name = event.target.name;
 
-        setUserInfo((prevalue) => {
+        setUserInfo((prev) => {
             return {
-                ...prevalue,
+                ...prev,
                 [name]: value
             }
         })
@@ -122,10 +122,6 @@ export default function Register() {
     return (<>
         <form className="form-container" onSubmit={endThis}>
             <fieldset>
-                <legend>
-                    <h2 className="text-center">Inscription</h2>
-                </legend>
-                <br/>
                 {show}
             </fieldset>
         </form>

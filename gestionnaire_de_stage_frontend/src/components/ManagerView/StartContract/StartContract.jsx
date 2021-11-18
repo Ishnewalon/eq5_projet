@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useAuth} from "../../../services/use-auth";
 import {getAllOfferAppReadyToSign, startSignerFetch} from "../../../services/contrat-service";
+import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function StartContract() {
     const [offerApplications, setOfferApplications] = useState([])
@@ -26,31 +28,26 @@ export default function StartContract() {
         })
     };
 
-    return (<>
-        <h1 className="text-center mt-5 mb-3">Liste des applications prêtes à être signer</h1>
-        <table className="table table-light table-striped table-borderless text-center rounded-3 shadow-lg">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Offre</th>
-                <th scope="col">Commencer le processus de signature</th>
-            </tr>
-            </thead>
-            <tbody>
-            {offerApplications.map(offerApplication => (
-                <tr key={offerApplication.id}>
-                    <th scope="row">{offerApplication.id}</th>
-                    <td>{offerApplication.offer.title}</td>
-                    <td>
-                        <div className="btn-group">
-                            <button className="btn btn-outline-success"
-                                    onClick={() => startSigner(offerApplication.id, auth.user.id)}>Lancer
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            ))}
-            </tbody>
-        </table>
-    </>)
+    if (offerApplications.length === 0)
+        return <MessageNothingToShow message="Aucun contrat à lancer pour le moment..."/>
+    return (
+        <Table>
+            <TableHeader>
+                <th>#</th>
+                <th>Offre</th>
+                <th>Commencer le processus de signature</th>
+            </TableHeader>
+            {offerApplications.map(offerApplication => <TableRow key={offerApplication.id}>
+                <th>{offerApplication.id}</th>
+                <td>{offerApplication.offer.title}</td>
+                <td>
+                    <div className="btn-group">
+                        <button className="btn btn-outline-success"
+                                onClick={() => startSigner(offerApplication.id, auth.user.id)}>Lancer
+                        </button>
+                    </div>
+                </td>
+            </TableRow>)}
+        </Table>
+    )
 }

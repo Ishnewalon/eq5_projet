@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {getAllOffersValid} from '../../../services/offer-service'
-import OfferView from '../../OfferView/OfferView';
-import {getCurrentAndFutureSession} from "../../../services/session-service";
-import {FormField} from "../../SharedComponents/FormField/FormField";
-import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {getAllOffersInvalid} from '../../../../../services/offer-service'
+import OfferView from '../../../../OfferView/OfferView';
+import {getCurrentAndFutureSession} from "../../../../../services/session-service";
+import {FormField} from "../../../../SharedComponents/FormField/FormField";
+import {FormGroup} from "../../../../SharedComponents/FormGroup/FormGroup";
 
-export default function OffersValidView() {
+export default function OfferNotValidView() {
 
     const [offers, setOffers] = useState([])
     const [sessions, setSessions] = useState([]);
@@ -15,7 +15,7 @@ export default function OffersValidView() {
         setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(idSession)))
 
     useEffect(() => {
-        getAllOffersValid()
+        getAllOffersInvalid()
             .then(offers => {
                 setOffers(offers)
             })
@@ -37,9 +37,9 @@ export default function OffersValidView() {
             })
     }, [offers])
 
+
     return (
         <div className='container'>
-            <h2 className="text-center">Offres de Stage</h2>
             <FormGroup>
                 <FormField>
                     <label/>
@@ -51,11 +51,13 @@ export default function OffersValidView() {
                 </FormField>
             </FormGroup>
             <ul>
-                {visibleOffers.map((offer, index) =>
-                    <li className={"mb-4"} key={index}>
-                        <OfferView offer={offer}/>
-                    </li>
-                )}
+                {visibleOffers.length > 0 ? (
+                        visibleOffers.map((offer, index) =>
+                            <li className={"mb-4"} key={index}>
+                                <OfferView offer={offer}/>
+                            </li>
+                        )) :
+                    <h3 className={"text-center mt-4"}>Toutes les offres sont validées</h3>}
             </ul>
         </div>
     )

@@ -1,9 +1,11 @@
-import OffersValidView from "../OffersValidView/OffersValidView";
-import OfferNotValidView from "../OffersNotValidView/OfferNotValidView";
+import OffersValidView from "./OffersValidView/OffersValidView";
+import OfferNotValidView from "./OffersNotValidView/OfferNotValidView";
 import {Link} from "react-router-dom";
-import StudentWithoutCvView from "../StudentWithoutCvView/StudentWithoutCvView";
-import StudentSignIn from "../StudentSignIn/StudentSignIn";
-import StudentWithInvalidCv from "../StudentWithInvalidCv/StudentWithInvalidCv";
+import StudentWithoutCvView from "./StudentWithoutCvView/StudentWithoutCvView";
+import StudentSignIn from "./StudentSignIn/StudentSignIn";
+import StudentWithInvalidCv from "./StudentWithInvalidCv/StudentWithInvalidCv";
+import AllStudentStatusView from "./AllStudentStatusView/AllStudentStatusView";
+import React from "react";
 
 export function RapportOfferValid() {
     return (
@@ -40,10 +42,20 @@ export function RapportStudentSignIn() {
         </>
     );
 }
+
 export function RapportStudentWithInvalidCv() {
     return (
         <>
             <StudentWithInvalidCv/>
+            <BtnBack/>
+        </>
+    );
+}
+
+export function RapportStudentStatus() {
+    return (
+        <>
+            <AllStudentStatusView/>
             <BtnBack/>
         </>
     );

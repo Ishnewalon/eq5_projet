@@ -7,7 +7,6 @@ import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 
 
-
 export default function StepMonitor({
                                         prevStep,
                                         nextStep,
@@ -27,13 +26,13 @@ export default function StepMonitor({
 
     return (<>
         <FormGroup>
-            <FormField myFor="companyName">
+            <FormField htmlFor="companyName">
                 <label>Nom de la compagnie</label>
                 <input name="companyName" placeholder="Nom de compagnie"
                        type="text"
                        value={companyName} onChange={handleChange}/>
             </FormField>
-            <FormField myFor="city">
+            <FormField htmlFor="city">
                 <label>Ville</label>
                 <input name="city" placeholder="Ville" type="text"
                        value={city} onChange={handleChange}/>
@@ -43,7 +42,7 @@ export default function StepMonitor({
             <FieldAddress label="Adresse de la compagnie" address={address} handleChange={handleChange}/>
         </FormGroup>
         <FormGroup>
-            <FormField myFor="postalCode">
+            <FormField htmlFor="postalCode">
                 <label>Code Postale</label>
                 <input name="postalCode" placeholder="XXX 123" type="text"
                        value={postalCode} onChange={handleChange}/>
