@@ -6,7 +6,6 @@ import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 
 export default function StepCegep({prevStep, nextStep, updateUserType, handleChange, matricule}) {
-
     const next = (matricule, val) => {
         if (!matricule) {
             toastErr.fire({title: 'Matricule invalid!'}).then()
@@ -22,7 +21,7 @@ export default function StepCegep({prevStep, nextStep, updateUserType, handleCha
 
     return (<>
             <FormGroup>
-                <FormField myFor="matricule">
+                <FormField htmlFor="matricule">
                     <label>Matricule</label>
                     <input name="matricule" placeholder="Matricule" type="number"
                            value={matricule} onChange={handleChange}/>

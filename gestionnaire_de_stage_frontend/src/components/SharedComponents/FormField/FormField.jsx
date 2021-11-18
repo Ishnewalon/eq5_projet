@@ -1,13 +1,14 @@
-import React from "react";
+import React, {Children, cloneElement} from "react";
+import PropTypes from "prop-types";
+
 
 export function FormField(props) {
-    const {children, myFor} = props;
-    let childList = React.Children.toArray(children);
-    // noinspection JSUnresolvedVariable
-    let input = childList.find(p => p.type === "input" || p.type === "textarea" || p.type === "select" || p.type === "button" || p.type === "radio");
+    const {children, htmlFor} = props;
+    let childList = Children.toArray(children) || [];
+
+    let input = childList.find(children => children.type === "input" || children.type === "textarea" || children.type === "select" || children.type === "button" || children.type === "radio");
     if (!input)
         throw new Error("FormField must have either an input, textarea, select, button or radio");
-    // noinspection JSUnresolvedVariable
     let label = childList.find(p => p.type === "label")
 
     let inputProps = {
@@ -16,18 +17,22 @@ export function FormField(props) {
     let labelProps = {
         className: `${input.props.className ? input.props.className : ""} label text-white`
     }
-    if (myFor) {
-        inputProps.id = myFor
-        labelProps.htmlFor = myFor
+    if (htmlFor) {
+        inputProps.id = htmlFor
+        labelProps.htmlFor = htmlFor
     }
 
-    // noinspection JSCheckFunctionSignatures
     return <>
         {label ?
-            React.cloneElement(label, labelProps) : null}
+            cloneElement(label, labelProps) : null}
         <div className="input-group">
-            {React.cloneElement(input, inputProps)}
+            {cloneElement(input, inputProps)}
         </div>
     </>
 
+}
+
+FormField.propTypes = {
+    htmlFor: PropTypes.string,
+    children: PropTypes.node
 }

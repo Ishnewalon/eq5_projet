@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 export function FormGroup(props) {
     const children = props.children;
@@ -25,4 +26,9 @@ export function FormGroup(props) {
             })}
         </div>
     </>
+}
+
+FormGroup.propTypes = {
+    repartition: PropTypes.arrayOf(PropTypes.number),
+    children: PropTypes.node
 }

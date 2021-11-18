@@ -1,6 +1,7 @@
 import {Link} from "react-router-dom";
 import React from "react";
 import {useAuth} from "../../services/use-auth";
+import PropTypes from "prop-types";
 
 
 export default function Navbar() {
@@ -76,15 +77,18 @@ function NavItemSpecificForUser() {
     return <></>
 }
 
-function ThisIsAListItem({children}) {
-    return React.Children.map(children, (child) => {
-        // noinspection JSCheckFunctionSignatures
-        return (<>
-            <li className="nav-item">{
+function ThisIsAListItem(props) {
+    const {children} = props;
+    return React.Children.map(children || [], child => {
+            return <li className="nav-item">{
                 React.cloneElement(child, {
                     className: `${child.props.className ? child.props.className : ""} nav-link text-white`
                 })}
             </li>
-        </>)
-    });
+        }
+    );
 }
+
+ThisIsAListItem.propTypes = {
+    children: PropTypes.node
+};
