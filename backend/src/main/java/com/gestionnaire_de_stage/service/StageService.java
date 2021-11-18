@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.EvaluationAlreadyFilledException;
 import com.gestionnaire_de_stage.exception.StageAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
 import com.gestionnaire_de_stage.model.Stage;
@@ -38,10 +39,13 @@ public class StageService {
         return stageRepository.save(stage);
     }
 
-    public Stage getStageByStudentEmail(String email) throws StageDoesNotExistException {
+    public Stage getStageByStudentEmail(String email) throws StageDoesNotExistException, EvaluationAlreadyFilledException {
         Assert.isTrue(email != null, "Le courriel ne peut pas être null");
         if (isNotAlreadyCreatedEmail(email)) {
             throw new StageDoesNotExistException();
+        }
+        if (isEvalStagiaireFilled(email)) {
+            throw new EvaluationAlreadyFilledException("L'évalutation de ce stagiaire a déjà été remplie");
         }
         return stageRepository.getByContract_StudentEmail(email);
     }
@@ -69,5 +73,9 @@ public class StageService {
 
     private boolean isNotAlreadyCreatedEmail(String email) {
         return !stageRepository.existsByContract_StudentEmail(email);
+    }
+
+    private boolean isEvalStagiaireFilled(String email) {
+        return stageRepository.existsByContract_StudentEmailAndEvalStagiaireNotNull(email);
     }
 }

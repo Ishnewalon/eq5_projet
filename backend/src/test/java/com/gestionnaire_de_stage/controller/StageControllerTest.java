@@ -3,10 +3,7 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.EvalMilieuStageDTO;
 import com.gestionnaire_de_stage.dto.EvalStagiaireDTO;
-import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
-import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StageAlreadyExistsException;
-import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.model.Student;
@@ -223,6 +220,22 @@ public class StageControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Le stage n'existe pas pour cette étudiant");
+    }
+
+    @Test
+    public void testFillEvalStagiairePDF_withEvaluationAlreadyFilled() throws Exception {
+        EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
+        when(stageService.getStageByStudentEmail(any())).thenThrow(new EvaluationAlreadyFilledException("L'évalutation de ce stagiaire a déjà été remplie"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/stages/monitor/fill_form")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'évalutation de ce stagiaire a déjà été remplie");
     }
 
     private EvalMilieuStageDTO getDummyEvalMilieuStageDTO() {

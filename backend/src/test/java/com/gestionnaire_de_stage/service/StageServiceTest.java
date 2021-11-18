@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.EvaluationAlreadyFilledException;
 import com.gestionnaire_de_stage.exception.StageAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
 import com.gestionnaire_de_stage.model.Contract;
@@ -99,6 +100,7 @@ public class StageServiceTest {
         Stage dummyStage = getDummyStage();
         String dummyEmail = "like@email.com";
         when(stageRepository.existsByContract_StudentEmail(any())).thenReturn(true);
+        when(stageRepository.existsByContract_StudentEmailAndEvalStagiaireNotNull(any())).thenReturn(false);
         when(stageRepository.getByContract_StudentEmail(any())).thenReturn(dummyStage);
 
         Stage actualStage = stageService.getStageByStudentEmail(dummyEmail);
@@ -118,6 +120,16 @@ public class StageServiceTest {
         when(stageRepository.existsByContract_StudentEmail(any())).thenReturn(false);
 
         assertThrows(StageDoesNotExistException.class,
+                () -> stageService.getStageByStudentEmail(dummyEmail));
+    }
+
+    @Test
+    public void testGetStageByStudentEmail_withEvaluationAlreadyFilled() {
+        String dummyEmail = "like@email.com";
+        when(stageRepository.existsByContract_StudentEmail(any())).thenReturn(true);
+        when(stageRepository.existsByContract_StudentEmailAndEvalStagiaireNotNull(any())).thenReturn(true);
+
+        assertThrows(EvaluationAlreadyFilledException.class,
                 () -> stageService.getStageByStudentEmail(dummyEmail));
     }
 

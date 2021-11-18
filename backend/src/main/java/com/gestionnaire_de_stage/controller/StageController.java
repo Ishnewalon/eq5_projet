@@ -3,10 +3,7 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.EvalMilieuStageDTO;
 import com.gestionnaire_de_stage.dto.EvalStagiaireDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
-import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StageAlreadyExistsException;
-import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.service.ContractService;
 import com.gestionnaire_de_stage.service.StageService;
@@ -109,7 +106,11 @@ public class StageController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Le stage n'existe pas pour cette étudiant"));
-        } 
+        } catch (EvaluationAlreadyFilledException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseMessage("Évaluation remplie!"));
