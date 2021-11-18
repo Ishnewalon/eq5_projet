@@ -15,11 +15,11 @@ export default function StepInformationGeneral({prevStep, nextStep, handleChange
 
     return (<>
         <FormGroup>
-            <FormField myFor="firstName">
+            <FormField htmlFor="firstName">
                 <label>Prénom</label>
                 <input name="firstName" placeholder="Prenom" type="text" value={firstName} onChange={handleChange}/>
             </FormField>
-            <FormField myFor="lastName">
+            <FormField htmlFor="lastName">
                 <label>Nom</label>
                 <input name="lastName" placeholder="Nom" type="text" value={lastName} onChange={handleChange}/>
             </FormField>
@@ -29,7 +29,7 @@ export default function StepInformationGeneral({prevStep, nextStep, handleChange
                         handleChanges={handleChange}/>
         </FormGroup>
         <FormGroup>
-            <FormField myFor="phone">
+            <FormField htmlFor="phone">
                 <label>Téléphone</label>
                 <input name="phone" placeholder="000 000 000" type="tel"
                        value={phone} onChange={handleChange}/>

@@ -8,7 +8,7 @@ export default function RapportsView() {
                              description="Liste de toutes les offres enregistrées et que vous avez validées"
                              to="/dashboard/rapports/1"/>
                 <RapportCard title="Rapport des offres non validées"
-                             description="Liste de toutes les offres enregistrées et refusées"
+                             description="Liste de toutes les offres enregistrées et pas encore validées"
                              to="/dashboard/rapports/2"/>
                 <RapportCard title="Rapport des étudiants sans Cv"
                              description="Liste des étudiants inscrits et qui n'ont pas encore téleverser de Cv"

@@ -1,6 +1,7 @@
 import {Link} from "react-router-dom";
 import React from "react";
 import {useAuth} from "../../services/use-auth";
+import PropTypes from "prop-types";
 
 
 export default function Navbar() {
@@ -44,6 +45,7 @@ function NavItemSpecificForUser() {
                 <Link to="/dashboard/applications">Applications</Link>
                 <Link to="/dashboard/voir/futures_stagiaires">Contrats à
                     valider</Link>
+                <Link to="/dashboard/monitor_eval_stagiaire">Formulaire d'évaluation de stagiaire</Link>
                 <Link to="/dashboard/monitor/contracts/signed">Contrats signés</Link>
             </ThisIsAListItem>
         )
@@ -71,20 +73,24 @@ function NavItemSpecificForUser() {
         </ThisIsAListItem>
     if (auth.isSupervisor())
         return <ThisIsAListItem>
+            <Link to="/dashboard/supervisor_form_visit_company">Formulaire de visite d'entreprise</Link>
             <Link to="/dashboard/students/status">Status des étudiants</Link>
         </ThisIsAListItem>
     return <></>
 }
 
-function ThisIsAListItem({children}) {
-    return React.Children.map(children, (child) => {
-        // noinspection JSCheckFunctionSignatures
-        return (<>
-            <li className="nav-item">{
+function ThisIsAListItem(props) {
+    const {children} = props;
+    return React.Children.map(children || [], child => {
+            return <li className="nav-item">{
                 React.cloneElement(child, {
                     className: `${child.props.className ? child.props.className : ""} nav-link text-white`
                 })}
             </li>
-        </>)
-    });
+        }
+    );
 }
+
+ThisIsAListItem.propTypes = {
+    children: PropTypes.node
+};

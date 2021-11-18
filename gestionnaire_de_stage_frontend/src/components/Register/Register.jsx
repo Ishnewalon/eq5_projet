@@ -122,10 +122,6 @@ export default function Register() {
     return (<>
         <form className="form-container" onSubmit={endThis}>
             <fieldset>
-                <legend>
-                    <h2 className="text-center">Inscription</h2>
-                </legend>
-                <br/>
                 {show}
             </fieldset>
         </form>

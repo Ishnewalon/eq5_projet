@@ -5,7 +5,7 @@ import {methods, requestInit, urlBackend} from "./serviceUtils";
 import {swalErr, toast} from "../utility";
 import {UserType} from "../enums/UserTypes";
 
-const authContext = createContext(undefined, undefined);
+const authContext = createContext({});
 
 export function AuthProvider({children}) {
     const auth = useProvideAuth();
