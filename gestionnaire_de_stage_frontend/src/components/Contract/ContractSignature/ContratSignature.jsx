@@ -42,7 +42,7 @@ export default function ContratSignature({userType, contract, removeContract}) {
         else if (userType === UserType.STUDENT[0])
             studentSignContract(signature, contract.id).then(isSigned => setSigned(isSigned));
     }
-    if (!signed) {
+    if (signed) {
         return <MessageNothingToShow message="Vous avez signé le contrat."/>
     }
     return <div className={"container bg-secondary my-2"}>
