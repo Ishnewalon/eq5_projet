@@ -108,7 +108,7 @@ Adapt color to bg-dark
     outline: 0 none !important;
 }
 
-.bg-light{
+.bg-light {
     background-color: var(--color-light) !important;
 }
 
@@ -129,5 +129,8 @@ Adapt color to bg-dark
     margin-bottom: 20px;
 }
 
-
-
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

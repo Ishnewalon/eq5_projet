@@ -13,7 +13,6 @@ function LoginLogout() {
 
     const onClick = (e) => {
         if (auth.user) {
-
             e.preventDefault()
             auth.signOut();
         }

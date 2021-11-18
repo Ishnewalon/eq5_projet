@@ -1,4 +1,3 @@
-import './Login.css'
 import React, {useState} from "react";
 import FieldPassword from "../SharedComponents/Fields/FieldPassword";
 import FieldEmail from "../SharedComponents/Fields/FieldEmail";
@@ -25,7 +24,7 @@ export default function Login() {
     }
 
     return (
-        <ContainerBox>
+        <ContainerBox className="w-75">
             <FormGroup>
                 <ul className="nav nav-pills nav-fill mx-md-5 mx-auto">
                     <li className="nav-item">

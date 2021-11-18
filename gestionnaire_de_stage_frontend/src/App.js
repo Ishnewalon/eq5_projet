@@ -5,7 +5,7 @@ import Register from "./components/Register/Register";
 import React from "react";
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from "./components/NavBar/NavBar";
+import Navbar from "./components/Navbar/Navbar";
 import {AuthProvider, RequireAuth, RequireNoAuth} from "./services/use-auth";
 import Login from "./components/Login/Login";
 import {ContainerBox} from "./components/SharedComponents/ContainerBox/ContainerBox";

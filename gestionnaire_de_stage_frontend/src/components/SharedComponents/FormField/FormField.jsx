@@ -12,7 +12,7 @@ export function FormField(props) {
     let label = childList.find(p => p.type === "label")
 
     let inputProps = {
-        className: `${input.props.className ? input.props.className : ""} form-control`
+        className: `${input.props.className ? input.props.className : ""} form-control mb-1`
     }
     let labelProps = {
         className: `${input.props.className ? input.props.className : ""} label text-white`
