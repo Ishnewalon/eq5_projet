@@ -1,6 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
-import com.gestionnaire_de_stage.exception.StageAlreadyExistsException;
+import com.gestionnaire_de_stage.exception.EvaluationAlreadyFilledException;
 import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
 import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.repository.StageRepository;
@@ -18,10 +18,10 @@ public class StageService {
         this.stageRepository = stageRepository;
     }
 
-    public Stage create(Stage stage, String matricule) throws StageAlreadyExistsException {
+    public Stage create(Stage stage, String matricule) throws EvaluationAlreadyFilledException {
         Assert.isTrue(stage != null, "Le stage ne peut pas être null");
         if (isAlreadyCreated(matricule)) {
-            throw new StageAlreadyExistsException();
+            throw new EvaluationAlreadyFilledException("L'évalutation de cet étudiant a déjà été remplie");
         }
         if (isAlreadyCreatedButNoEvalMilieu(matricule)) {
             stage = stageRepository.getStageByContractStudentMatricule(matricule);
@@ -38,10 +38,13 @@ public class StageService {
         return stageRepository.save(stage);
     }
 
-    public Stage getStageByStudentEmail(String email) throws StageDoesNotExistException {
+    public Stage getStageByStudentEmail(String email) throws StageDoesNotExistException, EvaluationAlreadyFilledException {
         Assert.isTrue(email != null, "Le courriel ne peut pas être null");
         if (isNotAlreadyCreatedEmail(email)) {
             throw new StageDoesNotExistException();
+        }
+        if (isEvalStagiaireFilled(email)) {
+            throw new EvaluationAlreadyFilledException("L'évalutation de ce stagiaire a déjà été remplie");
         }
         return stageRepository.getByContract_StudentEmail(email);
     }
@@ -69,5 +72,9 @@ public class StageService {
 
     private boolean isNotAlreadyCreatedEmail(String email) {
         return !stageRepository.existsByContract_StudentEmail(email);
+    }
+
+    private boolean isEvalStagiaireFilled(String email) {
+        return stageRepository.existsByContract_StudentEmailAndEvalStagiaireNotNull(email);
     }
 }
