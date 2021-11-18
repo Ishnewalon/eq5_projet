@@ -600,7 +600,7 @@ export default function EvaluationIntern() {
             <FormGroup>
                 <FormField>
                     <label>L’entreprise aimerait accueillir cet élève pour son prochain stage</label>
-                    <select title="Le champ doit être rempli" name='entrepriseApprecieEtudiant'
+                    <select title="Le champ 'L’entreprise aimerait accueillir cet élève pour son prochain stage' doit être rempli" name='entrepriseApprecieEtudiant'
                             value={monitorVisitForm.entrepriseApprecieEtudiant} onChange={e => handleChange(e)}>
                         <option disabled value="">Choisiser une réponse</option>
                         {Object.values(yesAndNoAnswers).map((c, index) => <option key={index}
@@ -612,7 +612,8 @@ export default function EvaluationIntern() {
                 <FormField>
                     <label>La formation technique du stagiaire était-elle suffisante pour accomplir le mandat de
                         stage?</label>
-                    <textarea title="Le champ doit être rempli" name="formationSuffisanteCommentaire"
+                    <textarea title="Le champ 'La formation technique du stagiaire était-elle suffisante pour accomplir le mandat de
+                        stage' doit être rempli" name="formationSuffisanteCommentaire"
                               value={monitorVisitForm.formationSuffisanteCommentaire}
                               placeholder='Est-ce que la formation était suffisante?'
                               onChange={e => handleChange(e)}/>
@@ -628,7 +629,7 @@ export default function EvaluationIntern() {
                 <FormField>
                     <label>Fonction</label>
                     <input type="text" placeholder='Fonction' name='fonctionDeux'
-                           title='La fonction est requise'
+                           title='La 2ième fonction est requise'
                            value={monitorVisitForm.fonctionDeux} onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
