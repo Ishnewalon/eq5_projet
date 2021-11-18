@@ -305,26 +305,6 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testGetAllStudentsNotYetEvaluated() {
-        List<Student> dummyStudentList = getDummyStudentList();
-        //when(studentRepository.findAllByPrincipalCurriculum_IsValid(any())).thenReturn(dummyStudentList);
-
-        List<Student> actualStudentList = studentService.getAllStudentsNotYetEvaluated();
-
-        //assertThat(actualStudentList.size()).isEqualTo(dummyStudentList.size());
-    }
-
-    @Test
-    public void testGetAllStudentsWithCompanyNotYetEvaluated() {
-        List<Student> dummyStudentList = getDummyStudentList();
-        //when(studentRepository.findAllByPrincipalCurriculum_IsValid(any())).thenReturn(dummyStudentList);
-
-        List<Student> actualStudentList = studentService.getAllStudentsWithCompanyNotYetEvaluated();
-
-        //assertThat(actualStudentList.size()).isEqualTo(dummyStudentList.size());
-    }
-
-    @Test
     void testAssign() {
         Student dummyStudent = getDummyStudent();
         Supervisor dummySupervisor = getDummySupervisor();

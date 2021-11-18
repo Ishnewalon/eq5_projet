@@ -99,15 +99,6 @@ public class StudentService {
         return studentRepository.findAllByPrincipalCurriculum_IsValid(false);
     }
 
-    public List<Student> getAllStudentsNotYetEvaluated() {
-        return null;
-    }
-
-    public List<Student> getAllStudentsWithCompanyNotYetEvaluated() {
-        return null;
-    }
-
-
     public boolean assign(Student student, Supervisor supervisor){
         student.setSupervisor(supervisor);
         studentRepository.save(student);
