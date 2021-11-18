@@ -2,37 +2,63 @@ import {Link} from "react-router-dom";
 import React from "react";
 import {useAuth} from "../../services/use-auth";
 import PropTypes from "prop-types";
+import {BiLogIn, BiLogOut, GiHamburgerMenu} from "react-icons/all";
 
+
+function LoginLogout() {
+    let auth = useAuth();
+    let btn = (<BiLogIn color="white" title="Se connecter" size="25"/>)
+    if (auth.user)
+        btn = (<BiLogOut color="white" title="Se deconnecter" size="25"/>)
+
+    const onClick = (e) => {
+        if (auth.user) {
+
+            e.preventDefault()
+            auth.signOut();
+        }
+    };
+
+    return (
+        <form className="d-flex">
+            <Link className="me-2" onClick={onClick} to="/login">{btn}</Link>
+        </form>
+    )
+}
 
 export default function Navbar() {
     return (
-        <nav className="navbar navbar-expand-sm bg-dark mb-4">
+        <nav className="navbar navbar-expand-lg bg-dark mb-4">
             <div className="container-fluid">
-                <ul className="navbar-nav">
-                    <ThisIsAListItem>
-                        <Link to="/">Accueil</Link>
-                    </ThisIsAListItem>
-                    <GetRestOfTheList/>
-                </ul>
+                <Link className="navbar-brand text-white" to="/">OseDlaMarde</Link>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <GiHamburgerMenu color="white"/>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarText">
+                    <ul className="navbar-nav">
+                        <GetNavItems/>
+                    </ul>
+                </div>
+                <LoginLogout/>
             </div>
         </nav>
     );
 }
 
-function GetRestOfTheList() {
+function GetNavItems() {
     const auth = useAuth();
     if (!auth.user)
-        return <ThisIsAListItem>
-            <Link to="/login">Se connecter</Link>
+        return <NavItemList>
             <Link to="/register">Créer un compte</Link>
-        </ThisIsAListItem>
+        </NavItemList>
     return <>
-        <ThisIsAListItem>
+        <NavItemList>
             <Link to="/dashboard">Compte
                 ({auth.user.firstName})</Link>
-        </ThisIsAListItem>
+        </NavItemList>
         <NavItemSpecificForUser/>
-        <button className="fw-bold" onClick={() => auth.signOut()}>Se déconnecter</button>
+
     </>;
 }
 
@@ -40,48 +66,64 @@ function NavItemSpecificForUser() {
     let auth = useAuth();
     if (auth.isMonitor())
         return (
-            <ThisIsAListItem>
-                <Link to="/dashboard/offres/ajouter">Ajouter des offres</Link>
-                <Link to="/dashboard/applications">Applications</Link>
+            <NavItemList>
+                <Dropdown title="Offres">
+                    <Link to="/dashboard/offres/ajouter">Ajouter des offres</Link>
+                    <Link to="/dashboard/applications">Applications</Link>
+                </Dropdown>
                 <Link to="/dashboard/voir/futures_stagiaires">Contrats à
                     valider</Link>
                 <Link to="/dashboard/monitor_eval_stagiaire">Formulaire d'évaluation de stagiaire</Link>
                 <Link to="/dashboard/monitor/contracts/signed">Contrats signés</Link>
-            </ThisIsAListItem>
+            </NavItemList>
         )
     if (auth.isManager())
-        return <ThisIsAListItem>
-            <Link to="/dashboard/offres/ajouter">Ajouter des offres</Link>
-            <Link to="/dashboard/offres/review">Validation Offre</Link>
-            <Link to="/dashboard/curriculum/review">Valider Cv</Link>
-            <Link to="/dashboard/students/start">Commencer signature</Link>
-            <Link to="/dashboard/students/applied">Associer Superviseur</Link>
-            <Link to="/dashboard/contrats/a_signer">Contrats à valider</Link>
+        return <NavItemList>
+            <Dropdown title="Offres">
+                <Link to="/dashboard/offres/ajouter">Ajouter des offres</Link>
+                <Link to="/dashboard/offres/review">Validation Offre</Link>
+            </Dropdown>
+            <Dropdown title="Étudiants">
+                <Link to="/dashboard/curriculum/review">Valider Curriculum</Link>
+                <Link to="/dashboard/students/applied">Associer Superviseur</Link>
+            </Dropdown>
+            <Dropdown title="Contrats">
+                <Link to="/dashboard/contrats/a_signer">Contrats à valider</Link>
+                <Link to="/dashboard/students/start">Commencer signature</Link>
+                <Link to="/dashboard/manager/contracts/signed">Contrats signés</Link>
+            </Dropdown>
             <Link to="/dashboard/session">Gestion des session</Link>
-            <Link to="/dashboard/manager/contracts/signed">Contrats signés</Link>
             <Link to="/dashboard/rapports">Rapports</Link>
-        </ThisIsAListItem>
+        </NavItemList>
     if (auth.isStudent())
-        return <ThisIsAListItem>
-            <Link to="/dashboard/televerser">Téléverser CV</Link>
-            <Link to="/dashboard/mes_cv">Mes CV</Link>
+        return <NavItemList>
+            <Dropdown title="Curriculum">
+                <Link to="/dashboard/televerser">Téléverser curriculum</Link>
+                <Link to="/dashboard/mes_cv">Mes curriculum</Link>
+            </Dropdown>
             <Link to="/dashboard/offres">Offres</Link>
-            <Link to="/dashboard/voir_mon_contrat">Voir Contrat</Link>
-            <Link to="/dashboard/view/status">Mes applications</Link>
-            <Link to="/dashboard/offer/setdate">Ajouter une date d'entrevue</Link>
-            <Link to="/dashboard/student/contract/signed">Voir contrat signé</Link>
-        </ThisIsAListItem>
+            <Dropdown title="Applications">
+                <Link to="/dashboard/view/status">Mes applications</Link>
+                <Link to="/dashboard/offer/setdate">Ajouter une date d'entrevue</Link>
+            </Dropdown>
+            <Dropdown title="Contrat">
+                <Link to="/dashboard/voir_mon_contrat">Mon contrats</Link>
+                <Link to="/dashboard/student/contract/signed">Mes contrats signés</Link>
+            </Dropdown>
+        </NavItemList>
     if (auth.isSupervisor())
-        return <ThisIsAListItem>
+        return <NavItemList>
             <Link to="/dashboard/supervisor_form_visit_company">Formulaire de visite d'entreprise</Link>
             <Link to="/dashboard/students/status">Status des étudiants</Link>
-        </ThisIsAListItem>
+        </NavItemList>
     return <></>
 }
 
-function ThisIsAListItem(props) {
+function NavItemList(props) {
     const {children} = props;
     return React.Children.map(children || [], child => {
+            if (child.type.name === "Dropdown")
+                return child
             return <li className="nav-item">{
                 React.cloneElement(child, {
                     className: `${child.props.className ? child.props.className : ""} nav-link text-white`
@@ -91,6 +133,33 @@ function ThisIsAListItem(props) {
     );
 }
 
-ThisIsAListItem.propTypes = {
+NavItemList.propTypes = {
     children: PropTypes.node
+};
+
+
+function Dropdown(props) {
+    const {children, title} = props;
+    return (
+        <li className="nav-item dropdown text-white">
+            <Link className="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" role="button"
+                  aria-expanded="false">{title}</Link>
+            <ul className="dropdown-menu">
+                {
+                    React.Children.map(children || [], child => {
+                        return <li className="nav-item dropdown">{
+                            React.cloneElement(child, {
+                                className: `${child.props.className ? child.props.className : ""} dropdown-item`
+                            })}
+                        </li>
+                    })
+                }
+            </ul>
+        </li>
+    )
+}
+
+Dropdown.propTypes = {
+    children: PropTypes.node,
+    title: PropTypes.string
 };
