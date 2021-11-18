@@ -71,14 +71,14 @@ public class StageController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Le stage n'existe pas"));
-        } catch (StageAlreadyExistsException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le stage existe déjà et une evaluation a déjà été fait"));
         } catch (ContractDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Cet étudiant n'a pas de stage"));
+        } catch (EvaluationAlreadyFilledException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity
                 .status(HttpStatus.OK)

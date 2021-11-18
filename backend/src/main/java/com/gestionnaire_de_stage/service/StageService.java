@@ -1,7 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.EvaluationAlreadyFilledException;
-import com.gestionnaire_de_stage.exception.StageAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
 import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.repository.StageRepository;
@@ -19,10 +18,10 @@ public class StageService {
         this.stageRepository = stageRepository;
     }
 
-    public Stage create(Stage stage, String matricule) throws StageAlreadyExistsException {
+    public Stage create(Stage stage, String matricule) throws EvaluationAlreadyFilledException {
         Assert.isTrue(stage != null, "Le stage ne peut pas être null");
         if (isAlreadyCreated(matricule)) {
-            throw new StageAlreadyExistsException();
+            throw new EvaluationAlreadyFilledException("L'évalutation de cet étudiant a déjà été remplie");
         }
         if (isAlreadyCreatedButNoEvalMilieu(matricule)) {
             stage = stageRepository.getStageByContractStudentMatricule(matricule);

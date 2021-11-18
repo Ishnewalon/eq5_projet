@@ -1,7 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.EvaluationAlreadyFilledException;
-import com.gestionnaire_de_stage.exception.StageAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
 import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.model.Stage;
@@ -52,7 +51,7 @@ public class StageServiceTest {
     public void testCreate_withInvalidStage() {
         when(stageRepository.existsByContract_StudentMatriculeAndEvalMilieuStageNotNull(any())).thenReturn(true);
 
-        assertThrows(StageAlreadyExistsException.class,
+        assertThrows(EvaluationAlreadyFilledException.class,
                 () -> stageService.create(getDummyStage(), getDummyStudent().getMatricule()));
     }
 
