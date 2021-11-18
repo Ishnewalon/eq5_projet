@@ -1,4 +1,3 @@
-import "./OfferValidationView.css"
 import React, {useEffect, useState} from 'react';
 import {getAllOffersInvalid, validateOffer} from '../../../services/offer-service';
 import OfferView from "../../OfferView/OfferView";

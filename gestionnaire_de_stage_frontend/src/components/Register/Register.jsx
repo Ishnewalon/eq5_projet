@@ -1,4 +1,3 @@
-import './Register.css'
 import React, {useState} from "react";
 import StepPassword from "./Steps/StepPassword";
 import StepInformationGeneral from "./Steps/StepInformationGeneral";

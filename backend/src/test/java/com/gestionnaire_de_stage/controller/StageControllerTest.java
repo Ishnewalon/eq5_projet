@@ -3,10 +3,7 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.EvalMilieuStageDTO;
 import com.gestionnaire_de_stage.dto.EvalStagiaireDTO;
-import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
-import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StageAlreadyExistsException;
-import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.model.Student;
@@ -45,6 +42,7 @@ public class StageControllerTest {
     public void testFillEvalMilieuStagePDF_withValidEntries() throws Exception {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
         Stage dummyStage = getDummyStage();
+        when(stageService.create(any(), any())).thenReturn(dummyStage);
         when(stageService.addEvalMilieuStage( any(), any())).thenReturn(dummyStage);
 
         MvcResult mvcResult = mockMvc.perform(
@@ -126,7 +124,7 @@ public class StageControllerTest {
     @Test
     public void testFillEvalMilieuStagePDF_withExistingStage() throws Exception {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
-        when(stageService.create(any(),any())).thenThrow(StageAlreadyExistsException.class);
+        when(stageService.create(any(),any())).thenThrow(new EvaluationAlreadyFilledException("L'évalutation de cet étudiant a déjà été remplie"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
@@ -136,7 +134,7 @@ public class StageControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le stage existe déjà et une evaluation a déjà été fait");
+        assertThat(response.getContentAsString()).contains("L'évalutation de cet étudiant a déjà été remplie");
     }
 
     @Test
@@ -223,6 +221,22 @@ public class StageControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Le stage n'existe pas pour cette étudiant");
+    }
+
+    @Test
+    public void testFillEvalStagiairePDF_withEvaluationAlreadyFilled() throws Exception {
+        EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
+        when(stageService.getStageByStudentEmail(any())).thenThrow(new EvaluationAlreadyFilledException("L'évalutation de ce stagiaire a déjà été remplie"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/stages/monitor/fill_form")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'évalutation de ce stagiaire a déjà été remplie");
     }
 
     private EvalMilieuStageDTO getDummyEvalMilieuStageDTO() {

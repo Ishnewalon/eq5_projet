@@ -1,5 +1,4 @@
 import React from 'react';
-import './OfferView.css';
 
 export default function OfferView({offer}) {
     return <>

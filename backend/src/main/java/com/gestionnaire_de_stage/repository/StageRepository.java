@@ -20,4 +20,6 @@ public interface StageRepository extends JpaRepository<Stage, Long> {
     List<Stage> getAllByEvalMilieuStageIsNull();
 
     List<Stage> getAllByEvalStagiaireIsNull();
+
+    boolean existsByContract_StudentEmailAndEvalStagiaireNotNull(String email);
 }

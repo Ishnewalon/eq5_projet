@@ -1,4 +1,3 @@
-import './Login.css'
 import React, {useState} from "react";
 import FieldPassword from "../SharedComponents/Fields/FieldPassword";
 import FieldEmail from "../SharedComponents/Fields/FieldEmail";
@@ -16,7 +15,7 @@ export default function Login() {
     const [password, setPassword] = useState('')
     const [userType, setUserType] = useState(UserType.MONITOR[0])
 
-    const connect = (e) => {
+    const connect = e => {
         e.preventDefault()
         auth.signIn(userType, email, password).then(() => {
             if (auth.user)
@@ -25,9 +24,9 @@ export default function Login() {
     }
 
     return (
-        <ContainerBox>
+        <ContainerBox className="w-75">
             <FormGroup>
-                <ul className="nav nav-pills nav-fill w-50 mx-auto">
+                <ul className="nav nav-pills nav-fill mx-md-5 mx-auto">
                     <li className="nav-item">
                         <input type="radio" className="btn-check" name="options-outlined" id="monitor"
                                autoComplete="off" onClick={() => setUserType(UserType.MONITOR[0])} defaultChecked/>
