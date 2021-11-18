@@ -2,11 +2,11 @@ import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 import {useState} from "react";
 import {supervisorCreateForm} from "../../../services/stage-service";
-import Swal from "sweetalert2";
+import {regexMatriculeEtudiant, swalErr} from "../../../utility";
 
 
 export default function SupervisorVisitForm() {
-
+    const [errors, setErrors] = useState({});
     const [visitForm, setVisitForm] = useState({
         entrepriseNom: '',
         matriculeEtudiant: '',
@@ -37,18 +37,133 @@ export default function SupervisorVisitForm() {
         commentaires: '',
         questionOnze: 'Premier stage',
         questionDouze: 'Un stagiaire',
-        questionTreize: 'Oui',
-        questionQuatorzeHeuresUnA: '',
-        questionQuatorzeHeuresUnB: '',
-        questionQuatorzeHeuresUnC: '',
-        questionQuatorzeHeuresUnD: '',
-        questionQuatorzeHeuresUnE: '',
-        questionQuatorzeHeuresUnF: '',
-        questionQuinze: ''
+        questionTreize: 'true',
+        questionQuinze: 'true',
+        questionQuatorzeHeuresUnA: 0,
+        questionQuatorzeHeuresUnB: 0,
+        questionQuatorzeHeuresUnC: 0,
+        questionQuatorzeHeuresUnD: 0,
+        questionQuatorzeHeuresUnE: 0,
+        questionQuatorzeHeuresUnF: 0
     });
 
-    const handleChange = (e) => {
-        const {value, name} = e.target;
+    const choixAccords = {
+        TOTALEMENT_EN_ACCORD: ["TOTALEMENT_EN_ACCORD", "Totalement en accord"],
+        PLUTOT_EN_ACCORD: ['PLUTOT_EN_ACCORD', 'Plûtot en accord'],
+        PLUTOT_EN_DESACCORD: ['PLUTOT_EN_DESACCORD', 'Plûtot en désaccord'],
+        TOTALEMENT_EN_DESACCORD: ['TOTALEMENT_EN_DESACCORD', 'Totalement en désaccord'],
+        IMPOSSIBLE_DE_SE_PRONONCER: ['IMPOSSIBLE_DE_SE_PRONONCER', 'Impossible de se prononcer']
+    }
+
+    const choixStagiaires = {
+        UN_STAGIAIRE: ['Un stagiaire'],
+        DEUX_STAGIAIRES: ['Deux stagiaires'],
+        TROIS_STAGIAIRES: ['Trois stagiaires'],
+        PLUS_DE_TROIS_STAGIAIRES: ['Plus de trois stagiaires'],
+    }
+
+    const choixStage = {
+        UN_STAGIAIRE: ['Premier stage'],
+        DEUX_STAGIAIRES: ['Deuxième stage']
+    }
+
+    const yesAndNoAnswers = {
+        OUI: ['true', 'Oui'],
+        NON: ['false', 'Non']
+    }
+
+    const applyValidationStyleBasedOnChoices = (value, name, validationObj) => {
+        for (const val of Object.values(validationObj))
+            if (value === val[0]) {
+                elementIsRight(name);
+                return true;
+            } else
+                elementIsWrong(name);
+        return false;
+    }
+
+    const elementIsRight = (name) => {
+        document.getElementsByName(name)
+            .forEach(input => {
+                if (!input.classList.contains('border'))
+                    input.classList.add('border');
+
+                input.classList.remove('border-danger');
+                if (!input.classList.contains('border-success'))
+                    input.classList.add('border-success');
+            });
+    }
+
+    const elementIsWrong = (name) => {
+        document.getElementsByName(name)
+            .forEach(input => {
+                if (!input.classList.contains('border'))
+                    input.classList.add('border');
+
+                input.classList.remove('border-success');
+                if (!input.classList.contains('border-danger'))
+                    input.classList.add('border-danger');
+            });
+    }
+
+    const validateByNameSelection = (tagName, name, value, element, title) => {
+        let isValid = true;
+        tagName = tagName.toLowerCase();
+
+        if (tagName === 'select') {
+            if (name.indexOf('question') >= 0) {
+                if (name.indexOf("Douze") >= 0) {
+                    isValid = applyValidationStyleBasedOnChoices(value, name, choixStagiaires);
+                } else if (name.indexOf("Quinze") >= 0 || name.indexOf("Treize") >= 0) {
+                    isValid = applyValidationStyleBasedOnChoices(value, name, yesAndNoAnswers);
+                } else if (name.indexOf("Onze") >= 0) {
+                    isValid = applyValidationStyleBasedOnChoices(value, name, choixStage);
+                } else {
+                    isValid = applyValidationStyleBasedOnChoices(value, name, choixAccords);
+                }
+            }
+        } else if (tagName === 'input') {
+            const {type} = element;
+
+            if (type === 'number') {
+                if (parseInt(value) === 0) {
+                    isValid = false;
+                    elementIsWrong(name);
+                } else
+                    elementIsRight(name);
+            } else if (type === 'text' || type === 'date') {
+                if (name.indexOf("matricule") >= 0) {
+                    if (regexMatriculeEtudiant.test(value))
+                        elementIsRight(name);
+                    else {
+                        elementIsWrong(name);
+                        isValid = false;
+                    }
+                } else if (value === '') {
+                    elementIsWrong(name);
+                    isValid = false;
+                } else {
+                    elementIsRight(name);
+                }
+            }
+        }
+        if (!isValid)
+            setErrors(prevalue => {
+                return {
+                    ...prevalue,
+                    [name]: title
+                }
+            })
+        return isValid;
+    }
+
+    const handleChange = (event) => {
+        const {value, name} = event.target;
+
+        const element = document.getElementsByName(name)[0];
+        const {tagName, title} = element;
+
+        validateByNameSelection(tagName, name, value, element, title);
 
         setVisitForm(prevalue => {
             return {
@@ -58,169 +173,83 @@ export default function SupervisorVisitForm() {
         })
     }
 
-    const convertAllNumberFieldsToNumbers = () => {
-        Object.keys(visitForm).forEach(key => {
-            if (!isNaN(visitForm[key])) {
-                setVisitForm((prevalue) => {
-                    return {
-                        ...prevalue,
-                        [key]: parseInt(visitForm[key])
-                    }
-                })
-            }
-        })
-    }
-
-    const getAllFormErrors = () => {
-        const formErrors = {};
-        if (visitForm.matriculeEtudiant.trim().length === 0) {
-            formErrors.matriculeEtudiant ='La matricule de l\'étudiant est requis';
-        }
-
-        if (visitForm.entrepriseNom.trim().length === 0) {
-            formErrors.entrepriseNom= 'Le nom de l\'entreprise est requis';
-        }
-
-        if (visitForm.personneContact.trim().length === 0) {
-            formErrors.personneContact = 'La personne contact est requis';
-        }
-
-        if (visitForm.phone.trim().length === 0) {
-            formErrors.phone ='Le numéro de téléphone est requis';
-        }
-
-        if (visitForm.telecopieur.trim().length === 0) {
-            formErrors.telecopieur = 'Le numéro du télécopieur est requis';
-        }
-
-        if (visitForm.adresse.trim().length === 0) {
-            formErrors.adresse = 'L\'adresse est requis';
-        }
-
-        if (visitForm.zip.trim().length === 0) {
-            formErrors.zip = 'Le code postal est requis';
-        }
-
-        if (visitForm.ville.trim().length === 0) {
-            formErrors.ville = 'La ville est requis';
-        }
-
-        if (visitForm.nomStagiaire.trim().length === 0) {
-            formErrors.nomStagiaire ='Le nom du stagiaire est requis';
-        }
-
-        if (visitForm.dateStage.trim().length === 0) {
-            formErrors.dateStage = 'La date de stage est requis';
-        }
-
-        if (visitForm.nbHeuresMoisUn === 0) {
-            formErrors.nbHeuresMoisUn ='Le nombre d\'heures du premier mois est requis';
-        }
-
-        if (visitForm.nbHeuresMoisDeux === 0) {
-            formErrors.nbHeuresMoisDeux ='Le nombre d\'heures du deuxième mois est requis';
-        }
-
-        if (visitForm.nbHeuresMoisTrois === 0) {
-            formErrors.nbHeuresMoisTrois = 'Le nombre d\'heures du troisième mois est requis';
-        }
-
-        if (visitForm.salaireStagiaire === 0) {
-            formErrors.salaireStagiaire = 'Le salaire du stagiaire est requis';
-        }
-
-        if (visitForm.questionQuatorzeHeuresUnA.trim().length === 0) {
-            formErrors.questionQuatorzeHeuresUnA = '1. L\'heure de départ est requis';
-        }
-
-        if (visitForm.questionQuatorzeHeuresUnB.trim().length === 0) {
-            formErrors.questionQuatorzeHeuresUnB ='1. L\'heure de fin est requis';
-        }
-
-        if (visitForm.questionQuatorzeHeuresUnC.trim().length === 0) {
-            formErrors.questionQuatorzeHeuresUnC ='2. L\'heure de départ est requis';
-        }
-
-        if (visitForm.questionQuatorzeHeuresUnD.trim().length === 0) {
-            formErrors.questionQuatorzeHeuresUnD = '2. L\'heure de fin est requis';
-        }
-
-        if (visitForm.questionQuatorzeHeuresUnE.trim().length === 0) {
-            formErrors.questionQuatorzeHeuresUnE = '3. L\'heure de départ est requis';
-        }
-
-        if (visitForm.questionQuatorzeHeuresUnF.trim().length === 0) {
-            formErrors.questionQuatorzeHeuresUnF = '3. L\'heure de fin est requis';
-        }
-
-        if (visitForm.signatureSuperviseur.trim().length === 0) {
-            formErrors.signatureSuperviseur ='La signature du superviseur est requis';
-        }
-
-        return [Object.keys(formErrors), Object.values(formErrors)];
-    }
-
-    const sendVisitForm = (e) => {
+    const sendEvaluation = (e) => {
         e.preventDefault();
-        const [, values] = getAllFormErrors();
+        setErrors({});
+        let isValid = true;
+        for (const key in visitForm) {
+            const element = document.getElementsByName(key)[0];
+            const {tagName, title} = element;
 
-        if (values.length === 0) {
-            convertAllNumberFieldsToNumbers();
-            supervisorCreateForm(visitForm).then(() => document.forms[0].reset());
-        }else{
-            Swal.fire({title:'Champ requis', text:`${values[0]} et ${values.length} autres...`, icon: 'error'} ).then();
+            if (!validateByNameSelection(tagName, key, visitForm[key], element, title)) {
+                isValid = false;
+            }
+        }
+        if (!isValid) {
+            swalErr.fire({text: "Veuillez remplir tous les champs requis!"}).then();
+        } else {
+            supervisorCreateForm(visitForm).then();
         }
     };
 
-    return <form onSubmit={sendVisitForm}>
+    return <div>
         <h1 className='text-center text-decoration-underline'>Évaluation de stage</h1>
         <div className='px-3 pb-3 pt-1 rounded'>
             <h4 className='mt-4 mb-0 text-decoration-underline'>Identification de l'entreprise</h4>
             <FormGroup>
                 <FormField>
                     <label>Matricule Étudiant</label>
-                    <input type='text' name='matriculeEtudiant' value={visitForm.matriculeEtudiant}
+                    <input type='text' placeholder="La matricule de l'étudiant (7 chiffres)"
+                           title="La matricule de l'étudiant est requis" name='matriculeEtudiant'
+                           value={visitForm.matriculeEtudiant}
                            onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>Nom de l'entreprise</label>
-                    <input type="text" name='entrepriseNom' value={visitForm.entrepriseNom}
-                           onChange={e => handleChange(e)} autoComplete='off' placeholder="Nom de l'entreprise" />
+                    <input type="text" title="Le nom de l'entreprise est requis" name='entrepriseNom'
+                           value={visitForm.entrepriseNom}
+                           onChange={e => handleChange(e)} autoComplete='off' placeholder="Nom de l'entreprise"/>
                 </FormField>
                 <FormField>
                     <label>Personne contact</label>
-                    <input type="text" name='personneContact' value={visitForm.personneContact}
+                    <input type="text" title="La personne contact est requis" name='personneContact'
+                           value={visitForm.personneContact}
                            onChange={e => handleChange(e)} placeholder="Personne contact"/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>Téléphone</label>
-                    <input type="text" name='phone' value={visitForm.phone} onChange={e => handleChange(e)}
+                    <input type="text" name='phone' title="Le numéro de téléphone est requis" value={visitForm.phone}
+                           onChange={e => handleChange(e)}
                            autoComplete='off' placeholder="Téléphone"/>
                 </FormField>
                 <FormField>
                     <label>Télécopieur</label>
-                    <input type="text" name='telecopieur' value={visitForm.telecopieur} onChange={e => handleChange(e)}
+                    <input type="text" name='telecopieur' title="Le télécopieur est requis"
+                           value={visitForm.telecopieur} onChange={e => handleChange(e)}
                            autoComplete='off' placeholder="Télécopieur"/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>Adresse</label>
-                    <input type="text" name='adresse' value={visitForm.adresse} onChange={e => handleChange(e)}
+                    <input type="text" name='adresse' title="L'adresse est requis" value={visitForm.adresse}
+                           onChange={e => handleChange(e)}
                            placeholder="Adresse"/>
                 </FormField>
                 <FormField>
                     <label>Code postal</label>
-                    <input type="text" name='zip' value={visitForm.zip} onChange={e => handleChange(e)}
+                    <input type="text" name='zip' title="Le code postal est requis" value={visitForm.zip}
+                           onChange={e => handleChange(e)}
                            placeholder="Code postal"/>
                 </FormField>
                 <FormField>
                     <label>Ville</label>
-                    <input type="text" name='ville' value={visitForm.ville} onChange={e => handleChange(e)}
+                    <input type="text" name='ville' title="La ville est requis" value={visitForm.ville}
+                           onChange={e => handleChange(e)}
                            placeholder="Ville"/>
                 </FormField>
             </FormGroup>
@@ -232,23 +261,22 @@ export default function SupervisorVisitForm() {
                 <FormField>
                     <label>Nom du stagiaire</label>
                     <input type="text" name='nomStagiaire' value={visitForm.nomStagiaire}
+                           title="Le nom du stagiaire est requis"
                            onChange={e => handleChange(e)}
                            placeholder="Entrez le nom du stagiare"/>
                 </FormField>
                 <FormField>
                     <label>Date du stage</label>
-                    <input type="date" name='dateStage' value={visitForm.dateStage} onChange={e => handleChange(e)}
+                    <input type="date" name='dateStage' title="La date du stage est requis" value={visitForm.dateStage}
+                           onChange={e => handleChange(e)}
                            placeholder="Date du stage"/>
                 </FormField>
-                <>
+                <FormField>
                     <label className='d-flex justify-content-center'>Stage</label>
-                    <div className='d-flex justify-content-around align-items-center flex-row'>
-                        <input type="radio" onChange={e => handleChange(e)} name='stage' value='1'/>
-                        <label>1</label>
-                        <input type="radio" onChange={e => handleChange(e)} name='stage' value='2'/>
-                        <label>2</label>
-                    </div>
-                </>
+                    <input name='stageCourant' type='number' min='1' max='2' title="Le numéro du stage est requis"
+                           value={visitForm.stageCourant}
+                           onChange={e => handleChange(e)}/>
+                </FormField>
             </FormGroup>
         </div>
         <hr/>
@@ -258,52 +286,53 @@ export default function SupervisorVisitForm() {
                 <FormField>
                     <label>Les tâches confiées au stagiaire sont conformes aux tâches annoncées dans l’entente de
                         stage?</label>
-                    <select name='questionUn' value={visitForm.questionUn} onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
-                        <option value='TOTALEMENT_DESACCORD'>Totalement désaccord</option>
-                        <option value='IMPOSSIBLE_DE_SE_PRONONCER'>Impossible de se prononcer</option>
+                    <select name='questionUn' title="Le champ 'Les tâches confiées au stagiaire sont conformes aux tâches annoncées dans l’entente de
+                        stage' doit être rempli" value={visitForm.questionUn} onChange={e => handleChange(e)}>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                                   value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
                     <label>Des mesures d’accueil facilitent l’intégration du nouveau stagiaire?</label>
                     <select name='questionDeux' value={visitForm.questionDeux}
+                            title="Le champ 'Des mesures d’accueil facilitent l’intégration du nouveau stagiaire' doit être rempli"
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
-                        <option value='TOTALEMENT_DESACCORD'>Totalement désaccord</option>
-                        <option value='IMPOSSIBLE_DE_SE_PRONONCER'>Impossible de se prononcer</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) =>
+                            <option key={index} value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
                     <label>Le temps réel consacré à l’encadrement du stagiaire est suffisant?</label>
-                    <select name='questionTrois' value={visitForm.questionTrois}
+                    <select name='questionTrois'
+                            title="Le champ 'Le temps réel consacré à l’encadrement du stagiaire est suffisant' doit être rempli"
+                            value={visitForm.questionTrois}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
-                        <option value='TOTALEMENT_DESACCORD'>Totalement désaccord</option>
-                        <option value='IMPOSSIBLE_DE_SE_PRONONCER'>Impossible de se prononcer</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                                   value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>Nombre d'heures pour le 1er mois?</label>
-                    <input type="number" name="nbHeuresMoisUn" value={visitForm.nbHeuresMoisUn}
+                    <input type="number" name="nbHeuresMoisUn" min={0} value={visitForm.nbHeuresMoisUn}
+                           title="Le champ 'Nombre d'heures pour le 1ier mois' doit être rempli"
                            onChange={e => handleChange(e)} placeholder="Nombre d'heures"/>
                 </FormField>
                 <FormField>
                     <label>Nombre d'heures pour le 2ième mois?</label>
-                    <input type="number" name='nbHeuresMoisDeux'
+                    <input type="number" min={0} name='nbHeuresMoisDeux'
+                           title="Le champ 'Nombre d'heures pour le 2ième mois' doit être rempli"
                            value={visitForm.nbHeuresMoisDeux} onChange={e => handleChange(e)}
                            placeholder="Nombre d'heures"/>
                 </FormField>
                 <FormField>
                     <label>Nombre d'heures pour le 3ième mois?</label>
-                    <input type="number" name='nbHeuresMoisTrois'
+                    <input type="number" min={0} name='nbHeuresMoisTrois'
+                           title="Le champ 'Nombre d'heures pour le 3ième mois' doit être rempli"
                            value={visitForm.nbHeuresMoisTrois} onChange={e => handleChange(e)}
                            placeholder="Nombre d'heures"/>
                 </FormField>
@@ -311,86 +340,83 @@ export default function SupervisorVisitForm() {
             <FormGroup>
                 <FormField>
                     <label>L’environnement de travail respecte les normes d’hygiène et de sécurité au travail?</label>
-                    <select name='questionQuatre' value={visitForm.questionQuatre}
+                    <select name='questionQuatre'
+                            title="Le champ 'L’environnement de travail respecte les normes d’hygiène et de sécurité au travail?' doit être rempli"
+                            value={visitForm.questionQuatre}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
-                        <option value='TOTALEMENT_DESACCORD'>Totalement désaccord</option>
-                        <option value='IMPOSSIBLE_DE_SE_PRONONCER'>Impossible de se prononcer</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                                   value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
                     <label>Le climat de travail est agréable?</label>
-                    <select name='questionCinq' value={visitForm.questionCinq}
+                    <select name='questionCinq' title="Le champ 'Le climat de travail est agréable?' doit être rempli"
+                            value={visitForm.questionCinq}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
-                        <option value='TOTALEMENT_DESACCORD'>Totalement désaccord</option>
-                        <option value='IMPOSSIBLE_DE_SE_PRONONCER'>Impossible de se prononcer</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                                   value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
                     <label>Le milieu de stage est accessible par transport en commun?</label>
-                    <select name='questionSix' value={visitForm.questionSix} onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
-                        <option value='TOTALEMENT_DESACCORD'>Totalement désaccord</option>
-                        <option value='IMPOSSIBLE_DE_SE_PRONONCER'>Impossible de se prononcer</option>
+                    <select name='questionSix'
+                            title="Le champ 'Le milieu de stage est accessible par transport en commun' doit être rempli"
+                            value={visitForm.questionSix} onChange={e => handleChange(e)}>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                                   value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>Le salaire offert est intéressant pour le stagiaire?</label>
-                    <select name='questionSept' value={visitForm.questionSept}
+                    <select name='questionSept'
+                            title="Le champ 'Le salaire offert est intéressant pour le stagiaire' doit être rempli"
+                            value={visitForm.questionSept}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
-                        <option value='TOTALEMENT_DESACCORD'>Totalement désaccord</option>
-                        <option value='IMPOSSIBLE_DE_SE_PRONONCER'>Impossible de se prononcer</option>
+                        <option disabled value="">Choisiser une réponse</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                                   value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
                     <label>Préciser le salaire par heure</label>
-                    <input type="number" name='salaireStagiaire' value={visitForm.salaireStagiaire}
-                           onChange={(e) => handleChange(e)}/>
+                    <input type="number" min={0} name='salaireStagiaire' title="Le salaire du stagiaire est requis"
+                           value={visitForm.salaireStagiaire}
+                           onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>La communication avec le superviseur de stage facilite le déroulement du stage?</label>
-                    <select name="questionHuit" value={visitForm.questionHuit}
+                    <select name="questionHuit"
+                            title="Le champ 'La communication avec le superviseur de stage facilite le déroulement du stage' doit être rempli"
+                            value={visitForm.questionHuit}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
-                        <option value='TOTALEMENT_DESACCORD'>Totalement désaccord</option>
-                        <option value='IMPOSSIBLE_DE_SE_PRONONCER'>Impossible de se prononcer</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                                   value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
                     <label>L’équipement fourni est adéquat pour réaliser les tâches confiées?</label>
                     <select name='questionNeuf' value={visitForm.questionNeuf}
                             onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
-                        <option value='TOTALEMENT_DESACCORD'>Totalement désaccord</option>
-                        <option value='IMPOSSIBLE_DE_SE_PRONONCER'>Impossible de se prononcer</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                                   value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
                     <label>Le volume de travail est acceptable?</label>
                     <select name='questionDix' value={visitForm.questionDix} onChange={e => handleChange(e)}>
-                        <option value="TOTALEMENT_EN_ACCORD">Totalement en accord</option>
-                        <option value="PLUTOT_EN_ACCORD">Plutôt en accord</option>
-                        <option value='PLUTOT_EN_DESACCORD'>Plûtot désaccord</option>
-                        <option value='TOTALEMENT_DESACCORD'>Totalement désaccord</option>
-                        <option value='IMPOSSIBLE_DE_SE_PRONONCER'>Impossible de se prononcer</option>
+                        <option disabled value="">Choisiser une évaluation</option>
+                        {Object.values(choixAccords).map((choix, index) => <option key={index}
+                                                                                   value={choix[0]}>{choix[1]}</option>)}
                     </select>
                 </FormField>
             </FormGroup>
@@ -409,9 +435,9 @@ export default function SupervisorVisitForm() {
                     <label>Ce milieu est à privilégier pour le stage</label>
                     <select name='questionOnze' value={visitForm.questionOnze}
                             onChange={e => handleChange(e)}>
-                        <option value="Choisissez une option" selected disabled>Choisissez une option</option>
-                        <option value='Premier stage'>Premier stage</option>
-                        <option value='Deuxième stage'>Deuxième stage</option>
+                        <option value="" disabled>Choisissez une option</option>
+                        {Object.values(choixStage).map((choix, index) => <option key={index}
+                                                                                 value={choix[0]}>{choix[0]}</option>)}
                     </select>
                 </FormField>
                 <FormField>
@@ -419,84 +445,95 @@ export default function SupervisorVisitForm() {
                     </label>
                     <select name='questionDouze' value={visitForm.questionDouze}
                             onChange={e => handleChange(e)}>
-                        <option value="Choisissez une option" selected disabled>Choisissez une option</option>
-                        <option value='Un stagiaire'>Un stagiaire</option>
-                        <option value='Deux stagiaires'>Deux stagiaires</option>
-                        <option value='Trois stagiaires'>Trois stagiaires</option>
-                        <option value='Plus de trois stagiaires'>Plus de trois stagiaires</option>
+                        <option value="" disabled>Choisissez une option</option>
+                        {Object.values(choixStagiaires).map((choix, index) => <option key={index}
+                                                                                      value={choix[0]}>{choix[0]}</option>)}
                     </select>
                 </FormField>
-                <>
+                <FormField>
                     <label className='d-flex justify-content-center'>Ce milieu désire accueillir le même stagiaire pour
                         un prochain stage</label>
-                    <div className='d-flex justify-content-around align-items-center flex-row'>
-                        <input type="radio" onChange={e => handleChange(e)} name='questionTreize' value='Oui'
-                        />
-                        <label>Oui</label>
-                        <input type="radio" onChange={e => handleChange(e)} name='questionTreize' value='Non'
-                        />
-                        <label>Non</label>
-                    </div>
-                </>
+                    <select name='questionTreize' value={visitForm.questionTreize}
+                            title="Le choix oui ou non pour le désir d'accueillir le même stagiaire doit être rempli"
+                            onChange={e => handleChange(e)}>
+                        <option value="" disabled>Choisissez une option</option>
+                        {Object.values(yesAndNoAnswers).map((choix, index) =>
+                            <option key={index} value={choix[0]}>{choix[1]}</option>
+                        )}
+                    </select>
+                </FormField>
             </FormGroup>
-            <FormGroup repartition={[12, 6, 6]}>
+            <FormGroup repartition={[12, 12]}>
                 <h5>Ce milieu offre des quarts de travail variables?</h5>
                 <FormField>
+                    <label/>
+                    <select name='questionQuinze' value={visitForm.questionQuinze}
+                            title={'Le choix oui ou non pour les quarts variables doit être rempli'}
+                            onChange={e => handleChange(e)}>
+                        <option value="" disabled>Choisissez une option</option>
+                        {Object.values(yesAndNoAnswers).map((choix, index) =>
+                            <option key={index} value={choix[0]}>{choix[1]}</option>
+                        )}
+                    </select>
+                </FormField>
+            </FormGroup>
+
+            <FormGroup>
+                <FormField>
                     <label>De</label>
-                    <input type="number" name="questionQuatorzeHeuresUnA"
+                    <input type="number" name="questionQuatorzeHeuresUnA" min={1} max={24}
                            value={visitForm.questionQuatorzeHeuresUnA} onChange={e => handleChange(e)}/>
                 </FormField>
                 <FormField>
                     <label>À</label>
-                    <input type="number" name="questionQuatorzeHeuresUnB"
+                    <input type="number" name="questionQuatorzeHeuresUnB" min={1} max={24}
                            value={visitForm.questionQuatorzeHeuresUnB} onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>De</label>
-                    <input type="number" name="questionQuatorzeHeuresUnC"
+                    <input type="number" name="questionQuatorzeHeuresUnC" min={1} max={24}
                            value={visitForm.questionQuatorzeHeuresUnC} onChange={e => handleChange(e)}/>
                 </FormField>
                 <FormField>
                     <label>À</label>
-                    <input type="number" name="questionQuatorzeHeuresUnD"
+                    <input type="number" name="questionQuatorzeHeuresUnD" min={1} max={24}
                            value={visitForm.questionQuatorzeHeuresUnD} onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
             <FormGroup>
                 <FormField>
                     <label>De</label>
-                    <input type="number" name="questionQuatorzeHeuresUnE"
+                    <input type="number" name="questionQuatorzeHeuresUnE" min={1} max={24}
                            value={visitForm.questionQuatorzeHeuresUnE} onChange={e => handleChange(e)}/>
                 </FormField>
                 <FormField>
                     <label>À</label>
-                    <input type="number" name="questionQuatorzeHeuresUnF"
+                    <input type="number" name="questionQuatorzeHeuresUnF" min={1} max={24}
                            value={visitForm.questionQuatorzeHeuresUnF} onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
             <FormGroup>
-                <>
-                    <label/>
-                    <div className='d-flex justify-content-around align-items-center flex-row'>
-                        <input type="radio" onChange={e => handleChange(e)} name='questionQuinze' value='Oui'
-                        />
-                        <label>Oui</label>
-                        <input type="radio" onChange={e => handleChange(e)} name='questionQuinze' value='Non'
-                        />
-                        <label>Non</label>
-                    </div>
-                </>
-            </FormGroup>
-            <FormGroup>
                 <FormField>
                     <label>Signature de l'enseignant responsable du stagiaire</label>
-                    <input type="text" name="signatureSuperviseur" value={visitForm.signatureSuperviseur}
+                    <input type="text" placeholder='Signature du superviseur'
+                           title="La signature du superviseur est requise" name="signatureSuperviseur"
+                           value={visitForm.signatureSuperviseur}
                            onChange={e => handleChange(e)}/>
                 </FormField>
             </FormGroup>
+            {Object.keys(errors).length > 0 ?
+                <>
+                    <h4 className={'my-3'}>Voici la liste des champs à remplir</h4>
+                    <ul>
+                        {Object.keys(errors).map((key, index) => <li
+                            key={index}>{errors[key]}</li>)}
+                    </ul>
+                </>
+                : <div></div>
+            }
         </div>
-        <button type='submit' className='btn btn-primary w-100 mt-4'>Créer un formulaire de visite</button>
-    </form>
+        <button onClick={sendEvaluation} className='btn btn-primary w-100 mt-4'>Créer un formulaire de visite</button>
+    </div>
 }
