@@ -6,6 +6,7 @@ import ContractsToBeSigned from "../Contract/ContractsToBeSigned";
 import {UserType} from "../../enums/UserTypes";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useAuth} from "../../services/use-auth";
+import EvaluationIntern from "./EvaluationIntern/EvaluationIntern";
 import ViewSignedContracts from "../Contract/ViewSignedContracts/ViewSignedContracts";
 import {Title} from "../SharedComponents/Title/Title";
 
@@ -33,6 +34,11 @@ export default function MonitorView() {
             <Title>Contrats de futures stagiaires à valider</Title>
             <ContainerBox>
                 <ContractsToBeSigned userType={UserType.MONITOR[0]}/>
+            </ContainerBox>
+        </Route>
+        <Route exact path={`${path}/monitor_eval_stagiaire`}>
+            <ContainerBox>
+                <EvaluationIntern/>
             </ContainerBox>
         </Route>
         <Route exact path={`${path}`}>
