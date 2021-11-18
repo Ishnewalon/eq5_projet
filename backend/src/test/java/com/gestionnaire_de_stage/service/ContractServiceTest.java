@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
+import com.gestionnaire_de_stage.dto.StudentMonitorOfferDTO;
 import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
@@ -402,6 +403,37 @@ public class ContractServiceTest {
                 "L'id de l'étudiant ne peut pas être null");
     }
 
+    @Test
+    public void testBuildStudentMonitorOfferDTOFromContract() {
+        Contract contract = getDummyContract();
+        StudentMonitorOfferDTO studentMonitorOfferDTO = getDummyStudentMonitorOfferDTO();
+
+        StudentMonitorOfferDTO actual = contractService.buildStudentMonitorOfferDTOFromContract(contract);
+
+        assertThat(actual.getStudent()).isEqualTo(studentMonitorOfferDTO.getStudent());
+        assertThat(actual.getMonitor()).isEqualTo(studentMonitorOfferDTO.getMonitor());
+        assertThat(actual.getOffer()).isEqualTo(studentMonitorOfferDTO.getOffer());
+    }
+
+    private StudentMonitorOfferDTO getDummyStudentMonitorOfferDTO() {
+        return new StudentMonitorOfferDTO(
+                getDummyStudent(),
+                getDummyMonitor(),
+                getDummyOffer()
+        );
+    }
+
+    private Monitor getDummyMonitor() {
+        Monitor dummyMonitor = new Monitor();
+        dummyMonitor.setId(1L);
+        dummyMonitor.setFirstName("same");
+        dummyMonitor.setLastName("dude");
+        dummyMonitor.setEmail("dudesame@gmail.com");
+        dummyMonitor.setPhone("5145555112");
+        dummyMonitor.setDepartment("Informatique");
+        dummyMonitor.setPassword("testPassword");
+        return dummyMonitor;
+    }
 
     private List<Contract> getDummyContractList() {
         List<Contract> dummyContractList = new ArrayList<>();
@@ -425,6 +457,8 @@ public class ContractServiceTest {
         Contract dummyContract = new Contract();
         dummyContract.setId(1L);
         dummyContract.setStudent(getDummyStudent());
+        dummyContract.setMonitor(getDummyMonitor());
+        dummyContract.setOffer(getDummyOffer());
         return dummyContract;
     }
 
