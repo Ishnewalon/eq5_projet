@@ -404,6 +404,25 @@ public class ContractServiceTest {
     }
 
     @Test
+    public void testBuildStudentMonitorOfferDTOFromContract_withValidEntries() {
+        Contract contract = getDummyContract();
+        StudentMonitorOfferDTO studentMonitorOfferDTO = getDummyStudentMonitorOfferDTO();
+
+        StudentMonitorOfferDTO actual = contractService.buildStudentMonitorOfferDTOFromContract(contract);
+
+        assertThat(actual.getStudent()).isEqualTo(studentMonitorOfferDTO.getStudent());
+        assertThat(actual.getMonitor()).isEqualTo(studentMonitorOfferDTO.getMonitor());
+        assertThat(actual.getOffer()).isEqualTo(studentMonitorOfferDTO.getOffer());
+    }
+
+    @Test
+    public void testBuildStudentMonitorOfferDTOFromContract_withNullEntries() {
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.buildStudentMonitorOfferDTOFromContract(null),
+                "Le contract ne peut pas être null");
+    }
+
+    @Test
     public void testBuildStudentMonitorOfferDTOFromContract() {
         Contract contract = getDummyContract();
         StudentMonitorOfferDTO studentMonitorOfferDTO = getDummyStudentMonitorOfferDTO();

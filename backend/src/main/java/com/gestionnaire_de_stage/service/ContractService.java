@@ -168,18 +168,14 @@ public class ContractService {
         return contractRepository.getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNotNullAndSession_YearGreaterThanEqual(student_id,Year.now());
     }
 
-    public StudentMonitorOfferDTO buildStudentMonitorOfferDTOFromContract(Contract contract) {
-        //Assert.notNull(contract, "Le contract ne peut pas être null");
+    public StudentMonitorOfferDTO buildStudentMonitorOfferDTOFromContract(Contract contract) throws IllegalArgumentException {
+        Assert.notNull(contract, "Le contract ne peut pas être null");
 
-        //Assert.isValid()getstudent, getmonitor getoffer ne retourne pas null???
-
-        StudentMonitorOfferDTO studentMonitorOfferDTO = new StudentMonitorOfferDTO(
+        return new StudentMonitorOfferDTO(
                 contract.getStudent(),
                 contract.getMonitor(),
                 contract.getOffer()
         );
-
-        return studentMonitorOfferDTO;
     }
 
     public boolean isNotCreated(String matricule) {
