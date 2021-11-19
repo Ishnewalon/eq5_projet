@@ -61,7 +61,7 @@ export default function CurriculumTable() {
         }
     };
 
-    if (!curriculumsWithPrincipal || curriculumsWithPrincipal.length === 0)
+    if (!curriculumsWithPrincipal.curriculumList || curriculumsWithPrincipal.curriculumList.length === 0)
         return <MessageNothingToShow message="Aucun C.V. à afficher"/>
 
     return (
