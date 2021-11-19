@@ -86,14 +86,6 @@ export async function validateCurriculum(id, valid) {
     );
 }
 
-export async function downloadCV(id) {
-    let requestInit1 = requestInit(methods.GET);
-    requestInit1.headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/octet-stream'
-    }
-    return (await fetch(`${urlBackend}/curriculum/download/${id}`)).blob();
-}
 
 
 

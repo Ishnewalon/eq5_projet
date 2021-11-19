@@ -27,9 +27,7 @@ export default function StudentView() {
             </Route>
             <Route exact path={`${path}/offres`}>
                 <Title>Offres de stage</Title>
-                <ContainerBox>
-                    <ViewOffersAndApply/>
-                </ContainerBox>
+                <ViewOffersAndApply/>
             </Route>
             <Route exact path={`${path}/view/status`}>
                 <Title>Les status de mes applications</Title>

@@ -38,3 +38,15 @@ export const toPdfBlob = (pdfFile) => {
     // noinspection JSCheckFunctionSignatures
     return new Blob([new Uint8Array(numBytes), {type: 'application/pdf'}]);
 }
+
+export const downloadFile = (blob, fileName) => {
+    let myUrl = URL.createObjectURL(blob);
+
+    const a = document.createElement('a')
+    a.href = myUrl
+    a.download = fileName;
+    a.click();
+
+    URL.revokeObjectURL(myUrl);
+    toast.fire({title: 'Téléchargement en cours'}).then()
+}
