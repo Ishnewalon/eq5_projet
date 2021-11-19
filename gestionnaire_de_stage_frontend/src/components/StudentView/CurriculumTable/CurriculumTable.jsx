@@ -70,6 +70,7 @@ export default function CurriculumTable() {
                 <TableHeader>
                     <th>Principal</th>
                     <th>Nom</th>
+
                 </TableHeader>
 
                 {curriculumsWithPrincipal.curriculumList.map((cv, index) =>
