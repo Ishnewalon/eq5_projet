@@ -6,6 +6,9 @@ import StudentSignIn from "./StudentSignIn/StudentSignIn";
 import StudentWithInvalidCv from "./StudentWithInvalidCv/StudentWithInvalidCv";
 import AllStudentStatusView from "./AllStudentStatusView/AllStudentStatusView";
 import React from "react";
+import StudentsWithCompanyNotYetEvaluated
+    from "./StudentsWithCompanyNotYetEvaluated/StudentsWithCompanyNotYetEvaluated";
+import StudentsNotYetEvaluated from "./StudentsNotYetEvaluated/StudentsNotYetEvaluated";
 
 export function RapportOfferValid() {
     return (
@@ -56,6 +59,24 @@ export function RapportStudentStatus() {
     return (
         <>
             <AllStudentStatusView/>
+            <BtnBack/>
+        </>
+    );
+}
+
+export function RapportStudentsNotYetEvaluated() {
+    return (
+        <>
+            <StudentsNotYetEvaluated/>
+            <BtnBack/>
+        </>
+    );
+}
+
+export function RapportStudentsWithCompanyNotYetEvaluated() {
+    return (
+        <>
+            <StudentsWithCompanyNotYetEvaluated/>
             <BtnBack/>
         </>
     );

@@ -8,6 +8,7 @@ import io.jsonwebtoken.lang.Assert;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 @Service
 public class StageService {
@@ -56,6 +57,14 @@ public class StageService {
         }
         stage.setEvalStagiaire(baos.toByteArray());
         return stageRepository.save(stage);
+    }
+
+    public List<Stage> getAllWithNoEvalMilieu() {
+        return stageRepository.getAllByEvalMilieuStageIsNull();
+    }
+
+    public List<Stage> getAllWithNoEvalStagiaire() {
+        return stageRepository.getAllByEvalStagiaireIsNull();
     }
 
     private boolean isNotValid(Stage stage) {
