@@ -15,7 +15,8 @@ import {
     RapportOfferValid,
     RapportStudentSignIn,
     RapportStudentsNotYetEvaluated,
-    RapportStudentStatus, RapportStudentsWithCompanyNotYetEvaluated,
+    RapportStudentStatus,
+    RapportStudentsWithCompanyNotYetEvaluated,
     RapportStudentWithInvalidCv,
     RapportStudentWithoutCv
 } from "./RapportsView/Rapport/Rapports";

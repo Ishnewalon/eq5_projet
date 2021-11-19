@@ -96,7 +96,7 @@ public class StudentService {
     }
 
     public List<Student> getAllStudentWithInvalidCv() {
-        return studentRepository.findAllByPrincipalCurriculum_IsValid(false);
+        return studentRepository.findAllByPrincipalCurriculumIsNullOrPrincipalCurriculum_IsValid(false);
     }
 
     public boolean assign(Student student, Supervisor supervisor){
