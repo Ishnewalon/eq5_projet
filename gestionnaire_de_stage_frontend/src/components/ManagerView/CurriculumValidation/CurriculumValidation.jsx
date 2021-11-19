@@ -24,7 +24,6 @@ export default function CurriculumValidation() {
     }
 
 
-
     const validateCv = (id, valid) => {
         validateCurriculum(id, valid).then(
             () => removeFromList(id));
@@ -48,10 +47,8 @@ export default function CurriculumValidation() {
                     <td>{cv.student.firstName}</td>
                     <td>
                         <button className="btn btn-primary"
-                                onClick={() => {
-                                    downloadFile(cv.data, `${cv.student.firstName}_${cv.student.lastName}_${cv.id}.pdf`)
-                                }}>Télécharger
-                            Cv
+                                onClick={() => downloadFile(cv.data, `${cv.student.firstName}_${cv.student.lastName}_${cv.id}.pdf`)}>
+                            Télécharger Cv
                         </button>
                     </td>
                     <td>
