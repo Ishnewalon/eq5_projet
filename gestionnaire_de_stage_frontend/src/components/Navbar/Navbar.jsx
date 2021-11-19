@@ -95,7 +95,7 @@ function NavItemSpecificForUser() {
     if (auth.isStudent())
         return <NavItemList>
             <Dropdown title="Curriculum">
-                <Link to="/dashboard/televerser">Téléverser curriculum</Link>
+                <Link to="/dashboard/televerser">Téléverser un curriculum</Link>
                 <Link to="/dashboard/mes_cv">Mes curriculum</Link>
             </Dropdown>
             <Link to="/dashboard/offres">Offres</Link>
@@ -105,7 +105,7 @@ function NavItemSpecificForUser() {
             </Dropdown>
             <Dropdown title="Contrat">
                 <Link to="/dashboard/voir_mon_contrat">Mon contrats</Link>
-                <Link to="/dashboard/student/contract/signed">Mes contrats signés</Link>
+                <Link to="/dashboard/student/contract/signed">Mon contrat signé</Link>
             </Dropdown>
         </NavItemList>
     if (auth.isSupervisor())
