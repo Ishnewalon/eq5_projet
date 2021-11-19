@@ -16,7 +16,7 @@ class User {
 }
 
 
-export class ManagerModel extends User{
+export class ManagerModel extends User {
 
 }
 

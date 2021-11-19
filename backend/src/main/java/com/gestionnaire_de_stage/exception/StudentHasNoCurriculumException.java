@@ -1,4 +1,4 @@
 package com.gestionnaire_de_stage.exception;
 
-public class StudentHasNoCurriculumException extends Exception{
+public class StudentHasNoCurriculumException extends Exception {
 }

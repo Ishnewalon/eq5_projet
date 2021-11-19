@@ -30,12 +30,11 @@ export default function StudentsWithCompanyNotYetEvaluated() {
                     <th>#</th>
                     <th>Étudiant</th>
                     <th>Matricule</th>
-                    <th>Monitor</th>
+                    <th>Moniteur</th>
                     <th>Date de fin de stage</th>
                 </TableHeader>
                 {studentMonitorOfferDtoList.map((dto, index) =>
                     <TableRow key={index}>
-                        console.log(dto)
                         <th>{dto.student.id}</th>
                         <td>{dto.student.firstName} {dto.student.lastName}</td>
                         <td>{dto.student.matricule}</td>

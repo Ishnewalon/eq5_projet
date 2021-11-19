@@ -29,7 +29,7 @@ export default function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg bg-dark mb-4">
             <div className="container-fluid">
-                <Link className="navbar-brand text-white" to="/">OseDlaMarde</Link>
+                <Link className="navbar-brand text-white" to="/">JISOS</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                         aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <GiHamburgerMenu color="white"/>
@@ -70,17 +70,19 @@ function NavItemSpecificForUser() {
                     <Link to="/dashboard/offres/ajouter">Ajouter des offres</Link>
                     <Link to="/dashboard/applications">Applications</Link>
                 </Dropdown>
-                <Link to="/dashboard/voir/futures_stagiaires">Contrats à
-                    valider</Link>
+                <Dropdown title="Contrats">
+                    <Link to="/dashboard/voir/futures_stagiaires">Contrats à
+                        valider</Link>
+                    <Link to="/dashboard/monitor/contracts/signed">Contrats signés</Link>
+                </Dropdown>
                 <Link to="/dashboard/monitor_eval_stagiaire">Formulaire d'évaluation de stagiaire</Link>
-                <Link to="/dashboard/monitor/contracts/signed">Contrats signés</Link>
             </NavItemList>
         )
     if (auth.isManager())
         return <NavItemList>
             <Dropdown title="Offres">
                 <Link to="/dashboard/offres/ajouter">Ajouter des offres</Link>
-                <Link to="/dashboard/offres/review">Validation Offre</Link>
+                <Link to="/dashboard/offres/review">Valider offres</Link>
             </Dropdown>
             <Dropdown title="Étudiants">
                 <Link to="/dashboard/curriculum/review">Valider Curriculum</Link>
@@ -91,7 +93,7 @@ function NavItemSpecificForUser() {
                 <Link to="/dashboard/students/start">Commencer signature</Link>
                 <Link to="/dashboard/manager/contracts/signed">Contrats signés</Link>
             </Dropdown>
-            <Link to="/dashboard/session">Gestion des session</Link>
+            <Link to="/dashboard/session">Gestion des sessions</Link>
             <Link to="/dashboard/rapports">Rapports</Link>
         </NavItemList>
     if (auth.isStudent())

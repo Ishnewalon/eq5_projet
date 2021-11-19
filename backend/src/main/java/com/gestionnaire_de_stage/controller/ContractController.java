@@ -7,7 +7,6 @@ import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
 import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.service.ContractService;
 import com.itextpdf.html2pdf.HtmlConverter;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +42,8 @@ public class ContractController {
         return ResponseEntity.ok(contractList);
     }
 
-    @PutMapping("/managerSign/{managerSignature}/{contract_id}")//SESSION : sign only contract of current or futur session
+    @PutMapping("/managerSign/{managerSignature}/{contract_id}")
+//SESSION : sign only contract of current or futur session
     public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addManagerSignature(managerSignature, contract_id);
@@ -116,7 +116,8 @@ public class ContractController {
         return ResponseEntity.ok(contractList);
     }
 
-    @PutMapping("/monitorSign/{monitorSignature}/{contract_id}")//SESSION : sign only contract of current or futur session
+    @PutMapping("/monitorSign/{monitorSignature}/{contract_id}")
+//SESSION : sign only contract of current or futur session
     public ResponseEntity<?> monitorSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String monitorSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addMonitorSignature(monitorSignature, contract_id);
@@ -159,7 +160,8 @@ public class ContractController {
         return ResponseEntity.ok(contract);
     }
 
-    @PutMapping("/studentSign/{studentSignature}/{contract_id}")//SESSION : sign only contract of current or futur session
+    @PutMapping("/studentSign/{studentSignature}/{contract_id}")
+//SESSION : sign only contract of current or futur session
     public ResponseEntity<?> studentSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String studentSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addStudentSignature(studentSignature, contract_id);

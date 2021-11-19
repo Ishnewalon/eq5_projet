@@ -1,4 +1,4 @@
-export default class StudentCurriculumsDTO{
+export default class StudentCurriculumsDTO {
     principal
     curriculumList
 

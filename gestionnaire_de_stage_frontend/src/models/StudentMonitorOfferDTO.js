@@ -1,4 +1,4 @@
-export default class StudentMonitorOfferDTO{
+export default class StudentMonitorOfferDTO {
     student
     monitor
     offer
