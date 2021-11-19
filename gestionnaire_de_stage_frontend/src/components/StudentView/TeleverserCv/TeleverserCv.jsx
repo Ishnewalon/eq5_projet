@@ -1,14 +1,11 @@
-import React, {useState} from "react";
+import React from "react";
 import Dropzone from "react-dropzone";
 import {uploadFile} from "../../../services/curriculum-service";
 import {useAuth} from "../../../services/use-auth";
 
 export default function TeleverserCv() {
     let auth = useAuth();
-    const [fileNames, setFileNames] = useState([]);
     const handleDrop = acceptedFiles => {
-        setFileNames(acceptedFiles.map(file => file.name));
-        console.log(acceptedFiles)
         uploadFile(acceptedFiles, auth.user.id).then()
     }
 
@@ -52,14 +49,6 @@ export default function TeleverserCv() {
                     );
                 }}
             </Dropzone>
-            <div className={"text-center"}>
-                <b><h3>Fichiers:</h3></b>
-                <ul>
-                    {fileNames.map(fileName => (
-                        <li key={fileName}>{fileName}</li>
-                    ))}
-                </ul>
-            </div>
         </div>
     );
 }
