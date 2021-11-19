@@ -8,12 +8,13 @@ export async function applyToOffer(offerApp) {//TODO: Should not be able to appl
 
     return await fetch(`${urlBackend}/applications/apply`, requestInit(methods.POST, offerApp)).then(
         response => {
-            response.json().then(
+            return response.json().then(
                 body => {
                     if (response.status === 201)
                         toast.fire({title: body.message});
                     if (response.status === 400)
                         swalErr.fire({title: body.message})
+                    return response.status === 201;
                 }
             )
         }

@@ -6,10 +6,14 @@ export default class Offer {
     salary
     id
     creator
-    valid=true
+    valid = true
+    dateFin
+    dateDebut
+    created
+    nbSemaine
 
 
-    constructor($id, $title, $department, $description, $address, $salary, $creator, $valid=true) {
+    constructor($id, $title, $department, $description, $address, $salary, $creator, $valid) {
         this.id = $id;
         this.title = $title;
         this.department = $department;
