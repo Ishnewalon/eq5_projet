@@ -55,7 +55,7 @@ export default function AddOffer() {
     const monitorEmail = (
         <FormField>
             <label>Email du moniteur</label>
-            <input name="email" placeholder="Email" type="text"
+            <input name="email" placeholder="Entrez l'email du moniteur" type="text"
                    value={creator_email} onChange={(e) => setCreatorId(e.target.value)}/>
         </FormField>
     )
@@ -65,12 +65,12 @@ export default function AddOffer() {
             <FormField>
                 <label>Titre</label>
                 <input name="title" placeholder="Titre" type="text"
-                       value={title} onChange={(e) => setTitle(e.target.value)}/>
+                       value={title} onChange={e => setTitle(e.target.value)}/>
             </FormField>
             <FormField>
                 <label>Département</label>
                 <select name="choice" id="userTypes"
-                        onChange={(e) => setDepartement(e.target.value)}>
+                        onChange={e => setDepartement(e.target.value)}>
                     <option value={DepartmentEnum.info}>{DepartmentEnum.info}</option>
                     <option value={DepartmentEnum.art}>{DepartmentEnum.art}</option>
                 </select>
@@ -80,7 +80,7 @@ export default function AddOffer() {
             <FormField>
                 <label className="label">Session</label>
                 <select name="sessions" id="session"
-                        onChange={(e) => setSessionId(e.target.value)} defaultValue="">
+                        onChange={e => setSessionId(e.target.value)} defaultValue="">
                     <option disabled value="">Choisissez une session</option>
                     {sessions.map(session =>
                         <option key={session.id} value={session.id}>{session.typeSession + session.year}</option>)}
@@ -91,16 +91,16 @@ export default function AddOffer() {
             <FormField>
                 <label>Description</label>
                 <input name="description" placeholder="Description" type="text"
-                       value={description} onChange={(e) => setDescription(e.target.value)}/>
+                       value={description} onChange={e => setDescription(e.target.value)}/>
             </FormField>
         </FormGroup>
         <FormGroup>
             <FieldAddress label="Adresse ou le stage se situe" address={address}
-                          handleChange={(e) => setAddress(e.target.value)}/>
+                          handleChange={e => setAddress(e.target.value)}/>
             <FormField>
                 <label>Salaire</label>
                 <input name="salary" placeholder="Salaire" type="number"
-                       value={salary} onChange={(e) => setSalary(e.target.value)}/>
+                       value={salary} onChange={e => setSalary(e.target.value)}/>
             </FormField>
         </FormGroup>
         <FormGroup>
@@ -115,17 +115,17 @@ export default function AddOffer() {
             <FormField>
                 <label>Date de fin</label>
                 <input name="dateFin" placeholder="Date de fin" type="date"
-                       value={dateFin} onChange={(e) => setDateFin(e.target.value)}/>
+                       value={dateFin} onChange={e => setDateFin(e.target.value)}/>
             </FormField>
         </FormGroup>
         <FormGroup>
             <FormField>
                 <label>Nombre de semaines</label>
-                <input type="text" value={nbSemaine} onChange={e => setNbSemaine(e.target.value)}/>
+                <input type="text" value={nbSemaine} placeholder='Nombre de semaines' onChange={e => setNbSemaine(e.target.value)}/>
             </FormField>
             <FormField>
                 <label>Horaire de travail</label>
-                <input type="text" value={horaireTravail} onChange={e => setHoraireTravail(e.target.value)}/>
+                <input type="text" placeholder='Horaire de travail' value={horaireTravail} onChange={e => setHoraireTravail(e.target.value)}/>
             </FormField>
         </FormGroup>
         <FormGroup>
