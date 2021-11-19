@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
+import com.gestionnaire_de_stage.dto.StudentMonitorOfferDTO;
 import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
@@ -17,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -402,6 +404,96 @@ public class ContractServiceTest {
                 "L'id de l'étudiant ne peut pas être null");
     }
 
+    @Test
+    public void testBuildStudentMonitorOfferDTOFromContract_withValidEntries() {
+        Contract contract = getDummyContract();
+        StudentMonitorOfferDTO studentMonitorOfferDTO = getDummyStudentMonitorOfferDTO();
+
+        StudentMonitorOfferDTO actual = contractService.buildStudentMonitorOfferDTOFromContract(contract);
+
+        assertThat(actual.getStudent()).isEqualTo(studentMonitorOfferDTO.getStudent());
+        assertThat(actual.getMonitor()).isEqualTo(studentMonitorOfferDTO.getMonitor());
+        assertThat(actual.getOffer()).isEqualTo(studentMonitorOfferDTO.getOffer());
+    }
+
+    @Test
+    public void testBuildStudentMonitorOfferDTOFromContract_withNullEntries() {
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.buildStudentMonitorOfferDTOFromContract(null),
+                "Le contract ne peut pas être null");
+    }
+
+    @Test
+    public void testBuildStudentMonitorOfferDTOFromContract() {
+        Contract contract = getDummyContract();
+        StudentMonitorOfferDTO studentMonitorOfferDTO = getDummyStudentMonitorOfferDTO();
+
+        StudentMonitorOfferDTO actual = contractService.buildStudentMonitorOfferDTOFromContract(contract);
+
+        assertThat(actual.getStudent()).isEqualTo(studentMonitorOfferDTO.getStudent());
+        assertThat(actual.getMonitor()).isEqualTo(studentMonitorOfferDTO.getMonitor());
+        assertThat(actual.getOffer()).isEqualTo(studentMonitorOfferDTO.getOffer());
+    }
+
+    @Test
+    public void testStageListToStudentMonitorOfferDtoList() {
+        List<Stage> stageList = getDummyStageList();
+        List<StudentMonitorOfferDTO> studentMonitorOfferDTOList = getDummyStudentMonitorOfferDTOList();
+
+        List<StudentMonitorOfferDTO> actual = contractService.stageListToStudentMonitorOfferDtoList(stageList);
+
+        assertThat(actual.size()).isEqualTo(studentMonitorOfferDTOList.size());
+    }
+
+    @Test
+    public void testStageListToStudentMonitorOfferDtoList_throwsIllegalArg() {
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.stageListToStudentMonitorOfferDtoList(null),
+                "La liste de stage ne peut pas être null");
+    }
+
+    private List<StudentMonitorOfferDTO> getDummyStudentMonitorOfferDTOList() {
+        StudentMonitorOfferDTO dto1 = getDummyStudentMonitorOfferDTO();
+        StudentMonitorOfferDTO dto2 = getDummyStudentMonitorOfferDTO();
+        StudentMonitorOfferDTO dto3 = getDummyStudentMonitorOfferDTO();
+        return new ArrayList<>(Arrays.asList(dto1, dto2, dto3));
+    }
+
+    private List<Stage> getDummyStageList() {
+        Stage stage1 = getDummyStage();
+        Stage stage2 = getDummyStage();
+        stage2.setId(2L);
+        Stage stage3 = getDummyStage();
+        stage3.setId(3L);
+        return new ArrayList<>(Arrays.asList(stage1, stage2, stage3));
+    }
+
+    private Stage getDummyStage() {
+        Stage dummyStage = new Stage();
+        dummyStage.setId(1L);
+        dummyStage.setContract(getDummyContract());
+        return dummyStage;
+    }
+
+    private StudentMonitorOfferDTO getDummyStudentMonitorOfferDTO() {
+        return new StudentMonitorOfferDTO(
+                getDummyStudent(),
+                getDummyMonitor(),
+                getDummyOffer()
+        );
+    }
+
+    private Monitor getDummyMonitor() {
+        Monitor dummyMonitor = new Monitor();
+        dummyMonitor.setId(1L);
+        dummyMonitor.setFirstName("same");
+        dummyMonitor.setLastName("dude");
+        dummyMonitor.setEmail("dudesame@gmail.com");
+        dummyMonitor.setPhone("5145555112");
+        dummyMonitor.setDepartment("Informatique");
+        dummyMonitor.setPassword("testPassword");
+        return dummyMonitor;
+    }
 
     private List<Contract> getDummyContractList() {
         List<Contract> dummyContractList = new ArrayList<>();
@@ -425,6 +517,8 @@ public class ContractServiceTest {
         Contract dummyContract = new Contract();
         dummyContract.setId(1L);
         dummyContract.setStudent(getDummyStudent());
+        dummyContract.setMonitor(getDummyMonitor());
+        dummyContract.setOffer(getDummyOffer());
         return dummyContract;
     }
 

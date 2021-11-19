@@ -20,10 +20,14 @@ export default function RapportsView() {
                              description="Liste des étudiants inscrits avec des cv invalides
                              (Notifiez-les)"
                              to="/dashboard/rapports/5"/>
-                <RapportCard title="Rapport des status de stage des étudiants"
-                             description="Liste de TOUS les étudiants avec
-                              le nombre et les détails chacune de leurs d'application "
-                             to="/dashboard/rapports/6"/>
+                <RapportCard title="Rapport des étudiants pas évalués par le moniteur"
+                             description="Liste des étudiants qui ne sont pas encore évalués par le
+                             moniteur suite à leur stage"
+                             to="/dashboard/rapports/7"/>
+                <RapportCard title="Rapport des étudiants dont la compagnie n'est pas évalués par le supervisor"
+                             description="Liste des étudiants dont la compagnie n'a pas encore été évaluées par le supervisor
+                             suite à leur stage"
+                             to="/dashboard/rapports/8"/>
             </CardsView>
         </>
     )

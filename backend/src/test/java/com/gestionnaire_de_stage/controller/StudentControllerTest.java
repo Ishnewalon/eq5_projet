@@ -2,18 +2,18 @@ package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.dto.StudentMonitorOfferDTO;
 import com.gestionnaire_de_stage.exception.CurriculumNotValidException;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
-import com.gestionnaire_de_stage.model.Curriculum;
-import com.gestionnaire_de_stage.model.Student;
+import com.gestionnaire_de_stage.model.*;
+import com.gestionnaire_de_stage.service.ContractService;
+import com.gestionnaire_de_stage.service.StageService;
 import com.gestionnaire_de_stage.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,11 +22,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -38,6 +38,12 @@ public class StudentControllerTest {
 
     @MockBean
     private StudentService studentService;
+
+    @MockBean
+    private ContractService contractService;
+
+    @MockBean
+    private StageService stageService;
 
     private final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -268,6 +274,116 @@ public class StudentControllerTest {
         assertThat(actualStudentList).isEqualTo(list);
     }
 
+    @Test
+    public void testGetAllStudentsNotYetEvaluatedAsStudentMonitorOfferDTO() throws Exception {
+        List<StudentMonitorOfferDTO> studentMonitorOfferDTOList = getDummyStudentMonitorOfferDTOList();
+        when(stageService.getAllWithNoEvalStagiaire()).thenReturn(getDummyStageList());
+        when(contractService.stageListToStudentMonitorOfferDtoList(any())).thenReturn(studentMonitorOfferDTOList);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/not_evaluated")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        final List<StudentMonitorOfferDTO> actual =
+                MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actual.size()).isEqualTo(studentMonitorOfferDTOList.size());
+    }
+
+    @Test
+    public void testGetAllStudentsNotYetEvaluatedAsStudentMonitorOfferDTOThrowsIllegalArg() throws Exception {
+        when(stageService.getAllWithNoEvalStagiaire()).thenReturn(getDummyStageList());
+        when(contractService.stageListToStudentMonitorOfferDtoList(any()))
+                .thenThrow(new IllegalArgumentException("La liste de stage ne peut pas être null"));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/not_evaluated")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("La liste de stage ne peut pas être null");
+    }
+
+    @Test
+    public void testGetAllStudentsWithCompanyNotYetEvaluatedAsStudentMonitorOfferDTO() throws Exception {
+        List<StudentMonitorOfferDTO> studentMonitorOfferDTOList = getDummyStudentMonitorOfferDTOList();
+        when(stageService.getAllWithNoEvalMilieu()).thenReturn(getDummyStageList());
+        when(contractService.stageListToStudentMonitorOfferDtoList(any())).thenReturn(studentMonitorOfferDTOList);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/company_not_evaluated")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        final List<StudentMonitorOfferDTO> actual =
+                MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actual.size()).isEqualTo(studentMonitorOfferDTOList.size());
+    }
+
+    @Test
+    public void testGetAllStudentsWithCompanyNotYetEvaluatedAsStudentMonitorOfferDTOThrowsIllegalArg() throws Exception {
+        when(stageService.getAllWithNoEvalMilieu()).thenReturn(getDummyStageList());
+        when(contractService.stageListToStudentMonitorOfferDtoList(any()))
+                .thenThrow(new IllegalArgumentException("La liste de stage ne peut pas être null"));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/company_not_evaluated")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("La liste de stage ne peut pas être null");
+    }
+
+    private StudentMonitorOfferDTO getDummyStudentMonitorOfferDTO() {
+        return new StudentMonitorOfferDTO(
+                getDummyStudent(),
+                getDummyMonitor(),
+                getDummyOffer()
+        );
+    }
+
+    private List<StudentMonitorOfferDTO> getDummyStudentMonitorOfferDTOList() {
+        StudentMonitorOfferDTO dto1 = getDummyStudentMonitorOfferDTO();
+        StudentMonitorOfferDTO dto2 = getDummyStudentMonitorOfferDTO();
+        StudentMonitorOfferDTO dto3 = getDummyStudentMonitorOfferDTO();
+        return new ArrayList<>(Arrays.asList(dto1, dto2, dto3));
+    }
+
+    private Offer getDummyOffer() {
+        Offer dummyOffer = new Offer();
+        dummyOffer.setDepartment("Un departement");
+        dummyOffer.setAddress("ajsaodas");
+        dummyOffer.setId(1L);
+        dummyOffer.setDescription("oeinoiendw");
+        dummyOffer.setSalary(10);
+        dummyOffer.setTitle("oeinoiendw");
+        return dummyOffer;
+    }
+
+    private Monitor getDummyMonitor() {
+        Monitor dummyMonitor = new Monitor();
+        dummyMonitor.setId(1L);
+        dummyMonitor.setFirstName("same");
+        dummyMonitor.setLastName("dude");
+        dummyMonitor.setEmail("dudesame@gmail.com");
+        dummyMonitor.setPhone("5145555112");
+        dummyMonitor.setDepartment("Informatique");
+        dummyMonitor.setPassword("testPassword");
+        return dummyMonitor;
+    }
+
+    private List<Student> getDummyStudentList() {
+        List<Student> dummyStudentList = new ArrayList<>();
+        Long idIterator = 1L;
+        for (int i = 0; i < 3; i++) {
+            Student dummyStudent = getDummyStudent();
+            dummyStudent.setId(idIterator);
+            dummyStudentList.add(dummyStudent);
+            idIterator++;
+        }
+        return dummyStudentList;
+    }
+
     private Student getDummyStudent() {
         Student dummyStudent = new Student();
         dummyStudent.setId(1L);
@@ -291,5 +407,31 @@ public class StudentControllerTest {
         curriculum.setType("pdf");
         curriculum.setId(1L);
         return curriculum;
+    }
+
+    private Contract getDummyContract() {
+        Contract dummyContract = new Contract();
+        dummyContract.setId(1L);
+        dummyContract.setStudent(getDummyStudent());
+        dummyContract.setMonitor(getDummyMonitor());
+        dummyContract.setOffer(getDummyOffer());
+        return dummyContract;
+    }
+
+    private Stage getDummyStage() {
+        Stage dummyStage = new Stage();
+        dummyStage.setId(1L);
+        dummyStage.setContract(getDummyContract());
+        return dummyStage;
+    }
+
+    private List<Stage> getDummyStageList() {
+        Stage stage1 = getDummyStage();
+        Stage stage2 = getDummyStage();
+        stage2.setId(2L);
+        
+        Stage stage3 = getDummyStage();
+        stage3.setId(3L);
+        return List.of(stage1, stage2, stage3);
     }
 }

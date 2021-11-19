@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
+import com.gestionnaire_de_stage.dto.StudentMonitorOfferDTO;
 import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
@@ -15,6 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -165,6 +167,24 @@ public class ContractService {
             throw new IdDoesNotExistException();
         }
         return contractRepository.getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNotNullAndSession_YearGreaterThanEqual(student_id,Year.now());
+    }
+
+    public StudentMonitorOfferDTO buildStudentMonitorOfferDTOFromContract(Contract contract) throws IllegalArgumentException {
+        Assert.notNull(contract, "Le contract ne peut pas être null");
+
+        return new StudentMonitorOfferDTO(
+                contract.getStudent(),
+                contract.getMonitor(),
+                contract.getOffer()
+        );
+    }
+
+    public List<StudentMonitorOfferDTO> stageListToStudentMonitorOfferDtoList(List<Stage> stageList) {
+        Assert.notNull(stageList, "La liste de stage ne peut pas être null");
+
+        return stageList.stream().map((stage) ->
+                buildStudentMonitorOfferDTOFromContract(stage.getContract()))
+                .collect(Collectors.toList());
     }
 
     public boolean isNotCreated(String matricule) {
