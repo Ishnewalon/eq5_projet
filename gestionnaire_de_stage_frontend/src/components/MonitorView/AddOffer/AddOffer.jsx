@@ -17,8 +17,13 @@ export default function AddOffer() {
     const [address, setAddress] = useState('')
     const [salary, setSalary] = useState(0)
     const [creator_email, setCreatorId] = useState(auth.isMonitor() ? auth.user.email : '')
-    const [session_id, setSessionId] = useState(null)
+    const [idSession, setSessionId] = useState(null)
     const [sessions, setSessions] = useState([])
+    const [dateDebut, setDateDebut] = useState('');
+    const [dateFin, setDateFin] = useState('');
+    const [nbSemaine, setNbSemaine] = useState('');
+    const [horaireTravail, setHoraireTravail] = useState('');
+    const [nbHeureSemaine, setNbHeureSemaine] = useState('');
 
     const resetFields = () => {
         setTitle('')
@@ -34,8 +39,9 @@ export default function AddOffer() {
         })
     }, [])
 
-    const addOffer = () => {
-        let offer = new OfferDTO(title, department, description, address, salary, creator_email, session_id)
+    const addOffer = e => {
+        e.preventDefault();
+        let offer = new OfferDTO(title, department, description, address, salary, creator_email,nbSemaine, dateDebut, dateFin, horaireTravail, nbHeureSemaine, parseInt(idSession));
         createOffer(offer).then((b) => {
             if (b === null)
                 return
@@ -88,17 +94,45 @@ export default function AddOffer() {
         <FormGroup>
             <FieldAddress label="Adresse ou le stage se situe" address={address}
                           handleChange={(e) => setAddress(e.target.value)}/>
+            <FormField>
+                <label>Salaire</label>
+                <input name="salary" placeholder="Salaire" type="number"
+                       value={salary} onChange={(e) => setSalary(e.target.value)}/>
+            </FormField>
+        </FormGroup>
+        <FormGroup>
+            {(auth.isManager()) ? monitorEmail : <></>}
         </FormGroup>
         <FormGroup>
             <FormField>
-                <label>Salaire</label>
-                <input name="salaire" placeholder="Salaire" type="number"
-                       value={salary} onChange={(e) => setSalary(e.target.value)}/>
+                <label>Date de début</label>
+                <input name="dateDebut" placeholder="Date de début" type="date"
+                       value={dateDebut} onChange={(e) => setDateDebut(e.target.value)}/>
             </FormField>
-            {(auth.isManager()) ? monitorEmail : <></>}
+            <FormField>
+                <label>Date de fin</label>
+                <input name="dateFin" placeholder="Date de fin" type="date"
+                       value={dateFin} onChange={(e) => setDateFin(e.target.value)}/>
+            </FormField>
+        </FormGroup>
+        <FormGroup>
+            <FormField>
+                <label>Nombre de semaines</label>
+                <input type="text" value={nbSemaine} onChange={e => setNbSemaine(e.target.value)}/>
+            </FormField>
+            <FormField>
+                <label>Horaire de travail</label>
+                <input type="text" value={horaireTravail} onChange={e => setHoraireTravail(e.target.value)}/>
+            </FormField>
+        </FormGroup>
+        <FormGroup>
+            <FormField>
+                <label>Nombre de heures par semaine</label>
+                <input type="text" value={nbHeureSemaine} onChange={e => setNbHeureSemaine(e.target.value)}/>
+            </FormField>
         </FormGroup>
         <div className="form-group text-center">
-            <button className="btn btn-primary mt-3" type={"button"} onClick={addOffer}>Ajouter</button>
+            <button className="btn btn-primary mt-3" onClick={addOffer}>Ajouter</button>
         </div>
     </>);
 }

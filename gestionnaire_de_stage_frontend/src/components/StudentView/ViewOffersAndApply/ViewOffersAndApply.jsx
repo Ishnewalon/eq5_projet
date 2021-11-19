@@ -103,7 +103,7 @@ function OfferApplication({offer, removeFromList}) {
                             a {Math.ceil((new Date().getTime() - new Date(offer.created).getTime()) / (1000 * 3600 * 24))} jour
                         </p>
                         <p className="card-salary-range d-flex align-items-center">
-                            <MdAttachMoney/> {offer.salary}$ de l'heure
+                            <MdAttachMoney/> {offer.salary}$/h
                         </p>
                     </div>
                     <div className="card-job-summary">
