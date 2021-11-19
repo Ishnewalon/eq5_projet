@@ -32,11 +32,14 @@ export default function AddOffer() {
         setAddress('')
         setSalary(0)
         setCreatorId(auth.isMonitor() ? auth.user.email : '')
+        setDateDebut('');
+        setDateFin('');
+        setNbSemaine('');
+        setHoraireTravail('');
+        setNbHeureSemaine('');
     };
     useEffect(() => {
-        getCurrentAndFutureSession().then(res => {
-            setSessions(res)
-        })
+        getCurrentAndFutureSession().then(sessions => setSessions(sessions))
     }, [])
 
     const addOffer = e => {
