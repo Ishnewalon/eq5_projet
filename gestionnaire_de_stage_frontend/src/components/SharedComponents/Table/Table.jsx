@@ -6,11 +6,12 @@ export function Table(props) {
     let tableRows = [];
     let tableHeader;
 
-    let list = Children.toArray(children) || [];
+    let list = Children.toArray(children).filter(child => child !== null) || [];
     if (!list.find(child => child.type.name === "TableHeader"))
         throw new Error("Table must have a TableHeader");
 
     Children.map(children, child => {
+        if (!child) return;
         if (child.type.name === "TableHeader")
             tableHeader = child;
         else

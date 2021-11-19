@@ -21,7 +21,7 @@ export default function OfferAppRapportView() {
             <Title>
                 Le status des applications de: {student.firstName} {student.lastName}
             </Title>
-            <Table>
+            <Table className={"w-75 mx-auto"}>
                 <TableHeader>
                     <th>#</th>
                     <th>Offre</th>

@@ -47,10 +47,11 @@ export default function AllStudentStatusView() {
                     <th>Voir les applications</th>
                 </TableHeader>
                 {studentList.map((student, index) =>
-                    <TableRow key={index}>
+                    {if (!offerList[index] || offerList[index].length === 0) return null;
+                    else return <TableRow key={index}>
                         <td>{student.id}</td>
                         <td>{student.firstName} {student.lastName}</td>
-                        <td>{offerList[index] ? offerList[index].length : 0}</td>
+                        <td>{offerList[index].length}</td>
                         <td>
                             <button className="btn btn-primary"
                                     onClick={() => history.push({
@@ -61,6 +62,7 @@ export default function AllStudentStatusView() {
                             </button>
                         </td>
                     </TableRow>
+                    }
                 )}
             </Table>
         </div>
