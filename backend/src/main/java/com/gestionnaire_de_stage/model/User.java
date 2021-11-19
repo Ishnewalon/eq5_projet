@@ -19,13 +19,13 @@ public abstract class User implements Serializable {
 
     @JsonCreator
     public User(
-        @JsonProperty("id") Long id,
-        @JsonProperty("lastName") String lastName,
-        @JsonProperty("firstName") String firstName,
-        @JsonProperty("email") String email,
-        @JsonProperty("phone") String phone,
-        @JsonProperty("password") String password
-    ){
+            @JsonProperty("id") Long id,
+            @JsonProperty("lastName") String lastName,
+            @JsonProperty("firstName") String firstName,
+            @JsonProperty("email") String email,
+            @JsonProperty("phone") String phone,
+            @JsonProperty("password") String password
+    ) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;

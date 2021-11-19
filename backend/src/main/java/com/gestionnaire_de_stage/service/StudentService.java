@@ -99,7 +99,7 @@ public class StudentService {
         return studentRepository.findAllByPrincipalCurriculumIsNullOrPrincipalCurriculum_IsValid(false);
     }
 
-    public boolean assign(Student student, Supervisor supervisor){
+    public boolean assign(Student student, Supervisor supervisor) {
         student.setSupervisor(supervisor);
         studentRepository.save(student);
         return true;

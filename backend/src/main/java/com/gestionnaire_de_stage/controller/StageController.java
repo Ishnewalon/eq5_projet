@@ -3,7 +3,10 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.EvalMilieuStageDTO;
 import com.gestionnaire_de_stage.dto.EvalStagiaireDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.exception.*;
+import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
+import com.gestionnaire_de_stage.exception.EvaluationAlreadyFilledException;
+import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
+import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
 import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.service.ContractService;
 import com.gestionnaire_de_stage.service.StageService;
@@ -18,8 +21,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.time.LocalDate;
 
 @RestController
@@ -95,7 +96,7 @@ public class StageController {
             String contractHtml = templateEngine.process("evalStagiaire", context);
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            HtmlConverter.convertToPdf(contractHtml,baos);
+            HtmlConverter.convertToPdf(contractHtml, baos);
 
             stageService.addEvalStagiaire(stage, baos);
         } catch (IllegalArgumentException e) {
