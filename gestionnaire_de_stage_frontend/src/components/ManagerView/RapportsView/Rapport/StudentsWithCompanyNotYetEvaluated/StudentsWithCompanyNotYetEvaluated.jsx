@@ -35,7 +35,6 @@ export default function StudentsWithCompanyNotYetEvaluated() {
                 </TableHeader>
                 {studentMonitorOfferDtoList.map((dto, index) =>
                     <TableRow key={index}>
-                        console.log(dto)
                         <th>{dto.student.id}</th>
                         <td>{dto.student.firstName} {dto.student.lastName}</td>
                         <td>{dto.student.matricule}</td>

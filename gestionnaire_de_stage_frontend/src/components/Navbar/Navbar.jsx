@@ -29,7 +29,7 @@ export default function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg bg-dark mb-4">
             <div className="container-fluid">
-                <Link className="navbar-brand text-white" to="/">OseDlaMarde</Link>
+                <Link className="navbar-brand text-white" to="/">JISOS</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                         aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <GiHamburgerMenu color="white"/>
