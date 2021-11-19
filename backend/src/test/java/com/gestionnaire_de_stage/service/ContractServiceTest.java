@@ -63,7 +63,7 @@ public class ContractServiceTest {
         String managerSignature = "Joe Janson";
         Contract dummyContract = getDummyContract();
         Manager dummyManager = getDummyManager();
-        when(contractRepository.existsById(any())).thenReturn(true);
+        when(contractRepository.existsByIdAndSession_YearGreaterThanEqual(any(), any())).thenReturn(true);
         when(contractRepository.getContractByIdAndManagerSignatureNullAndMonitorSignatureNullAndStudentSignatureNullAndSession_YearGreaterThanEqual(any(), any())).thenReturn(dummyContract);
         when(contractRepository.save(any())).thenReturn(getDummyFilledContract());
 
@@ -89,7 +89,7 @@ public class ContractServiceTest {
     public void testAddManagerSignature_withInvalidContractID() {
         String managerSignature = "Joe Janson";
         Contract dummyContract = getDummyContract();
-        when(contractRepository.existsById(any())).thenReturn(false);
+        when(contractRepository.existsByIdAndSession_YearGreaterThanEqual(any(), any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
                 () -> contractService.addManagerSignature(managerSignature, dummyContract.getId()));
@@ -185,7 +185,7 @@ public class ContractServiceTest {
     public void testAddMonitorSignature_validValidEntries() throws Exception {
         String monitorSignature = "Joe Janson";
         Contract dummyContract = getDummyContract();
-        when(contractRepository.existsById(any())).thenReturn(true);
+        when(contractRepository.existsByIdAndSession_YearGreaterThanEqual(any(), any())).thenReturn(true);
         when(contractRepository.getContractByIdAndManagerSignatureNotNullAndMonitorSignatureNullAndStudentSignatureNull(any())).thenReturn(dummyContract);
         when(contractRepository.save(any())).thenReturn(getDummyFilledContract());
 
@@ -211,7 +211,7 @@ public class ContractServiceTest {
     public void testAddMonitorSignature_withInvalidContractID() {
         String monitorSignature = "Joe Janson";
         long contract_id = 1L;
-        when(contractRepository.existsById(any())).thenReturn(false);
+        when(contractRepository.existsByIdAndSession_YearGreaterThanEqual(any(), any())).thenReturn(false);
         assertThrows(IdDoesNotExistException.class,
                 () -> contractService.addMonitorSignature(monitorSignature, contract_id));
 
@@ -291,7 +291,7 @@ public class ContractServiceTest {
     public void testAddStudentSignature_withValidEntries() throws Exception {
         Contract dummyContract = getDummyContract();
         String studentSignature = "Dawn Soap";
-        when(contractRepository.existsById(any())).thenReturn(true);
+        when(contractRepository.existsByIdAndSession_YearGreaterThanEqual(any(), any())).thenReturn(true);
         when(contractRepository.getContractByIdAndMonitorSignatureNotNullAndManagerSignatureNotNullAndStudentSignatureNull(any())).thenReturn(dummyContract);
         when(contractRepository.save(any())).thenReturn(dummyContract);
 
@@ -313,7 +313,7 @@ public class ContractServiceTest {
     public void testAddStudentSignature_withInvalidContractId() {
         Contract dummyContract = getDummyContract();
         String studentSignature = "Dawn Soap";
-        when(contractRepository.existsById(any())).thenReturn(false);
+        when(contractRepository.existsByIdAndSession_YearGreaterThanEqual(any(), any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
                 () -> contractService.addStudentSignature(studentSignature, dummyContract.getId()));
