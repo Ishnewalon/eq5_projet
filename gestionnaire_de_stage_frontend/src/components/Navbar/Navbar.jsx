@@ -5,6 +5,26 @@ import PropTypes from "prop-types";
 import {BiLogIn, BiLogOut, GiHamburgerMenu} from "react-icons/all";
 
 
+export default function Navbar() {
+    return (
+        <nav className="navbar navbar-expand-lg bg-dark mb-4">
+            <div className="container-fluid">
+                <Link className="navbar-brand text-white" to="/">JISOS</Link>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <GiHamburgerMenu color="white"/>
+                </button>
+                <div className="collapse navbar-collapse justify-content-between" id="navbarText">
+                    <ul className="navbar-nav">
+                        <GetNavItems/>
+                    </ul>
+                    <LoginLogout/>
+                </div>
+            </div>
+        </nav>
+    );
+}
+
 function LoginLogout() {
     let auth = useAuth();
     let btn = (<BiLogIn color="white" title="Se connecter" size="25"/>)
@@ -18,31 +38,7 @@ function LoginLogout() {
         }
     };
 
-    return (
-        <form className="d-flex">
-            <Link className="me-2" onClick={onClick} to="/login">{btn}</Link>
-        </form>
-    )
-}
-
-export default function Navbar() {
-    return (
-        <nav className="navbar navbar-expand-lg bg-dark mb-4">
-            <div className="container-fluid">
-                <Link className="navbar-brand text-white" to="/">JISOS</Link>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-                        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                    <GiHamburgerMenu color="white"/>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarText">
-                    <ul className="navbar-nav">
-                        <GetNavItems/>
-                    </ul>
-                </div>
-                <LoginLogout/>
-            </div>
-        </nav>
-    );
+    return <Link className="me-2 d-flex" onClick={onClick} to="/login">{btn}</Link>
 }
 
 function GetNavItems() {
