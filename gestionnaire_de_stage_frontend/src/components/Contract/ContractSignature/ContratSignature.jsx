@@ -19,6 +19,7 @@ export default function ContratSignature({userType, contract, removeContract}) {
         setPdf(toPdfBlob(contract.contractPDF));
     }, [contract.contractPDF]);
 
+    const studentFullName = student => `${student.firstName} ${student.lastName}`;
     const startContract = (e) => {
         e.preventDefault();
         if (!signature || signature === '') {
@@ -48,7 +49,7 @@ export default function ContratSignature({userType, contract, removeContract}) {
     return <div className={"container bg-secondary my-2"}>
 
         <div className="d-flex justify-content-between flex-column">
-            <PdfDocumentViewer file={pdf}/>
+            <PdfDocumentViewer file={pdf} fileName={`contrat_${studentFullName(contract.student)}.pdf`}/>
             <form onSubmit={startContract}>
                 <FormField>
                     <label>Signature</label>

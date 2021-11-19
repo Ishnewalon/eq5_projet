@@ -7,12 +7,12 @@ import {BiLogIn, BiLogOut, GiHamburgerMenu} from "react-icons/all";
 
 export default function Navbar() {
     return (
-        <nav className="navbar navbar-expand-lg bg-dark mb-4">
+        <nav className="navbar navbar-expand-lg bg-dark navbar-dark mb-4">
             <div className="container-fluid">
-                <Link className="navbar-brand text-white" to="/">JISOS</Link>
+                <Link className="navbar-brand" to="/">JISOS</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                         aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                    <GiHamburgerMenu color="white"/>
+                    <GiHamburgerMenu/>
                 </button>
                 <div className="collapse navbar-collapse justify-content-between" id="navbarText">
                     <ul className="navbar-nav">
@@ -123,7 +123,7 @@ function NavItemList(props) {
                 return child
             return <li className="nav-item">{
                 React.cloneElement(child, {
-                    className: `${child.props.className ? child.props.className : ""} nav-link text-white`
+                    className: `${child.props.className ? child.props.className : ""} nav-link`
                 })}
             </li>
         }
@@ -138,8 +138,8 @@ NavItemList.propTypes = {
 function Dropdown(props) {
     const {children, title} = props;
     return (
-        <li className="nav-item dropdown text-white">
-            <button className="nav-link dropdown-toggle text-white link-button" data-bs-toggle="dropdown"
+        <li className="nav-item dropdown">
+            <button className="nav-link dropdown-toggle link-button" data-bs-toggle="dropdown"
                     aria-expanded="false">{title}</button>
             <ul className="dropdown-menu">
                 {

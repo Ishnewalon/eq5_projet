@@ -1,8 +1,10 @@
 import {Document, Page, pdfjs} from 'react-pdf';
 
 import {useEffect, useState} from "react";
+import {downloadFile} from "../../../utility";
+import {FiDownload} from "react-icons/all";
 
-export default function PdfDocumentViewer({file, showContract = false}) {
+export default function PdfDocumentViewer({file, fileName, showContract = false}) {
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [show, setShow] = useState(showContract);
@@ -32,8 +34,12 @@ export default function PdfDocumentViewer({file, showContract = false}) {
 
     return (
         <div className={"d-flex justify-content-center align-items-center flex-column"}>
-            <button className={"btn btn-primary text-capitalize mb-2 mt-4"}
-                    onClick={() => setShow(!show)}>{(show ? 'cacher' : 'montrer') + ' pdf'}</button>
+            <div className="btn-group my-3">
+                <button className={"btn btn-primary"}
+                        onClick={() => setShow(!show)}>{(show ? 'Cacher' : 'Montrer') + ' pdf'}</button>
+                <button className='btn btn-primary'
+                        onClick={() => downloadFile(file, fileName)}><FiDownload/></button>
+            </div>
             {
                 show ?
                     <div>
