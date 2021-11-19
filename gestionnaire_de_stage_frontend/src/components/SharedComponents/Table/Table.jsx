@@ -61,15 +61,12 @@ export function TableRow(props) {
             if (child.type === 'th') {
                 return React.cloneElement(child,
                     {
-                        className: "",
+                        className: child.props.className,
                         scope: "row"
                     })
             }
             if (child.type === 'td') {
-                return React.cloneElement(child,
-                    {
-                        className: ""
-                    })
+                return child
             }
         })}
     </tr>
