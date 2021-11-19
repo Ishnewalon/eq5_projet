@@ -183,9 +183,13 @@ public class StageServiceTest {
 
     private List<Stage> getDummyStageList() {
         Stage stage1 = getDummyStage();
-        Stage stage2 = getDummyStage();stage2.setId(2L);
-        Stage stage3 = getDummyStage();stage3.setId(3L);
-        return new ArrayList<>(Arrays.asList(stage1, stage2, stage3));
+        Stage stage2 = getDummyStage();
+        stage2.setId(2L);
+        
+        Stage stage3 = getDummyStage();
+        stage3.setId(3L);
+        
+        return List.of(stage1, stage2, stage3);
     }
 
     private Stage getDummyStage() {
