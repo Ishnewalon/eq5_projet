@@ -185,11 +185,11 @@ export default function SupervisorVisitForm() {
                 isValid = false;
             }
         }
-        if (!isValid) {
+        if (!isValid)
             swalErr.fire({text: "Veuillez remplir tous les champs requis!"}).then();
-        } else {
+        else
             supervisorCreateForm(visitForm).then();
-        }
+
     };
 
     return <div className={'text-white'}>

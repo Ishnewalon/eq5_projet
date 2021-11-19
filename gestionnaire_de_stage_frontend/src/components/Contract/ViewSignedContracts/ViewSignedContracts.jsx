@@ -20,8 +20,6 @@ export default function ViewSignedContracts({userType}) {
         return <MessageNothingToShow message={"Aucun contrat à afficher pour le moment..."}/>;
 
     return <>{contractList.map((contract, index) =>
-        <div key={index}>
-            <ViewSignedContract contract={contract}/>
-        </div>)}</>
+        <ViewSignedContract key={index} contract={contract}/>)}</>
 }
 
