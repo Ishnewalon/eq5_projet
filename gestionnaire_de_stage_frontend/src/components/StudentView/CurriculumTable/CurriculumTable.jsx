@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {getAllCurriculumsByStudentWithPrincipal, setPrincipalCurriculum} from "../../../services/curriculum-service";
 import {useAuth} from "../../../services/use-auth";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
+import {AiOutlineCloseCircle, GoStar, MdOutlinePendingActions} from "react-icons/all";
 
 export default function CurriculumTable() {
     let auth = useAuth();
@@ -10,7 +11,14 @@ export default function CurriculumTable() {
     useEffect(() => {
         getAllCurriculumsByStudentWithPrincipal(auth.user.id)
             .then(curriculums => {
-                setCurriculumsWithPrincipal(curriculums)
+                curriculums.curriculumList.sort((a, b) => {
+                    if (b.isValid === null || (a.isValid === false && b.isValid === true))
+                        return 1;
+                    if (a.isValid === null || (a.isValid === true && b.isValid === false))
+                        return -1;
+                    return 0
+                });
+                setCurriculumsWithPrincipal(curriculums);
             })
             .catch(e => {
                 setCurriculumsWithPrincipal({})
@@ -29,12 +37,7 @@ export default function CurriculumTable() {
         setPrincipalCurriculum(auth.user.id, cv.id).then(
             (success) => {
                 if (success)
-                    setCurriculumsWithPrincipal(prev => {
-                        return {
-                            ...prev,
-                            "principal": cv
-                        }
-                    })
+                    setCurriculumsWithPrincipal(prev => ({...prev, "principal": cv}))
             }
         );
     }
@@ -44,47 +47,35 @@ export default function CurriculumTable() {
             cv.id === curriculumsWithPrincipal.principal.id;
     }
 
-    const getBtnStyle = (cv) => {
-        if (isPrincipal(cv)) {
-            return "btn-secondary"
-        } else if (cv.isValid) {
-            return "btn-success"
-        } else {
-            return "btn-danger"
-        }
-    }
 
-    const getBtnText = (cv) => {
+    const getIcon = cv => {
         if (isPrincipal(cv)) {
-            return "C.V. par défaut";
-        } else if (cv.isValid) {
-            return "Définir comme principal";
+            return <GoStar color="orange" title="C.V. par défaut" size="20"/>
         } else {
-            return "C.V. est Invalide!";
+            if (cv.isValid)
+                return <button className="link-button" onClick={setPrincipal(cv)}>
+                    <GoStar color="grey" title="En attente de validation" size="20"/>
+                </button>
+            else if (cv.isValid === null)
+                return <MdOutlinePendingActions color="#304c7b" title="En attente de validation" size="20"/>
+            else
+                return <AiOutlineCloseCircle color="D00" title="Invalid" size="20"/>
         }
-    }
+    };
 
     return (
         <>
             <Table>
                 <TableHeader>
-                    <th>Nom</th>
-                    <th>Status</th>
                     <th>Principal</th>
+                    <th>Nom</th>
                 </TableHeader>
 
                 {getCurriculumList().map((cv, index) =>
                     <TableRow key={index}>
-                        <td>{cv.name}</td>
-                        <td>{cv.isValid ? "Valide" : "Invalide"}</td>
-                        <td>
-                            <div className="btn-group">
-                                <button className={"btn " + (getBtnStyle(cv))}
-                                        disabled={!cv.isValid || isPrincipal(cv)}
-                                        onClick={setPrincipal(cv)}>{getBtnText(cv)}
-                                </button>
-                            </div>
-                        </td>
+                        <td>{getIcon(cv)}</td>
+                        {/*TODO: download cv*/}
+                        <td className={cv.isValid === false ? "text-danger" : ""}>{cv.name}</td>
                     </TableRow>)}
             </Table>
         </>
