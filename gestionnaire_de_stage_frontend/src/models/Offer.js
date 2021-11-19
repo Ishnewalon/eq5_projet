@@ -7,6 +7,7 @@ export default class Offer {
     id
     creator
     valid=true
+    dateFin
 
 
     constructor($id, $title, $department, $description, $address, $salary, $creator, $valid=true) {

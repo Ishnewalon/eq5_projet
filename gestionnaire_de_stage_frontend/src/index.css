@@ -134,3 +134,10 @@ Adapt color to bg-dark
     justify-content: center;
     align-items: center;
 }
+
+.link-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline;
+}

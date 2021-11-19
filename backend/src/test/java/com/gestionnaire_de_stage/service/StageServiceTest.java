@@ -13,6 +13,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -156,6 +159,37 @@ public class StageServiceTest {
 
         assertThrows(StageDoesNotExistException.class,
                 () -> stageService.addEvalStagiaire(dummyStage, new ByteArrayOutputStream()));
+    }
+
+    @Test
+    public void testGetAllWithNoEvalMilieu() {
+        List<Stage> stageList = getDummyStageList();
+        when(stageRepository.getAllByEvalMilieuStageIsNull()).thenReturn(stageList);
+
+        List<Stage> actualStageList = stageService.getAllWithNoEvalMilieu();
+
+        assertThat(actualStageList).isEqualTo(stageList);
+    }
+
+    @Test
+    public void testGetAllWithNoEvalStagiaire() {
+        List<Stage> stageList = getDummyStageList();
+        when(stageRepository.getAllByEvalStagiaireIsNull()).thenReturn(stageList);
+
+        List<Stage> actualStageList = stageService.getAllWithNoEvalStagiaire();
+
+        assertThat(actualStageList).isEqualTo(stageList);
+    }
+
+    private List<Stage> getDummyStageList() {
+        Stage stage1 = getDummyStage();
+        Stage stage2 = getDummyStage();
+        stage2.setId(2L);
+        
+        Stage stage3 = getDummyStage();
+        stage3.setId(3L);
+        
+        return List.of(stage1, stage2, stage3);
     }
 
     private Stage getDummyStage() {

@@ -141,8 +141,8 @@ function Dropdown(props) {
     const {children, title} = props;
     return (
         <li className="nav-item dropdown text-white">
-            <Link className="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" role="button"
-                  aria-expanded="false">{title}</Link>
+            <button className="nav-link dropdown-toggle text-white link-button" data-bs-toggle="dropdown"
+                    aria-expanded="false">{title}</button>
             <ul className="dropdown-menu">
                 {
                     React.Children.map(children || [], child => {
