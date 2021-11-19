@@ -432,6 +432,6 @@ public class StudentControllerTest {
         
         Stage stage3 = getDummyStage();
         stage3.setId(3L);
-        return new ArrayList<>(Arrays.asList(stage1, stage2, stage3));
+        return List.of(stage1, stage2, stage3);
     }
 }
