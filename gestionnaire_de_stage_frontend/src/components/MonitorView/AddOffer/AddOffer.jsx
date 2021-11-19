@@ -44,7 +44,7 @@ export default function AddOffer() {
 
     const addOffer = e => {
         e.preventDefault();
-        let offer = new OfferDTO(title, department, description, address, salary, creator_email,nbSemaine, dateDebut, dateFin, horaireTravail, nbHeureSemaine, parseInt(idSession));
+        let offer = new OfferDTO(title, department, description, address, salary, creator_email, nbSemaine, dateDebut, dateFin, horaireTravail, nbHeureSemaine, parseInt(idSession));
         createOffer(offer).then((b) => {
             if (b === null)
                 return
@@ -121,11 +121,13 @@ export default function AddOffer() {
         <FormGroup>
             <FormField>
                 <label>Nombre de semaines</label>
-                <input type="text" value={nbSemaine} placeholder='Nombre de semaines' onChange={e => setNbSemaine(e.target.value)}/>
+                <input type="text" value={nbSemaine} placeholder='Nombre de semaines'
+                       onChange={e => setNbSemaine(e.target.value)}/>
             </FormField>
             <FormField>
                 <label>Horaire de travail</label>
-                <input type="text" placeholder='Horaire de travail' value={horaireTravail} onChange={e => setHoraireTravail(e.target.value)}/>
+                <input type="text" placeholder='Horaire de travail' value={horaireTravail}
+                       onChange={e => setHoraireTravail(e.target.value)}/>
             </FormField>
         </FormGroup>
         <FormGroup>
