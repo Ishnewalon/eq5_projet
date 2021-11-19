@@ -62,11 +62,11 @@ export default function EvaluationIntern() {
     }
 
     const choixAppreciation = {
-        DEPASSE_BEAUCOUP: ['DEPASSE_BEAUCOUP', 'dépassent de beaucoup les attentes'],
-        DEPASSE: ['DEPASSE', 'dépassent les attentes'],
+        DEPASSE_BEAUCOUP: ['DEPASSE_BEAUCOUP', 'Dépassent de beaucoup les attentes'],
+        DEPASSE: ['DEPASSE', 'Dépassent les attentes'],
         REPOND_PLEINEMENT: ['REPOND_PLEINEMENT', 'Répondent pleinement aux attentes'],
         REPOND_PARTIELLEMENT: ['REPOND_PARTIELLEMENT', 'Répondent partiellement aux attentes'],
-        REPOND_PAS: ['REPOND_PAS', 'répondent pas aux attentes']
+        REPOND_PAS: ['REPOND_PAS', 'Répondent pas aux attentes']
     }
 
     const applyValidationStyleBasedOnChoices = (value, name, validationObj) => {
@@ -186,7 +186,7 @@ export default function EvaluationIntern() {
         }
         if (!isValid) {
             swalErr.fire({text: "Veuillez remplir tous les champs requis!"}).then();
-        }else {
+        } else {
             monitorCreateForm(monitorVisitForm).then();
         }
     };
@@ -600,8 +600,10 @@ export default function EvaluationIntern() {
             <FormGroup>
                 <FormField>
                     <label>L’entreprise aimerait accueillir cet élève pour son prochain stage</label>
-                    <select title="Le champ 'L’entreprise aimerait accueillir cet élève pour son prochain stage' doit être rempli" name='entrepriseApprecieEtudiant'
-                            value={monitorVisitForm.entrepriseApprecieEtudiant} onChange={e => handleChange(e)}>
+                    <select
+                        title="Le champ 'L’entreprise aimerait accueillir cet élève pour son prochain stage' doit être rempli"
+                        name='entrepriseApprecieEtudiant'
+                        value={monitorVisitForm.entrepriseApprecieEtudiant} onChange={e => handleChange(e)}>
                         <option disabled value="">Choisiser une réponse</option>
                         {Object.values(yesAndNoAnswers).map((c, index) => <option key={index}
                                                                                   value={c[0]}>{c[1]}</option>)}

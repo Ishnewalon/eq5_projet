@@ -130,14 +130,18 @@ public class ContractService {
         Manager manager = managerService.getOneByID(contractStarterDto.getIdManager());
         contract.setManager(manager);
 
+
         OfferApplication offerApplication = offerApplicationService.getOneById(contractStarterDto.getIdOfferApplication());
+        Offer offer = offerApplication.getOffer();
+        Monitor monitor = offer.getCreator();
         Curriculum curriculum = offerApplication.getCurriculum();
         Student student = curriculum.getStudent();
         if (doesStudentAlreadyHaveAContract(student.getId(), contract.getSession()))
             throw new StudentAlreadyHaveAContractException();
 
         contract.setStudent(student);
-        contract.setOffer(offerApplication.getOffer());
+        contract.setMonitor(monitor);
+        contract.setOffer(offer);
         contract.setSession(offerApplication.getSession());
 
         return contractRepository.save(contract);

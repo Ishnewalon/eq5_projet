@@ -45,7 +45,7 @@ export default function AddOffer() {
 
     const monitorEmail = (
         <FormField>
-            <label>Email</label>
+            <label>Email du moniteur</label>
             <input name="email" placeholder="Email" type="text"
                    value={creator_email} onChange={(e) => setCreatorId(e.target.value)}/>
         </FormField>

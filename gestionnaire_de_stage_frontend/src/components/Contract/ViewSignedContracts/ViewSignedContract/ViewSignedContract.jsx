@@ -19,7 +19,7 @@ export default function ViewSignedContract({contract}) {
         toast.fire({text: 'Contrat en cours de téléchargement'}).then();
     };
 
-    return <div className='d-flex align-items-center justify-content-center flex-column'>
+    return <div className='d-flex align-items-center justify-content-center text-white flex-column'>
         <h5>Contrat de {studentFullName(contract.student)}</h5>
         <button className='btn-primary mt-2' onClick={downloadPdf}>Télécharger Contrat <FiDownload/></button>
         <PdfDocumentViewer showContract={true} file={pdf}/>
