@@ -34,4 +34,6 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
     boolean existsByStudentIdAndSession(Long idStudent, Session session);
 
     Contract getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNotNullAndSession_YearGreaterThanEqual(Long student_id, Year year);
+
+    boolean existsByIdAndSession_YearGreaterThanEqual(Long id, Year year);
 }

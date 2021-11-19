@@ -123,7 +123,7 @@ public class ContractService {
     }
 
     private boolean isContractIdNotValid(Long contract_id) {
-        return !contractRepository.existsById(contract_id);
+        return !contractRepository.existsByIdAndSession_YearGreaterThanEqual(contract_id, Year.now());
     }
 
     public Contract gsStartContract(Contract contract, ContractStarterDto contractStarterDto) throws IdDoesNotExistException, IllegalArgumentException, StudentAlreadyHaveAContractException {
