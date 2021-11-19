@@ -4,6 +4,7 @@ import {useAuth} from "../../../services/use-auth";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import {AiOutlineCloseCircle, GoStar, MdOutlinePendingActions} from "react-icons/all";
 import {downloadFile, toPdfBlob} from "../../../utility";
+import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function CurriculumTable() {
     let auth = useAuth();
@@ -27,10 +28,6 @@ export default function CurriculumTable() {
             });
     }, [auth.user.id]);
 
-    const getCurriculumList = () => {
-        return curriculumsWithPrincipal && curriculumsWithPrincipal.curriculumList
-            ? curriculumsWithPrincipal.curriculumList : [];
-    }
 
     const setPrincipal = cv => e => {
         e.preventDefault();
@@ -64,6 +61,9 @@ export default function CurriculumTable() {
         }
     };
 
+    if (curriculumsWithPrincipal || curriculumsWithPrincipal.length === 0)
+        return <MessageNothingToShow message="Aucun C.V. à afficher"/>
+
     return (
         <>
             <Table>
@@ -72,7 +72,7 @@ export default function CurriculumTable() {
                     <th>Nom</th>
                 </TableHeader>
 
-                {getCurriculumList().map((cv, index) =>
+                {curriculumsWithPrincipal.curriculumList.map((cv, index) =>
                     <TableRow key={index}>
                         <td>{getIcon(cv)}</td>
                         <td className={cv.isValid === false ? "text-danger" : ""}>
