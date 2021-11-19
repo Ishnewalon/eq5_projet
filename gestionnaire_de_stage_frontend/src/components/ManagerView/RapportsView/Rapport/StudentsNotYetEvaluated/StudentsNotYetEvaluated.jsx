@@ -28,7 +28,7 @@ export default function StudentsNotYetEvaluated() {
                     <th>#</th>
                     <th>Étudiant</th>
                     <th>Matricule</th>
-                    <th>Supervisor</th>
+                    <th>Superviseur</th>
                     <th>Date de fin de stage</th>
                 </TableHeader>
                 {studentMonitorOfferDtoList.map((dto, index) =>
