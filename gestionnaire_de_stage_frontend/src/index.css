@@ -268,30 +268,6 @@ Adapt color to bg-dark
     flex-wrap: wrap;
 }
 
-.btn-success {
-    color: #fff !important;
-    background-color: #218838 !important;
-    border-color: #1e7e34 !important;
-}
-
-.btn-success:hover {
-    color: #fff !important;
-    background-color: #28a745 !important;
-    border-color: #28a745 !important;
-}
-
-.btn-primary {
-    color: #fff !important;
-    background-color: #0069d9 !important;
-    border-color: #0062cc !important;
-}
-
-.btn-primary:hover {
-    color: #fff !important;
-    background-color: #007bff !important;
-    border-color: #007bff !important;
-}
-
 .card-company-fit {
     display: flex;
 }

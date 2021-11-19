@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {downloadCV, getCurriculumWithInvalidCV, validateCurriculum} from "../../../services/curriculum-service";
-import {toast} from "../../../utility";
+import {getCurriculumWithInvalidCV, validateCurriculum} from "../../../services/curriculum-service";
+import {downloadFile} from "../../../utility";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
@@ -22,23 +22,7 @@ export default function CurriculumValidation() {
     const removeFromList = (id) => {
         setCurriculumList(prev => prev.filter(items => items.id !== id))
     }
-    const downloadStudentCv = (cv) => {
-        const {id} = cv
-        downloadCV(id).then(
-            blob => {
-                let myUrl = URL.createObjectURL(blob);
 
-                let myFilename = cv.student.firstName + "_" + cv.student.lastName + "_" + id + ".pdf";
-
-                const a = document.createElement('a')
-                a.href = myUrl
-                a.download = myFilename;
-                a.click();
-                URL.revokeObjectURL(myUrl);
-                toast.fire({title: 'Téléchargement en cours'}).then()
-            }
-        );
-    }
 
 
     const validateCv = (id, valid) => {
@@ -63,7 +47,9 @@ export default function CurriculumValidation() {
                     <td>{cv.student.lastName}</td>
                     <td>{cv.student.firstName}</td>
                     <td>
-                        <button className="btn btn-primary" onClick={() => downloadStudentCv(cv)}>Télécharger Cv
+                        <button className="btn btn-primary"
+                                onClick={() => downloadFile(cv.data, `${cv.student.firstName}_${cv.student.lastName}_${cv.id}.pdf`)}>Télécharger
+                            Cv
                         </button>
                     </td>
                     <td>
