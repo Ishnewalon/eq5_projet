@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {getCurriculumWithInvalidCV, validateCurriculum} from "../../../services/curriculum-service";
-import {downloadFile} from "../../../utility";
+import {downloadFile, toPdfBlob} from "../../../utility";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
@@ -47,7 +47,7 @@ export default function CurriculumValidation() {
                     <td>{cv.student.firstName}</td>
                     <td>
                         <button className="btn btn-primary"
-                                onClick={() => downloadFile(cv.data, `${cv.student.firstName}_${cv.student.lastName}_${cv.id}.pdf`)}>
+                                onClick={() => downloadFile(toPdfBlob(cv.data), `${cv.student.firstName}_${cv.student.lastName}_${cv.id}.pdf`)}>
                             Télécharger Cv
                         </button>
                     </td>

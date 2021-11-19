@@ -3,7 +3,7 @@ import {getAllCurriculumsByStudentWithPrincipal, setPrincipalCurriculum} from ".
 import {useAuth} from "../../../services/use-auth";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import {AiOutlineCloseCircle, GoStar, MdOutlinePendingActions} from "react-icons/all";
-import {downloadFile} from "../../../utility";
+import {downloadFile, toPdfBlob} from "../../../utility";
 
 export default function CurriculumTable() {
     let auth = useAuth();
@@ -76,7 +76,7 @@ export default function CurriculumTable() {
                     <TableRow key={index}>
                         <td>{getIcon(cv)}</td>
                         <td className={cv.isValid === false ? "text-danger" : ""}>
-                            <button className="link-button" onClick={() => downloadFile(cv.data, cv.name)}>
+                            <button className="link-button" onClick={() => downloadFile(toPdfBlob(cv.data), cv.name)}>
                                 {cv.name}
                             </button>
                         </td>

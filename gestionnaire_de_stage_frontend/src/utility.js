@@ -39,8 +39,8 @@ export const toPdfBlob = (pdfFile) => {
     return new Blob([new Uint8Array(numBytes), {type: 'application/pdf'}]);
 }
 
-export const downloadFile = (data, fileName) => {
-    let myUrl = URL.createObjectURL(toPdfBlob(data));
+export const downloadFile = (blob, fileName) => {
+    let myUrl = URL.createObjectURL(blob);
 
     const a = document.createElement('a')
     a.href = myUrl
