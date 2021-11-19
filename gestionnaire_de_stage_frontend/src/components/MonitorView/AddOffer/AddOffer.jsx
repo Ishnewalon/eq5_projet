@@ -119,21 +119,21 @@ export default function AddOffer() {
             </FormField>
         </FormGroup>
         <FormGroup>
-            <FormField>
+            <FormField htmlFor='nbSemaine'>
                 <label>Nombre de semaines</label>
-                <input type="text" value={nbSemaine} placeholder='Nombre de semaines'
+                <input name='nbSemaine' type="text" value={nbSemaine} placeholder='Nombre de semaines'
                        onChange={e => setNbSemaine(e.target.value)}/>
             </FormField>
-            <FormField>
+            <FormField htmlFor='horaireTravail'>
                 <label>Horaire de travail</label>
-                <input type="text" placeholder='Horaire de travail' value={horaireTravail}
+                <input name='horaireTravail' type="text" placeholder='Horaire de travail' value={horaireTravail}
                        onChange={e => setHoraireTravail(e.target.value)}/>
             </FormField>
         </FormGroup>
         <FormGroup>
-            <FormField>
+            <FormField htmlFor='nbHeureSemaine'>
                 <label>Nombre de heures par semaine</label>
-                <input type="text" value={nbHeureSemaine} onChange={e => setNbHeureSemaine(e.target.value)}/>
+                <input name='nbHeureSemaine' type="text" placeholder='Nombre de heures par semaine' value={nbHeureSemaine} onChange={e => setNbHeureSemaine(e.target.value)}/>
             </FormField>
         </FormGroup>
         <div className="form-group text-center">

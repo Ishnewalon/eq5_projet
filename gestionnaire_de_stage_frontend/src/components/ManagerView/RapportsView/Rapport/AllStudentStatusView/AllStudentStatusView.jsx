@@ -34,12 +34,11 @@ export default function AllStudentStatusView() {
             })
     }, [auth.user.id]);
 
-    if (studentList.length === 0)
+    if (studentList.length === 0 || offerList.length === 0)
         return <MessageNothingToShow message="Aucun étudiant n'a appliqué"/>
 
     return (
         <div>
-            {/* TODO UX A REVOIR SI LISTE VIDE*/}
             <Table className={"w-75 mx-auto"}>
                 <TableHeader>
                     <th>#</th>
@@ -51,7 +50,7 @@ export default function AllStudentStatusView() {
                     <TableRow key={index}>
                         <td>{student.id}</td>
                         <td>{student.firstName} {student.lastName}</td>
-                        <td>{offerList.length > 0 ? offerList[index].length : 0}</td>
+                        <td>{offerList[index] ? offerList[index].length : 0}</td>
                         <td>
                             <button className="btn btn-primary"
                                     onClick={() => history.push({

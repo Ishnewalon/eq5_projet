@@ -10,23 +10,25 @@ export default function RapportsView() {
                 <RapportCard title="Rapport des offres non validées"
                              description="Liste de toutes les offres enregistrées et pas encore validées"
                              to="/dashboard/rapports/2"/>
-                <RapportCard title="Rapport des étudiants sans Cv"
-                             description="Liste des étudiants inscrits et qui n'ont pas encore téleverser de Cv"
+                <RapportCard title="Rapport des étudiants sans cv"
+                             description="Liste des étudiants inscrits et qui n'ont pas encore téleverser de cv"
                              to="/dashboard/rapports/3"/>
                 <RapportCard title="Rapport des étudiants inscrits dans la plateforme"
                              description="Liste de TOUS les étudiants inscrits"
                              to="/dashboard/rapports/4"/>
-                <RapportCard title="Rapport des étudiants avec des Cv Invalides"
+                <RapportCard title="Rapport des étudiants avec des cv invalides"
                              description="Liste des étudiants inscrits avec des cv invalides
                              (Notifiez-les)"
                              to="/dashboard/rapports/5"/>
+                <RapportCard title="Rapport des étudiants avec leur status"
+                             description="Liste des étudiants qui ont appliqué au moins 1 fois"
+                             to="/dashboard/rapports/6"/>
                 <RapportCard title="Rapport des étudiants pas évalués par le moniteur"
                              description="Liste des étudiants qui ne sont pas encore évalués par le
                              moniteur suite à leur stage"
                              to="/dashboard/rapports/7"/>
-                <RapportCard title="Rapport des étudiants dont la compagnie n'est pas évalués par le supervisor"
-                             description="Liste des étudiants dont la compagnie n'a pas encore été évaluées par le supervisor
-                             suite à leur stage"
+                <RapportCard title="Rapport des étudiants dont la compagnie n'est pas évalués"
+                             description="Liste des étudiants dont la compagnie n'a pas encore été évaluées par le superviseur"
                              to="/dashboard/rapports/8"/>
             </CardsView>
         </>
