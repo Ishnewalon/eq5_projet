@@ -12,11 +12,8 @@ import com.gestionnaire_de_stage.service.ContractService;
 import com.gestionnaire_de_stage.service.StageService;
 import com.gestionnaire_de_stage.service.StudentService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,7 +27,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -282,7 +278,7 @@ public class StudentControllerTest {
     public void testGetAllStudentsNotYetEvaluatedAsStudentMonitorOfferDTO() throws Exception {
         List<StudentMonitorOfferDTO> studentMonitorOfferDTOList = getDummyStudentMonitorOfferDTOList();
         when(stageService.getAllWithNoEvalStagiaire()).thenReturn(getDummyStageList());
-        when(contractService.buildStudentMonitorOfferDTOFromContract(any())).thenReturn(getDummyStudentMonitorOfferDTO());
+        when(contractService.stageListToStudentMonitorOfferDtoList(any())).thenReturn(studentMonitorOfferDTOList);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/not_evaluated")
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
@@ -297,22 +293,22 @@ public class StudentControllerTest {
     @Test
     public void testGetAllStudentsNotYetEvaluatedAsStudentMonitorOfferDTOThrowsIllegalArg() throws Exception {
         when(stageService.getAllWithNoEvalStagiaire()).thenReturn(getDummyStageList());
-        when(contractService.buildStudentMonitorOfferDTOFromContract(any()))
-                .thenThrow(new IllegalArgumentException("Le contract ne peut pas être null"));
+        when(contractService.stageListToStudentMonitorOfferDtoList(any()))
+                .thenThrow(new IllegalArgumentException("La liste de stage ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/not_evaluated")
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le contract ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("La liste de stage ne peut pas être null");
     }
 
     @Test
     public void testGetAllStudentsWithCompanyNotYetEvaluatedAsStudentMonitorOfferDTO() throws Exception {
         List<StudentMonitorOfferDTO> studentMonitorOfferDTOList = getDummyStudentMonitorOfferDTOList();
         when(stageService.getAllWithNoEvalMilieu()).thenReturn(getDummyStageList());
-        when(contractService.buildStudentMonitorOfferDTOFromContract(any())).thenReturn(getDummyStudentMonitorOfferDTO());
+        when(contractService.stageListToStudentMonitorOfferDtoList(any())).thenReturn(studentMonitorOfferDTOList);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/company_not_evaluated")
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
@@ -327,15 +323,15 @@ public class StudentControllerTest {
     @Test
     public void testGetAllStudentsWithCompanyNotYetEvaluatedAsStudentMonitorOfferDTOThrowsIllegalArg() throws Exception {
         when(stageService.getAllWithNoEvalMilieu()).thenReturn(getDummyStageList());
-        when(contractService.buildStudentMonitorOfferDTOFromContract(any()))
-                .thenThrow(new IllegalArgumentException("Le contract ne peut pas être null"));
+        when(contractService.stageListToStudentMonitorOfferDtoList(any()))
+                .thenThrow(new IllegalArgumentException("La liste de stage ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/company_not_evaluated")
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le contract ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("La liste de stage ne peut pas être null");
     }
 
     private StudentMonitorOfferDTO getDummyStudentMonitorOfferDTO() {

@@ -2,11 +2,8 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.dto.StudentMonitorOfferDTO;
-import com.gestionnaire_de_stage.exception.CurriculumNotValidException;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
-import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.ContractService;
@@ -16,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -108,13 +104,9 @@ public class StudentController {
     public ResponseEntity<?> getAllStudentsNotYetEvaluatedAsStudentMonitorOfferDTO() {
         try {
             List<Stage> stageList = stageService.getAllWithNoEvalStagiaire();
-            List<StudentMonitorOfferDTO> studentMonitorOfferDTOList = new ArrayList<>();
 
-            stageList.forEach((stage) -> {
-                StudentMonitorOfferDTO studentMonitorOfferDTO =
-                        contractService.buildStudentMonitorOfferDTOFromContract(stage.getContract());
-                studentMonitorOfferDTOList.add(studentMonitorOfferDTO);
-            });
+            List<StudentMonitorOfferDTO> studentMonitorOfferDTOList =
+                    contractService.stageListToStudentMonitorOfferDtoList(stageList);
             return ResponseEntity
                     .ok(studentMonitorOfferDTOList);
         } catch (Exception e) {
@@ -128,13 +120,9 @@ public class StudentController {
     public ResponseEntity<?> getAllStudentsWithCompanyNotYetEvaluatedAsStudentMonitorOfferDTO() {
         try {
             List<Stage> stageList = stageService.getAllWithNoEvalMilieu();
-            List<StudentMonitorOfferDTO> studentMonitorOfferDTOList = new ArrayList<>();
 
-            stageList.forEach((stage) -> {
-                        StudentMonitorOfferDTO studentMonitorOfferDTO =
-                                contractService.buildStudentMonitorOfferDTOFromContract(stage.getContract());
-                        studentMonitorOfferDTOList.add(studentMonitorOfferDTO);
-                    });
+            List<StudentMonitorOfferDTO> studentMonitorOfferDTOList =
+                    contractService.stageListToStudentMonitorOfferDtoList(stageList);
             return ResponseEntity
                     .ok(studentMonitorOfferDTOList);
         } catch (Exception e) {

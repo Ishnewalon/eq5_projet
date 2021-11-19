@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -432,6 +433,46 @@ public class ContractServiceTest {
         assertThat(actual.getStudent()).isEqualTo(studentMonitorOfferDTO.getStudent());
         assertThat(actual.getMonitor()).isEqualTo(studentMonitorOfferDTO.getMonitor());
         assertThat(actual.getOffer()).isEqualTo(studentMonitorOfferDTO.getOffer());
+    }
+
+    @Test
+    public void testStageListToStudentMonitorOfferDtoList() {
+        List<Stage> stageList = getDummyStageList();
+        List<StudentMonitorOfferDTO> studentMonitorOfferDTOList = getDummyStudentMonitorOfferDTOList();
+
+        List<StudentMonitorOfferDTO> actual = contractService.stageListToStudentMonitorOfferDtoList(stageList);
+
+        assertThat(actual.size()).isEqualTo(studentMonitorOfferDTOList.size());
+    }
+
+    @Test
+    public void testStageListToStudentMonitorOfferDtoList_throwsIllegalArg() {
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.stageListToStudentMonitorOfferDtoList(null),
+                "La liste de stage ne peut pas être null");
+    }
+
+    private List<StudentMonitorOfferDTO> getDummyStudentMonitorOfferDTOList() {
+        StudentMonitorOfferDTO dto1 = getDummyStudentMonitorOfferDTO();
+        StudentMonitorOfferDTO dto2 = getDummyStudentMonitorOfferDTO();
+        StudentMonitorOfferDTO dto3 = getDummyStudentMonitorOfferDTO();
+        return new ArrayList<>(Arrays.asList(dto1, dto2, dto3));
+    }
+
+    private List<Stage> getDummyStageList() {
+        Stage stage1 = getDummyStage();
+        Stage stage2 = getDummyStage();
+        stage2.setId(2L);
+        Stage stage3 = getDummyStage();
+        stage3.setId(3L);
+        return new ArrayList<>(Arrays.asList(stage1, stage2, stage3));
+    }
+
+    private Stage getDummyStage() {
+        Stage dummyStage = new Stage();
+        dummyStage.setId(1L);
+        dummyStage.setContract(getDummyContract());
+        return dummyStage;
     }
 
     private StudentMonitorOfferDTO getDummyStudentMonitorOfferDTO() {

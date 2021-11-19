@@ -16,6 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -176,6 +177,14 @@ public class ContractService {
                 contract.getMonitor(),
                 contract.getOffer()
         );
+    }
+
+    public List<StudentMonitorOfferDTO> stageListToStudentMonitorOfferDtoList(List<Stage> stageList) {
+        Assert.notNull(stageList, "La liste de stage ne peut pas être null");
+
+        return stageList.stream().map((stage) ->
+                buildStudentMonitorOfferDTOFromContract(stage.getContract()))
+                .collect(Collectors.toList());
     }
 
     public boolean isNotCreated(String matricule) {
