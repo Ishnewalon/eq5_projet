@@ -44,6 +44,10 @@ public class OfferController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("Le courriel n'existe pas"));
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage("L'id de la session n'existe pas"));
         }
         return ResponseEntity
                 .status(HttpStatus.CREATED)

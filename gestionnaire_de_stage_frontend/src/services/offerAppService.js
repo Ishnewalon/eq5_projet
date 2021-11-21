@@ -8,15 +8,17 @@ export async function applyToOffer(offerApp) {//TODO: Should not be able to appl
 
     return await fetch(`${urlBackend}/applications/apply`, requestInit(methods.POST, offerApp)).then(
         response => {
-            response.json().then(
+            return response.json().then(
                 body => {
                     if (response.status === 201)
                         toast.fire({title: body.message});
                     if (response.status === 400)
                         swalErr.fire({title: body.message})
+                    return response.status === 201;
                 }
             )
-        });
+        }
+    );
 }
 
 export async function getAllApplicants(email) {
@@ -37,6 +39,20 @@ export async function getAllApplicants(email) {
 
 export async function getStudentApplications(id) {
     return await fetch(`${urlBackend}/applications/applicants/student/${id}`, requestInit(methods.GET)).then(
+        response => {
+            return response.json().then((body) => {
+                if (response.status === 200)
+                    return body;
+                if (response.status === 400)
+                    toastErr.fire({title: body.message})
+                return Promise.any([]);
+            })
+        }, err => console.error(err)
+    );
+}
+
+export async function getStudentApplicationsOffer(id) {
+    return await fetch(`${urlBackend}/applications/applicants/offerApp/student/${id}`, requestInit(methods.GET)).then(
         response => {
             return response.json().then((body) => {
                 if (response.status === 200)
@@ -81,7 +97,8 @@ export async function setInterview(offerAppID, date) {
                 }
                 return Promise.any([]);
             })
-        });
+        }
+    );
 }
 
 export async function getAllOffersByStudentAppliedOn(studentID) {
@@ -96,7 +113,8 @@ export async function getAllOffersByStudentAppliedOn(studentID) {
                 }
                 return Promise.any([]);
             })
-        });
+        }
+    );
 }
 
 function _isApplicationValid(offerApp) {

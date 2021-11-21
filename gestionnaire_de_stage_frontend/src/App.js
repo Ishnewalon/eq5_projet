@@ -1,14 +1,15 @@
 import './App.css';
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
-import Dashboard from "./components/Dashboard/Dashboard";
-import Register from "./components/Register/Register";
+import Dashboard from "./components/UserView/Dashboard";
+import Register from "./components/Unauthenticated/Register/Register";
 import React from "react";
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from "./components/NavBar/NavBar";
+import Navbar from "./components/Navbar/Navbar";
 import {AuthProvider, RequireAuth, RequireNoAuth} from "./services/use-auth";
-import Login from "./components/Login/Login";
+import Login from "./components/Unauthenticated/Login";
 import {ContainerBox} from "./components/SharedComponents/ContainerBox/ContainerBox";
+import {Title} from "./components/SharedComponents/Title/Title";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
                     </Route>
                     <Route path="/register">
                         <RequireNoAuth>
+                            <Title>Inscription</Title>
                             <ContainerBox>
                                 <Register/>
                             </ContainerBox>
@@ -31,9 +33,8 @@ function App() {
                     </Route>
                     <Route path="/login">
                         <RequireNoAuth>
-                            <ContainerBox>
-                                <Login/>
-                            </ContainerBox>
+                            <h2 className="text-center mt-4">Se connecter</h2>
+                            <Login/>
                         </RequireNoAuth>
                     </Route>
                     <Route exact path="/">

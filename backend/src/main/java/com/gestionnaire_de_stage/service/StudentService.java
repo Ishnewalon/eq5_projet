@@ -1,28 +1,28 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.CurriculumNotValidException;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
-import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import com.gestionnaire_de_stage.repository.StudentRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StudentService {
 
     private final StudentRepository studentRepository;
-    private final CurriculumRepository curriculumRepository;
+    private final CurriculumService curriculumService;
 
-    public StudentService(StudentRepository studentRepository, CurriculumRepository curriculumRepository) {
+    public StudentService(StudentRepository studentRepository, @Lazy CurriculumService curriculumService) {
         this.studentRepository = studentRepository;
-        this.curriculumRepository = curriculumRepository;
+        this.curriculumService = curriculumService;
     }
 
     public Student create(Student student) throws StudentAlreadyExistsException {
@@ -58,7 +58,7 @@ public class StudentService {
     public void deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (isIDNotValid(aLong)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Aucun étudiant trouvé pour cet ID");
         }
         studentRepository.deleteById(aLong);
     }
@@ -72,18 +72,18 @@ public class StudentService {
         return studentRepository.findStudentByEmailAndPassword(email, password);
     }
 
-    public Student setPrincipalCurriculum(Student receivedStudent, Long idCurriculum) throws IdDoesNotExistException {
+    public Student setPrincipalCurriculum(Student receivedStudent, Long idCurriculum) throws IdDoesNotExistException, CurriculumNotValidException {
         Assert.isTrue(receivedStudent != null, "L'étudiant est null");
         Assert.isTrue(idCurriculum != null, "Le id curriculum est null");
 
-        Optional<Student> optionalStudent = studentRepository.findById(receivedStudent.getId());
-        Optional<Curriculum> curriculum = curriculumRepository.findById(idCurriculum);
-        if (optionalStudent.isEmpty() || curriculum.isEmpty())
-            throw new IdDoesNotExistException();
+        Student student = getOneByID(receivedStudent.getId());
+        Curriculum curriculum = curriculumService.getOneByID(idCurriculum);
 
-        Student student = optionalStudent.get();
+        if (curriculum.getIsValid() == null
+                || !curriculum.getIsValid())
+            throw new CurriculumNotValidException("Le curriculum doit être valide");
 
-        student.setPrincipalCurriculum(curriculum.get());
+        student.setPrincipalCurriculum(curriculum);
         return studentRepository.save(student);
     }
 
@@ -96,10 +96,10 @@ public class StudentService {
     }
 
     public List<Student> getAllStudentWithInvalidCv() {
-        return studentRepository.findAllByPrincipalCurriculum_IsValid(false);
+        return studentRepository.findAllByPrincipalCurriculumIsNullOrPrincipalCurriculum_IsValid(false);
     }
 
-    public boolean assign(Student student, Supervisor supervisor){
+    public boolean assign(Student student, Supervisor supervisor) {
         student.setSupervisor(supervisor);
         studentRepository.save(student);
         return true;

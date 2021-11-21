@@ -16,7 +16,7 @@ class User {
 }
 
 
-export class ManagerModel extends User{
+export class ManagerModel extends User {
 
 }
 
@@ -45,6 +45,7 @@ export class Student extends User {
     address = '';
     city = '';
     postalCode = '';
+    supervisor;
 
     constructor($email, $password, $lastName, $firstName, $phone, $matricule, $department = 'informatique',
                 $address = '', $city = '', $postalCode = '') {
