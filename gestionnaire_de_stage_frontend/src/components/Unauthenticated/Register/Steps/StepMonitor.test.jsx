@@ -5,7 +5,6 @@ import userEvent from "@testing-library/user-event";
 import StepMonitor, {verification} from "./StepMonitor";
 
 
-
 let myPostalCode = 'H0H0H0';
 let myAddress = '555 rue blabla';
 let myCompanyName = 'myBigCompagnie';

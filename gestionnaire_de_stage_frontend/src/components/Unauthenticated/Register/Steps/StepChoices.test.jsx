@@ -3,7 +3,7 @@
 import {cleanup, render, screen} from "@testing-library/react";
 import Choice from "./StepChoices";
 import userEvent from "@testing-library/user-event";
-import {Step} from "../../../enums/Steps";
+import {Step} from "../../../../enums/Steps";
 
 const mockFnNext = jest.fn();
 beforeEach(() => {

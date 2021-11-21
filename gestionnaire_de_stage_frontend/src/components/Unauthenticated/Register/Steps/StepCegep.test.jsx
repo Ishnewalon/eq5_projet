@@ -3,7 +3,7 @@
 import {cleanup, render, screen} from "@testing-library/react";
 import StepCegep from "./StepCegep";
 import userEvent from "@testing-library/user-event";
-import {UserType} from "../../../enums/UserTypes";
+import {UserType} from "../../../../enums/UserTypes";
 
 let matricule = 12345;
 const mockFnPrev = jest.fn();
