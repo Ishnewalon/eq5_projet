@@ -30,6 +30,7 @@ public class PasswordResetToken {
         this.user = user;
         created = new Date();
         token = generateNewToken();
+        usable = false;
     }
 
     private static String generateNewToken() {
