@@ -63,14 +63,10 @@ export async function getAllOffersInvalid() {
                     if (response.status === 200) {
                         return body
                     }
-                    if (response.status === 400) {
-                        swalErr.fire({text: body.message})
-                    }
-                    return Promise.any([])
-                }
-            )
-        },
-        err => console.error(err)
+                    console.error(response)
+                    return []
+                })
+        }, err => console.error(err)
     );
 }
 
@@ -82,14 +78,10 @@ export async function getAllOffersValid() {
                     if (response.status === 200) {
                         return body
                     }
-                    if (response.status === 400) {
-                        swalErr.fire({text: body.message})
-                    }
-                    return Promise.any([])
-                }
-            )
-        },
-        err => console.error(err)
+                    console.error(response)
+                    return []
+                })
+        }, err => console.error(err)
     );
 }
 
