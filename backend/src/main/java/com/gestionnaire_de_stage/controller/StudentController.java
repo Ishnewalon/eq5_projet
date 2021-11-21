@@ -1,9 +1,13 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
+import com.gestionnaire_de_stage.dto.StudentMonitorOfferDTO;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
+import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.model.Student;
+import com.gestionnaire_de_stage.service.ContractService;
+import com.gestionnaire_de_stage.service.StageService;
 import com.gestionnaire_de_stage.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +21,15 @@ import java.util.List;
 public class StudentController {
 
     private final StudentService studentService;
+    private final StageService stageService;
+    private final ContractService contractService;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService,
+                             StageService stageService,
+                             ContractService contractService) {
         this.studentService = studentService;
+        this.stageService = stageService;
+        this.contractService = contractService;
     }
 
     @PostMapping("/signup")
@@ -56,6 +66,19 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
+    @GetMapping("/set_principal/{studentID}/{curriculumID}")
+    public ResponseEntity<?> setPrincipalCurriculum(@PathVariable long studentID, @PathVariable long curriculumID) {
+        try {
+            Student student = studentService.getOneByID(studentID);
+            studentService.setPrincipalCurriculum(student, curriculumID);
+            return ResponseEntity.ok(new ResponseMessage("CV principal changé"));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+    }
+
     @GetMapping
     public List<Student> getAllStudents() {
         return studentService.getAll();
@@ -75,5 +98,37 @@ public class StudentController {
     public ResponseEntity<?> getAllStudentsNotAssigned() {
         List<Student> studentList = studentService.getAllUnassignedStudents();
         return ResponseEntity.ok(studentList);
+    }
+
+    @GetMapping("/not_evaluated")
+    public ResponseEntity<?> getAllStudentsNotYetEvaluatedAsStudentMonitorOfferDTO() {
+        try {
+            List<Stage> stageList = stageService.getAllWithNoEvalStagiaire();
+
+            List<StudentMonitorOfferDTO> studentMonitorOfferDTOList =
+                    contractService.stageListToStudentMonitorOfferDtoList(stageList);
+            return ResponseEntity
+                    .ok(studentMonitorOfferDTOList);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+    }
+
+    @GetMapping("/company_not_evaluated")
+    public ResponseEntity<?> getAllStudentsWithCompanyNotYetEvaluatedAsStudentMonitorOfferDTO() {
+        try {
+            List<Stage> stageList = stageService.getAllWithNoEvalMilieu();
+
+            List<StudentMonitorOfferDTO> studentMonitorOfferDTOList =
+                    contractService.stageListToStudentMonitorOfferDtoList(stageList);
+            return ResponseEntity
+                    .ok(studentMonitorOfferDTOList);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
     }
 }

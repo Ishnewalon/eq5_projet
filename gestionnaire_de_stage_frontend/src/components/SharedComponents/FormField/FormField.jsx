@@ -1,29 +1,38 @@
-import React from "react";
+import React, {Children, cloneElement} from "react";
+import PropTypes from "prop-types";
 
-export function FormField({children}) {
-    let reactPortals = React.Children.toArray(children);
-    let input
-    if (reactPortals.find(p => p.type === "input" || p.type === "textarea" || p.type === "select" || p.type === "button" || p.type === "radio")) {
-        input = reactPortals.find(p => p.type === "input" || p.type === "textarea" || p.type === "select" || p.type === "button" || p.type === "radio");
-    } else {
+
+export function FormField(props) {
+    const {children, htmlFor} = props;
+    let childList = Children.toArray(children) || [];
+
+    let input = childList.find(children => children.type === "input" || children.type === "textarea" || children.type === "select" || children.type === "button" || children.type === "radio");
+    if (!input)
         throw new Error("FormField must have either an input, textarea, select, button or radio");
-    }
-    let label
-    if (reactPortals.find(p => p.type === "label")) {
-        label = reactPortals.find(p => p.type === "label");
-    }
+    let label = childList.find(p => p.type === "label")
 
+    let inputProps = {
+        className: `${input.props.className ? input.props.className : ""} form-control mb-1`
+    }
+    let labelProps = {
+        className: `${input.props.className ? input.props.className : ""} label text-white`
+    }
+    if (htmlFor) {
+        inputProps.id = htmlFor
+        labelProps.htmlFor = htmlFor
+    }
 
     return <>
         {label ?
-            React.cloneElement(label, {
-                className: `${input.props.className ? input.props.className : ""} label`
-            }) : null}
+            cloneElement(label, labelProps) : null}
         <div className="input-group">
-            {React.cloneElement(input, {
-                className: `${input.props.className ? input.props.className : ""} form-control`
-            })}
+            {cloneElement(input, inputProps)}
         </div>
     </>
 
+}
+
+FormField.propTypes = {
+    htmlFor: PropTypes.string,
+    children: PropTypes.node
 }

@@ -25,6 +25,16 @@ export async function getAllStudents() {
     return await response.json();
 }
 
+export async function getAllStudentsNotYetEvaluated() {
+    const response = await fetch(`${urlBackend}/student/not_evaluated`, requestInit(methods.GET));
+    return await response.json();
+}
+
+export async function getAllStudentsWithCompanyNotYetEvaluated() {
+    const response = await fetch(`${urlBackend}/student/company_not_evaluated`, requestInit(methods.GET));
+    return await response.json();
+}
+
 export async function assignStudentToSupervisor(idStudent, idSupervisor) {//TODO BACKEND cant assign twice
     let obj = {
         idStudent,
@@ -39,3 +49,9 @@ export async function getStudentsStatus(idSupervisor) {
     const response = await fetch(`${urlBackend}/supervisor/students_status/${idSupervisor}`, requestInit(methods.GET));
     return await response.json();
 }
+
+export async function getAllStudentsStatus() {
+    const response = await fetch(`${urlBackend}/applications`, requestInit(methods.GET));
+    return await response.json();
+}
+

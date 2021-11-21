@@ -1,4 +1,3 @@
-
 export const urlBackend = 'http://localhost:8181'
 export const methods = {
     POST: 'POST',

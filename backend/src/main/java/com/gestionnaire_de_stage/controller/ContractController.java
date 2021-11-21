@@ -42,7 +42,8 @@ public class ContractController {
         return ResponseEntity.ok(contractList);
     }
 
-    @PutMapping("/managerSign/{managerSignature}/{contract_id}")//SESSION : sign only contract of current or futur session
+    @PutMapping("/managerSign/{managerSignature}/{contract_id}")
+//SESSION : sign only contract of current or futur session
     public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addManagerSignature(managerSignature, contract_id);
@@ -115,7 +116,8 @@ public class ContractController {
         return ResponseEntity.ok(contractList);
     }
 
-    @PutMapping("/monitorSign/{monitorSignature}/{contract_id}")//SESSION : sign only contract of current or futur session
+    @PutMapping("/monitorSign/{monitorSignature}/{contract_id}")
+//SESSION : sign only contract of current or futur session
     public ResponseEntity<?> monitorSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String monitorSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addMonitorSignature(monitorSignature, contract_id);
@@ -158,7 +160,8 @@ public class ContractController {
         return ResponseEntity.ok(contract);
     }
 
-    @PutMapping("/studentSign/{studentSignature}/{contract_id}")//SESSION : sign only contract of current or futur session
+    @PutMapping("/studentSign/{studentSignature}/{contract_id}")
+//SESSION : sign only contract of current or futur session
     public ResponseEntity<?> studentSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String studentSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addStudentSignature(studentSignature, contract_id);
@@ -193,5 +196,16 @@ public class ContractController {
     public ResponseEntity<?> getAllSignedContractsByMonitor(@PathVariable Long monitor_id) {
         List<Contract> allSignedContractsByMonitor = contractService.getAllSignedContractsByMonitor(monitor_id);
         return ResponseEntity.ok(allSignedContractsByMonitor);
+    }
+
+    @GetMapping("/student/signed/{student_id}")
+    public ResponseEntity<?> getSignedContractByStudent(@PathVariable Long student_id) {
+        Contract studentContract;
+        try {
+            studentContract = contractService.getSignedContractByStudentId(student_id);
+        } catch (IdDoesNotExistException e) {
+            return ResponseEntity.badRequest().body(new ResponseMessage("Le id de l'étudiant n'existe pas"));
+        }
+        return ResponseEntity.ok(studentContract);
     }
 }
