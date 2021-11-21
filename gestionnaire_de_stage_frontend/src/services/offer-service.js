@@ -95,7 +95,7 @@ export async function validateOffer(offerId, isValid) {
                 body => {
                     if (response.status === 200) {
                         let title = isValid ? 'Offre validée!' : 'Offre invalidée!'
-                        toast.fire({title: title}).then()
+                        toast.fire({title: title})
                     }
                     if (response.status === 400)
                         swalErr.fire({text: body.message})

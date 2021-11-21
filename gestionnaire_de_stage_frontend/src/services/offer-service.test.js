@@ -1,9 +1,22 @@
 import {swalErr, toast} from "../utility";
-import {createOffer, getAllOffersByDepartment} from "./offer-service";
+import {
+    createOffer,
+    getAllOffersByDepartment,
+    getAllOffersInvalid,
+    getAllOffersValid,
+    validateOffer
+} from "./offer-service";
 import OfferDTO from "../models/OfferDTO";
 import {cleanup} from "@testing-library/react";
 
 const offer = new OfferDTO("title", "description", "informatique", "imageUrl", 11, "monitor@email.com", "3 semaines", null, null, "Lundi au Vendredi", 35, 3)
+const mockFetch = (status, body) => {
+    global.fetch = jest.fn(() =>
+        Promise.resolve({
+            status: status,
+            json: () => Promise.resolve(body)
+        }));
+}
 jest.mock('../utility')
 
 beforeAll(() => {
@@ -20,13 +33,6 @@ afterAll(() => {
     global.console.error.mockRestore();
 });
 
-const mockFetch = (status, body) => {
-    global.fetch = jest.fn(() =>
-        Promise.resolve({
-            status: status,
-            json: () => Promise.resolve(body)
-        }));
-}
 
 describe("createOffer", () => {
     // noinspection JSValidateTypes
@@ -40,7 +46,7 @@ describe("createOffer", () => {
 
         let returnedValue = await createOffer(offer);
 
-        expect(returnedValue).toBe(body)
+        expect(returnedValue).toEqual(body)
         expect(toast.fire).toHaveBeenCalled()
     });
 
@@ -88,6 +94,88 @@ describe('getAllOffersByDepartment', () => {
         expect(console.error).toHaveBeenCalled()
     })
 })
-test.todo('getAllOffersInvalid')
-test.todo('getAllOffersValid')
+describe('getAllOffersInvalid', () => {
+
+    test('Status 200', async () => {
+        const body = [offer, offer, offer]
+        mockFetch(200, body)
+
+        let returnedValue = await getAllOffersInvalid()
+
+        expect(returnedValue).toEqual(body)
+        expect(console.error).not.toHaveBeenCalled()
+    })
+
+    test('Status other', async () => {
+        mockFetch(400, {message: 'BadRequest message'})
+
+        let returnedValue = await getAllOffersInvalid()
+
+        expect(returnedValue).toEqual([])
+        expect(console.error).toHaveBeenCalled()
+    })
+})
+describe('getAllOffersValid', () => {
+
+    test('Status 200', async () => {
+        const body = [offer, offer, offer]
+        mockFetch(200, body)
+
+        let returnedValue = await getAllOffersValid()
+
+        expect(returnedValue).toEqual(body)
+        expect(console.error).not.toHaveBeenCalled()
+    })
+
+    test('Status other', async () => {
+        mockFetch(400, {message: 'BadRequest message'})
+
+        let returnedValue = await getAllOffersValid()
+
+        expect(returnedValue).toEqual([])
+        expect(console.error).toHaveBeenCalled()
+    })
+})
 test.todo('validateOffer')
+describe("validateOffer", () => {
+    // noinspection JSValidateTypes
+    toast.fire = jest.fn(() => Promise.resolve())
+    // noinspection JSValidateTypes
+    swalErr.fire = jest.fn(() => Promise.resolve())
+
+    test('Status 200 valid', async () => {
+        mockFetch(200, null)
+
+        await validateOffer(1, true);
+
+        expect(toast.fire).toHaveBeenCalledWith({title: "Offre validée!"})
+    });
+    test('Status 200 invalid', async () => {
+        mockFetch(200, null)
+
+        await validateOffer(1, false);
+
+        expect(toast.fire).toHaveBeenCalledWith({title: "Offre invalidée!"})
+    });
+
+    test('Status 400', async () => {
+        let badRequestMessage = 'BadRequest message';
+        mockFetch(400, {
+            message: badRequestMessage
+        })
+
+        await validateOffer(1, true);
+
+        expect(swalErr.fire).toHaveBeenCalledWith({text: badRequestMessage})
+    });
+
+    test('Status other', async () => {
+        mockFetch(404, {
+            message: 'BadRequest message'
+        })
+
+        await validateOffer(offer);
+
+        expect(swalErr.fire).not.toHaveBeenCalled()
+    });
+})
