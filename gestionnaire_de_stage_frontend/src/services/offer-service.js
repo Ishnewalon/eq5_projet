@@ -45,13 +45,11 @@ export async function getAllOffersByDepartment(department) {//TODO: send student
         response => {
             return response.json().then(
                 body => {
-                    if (response.ok) {
+                    if (response.status === 200) {
                         return body
                     }
-                    if (response.status === 400) {
-                        swalErr.fire({text: body.message})
-                    }
-                    return Promise.any([])
+                    console.error(response)
+                    return []
                 })
         }, err => console.error(err)
     );
