@@ -20,24 +20,29 @@ public class PasswordResetToken {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(unique = true)
     private String token;
     @ManyToOne
     private User user;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = false)
     private Date created;
-    private boolean usable;//TODO maybe un puller?
+    private boolean unusable;//TODO maybe un puller?
 
     public PasswordResetToken(User user) {
         this.user = user;
         created = new Date();
         token = generateNewToken();
-        usable = false;
+        unusable = false;
     }
 
     private static String generateNewToken() {
         byte[] randomBytes = new byte[24];
         secureRandom.nextBytes(randomBytes);
         return base64Encoder.encodeToString(randomBytes);
+    }
+
+    public void setUnusable() {
+        this.unusable = true;
     }
 }

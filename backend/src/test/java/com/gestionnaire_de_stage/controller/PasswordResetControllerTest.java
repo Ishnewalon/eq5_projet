@@ -1,8 +1,13 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.dto.PasswordResetTokenDto;
+import com.gestionnaire_de_stage.exception.DoesNotExistException;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
+import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.PasswordResetToken;
+import com.gestionnaire_de_stage.model.Student;
+import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.service.PasswordResetService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,5 +130,103 @@ public class PasswordResetControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Ce email n'existe pas");
     }
+
+
+    @Test
+    public void testResetPassword_monitor() throws Exception {
+        Monitor dummyMonitor = getDummyMonitor();
+        when(passwordResetService.resetPassword(any())).thenReturn(dummyMonitor);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/forgot_password/reset")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(new PasswordResetTokenDto("DIBWA213Nw_dW31Ad3DAO9WD213", "newPassword"))))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Votre mot de passe a été réinitialisé avec succès!");
+    }
+
+    @Test
+    public void testResetPassword_monitor_withTokenNull() throws Exception {
+        when(passwordResetService.resetPassword(any())).thenThrow(new IllegalArgumentException("Un token est nécessaire pour une modification de mot de passe"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/forgot_password/reset")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(new PasswordResetTokenDto(null, "newPassword"))))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Un token est nécessaire pour une modification de mot de passe");
+    }
+
+    @Test
+    public void testResetPassword_monitor_withPasswordNull() throws Exception {
+        when(passwordResetService.resetPassword(any())).thenThrow(new IllegalArgumentException("Un nouveau mot de passe est nécessaire pour une modification de mot de passe"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/forgot_password/reset")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(new PasswordResetTokenDto("DIBWA213Nw_dW31Ad3DAO9WD213", null))))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Un nouveau mot de passe est nécessaire pour une modification de mot de passe");
+    }
+
+    @Test
+    public void testResetPassword_monitor_withTokenNonExistant() throws Exception {
+        when(passwordResetService.resetPassword(any())).thenThrow(new DoesNotExistException("Ce token n'existe pas"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/forgot_password/reset")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(new PasswordResetTokenDto("DIBWA213Nw_dW31Ad3DAO9WD213", "newPassword"))))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Ce token n'existe pas");
+    }
+
+
+    private Monitor getDummyMonitor() {
+        Monitor dummyMonitor = new Monitor();
+        dummyMonitor.setId(1L);
+        dummyMonitor.setLastName("toto");
+        dummyMonitor.setFirstName("titi");
+        dummyMonitor.setEmail("toto@gmail.com");
+        dummyMonitor.setPassword("testPassword");
+        return dummyMonitor;
+    }
+
+    private Supervisor getDummySupervisor() {
+        Supervisor dummySupervisor = new Supervisor();
+        dummySupervisor.setId(1L);
+        dummySupervisor.setLastName("Keys");
+        dummySupervisor.setFirstName("Harold");
+        dummySupervisor.setEmail("keyh@gmail.com");
+        dummySupervisor.setPassword("galaxy29");
+        dummySupervisor.setDepartment("Comptabilité");
+        dummySupervisor.setMatricule("04736");
+        return dummySupervisor;
+    }
+
+    private Student getDummyStudent() {
+        Student dummyStudent = new Student();
+        dummyStudent.setId(1L);
+        dummyStudent.setLastName("Candle");
+        dummyStudent.setFirstName("Tea");
+        dummyStudent.setEmail("cant@outlook.com");
+        dummyStudent.setPassword("cantPass");
+        dummyStudent.setDepartment("info");
+        dummyStudent.setMatricule("4673943");
+        return dummyStudent;
+    }
+
 
 }

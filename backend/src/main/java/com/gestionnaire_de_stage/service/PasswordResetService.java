@@ -1,6 +1,10 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.dto.PasswordResetTokenDto;
+import com.gestionnaire_de_stage.exception.DoesNotExistException;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.UnusableTokenException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.PasswordResetTokenRepository;
 import io.jsonwebtoken.lang.Assert;
@@ -41,5 +45,53 @@ public class PasswordResetService {
     public PasswordResetToken forgotPasswordStudent(String email) throws EmailDoesNotExistException {
         Student student = studentService.getOneByEmail(email);
         return forgotPassword(student);
+    }
+
+    public User resetPassword(PasswordResetTokenDto passwordResetTokenDto) throws DoesNotExistException, IdDoesNotExistException, UnusableTokenException {
+        Assert.notNull(passwordResetTokenDto, "Un token et un mot de passe est nécessaire pour une modification de mot de passe");
+        PasswordResetToken passwordResetToken = getOneByToken(passwordResetTokenDto.getToken());
+
+        User user = updateUserPassword(passwordResetTokenDto.getPassword(), passwordResetToken.getUser());
+
+        setTokenUnusable(passwordResetToken);
+
+        return user;
+    }
+
+    private User updateUserPassword(String password, User user) throws IdDoesNotExistException {
+        Assert.notNull(password, "Un mot de passe est nécessaire pour une modification de mot de passe");
+        user.setPassword(password);
+
+        if (user instanceof Monitor)
+            user = monitorService.update((Monitor) user, user.getId());
+        else if (user instanceof Supervisor)
+            user = supervisorService.update((Supervisor) user, user.getId());
+        else if (user instanceof Student)
+            user = studentService.update((Student) user, user.getId());
+        return user;
+    }
+
+
+    private PasswordResetToken getOneByToken(String token) throws DoesNotExistException, UnusableTokenException {
+        Assert.notNull(token, "Un token est nécessaire pour une modification de mot de passe");
+        if (doesNotExists(token))
+            throw new DoesNotExistException("Le token n'existe pas");
+        if (isTokenUnusable(token))
+            throw new UnusableTokenException("Le token n'est plus utilisable");
+
+        return passwordResetTokenRepository.getByToken(token);
+    }
+
+    private boolean isTokenUnusable(String token) {
+        return passwordResetTokenRepository.existsByTokenAndUnusableTrue(token);
+    }
+
+    private void setTokenUnusable(PasswordResetToken passwordResetToken) {
+        passwordResetToken.setUnusable();
+        passwordResetTokenRepository.save(passwordResetToken);
+    }
+
+    private boolean doesNotExists(String token) {
+        return !passwordResetTokenRepository.existsByToken(token);
     }
 }

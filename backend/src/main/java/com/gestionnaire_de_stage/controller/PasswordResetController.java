@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.gestionnaire_de_stage.dto.PasswordResetTokenDto;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.service.PasswordResetService;
 import org.springframework.http.ResponseEntity;
@@ -50,5 +51,17 @@ public class PasswordResetController {
                     .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity.ok(new ResponseMessage(MESSAGE_SUCCESS));
+    }
+
+    @PostMapping("/reset")
+    public ResponseEntity<?> resetPassword(@RequestBody PasswordResetTokenDto passwordResetTokenDto) {
+        try {
+            passwordResetService.resetPassword(passwordResetTokenDto);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+        return ResponseEntity.ok(new ResponseMessage("Votre mot de passe a été réinitialisé avec succès!"));
     }
 }
