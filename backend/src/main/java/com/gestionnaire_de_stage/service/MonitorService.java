@@ -5,6 +5,7 @@ import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
+import com.gestionnaire_de_stage.model.PasswordResetToken;
 import com.gestionnaire_de_stage.repository.MonitorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -80,5 +81,11 @@ public class MonitorService {
 
     public boolean isIdInvalid(Long id) {
         return !monitorRepository.existsById(id);
+    }
+
+    public PasswordResetToken forgotPassword(String email) throws EmailDoesNotExistException {
+        Monitor monitor = getOneByEmail(email);
+        PasswordResetToken passwordResetToken = new PasswordResetToken(monitor);
+        return passwordResetToken;
     }
 }

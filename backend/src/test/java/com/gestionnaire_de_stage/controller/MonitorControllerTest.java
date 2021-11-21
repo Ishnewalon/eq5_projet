@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
+import com.gestionnaire_de_stage.model.PasswordResetToken;
 import com.gestionnaire_de_stage.service.MonitorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,9 +124,27 @@ public class MonitorControllerTest {
                         MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
+
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
+    }
+
+    @Test
+    public void testForgotPassword() throws Exception {
+        String email = "monitor@email.com";
+
+        when(monitorService.forgotPassword(any())).thenReturn(new PasswordResetToken());
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/monitor/forgot_password")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(email))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Un email vous a été envoyé pour réinitialiser votre mot de passe");
     }
 
     private Monitor getDummyMonitor() {
