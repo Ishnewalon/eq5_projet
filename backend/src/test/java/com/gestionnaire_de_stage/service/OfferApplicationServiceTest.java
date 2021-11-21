@@ -24,20 +24,26 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class OfferApplicationServiceTest {
+
     @InjectMocks
     private OfferApplicationService offerApplicationService;
+
     @Mock
     private OfferService offerService;
+
     @Mock
     private StudentService studentService;
+
     @Mock
     private ManagerService managerService;
+
     @Mock
     private OfferApplicationRepository offerApplicationRepository;
+
     @Mock
     private SupervisorRepository supervisorRepository;
 
@@ -360,6 +366,45 @@ class OfferApplicationServiceTest {
 
         assertThrows(IdDoesNotExistException.class,
                 () -> offerApplicationService.getAllBySupervisorId(supervisorId));
+    }
+
+    @Test
+    void testUpdateAllOffersStatus_withValidEntries() {
+        when(offerApplicationRepository.updateAllOfferApplicationThatWereInAInterviewStatusToStatus(any(), any(), any())).thenReturn(3);
+
+        final int updatedOfferApplications = offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(Status.EN_ATTENTE_ENTREVUE, Status.EN_ATTENTE_REPONSE);
+
+        assertThat(updatedOfferApplications).isEqualTo(3);
+    }
+
+    @Test
+    void testUpdateAllOffersStatus_withAllNullEntries() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(null, null),
+                "Les deux status ne peuvent pas être vide");
+    }
+
+    @Test
+    void testUpdateAllOfferStatus_withNullOldStatus(){
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(null, Status.EN_ATTENTE_REPONSE),
+                "Le deux status ne peut pas être vide");
+    }
+
+    @Test
+    void testUpdateAllOfferStatus_withNullNewStatus(){
+        assertThrows(IllegalArgumentException.class,
+            () -> offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(Status.EN_ATTENTE_ENTREVUE, null),
+        "Le deux status ne peut pas être vide"
+        );
+    }
+
+    @Test
+    void testUpdateAllOfferStatus_withSameStatus(){
+        assertThrows(IllegalArgumentException.class,
+            () -> offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(Status.EN_ATTENTE_ENTREVUE, Status.EN_ATTENTE_ENTREVUE),
+    "Les deux status ne peuvent pas être identique"
+        );
     }
 
     private OfferApplication getDummyOfferApp() {
