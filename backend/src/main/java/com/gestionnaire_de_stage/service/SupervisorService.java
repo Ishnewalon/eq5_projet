@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
+import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.OfferApplication;
@@ -80,6 +81,13 @@ public class SupervisorService {
         return offerApplicationService.getAllBySupervisorId(supervisor_id);
     }
 
+    public Supervisor getOneByEmail(String email) throws EmailDoesNotExistException {
+        Assert.notNull(email, "Le email est obligatoire");
+        if (isEmailInvalid(email)) throw new EmailDoesNotExistException();
+
+        return supervisorRepository.getByEmail(email);
+    }
+
     private boolean isNotValid(Supervisor supervisor) {
         return supervisor.getEmail() != null &&
                 supervisorRepository.existsByEmail(supervisor.getEmail());
@@ -92,4 +100,9 @@ public class SupervisorService {
     private boolean isEmailAndPasswordValid(String email, String password) {
         return supervisorRepository.existsByEmailAndPassword(email, password);
     }
+
+    private boolean isEmailInvalid(String email) {
+        return !supervisorRepository.existsByEmail(email);
+    }
+
 }

@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.security.SecureRandom;
@@ -10,6 +11,7 @@ import java.util.Date;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class PasswordResetToken {
     private static final SecureRandom secureRandom = new SecureRandom();

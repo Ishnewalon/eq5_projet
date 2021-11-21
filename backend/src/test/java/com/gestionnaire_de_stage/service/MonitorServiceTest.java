@@ -208,15 +208,16 @@ public class MonitorServiceTest {
     }
 
     @Test
-    public void testIsIdInvalid_whenFalse(){
+    public void testIsIdInvalid_whenFalse() {
         when(monitorRepository.existsById(any())).thenReturn(true);
 
         boolean idInvalid = monitorService.isIdInvalid(1L);
 
         assertThat(idInvalid).isFalse();
     }
+
     @Test
-    public void testIsIdInvalid_whenTrue(){
+    public void testIsIdInvalid_whenTrue() {
         when(monitorRepository.existsById(any())).thenReturn(false);
 
         boolean idInvalid = monitorService.isIdInvalid(1L);

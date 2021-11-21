@@ -2,10 +2,15 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
+import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
-import com.gestionnaire_de_stage.model.*;
+import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.model.OfferApplication;
+import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -215,6 +220,30 @@ public class SupervisorServiceTest {
 
         assertThat(actualSupervisorList).isEqualTo(dummySupervisorList);
         assertThat(actualSupervisorList.size()).isEqualTo(dummySupervisorList.size());
+    }
+
+    @Test
+    public void testGetOneByEmail_withValidEmail() throws EmailDoesNotExistException {
+        Supervisor dummySupervisor = getDummySupervisor();
+        when(supervisorRepository.existsByEmail(any())).thenReturn(true);
+        when(supervisorRepository.getByEmail(any())).thenReturn(dummySupervisor);
+
+        Supervisor actual = supervisorService.getOneByEmail(dummySupervisor.getEmail());
+
+        Assertions.assertThat(actual).isEqualTo(dummySupervisor);
+    }
+
+    @Test
+    public void testGetOneByEmail_withNullEmail() {
+        assertThrows(IllegalArgumentException.class,
+                () -> supervisorService.getOneByEmail(null));
+    }
+
+    @Test
+    public void testGetOneByEmail_withInvalidEmail() {
+        String email = "civfan@email.com";
+        assertThrows(EmailDoesNotExistException.class,
+                () -> supervisorService.getOneByEmail(email));
     }
 
     private Supervisor getDummySupervisor() {

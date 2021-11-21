@@ -57,16 +57,4 @@ public class MonitorController {
                     .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));//FIXME: Change message
         }
     }
-
-    @PostMapping("/forgot_password")
-    public ResponseEntity<?> forgotPassword(@RequestBody String email) {
-        try {
-            monitorService.forgotPassword(email);
-        } catch (Exception e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        }
-        return ResponseEntity.ok(new ResponseMessage("Un email vous a été envoyé pour réinitialiser votre mot de passe"));
-    }
 }
