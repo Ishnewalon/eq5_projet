@@ -94,4 +94,36 @@ public class PasswordResetControllerTest {
         assertThat(response.getContentAsString()).contains("Ce email n'existe pas");
     }
 
+    @Test
+    public void testForgotPassword_student() throws Exception {
+        String email = "student@email.com";
+        when(passwordResetService.forgotPasswordStudent(any())).thenReturn(new PasswordResetToken());
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/forgot_password/student")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(email))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Un email vous a été envoyé pour réinitialiser votre mot de passe");
+    }
+
+    @Test
+    public void testForgotPassword_student_whenEmailDoesNotExist() throws Exception {
+        String email = "student@email.com";
+        when(passwordResetService.forgotPasswordStudent(any())).thenThrow(new EmailDoesNotExistException("Ce email n'existe pas"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/forgot_password/student")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(email))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Ce email n'existe pas");
+    }
+
 }

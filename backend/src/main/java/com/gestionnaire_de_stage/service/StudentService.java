@@ -1,9 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
-import com.gestionnaire_de_stage.exception.CurriculumNotValidException;
-import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
@@ -115,6 +112,16 @@ public class StudentService {
 
     private boolean isEmailAndPasswordValid(String email, String password) {
         return studentRepository.existsByEmailAndPassword(email, password);
+    }
+
+    public Student getOneByEmail(String email) throws EmailDoesNotExistException {
+        Assert.notNull(email, "Le courriel est null");
+        if (isEmailInvalid(email)) throw new EmailDoesNotExistException();
+        return studentRepository.getByEmail(email);
+    }
+
+    private boolean isEmailInvalid(String email) {
+        return !studentRepository.existsByEmail(email);
     }
 
 }

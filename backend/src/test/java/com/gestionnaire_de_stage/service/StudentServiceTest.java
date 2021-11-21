@@ -1,9 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
-import com.gestionnaire_de_stage.exception.CurriculumNotValidException;
-import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
@@ -17,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -313,6 +309,30 @@ public class StudentServiceTest {
         boolean isAssigned = studentService.assign(dummyStudent, dummySupervisor);
 
         assertThat(isAssigned).isTrue();
+    }
+
+    @Test
+    public void testGetOneByEmail_withValidEmail() throws EmailDoesNotExistException {
+        Student dummyStudent = getDummyStudent();
+        when(studentRepository.existsByEmail(any())).thenReturn(true);
+        when(studentRepository.getByEmail(any())).thenReturn(dummyStudent);
+
+        Student actual = studentService.getOneByEmail(dummyStudent.getEmail());
+
+        assertThat(actual).isEqualTo(dummyStudent);
+    }
+
+    @Test
+    public void testGetOneByEmail_withNullEmail() {
+        assertThrows(IllegalArgumentException.class,
+                () -> studentService.getOneByEmail(null));
+    }
+
+    @Test
+    public void testGetOneByEmail_withInvalidEmail() {
+        String email = "civfan@email.com";
+        assertThrows(EmailDoesNotExistException.class,
+                () -> studentService.getOneByEmail(email));
     }
 
     private Student getDummyStudent() {

@@ -39,4 +39,16 @@ public class PasswordResetController {
         }
         return ResponseEntity.ok(new ResponseMessage(MESSAGE_SUCCESS));
     }
+
+    @PostMapping("/student")
+    public ResponseEntity<?> forgotPasswordStudent(@RequestBody String email) {
+        try {
+            passwordResetService.forgotPasswordStudent(email);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+        return ResponseEntity.ok(new ResponseMessage(MESSAGE_SUCCESS));
+    }
 }

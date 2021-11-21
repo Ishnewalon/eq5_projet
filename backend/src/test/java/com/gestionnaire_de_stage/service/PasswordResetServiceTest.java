@@ -1,10 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
-import com.gestionnaire_de_stage.model.Monitor;
-import com.gestionnaire_de_stage.model.PasswordResetToken;
-import com.gestionnaire_de_stage.model.Supervisor;
-import com.gestionnaire_de_stage.model.User;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.PasswordResetTokenRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +26,8 @@ public class PasswordResetServiceTest {
     private MonitorService monitorService;
     @Mock
     private SupervisorService supervisorService;
+    @Mock
+    private StudentService studentService;
 
     @Test
     public void testForgotPassword_monitor_withValidEmail() throws EmailDoesNotExistException {
@@ -55,6 +54,20 @@ public class PasswordResetServiceTest {
 
         assertThat(passwordResetToken.getId()).isGreaterThanOrEqualTo(1L);
         assertThat(passwordResetToken.getUser()).isEqualTo(dummySupervisor);
+        assertThat(passwordResetToken.getToken()).isNotNull();
+    }
+
+    @Test
+    public void testForgotPassword_student_withValidEmail() throws EmailDoesNotExistException {
+        Student dummyStudent = getDummyStudent();
+        PasswordResetToken dummyPasswordResetToken = getDummyPasswordResetToken(dummyStudent);
+        when(studentService.getOneByEmail(any())).thenReturn(dummyStudent);
+        when(passwordResetTokenRepository.save(any())).thenReturn(dummyPasswordResetToken);
+
+        PasswordResetToken passwordResetToken = passwordResetService.forgotPasswordStudent(dummyStudent.getEmail());
+
+        assertThat(passwordResetToken.getId()).isGreaterThanOrEqualTo(1L);
+        assertThat(passwordResetToken.getUser()).isEqualTo(dummyStudent);
         assertThat(passwordResetToken.getToken()).isNotNull();
     }
 
@@ -87,5 +100,17 @@ public class PasswordResetServiceTest {
         dummySupervisor.setDepartment("Comptabilité");
         dummySupervisor.setMatricule("04736");
         return dummySupervisor;
+    }
+
+    private Student getDummyStudent() {
+        Student dummyStudent = new Student();
+        dummyStudent.setId(1L);
+        dummyStudent.setLastName("Candle");
+        dummyStudent.setFirstName("Tea");
+        dummyStudent.setEmail("cant@outlook.com");
+        dummyStudent.setPassword("cantPass");
+        dummyStudent.setDepartment("info");
+        dummyStudent.setMatricule("4673943");
+        return dummyStudent;
     }
 }
