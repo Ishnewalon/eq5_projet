@@ -5,6 +5,7 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SessionAlreadyExistException;
 import com.gestionnaire_de_stage.model.Session;
 import com.gestionnaire_de_stage.repository.SessionRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -21,7 +22,7 @@ public class SessionService {
     private final SessionRepository sessionRepository;
     private final Clock clock;
 
-    public SessionService(SessionRepository sessionRepository, Clock clock) {
+    public SessionService(SessionRepository sessionRepository,@Lazy Clock clock) {
         this.sessionRepository = sessionRepository;
         this.clock = clock;
     }
