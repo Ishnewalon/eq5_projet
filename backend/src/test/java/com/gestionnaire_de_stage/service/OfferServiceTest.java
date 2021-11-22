@@ -3,7 +3,10 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ValidationOffer;
 import com.gestionnaire_de_stage.enums.TypeSession;
-import com.gestionnaire_de_stage.exception.*;
+import com.gestionnaire_de_stage.exception.DoesNotExistException;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
+import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.Session;
@@ -103,7 +106,7 @@ public class OfferServiceTest {
     }
 
     @Test
-    public void testCreateOffer_withValidOffer() throws OfferAlreadyExistsException, EmailDoesNotExistException, IdDoesNotExistException {
+    public void testCreateOffer_withValidOffer() throws OfferAlreadyExistsException, IdDoesNotExistException, DoesNotExistException {
 
         Offer dummyOffer = getDummyOffer();
         when(offerRepository.save(any())).thenReturn(dummyOffer);

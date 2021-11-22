@@ -307,7 +307,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testGetOneByEmail_withValidEmail() throws EmailDoesNotExistException {
+    public void testGetOneByEmail_withValidEmail() throws DoesNotExistException {
         Student dummyStudent = getDummyStudent();
         when(studentRepository.existsByEmail(any())).thenReturn(true);
         when(studentRepository.getByEmail(any())).thenReturn(dummyStudent);
@@ -326,8 +326,9 @@ public class StudentServiceTest {
     @Test
     public void testGetOneByEmail_withInvalidEmail() {
         String email = "civfan@email.com";
-        assertThrows(EmailDoesNotExistException.class,
-                () -> studentService.getOneByEmail(email));
+        assertThrows(DoesNotExistException.class,
+                () -> studentService.getOneByEmail(email),
+                "L'email n'existe pas");
     }
 
     private Student getDummyStudent() {

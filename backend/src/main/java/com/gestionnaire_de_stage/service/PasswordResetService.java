@@ -2,7 +2,6 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.PasswordResetTokenDto;
 import com.gestionnaire_de_stage.exception.DoesNotExistException;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.UnusableTokenException;
 import com.gestionnaire_de_stage.model.*;
@@ -37,17 +36,17 @@ public class PasswordResetService {
         return passwordResetTokenRepository.save(passwordResetToken);
     }
 
-    public PasswordResetToken forgotPasswordMonitor(String email) throws EmailDoesNotExistException {
+    public PasswordResetToken forgotPasswordMonitor(String email) throws DoesNotExistException {
         Monitor monitor = monitorService.getOneByEmail(email);
         return forgotPassword(monitor);
     }
 
-    public PasswordResetToken forgotPasswordSupervisor(String email) throws EmailDoesNotExistException {
+    public PasswordResetToken forgotPasswordSupervisor(String email) throws DoesNotExistException {
         Supervisor supervisor = supervisorService.getOneByEmail(email);
         return forgotPassword(supervisor);
     }
 
-    public PasswordResetToken forgotPasswordStudent(String email) throws EmailDoesNotExistException {
+    public PasswordResetToken forgotPasswordStudent(String email) throws DoesNotExistException {
         Student student = studentService.getOneByEmail(email);
         return forgotPassword(student);
     }

@@ -1,8 +1,8 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.enums.Status;
+import com.gestionnaire_de_stage.exception.DoesNotExistException;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Curriculum;
@@ -210,7 +210,7 @@ public class SupervisorServiceTest {
     }
 
     @Test
-    public void testGetOneByEmail_withValidEmail() throws EmailDoesNotExistException {
+    public void testGetOneByEmail_withValidEmail() throws DoesNotExistException {
         Supervisor dummySupervisor = getDummySupervisor();
         when(supervisorRepository.existsByEmail(any())).thenReturn(true);
         when(supervisorRepository.getByEmail(any())).thenReturn(dummySupervisor);
@@ -229,8 +229,9 @@ public class SupervisorServiceTest {
     @Test
     public void testGetOneByEmail_withInvalidEmail() {
         String email = "civfan@email.com";
-        assertThrows(EmailDoesNotExistException.class,
-                () -> supervisorService.getOneByEmail(email));
+        assertThrows(DoesNotExistException.class,
+                () -> supervisorService.getOneByEmail(email),
+                "L'email n'existe pas");
     }
 
     private Supervisor getDummySupervisor() {

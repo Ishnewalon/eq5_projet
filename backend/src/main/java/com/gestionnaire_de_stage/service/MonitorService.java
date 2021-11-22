@@ -1,7 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.DoesNotExistException;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
@@ -60,10 +60,10 @@ public class MonitorService {
         monitorRepository.deleteById(aLong);
     }
 
-    public Monitor getOneByEmail(String email) throws EmailDoesNotExistException {
+    public Monitor getOneByEmail(String email) throws DoesNotExistException {
         Assert.isTrue(email != null, "Le courriel est null");
         if (isEmailInvalid(email)) {
-            throw new EmailDoesNotExistException();
+            throw new DoesNotExistException("L'email n'existe pas");
         }
         return monitorRepository.getMonitorByEmail(email);
     }

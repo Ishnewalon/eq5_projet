@@ -111,9 +111,10 @@ public class StudentService {
         return studentRepository.existsByEmailAndPassword(email, password);
     }
 
-    public Student getOneByEmail(String email) throws EmailDoesNotExistException {
+    public Student getOneByEmail(String email) throws DoesNotExistException {
         Assert.notNull(email, "Le courriel est null");
-        if (isEmailInvalid(email)) throw new EmailDoesNotExistException();
+        if (isEmailInvalid(email))
+            throw new DoesNotExistException("L'email n'existe pas");
         return studentRepository.getByEmail(email);
     }
 

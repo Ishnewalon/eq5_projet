@@ -3,7 +3,6 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.PasswordResetTokenDto;
 import com.gestionnaire_de_stage.exception.DoesNotExistException;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.UnusableTokenException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.PasswordResetToken;
@@ -54,7 +53,7 @@ public class PasswordResetControllerTest {
     @Test
     public void testForgotPassword_monitor_whenEmailDoesNotExist() throws Exception {
         String email = "monitor@email.com";
-        when(passwordResetService.forgotPasswordMonitor(any())).thenThrow(new EmailDoesNotExistException("Ce email n'existe pas"));
+        when(passwordResetService.forgotPasswordMonitor(any())).thenThrow(new DoesNotExistException("Ce email n'existe pas"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/forgot_password/monitor/{0}", email)
@@ -84,7 +83,7 @@ public class PasswordResetControllerTest {
     @Test
     public void testForgotPassword_supervisor_whenEmailDoesNotExist() throws Exception {
         String email = "supervisor@email.com";
-        when(passwordResetService.forgotPasswordSupervisor(any())).thenThrow(new EmailDoesNotExistException("Ce email n'existe pas"));
+        when(passwordResetService.forgotPasswordSupervisor(any())).thenThrow(new DoesNotExistException("Ce email n'existe pas"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/forgot_password/supervisor/{0}", email)
@@ -114,7 +113,7 @@ public class PasswordResetControllerTest {
     @Test
     public void testForgotPassword_student_whenEmailDoesNotExist() throws Exception {
         String email = "student@email.com";
-        when(passwordResetService.forgotPasswordStudent(any())).thenThrow(new EmailDoesNotExistException("Ce email n'existe pas"));
+        when(passwordResetService.forgotPasswordStudent(any())).thenThrow(new DoesNotExistException("Ce email n'existe pas"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/forgot_password/student/{0}", email)

@@ -2,7 +2,6 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.PasswordResetTokenDto;
 import com.gestionnaire_de_stage.exception.DoesNotExistException;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.UnusableTokenException;
 import com.gestionnaire_de_stage.model.*;
@@ -40,7 +39,7 @@ public class PasswordResetServiceTest {
     private JavaMailSender javaMailSender;
 
     @Test
-    public void testForgotPassword_monitor_withValidEmail() throws EmailDoesNotExistException {
+    public void testForgotPassword_monitor_withValidEmail() throws DoesNotExistException {
         Monitor dummyMonitor = getDummyMonitor();
         PasswordResetToken dummyPasswordResetToken = getDummyPasswordResetToken(dummyMonitor);
         when(monitorService.getOneByEmail(any())).thenReturn(dummyMonitor);
@@ -55,7 +54,7 @@ public class PasswordResetServiceTest {
     }
 
     @Test
-    public void testForgotPassword_supervisor_withValidEmail() throws EmailDoesNotExistException {
+    public void testForgotPassword_supervisor_withValidEmail() throws DoesNotExistException {
         Supervisor dummySupervisor = getDummySupervisor();
         PasswordResetToken dummyPasswordResetToken = getDummyPasswordResetToken(dummySupervisor);
         when(supervisorService.getOneByEmail(any())).thenReturn(dummySupervisor);
@@ -70,7 +69,7 @@ public class PasswordResetServiceTest {
     }
 
     @Test
-    public void testForgotPassword_student_withValidEmail() throws EmailDoesNotExistException {
+    public void testForgotPassword_student_withValidEmail() throws DoesNotExistException {
         Student dummyStudent = getDummyStudent();
         PasswordResetToken dummyPasswordResetToken = getDummyPasswordResetToken(dummyStudent);
         when(studentService.getOneByEmail(any())).thenReturn(dummyStudent);
