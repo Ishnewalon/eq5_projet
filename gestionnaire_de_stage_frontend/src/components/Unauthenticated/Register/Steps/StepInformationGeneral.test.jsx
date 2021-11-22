@@ -15,7 +15,7 @@ const mockFnHandleChange = () => jest.fn((e) => {
     e.preventDefault();
 });
 
-jest.mock('../../SharedComponents/Fields/FieldAddress', () => () => 'myAddressComponents');
+jest.mock('../../../SharedComponents/Fields/FieldAddress', () => () => 'myAddressComponents');
 
 beforeEach(() => {
     render(

@@ -17,7 +17,7 @@ afterEach(() => {
 test('Login component', async () => {
     render(<Login/>);
 
-    expect(await screen.findAllByRole('option')).toHaveLength(4)
+    expect(await screen.findAllByRole('radio')).toHaveLength(4)
     expect(screen.getByText("myEmailComponents")).toBeInTheDocument()
     expect(screen.getByText("myPasswordComponents")).toBeInTheDocument()
 });
