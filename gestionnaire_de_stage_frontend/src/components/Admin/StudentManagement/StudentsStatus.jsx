@@ -5,7 +5,7 @@ import {useAuth} from "../../../services/use-auth";
 import {getStudentApplicationsOffer} from "../../../services/offerAppService";
 import {useHistory} from "react-router-dom";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {BtnBack} from "../BtnBack";
+import {BtnBack} from "../../SharedComponents/BtnBack";
 
 export default function StudentsStatus() {
 

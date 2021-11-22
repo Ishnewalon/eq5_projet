@@ -10,6 +10,9 @@ import StudentsWithInvalidCurriculum from "./StudentManagement/StudentsWithInval
 import StudentsStatus from "./StudentManagement/StudentsStatus";
 import StudentsNotYetEvaluated from "./StudentManagement/StudentsNotYetEvaluated";
 import StudentsWithCompanyNotYetEvaluated from "./StudentManagement/StudentsWithCompanyNotYetEvaluated";
+import StudentsCurriculumsOverview from "./StudentManagement/StudentsCurriculumsOverview";
+import StudentCurriculumValidation from "../Curriculums/StudentCurriculumsValidation";
+import {BtnBack} from "../SharedComponents/BtnBack";
 
 
 export default function RapportsView() {
@@ -51,6 +54,15 @@ export default function RapportsView() {
                 <Title>Les étudiants dont la compagnie n'a pas encore été évaluée</Title>
                 <StudentsWithCompanyNotYetEvaluated/>
             </Route>
+            <Route path={`${path}/overview`}>
+                <Route exact path={`${path}/overview/student`}>
+                    <StudentCurriculumValidation/>
+                    <BtnBack/>
+                </Route>
+                <Route exact path={`${path}/overview`}>
+                    <StudentsCurriculumsOverview/>
+                </Route>
+            </Route>
             <Route exact path={`${path}/offer`}>
                 <OfferApplicationsList/>
             </Route>
@@ -88,6 +100,9 @@ function Menu() {
             <RapportCard title="Rapport des étudiants dont la compagnie n'est pas évalués"
                          description="Liste des étudiants dont la compagnie n'a pas encore été évaluées par le superviseur"
                          to="/dashboard/rapports/8"/>
+            <RapportCard title="Rapport des étudiants dont la compagnie n'est pas évalués"
+                         description="Liste des étudiants dont la compagnie n'a pas encore été évaluées par le superviseur"
+                         to="/dashboard/rapports/overview"/>
         </CardsView>
     </>;
 }

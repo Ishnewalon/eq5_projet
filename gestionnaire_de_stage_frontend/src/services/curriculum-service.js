@@ -41,6 +41,22 @@ export async function getAllCurriculumsByStudentWithPrincipal(studentID) {
     );
 }
 
+export async function getAllCurriculumsByStudent(studentID) {
+    return await fetch(`${urlBackend}/curriculum/student/${studentID}`,
+        requestInit(methods.GET)).then(
+        response => {
+            return response.json().then(
+                body => {
+                    if (response.status === 200)
+                        return body
+                    if (response.status === 400)
+                        swalErr.fire({text: body.message})
+                    return []
+                })
+        }, err => console.error(err)
+    );
+}
+
 export async function setPrincipalCurriculum(studentID, curriculumID) {
     return await fetch(`${urlBackend}/student/set_principal/${studentID}/${curriculumID}`,
         requestInit(methods.GET)).then(

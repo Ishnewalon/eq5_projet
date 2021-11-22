@@ -66,6 +66,16 @@ public class CurriculumController {
         List<Curriculum> curriculumList = curriculumService.findAllCurriculumValidated();
         return ResponseEntity.ok(curriculumList);
     }
+    @GetMapping("/student/{id}")
+    public ResponseEntity<?> getAllCurriculumByStudentId(@PathVariable Long id) {
+        List<Curriculum> curriculumList = null;
+        try {
+            curriculumList = curriculumService.findAllByStudentId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok(curriculumList);
+    }
 
     @GetMapping("/all_student/{studentID}")
     public ResponseEntity<?> allCurriculumsByStudentAsStudentCurriculumsDTO(@PathVariable long studentID) {

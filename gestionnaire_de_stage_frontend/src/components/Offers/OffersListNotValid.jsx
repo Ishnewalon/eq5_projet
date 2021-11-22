@@ -4,7 +4,7 @@ import OfferView from './OfferView';
 import {getCurrentAndFutureSession} from "../../services/session-service";
 import {FormField} from "../SharedComponents/FormField/FormField";
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
-import {BtnBack} from "../Admin/BtnBack";
+import {BtnBack} from "../SharedComponents/BtnBack";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
