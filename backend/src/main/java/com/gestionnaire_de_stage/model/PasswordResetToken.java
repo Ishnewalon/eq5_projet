@@ -5,17 +5,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.security.SecureRandom;
-import java.util.Base64;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 public class PasswordResetToken {
-    private static final SecureRandom secureRandom = new SecureRandom();
-    private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,15 +29,10 @@ public class PasswordResetToken {
     public PasswordResetToken(User user) {
         this.user = user;
         created = new Date();
-        token = generateNewToken();
+        token = UUID.randomUUID().toString();
         unusable = false;
     }
 
-    private static String generateNewToken() {
-        byte[] randomBytes = new byte[24];
-        secureRandom.nextBytes(randomBytes);
-        return base64Encoder.encodeToString(randomBytes);
-    }
 
     public void setUnusable() {
         this.unusable = true;
