@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import FieldPassword from "../SharedComponents/Fields/FieldPassword";
 import FieldEmail from "../SharedComponents/Fields/FieldEmail";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {UserType} from "../../enums/UserTypes";
 import {useAuth} from "../../services/use-auth";
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
@@ -59,6 +59,9 @@ export default function Login() {
             <div className="form-group text-center">
                 <label/>
                 <button className="btn btn-primary btn-login" type={"button"} onClick={connect}>Connexion</button>
+            </div>
+            <div className="form-group text-center mb-3">
+                <Link className={"float-end mb-3 link text-white"} to="/forgot_password">Mot de passe oublié?</Link>
             </div>
         </ContainerBox>
     )
