@@ -44,7 +44,8 @@ public class StudentService {
 
     public Student update(Student student) throws IdDoesNotExistException {
         Assert.isTrue(student != null, "L'étudiant est null");
-        if (isIDNotValid(student.getId())) throw new IdDoesNotExistException();
+        if (isIDNotValid(student.getId())) 
+             throw new IdDoesNotExistException();
         return studentRepository.save(student);
     }
 
