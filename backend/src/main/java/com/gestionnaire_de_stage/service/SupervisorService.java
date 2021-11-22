@@ -48,7 +48,8 @@ public class SupervisorService {
 
     public Supervisor update(Supervisor supervisor) throws IdDoesNotExistException {
         Assert.isTrue(supervisor != null, "Le superviseur est null");
-        if (isIdNotValid(supervisor.getId())) throw new IdDoesNotExistException();
+        if (isIdNotValid(supervisor.getId())) 
+            throw new IdDoesNotExistException();
         return supervisorRepository.save(supervisor);
     }
 
