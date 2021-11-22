@@ -42,9 +42,8 @@ public class PasswordResetControllerTest {
         when(passwordResetService.forgotPasswordMonitor(any())).thenReturn(new PasswordResetToken());
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/forgot_password/monitor")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(email))
+                        MockMvcRequestBuilders.post("/forgot_password/monitor/{0}", email)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -58,9 +57,8 @@ public class PasswordResetControllerTest {
         when(passwordResetService.forgotPasswordMonitor(any())).thenThrow(new EmailDoesNotExistException("Ce email n'existe pas"));
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/forgot_password/monitor")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(email))
+                        MockMvcRequestBuilders.post("/forgot_password/monitor/{0}", email)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -74,9 +72,8 @@ public class PasswordResetControllerTest {
         when(passwordResetService.forgotPasswordSupervisor(any())).thenReturn(new PasswordResetToken());
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/forgot_password/supervisor")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(email))
+                        MockMvcRequestBuilders.post("/forgot_password/supervisor/{0}", email)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -90,9 +87,8 @@ public class PasswordResetControllerTest {
         when(passwordResetService.forgotPasswordSupervisor(any())).thenThrow(new EmailDoesNotExistException("Ce email n'existe pas"));
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/forgot_password/supervisor")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(email))
+                        MockMvcRequestBuilders.post("/forgot_password/supervisor/{0}", email)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -106,9 +102,8 @@ public class PasswordResetControllerTest {
         when(passwordResetService.forgotPasswordStudent(any())).thenReturn(new PasswordResetToken());
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/forgot_password/student")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(email))
+                        MockMvcRequestBuilders.post("/forgot_password/student/{0}", email)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -122,9 +117,8 @@ public class PasswordResetControllerTest {
         when(passwordResetService.forgotPasswordStudent(any())).thenThrow(new EmailDoesNotExistException("Ce email n'existe pas"));
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/forgot_password/student")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(email))
+                        MockMvcRequestBuilders.post("/forgot_password/student/{0}", email)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
