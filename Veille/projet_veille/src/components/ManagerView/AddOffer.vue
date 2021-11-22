@@ -8,8 +8,14 @@
                 <input name="titre" v-model.lazy="offerDTO.title" type="text" placeholder="Titre" required/>
                 <input name="description" v-model.lazy="offerDTO.description" type="text" placeholder="Description"
                        required/>
+                <select name="session" v-model.lazy="offerDTO.idSession" required>
+                    <option disabled value="">Choisissez une session</option>
+                    <option v-for="(session, i) in this.listSession" :value="session.id" :key="i">{{ session.typeSession }} {{ session.year }}</option>
+                </select>
                 <input name="address" v-model.lazy="offerDTO.address" type="text" placeholder="Adresse de la compagnie"
                        required/>
+
+
                 <input name="email" v-model.lazy="offerDTO.creator_email" type="email" placeholder="E-mail du moniteur"
                        required/>
                 <input name="salaire" v-model.lazy="offerDTO.salary" type="number"
@@ -37,26 +43,45 @@ export default {
                 description: "",
                 address: "",
                 creator_email: "",
-                salary: ""
+                salary: "",
+                idSession: "",
             },
+            listSession: [{}],
         }
     },
     methods: {
         addOffer() {
-            axios.post("http://localhost:8181//offers/add", this.offerDTO)
+            axios.post("http://localhost:8181/offers/add", this.offerDTO)
                 .then(() => {
                     alert("Offre créée avec succès");
                 })
                 .catch(error => {
                     alert(error.response.data.message);
                 });
+        },
+
+        getListSession() {
+            axios.get("http://localhost:8181//sessions").then((response) => {
+                this.listSession = response.data;
+                console.log(response);
+                console.log(this.listSession);
+            })
+                .catch(error => {
+                    console.log(error);
+                });
         }
+    },
+    mounted: function () {
+        this.getListSession();
+    },
+    created() {
+        this.getListSession();
     }
 }
 </script>
 
 <style scoped>
-input {
+input, select {
     width: 80%;
     padding: 12px 20px;
     margin: 8px 0;
