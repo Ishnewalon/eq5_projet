@@ -8,12 +8,9 @@ import com.gestionnaire_de_stage.exception.UnusableTokenException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.PasswordResetTokenRepository;
 import io.jsonwebtoken.lang.Assert;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 
 @Service
 public class PasswordResetService {
@@ -36,17 +33,12 @@ public class PasswordResetService {
         Assert.notNull(user, "Un utilisateur est nécessaire afin de créé un token de récupération de mot de passe");
         PasswordResetToken passwordResetToken = new PasswordResetToken(user);
         String message = "Veuillez cliquer sur le lien suivant pour réinitialiser votre mot de passe : http://localhost:3000/reset_password/" + passwordResetToken.getToken();
-        try {
-            sendEmail(user.getEmail(), "Mot de passe oublier", message);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+        sendEmail(user.getEmail(), "Mot de passe oublié", message);
         return passwordResetTokenRepository.save(passwordResetToken);
     }
 
     public PasswordResetToken forgotPasswordMonitor(String email) throws EmailDoesNotExistException {
         Monitor monitor = monitorService.getOneByEmail(email);
-
         return forgotPassword(monitor);
     }
 
@@ -108,13 +100,14 @@ public class PasswordResetService {
         return !passwordResetTokenRepository.existsByToken(token);
     }
 
-    private void sendEmail(String mailTo, String subject, String body) throws MessagingException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setTo(mailTo);
-        helper.setSubject(subject);
-        helper.setText(body);
+    private void sendEmail(String mailTo, String subject, String body) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setFrom("jisos.eq5@gmail.com");
+        mail.setSubject(subject);
+        mail.setText(body);
+        mail.setTo(mailTo);
 
-        mailSender.send(message);
+
+        this.mailSender.send(mail);
     }
 }
