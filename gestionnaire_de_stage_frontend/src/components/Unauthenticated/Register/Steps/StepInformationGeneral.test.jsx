@@ -40,48 +40,52 @@ test('click prev', () => {
 
     expect(mockFnPrev).toHaveBeenCalled()
 });
+describe('verification', () => {
+    test('valid', () => {
+        let myBool = verification('monPrenom', 'MonNom', 'dwdaa@email.com', '5555555555');
+        expect(myBool).toBeTruthy();
+    });
+    describe('invalid', () => {
 
-test('verification', () => {
-    let myBool = verification('monPrenom', 'MonNom', 'dwdaa@email.com', '5555555555');
-    expect(myBool).toBeTruthy();
-});
 
-test('verification bad postalCode', () => {
-    let myBool = verification('monPrenom', 'MonNom', 'dwdaa@email.com', '55555555556');
-    expect(myBool).toBeFalsy();
-    myBool = verification('monPrenom', 'MonNom', 'dwdaa@email.com', '555555555');
-    expect(myBool).toBeFalsy();
-});
+        test('bad postalCode', () => {
+            let myBool = verification('monPrenom', 'MonNom', 'dwdaa@email.com', '55555555556');
+            expect(myBool).toBeFalsy();
+            myBool = verification('monPrenom', 'MonNom', 'dwdaa@email.com', '555555555');
+            expect(myBool).toBeFalsy();
+        });
 
-test('verification bad FirstName', () => {
-    let myBool = verification('monP!renom', 'MonNom', 'dwdaa@emailcom', '5555555555');
-    expect(myBool).toBeFalsy();
-    myBool = verification('monPrenom1', 'MonNom', 'dwdaaATemail.com', '5555555555');
-    expect(myBool).toBeFalsy();
-});
-test('verification bad LastName', () => {
-    let myBool = verification('monPrenom', 'MonN@om', 'dwdaa@email.com', '5555555555');
-    expect(myBool).toBeFalsy();
-    myBool = verification('monPrenom', 'MonN1om', 'dwdaa@email.com', '5555555555');
-    expect(myBool).toBeFalsy();
-});
+        test('bad FirstName', () => {
+            let myBool = verification('monP!renom', 'MonNom', 'dwdaa@emailcom', '5555555555');
+            expect(myBool).toBeFalsy();
+            myBool = verification('monPrenom1', 'MonNom', 'dwdaaATemail.com', '5555555555');
+            expect(myBool).toBeFalsy();
+        });
+        test('bad LastName', () => {
+            let myBool = verification('monPrenom', 'MonN@om', 'dwdaa@email.com', '5555555555');
+            expect(myBool).toBeFalsy();
+            myBool = verification('monPrenom', 'MonN1om', 'dwdaa@email.com', '5555555555');
+            expect(myBool).toBeFalsy();
+        });
 
-test('verification undefined FirstName', () => {
-    let myBool = verification(undefined, 'MonNom', 'dwdaa@email.com', '5555555555');
-    expect(myBool).toBeFalsy();
-});
+        test('undefined FirstName', () => {
+            let myBool = verification(undefined, 'MonNom', 'dwdaa@email.com', '5555555555');
+            expect(myBool).toBeFalsy();
+        });
 
-test('verification undefined LastName', () => {
-    let myBool = verification('monPrenom', 'myBigCompagnie', undefined, 'dwdaa@email.com', '5555555555');
-    expect(myBool).toBeFalsy();
-});
+        test('undefined LastName', () => {
+            let myBool = verification('monPrenom', 'myBigCompagnie', undefined, 'dwdaa@email.com', '5555555555');
+            expect(myBool).toBeFalsy();
+        });
 
-test('verification undefined email', () => {
-    let myBool = verification('monPrenom', 'MonNom', undefined, '5555555555');
-    expect(myBool).toBeFalsy();
-});
+        test('undefined email', () => {
+            let myBool = verification('monPrenom', 'MonNom', undefined, '5555555555');
+            expect(myBool).toBeFalsy();
+        });
 
-test('verification undefined Phone', () => {
-    let myBool = verification('monPrenom', 'MonNom', 'dwdaa@email.com', undefined);
-    expect(myBool).toBeFalsy();
+        test('undefined Phone', () => {
+            let myBool = verification('monPrenom', 'MonNom', 'dwdaa@email.com', undefined);
+            expect(myBool).toBeFalsy();
+        })
+    })
 })

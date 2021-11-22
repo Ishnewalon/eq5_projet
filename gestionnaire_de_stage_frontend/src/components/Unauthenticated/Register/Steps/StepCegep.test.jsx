@@ -35,34 +35,37 @@ test('loads and displays StepCegep', () => {
     expect(screen.getByText("Précédent")).toBeInTheDocument();
     expect(screen.getByTestId("input-matricule")).toHaveValue(matricule);
 });
+describe('click next', () => {
+    test('but nothing happen', () => {
+        matricule = "";
+        myRender(matricule);
 
-test('click next but nothing happen', () => {
-    matricule = "";
-    myRender(matricule);
+        userEvent.click(screen.getByText("Suivant"));
 
-    userEvent.click(screen.getByText("Suivant"));
+        expect(mockFnNext).not.toHaveBeenCalled()
+        expect(mockFnUpdateType).not.toHaveBeenCalled()
+    });
 
-    expect(mockFnNext).not.toHaveBeenCalled()
-    expect(mockFnUpdateType).not.toHaveBeenCalled()
-});
-test('click next Supervisor', () => {
-    myRender(matricule);
+    test('Supervisor', () => {
+        myRender(matricule);
 
-    userEvent.click(screen.getByText("Suivant"));
+        userEvent.click(screen.getByText("Suivant"));
 
-    expect(mockFnNext).toHaveBeenCalled()
-    expect(mockFnUpdateType).toHaveBeenCalledWith(UserType.SUPERVISOR)
-});
-test('click next Student', () => {
-    matricule = 1234567;
-    myRender(matricule);
+        expect(mockFnNext).toHaveBeenCalled()
+        expect(mockFnUpdateType).toHaveBeenCalledWith(UserType.SUPERVISOR)
+    });
+
+    test('Student', () => {
+        matricule = 1234567;
+        myRender(matricule);
 
 
-    userEvent.click(screen.getByText("Suivant"));
+        userEvent.click(screen.getByText("Suivant"));
 
-    expect(mockFnNext).toHaveBeenCalled()
-    expect(mockFnUpdateType).toHaveBeenCalledWith(UserType.STUDENT)
-});
+        expect(mockFnNext).toHaveBeenCalled()
+        expect(mockFnUpdateType).toHaveBeenCalledWith(UserType.STUDENT)
+    });
+})
 
 test('click prev', () => {
     myRender(matricule);

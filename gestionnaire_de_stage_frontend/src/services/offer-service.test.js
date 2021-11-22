@@ -136,7 +136,6 @@ describe('getAllOffersValid', () => {
         expect(console.error).toHaveBeenCalled()
     })
 })
-test.todo('validateOffer')
 describe("validateOffer", () => {
     // noinspection JSValidateTypes
     toast.fire = jest.fn(() => Promise.resolve())
