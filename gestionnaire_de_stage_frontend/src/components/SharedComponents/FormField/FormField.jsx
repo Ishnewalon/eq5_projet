@@ -12,14 +12,17 @@ export function FormField(props) {
     let label = childList.find(p => p.type === "label")
 
     let inputProps = {
-        className: `${input.props.className ? input.props.className : ""} form-control mb-1`
+        className: `${input.props.className ? input.props.className + " " : ""}form-control mb-1`
     }
-    let labelProps = {
-        className: `${input.props.className ? input.props.className : ""} label text-white`
-    }
-    if (htmlFor) {
-        inputProps.id = htmlFor
-        labelProps.htmlFor = htmlFor
+    let labelProps;
+    if (label) {
+        labelProps = {
+            className: `${label.props.className ? input.props.className + " " : ""}label text-white`
+        };
+        if (htmlFor) {
+            inputProps.id = htmlFor
+            labelProps.htmlFor = htmlFor
+        }
     }
 
     return <>
