@@ -8,7 +8,12 @@ import com.gestionnaire_de_stage.exception.UnusableTokenException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.PasswordResetTokenRepository;
 import io.jsonwebtoken.lang.Assert;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 @Service
 public class PasswordResetService {
@@ -17,17 +22,25 @@ public class PasswordResetService {
     private final MonitorService monitorService;
     private final SupervisorService supervisorService;
     private final StudentService studentService;
+    private final JavaMailSender mailSender;
 
-    public PasswordResetService(PasswordResetTokenRepository passwordResetTokenRepository, MonitorService monitorService, SupervisorService supervisorService, StudentService studentService) {
+    public PasswordResetService(PasswordResetTokenRepository passwordResetTokenRepository, MonitorService monitorService, SupervisorService supervisorService, StudentService studentService, JavaMailSender mailSender) {
         this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.monitorService = monitorService;
         this.supervisorService = supervisorService;
         this.studentService = studentService;
+        this.mailSender = mailSender;
     }
 
     private PasswordResetToken forgotPassword(User user) {
         Assert.notNull(user, "Un utilisateur est nécessaire afin de créé un token de récupération de mot de passe");
         PasswordResetToken passwordResetToken = new PasswordResetToken(user);
+        String message = "Veuillez cliquer sur le lien suivant pour réinitialiser votre mot de passe : http://localhost:3000/reset_password/" + passwordResetToken.getToken();
+        try {
+            sendEmail(user.getEmail(), "Mot de passe oublier", message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
         return passwordResetTokenRepository.save(passwordResetToken);
     }
 
@@ -93,5 +106,15 @@ public class PasswordResetService {
 
     private boolean doesNotExists(String token) {
         return !passwordResetTokenRepository.existsByToken(token);
+    }
+
+    private void sendEmail(String mailTo, String subject, String body) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setTo(mailTo);
+        helper.setSubject(subject);
+        helper.setText(body);
+
+        mailSender.send(message);
     }
 }
