@@ -38,12 +38,10 @@ public class MonitorService {
         return monitorRepository.findAll();
     }
 
-    public Monitor update(Monitor monitor, Long aLong) throws IdDoesNotExistException {
-        Assert.isTrue(aLong != null, "ID est null");
+    public Monitor update(Monitor monitor) throws IdDoesNotExistException {
         Assert.isTrue(monitor != null, "Monitor est null");
-        if (!monitorRepository.existsById(aLong))
+        if (!monitorRepository.existsById(monitor.getId()))
             throw new IdDoesNotExistException();
-        monitor.setId(aLong);
         return monitorRepository.save(monitor);
     }
 

@@ -73,12 +73,6 @@ public class SupervisorServiceTest {
     }
 
     @Test
-    public void testGetByID_withNullID() {
-        assertThrows(IllegalArgumentException.class,
-                () -> supervisorService.getOneByID(null));
-    }
-
-    @Test
     public void testGetByID_doesntExistID() {
         Supervisor dummySupervisor = getDummySupervisor();
         when(supervisorRepository.existsById(any())).thenReturn(false);
@@ -93,23 +87,16 @@ public class SupervisorServiceTest {
         when(supervisorRepository.existsById(any())).thenReturn(true);
         when(supervisorRepository.save(any())).thenReturn(dummySupervisor);
 
-        Supervisor actualSupervisor = supervisorService.update(dummySupervisor, dummySupervisor.getId());
+        Supervisor actualSupervisor = supervisorService.update(dummySupervisor);
 
         assertThat(actualSupervisor.getMatricule()).isEqualTo(dummySupervisor.getMatricule());
     }
 
     @Test
-    public void testUpdate_withNullID() {
-        Supervisor dummySupervisor = getDummySupervisor();
-
-        assertThrows(IllegalArgumentException.class,
-                () -> supervisorService.update(dummySupervisor, null));
-    }
-
-    @Test
     public void testUpdate_withNullSupervisor() {
+        //noinspection ConstantConditions
         assertThrows(IllegalArgumentException.class,
-                () -> supervisorService.update(null, 1L));
+                () -> supervisorService.update(null));
     }
 
     @Test
@@ -118,7 +105,7 @@ public class SupervisorServiceTest {
         when(supervisorRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-                () -> supervisorService.update(dummySupervisor, dummySupervisor.getId()));
+                () -> supervisorService.update(dummySupervisor));
     }
 
     @Test

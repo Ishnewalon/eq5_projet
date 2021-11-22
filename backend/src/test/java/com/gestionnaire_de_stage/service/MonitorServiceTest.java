@@ -94,21 +94,17 @@ public class MonitorServiceTest {
         when(monitorRepository.existsById(any())).thenReturn(true);
         when(monitorRepository.save(any())).thenReturn(dummyMonitor);
 
-        Monitor actualMonitor = monitorService.update(dummyMonitor, dummyMonitor.getId());
+        Monitor actualMonitor = monitorService.update(dummyMonitor);
 
         assertThat(actualMonitor).isEqualTo(dummyMonitor);
     }
 
-    @Test
-    public void testUpdate_withNullID() {
-        assertThrows(IllegalArgumentException.class,
-                () -> monitorService.update(getDummyMonitor(), null));
-    }
 
     @Test
     public void testUpdate_withNullMonitor() {
+        //noinspection ConstantConditions
         assertThrows(IllegalArgumentException.class,
-                () -> monitorService.update(null, 1L));
+                () -> monitorService.update(null));
     }
 
     @Test
@@ -117,7 +113,7 @@ public class MonitorServiceTest {
         when(monitorRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-                () -> monitorService.update(dummyMonitor, dummyMonitor.getId()));
+                () -> monitorService.update(dummyMonitor));
     }
 
     @Test

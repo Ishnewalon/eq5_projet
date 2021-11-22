@@ -1,6 +1,10 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.dto.PasswordResetTokenDto;
+import com.gestionnaire_de_stage.exception.DoesNotExistException;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.UnusableTokenException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.PasswordResetTokenRepository;
 import org.junit.jupiter.api.Test;
@@ -10,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -36,11 +41,11 @@ public class PasswordResetServiceTest {
         when(monitorService.getOneByEmail(any())).thenReturn(dummyMonitor);
         when(passwordResetTokenRepository.save(any())).thenReturn(dummyPasswordResetToken);
 
-        PasswordResetToken passwordResetToken = passwordResetService.forgotPasswordMonitor(dummyMonitor.getEmail());
+        PasswordResetToken actual = passwordResetService.forgotPasswordMonitor(dummyMonitor.getEmail());
 
-        assertThat(passwordResetToken.getId()).isGreaterThanOrEqualTo(1L);
-        assertThat(passwordResetToken.getUser()).isEqualTo(dummyMonitor);
-        assertThat(passwordResetToken.getToken()).isNotNull();
+        assertThat(actual.getId()).isGreaterThanOrEqualTo(1L);
+        assertThat(actual.getUser()).isEqualTo(dummyMonitor);
+        assertThat(actual.getToken()).isNotNull();
     }
 
     @Test
@@ -50,11 +55,11 @@ public class PasswordResetServiceTest {
         when(supervisorService.getOneByEmail(any())).thenReturn(dummySupervisor);
         when(passwordResetTokenRepository.save(any())).thenReturn(dummyPasswordResetToken);
 
-        PasswordResetToken passwordResetToken = passwordResetService.forgotPasswordSupervisor(dummySupervisor.getEmail());
+        PasswordResetToken actual = passwordResetService.forgotPasswordSupervisor(dummySupervisor.getEmail());
 
-        assertThat(passwordResetToken.getId()).isGreaterThanOrEqualTo(1L);
-        assertThat(passwordResetToken.getUser()).isEqualTo(dummySupervisor);
-        assertThat(passwordResetToken.getToken()).isNotNull();
+        assertThat(actual.getId()).isGreaterThanOrEqualTo(1L);
+        assertThat(actual.getUser()).isEqualTo(dummySupervisor);
+        assertThat(actual.getToken()).isNotNull();
     }
 
     @Test
@@ -64,11 +69,72 @@ public class PasswordResetServiceTest {
         when(studentService.getOneByEmail(any())).thenReturn(dummyStudent);
         when(passwordResetTokenRepository.save(any())).thenReturn(dummyPasswordResetToken);
 
-        PasswordResetToken passwordResetToken = passwordResetService.forgotPasswordStudent(dummyStudent.getEmail());
+        PasswordResetToken actual = passwordResetService.forgotPasswordStudent(dummyStudent.getEmail());
 
-        assertThat(passwordResetToken.getId()).isGreaterThanOrEqualTo(1L);
-        assertThat(passwordResetToken.getUser()).isEqualTo(dummyStudent);
-        assertThat(passwordResetToken.getToken()).isNotNull();
+        assertThat(actual.getId()).isGreaterThanOrEqualTo(1L);
+        assertThat(actual.getUser()).isEqualTo(dummyStudent);
+        assertThat(actual.getToken()).isNotNull();
+    }
+
+    @Test
+    public void testResetPassword_monitor_valid() throws IdDoesNotExistException, DoesNotExistException, UnusableTokenException {
+        Monitor dummyMonitor = getDummyMonitor();
+        PasswordResetToken dummyPasswordResetToken = getDummyPasswordResetToken(dummyMonitor);
+        when(passwordResetTokenRepository.existsByToken(any())).thenReturn(true);
+        when(passwordResetTokenRepository.getByToken(any())).thenReturn(dummyPasswordResetToken);
+        when(passwordResetTokenRepository.save(any())).thenReturn(dummyPasswordResetToken);
+        when(monitorService.update(any())).thenReturn(dummyMonitor);
+
+        Monitor actual = (Monitor) passwordResetService.resetPassword(new PasswordResetTokenDto("DIBWA213Nw_dW31Ad3DAO9WD213", "testPassword"));
+
+        assertThat(actual).isEqualTo(dummyMonitor);
+    }
+
+    @Test
+    public void testResetPassword_supervisor_valid() throws IdDoesNotExistException, DoesNotExistException, UnusableTokenException {
+        Supervisor dummySupervisor = getDummySupervisor();
+        PasswordResetToken dummyPasswordResetToken = getDummyPasswordResetToken(dummySupervisor);
+        when(passwordResetTokenRepository.existsByToken(any())).thenReturn(true);
+        when(passwordResetTokenRepository.getByToken(any())).thenReturn(dummyPasswordResetToken);
+        when(passwordResetTokenRepository.save(any())).thenReturn(dummyPasswordResetToken);
+        when(supervisorService.update(any())).thenReturn(dummySupervisor);
+
+        Supervisor actual = (Supervisor) passwordResetService.resetPassword(new PasswordResetTokenDto("DIBWA213Nw_dW31Ad3DAO9WD213", "testPassword"));
+
+        assertThat(actual).isEqualTo(dummySupervisor);
+    }
+
+    @Test
+    public void testResetPassword_student_valid() throws IdDoesNotExistException, DoesNotExistException, UnusableTokenException {
+        Student dummyStudent = getDummyStudent();
+        PasswordResetToken dummyPasswordResetToken = getDummyPasswordResetToken(dummyStudent);
+        when(passwordResetTokenRepository.existsByToken(any())).thenReturn(true);
+        when(passwordResetTokenRepository.getByToken(any())).thenReturn(dummyPasswordResetToken);
+        when(passwordResetTokenRepository.save(any())).thenReturn(dummyPasswordResetToken);
+        when(studentService.update(any())).thenReturn(dummyStudent);
+
+        Student actual = (Student) passwordResetService.resetPassword(new PasswordResetTokenDto("DIBWA213Nw_dW31Ad3DAO9WD213", "testPassword"));
+
+        assertThat(actual).isEqualTo(dummyStudent);
+    }
+
+    @Test
+    public void testResetPassword_whenTokenDoesNotExist() {
+        when(passwordResetTokenRepository.existsByToken(any())).thenReturn(false);
+
+        assertThrows(DoesNotExistException.class,
+                () -> passwordResetService.resetPassword(new PasswordResetTokenDto("DIBWA213Nw_dW31Ad3DAO9WD213", "testPassword")),
+                "Le token n'existe pas");
+    }
+
+    @Test
+    public void testResetPassword_whenTokenUnusable() {
+        when(passwordResetTokenRepository.existsByToken(any())).thenReturn(true);
+        when(passwordResetTokenRepository.existsByTokenAndUnusableTrue(any())).thenReturn(true);
+
+        assertThrows(UnusableTokenException.class,
+                () -> passwordResetService.resetPassword(new PasswordResetTokenDto("DIBWA213Nw_dW31Ad3DAO9WD213", "testPassword")),
+                "Le token n'est plus utilisable");
     }
 
     private PasswordResetToken getDummyPasswordResetToken(User user) {

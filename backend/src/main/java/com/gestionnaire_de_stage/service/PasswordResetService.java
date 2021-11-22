@@ -25,16 +25,16 @@ public class PasswordResetService {
         this.studentService = studentService;
     }
 
-    public PasswordResetToken forgotPasswordMonitor(String email) throws EmailDoesNotExistException {
-        Monitor monitor = monitorService.getOneByEmail(email);
-
-        return forgotPassword(monitor);
-    }
-
     private PasswordResetToken forgotPassword(User user) {
         Assert.notNull(user, "Un utilisateur est nécessaire afin de créé un token de récupération de mot de passe");
         PasswordResetToken passwordResetToken = new PasswordResetToken(user);
         return passwordResetTokenRepository.save(passwordResetToken);
+    }
+
+    public PasswordResetToken forgotPasswordMonitor(String email) throws EmailDoesNotExistException {
+        Monitor monitor = monitorService.getOneByEmail(email);
+
+        return forgotPassword(monitor);
     }
 
     public PasswordResetToken forgotPasswordSupervisor(String email) throws EmailDoesNotExistException {
@@ -63,11 +63,11 @@ public class PasswordResetService {
         user.setPassword(password);
 
         if (user instanceof Monitor)
-            user = monitorService.update((Monitor) user, user.getId());
+            user = monitorService.update((Monitor) user);
         else if (user instanceof Supervisor)
-            user = supervisorService.update((Supervisor) user, user.getId());
+            user = supervisorService.update((Supervisor) user);
         else if (user instanceof Student)
-            user = studentService.update((Student) user, user.getId());
+            user = studentService.update((Student) user);
         return user;
     }
 

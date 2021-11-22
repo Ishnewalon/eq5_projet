@@ -46,13 +46,9 @@ public class SupervisorService {
         return supervisorRepository.findAll();
     }
 
-    public Supervisor update(Supervisor supervisor, Long aLong) throws IdDoesNotExistException {
-        Assert.isTrue(aLong != null, "ID est null");
+    public Supervisor update(Supervisor supervisor) throws IdDoesNotExistException {
         Assert.isTrue(supervisor != null, "Le superviseur est null");
-        if (isIdNotValid(aLong)) {
-            throw new IdDoesNotExistException();
-        }
-        supervisor.setId(aLong);
+        if (isIdNotValid(supervisor.getId())) throw new IdDoesNotExistException();
         return supervisorRepository.save(supervisor);
     }
 

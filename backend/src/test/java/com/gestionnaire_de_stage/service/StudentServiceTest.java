@@ -102,23 +102,17 @@ public class StudentServiceTest {
         when(studentRepository.existsById(any())).thenReturn(true);
         when(studentRepository.save(any())).thenReturn(dummyStudent);
 
-        Student actualStudent = studentService.update(dummyStudent, dummyStudent.getId());
+        Student actualStudent = studentService.update(dummyStudent);
 
         assertThat(actualStudent.getEmail()).isEqualTo(dummyStudent.getEmail());
     }
 
-    @Test
-    public void testUpdate_withNullID() {
-        Student dummyStudent = getDummyStudent();
-
-        assertThrows(IllegalArgumentException.class,
-                () -> studentService.update(dummyStudent, null));
-    }
 
     @Test
     public void testUpdate_withNullStudent() {
+        //noinspection ConstantConditions
         assertThrows(IllegalArgumentException.class,
-                () -> studentService.update(null, 1L));
+                () -> studentService.update(null));
     }
 
     @Test
@@ -127,7 +121,7 @@ public class StudentServiceTest {
         when(studentRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-                () -> studentService.update(dummyStudent, dummyStudent.getId()));
+                () -> studentService.update(dummyStudent));
     }
 
     @Test
@@ -222,6 +216,7 @@ public class StudentServiceTest {
     void testSetPrincipalCurriculum_withStudentNull() {
         Curriculum dummyCurriculum = getDummyCurriculum();
 
+        //noinspection ConstantConditions
         assertThrows(IllegalArgumentException.class,
                 () -> studentService.setPrincipalCurriculum(null, dummyCurriculum.getId()));
     }

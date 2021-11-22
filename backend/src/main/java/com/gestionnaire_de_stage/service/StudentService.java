@@ -42,13 +42,9 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Student update(Student student, Long aLong) throws IdDoesNotExistException {
-        Assert.isTrue(aLong != null, "ID est null");
+    public Student update(Student student) throws IdDoesNotExistException {
         Assert.isTrue(student != null, "L'étudiant est null");
-        if (isIDNotValid(aLong)) {
-            throw new IdDoesNotExistException();
-        }
-        student.setId(aLong);
+        if (isIDNotValid(student.getId())) throw new IdDoesNotExistException();
         return studentRepository.save(student);
     }
 

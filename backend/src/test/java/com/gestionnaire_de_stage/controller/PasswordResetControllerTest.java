@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.PasswordResetTokenDto;
 import com.gestionnaire_de_stage.exception.DoesNotExistException;
 import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
+import com.gestionnaire_de_stage.exception.UnusableTokenException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.PasswordResetToken;
 import com.gestionnaire_de_stage.model.Student;
@@ -191,6 +192,21 @@ public class PasswordResetControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Ce token n'existe pas");
+    }
+
+    @Test
+    public void testResetPassword_monitor_withTokenUnusable() throws Exception {
+        when(passwordResetService.resetPassword(any())).thenThrow(new UnusableTokenException("Le token n'est plus utilisable"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/forgot_password/reset")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(new PasswordResetTokenDto("DIBWA213Nw_dW31Ad3DAO9WD213", "newPassword"))))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Le token n'est plus utilisable");
     }
 
 
