@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Veille2"
         android:usesCleartextTraffic="true">
-        <activity android:name=".OfferList"></activity>
+        <activity android:name=".MesCurriculum"></activity>
+        <activity android:name=".OfferList" />
         <activity android:name=".ManagerDashboard" />
         <activity android:name=".MonitorDashboard" />
         <activity android:name=".StudentDashboard" />
