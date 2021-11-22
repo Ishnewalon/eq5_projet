@@ -1,45 +1,35 @@
 import './App.css';
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import Dashboard from "./components/UserView/Dashboard";
-import Register from "./components/Unauthenticated/Register/Register";
-import React from "react";
+import React, {createElement} from "react";
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "./components/Navbar/Navbar";
 import {AuthProvider, RequireAuth, RequireNoAuth} from "./services/use-auth";
 import Login from "./components/Unauthenticated/Login";
-import {ContainerBox} from "./components/SharedComponents/ContainerBox/ContainerBox";
 import {Title} from "./components/SharedComponents/Title/Title";
+import Register from "./components/Unauthenticated/Register/Register";
+import PropTypes from "prop-types";
 
 function App() {
-
     return <AuthProvider>
         <Router>
             <Navbar/>
             <div className="container">
                 <Switch>
-                    <Route path="/dashboard">
-                        <RequireAuth>
-                            <Dashboard/>
-                        </RequireAuth>
-                    </Route>
-                    <Route path="/register">
-                        <RequireNoAuth>
-                            <Title>Inscription</Title>
-                            <ContainerBox>
-                                <Register/>
-                            </ContainerBox>
-                        </RequireNoAuth>
-                    </Route>
-                    <Route path="/login">
-                        <RequireNoAuth>
-                            <h2 className="text-center mt-4">Se connecter</h2>
-                            <Login/>
-                        </RequireNoAuth>
-                    </Route>
-                    <Route exact path="/">
-                        <Redirect to="/login"/>
-                    </Route>
+                    <RequiredRoute path="/dashboard" component={RequireAuth}>
+                        <Dashboard/>
+                    </RequiredRoute>
+                    <RequiredRoute exact path="/login" component={RequireNoAuth}>
+                        <Title>Se connecter</Title>
+                        <Login/>
+                    </RequiredRoute>
+                    <RequiredRoute exact={true} path="/register" component={RequireNoAuth}>
+                        <Title>Inscription</Title>
+                        <Register/>
+                    </RequiredRoute>
+                    <Route exact path="/404" component={NotFound}/>
+                    <Redirect to="/404"/>
                 </Switch>
             </div>
         </Router>
@@ -47,3 +37,31 @@ function App() {
 }
 
 export default App;
+
+
+function RequiredRoute(props) {
+    const {exact, path, component, children} = props;
+
+    return <Route exact={exact} path={path}>
+        {createElement(component, {
+            children: children
+        })}
+    </Route>
+}
+
+RequiredRoute.propTypes = {
+    exact: PropTypes.bool,
+    path: PropTypes.string.isRequired,
+    component: PropTypes.elementType,
+    children: PropTypes.node
+};
+
+
+//TODO: EMEME
+function NotFound() {
+    return (<>
+            <Title>404</Title>
+            <h1>Page not found</h1>
+        </>
+    )
+}

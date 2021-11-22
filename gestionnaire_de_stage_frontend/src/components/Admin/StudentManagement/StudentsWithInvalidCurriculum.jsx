@@ -2,9 +2,10 @@ import React, {useEffect, useState} from "react";
 import {getStudentsWithInvalidCv} from "../../../services/user-service";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import {BtnBack} from "../BtnBack";
 
 
-export default function StudentWithInvalidCv() {
+export default function StudentsWithInvalidCurriculum() {
 
     const [studentList, setStudentList] = useState([])
 
@@ -41,6 +42,7 @@ export default function StudentWithInvalidCv() {
                     </TableRow>
                 )}
             </Table>
+            <BtnBack/>
         </>
     )
 }

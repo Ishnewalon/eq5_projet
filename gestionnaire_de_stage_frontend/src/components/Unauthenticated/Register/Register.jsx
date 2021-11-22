@@ -9,6 +9,7 @@ import {Step} from "../../../enums/Steps";
 import {useHistory} from "react-router-dom";
 import {useAuth} from "../../../services/use-auth";
 import {UserType} from "../../../enums/UserTypes";
+import {ContainerBox} from "../../SharedComponents/ContainerBox/ContainerBox";
 
 
 export default function Register() {
@@ -118,11 +119,11 @@ export default function Register() {
         default:
             break;
     }
-    return (<>
+    return (<ContainerBox>
         <form className="form-container" onSubmit={endThis}>
             <fieldset>
                 {show}
             </fieldset>
         </form>
-    </>);
+    </ContainerBox>);
 }

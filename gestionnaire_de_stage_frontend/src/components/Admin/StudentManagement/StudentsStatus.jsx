@@ -5,8 +5,9 @@ import {useAuth} from "../../../services/use-auth";
 import {getStudentApplicationsOffer} from "../../../services/offerAppService";
 import {useHistory} from "react-router-dom";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import {BtnBack} from "../BtnBack";
 
-export default function AllStudentStatusView() {
+export default function StudentsStatus() {
 
     const [studentList, setStudentList] = useState([])
     const [offerList, setOfferList] = useState([])
@@ -38,7 +39,7 @@ export default function AllStudentStatusView() {
         return <MessageNothingToShow message="Aucun étudiant n'a appliqué"/>
 
     return (
-        <div>
+        <>
             <Table className={"w-75 mx-auto"}>
                 <TableHeader>
                     <th>#</th>
@@ -46,25 +47,26 @@ export default function AllStudentStatusView() {
                     <th>Nombre d'application</th>
                     <th>Voir les applications</th>
                 </TableHeader>
-                {studentList.map((student, index) =>
-                    {if (!offerList[index] || offerList[index].length === 0) return null;
-                    else return <TableRow key={index}>
-                        <td>{student.id}</td>
-                        <td>{student.firstName} {student.lastName}</td>
-                        <td>{offerList[index].length}</td>
-                        <td>
-                            <button className="btn btn-primary"
-                                    onClick={() => history.push({
-                                        pathname: "offer",
-                                        state: {student: student}
-                                    })}>
-                                Voir
-                            </button>
-                        </td>
-                    </TableRow>
+                {studentList.map((student, index) => {
+                        if (!offerList[index] || offerList[index].length === 0) return null;
+                        else return <TableRow key={index}>
+                            <td>{student.id}</td>
+                            <td>{student.firstName} {student.lastName}</td>
+                            <td>{offerList[index].length}</td>
+                            <td>
+                                <button className="btn btn-primary"
+                                        onClick={() => history.push({
+                                            pathname: "offer",
+                                            state: {student: student}
+                                        })}>
+                                    Voir
+                                </button>
+                            </td>
+                        </TableRow>
                     }
                 )}
             </Table>
-        </div>
+            <BtnBack/>
+        </>
     )
 }
