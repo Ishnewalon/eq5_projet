@@ -173,7 +173,7 @@ public class OfferApplicationController {
         return ResponseEntity.ok(offerApplicationList);
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<?> getAllOffersApplication() {
         return ResponseEntity.ok(offerApplicationService.getAllOffersApplication());
     }

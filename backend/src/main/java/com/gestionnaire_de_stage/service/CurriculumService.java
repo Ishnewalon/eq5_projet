@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CurriculumService {
@@ -28,9 +27,9 @@ public class CurriculumService {
     private final OfferService offerService;
 
     public CurriculumService(
-        CurriculumRepository curriculumRepository,
-        StudentService studentService,
-        OfferService offerService
+            CurriculumRepository curriculumRepository,
+            StudentService studentService,
+            OfferService offerService
     ) {
         this.curriculumRepository = curriculumRepository;
         this.studentService = studentService;
@@ -66,7 +65,7 @@ public class CurriculumService {
         return curriculumRepository.getById(aLong);
     }
 
-    public List<CurriculumDTO> mapToCurriculumDTOList (List<OfferApplication> offerApplicationList) {
+    public List<CurriculumDTO> mapToCurriculumDTOList(List<OfferApplication> offerApplicationList) {
         List<CurriculumDTO> curriculumDTOList = new ArrayList<>();
         Student student;
         CurriculumDTO curriculumDTO = new CurriculumDTO();

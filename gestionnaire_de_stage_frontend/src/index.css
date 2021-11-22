@@ -31,18 +31,28 @@ code {
     monospace;
 }
 
+li {
+    list-style-type: none;
+}
+
+ul {
+    padding: 0;
+}
 
 /********
 Custom BS
 *********/
 .btn {
-    padding: 8px 20px!important;
+    padding: 8px 20px !important;
     border-radius: 0 !important;
-    overflow: hidden;
+    overflow: hidden !important;
+    border: 1px solid #cdd6e0ff;
+    letter-spacing: 1px !important;
+    cursor: pointer !important;
 }
 
 .link, .btn-link {
-    font-weight: bold!important;
+    font-weight: bold !important;
     color: var(--color-primary) !important;
 }
 
@@ -53,19 +63,15 @@ Custom BS
 .btn-primary {
     background: var(--color-primary) !important;
     border: var(--color-primary) !important;
-    padding: 10px 30px 10px;
-    border: 1px solid #cdd6e0ff;
-    letter-spacing: 1px;
-    cursor: pointer;
     background-color: #dc7718ff;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
     background: var(--color-primary-hover) !important;
+    background-color: #b05f13;
     border-color: rgba(var(--color-rgb-primary), 0.8) !important;
     box-shadow: 0 1px 1px rgba(var(--color-rgb-primary), 0.075) inset, 0 0 8px rgba(var(--color-rgb-primary), 0.6) !important;
     outline: 0 none !important;
-    background-color: #b05f13;
 }
 
 /*********************
@@ -73,6 +79,9 @@ Adapt color to bg-dark
 **********************/
 .bg-dark {
     background-color: var(--color-bg-dark) !important;
+}
+
+.bg-dark > h1, .bg-dark > h2, .bg-dark > h3, .bg-dark > h4, .bg-dark > h5, .bg-dark > h6 {
     color: var(--color-light) !important;
 }
 
@@ -99,6 +108,10 @@ Adapt color to bg-dark
     outline: 0 none !important;
 }
 
+.bg-light {
+    background-color: var(--color-light) !important;
+}
+
 .text-white {
     color: var(--color-light);
 }
@@ -116,16 +129,156 @@ Adapt color to bg-dark
     margin-bottom: 20px;
 }
 
-.accept {
-    border-color: #107c10 !important;
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.reject {
-    border-color: #d83b01 !important;
+.link-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline;
 }
-li {
-    list-style-type: none;
+
+.card {
+    margin: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
-ul {
+
+.card:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.card-holder {
+    max-width: 100%;
+}
+
+.card-company-name {
+    margin-right: 0.5rem;
+}
+
+.card-company-location {
+    margin-bottom: -0.125rem;
+    margin-right: 1rem;
+}
+
+.card-role-type {
+    margin-bottom: -0.125rem;
+
+    margin-right: 0.75rem;
+}
+
+.card-listing-date {
+    margin-bottom: -0.125rem;
+
+    margin-right: 0.75rem;
+}
+
+.skills-container {
+    margin-bottom: 1rem;
+}
+
+.card-favorite-icon {
+    /* Center the content */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    /* Colors */
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+
+    /* Rounded border */
+    border-radius: 9999px;
+    height: 32px;
+    width: 32px;
+
+    margin: 4px;
+}
+
+.card-vote-on-job {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-left: auto;
+}
+
+.card-hide-icon {
+    /* Center the content */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    /* Colors */
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+
+    /* Rounded border */
+    border-radius: 9999px;
+    height: 32px;
+    width: 32px;
+
+    margin: 4px;
+}
+
+.card-hide-icon:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.card-favorite-icon:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.card-report-job {
+}
+
+.card-salary-range {
+    margin-right: 0.75rem;
+    margin-bottom: -0.125rem;
+}
+
+.card-job-duration {
+    margin-right: 0.75rem;
+    margin-bottom: -0.125rem;
+}
+
+.glassdoor-rating {
+    /* Reset styles for button */
+    background-color: transparent;
+    border: transparent;
+    margin: 0 2px;
     padding: 0;
+    color: #0caa41;
+
+    /* Used to position the hover state */
+    position: relative;
+}
+
+.card-company-glassdoor {
+    display: flex;
+    margin-top: -0.5rem;
+    margin-bottom: -0.5rem;
+}
+
+.card-job-details {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.card-company-fit {
+    display: flex;
+}
+
+.job-title {
+    font-size: 2rem !important;
+    line-height: 1;
+}
+
+.card-job-summary {
+    display: flex;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }

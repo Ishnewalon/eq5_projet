@@ -28,3 +28,5 @@ yarn-debug.log*
 yarn-error.log*
 
 /.idea/codeStyles/codeStyleConfig.xml
+
+/.env.development

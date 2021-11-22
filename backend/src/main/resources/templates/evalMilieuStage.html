@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Contrat de Stage</title>
+	</head>
+	<body>
+
+
+		<div style='page-break-after: always;text-align:center;'>
+			<h1 style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;text-align:center;'><strong><span style='font-family:"Arial",sans-serif;'>ÉVALUATION DU MILIEU DE STAGE</span></strong></h1>
+
+			<h3 style='margin:0cm;font-size:16px;font-family:"Albertus Medium",sans-serif;'>IDENTIFICATION DE L'ENTREPRISE</h3>
+			<table style="border-collapse:collapse;border:none;margin-left:auto;margin-right:auto;">
+				<tbody>
+					<tr>
+						<td style="width: 548pt;border: 1pt solid windowtext;padding: 0cm 3.5pt;vertical-align: top;text-align: left;">
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:  3.0pt;margin-left:0cm;'>Nom de l'entreprise: <span th:text="${formInfo.entrepriseNom}"></span></p>
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:  3.0pt;margin-left:0cm;'>Personne contact : <span th:text="${formInfo.personneContact}"></span></p>
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:  3.0pt;margin-left:0cm;'>Adresse: <span th:text="${formInfo.adresse}"></span></p>
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:  3.0pt;margin-left:0cm;'>Téléphone: <span th:text="${formInfo.phone}"></span></p>
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:  3.0pt;margin-left:0cm;'>Ville : <span th:text="${formInfo.ville}"></span> </p>
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:  3.0pt;margin-left:0cm;'>Télécopieur : <span th:text="${formInfo.telecopieur}"></span></p>
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:  3.0pt;margin-left:0cm;'>Code Postal : <span th:text="${formInfo.zip}"></span></p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<br>
+			<br>
+
+			<h1 style='margin:0cm;font-size:16px;font-family:"Albertus Medium",sans-serif;'>IDENTIFICATION DU STAGIAIRE</h1>
+			<table style="border-collapse:collapse;border:none;margin-left:auto;margin-right:auto;">
+				<tbody>
+					<tr>
+						<td style="width: 548pt;border: 1pt solid windowtext;padding: 0cm 3.5pt;vertical-align: top;text-align: left;">
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:  3.0pt;margin-left:0cm;'>Nom du stagiaire : <span th:text="${formInfo.nomStagiaire}"></span></p>
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:  3.0pt;margin-left:0cm;'>Date du stage : <span th:text="${formInfo.dateStage}"></span></p>
+							<p style='margin:0cm;font-size:15px;font-family:"Univers",sans-serif;margin-top:3.0pt;margin-right:0cm;margin-bottom:  3.0pt;margin-left:0cm;'>Stage : <span th:text="${formInfo.stageCourant}"></span></p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<br>
+			<br>
+
+
+			<h1 style='margin:0cm;font-size:16px;font-family:"Albertus Medium",sans-serif;'>ÉVALUATION</h1>
+			<table style="border-collapse: separate; border:1pt solid windowtext; border-spacing: 6px 10px;margin-left:auto;margin-right:auto;">
+				<tbody>
+					<tr>
+						<td style='width:237.5pt;'></td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement en accord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt en accord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt désaccord*</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement désaccord*</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Impossible de se prononcer</td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+								Les tâches confiées au stagiaire sont conformes aux tâches annoncées dans l’entente de stage.
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="tacheStagiaire" th:checked="${formInfo.questionUn == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="tacheStagiaire" th:checked="${formInfo.questionUn == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="tacheStagiaire" th:checked="${formInfo.questionUn == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="tacheStagiaire" th:checked="${formInfo.questionUn == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="tacheStagiaire" th:checked="${formInfo.questionUn == 'IMPOSSIBLE_DE_SE_PRONONCER'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+								Des mesures d’accueil facilitent l’intégration du nouveau stagiaire.
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="accueilStagiaire" th:checked="${formInfo.questionDeux == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="accueilStagiaire" th:checked="${formInfo.questionDeux == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="accueilStagiaire" th:checked="${formInfo.questionDeux == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="accueilStagiaire" th:checked="${formInfo.questionDeux == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio"  name="accueilStagiaire" th:checked="${formInfo.questionDeux == 'IMPOSSIBLE_DE_SE_PRONONCER'}"></td>
+					</tr>
+							<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+								Le temps réel consacré à l’encadrement du stagiaire est suffisant.
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="encadrementStagiaire" th:checked="${formInfo.questionTrois == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="encadrementStagiaire" th:checked="${formInfo.questionTrois == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="encadrementStagiaire" th:checked="${formInfo.questionTrois == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="encadrementStagiaire" th:checked="${formInfo.questionTrois == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="encadrementStagiaire" th:checked="${formInfo.questionTrois == 'IMPOSSIBLE_DE_SE_PRONONCER'}"></td>
+					</tr>
+
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+								Préciser le nombre d’heures/semaine :
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+								Premier mois : <span th:text="${formInfo.nbHeuresMoisUn}"></span>
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+								Deuxième mois : <span th:text="${formInfo.nbHeuresMoisDeux}"></span>
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+								Troisième mois : <span th:text="${formInfo.nbHeuresMoisTrois}"></span>
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style='page-break-after:always;text-align:center;'>
+			<table style="border-collapse:separate;border:1pt solid windowtext; border-spacing: 6px 10px;margin-left:auto;margin-right:auto;">
+				<tbody>
+					<tr>
+						<td style='width:237.5pt;'></td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement en accord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt en accord</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Plutôt désaccord*</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Totalement désaccord*</td>
+						<td style='width:61.9pt;font-family:"Arial",sans-serif;text-align: center;'>Impossible de se prononcer</td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+								L’environnement de travail respecte les normes d’hygiène et de sécurité au travail.
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="hygieneSecurite" th:checked="${formInfo.questionQuatre == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="hygieneSecurite" th:checked="${formInfo.questionQuatre == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="hygieneSecurite" th:checked="${formInfo.questionQuatre == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="hygieneSecurite" th:checked="${formInfo.questionQuatre == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="hygieneSecurite" th:checked="${formInfo.questionQuatre == 'IMPOSSIBLE_DE_SE_PRONONCER'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+								Le climat de travail est agréable.
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="climatTravail" th:checked="${formInfo.questionCinq == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="climatTravail" th:checked="${formInfo.questionCinq == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="climatTravail" th:checked="${formInfo.questionCinq == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="climatTravail" th:checked="${formInfo.questionCinq == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="climatTravail" th:checked="${formInfo.questionCinq == 'IMPOSSIBLE_DE_SE_PRONONCER'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+								Le milieu de stage est accessible par transport en commun.
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="accessibleTransport" th:checked="${formInfo.questionSix == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="accessibleTransport" th:checked="${formInfo.questionSix == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="accessibleTransport" th:checked="${formInfo.questionSix == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="accessibleTransport" th:checked="${formInfo.questionSix == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="accessibleTransport" th:checked="${formInfo.questionSix == 'IMPOSSIBLE_DE_SE_PRONONCER'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+								Le salaire offert est intéressant pour le stagiaire.
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+								Préciser : <span th:text="${formInfo.salaireStagiaire}"></span> /l'heure.
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="salaireInteressant" th:checked="${formInfo.questionSept == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="salaireInteressant" th:checked="${formInfo.questionSept == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="salaireInteressant" th:checked="${formInfo.questionSept == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="salaireInteressant" th:checked="${formInfo.questionSept == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="salaireInteressant" th:checked="${formInfo.questionSept == 'IMPOSSIBLE_DE_SE_PRONONCER'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+								La communication avec le superviseur de stage facilite le déroulement du stage.
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="communicationSup" th:checked="${formInfo.questionHuit == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="communicationSup" th:checked="${formInfo.questionHuit == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="communicationSup" th:checked="${formInfo.questionHuit == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="communicationSup" th:checked="${formInfo.questionHuit == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="communicationSup" th:checked="${formInfo.questionHuit == 'IMPOSSIBLE_DE_SE_PRONONCER'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+								L’équipement fourni est adéquat pour réaliser les tâches confiées.
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="equipementAdequat" th:checked="${formInfo.questionNeuf == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="equipementAdequat" th:checked="${formInfo.questionNeuf == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="equipementAdequat" th:checked="${formInfo.questionNeuf == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="equipementAdequat" th:checked="${formInfo.questionNeuf == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="equipementAdequat" th:checked="${formInfo.questionNeuf == 'IMPOSSIBLE_DE_SE_PRONONCER'}"></td>
+					</tr>
+					<tr>
+						<td>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif'>
+								Le volume de travail est acceptable.
+							</p>
+						</td>
+						<td style='text-align: center;'><input type="radio" name="volumeTravail" th:checked="${formInfo.questionDix == 'TOTALEMENT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="volumeTravail" th:checked="${formInfo.questionDix == 'PLUTOT_EN_ACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="volumeTravail" th:checked="${formInfo.questionDix == 'PLUTOT_EN_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="volumeTravail" th:checked="${formInfo.questionDix == 'TOTALEMENT_DESACCORD'}"></td>
+						<td style='text-align: center;'><input type="radio" name="volumeTravail" th:checked="${formInfo.questionDix == 'IMPOSSIBLE_DE_SE_PRONONCER'}"></td>
+					</tr>
+				</tbody>
+			</table>
+			<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif; font-weight:bold;'>* Expliquer dans la section commentaires</p>
+			<br>
+			<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif; font-weight:bold;'>Commentaire</p>
+			<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'><span th:text="${formInfo.commentaires}"></span></p>
+
+			<br>
+			<br>
+
+			<h1 style='margin:0cm;font-size:16px;font-family:"Albertus Medium",sans-serif;'>OBSERVATION GÉNÉRALES</h1>
+			<table style='border-collapse:separate;margin-left:auto;margin-right:auto;'>
+				<tbody>
+					<tr>
+						<td style='border:1pt solid; width: 400pt;'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>Ce milieu est à privilégier pour le:
+								<span>Premier stage
+									<input type="radio" id="premierStage" name="numeroStage" th:checked="${formInfo.questionOnze == 'Premier stage'}"></span>
+								<span>Deuxième stage <input type="radio" id="deuxiemeStage" name="numeroStage" th:checked="${formInfo.questionOnze == 'Deuxième stage'}"></span>
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								stage
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td style='border:1pt solid'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>Ce milieu est ouvert à accueillir: </p>
+								<span>Un stagiaire <input type="radio" id="unStagiaire" name="nbStagiaire" th:checked="${formInfo.questionDouze == 'Un stagiaire'}"></span>
+								<span>Deux stagiaire <input type="radio" id="deuxStagiaire" name="nbStagiaire" th:checked="${formInfo.questionDouze == 'Deux stagiaires'}"></span>
+								<span>Trois stagiaire <input type="radio" id="troisStagiaire" name="nbStagiaire" th:checked="${formInfo.questionDouze == 'Trois stagiaires'}"></span>
+								<span>Plus de trois stagiaire <input type="radio" id="plusStagiaire" name="nbStagiaire" th:checked="${formInfo.questionDouze == 'Plus de trois stagiaires'}"></span>
+						</td>
+					</tr>
+					<tr>
+						<td style='border:1pt solid' rowspan="2">
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								Ce milieu désire accueillir le même stagiaire pour un prochain stage
+							</p>
+						</td>
+						<td style='border:1pt solid;width:90pt;height:30pt; text-align:center;'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								Oui
+							</p>
+						</td>
+						<td style='border:1pt solid;width:90pt;height:30pt;text-align:center;'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								Non
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td style='border:1pt solid;text-align:center;height:20pt;'>
+							<input type="radio" name="memeStagiaire" th:checked="${formInfo.questionTreize == 'Oui'}">
+						</td>
+						<td style='border:1pt solid;text-align:center;height:20pt;'>
+							<input type="radio" name="memeStagiaire" th:checked="${formInfo.questionTreize == 'Non'}">
+						</td>
+					</tr>
+					<tr>
+						<td style='border:1pt solid;text-align: left;'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								Ce milieu offre des quarts de travail variables :
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								De <span th:text="${formInfo.questionQuatorzeHeuresUnA}"></span> à <span th:text="${formInfo.questionQuatorzeHeuresUnB}"></span>
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								De <span th:text="${formInfo.questionQuatorzeHeuresUnC}"></span> à <span th:text="${formInfo.questionQuatorzeHeuresUnD}"></span>
+							</p>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								De <span th:text="${formInfo.questionQuatorzeHeuresUnE}"></span> à <span th:text="${formInfo.questionQuatorzeHeuresUnF}"></span>
+							</p>
+						</td>
+						<td style='border:1pt solid;text-align:center;'>
+							<input type="radio" id="oui" name="quartTravail" th:checked="${formInfo.questionQuinze == 'Oui'}">
+						</td>
+						<td style='border:1pt solid;text-align:center;'>
+							<input type="radio" id="non" name="quartTravail" th:checked="${formInfo.questionQuinze == 'Non'}">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<br>
+			<br>
+			<table style='border-collapse:separate;border-spacing:75px 5px;margin-left:auto;margin-right:auto;'>
+				<tbody>
+					<tr>
+						<td style='width:200pt;'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								<span style="font-style: italic" th:text="${formInfo.signatureSuperviseur}"></span>
+							</p>
+						</td>
+						<td style='width:200pt;'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								<span th:text="${formInfo.signatureDate}"></span>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td style='border-top:1pt solid black'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								Signature de l'enseignant responsable du stagiaire
+							</p>
+						</td>
+						<td style='border-top:1pt solid black'>
+							<p style='margin:0cm;font-size:15px;font-family:"Arial",sans-serif;'>
+								Date
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>
+
