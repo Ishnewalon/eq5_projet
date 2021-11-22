@@ -9,14 +9,28 @@
                 <input name="description" v-model.lazy="offerDTO.description" type="text" placeholder="Description"
                        required/>
                 <select name="session" v-model.lazy="offerDTO.idSession" required>
-                    <option disabled value="">Choisissez une session</option>
-                    <option v-for="(session, i) in this.listSession" :value="session.id" :key="i">{{ session.typeSession }} {{ session.year }}</option>
+                    <option disabled value="">Choisir une session</option>
+                    <option v-for="(session, i) in this.listSession" :value="session.id" :key="i">{{
+                            session.typeSession
+                        }} {{ session.year }}
+                    </option>
                 </select>
                 <input name="address" v-model.lazy="offerDTO.address" type="text" placeholder="Adresse de la compagnie"
                        required/>
-
-
+                <input name="dateDebut" v-model.lazy="offerDTO.dateDebut" type="date"
+                       placeholder="Date de début du stage"
+                       required/>
+                <input name="dateFin" v-model.lazy="offerDTO.dateFin" type="date" placeholder="Date de fin du stage"
+                       required/>
                 <input name="email" v-model.lazy="offerDTO.creator_email" type="email" placeholder="E-mail du moniteur"
+                       required/>
+                <input name="horaireTravail" v-model.lazy="offerDTO.horaireTravail" type="text"
+                       placeholder="Horaire de travail"
+                       required/>
+                <input name="nbSemaine" v-model.lazy="offerDTO.nbSemaine" type="text" placeholder="Nombre de semaine"
+                       required/>
+                <input name="nbHeureSemaine" v-model.lazy="offerDTO.nbHeureSemaine" type="email"
+                       placeholder="Nombre heure par semaine"
                        required/>
                 <input name="salaire" v-model.lazy="offerDTO.salary" type="number"
                        placeholder="Salaire"
@@ -45,6 +59,11 @@ export default {
                 creator_email: "",
                 salary: "",
                 idSession: "",
+                dateDebut: "",
+                dateFin: "",
+                nbSemaine: "",
+                horaireTravail: "",
+                nbHeureSemaine: "",
             },
             listSession: [{}],
         }
@@ -54,6 +73,7 @@ export default {
             axios.post("http://localhost:8181/offers/add", this.offerDTO)
                 .then(() => {
                     alert("Offre créée avec succès");
+                    this.resetFields();
                 })
                 .catch(error => {
                     alert(error.response.data.message);
@@ -63,12 +83,23 @@ export default {
         getListSession() {
             axios.get("http://localhost:8181//sessions").then((response) => {
                 this.listSession = response.data;
-                console.log(response);
-                console.log(this.listSession);
             })
                 .catch(error => {
                     console.log(error);
                 });
+        },
+        resetFields(){
+            this.offerDTO.title = "";
+            this.offerDTO.description = "";
+            this.offerDTO.address = "";
+            this.offerDTO.creator_email = "";
+            this.offerDTO.salary = "";
+            this.offerDTO.idSession = "";
+            this.offerDTO.dateDebut = "";
+            this.offerDTO.dateFin = "";
+            this.offerDTO.nbSemaine = "";
+            this.offerDTO.horaireTravail = "";
+            this.offerDTO.nbHeureSemaine = "";
         }
     },
     mounted: function () {
