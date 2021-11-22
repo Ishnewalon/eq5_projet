@@ -73,16 +73,6 @@ export async function setPrincipalCurriculum(studentID, curriculumID) {
     );
 }
 
-export async function getCurriculumWithInvalidCV() {
-    const response = await fetch(`${urlBackend}/curriculum/invalid/students`, requestInit(methods.GET));
-    return await response.json();
-}
-
-export async function getCurriculumWithValidCV() {
-    const response = await fetch(`${urlBackend}/curriculum/valid/students`, requestInit(methods.GET));
-    return await response.json();
-}
-
 export async function validateCurriculum(id, valid) {
     let obj = {
         id,

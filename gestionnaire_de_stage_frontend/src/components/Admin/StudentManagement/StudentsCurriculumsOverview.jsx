@@ -13,10 +13,11 @@ export default function StudentsCurriculumsOverview() {
     const auth = useAuth()
 
     useEffect(() => {
-        getAllStudents(auth.user.id)
+        getAllStudents()
             .then(studentList => {
                 setStudents(studentList)
                 studentList.forEach(student => {
+                    if (!student) return
                     getAllCurriculumsByStudent(student.id)
                         .then(curriculums => {
                             setCurriculums(prev => [...prev, curriculums || []])
@@ -37,7 +38,8 @@ export default function StudentsCurriculumsOverview() {
         return <div>Loading...</div>
     }
     const getNbOf = (curriculums, state) => {
-        return curriculums.filter(curriculum => curriculum.isValid === state).length || 0
+        if (!curriculums) return 0
+        return curriculums.filter(curriculum => curriculum.isValid === state).length
     }
     return <>
         <Table>
@@ -52,7 +54,7 @@ export default function StudentsCurriculumsOverview() {
                 <th>Voir</th>
             </TableHeader>
             {students.map((student, index) => {
-                    let cur = curriculums.find(curriculums => curriculums[0].student.id === student.id) || []
+                let cur = curriculums.find(curriculums => curriculums.length > 0 && curriculums[0].student.id === student.id)
                     return <TableRow key={index}>
                         <th>{student.id}</th>
                         <td>{student.firstName} {student.lastName}</td>

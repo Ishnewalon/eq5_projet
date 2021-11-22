@@ -1,7 +1,6 @@
 import React from "react";
 import CreateOffer from "../Offers/CreateOffer";
 import OffersManagerValidation from "../Offers/OffersManagerValidation";
-import CurriculumValidation from "../Curriculums/CurriculumValidation";
 import ContractsToSign from "../Contract/ContractsToSign";
 import LinkSupervisorToStudent from "../Admin/StudentManagement/LinkSupervisorToStudent";
 import {Route, useRouteMatch} from "react-router-dom";
@@ -13,6 +12,9 @@ import RapportsView from "../Admin/RapportsView";
 import CreateSession from "../Sessions/CreateSession";
 import ContractsSigned from '../Contract/ContractsSigned';
 import {Title} from "../SharedComponents/Title/Title";
+import StudentsCurriculumsOverview from "../Admin/StudentManagement/StudentsCurriculumsOverview";
+import StudentCurriculumValidation from "../Curriculums/StudentCurriculumsValidation";
+import {BtnBack} from "../SharedComponents/BtnBack";
 
 export default function ManagerView() {
     const {path} = useRouteMatch();
@@ -27,21 +29,29 @@ export default function ManagerView() {
                     <ContractsSigned userType={UserType.MANAGER[0]}/>
                 </ContainerBox>
             </Route>
-            <Route exact path={`${path}/offres/ajouter`}>
-                <Title>Ajouter une offre de stage</Title>
-                <ContainerBox>
-                    <CreateOffer/>
-                </ContainerBox>
+            <Route path={`${path}/offres`}>
+                <Route exact path={`${path}/offres/ajouter`}>
+                    <Title>Ajouter une offre de stage</Title>
+                    <ContainerBox>
+                        <CreateOffer/>
+                    </ContainerBox>
+                </Route>
+                <Route exact path={`${path}/offres/review`}>
+                    <Title>Validation des offres</Title>
+                    <ContainerBox>
+                        <OffersManagerValidation/>
+                    </ContainerBox>
+                </Route>
             </Route>
-            <Route exact path={`${path}/offres/review`}>
-                <Title>Validation des offres</Title>
-                <ContainerBox>
-                    <OffersManagerValidation/>
-                </ContainerBox>
-            </Route>
-            <Route exact path={`${path}/curriculum/review`}>
-                <Title>Validation des curriculums</Title>
-                <CurriculumValidation/>
+            <Route path={`${path}/curriculum/review`}>
+                <Route exact path={`${path}/curriculum/review/student`}>
+                    <StudentCurriculumValidation/>
+                    <BtnBack/>
+                </Route>
+                <Route exact path={`${path}/curriculum/review`}>
+                    <Title>Validation des curriculums</Title>
+                    <StudentsCurriculumsOverview/>
+                </Route>
             </Route>
             <Route path={`${path}/students/applied`}>
                 <Title>Attribuer des superviseurs aux étudiants</Title>

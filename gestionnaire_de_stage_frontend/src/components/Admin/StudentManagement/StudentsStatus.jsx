@@ -15,7 +15,7 @@ export default function StudentsStatus() {
     const history = useHistory()
 
     useEffect(() => {
-        getAllStudents(auth.user.id)
+        getAllStudents()
             .then(studentList => {
                 setStudentList(studentList)
                 studentList.forEach(student => {

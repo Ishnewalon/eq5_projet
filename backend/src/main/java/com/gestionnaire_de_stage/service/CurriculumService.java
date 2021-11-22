@@ -86,18 +86,6 @@ public class CurriculumService {
         return curriculumDTOList;
     }
 
-    public List<Curriculum> getAll() {
-        return curriculumRepository.findAll();
-    }
-
-    public List<Curriculum> findAllCurriculumNotValidatedYet() {
-        return curriculumRepository.findAllByIsValidIsNull();
-    }
-
-    public List<Curriculum> findAllCurriculumValidated() {
-        return curriculumRepository.findAllByIsValidIsTrue();
-    }
-
     public List<Curriculum> findAllByStudent(Student student) throws IllegalArgumentException {
         Assert.notNull(student, "L'etudiant ne peut pas être null");
 
