@@ -21,7 +21,10 @@ export default function StudentsWithInvalidCurriculum() {
     }, [])
 
     if (studentList.length === 0) {
-        return <MessageNothingToShow message="Tous les étudiants ont un CV valide"/>
+        return <>
+            <MessageNothingToShow message="Tous les étudiants ont un CV valide"/>
+            <BtnBack/>
+        </>
     }
 
     return (

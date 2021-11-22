@@ -6,6 +6,7 @@ import {FormField} from "../SharedComponents/FormField/FormField";
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {BtnBack} from "../Admin/BtnBack";
+import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function OffersListValid() {
 
@@ -39,6 +40,12 @@ export default function OffersListValid() {
             })
     }, [offers])
 
+    if (offers.length === 0)
+        return <>
+            <MessageNothingToShow message="Aucune offre valide à afficher"/>
+            <BtnBack/>
+        </>
+
     return (<>
             <ContainerBox>
                 <FormGroup>
@@ -52,13 +59,11 @@ export default function OffersListValid() {
                     </FormField>
                 </FormGroup>
                 <ul>
-                    {visibleOffers.length > 0 ? (
-                            visibleOffers.map((offer, index) =>
-                                <li className={"mb-4"} key={index}>
-                                    <OfferView offer={offer}/>
-                                </li>
-                            )) :
-                        <h3 className={"text-center text-white mt-4"}>Aucune offre valide à afficher</h3>}
+                    {visibleOffers.map((offer, index) =>
+                        <li className={"mb-4"} key={index}>
+                            <OfferView offer={offer}/>
+                        </li>
+                    )}
                 </ul>
             </ContainerBox>
             <BtnBack/>

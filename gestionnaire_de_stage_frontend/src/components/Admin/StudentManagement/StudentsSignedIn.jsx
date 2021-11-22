@@ -21,7 +21,10 @@ export default function StudentsSignedIn() {
     }, [])
 
     if (studentList.length === 0) {
-        return <MessageNothingToShow message="Aucun étudiant inscrit"/>
+        return <>
+            <MessageNothingToShow message="Aucun étudiant inscrit"/>
+            <BtnBack/>
+        </>
 
     }
     return (

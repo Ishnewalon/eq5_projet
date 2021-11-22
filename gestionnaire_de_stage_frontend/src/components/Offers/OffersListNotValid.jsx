@@ -6,6 +6,7 @@ import {FormField} from "../SharedComponents/FormField/FormField";
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {BtnBack} from "../Admin/BtnBack";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function OffersListNotValid() {
 
@@ -39,6 +40,11 @@ export default function OffersListNotValid() {
             })
     }, [offers])
 
+    if (offers.length === 0)
+        return <>
+            <MessageNothingToShow message="Toutes les offres sont validées"/>
+            <BtnBack/>
+        </>
 
     return (<>
             <ContainerBox>
@@ -53,13 +59,11 @@ export default function OffersListNotValid() {
                     </FormField>
                 </FormGroup>
                 <ul>
-                    {visibleOffers.length > 0 ? (
-                            visibleOffers.map((offer, index) =>
-                                <li className={"mb-4"} key={index}>
-                                    <OfferView offer={offer}/>
-                                </li>
-                            )) :
-                        <h3 className={"text-center text-white mt-4"}>Toutes les offres sont validées</h3>}
+                    {visibleOffers.map((offer, index) =>
+                        <li className={"mb-4"} key={index}>
+                            <OfferView offer={offer}/>
+                        </li>
+                    )}
                 </ul>
             </ContainerBox>
             <BtnBack/>

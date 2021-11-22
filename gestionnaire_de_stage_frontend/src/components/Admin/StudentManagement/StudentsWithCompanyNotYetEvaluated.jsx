@@ -21,7 +21,10 @@ export default function StudentsWithCompanyNotYetEvaluated() {
     }, [])
 
     if (studentMonitorOfferDtoList.length === 0) {
-        return <MessageNothingToShow message="Tous les compagnies ont été évaluées"/>
+        return <>
+            <MessageNothingToShow message="Tous les compagnies ont été évaluées"/>
+            <BtnBack/>
+        </>
     }
 
     return (

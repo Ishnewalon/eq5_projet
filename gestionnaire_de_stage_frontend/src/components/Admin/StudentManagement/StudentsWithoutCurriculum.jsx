@@ -21,7 +21,10 @@ export default function StudentsWithoutCurriculum() {
     }, [])
 
     if (studentList.length === 0) {
-        return <MessageNothingToShow message="Tous les étudiants ont un CV"/>
+        return <>
+            <MessageNothingToShow message="Tous les étudiants ont un CV"/>
+            <BtnBack/>
+        </>
     }
 
     return (
