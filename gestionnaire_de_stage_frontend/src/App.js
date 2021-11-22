@@ -42,7 +42,7 @@ function App() {
                     <Route exact path="/">
                         <Redirect to="/login"/>
                     </Route>
-                    <Route path="/reset/:token">
+                    <Route path="/reset_password/:token">
                         <RequireNoAuth>
                             <Title>Réinitialiser votre mot de passe</Title>
                             <ResetPassword/>
