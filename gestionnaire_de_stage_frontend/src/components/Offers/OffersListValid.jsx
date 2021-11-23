@@ -5,7 +5,7 @@ import {getCurrentAndFutureSession} from "../../services/session-service";
 import {FormField} from "../SharedComponents/FormField/FormField";
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
-import {BtnBack} from "../Admin/BtnBack";
+import {BtnBack} from "../SharedComponents/BtnBack";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function OffersListValid() {

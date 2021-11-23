@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {getAllStudents} from "../../../services/user-service";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {BtnBack} from "../BtnBack";
+import {BtnBack} from "../../SharedComponents/BtnBack";
 
 
 export default function StudentsSignedIn() {

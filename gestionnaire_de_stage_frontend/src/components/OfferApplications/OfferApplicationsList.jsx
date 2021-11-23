@@ -1,8 +1,9 @@
-import {Link, useLocation} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {getStudentApplicationsOffer} from "../../services/offerAppService";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import {Title} from "../SharedComponents/Title/Title";
+import {BtnBack} from "../SharedComponents/BtnBack";
 
 export default function OfferApplicationsList() {
 
@@ -35,7 +36,7 @@ export default function OfferApplicationsList() {
                     </TableRow>
                 ))}
             </Table>
-            <Link to="/dashboard/rapports/6" className="btn btn-primary">Retour</Link>
+            <BtnBack/>
         </>
     )
 }

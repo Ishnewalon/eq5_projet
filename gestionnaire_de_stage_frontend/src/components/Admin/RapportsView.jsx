@@ -4,9 +4,6 @@ import {Title} from "../SharedComponents/Title/Title";
 import OfferApplicationsList from "../OfferApplications/OfferApplicationsList";
 import OffersListValid from "../Offers/OffersListValid";
 import OffersListNotValid from "../Offers/OffersListNotValid";
-import StudentsWithoutCurriculum from "./StudentManagement/StudentsWithoutCurriculum";
-import StudentsSignedIn from "./StudentManagement/StudentsSignedIn";
-import StudentsWithInvalidCurriculum from "./StudentManagement/StudentsWithInvalidCurriculum";
 import StudentsStatus from "./StudentManagement/StudentsStatus";
 import StudentsNotYetEvaluated from "./StudentManagement/StudentsNotYetEvaluated";
 import StudentsWithCompanyNotYetEvaluated from "./StudentManagement/StudentsWithCompanyNotYetEvaluated";
@@ -28,26 +25,14 @@ export default function RapportsView() {
                 <OffersListNotValid/>
             </Route>
             <Route exact path={`${path}/3`}>
-                <Title>Liste des étudiants sans Cv</Title>
-                <StudentsWithoutCurriculum/>
-            </Route>
-            <Route exact path={`${path}/4`}>
-                <Title>Liste des étudiants inscrits</Title>
-                <StudentsSignedIn/>
-            </Route>
-            <Route exact path={`${path}/5`}>
-                <Title>Liste des étudiants avec des Cv Invalides</Title>
-                <StudentsWithInvalidCurriculum/>
-            </Route>
-            <Route exact path={`${path}/6`}>
                 <Title>Status de tous les étudiants</Title>
                 <StudentsStatus/>
             </Route>
-            <Route exact path={`${path}/7`}>
+            <Route exact path={`${path}/4`}>
                 <Title>Les étudiants pas encore évalués</Title>
                 <StudentsNotYetEvaluated/>
             </Route>
-            <Route exact path={`${path}/8`}>
+            <Route exact path={`${path}/5`}>
                 <Title>Les étudiants dont la compagnie n'a pas encore été évaluée</Title>
                 <StudentsWithCompanyNotYetEvaluated/>
             </Route>
@@ -68,26 +53,16 @@ function Menu() {
             <RapportCard title="Rapport des offres non validées"
                          description="Liste de toutes les offres enregistrées et pas encore validées"
                          to="/dashboard/rapports/2"/>
-            <RapportCard title="Rapport des étudiants sans cv"
-                         description="Liste des étudiants inscrits et qui n'ont pas encore téleverser de cv"
-                         to="/dashboard/rapports/3"/>
-            <RapportCard title="Rapport des étudiants inscrits dans la plateforme"
-                         description="Liste de TOUS les étudiants inscrits"
-                         to="/dashboard/rapports/4"/>
-            <RapportCard title="Rapport des étudiants avec des cv invalides"
-                         description="Liste des étudiants inscrits avec des cv invalides
-                             (Notifiez-les)"
-                         to="/dashboard/rapports/5"/>
             <RapportCard title="Rapport des étudiants avec leur status"
                          description="Liste des étudiants qui ont appliqué au moins 1 fois"
-                         to="/dashboard/rapports/6"/>
+                         to="/dashboard/rapports/3"/>
             <RapportCard title="Rapport des étudiants pas évalués par le moniteur"
                          description="Liste des étudiants qui ne sont pas encore évalués par le
                              moniteur suite à leur stage"
-                         to="/dashboard/rapports/7"/>
+                         to="/dashboard/rapports/4"/>
             <RapportCard title="Rapport des étudiants dont la compagnie n'est pas évalués"
                          description="Liste des étudiants dont la compagnie n'a pas encore été évaluées par le superviseur"
-                         to="/dashboard/rapports/8"/>
+                         to="/dashboard/rapports/5"/>
         </CardsView>
     </>;
 }
