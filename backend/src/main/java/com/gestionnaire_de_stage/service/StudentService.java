@@ -25,7 +25,7 @@ public class StudentService {
     public Student create(Student student) throws StudentAlreadyExistsException {
         Assert.isTrue(student != null, "Étudiant est null");
         if (isNotValid(student)) {
-            throw new StudentAlreadyExistsException();
+            throw new StudentAlreadyExistsException("Un compte existe déjà pour cet étudiant");
         }
         return studentRepository.save(student);
     }

@@ -37,15 +37,11 @@ public class StudentController {
         Student createdStudent;
         try {
             createdStudent = studentService.create(student);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
-        } catch (StudentAlreadyExistsException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Erreur: Ce courriel existe déjà!"));
-        }
+        } 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdStudent);
     }
 

@@ -84,7 +84,7 @@ public class StudentControllerTest {
     @Test
     public void testStudentSignUp_withInvalidStudent() throws Exception {
         Student dummyStudent = getDummyStudent();
-        when(studentService.create(any())).thenThrow(StudentAlreadyExistsException.class);
+        when(studentService.create(any())).thenThrow(new StudentAlreadyExistsException("Un compte existe déjà pour cet étudiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/student/signup")
@@ -94,7 +94,7 @@ public class StudentControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Ce courriel existe déjà!");
+        assertThat(response.getContentAsString()).contains("Un compte existe déjà pour cet étudiant");
     }
 
     @Test
