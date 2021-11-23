@@ -82,7 +82,7 @@ public class OfferApplicationService {
             throw new IdDoesNotExistException();
 
         if (isDateInvalid(date))
-            throw new DateNotValidException();
+            throw new DateNotValidException("La date choisie est invalide");
 
         OfferApplication offerApplication = offerApplicationRepository.getById(offerAppID);
         offerApplication.setStatus(Status.EN_ATTENTE_ENTREVUE);

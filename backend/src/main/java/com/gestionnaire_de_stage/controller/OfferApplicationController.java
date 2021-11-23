@@ -81,7 +81,7 @@ public class OfferApplicationController {
         } catch (DateNotValidException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("La date entrée est invalide!"));
+                    .body(new ResponseMessage(e.getMessage()));
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()

@@ -323,7 +323,7 @@ class OfferApplicationControllerTest {
     void testSetInterviewDate_withDateInvalid() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
         when(offerApplicationService.setInterviewDate(any(), any()))
-                .thenThrow(DateNotValidException.class);
+                .thenThrow(new DateNotValidException("La date choisie est invalide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/setdate/" + 3L)
@@ -333,7 +333,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("La date entrée est invalide!");
+        assertThat(response.getContentAsString()).contains("La date choisie est invalide");
     }
 
     @Test
