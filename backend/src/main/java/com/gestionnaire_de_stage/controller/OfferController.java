@@ -60,18 +60,10 @@ public class OfferController {
         try {
             Offer offer = offerService.validation(validationOffer);
             return ResponseEntity.ok(offer);
-        } catch (IdDoesNotExistException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
-        } catch (IllegalArgumentException ie) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(ie.getMessage());
-        } catch (OfferAlreadyTreatedException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Offre déjà traité!"));
         }
     }
 
