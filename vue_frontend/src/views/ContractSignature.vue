@@ -60,17 +60,17 @@ export default {
       if (this.userType === UserType.MANAGER[0])
         managerSignContract(this.signature, this.contract.id).then(isSigned => {
           if (isSigned)
-            this.$emit('removeContract', this.contract.id)
+            this.$emit('remove')
         });
       else if (this.userType === UserType.MONITOR[0])
         monitorSignContract(this.signature, this.contract.id).then(isSigned => {
           if (isSigned)
-            this.$emit('removeContract', this.contract.id);
+            this.$emit('remove');
         });
       else if (this.userType === UserType.STUDENT[0])
         studentSignContract(this.signature, this.contract.id).then(isSigned => {
           if (isSigned)
-            this.$emit('removeContract', this.contract.id);
+            this.$emit('remove');
         });
     }
 

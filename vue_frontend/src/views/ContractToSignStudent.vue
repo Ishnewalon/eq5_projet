@@ -1,5 +1,5 @@
 <template>
-  <ContratSignature :contract="contract" :userType="'student'"/>
+  <ContractSignature :contract="contract" :userType="'student'"/>
 </template>
 <script>
 import authService from "@/services/auth-service";
@@ -14,7 +14,7 @@ export default {
       id: null
     };
   },
-  components: ContractSignature,
+  components: {ContractSignature},
   created() {
     this.id = authService.getUserId();
     getContractForStudent(this.id).then(contract => {
