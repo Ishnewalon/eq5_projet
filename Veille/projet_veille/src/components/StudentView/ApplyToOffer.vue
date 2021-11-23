@@ -54,13 +54,10 @@ export default {
                 }
             });
             const data = await response.json();
-            if (response.status === 201) {
+            if (response.status === 201)
                 this.msgSuccess = data.message;
-                alert("Votre candidature a été soumise avec succès");
-            } else {
+            else
                 this.msgError = data.message;
-                alert("Une erreur est survenue lors de la soumission de votre candidature");
-            }
         }
     },
     created() {

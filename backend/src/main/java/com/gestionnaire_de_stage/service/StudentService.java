@@ -117,4 +117,7 @@ public class StudentService {
         return studentRepository.existsByEmailAndPassword(email, password);
     }
 
+    public Student save(Student student) {
+        return studentRepository.save(student);
+    }
 }

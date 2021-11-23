@@ -61,7 +61,7 @@ export default {
             console.log(this.componentKey);
             this.componentKey += 1;
         }
-    }
+    },
 
 }
 </script>

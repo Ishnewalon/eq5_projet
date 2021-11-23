@@ -88,6 +88,10 @@ public class CurriculumController {
     public ResponseEntity<?> validate(@RequestBody ValidationCurriculum validationCurriculum) {
         try {
             curriculumService.validate(validationCurriculum.getId(), validationCurriculum.isValid());//FIXME: Change pour objet
+            Curriculum curriculum = curriculumService.getOneByID(validationCurriculum.getId());
+            Student student = studentService.getOneByID(curriculum.getStudent().getId());
+            student.setPrincipalCurriculum(curriculum);
+            studentService.save(student);
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
@@ -102,6 +106,7 @@ public class CurriculumController {
                     .body(new ResponseMessage(e.getMessage()));
         }
         String response = validationCurriculum.isValid() ? "Curriculum validé!" : "Curriculum rejeté!";
+
         return ResponseEntity.ok(new ResponseMessage(response));
     }
 
