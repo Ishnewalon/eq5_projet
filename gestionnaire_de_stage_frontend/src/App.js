@@ -30,18 +30,14 @@ function App() {
                         <Title>Inscription</Title>
                         <Register/>
                     </RequiredRoute>
-                    <Route path="/reset_password/:token">
-                        <RequireNoAuth>
-                            <Title>Réinitialiser votre mot de passe</Title>
-                            <ResetPassword/>
-                        </RequireNoAuth>
-                    </Route>
-                    <Route exact path="/forgot_password">
-                        <RequireNoAuth>
-                            <Title>Mot de passe oublié</Title>
-                            <ForgotPassword/>
-                        </RequireNoAuth>
-                    </Route>
+                    <RequiredRoute path="/reset_password/:token" component={RequireNoAuth}>
+                        <Title>Réinitialiser votre mot de passe</Title>
+                        <ResetPassword/>
+                    </RequiredRoute>
+                    <RequiredRoute exact path="/forgot_password" component={RequireNoAuth}>
+                        <Title>Mot de passe oublié</Title>
+                        <ForgotPassword/>
+                    </RequiredRoute>
                     <Route exact path="/404" component={NotFound}/>
                     <Redirect to="/404"/>
                 </Switch>
@@ -68,6 +64,11 @@ RequiredRoute.propTypes = {
     path: PropTypes.string.isRequired,
     component: PropTypes.elementType,
     children: PropTypes.node
+};
+RequiredRoute.defaultProps = {
+    exact: false,
+    component: () => null,
+    children: null
 };
 
 
