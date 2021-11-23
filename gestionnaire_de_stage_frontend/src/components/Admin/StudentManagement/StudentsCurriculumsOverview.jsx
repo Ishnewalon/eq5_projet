@@ -37,7 +37,7 @@ export default function StudentsCurriculumsOverview() {
     if (students.length === 0 || !students || curriculums.length === 0 || !curriculums) {
         return <div>Loading...</div>
     }
-    const getNbOf = (curriculums, state) => {
+    const getNbOfCurriculumsWithState = (curriculums, state) => {
         if (!curriculums) return 0
         return curriculums.filter(curriculum => curriculum.isValid === state).length
     }
@@ -60,9 +60,9 @@ export default function StudentsCurriculumsOverview() {
                         <td>{student.firstName} {student.lastName}</td>
                         <td>{student.matricule}</td>
                         <td>{student.email}</td>
-                        <td>{getNbOf(cur, true)}</td>
-                        <td>{getNbOf(cur, false)}</td>
-                        <td>{getNbOf(cur, null)}</td>
+                        <td>{getNbOfCurriculumsWithState(cur, true)}</td>
+                        <td>{getNbOfCurriculumsWithState(cur, false)}</td>
+                        <td>{getNbOfCurriculumsWithState(cur, null)}</td>
                         <td>
                             <button className="btn btn-primary" onClick={() => history.push({
                                 pathname: `${path}/student`,
