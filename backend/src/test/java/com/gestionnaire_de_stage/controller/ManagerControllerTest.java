@@ -54,7 +54,7 @@ public class ManagerControllerTest {
     public void testManagerLogin_withNullEntries() throws Exception {
         String email = null;
         String password = null;
-        when(managerService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
+        when(managerService.getOneByEmailAndPassword(any(),any())).thenThrow(new IllegalArgumentException("Courriel et mot de passe ne peuvent pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/manager/" + email + "/" + password)
@@ -63,14 +63,14 @@ public class ManagerControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
+        assertThat(response.getContentAsString()).contains("Courriel et mot de passe ne peuvent pas être vide");
     }
 
     @Test
     public void testSupervisorLogin_withInvalidEntries() throws Exception {
         String email = "qerw@qwetq.com";
         String password = "qwreqwer";
-        when(managerService.getOneByEmailAndPassword(any(), any())).thenThrow(EmailAndPasswordDoesNotExistException.class);
+        when(managerService.getOneByEmailAndPassword(any(),any())).thenThrow(new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/manager/" + email + "/" + password)
@@ -79,7 +79,7 @@ public class ManagerControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
+        assertThat(response.getContentAsString()).contains("Courriel ou mot de passe invalid");
     }
 
     private Manager getDummyManager() {

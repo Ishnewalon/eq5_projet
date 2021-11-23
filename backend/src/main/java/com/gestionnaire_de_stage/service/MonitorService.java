@@ -23,14 +23,14 @@ public class MonitorService {
     public Monitor create(Monitor monitor) throws MonitorAlreadyExistsException, IllegalArgumentException {
         Assert.isTrue(monitor != null, "Monitor est null");
         if (emailAlreadyInUse(monitor))
-            throw new MonitorAlreadyExistsException();
+            throw new MonitorAlreadyExistsException("Un compte existe déjà pour ce moniteur");
         return monitorRepository.save(monitor);
     }
 
     public Monitor getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (!monitorRepository.existsById(aLong))
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de moniteur associé à cet identifiant");
         return monitorRepository.getById(aLong);
     }
 
@@ -41,7 +41,7 @@ public class MonitorService {
     public Monitor update(Monitor monitor) throws IdDoesNotExistException {
         Assert.isTrue(monitor != null, "Monitor est null");
         if (!monitorRepository.existsById(monitor.getId()))
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de moniteur associé à cet identifiant");
         return monitorRepository.save(monitor);
     }
 
@@ -49,14 +49,14 @@ public class MonitorService {
         Assert.isTrue(email != null, "Le courriel est null");
         Assert.isTrue(password != null, "Le mot de passe est null");
         if (!monitorRepository.existsByEmailAndPassword(email, password))
-            throw new EmailAndPasswordDoesNotExistException();
+            throw new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid");
         return monitorRepository.findMonitorByEmailAndPassword(email, password);
     }
 
     public void deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (!monitorRepository.existsById(aLong))
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de moniteur associé à cet identifiant");
         monitorRepository.deleteById(aLong);
     }
 
