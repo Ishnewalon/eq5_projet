@@ -51,6 +51,9 @@ public class OfferService {
         offer.setTitle(dto.getTitle());
         offer.setDateDebut(dto.getDateDebut());
         offer.setDateFin(dto.getDateFin());
+        offer.setHoraireTravail(dto.getHoraireTravail());
+        offer.setNbHeureSemaine(dto.getNbHeureSemaine());
+        offer.setNbSemaine(dto.getNbSemaine());
         return offer;
     }
 

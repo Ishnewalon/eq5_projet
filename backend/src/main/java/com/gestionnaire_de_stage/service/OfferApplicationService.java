@@ -111,11 +111,18 @@ public class OfferApplicationService {
         return offerApplicationRepository.getById(idOfferApplication);
     }
 
-    public List<OfferApplication> getAllOffersStudentApplied(Long idStudent) throws IdDoesNotExistException, IllegalArgumentException {
+    public List<OfferApplication> getAllOffersStudentAppliedAndStatusWaiting(Long idStudent) throws IdDoesNotExistException, IllegalArgumentException {
         Assert.isTrue(idStudent != null, "L'id de l'étudiant ne peut pas être null");
         if (studentService.getOneByID(idStudent) == null)
             throw new IdDoesNotExistException();
         return offerApplicationRepository.getAllByStatusAndCurriculum_StudentIdAndSession_YearGreaterThanEqual(Status.EN_ATTENTE_REPONSE, idStudent, Year.now());
+    }
+
+    public List<OfferApplication> getAllOffersStudentApplied(Long idStudent) throws IdDoesNotExistException, IllegalArgumentException {
+        Assert.isTrue(idStudent != null, "L'id de l'étudiant ne peut pas être null");
+        if (studentService.getOneByID(idStudent) == null)
+            throw new IdDoesNotExistException();
+        return offerApplicationRepository.getAllByCurriculum_StudentId(idStudent);
     }
 
     public String updateStatus(UpdateStatusDTO updateStatusDTO) throws IdDoesNotExistException {
@@ -136,5 +143,9 @@ public class OfferApplicationService {
             throw new IdDoesNotExistException();
         }
         return offerApplicationRepository.findAllByCurriculum_Student_Supervisor_IdAndSession_YearGreaterThanEqual(supervisor_id, Year.now());
+    }
+
+    public List<OfferApplication> getAllOffersApplication() {
+        return offerApplicationRepository.findAll();
     }
 }

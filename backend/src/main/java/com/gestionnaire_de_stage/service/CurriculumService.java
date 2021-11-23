@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferDTO;
+import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
@@ -26,9 +27,9 @@ public class CurriculumService {
     private final OfferService offerService;
 
     public CurriculumService(
-        CurriculumRepository curriculumRepository,
-        StudentService studentService,
-        OfferService offerService
+            CurriculumRepository curriculumRepository,
+            StudentService studentService,
+            OfferService offerService
     ) {
         this.curriculumRepository = curriculumRepository;
         this.studentService = studentService;
@@ -54,9 +55,7 @@ public class CurriculumService {
 
     public Curriculum create(Curriculum curriculum) throws IllegalArgumentException, IdDoesNotExistException {
         Assert.isTrue(curriculum != null, "Curriculum est null");
-        Curriculum updatedCurriculum = curriculumRepository.save(curriculum);
-        studentService.setPrincipalCurriculum(updatedCurriculum.getStudent(), updatedCurriculum.getId());
-        return updatedCurriculum;
+        return curriculumRepository.save(curriculum);
     }
 
     public Curriculum getOneByID(Long aLong) throws IdDoesNotExistException {
@@ -66,7 +65,7 @@ public class CurriculumService {
         return curriculumRepository.getById(aLong);
     }
 
-    public List<CurriculumDTO> mapToCurriculumDTOList (List<OfferApplication> offerApplicationList) {
+    public List<CurriculumDTO> mapToCurriculumDTOList(List<OfferApplication> offerApplicationList) {
         List<CurriculumDTO> curriculumDTOList = new ArrayList<>();
         Student student;
         CurriculumDTO curriculumDTO = new CurriculumDTO();
@@ -97,6 +96,23 @@ public class CurriculumService {
 
     public List<Curriculum> findAllCurriculumValidated() {
         return curriculumRepository.findAllByIsValidIsTrue();
+    }
+
+    public List<Curriculum> findAllByStudent(Student student) throws IllegalArgumentException {
+        Assert.notNull(student, "L'etudiant ne peut pas être null");
+
+        return curriculumRepository.findAllByStudent(student);
+    }
+
+    public StudentCurriculumsDTO allCurriculumsByStudentAsStudentCurriculumsDTO(Student student) throws IllegalArgumentException {
+        List<Curriculum> curriculumListByStudent = findAllByStudent(student);
+        Curriculum principal;
+
+        int index = curriculumListByStudent.indexOf(student.getPrincipalCurriculum());
+        principal = curriculumListByStudent.contains(student.getPrincipalCurriculum())
+                ? curriculumListByStudent.get(index) : null;
+
+        return new StudentCurriculumsDTO(principal, curriculumListByStudent);
     }
 
     public boolean validate(Long idCurriculum, boolean valid) throws

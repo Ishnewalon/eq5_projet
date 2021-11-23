@@ -100,7 +100,7 @@ public class SupervisorController {
             return ResponseEntity
                     .badRequest()
                     .body(e.getMessage());
-    }
+        }
         return ResponseEntity
                 .ok(offerApplicationList);
     }

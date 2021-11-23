@@ -12,7 +12,7 @@ export async function monitorSignContract(monitorSignature, contractId) {
     return await signContract(UserType.MONITOR[0], monitorSignature, contractId);
 }
 
-export async function studentSignContract(studentSignature, contractId){
+export async function studentSignContract(studentSignature, contractId) {
     return await signContract(UserType.STUDENT[0], studentSignature, contractId);
 }
 
@@ -54,7 +54,7 @@ export async function getAllContractsToBeSignedForMonitor(monitorId) {
     );
 }
 
-export async function getContractForStudent(userId){
+export async function getContractForStudent(userId) {
     return await fetch(`${url}/student/${userId}`, requestInit(methods.GET)).then(response => {
         return response.json().then(
             body => {
@@ -68,7 +68,7 @@ export async function getContractForStudent(userId){
     }, err => console.error(err));
 }
 
-export async function getAllOfferAppReadyToSign(idOfferApplication){
+export async function getAllOfferAppReadyToSign(idOfferApplication) {
     return await fetch(`${urlBackend}/applications/applicants/manager/${idOfferApplication}`, requestInit(methods.GET)).then(
         response => {
             return response.json().then((body) => {
@@ -101,15 +101,15 @@ export async function startSignerFetch(idOfferApplication, idManager) {
     );
 }
 
-export async function getAllSignedContractsForManager(idManager){
+export async function getAllSignedContractsForManager(idManager) {
     return await getOneOrMoreContracts(idManager, UserType.MANAGER[0]).then(res => res.json());
 }
 
-export async function getAllSignedContractsForMonitor(idMonitor){
+export async function getAllSignedContractsForMonitor(idMonitor) {
     return await getOneOrMoreContracts(idMonitor, UserType.MONITOR[0]).then(res => res.json());
 }
 
-export async function getSignedContractForStudent(idStudent){
+export async function getSignedContractForStudent(idStudent) {
     return await getOneOrMoreContracts(idStudent, UserType.STUDENT[0]).then(
         response => {
             return response.json().then((body) => {
@@ -123,6 +123,6 @@ export async function getSignedContractForStudent(idStudent){
     );
 }
 
-export async function getOneOrMoreContracts(id, userType){
+export async function getOneOrMoreContracts(id, userType) {
     return await fetch(`${urlBackend}/contracts/${userType}/signed/${id}`, requestInit(methods.GET));
 }

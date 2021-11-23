@@ -6,8 +6,6 @@ import com.gestionnaire_de_stage.service.SessionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/sessions")
 @CrossOrigin
@@ -33,7 +31,7 @@ public class SessionController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getActualAndFutureSessions(){
+    public ResponseEntity<?> getActualAndFutureSessions() {
         return ResponseEntity.ok(sessionService.getActualAndFutureSessions());
     }
 }
