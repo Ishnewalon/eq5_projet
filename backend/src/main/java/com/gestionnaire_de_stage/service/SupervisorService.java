@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.DoesNotExistException;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
@@ -45,13 +46,10 @@ public class SupervisorService {
         return supervisorRepository.findAll();
     }
 
-    public Supervisor update(Supervisor supervisor, Long aLong) throws IdDoesNotExistException {
-        Assert.isTrue(aLong != null, "ID est null");
+    public Supervisor update(Supervisor supervisor) throws IdDoesNotExistException {
         Assert.isTrue(supervisor != null, "Le superviseur est null");
-        if (isIdNotValid(aLong)) {
+        if (isIdNotValid(supervisor.getId())) 
             throw new IdDoesNotExistException();
-        }
-        supervisor.setId(aLong);
         return supervisorRepository.save(supervisor);
     }
 
@@ -80,6 +78,14 @@ public class SupervisorService {
         return offerApplicationService.getAllBySupervisorId(supervisor_id);
     }
 
+    public Supervisor getOneByEmail(String email) throws DoesNotExistException {
+        Assert.notNull(email, "Le email est obligatoire");
+        if (isEmailInvalid(email))
+            throw new DoesNotExistException("L'email n'existe pas");
+
+        return supervisorRepository.getByEmail(email);
+    }
+
     private boolean isNotValid(Supervisor supervisor) {
         return supervisor.getEmail() != null &&
                 supervisorRepository.existsByEmail(supervisor.getEmail());
@@ -92,4 +98,9 @@ public class SupervisorService {
     private boolean isEmailAndPasswordValid(String email, String password) {
         return supervisorRepository.existsByEmailAndPassword(email, password);
     }
+
+    private boolean isEmailInvalid(String email) {
+        return !supervisorRepository.existsByEmail(email);
+    }
+
 }

@@ -10,6 +10,8 @@ import {AuthProvider, RequireAuth, RequireNoAuth} from "./services/use-auth";
 import Login from "./components/Unauthenticated/Login";
 import {ContainerBox} from "./components/SharedComponents/ContainerBox/ContainerBox";
 import {Title} from "./components/SharedComponents/Title/Title";
+import ForgotPassword from "./components/Unauthenticated/ForgotPassword";
+import ResetPassword from "./components/Unauthenticated/ResetPassword";
 
 function App() {
 
@@ -33,12 +35,24 @@ function App() {
                     </Route>
                     <Route path="/login">
                         <RequireNoAuth>
-                            <h2 className="text-center mt-4">Se connecter</h2>
+                            <Title>Se connecter</Title>
                             <Login/>
                         </RequireNoAuth>
                     </Route>
                     <Route exact path="/">
                         <Redirect to="/login"/>
+                    </Route>
+                    <Route path="/reset_password/:token">
+                        <RequireNoAuth>
+                            <Title>Réinitialiser votre mot de passe</Title>
+                            <ResetPassword/>
+                        </RequireNoAuth>
+                    </Route>
+                    <Route exact path="/forgot_password">
+                        <RequireNoAuth>
+                            <Title>Mot de passe oublié</Title>
+                            <ForgotPassword/>
+                        </RequireNoAuth>
                     </Route>
                 </Switch>
             </div>
