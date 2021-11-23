@@ -4,6 +4,7 @@ import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
+import com.gestionnaire_de_stage.exception.CurriculumUsedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.OfferApplication;
@@ -140,4 +141,29 @@ public class CurriculumService {
 
         return byId.get();
     }
+
+    public void deleteOneById(Long idCurriculum) throws IdDoesNotExistException, CurriculumUsedException {
+        Assert.notNull(idCurriculum, "Le id du curriculum ne peut pas être null");
+
+        Curriculum curriculum = getOneByID(idCurriculum);
+
+        if (isPrincipal(curriculum))
+            throw new CurriculumUsedException("Impossible de supprimer. Cela est votre curriculum par defaut");
+
+        curriculumRepository.deleteById(idCurriculum);
+    }
+
+    private boolean isPrincipal(Curriculum curriculum) {
+        Student student = curriculum.getStudent();
+        return curriculum == student.getPrincipalCurriculum();
+    }
 }
+
+
+
+
+
+
+
+
+

@@ -4,6 +4,7 @@ import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
+import com.gestionnaire_de_stage.exception.CurriculumUsedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
@@ -21,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SuppressWarnings("ConstantConditions")
 @ExtendWith(MockitoExtension.class)
@@ -189,7 +190,7 @@ public class CurriculumServiceTest {
 
         List<Curriculum> actualList = curriculumService.findAllByStudent(student);
 
-        assertThat(actualList).isEqualTo(curriculumList);;
+        assertThat(actualList).isEqualTo(curriculumList);
     }
 
     @Test
@@ -330,6 +331,13 @@ public class CurriculumServiceTest {
                 curriculumService.findOneById(34L));
     }
 
+    @Test
+    void testDeleteOneById() throws Exception{
+
+        curriculumService.deleteOneById(1L);
+
+        verify(curriculumRepository, times(1)).deleteById(any());
+    }
 
     private Curriculum getDummyCurriculum() {
         Student dummyStudent = new Student();
