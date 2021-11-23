@@ -1,7 +1,7 @@
 <template>
   <ul>
-    <li v-for="(child, index) in contracts">
-      <ContractSignature :key="index" @remove="removeContract(index)" :userType="userType"
+    <li v-for="(child, index) in contracts" :key="index">
+      <ContractSignature @remove="removeContract(index)" :userType="userType"
                          :contract="child"/>
     </li>
   </ul>
@@ -38,6 +38,7 @@ export default {
       getAllContractsToBeStarted().then(contracts => (this.contracts = contracts));
     if (this.userType === UserType.MONITOR[0])
       getAllContractsToBeSignedForMonitor(this.id).then(contracts => (this.contracts = contracts));
+    console.log(this.contracts);
   }
 }
 </script>

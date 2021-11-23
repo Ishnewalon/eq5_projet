@@ -14,6 +14,9 @@
         <router-link to="/monitor/create_offer">Créer une offre</router-link>
       </a>
       <a>
+        <router-link to="/monitor/sign_contracts">Signer contrats</router-link>
+      </a>
+      <a>
         <router-link to="/monitor/view_applied_students">Voir applicants</router-link>
       </a>
     </div>
@@ -29,6 +32,9 @@
       </a>
       <a>
         <router-link to="/manager/start_contracts">Démarrage des contrats</router-link>
+      </a>
+      <a>
+        <router-link to="/manager/sign_contracts">Signer contrats</router-link>
       </a>
     </div>
     <div v-else-if="role === 'student'" class="d-inline">

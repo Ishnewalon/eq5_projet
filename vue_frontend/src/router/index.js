@@ -15,6 +15,7 @@ import ManagerResumeValidation from "@/views/ManagerResumeValidation";
 import ViewAppliedStudents from "@/views/ViewAppliedStudents";
 import StartContracts from "@/views/StartContracts";
 import ContractToSignStudent from "@/views/ContractToSignStudent";
+import ContractsToSign from "@/views/ContractsToSign";
 
 
 function guardRoute(to, from, next) {
@@ -87,6 +88,15 @@ const routes = [
         beforeEnter: guardRoute
     },
     {
+        path:'/monitor/sign_contracts',
+        name: 'Signature des contrats',
+        component: ContractsToSign,
+        props:{
+            userType: 'monitor'
+        },
+        beforeEnter: guardRoute
+    },
+    {
         path: '/manager/create_offer',
         name: 'Créer une offre en tant que Gestionnaire',
         component: ManagerCreateOffer,
@@ -96,6 +106,15 @@ const routes = [
         path: '/manager/review_offers',
         name: 'Valider les offres',
         component: ReviewOffers,
+        beforeEnter: guardRoute
+    },
+    {
+        path:'/manager/sign_contracts',
+        name: 'Signature des contrats',
+        component: ContractsToSign,
+        props:{
+            userType: 'manager'
+        },
         beforeEnter: guardRoute
     },
     {

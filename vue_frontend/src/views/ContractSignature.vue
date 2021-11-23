@@ -1,8 +1,7 @@
 <template>
   <div class="container bg-secondary my-2">
     <div class="d-flex justify-content-between flex-column">
-      div
-      <pdf :src="pdfUrl">
+      <pdf :src="pdfUrl"></pdf>
         <form @submit.prevent="startContract">
           <label>Signature</label>
           <input type="text" placeholder="Entrez votre signature" class="w-100"
@@ -11,7 +10,6 @@
             contrat et que la signature entrée correspond à la votre.</h6>
           <button class="btn btn-primary fw-bold w-100 mb-4 mt-0" type="submit">Signez le contrat</button>
         </form>
-      </pdf>
     </div>
   </div>
 </template>
@@ -31,7 +29,7 @@ export default {
       pdfUrl: ''
     }
   },
-  components: pdf,
+  components: {pdf},
   props: {
     contract: {
       type: Object,
@@ -44,7 +42,7 @@ export default {
     }
   },
   created() {
-    this.pdfUrl = window.url.createObjectURL(toPdfBlob(this.contract.contractPDF));
+    this.pdfUrl = window.URL.createObjectURL(toPdfBlob(this.contract.contractPDF));
   },
   methods: {
     setSignature(signature) {
