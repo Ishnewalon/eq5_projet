@@ -39,7 +39,6 @@ public class ContractControllerTest {
 
     private final ObjectMapper MAPPER = new ObjectMapper();
 
-
     @Test
     public void testManagerStartContract() throws Exception {
         when(contractService.gsStartContract( any(), any())).thenReturn(getDummyContract());
@@ -54,6 +53,7 @@ public class ContractControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString()).contains("Création de contrat réussi!");
     }
+
     @Test
     public void testManagerStartContract_whenContractStarterIdManagerNull() throws Exception {
         when(contractService.gsStartContract(any(), any())).thenThrow(new IllegalArgumentException("L'id du gestionnaire ne peut pas être null!"));
@@ -68,6 +68,7 @@ public class ContractControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("L'id du gestionnaire ne peut pas être null!");
     }
+
     @Test
     public void testManagerStartContract_whenIdOfferApplicationNull() throws Exception {
         when(contractService.gsStartContract( any(), any())).thenThrow(new IllegalArgumentException("L'id de l'application ne peut pas être null!"));
@@ -82,9 +83,10 @@ public class ContractControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("L'id de l'application ne peut pas être null!");
     }
+
     @Test
     public void testManagerStartContract_whenStudentAlreadyHaveAContract() throws Exception {
-        when(contractService.gsStartContract( any(), any())).thenThrow(StudentAlreadyHaveAContractException.class);
+        when(contractService.gsStartContract( any(), any())).thenThrow(new StudentAlreadyHaveAContractException("L'étudiant a déjà un contrat"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
@@ -94,11 +96,12 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'étudiant a déjà un contrat!");
+        assertThat(response.getContentAsString()).contains("L'étudiant a déjà un contrat");
     }
+
     @Test
     public void testManagerStartContract_whenIdOfferApplicationInvalid() throws Exception {
-        when(contractService.gsStartContract( any(), any())).thenThrow(IdDoesNotExistException.class);
+        when(contractService.gsStartContract( any(), any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'offre associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
@@ -108,10 +111,8 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'id du gestionnaire et de l'application doivent exister!");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'offre associé à cet identifiant");
     }
-
-
 
     @Test
     public void testGetContractReadySign_withValidEntries() throws Exception {

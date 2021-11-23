@@ -41,7 +41,7 @@ public class StudentController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
-        } 
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(createdStudent);
     }
 

@@ -137,7 +137,7 @@ public class ContractService {
         Curriculum curriculum = offerApplication.getCurriculum();
         Student student = curriculum.getStudent();
         if (doesStudentAlreadyHaveAContract(student.getId(), contract.getSession()))
-            throw new StudentAlreadyHaveAContractException();
+            throw new StudentAlreadyHaveAContractException("L'étudiant ayant la matricule " + student.getMatricule() + "a déjà un contrat");
 
         contract.setStudent(student);
         contract.setMonitor(monitor);

@@ -78,19 +78,11 @@ public class ContractController {
             HtmlConverter.convertToPdf(contractHtml, baos);
             contract.setContractPDF(baos.toByteArray());
             contractService.updateContract(contract);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(new ResponseMessage("L'id du gestionnaire et de l'application doivent exister!"));
-        } catch (StudentAlreadyHaveAContractException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("L'étudiant a déjà un contrat!"));
-        }
+        } 
         return ResponseEntity.ok(new ResponseMessage("Création de contrat réussi!"));
     }
 
