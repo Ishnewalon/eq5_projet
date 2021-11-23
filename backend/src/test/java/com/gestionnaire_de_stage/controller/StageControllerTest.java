@@ -60,7 +60,7 @@ public class StageControllerTest {
     @Test
     public void testFillEvalMilieuStagePDF_withInvalidStudentMatricule() throws Exception {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
-        when(contractService.getContractByStudentMatricule(any())).thenThrow(MatriculeDoesNotExistException.class);
+        when(contractService.getContractByStudentMatricule(any())).thenThrow(new MatriculeDoesNotExistException("Il n'y a pas d'étudiant ayant la matricule"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
@@ -70,7 +70,7 @@ public class StageControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("La matricule de l'étudiant n'existe pas");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant ayant la matricule");
     }
 
     @Test

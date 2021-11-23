@@ -63,7 +63,7 @@ public class StageController {
         } catch (MatriculeDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("La matricule de l'étudiant n'existe pas"));
+                    .body(new ResponseMessage(e.getMessage()));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()

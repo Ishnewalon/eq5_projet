@@ -474,24 +474,6 @@ class OfferApplicationControllerTest {
     }
 
     @Test
-    public void testUpdateStatusIsAccepted_withIdInvalid() throws Exception {
-        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(45433L, true);
-        when(offerApplicationService.updateStatus(any()))
-                .thenThrow(IdDoesNotExistException.class);
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/applications/student/update_status")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(MAPPER.writeValueAsString(updateStatusDTO)))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-
-        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Offre non existante!");
-    }
-
-    @Test
     public void testGetAllOffersByStudentsApplied() throws Exception {
         List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
         Student dummyStudent = getDummyStudent();

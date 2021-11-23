@@ -96,7 +96,7 @@ public class ContractService {
     public Contract getContractByStudentMatricule(String matricule) throws MatriculeDoesNotExistException, ContractDoesNotExistException {
         Assert.isTrue(matricule != null, "La matricule ne peut pas être null");
         if (!studentRepository.existsByMatricule(matricule)) {
-            throw new MatriculeDoesNotExistException();
+            throw new MatriculeDoesNotExistException("Il n'y a pas d'étudiant ayant la matricule " + matricule);
         }
         if (isNotCreated(matricule)) {
             throw new ContractDoesNotExistException("Il n'y a pas de contrat qui existe pour la matricule " + matricule);

@@ -68,7 +68,7 @@ public class StudentControllerTest {
     @Test
     public void testStudentSignUp_withNullStudent() throws Exception {
         Student dummyStudent = getDummyStudent();
-        when(studentService.create(any())).thenThrow(IllegalArgumentException.class);
+        when(studentService.create(any())).thenThrow(new IllegalArgumentException("Le courriel ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/student/signup")
@@ -78,7 +78,7 @@ public class StudentControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("Le courriel ne peut pas être vide");
     }
 
     @Test

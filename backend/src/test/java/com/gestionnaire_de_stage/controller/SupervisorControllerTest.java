@@ -71,7 +71,7 @@ public class SupervisorControllerTest {
     @Test
     public void testSupervisorSignUp_withNullEntries() throws Exception {
         Supervisor dummySupervisor = getDummySupervisor();
-        when(supervisorService.create(any())).thenThrow(IllegalArgumentException.class);
+        when(supervisorService.create(any())).thenThrow(new IllegalArgumentException("Le courriel ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/supervisor/signup")
@@ -81,7 +81,7 @@ public class SupervisorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("Le courriel ne peut pas être vide");
     }
 
     @Test

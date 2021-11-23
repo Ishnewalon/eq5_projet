@@ -96,7 +96,7 @@ public class OfferControllerTest {
     public void testOfferCreate_withInvalidId() throws Exception {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOfferDTO.setIdSession(null);
-        when(offerService.create(any())).thenThrow(IdDoesNotExistException.class);
+        when(offerService.create(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas de session associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/add")
@@ -106,7 +106,7 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).containsIgnoringCase("L'id de la session n'existe pas");
+        assertThat(response.getContentAsString()).containsIgnoringCase("Il n'y a pas de session associé à cet identifiant");
     }
 
     @Test

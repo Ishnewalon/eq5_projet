@@ -125,7 +125,7 @@ public class OfferApplicationService {
         return offerApplicationRepository.getAllByCurriculum_StudentId(idStudent);
     }
 
-    public String updateStatus(UpdateStatusDTO updateStatusDTO) throws IdDoesNotExistException {
+    public String updateStatus(UpdateStatusDTO updateStatusDTO) {
         Assert.isTrue(updateStatusDTO.getIdOfferApplied() != null, "L'id de l'offre ne peut pas être null");
         OfferApplication offerApplication = offerApplicationRepository.getById(updateStatusDTO.getIdOfferApplied());
         if (updateStatusDTO.isAccepted()) {
