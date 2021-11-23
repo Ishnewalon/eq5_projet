@@ -34,14 +34,10 @@ public class SupervisorController {
         Supervisor createdSupervisor;
         try {
             createdSupervisor = supervisorService.create(supervisor);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
-        } catch (SupervisorAlreadyExistsException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Erreur: Ce courriel existe déjà!"));
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSupervisor);
     }

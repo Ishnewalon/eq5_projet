@@ -87,7 +87,7 @@ public class SupervisorControllerTest {
     @Test
     public void testSupervisorSignUp_withInvalidSupervisor() throws Exception {
         Supervisor dummySupervisor = getDummySupervisor();
-        when(supervisorService.create(any())).thenThrow(SupervisorAlreadyExistsException.class);
+        when(supervisorService.create(any())).thenThrow(new SupervisorAlreadyExistsException("Un compte existe déjà pour ce superviseur"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/supervisor/signup")
@@ -97,7 +97,7 @@ public class SupervisorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Ce courriel existe déjà!");
+        assertThat(response.getContentAsString()).contains("Un compte existe déjà pour ce superviseur");
     }
 
     @Test

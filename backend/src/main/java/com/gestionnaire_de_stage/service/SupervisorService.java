@@ -28,7 +28,7 @@ public class SupervisorService {
     public Supervisor create(Supervisor supervisor) throws SupervisorAlreadyExistsException {
         Assert.isTrue(supervisor != null, "Superviseur est null");
         if (isNotValid(supervisor)) {
-            throw new SupervisorAlreadyExistsException();
+            throw new SupervisorAlreadyExistsException("Un compte existe déjà pour ce superviseur");
         }
         return supervisorRepository.save(supervisor);
     }
