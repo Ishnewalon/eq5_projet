@@ -36,10 +36,10 @@ public class OfferApplicationController {
     public ResponseEntity<?> studentApplyToOffer(@RequestBody OfferAppDTO offerAppDTO) {//TODO : Check if student has valid curriculum
         try {
             offerApplicationService.create(offerAppDTO.getIdOffer(), offerAppDTO.getIdStudent());//FIXME: Change to offerAppDTO
-        } catch (StudentAlreadyAppliedToOfferException err) {
+        } catch (StudentAlreadyAppliedToOfferException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Candidature déjà envoyé!"));
+                    .body(new ResponseMessage(e.getMessage()));
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()

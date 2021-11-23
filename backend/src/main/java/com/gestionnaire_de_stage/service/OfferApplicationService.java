@@ -51,7 +51,7 @@ public class OfferApplicationService {
             throw new IdDoesNotExistException("Il n'y a pas d'offre associé à cet identifiant");
 
         if (offerApplicationRepository.existsByOfferAndCurriculum(offer.get(), curriculum))
-            throw new StudentAlreadyAppliedToOfferException();
+            throw new StudentAlreadyAppliedToOfferException("Vous avez déjà appliqué(e) sur cette offre");
 
         OfferApplication offerApplication = new OfferApplication();
         offerApplication.setOffer(offer.get());

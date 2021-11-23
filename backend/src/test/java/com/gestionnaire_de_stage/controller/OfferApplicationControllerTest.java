@@ -65,7 +65,7 @@ class OfferApplicationControllerTest {
 
     @Test
     public void testStudentApplyToOfferAgain() throws Exception {
-        when(offerApplicationService.create(any(), any())).thenThrow(new StudentAlreadyAppliedToOfferException());
+        when(offerApplicationService.create(any(), any())).thenThrow(new StudentAlreadyAppliedToOfferException("Vous avez déjà appliqué(e) sur cette offre"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/apply")
@@ -75,7 +75,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Candidature déjà envoyé!");
+        assertThat(response.getContentAsString()).contains("Vous avez déjà appliqué(e) sur cette offre");
     }
 
     @Test
