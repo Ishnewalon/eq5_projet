@@ -144,7 +144,7 @@ class OfferApplicationControllerTest {
 
     @Test
     public void testStudentApplyToOffer_withCvInvalid() throws Exception {
-        when(offerApplicationService.create(any(), any())).thenThrow(new StudentHasNoCurriculumException());
+        when(offerApplicationService.create(any(), any())).thenThrow(new StudentHasNoCurriculumException("Vous devez avoir un curriculum valid avant d'appliquer"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/apply")
@@ -154,7 +154,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Vous devez d'abord ajouter un curriculum!");
+        assertThat(response.getContentAsString()).contains("Vous devez avoir un curriculum valid avant d'appliquer");
     }
 
     @Test

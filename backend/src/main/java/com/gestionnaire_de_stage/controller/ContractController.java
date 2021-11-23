@@ -82,7 +82,7 @@ public class ContractController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
-        } 
+        }
         return ResponseEntity.ok(new ResponseMessage("Création de contrat réussi!"));
     }
 

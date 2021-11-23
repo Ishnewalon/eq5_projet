@@ -45,7 +45,7 @@ public class OfferApplicationService {
         Curriculum curriculum = student.getPrincipalCurriculum();
 
         if (curriculum == null)
-            throw new StudentHasNoCurriculumException();
+            throw new StudentHasNoCurriculumException("Vous devez avoir un curriculum valid avant d'appliquer");
 
         if (offer.isEmpty())
             throw new IdDoesNotExistException("Il n'y a pas d'offre associé à cet identifiant");
