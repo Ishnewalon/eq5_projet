@@ -31,14 +31,6 @@ public class OfferController {
         Offer offer;
         try {
             offer = offerService.create(dto);
-        } catch (OfferAlreadyExistsException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Offre existe déjà"));
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()

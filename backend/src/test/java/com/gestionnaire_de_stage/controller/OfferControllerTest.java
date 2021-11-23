@@ -114,7 +114,7 @@ public class OfferControllerTest {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
-        when(offerService.create(any())).thenThrow(new OfferAlreadyExistsException());
+        when(offerService.create(any())).thenThrow(new OfferAlreadyExistsException("Cet offre a déjà été créé"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/add")
@@ -124,7 +124,7 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Offre existe déjà");
+        assertThat(response.getContentAsString()).contains("Cet offre a déjà été créé");
     }
 
     @Test

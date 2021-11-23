@@ -81,7 +81,7 @@ public class OfferService {
         Assert.isTrue(offerDto != null, "Offre est null");
         Offer offer = mapToOffer(offerDto);
         if (offerRepository.findOne(Example.of(offer)).isPresent())
-            throw new OfferAlreadyExistsException();
+            throw new OfferAlreadyExistsException("Cet offre a déjà été créé");
 
         Monitor monitor = monitorService.getOneByEmail(offerDto.getCreator_email());
         offer.setCreator(monitor);
