@@ -76,7 +76,7 @@ public class StageControllerTest {
     @Test
     public void testFillEvalMilieuStagePDF_withInexistantContract() throws Exception {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
-        when(contractService.getContractByStudentMatricule(any())).thenThrow(ContractDoesNotExistException.class);
+        when(contractService.getContractByStudentMatricule(any())).thenThrow(new ContractDoesNotExistException("Il n'y a pas de contrat qui existe pour la matricule"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
@@ -86,7 +86,7 @@ public class StageControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Cet étudiant n'a pas de stage");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de contrat qui existe pour la matricule");
     }
 
     @Test

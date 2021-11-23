@@ -99,7 +99,7 @@ public class ContractService {
             throw new MatriculeDoesNotExistException();
         }
         if (isNotCreated(matricule)) {
-            throw new ContractDoesNotExistException();
+            throw new ContractDoesNotExistException("Il n'y a pas de contrat qui existe pour la matricule " + matricule);
         }
         return contractRepository.getContractByStudent_Matricule(matricule);
     }

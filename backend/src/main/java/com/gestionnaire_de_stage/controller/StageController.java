@@ -75,7 +75,7 @@ public class StageController {
         } catch (ContractDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Cet étudiant n'a pas de stage"));
+                    .body(new ResponseMessage(e.getMessage()));
         } catch (EvaluationAlreadyFilledException e) {
             return ResponseEntity
                     .badRequest()
