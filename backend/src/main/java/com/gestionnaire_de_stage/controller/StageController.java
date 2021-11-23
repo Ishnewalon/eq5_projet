@@ -60,23 +60,7 @@ public class StageController {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             HtmlConverter.convertToPdf(evalMilieuStageHtml, baos);
             stageService.addEvalMilieuStage(stage, baos);
-        } catch (MatriculeDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        } catch (StageDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le stage n'existe pas"));
-        } catch (ContractDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        } catch (EvaluationAlreadyFilledException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
@@ -99,15 +83,7 @@ public class StageController {
             HtmlConverter.convertToPdf(contractHtml, baos);
 
             stageService.addEvalStagiaire(stage, baos);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        } catch (StageDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le stage n'existe pas pour cette étudiant"));
-        } catch (EvaluationAlreadyFilledException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
