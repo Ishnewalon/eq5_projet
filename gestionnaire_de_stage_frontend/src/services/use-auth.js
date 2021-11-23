@@ -46,12 +46,15 @@ function useProvideAuth() {
                     body => {
                         if (response.status === 201)
                             toast.fire({title: "Compte crée"}).then()
-                        if (response.status === 400)
-                            swalErr.fire({text: body.message})
-                    }
-                )
+                        else {
+                            if (response.status === 400)
+                                swalErr.fire({text: body.message})
+                            console.error(response)
+                        }
+                    })
+                return response.ok
             }, err => console.log(err)
-        );
+        ).catch(err => console.log(err));
     }
 
 
@@ -64,12 +67,15 @@ function useProvideAuth() {
                     body => {
                         if (response.status === 201)
                             toast.fire({title: "Compte crée"}).then()
-                        if (response.status === 400)
-                            swalErr.fire({text: body.message})
-                    }
-                )
+                        else {
+                            if (response.status === 400)
+                                swalErr.fire({text: body.message})
+                            console.error(response)
+                        }
+                    })
+                return response.ok
             }, err => console.log(err)
-        );
+        ).catch(err => console.log(err));
     }
 
 
@@ -82,12 +88,15 @@ function useProvideAuth() {
                     body => {
                         if (response.status === 201)
                             toast.fire({title: "Compte crée"}).then()
-                        if (response.status === 400)
-                            swalErr.fire({text: body.message})
-                    }
-                )
+                        else {
+                            if (response.status === 400)
+                                swalErr.fire({text: body.message})
+                            console.error(response)
+                        }
+                    })
+                return response.ok
             }, err => console.log(err)
-        );
+        ).catch(err => console.log(err));
     }
 
     const signIn = async (userType, email, password) => {

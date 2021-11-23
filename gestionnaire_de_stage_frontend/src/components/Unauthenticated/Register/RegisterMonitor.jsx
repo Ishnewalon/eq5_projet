@@ -1,13 +1,15 @@
 import React, {useState} from "react";
-import StepPassword from "./Steps/StepPassword";
-import StepInformationGeneral from "./Steps/StepInformationGeneral";
+import StepPassword from "./SharedSteps/StepPassword";
+import StepInformationGeneral from "./SharedSteps/StepInformationGeneral";
 import {MonitorModel} from "../../../models/User";
 import {Step} from "../../../enums/Steps";
 import {useHistory} from "react-router-dom";
 import {useAuth} from "../../../services/use-auth";
-import {ContainerBox} from "../../SharedComponents/ContainerBox/ContainerBox";
-import {StepMonitorr} from "./StepMonitorr";
 import {verificationGeneral, verificationMonitor, verificationPassword} from "./Verifications";
+import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FormField} from "../../SharedComponents/FormField/FormField";
+import FieldAddress from "../../SharedComponents/Fields/FieldAddress";
+import {BtnBack} from "../../SharedComponents/BtnBack";
 
 
 export default function RegisterMonitor() {
@@ -83,8 +85,8 @@ export default function RegisterMonitor() {
 
 
     if (curentStep === Step.MONITOR)
-        show = <StepMonitorr handleChange={handleChange} address={address} postalCode={postalCode} city={city}
-                             companyName={companyName}/>
+        show = <StepMonitor handleChange={handleChange} address={address} postalCode={postalCode} city={city}
+                            companyName={companyName}/>
     else if (curentStep === Step.GENERAL)
         show = <StepInformationGeneral handleChange={handleChange} email={email} firstName={firstName}
                                        lastName={lastName} phone={phone}/>
@@ -92,13 +94,56 @@ export default function RegisterMonitor() {
         show = <StepPassword handleChange={handleChange} password={password}/>
 
 
-    return (<ContainerBox>
+    return (<>
         <form className="form-container" onSubmit={submit}>
             <fieldset>
                 {show}
             </fieldset>
         </form>
-    </ContainerBox>);
+    </>);
 }
 
+
+function StepMonitor({
+                         handleChange,
+                         companyName,
+                         address,
+                         postalCode,
+                         city
+                     }) {
+
+
+    return (<>
+        <FormGroup>
+            <FormField htmlFor="companyName">
+                <label>Nom de la compagnie</label>
+                <input name="companyName" placeholder="Nom de compagnie"
+                       type="text"
+                       value={companyName} onChange={handleChange}/>
+            </FormField>
+            <FormField htmlFor="city">
+                <label>Ville</label>
+                <input name="city" placeholder="Ville" type="text"
+                       value={city} onChange={handleChange}/>
+            </FormField>
+        </FormGroup>
+        <FormGroup>
+            <FieldAddress label="Adresse de la compagnie" address={address} handleChange={handleChange}/>
+        </FormGroup>
+        <FormGroup>
+            <FormField htmlFor="postalCode">
+                <label>Code Postale</label>
+                <input name="postalCode" placeholder="H0H 0H0" type="text"
+                       value={postalCode} onChange={handleChange}/>
+            </FormField>
+        </FormGroup>
+        <div className="form-group text-center">
+            <div className="btn-group">
+                <BtnBack/>
+                <input className="btn btn-primary" type="submit" name="nextt" value="Suivant"/>
+            </div>
+        </div>
+    </>)
+
+}
 

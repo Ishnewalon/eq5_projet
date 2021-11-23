@@ -13,13 +13,14 @@ import PropTypes from "prop-types";
 import ForgotPassword from "./components/Unauthenticated/ForgotPassword";
 import ResetPassword from "./components/Unauthenticated/ResetPassword";
 import RegisterMonitor from "./components/Unauthenticated/Register/RegisterMonitor";
+import RegisterCegep from "./components/Unauthenticated/Register/RegisterCegep";
+import {ContainerBox} from "./components/SharedComponents/ContainerBox/ContainerBox";
 
 function App() {
     return <AuthProvider>
         <Router>
             <Navbar/>
             <div className="container">
-                <RegisterMonitor/>
                 <Switch>
                     <RequiredRoute path="/dashboard" component={RequireAuth}>
                         <Dashboard/>
@@ -28,9 +29,13 @@ function App() {
                         <Title>Se connecter</Title>
                         <Login/>
                     </RequiredRoute>
-                    <RequiredRoute exact={true} path="/register" component={RequireNoAuth}>
+                    <RequiredRoute path="/register" component={RequireNoAuth}>
                         <Title>Inscription</Title>
-                        <Register/>
+                        <ContainerBox className="w-50">
+                            <Route exact path="/register" component={Register}/>
+                            <Route exact path="/register/monitor" component={RegisterMonitor}/>
+                            <Route exact path="/register/cegep" component={RegisterCegep}/>
+                        </ContainerBox>
                     </RequiredRoute>
                     <RequiredRoute path="/reset_password/:token" component={RequireNoAuth}>
                         <Title>Réinitialiser votre mot de passe</Title>

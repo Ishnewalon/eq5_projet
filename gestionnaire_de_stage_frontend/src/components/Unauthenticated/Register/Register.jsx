@@ -1,17 +1,16 @@
 import React from "react";
-import {ContainerBox} from "../../SharedComponents/ContainerBox/ContainerBox";
-import {Link} from "react-router-dom";
+import {Link, useRouteMatch} from "react-router-dom";
 
 
 export default function Register() {
+    let {path} = useRouteMatch();
 
-
-    return (<ContainerBox>
-        <div className="form-group text-center">
+    return (<>
+        <div className="text-center">
             <div>
-                <Link className="btn btn-primary">Membre du cégep</Link>
-                <Link className="btn btn-primary">Compagnie</Link>
+                <Link className="btn btn-primary" to={`${path}/cegep`}>Membre du cégep</Link>
+                <Link className="btn btn-primary" to={`${path}/monitor`}>Compagnie</Link>
             </div>
         </div>
-    </ContainerBox>);
+    </>);
 }

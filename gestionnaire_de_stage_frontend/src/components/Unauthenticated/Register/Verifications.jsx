@@ -32,7 +32,7 @@ export function verificationMonitor(companyName, city, address, postalCode) {
     return true;
 }
 
-export function verificationGeneral(firstName, lastName, email, phone) {
+export function verificationGeneral(firstName, lastName, phone, email) {
     if (!firstName) {
         toastErr.fire({title: "Le champs prénom est vide"}).then()
         return false

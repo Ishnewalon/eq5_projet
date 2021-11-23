@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import FieldPassword from "../SharedComponents/Fields/FieldPassword";
 import FieldEmail from "../SharedComponents/Fields/FieldEmail";
 import {Link, useHistory} from "react-router-dom";
 import {UserType} from "../../enums/UserTypes";
 import {useAuth} from "../../services/use-auth";
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {FormField} from "../SharedComponents/FormField/FormField";
 
 
 export default function Login() {
@@ -52,9 +52,11 @@ export default function Login() {
             <FormGroup>
                 <FieldEmail email={email} label="Email" placeholder="Votre Email"
                             handleChanges={(e) => setEmail(e.target.value)}/>
-                <FieldPassword password={password} label="Mot de passe"
-                               placeholder="Votre mot de passe"
-                               handleChange={(e) => setPassword(e.target.value)}/>
+                <FormField htmlFor="password">
+                    <label>Mot de passe</label>
+                    <input name="password" placeholder="Votre mot de passe" type="password" value={password}
+                           onChange={e => setPassword(e.target.value)}/>
+                </FormField>
             </FormGroup>
             <div className="form-group text-center">
                 <label/>

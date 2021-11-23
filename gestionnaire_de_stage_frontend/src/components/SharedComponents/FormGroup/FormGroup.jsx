@@ -9,7 +9,7 @@ export function FormGroup(props) {
 
     if (repartition)
         return <>
-            <div className="form-group row">
+            <div className="form-group row mb-3">
                 {React.Children.map(children, (child, index) => {
                     return (<div className={`col-md-${repartition[index]}`} key={index}>
                         {child}
