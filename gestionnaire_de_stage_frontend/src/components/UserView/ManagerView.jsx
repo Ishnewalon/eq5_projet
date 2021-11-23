@@ -10,19 +10,8 @@ import StartContract from "../Contract/StartContract";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useAuth} from "../../services/use-auth";
 import RapportsView from "../Admin/RapportsView";
-import {
-    RapportOfferInvalid,
-    RapportOfferValid,
-    RapportStudentSignIn,
-    RapportStudentsNotYetEvaluated,
-    RapportStudentStatus,
-    RapportStudentsWithCompanyNotYetEvaluated,
-    RapportStudentWithInvalidCv,
-    RapportStudentWithoutCv
-} from "../Admin/Rapports";
 import CreateSession from "../Sessions/CreateSession";
 import ContractsSigned from '../Contract/ContractsSigned';
-import OfferApplicationsRapportView from "../OfferApplications/OfferApplicationsRapportView";
 import {Title} from "../SharedComponents/Title/Title";
 
 export default function ManagerView() {
@@ -76,48 +65,8 @@ export default function ManagerView() {
                     <CreateSession/>
                 </ContainerBox>
             </Route>
-            <Route exact path={`${path}/rapports`}>
-                <Title>Rapports</Title>
+            <Route path={`${path}/rapports`}>
                 <RapportsView/>
-            </Route>
-            <Route path={`${path}/rapports/1`}>
-                <Title>Offres de Stage</Title>
-                <ContainerBox>
-                    <RapportOfferValid/>
-                </ContainerBox>
-            </Route>
-            <Route path={`${path}/rapports/2`}>
-                <Title>Offres de Stage non validées</Title>
-                <ContainerBox>
-                    <RapportOfferInvalid/>
-                </ContainerBox>
-            </Route>
-            <Route path={`${path}/rapports/3`}>
-                <Title>Liste des étudiants sans Cv</Title>
-                <RapportStudentWithoutCv/>
-            </Route>
-            <Route path={`${path}/rapports/4`}>
-                <Title>Liste des étudiants inscrits</Title>
-                <RapportStudentSignIn/>
-            </Route>
-            <Route path={`${path}/rapports/5`}>
-                <Title>Liste des étudiants avec des Cv Invalides</Title>
-                <RapportStudentWithInvalidCv/>
-            </Route>
-            <Route path={`${path}/rapports/6`}>
-                <Title>Status de tous les étudiants</Title>
-                <RapportStudentStatus/>
-            </Route>
-            <Route path={`${path}/rapports/7`}>
-                <Title>Les étudiants pas encore évalués</Title>
-                <RapportStudentsNotYetEvaluated/>
-            </Route>
-            <Route path={`${path}/rapports/8`}>
-                <Title>Les étudiants dont la compagnie n'a pas encore été évaluée</Title>
-                <RapportStudentsWithCompanyNotYetEvaluated/>
-            </Route>
-            <Route path={`${path}/rapports/offer`}>
-                <OfferApplicationsRapportView/>
             </Route>
         </>
     )

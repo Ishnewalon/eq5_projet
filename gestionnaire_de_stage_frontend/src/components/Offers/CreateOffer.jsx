@@ -7,6 +7,7 @@ import {useAuth} from "../../services/use-auth";
 import {createOffer} from "../../services/offer-service";
 import FieldAddress from "../SharedComponents/Fields/FieldAddress";
 import OfferDTO from "../../models/OfferDTO";
+import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 
 
 export default function CreateOffer() {
@@ -60,7 +61,7 @@ export default function CreateOffer() {
         </FormField>
     )
 
-    return (<>
+    return (<ContainerBox>
         <FormGroup>
             <FormField>
                 <label>Titre</label>
@@ -133,12 +134,13 @@ export default function CreateOffer() {
         <FormGroup>
             <FormField htmlFor='nbHeureSemaine'>
                 <label>Nombre de heures par semaine</label>
-                <input name='nbHeureSemaine' type="text" placeholder='Nombre de heures par semaine' value={nbHeureSemaine} onChange={e => setNbHeureSemaine(e.target.value)}/>
+                <input name='nbHeureSemaine' type="text" placeholder='Nombre de heures par semaine'
+                       value={nbHeureSemaine} onChange={e => setNbHeureSemaine(e.target.value)}/>
             </FormField>
         </FormGroup>
         <div className="form-group text-center">
             <button className="btn btn-primary mt-3" onClick={addOffer}>Ajouter</button>
         </div>
-    </>);
+    </ContainerBox>);
 }
 

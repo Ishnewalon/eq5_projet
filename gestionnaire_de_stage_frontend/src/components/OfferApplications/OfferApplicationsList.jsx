@@ -4,7 +4,7 @@ import {getStudentApplicationsOffer} from "../../services/offerAppService";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import {Title} from "../SharedComponents/Title/Title";
 
-export default function OfferApplicationsRapportView() {
+export default function OfferApplicationsList() {
 
     const location = useLocation();
     const [offerApplications, setOfferApplications] = useState([])
