@@ -43,7 +43,7 @@ public class OfferApplicationController {
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Offre ou étudiant non existant!"));
+                    .body(new ResponseMessage(e.getMessage()));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
@@ -65,7 +65,7 @@ public class OfferApplicationController {
         try {
             offerApplicationList = offerApplicationService.getAllByOfferCreatorEmail(email);//SESSION : get only offer of current session or future
             curriculumDTOList = curriculumService.mapToCurriculumDTOList(offerApplicationList);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
@@ -78,15 +78,7 @@ public class OfferApplicationController {
         try {
             OfferApplication offerApplication = offerApplicationService.setInterviewDate(offerAppID, date);//SESSION : check if offer is not outdated
             return ResponseEntity.ok(offerApplication);
-        } catch (DateNotValidException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Impossible de trouver l'offre avec cette ID!"));
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
@@ -98,7 +90,7 @@ public class OfferApplicationController {
         try {
             List<OfferApplication> offerApplicationList = offerApplicationService.getAllByOfferStatusAndStudentID(Status.CV_ENVOYE, studentID);
             return ResponseEntity.ok(offerApplicationList);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
@@ -110,11 +102,7 @@ public class OfferApplicationController {
         List<OfferApplication> offerApplicationList;
         try {
             offerApplicationList = offerApplicationService.getOffersApplicationsStageTrouver(id);//SESSION : get application of current session and future
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le gestionnaire n'existe pas!"));
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
@@ -127,11 +115,7 @@ public class OfferApplicationController {
         List<OfferApplication> offerApplicationList;
         try {
             offerApplicationList = offerApplicationService.getAllOffersStudentAppliedAndStatusWaiting(id);//SESSION : get offers of current session and future
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("L'étudiant n'existe pas"));
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
@@ -144,14 +128,10 @@ public class OfferApplicationController {
         String message;
         try {
             message = offerApplicationService.updateStatus(updateStatusDTO);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Offre non existante!"));
         }
         return ResponseEntity.ok(new ResponseMessage(message));
     }
@@ -161,11 +141,7 @@ public class OfferApplicationController {
         List<OfferApplication> offerApplicationList;
         try {
             offerApplicationList = offerApplicationService.getAllOffersStudentApplied(id);
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("L'étudiant n'existe pas"));
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
