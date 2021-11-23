@@ -198,7 +198,7 @@ public class OfferControllerTest {
     @Test
     public void testUpdateOffer_withInvalidId() throws Exception {
         dummyOffer = getDummyOffer();
-        when(offerService.validation(any())).thenThrow(new IdDoesNotExistException());
+        when(offerService.validation(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'offre associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/validate")
@@ -208,7 +208,7 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Offre non existante!");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'offre associé à cet identifiant");
     }
 
 

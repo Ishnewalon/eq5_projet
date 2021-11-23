@@ -38,7 +38,7 @@ public class OfferController {
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("L'id de la session n'existe pas"));
+                    .body(new ResponseMessage(e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
@@ -54,7 +54,7 @@ public class OfferController {
         List<Offer> offers;
         try {
             offers = offerService.getOffersByDepartment(department);//TODO: get only offers non applied
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
@@ -71,7 +71,7 @@ public class OfferController {
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Offre non existante!"));
+                    .body(new ResponseMessage(e.getMessage()));
         } catch (IllegalArgumentException ie) {
             return ResponseEntity
                     .badRequest()

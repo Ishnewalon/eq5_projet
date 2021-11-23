@@ -139,7 +139,7 @@ public class OfferService {
 
     public Offer validation(ValidationOffer validationOffer) throws IdDoesNotExistException, OfferAlreadyTreatedException {
         Assert.isTrue(validationOffer.getId() != null, "L'id est null");
-        if (!offerRepository.existsById(validationOffer.getId())) throw new IdDoesNotExistException();
+        if (!offerRepository.existsById(validationOffer.getId())) throw new IdDoesNotExistException("Il n'y a pas d'offre associé à cet identifiant");
         if (offerRepository.existsByIdAndValidNotNull(validationOffer.getId()))
             throw new OfferAlreadyTreatedException();
 
