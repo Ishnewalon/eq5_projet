@@ -1,15 +1,15 @@
 <template>
-  <div class="container bg-secondary my-2">
-    <div class="d-flex justify-content-between flex-column">
-      <pdf :src="pdfUrl"></pdf>
-        <form @submit.prevent="startContract">
-          <label>Signature</label>
-          <input type="text" placeholder="Entrez votre signature" class="w-100"
-                 v-on:change="e => setSignature(e.target.value)"/>
-          <h6 class="text-white text-center mt-3">En appuyant sur envoyer, vous confirmez avoir lu le
-            contrat et que la signature entrée correspond à la votre.</h6>
-          <button class="btn btn-primary fw-bold w-100 mb-4 mt-0" type="submit">Signez le contrat</button>
-        </form>
+  <div class="container bg-secondary my-3 rounded">
+    <div class="d-flex justify-content-between flex-column text-white p-4">
+      <form @submit.prevent="startContract">
+        <h1>Contrat de {{contract.student.firstName}} {{contract.student.lastName}}</h1>
+        <label>Signature</label>
+        <input class="w-100" placeholder="Entrez votre signature" type="text"
+               v-on:change="e => setSignature(e.target.value)"/>
+        <h6 class="text-white text-center mt-3">En appuyant sur envoyer, vous confirmez avoir lu le
+          contrat et que la signature entrée correspond à la votre.</h6>
+        <button class="btn btn-primary fw-bold w-100 mb-4 mt-0" type="submit">Signez le contrat</button>
+      </form>
     </div>
   </div>
 </template>
@@ -18,8 +18,6 @@
 import toastErr from "sweetalert2";
 import {managerSignContract, monitorSignContract, studentSignContract} from "@/services/contrat-service";
 import {UserType} from "@/models/RegisterVars";
-import {toPdfBlob} from "@/services/utility";
-import pdf from "vue-pdf";
 
 export default {
   name: "ContractSignature",
@@ -29,7 +27,6 @@ export default {
       pdfUrl: ''
     }
   },
-  components: {pdf},
   props: {
     contract: {
       type: Object,
@@ -40,9 +37,6 @@ export default {
       default: UserType.STUDENT[0],
       required: true
     }
-  },
-  created() {
-    this.pdfUrl = window.URL.createObjectURL(toPdfBlob(this.contract.contractPDF));
   },
   methods: {
     setSignature(signature) {

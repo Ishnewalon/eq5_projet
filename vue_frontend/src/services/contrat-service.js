@@ -1,7 +1,7 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
 import Swal from "sweetalert2";
-import {UserType} from "@/models/RegisterVars";
 import toastErr from "sweetalert2";
+import {UserType} from "@/models/RegisterVars";
 
 const url = `${urlBackend}/contracts`;
 
@@ -27,7 +27,7 @@ async function signContract(userType, signature, contractId) {
                     }
 
                     if (response.status === 400) {
-                        Swal.fire({text: body.message, icon:'error'})
+                        Swal.fire({text: body.message, icon: 'error'})
                     }
 
                     return response.ok;
@@ -91,10 +91,10 @@ export async function startSignerFetch(idOfferApplication, idManager) {
         response => {
             return response.json().then((body) => {
                 if (response.ok)
-                    Swal.fire({title: body.message, icon:'success'})
+                    Swal.fire({title: body.message, icon: 'success'})
 
                 if (response.status === 400)
-                    Swal.fire({title: body.message, icon:'error'})
+                    Swal.fire({title: body.message, icon: 'error'})
 
                 return response.ok;
             })

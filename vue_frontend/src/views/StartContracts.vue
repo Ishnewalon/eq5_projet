@@ -13,9 +13,11 @@
         </thead>
         <tbody>
         <tr v-for="(offerApplication, index) in offerApplications" :key="index">
-          <th scope="row">{{offerApplication.id}}</th>
-          <td>{{`${offerApplication?.curriculum?.student.firstName} ${offerApplication?.curriculum?.student.lastName}`}}</td>
-          <td>{{offerApplication.offer.title}}</td>
+          <th scope="row">{{ offerApplication.id }}</th>
+          <td>
+            {{ `${offerApplication?.curriculum?.student.firstName} ${offerApplication?.curriculum?.student.lastName}` }}
+          </td>
+          <td>{{ offerApplication.offer.title }}</td>
           <td>
             <div class="btn-group">
               <button class="btn btn-outline-success"
@@ -55,7 +57,7 @@ export default {
     startSigner(offerApplicationId) {
       startSignerFetch(offerApplicationId, this.userId).then((ok) => {
         if (ok)
-            this.offerApplications = this.offerApplications.filter(offApp => offApp.id !== offerApplicationId)
+          this.offerApplications = this.offerApplications.filter(offApp => offApp.id !== offerApplicationId)
       })
     }
   },

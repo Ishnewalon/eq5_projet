@@ -70,7 +70,7 @@ const routes = [
         beforeEnter: guardRoute
     },
     {
-        path:'/student/sign_contract',
+        path: '/student/sign_contract',
         name: 'Signature du contrat',
         component: ContractToSignStudent,
         beforeEnter: guardRoute
@@ -88,10 +88,10 @@ const routes = [
         beforeEnter: guardRoute
     },
     {
-        path:'/monitor/sign_contracts',
+        path: '/monitor/sign_contracts',
         name: 'Signature des contrats',
         component: ContractsToSign,
-        props:{
+        props: {
             userType: 'monitor'
         },
         beforeEnter: guardRoute
@@ -109,10 +109,10 @@ const routes = [
         beforeEnter: guardRoute
     },
     {
-        path:'/manager/sign_contracts',
+        path: '/manager/sign_contracts',
         name: 'Signature des contrats',
         component: ContractsToSign,
-        props:{
+        props: {
             userType: 'manager'
         },
         beforeEnter: guardRoute
@@ -125,7 +125,7 @@ const routes = [
     },
     {
         path: '/manager/start_contracts',
-        name:'Démarrage des contrats',
+        name: 'Démarrage des contrats',
         component: StartContracts,
         beforeEnter: guardRoute
     },

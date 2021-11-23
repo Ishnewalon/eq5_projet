@@ -8,7 +8,7 @@ import ContractSignature from "@/views/ContractSignature";
 
 export default {
   name: "ContractToSignStudent",
-  data(){
+  data() {
     return {
       contract: null,
       id: null

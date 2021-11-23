@@ -1,8 +1,8 @@
 <template>
   <ul>
     <li v-for="(child, index) in contracts" :key="index">
-      <ContractSignature @remove="removeContract(index)" :userType="userType"
-                         :contract="child"/>
+      <ContractSignature :contract="child" :userType="userType"
+                         v-on:remove="removeContract(index)"/>
     </li>
   </ul>
 </template>
