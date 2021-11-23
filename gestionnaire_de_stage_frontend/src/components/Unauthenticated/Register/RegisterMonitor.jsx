@@ -54,11 +54,17 @@ export default function RegisterMonitor() {
 
     const prevStep = () => {
         setCurentStep(previousStep[previousStep.length - 1]);
-        setPrevStep(prev => prev ? prev.pop() : [])
+        setPrevStep(prev => {
+            prev.pop()
+            return prev
+        });
     }
 
     const nextStep = (current, next) => {
-        setPrevStep(prevs => prevs ? [...prevs, current] : [current]);
+        setPrevStep(prev => {
+            prev.push(current);
+            return prev;
+        })
         setCurentStep(next);
     }
 
