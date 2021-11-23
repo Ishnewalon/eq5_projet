@@ -10,6 +10,8 @@ import Login from "./components/Unauthenticated/Login";
 import {Title} from "./components/SharedComponents/Title/Title";
 import Register from "./components/Unauthenticated/Register/Register";
 import PropTypes from "prop-types";
+import ForgotPassword from "./components/Unauthenticated/ForgotPassword";
+import ResetPassword from "./components/Unauthenticated/ResetPassword";
 
 function App() {
     return <AuthProvider>
@@ -28,6 +30,18 @@ function App() {
                         <Title>Inscription</Title>
                         <Register/>
                     </RequiredRoute>
+                    <Route path="/reset_password/:token">
+                        <RequireNoAuth>
+                            <Title>Réinitialiser votre mot de passe</Title>
+                            <ResetPassword/>
+                        </RequireNoAuth>
+                    </Route>
+                    <Route exact path="/forgot_password">
+                        <RequireNoAuth>
+                            <Title>Mot de passe oublié</Title>
+                            <ForgotPassword/>
+                        </RequireNoAuth>
+                    </Route>
                     <Route exact path="/404" component={NotFound}/>
                     <Redirect to="/404"/>
                 </Switch>
