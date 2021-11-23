@@ -44,7 +44,7 @@ export default function StepMonitor({
         <FormGroup>
             <FormField htmlFor="postalCode">
                 <label>Code Postale</label>
-                <input name="postalCode" placeholder="XXX 123" type="text"
+                <input name="postalCode" placeholder="H0H 0H0" type="text"
                        value={postalCode} onChange={handleChange}/>
             </FormField>
         </FormGroup>

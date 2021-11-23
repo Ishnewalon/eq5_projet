@@ -8,9 +8,7 @@ import {FormField} from "../../../SharedComponents/FormField/FormField";
 
 export default function StepInformationGeneral({prevStep, nextStep, handleChange, lastName, firstName, email, phone}) {
 
-    const next = (val) => {
-        nextStep(val);
-    }
+    const next = (val) => nextStep(val);
 
 
     return (<>

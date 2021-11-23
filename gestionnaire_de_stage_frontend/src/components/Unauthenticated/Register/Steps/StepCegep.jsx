@@ -8,7 +8,7 @@ import {FormField} from "../../../SharedComponents/FormField/FormField";
 export default function StepCegep({prevStep, nextStep, updateUserType, handleChange, matricule}) {
     const next = (matricule, val) => {
         if (!matricule) {
-            toastErr.fire({title: 'Matricule invalid!'}).then()
+            toastErr.fire({title: 'Matricule invalide!'}).then()
             return
         }
         if (matricule.toString().length === 5)
@@ -31,9 +31,7 @@ export default function StepCegep({prevStep, nextStep, updateUserType, handleCha
                 <label/>
                 <div>
                     <button className="btn btn-primary" type={"button"} onClick={prevStep}>Précédent</button>
-                    <button className="btn btn-primary" type={"button"} onClick={() => {
-                        next(matricule, Step.GENERAL)
-                    }}>Suivant
+                    <button className="btn btn-primary" type={"button"} onClick={() => next(matricule, Step.GENERAL)}>Suivant
                     </button>
                 </div>
             </div>

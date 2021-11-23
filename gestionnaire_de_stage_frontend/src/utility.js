@@ -6,6 +6,7 @@ export const regexEmail = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"
 export const regexPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 export const regexCodePostal = /^([A-Za-z]\s?[0-9]){3}$/;
 export const regexMatriculeEtudiant = /^\d{7}$/;
+export const regexPassword = /^[0-9a-zA-Z]{8,64}/;
 
 export const swalErr = Swal.mixin({
     icon: 'error',
