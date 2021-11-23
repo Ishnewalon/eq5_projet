@@ -112,7 +112,7 @@ public class CurriculumService {
         if (curriculumOptional.isEmpty())
             throw new IdDoesNotExistException();
         if (curriculumOptional.get().getIsValid() != null)
-            throw new CurriculumAlreadyTreatedException();
+            throw new CurriculumAlreadyTreatedException("Ce curriculum a déjà été traité");
 
         Curriculum curriculum = curriculumOptional.get();
         curriculum.setIsValid(valid);

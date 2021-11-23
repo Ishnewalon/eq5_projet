@@ -215,7 +215,7 @@ public class CurriculumControllerTest {
     @Test
     public void testValidate_whenCurriculumAlreadyTreated() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, true);
-        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(CurriculumAlreadyTreatedException.class);
+        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(new CurriculumAlreadyTreatedException("Ce curriculum a déjà été traité"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/curriculum/validate")
@@ -224,7 +224,7 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Curriculum déjà traité!");
+        assertThat(response.getContentAsString()).contains("Ce curriculum a déjà été traité");
     }
 
     @Test

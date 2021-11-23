@@ -97,7 +97,7 @@ public class CurriculumController {
         } catch (CurriculumAlreadyTreatedException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Curriculum déjà traité!"));
+                    .body(new ResponseMessage(e.getMessage()));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
