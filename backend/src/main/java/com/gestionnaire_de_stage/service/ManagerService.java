@@ -22,7 +22,7 @@ public class ManagerService {
     public Manager create(Manager manager) throws ManagerAlreadyExistsException {
         Assert.isTrue(manager != null, "Le gestionnaire est null");
         if (isNotValid(manager)) {
-            throw new ManagerAlreadyExistsException();
+            throw new ManagerAlreadyExistsException("Un compte existe déjà pour ce gestionnaire");
         }
         return managerRepository.save(manager);
     }
