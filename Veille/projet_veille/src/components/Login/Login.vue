@@ -90,7 +90,6 @@ export default {
                         routes: [{path: `/dashboard`, component: Dashboard}]
                     })
                     alert("Vous êtes connecté")
-                    location.reload()
                     router.push({path: `/dashboard`})
                 })
                 .catch((error) => {

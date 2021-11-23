@@ -12,7 +12,8 @@
                 <hr>
             </li>
         </ul>
-        <p>{{this.msgError}}</p>
+        <p class="error">{{this.msgError}}</p>
+        <p class="succes">{{this.msgSuccess}}</p>
     </div>
 </template>
 
@@ -26,6 +27,7 @@ export default {
             listOffers: [{}],
             user: sessionStorage.getItem("currentUser") != null ? JSON.parse(sessionStorage.getItem("currentUser")) : {},
             msgError: "",
+            msgSuccess: ""
         }
     },
     methods: {
@@ -52,8 +54,8 @@ export default {
                 }
             });
             const data = await response.json();
-            if (data.status === "success") {
-                this.msgError = data.message;
+            if (response.status === 201) {
+                this.msgSuccess = data.message;
                 alert("Votre candidature a été soumise avec succès");
             } else {
                 this.msgError = data.message;
@@ -71,8 +73,13 @@ export default {
 
 <style scoped>
 p {
-    color: red;
     font-size: x-large;
+}
+.error {
+    color: red;
+}
+.succes {
+    color: green;
 }
 
 li {
