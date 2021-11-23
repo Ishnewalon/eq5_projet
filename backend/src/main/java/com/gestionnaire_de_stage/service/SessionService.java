@@ -57,7 +57,7 @@ public class SessionService {
     public Session getOneBySessionId(Long idSession) throws IdDoesNotExistException {
         Assert.isTrue(idSession != null, "L'id de la session est obligatoire");
         if (!sessionRepository.existsById(idSession))
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de session associé à cet identifiant");
         return sessionRepository.getById(idSession);
     }
 }

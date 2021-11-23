@@ -187,7 +187,7 @@ public class StudentControllerTest {
         Student student = getDummyStudent();
         Curriculum curriculum = getDummyCurriculum();
         when(studentService.getOneByID(any()))
-                .thenThrow(new IdDoesNotExistException("Aucun étudiant trouvé pour cet ID"));
+                .thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
@@ -196,7 +196,7 @@ public class StudentControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Aucun étudiant trouvé pour cet ID");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
     }
 
     @Test

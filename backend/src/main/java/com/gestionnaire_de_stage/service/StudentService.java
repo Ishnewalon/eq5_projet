@@ -33,7 +33,7 @@ public class StudentService {
     public Student getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (isIDNotValid(aLong)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
         }
         return studentRepository.getById(aLong);
     }
@@ -45,7 +45,7 @@ public class StudentService {
     public Student update(Student student) throws IdDoesNotExistException {
         Assert.isTrue(student != null, "L'étudiant est null");
         if (isIDNotValid(student.getId())) 
-             throw new IdDoesNotExistException();
+             throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
         return studentRepository.save(student);
     }
 

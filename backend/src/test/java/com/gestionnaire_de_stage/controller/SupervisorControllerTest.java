@@ -153,7 +153,7 @@ public class SupervisorControllerTest {
     @Test
     public void testAssign_withInvalidSupervisorAndStudent() throws Exception {
         AssignDto assignDto = new AssignDto(1L, 2L);
-        when(supervisorService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
+        when(supervisorService.getOneByID(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas de superviseur associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/supervisor/assign/student")
@@ -163,7 +163,7 @@ public class SupervisorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Inexistant");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de superviseur associé à cet identifiant");
     }
 
     @Test
@@ -228,14 +228,14 @@ public class SupervisorControllerTest {
     @Test
     public void testGetAllStudentsStatus_withInvalidSupervisorId() throws Exception {
         Supervisor dummySupervisor = getDummySupervisor();
-        when(supervisorService.getStudentsStatus(any())).thenThrow(IdDoesNotExistException.class);
+        when(supervisorService.getStudentsStatus(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas de superviseur associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Ce superviseur n'existe pas");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de superviseur associé à cet identifiant");
     }
 
     private Supervisor getDummySupervisor() {

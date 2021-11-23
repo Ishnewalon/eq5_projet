@@ -40,7 +40,7 @@ public class StudentController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas être null"));
+                    .body(new ResponseMessage(e.getMessage()));
         } catch (StudentAlreadyExistsException e) {
             return ResponseEntity
                     .badRequest()
