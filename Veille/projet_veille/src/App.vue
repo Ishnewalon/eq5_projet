@@ -4,6 +4,8 @@
         <span v-if="getUserRole() === 'etudiant'">
             |
             <router-link to="/upload-cv"> Televerser Cv</router-link>
+            |
+            <router-link to="/ApplyToOffer"> Appliquer</router-link>
         </span>
         <span v-if="getUserRole() === 'manager'">
             |

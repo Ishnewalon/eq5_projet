@@ -15,5 +15,7 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
 
     List<Offer> findAllByValidNull();
 
+    Offer getById(Long id);
+
     boolean existsByIdAndValidNotNull(Long id);
 }

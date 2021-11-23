@@ -55,7 +55,12 @@ const routes = [
                 prop: route.query.prop
             }
         }
-    }
+    },
+    {
+        path: '/ApplyToOffer',
+        name: 'ApplyToOffer',
+        component: () => import('../components/StudentView/ApplyToOffer')
+    },
 ]
 
 const router = createRouter({
