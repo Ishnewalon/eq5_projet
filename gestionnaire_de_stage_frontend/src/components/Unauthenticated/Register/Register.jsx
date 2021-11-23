@@ -10,6 +10,7 @@ import {useHistory} from "react-router-dom";
 import {useAuth} from "../../../services/use-auth";
 import {UserType} from "../../../enums/UserTypes";
 import {ContainerBox} from "../../SharedComponents/ContainerBox/ContainerBox";
+import {regexPassword, toastErr} from "../../../utility";
 
 
 export default function Register() {
@@ -54,13 +55,10 @@ export default function Register() {
         setStep(val);
     }
 
-    const updateUserType = (type) => {
-        setUserType(type)
-    }
+    const updateUserType = type => setUserType(type);
 
     const handleChange = (event) => {
-        let value = event.target.value;
-        let name = event.target.name;
+        const {value, name} = event.target;
 
         setUserInfo((prev) => {
             return {
@@ -73,6 +71,12 @@ export default function Register() {
     const endThis = (e) => {
         e.preventDefault();
         let user = null
+
+        if(!regexPassword.test(password)){
+            toastErr.fire({title: 'Le mot de passe doit être entre 8 et 64 caractères'}).then();
+            return;
+        }
+
         if (userType === UserType.STUDENT) {
             user = new Student(email, password, lastName, firstName, phone, matricule);
             auth.signupStudent(user).then(() => history.push("/login"));
