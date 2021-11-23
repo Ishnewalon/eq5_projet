@@ -29,14 +29,10 @@ public class MonitorController {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(createdMonitor);
-        } catch (MonitorAlreadyExistsException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Ce courriel existe déjà!"));//FIXME: Change message
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas être null"));//FIXME: Change message
+                    .body(new ResponseMessage(e.getMessage()));
         }
     }
 

@@ -51,7 +51,7 @@ public class MonitorControllerTest {
     @Test
     public void monitorSignupTest_withNullEntries() throws Exception {
         Monitor dummyMonitor = getDummyMonitor();
-        when(monitorService.create(any())).thenThrow(IllegalArgumentException.class);
+        when(monitorService.create(any())).thenThrow(new IllegalArgumentException("Le courriel ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/monitor/signup")
@@ -61,13 +61,13 @@ public class MonitorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("Le courriel ne peut pas être vide");
     }
 
     @Test
     public void monitorSignupTest_withInvalidEntries() throws Exception {
         Monitor dummyMonitor = getDummyMonitor();
-        when(monitorService.create(any())).thenThrow(MonitorAlreadyExistsException.class);
+        when(monitorService.create(any())).thenThrow(new MonitorAlreadyExistsException("Un compte existe déjà pour ce moniteur"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/monitor/signup")
@@ -76,7 +76,7 @@ public class MonitorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Ce courriel existe déjà!");
+        assertThat(response.getContentAsString()).contains("Un compte existe déjà pour ce moniteur");
     }
 
     @Test

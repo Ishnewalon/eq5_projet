@@ -23,7 +23,7 @@ public class MonitorService {
     public Monitor create(Monitor monitor) throws MonitorAlreadyExistsException, IllegalArgumentException {
         Assert.isTrue(monitor != null, "Monitor est null");
         if (emailAlreadyInUse(monitor))
-            throw new MonitorAlreadyExistsException();
+            throw new MonitorAlreadyExistsException("Un compte existe déjà pour ce moniteur");
         return monitorRepository.save(monitor);
     }
 
