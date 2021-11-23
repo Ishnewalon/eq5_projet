@@ -2,7 +2,7 @@ import React from "react";
 import FieldPassword from "../../../SharedComponents/Fields/FieldPassword";
 import {FormGroup} from "../../../SharedComponents/FormGroup/FormGroup";
 
-export default function StepPassword({prevStep, handleChange, password}) {
+export default function StepPassword({handleChange, password}) {
 
     return (<>
             <FormGroup>
@@ -11,9 +11,9 @@ export default function StepPassword({prevStep, handleChange, password}) {
             </FormGroup>
             <div className="form-group text-center">
                 <label/>
-                <div>
-                    <button className="btn btn-primary" type={"button"} onClick={prevStep}>Précédent</button>
-                    <button className="btn btn-primary" type={"submit"}>Créé le compte</button>
+                <div className="btn-group">
+                    <input className="btn btn-primary" type="submit" name="prevv" value="Précédent"/>
+                    <input className="btn btn-primary" type="submit" name="nextt" value="Suivant"/>
                 </div>
             </div>
         </>

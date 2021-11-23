@@ -12,12 +12,14 @@ import Register from "./components/Unauthenticated/Register/Register";
 import PropTypes from "prop-types";
 import ForgotPassword from "./components/Unauthenticated/ForgotPassword";
 import ResetPassword from "./components/Unauthenticated/ResetPassword";
+import RegisterMonitor from "./components/Unauthenticated/Register/RegisterMonitor";
 
 function App() {
     return <AuthProvider>
         <Router>
             <Navbar/>
             <div className="container">
+                <RegisterMonitor/>
                 <Switch>
                     <RequiredRoute path="/dashboard" component={RequireAuth}>
                         <Dashboard/>
