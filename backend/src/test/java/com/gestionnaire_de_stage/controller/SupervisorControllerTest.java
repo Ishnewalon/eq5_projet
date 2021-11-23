@@ -122,7 +122,7 @@ public class SupervisorControllerTest {
     public void testSupervisorLogin_withNullEntries() throws Exception {
         String email = "sinl@gmail.com";
         String password = "weightofworld";
-        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
+        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenThrow(new IllegalArgumentException("Courriel et mot de passe ne peuvent pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
@@ -131,7 +131,7 @@ public class SupervisorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
+        assertThat(response.getContentAsString()).contains("Courriel et mot de passe ne peuvent pas être vide");
     }
 
     @Test
@@ -170,7 +170,7 @@ public class SupervisorControllerTest {
     public void testSupervisorLogin_withInvalidEntries() throws Exception {
         String email = "sinl@gmail.com";
         String password = "weightofworld";
-        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenThrow(EmailAndPasswordDoesNotExistException.class);
+        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenThrow(new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
@@ -179,7 +179,7 @@ public class SupervisorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
+        assertThat(response.getContentAsString()).contains("Courriel ou mot de passe invalid");
     }
 
     @Test

@@ -47,14 +47,10 @@ public class MonitorController {
         try {
             Monitor monitor = monitorService.getOneByEmailAndPassword(email, password);
             return ResponseEntity.ok(monitor);
-        } catch (EmailAndPasswordDoesNotExistException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));//FIXME: Change message
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));//FIXME: Change message
+                    .body(new ResponseMessage(e.getMessage()));
         }
     }
 }

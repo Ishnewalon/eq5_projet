@@ -49,7 +49,7 @@ public class MonitorService {
         Assert.isTrue(email != null, "Le courriel est null");
         Assert.isTrue(password != null, "Le mot de passe est null");
         if (!monitorRepository.existsByEmailAndPassword(email, password))
-            throw new EmailAndPasswordDoesNotExistException();
+            throw new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid");
         return monitorRepository.findMonitorByEmailAndPassword(email, password);
     }
 

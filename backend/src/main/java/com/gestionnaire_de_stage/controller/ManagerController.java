@@ -23,14 +23,10 @@ public class ManagerController {
         try {
             Manager manager = managerService.getOneByEmailAndPassword(email, password);
             return ResponseEntity.ok(manager);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));//FIXME: Change message
-        } catch (EmailAndPasswordDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));//FIXME: Change message
+                    .body(new ResponseMessage(e.getMessage()));
         }
     }
 }
