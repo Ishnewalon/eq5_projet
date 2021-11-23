@@ -12,6 +12,8 @@
             <router-link to="/monitor-view">Liste étudiants</router-link>
             |
             <router-link to="/AddOffer">Créer offre</router-link>
+            |
+             <router-link to="/ValidationOffers">Validation des offres</router-link>
         </span>
         <span v-if="getUserRole() === 'moniteur'">
             |

@@ -8,11 +8,10 @@
                 <input name="titre" v-model.lazy="offerDTO.title" type="text" placeholder="Titre" required/>
                 <input name="description" v-model.lazy="offerDTO.description" type="text" placeholder="Description"
                        required/>
-                <select name="session" v-model.lazy="offerDTO.idSession" required>
+                <select v-model.lazy="offerDTO.idSession" required>
                     <option disabled value="">Choisir une session</option>
-                    <option v-for="(session, i) in this.listSession" :value="session.id" :key="i">{{
-                            session.typeSession
-                        }} {{ session.year }}
+                    <option v-for="(session, i) in this.listSession" :value="session.id" :key="i">
+                        {{ session.typeSession }} {{ session.year }}
                     </option>
                 </select>
                 <input name="address" v-model.lazy="offerDTO.address" type="text" placeholder="Adresse de la compagnie"
@@ -88,7 +87,7 @@ export default {
                     console.log(error);
                 });
         },
-        resetFields(){
+        resetFields() {
             this.offerDTO.title = "";
             this.offerDTO.description = "";
             this.offerDTO.address = "";

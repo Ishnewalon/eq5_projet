@@ -1,13 +1,16 @@
 <template>
     <div>
         <ul>
-            <li v-for="(item, i) in this.liste" :key="i">
-                {{ item.student.lastName }} {{ item.student.firstName }}
+            <li v-for="(offer, i) in this.liste" :key="i">
+                {{ offer.title }}: {{ offer.description }}
+                <router-link :to="{ path: '/offer/detail', query: { offer: offer }}">
+                    <button class="btn btn-details">Détails</button>
+                </router-link>
                 <button class="btn btn-validate"
-                        v-on:click="validateCv(item.id, true)">Valide
+                        v-on:click="validateOffer(offer.id, true)">Valide
                 </button>
                 <button class="btn btn-invalidate"
-                        v-on:click="validateCv(item.id, false)">Invalide
+                        v-on:click="validateOffer(offer.id, false)">Invalide
                 </button>
                 <hr>
             </li>
@@ -21,17 +24,18 @@
 import axios from "axios";
 
 export default {
-    name: "ValidationCv",
+    name: "ValidationOffers",
     data() {
         return {
             liste: [{}],
             msg: "",
-            msgNb: ""
+            msgNb: "",
+            pluriel: "",
         }
     },
     methods: {
-        getListeCv: function () {
-            axios.get('http://localhost:8181/curriculum/invalid/students')
+        getListOffers: function () {
+            axios.get('http://localhost:8181/offers/not_validated')
                 .then(response => {
                     this.liste = response.data;
                     this.checkListe();
@@ -40,11 +44,11 @@ export default {
                     console.log(error);
                 });
         },
-        validateCv: function (id, valid) {
-            axios.post('http://localhost:8181/curriculum/validate', {id, valid})
+        validateOffer: function (id, valid) {
+            axios.post('http://localhost:8181/offers/validate', {id, valid})
                 .then(response => {
                     this.msg = response.data.message;
-                    this.getListeCv();
+                    this.getListOffers();
                 })
                 .catch(error => {
                     console.log(error);
@@ -52,15 +56,16 @@ export default {
         },
         checkListe: function () {
             if (this.liste.length === 0) {
-                this.msgNb = "Aucun CV à valider";
+                this.msgNb = "Aucune offre à valider";
             } else {
-                this.msgNb = "Encore " + this.liste.length + " CV à valider";
+
+                this.liste.length > 1 ? this.pluriel = "Offres à valider" : this.pluriel = "Offre à valider";
+                this.msgNb = "Encore " + this.liste.length + " " + this.pluriel;
             }
         }
     },
     created() {
-        this.getListeCv();
-
+        this.getListOffers();
     },
 }
 </script>
@@ -92,5 +97,8 @@ button {
 }
 .btn-invalidate {
     background-color: red;
+}
+.btn-details{
+    background-color: blue;
 }
 </style>

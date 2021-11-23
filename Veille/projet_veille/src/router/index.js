@@ -1,6 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router'
 
-
 const routes = [
     {
         path: '/home',
@@ -41,6 +40,16 @@ const routes = [
         path: '/AddOffer',
         name: 'AddOffer',
         component: () => import('../components/ManagerView/AddOffer')
+    },
+    {
+        path: '/ValidationOffers',
+        name: 'ValidationOffers',
+        component: () => import('../components/ManagerView/ValidateOffers')
+    },
+    {
+        path: '/offer/detail',
+        name: 'DetailsOffer',
+        component: () => import('../components/ManagerView/DetailsOffer')
     }
 ]
 
