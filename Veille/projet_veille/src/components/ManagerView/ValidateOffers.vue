@@ -3,7 +3,7 @@
         <ul>
             <li v-for="(offer, i) in this.liste" :key="i">
                 {{ offer.title }}: {{ offer.description }}
-                <router-link :to="{ path: '/offer/detail', query: { offer: offer }}">
+                <router-link :to="{ name: 'DetailsOffer', query: { prop : offer.id }}">
                     <button class="btn btn-details">Détails</button>
                 </router-link>
                 <button class="btn btn-validate"

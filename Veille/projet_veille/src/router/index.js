@@ -49,7 +49,12 @@ const routes = [
     {
         path: '/offer/detail',
         name: 'DetailsOffer',
-        component: () => import('../components/ManagerView/DetailsOffer')
+        component: () => import('../components/ManagerView/DetailsOffer'),
+        props(route) {
+            return {
+                prop: route.query.prop
+            }
+        }
     }
 ]
 

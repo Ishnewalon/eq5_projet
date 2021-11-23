@@ -68,6 +68,11 @@ public class OfferController {
         return ResponseEntity.ok(offers);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOfferById(@PathVariable Long id) {
+        return ResponseEntity.ok(offerService.getOfferById(id));
+    }
+
     @PostMapping("/validate")
     public ResponseEntity<?> validateOffer(@RequestBody ValidationOffer validationOffer) {
         try {

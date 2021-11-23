@@ -149,4 +149,7 @@ public class OfferService {
         return offerRepository.save(offer);
     }
 
+    public Offer getOfferById(Long id) {
+        return offerRepository.getById(id);
+    }
 }
