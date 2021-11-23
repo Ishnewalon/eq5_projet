@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -25,13 +24,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
@@ -151,6 +146,40 @@ public class CurriculumControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("L'étudiant est null");
+    }
+
+    @Test
+    public void testGetAllCurriculumByStudentId() throws Exception {
+        Long studentId = 1L;
+        List<Curriculum> dummyCurriculumList = getDummyCurriculumList();
+        when(curriculumService.findAllByStudentId(any())).thenReturn(dummyCurriculumList);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/curriculum/student/{0}", studentId)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        List<Curriculum> returnedCurriculum = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(returnedCurriculum).containsAll(dummyCurriculumList);
+    }
+
+    @Test
+    public void testGetAllCurriculumByStudentId_withNullId() throws Exception {
+        Long studentId = 1L;
+        when(curriculumService.findAllByStudentId(any()))
+                .thenThrow(new IdDoesNotExistException("l'id de l'étudiant n'existe pas"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/curriculum/student/{0}", studentId)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("l'id de l'étudiant n'existe pas");
     }
 
     @Test
@@ -285,8 +314,8 @@ public class CurriculumControllerTest {
                 .thenReturn(studentCurriculumsDTO);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/curriculum/all_student/{studentID}", student.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/curriculum/all_student/{studentID}", student.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -304,8 +333,8 @@ public class CurriculumControllerTest {
                 .thenThrow(new IllegalArgumentException("L'etudiant ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/curriculum/all_student/{studentID}", student.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/curriculum/all_student/{studentID}", student.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -320,8 +349,8 @@ public class CurriculumControllerTest {
                 .thenThrow(IdDoesNotExistException.class);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/curriculum/all_student/{studentID}", student.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/curriculum/all_student/{studentID}", student.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();

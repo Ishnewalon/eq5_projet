@@ -130,7 +130,6 @@ public class CurriculumService {
     }
 
     public List<Curriculum> findAllByStudentId(Long id) throws IdDoesNotExistException {
-        Assert.notNull(id, "L'id de l'étudiant ne peut pas être null");
         Student student = studentService.getOneByID(id);
         return findAllByStudent(student);
     }

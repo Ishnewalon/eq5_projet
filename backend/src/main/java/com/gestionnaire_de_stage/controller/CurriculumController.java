@@ -9,7 +9,8 @@ import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.CurriculumService;
 import com.gestionnaire_de_stage.service.StudentService;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -57,11 +58,13 @@ public class CurriculumController {
 
     @GetMapping("/student/{id}")
     public ResponseEntity<?> getAllCurriculumByStudentId(@PathVariable Long id) {
-        List<Curriculum> curriculumList = null;
+        List<Curriculum> curriculumList;
         try {
             curriculumList = curriculumService.findAllByStudentId(id);
         } catch (Exception e) {
-            e.printStackTrace();
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity.ok(curriculumList);
     }

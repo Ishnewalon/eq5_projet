@@ -15,7 +15,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -142,7 +145,7 @@ public class CurriculumServiceTest {
 
         List<Curriculum> actualList = curriculumService.findAllByStudent(student);
 
-        assertThat(actualList).isEqualTo(curriculumList);;
+        assertThat(actualList).isEqualTo(curriculumList);
     }
 
     @Test
@@ -283,6 +286,17 @@ public class CurriculumServiceTest {
                 curriculumService.findOneById(34L));
     }
 
+    @Test
+    public void testFindAllByStudentId() throws Exception {
+        Student dummyStudent = getDummyStudent();
+        List<Curriculum> dummyCurriculumList = getDummyCurriculumList();
+        when(studentService.getOneByID(anyLong())).thenReturn(dummyStudent);
+        when(curriculumRepository.findAllByStudent(any())).thenReturn(dummyCurriculumList);
+
+        List<Curriculum> actualCurriculums = curriculumService.findAllByStudentId(dummyStudent.getId());
+
+        assertThat(actualCurriculums).isEqualTo(dummyCurriculumList);
+    }
 
     private Curriculum getDummyCurriculum() {
         Student dummyStudent = new Student();
