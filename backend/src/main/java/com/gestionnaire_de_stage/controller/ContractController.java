@@ -54,14 +54,10 @@ public class ContractController {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             HtmlConverter.convertToPdf(contractHtml, baos);
             contractService.fillPDF(contract, baos);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le id du contrat n'existe pas"));
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -103,14 +99,10 @@ public class ContractController {
         List<Contract> contractList;
         try {
             contractList = contractService.getAllUnsignedContractForMonitor(monitor_id);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(e.getMessage());
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le id du moniteur n'existe pas"));
         }
 
         return ResponseEntity.ok(contractList);
@@ -128,14 +120,10 @@ public class ContractController {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             HtmlConverter.convertToPdf(contractHtml, baos);
             contractService.fillPDF(contract, baos);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le id du contrat n'existe pas"));
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -147,16 +135,11 @@ public class ContractController {
         Contract contract;
         try {
             contract = contractService.getContractByStudentId(student_id);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(e.getMessage());
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le id de l'étudiant n'existe pas"));
         }
-
         return ResponseEntity.ok(contract);
     }
 
@@ -172,14 +155,10 @@ public class ContractController {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             HtmlConverter.convertToPdf(contractHtml, baos);
             contractService.fillPDF(contract, baos);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le id du contrat n'existe pas"));
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -203,8 +182,8 @@ public class ContractController {
         Contract studentContract;
         try {
             studentContract = contractService.getSignedContractByStudentId(student_id);
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity.badRequest().body(new ResponseMessage("Le id de l'étudiant n'existe pas"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity.ok(studentContract);
     }

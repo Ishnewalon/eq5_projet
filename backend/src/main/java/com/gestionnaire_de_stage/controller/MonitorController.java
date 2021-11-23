@@ -40,7 +40,6 @@ public class MonitorController {
         }
     }
 
-
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
 

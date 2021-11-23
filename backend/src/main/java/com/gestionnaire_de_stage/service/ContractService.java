@@ -56,7 +56,7 @@ public class ContractService {
         Assert.isTrue(managerSignature != null, "Il faut une signature");
         Assert.isTrue(contract_id != null, "L'id du contrat ne peut pas être null");
         if (isContractIdNotValid(contract_id))
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de contrat associé à cet identifiant");
 
         Contract contract = contractRepository.getContractByIdAndManagerSignatureNullAndMonitorSignatureNullAndStudentSignatureNullAndSession_YearGreaterThanEqual(contract_id, Year.now());
 
@@ -68,7 +68,7 @@ public class ContractService {
     public List<Contract> getAllUnsignedContractForMonitor(Long monitor_id) throws IdDoesNotExistException {
         Assert.isTrue(monitor_id != null, "L'id du moniteur ne peut pas être null");
         if (monitorService.isIdInvalid(monitor_id)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de moniteur associé à cet identifiant");
         }
         return contractRepository.getAllByOffer_CreatorIdAndMonitorSignatureNullAndManagerSignatureNotNullAndSession_YearGreaterThanEqual(monitor_id, Year.now());
     }
@@ -77,7 +77,7 @@ public class ContractService {
         Assert.isTrue(monitorSignature != null, "Il faut une signature");
         Assert.isTrue(contract_id != null, "L'id du contrat ne peut pas être null");
         if (isContractIdNotValid(contract_id)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de contrat associé à cet identifiant");
         }
         Contract contract = contractRepository.getContractByIdAndManagerSignatureNotNullAndMonitorSignatureNullAndStudentSignatureNull(contract_id);
         contract.setMonitorSignDate(LocalDate.now());
@@ -88,7 +88,7 @@ public class ContractService {
     public Contract getContractByStudentId(Long student_id) throws IdDoesNotExistException {
         Assert.isTrue(student_id != null, "L'id de l'étudiant ne peut pas être null");
         if (studentService.isIDNotValid(student_id)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
         }
         return contractRepository.getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNullAndSession_YearGreaterThanEqual(student_id, Year.now());
     }
@@ -108,7 +108,7 @@ public class ContractService {
         Assert.isTrue(studentSignature != null, "Il faut une signature");
         Assert.isTrue(contract_id != null, "L'id du contrat ne peut pas être null");
         if (isContractIdNotValid(contract_id)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de contrat associé à cet identifiant");
         }
         Contract contract = contractRepository.getContractByIdAndMonitorSignatureNotNullAndManagerSignatureNotNullAndStudentSignatureNull(contract_id);
         contract.setStudentSignDate(LocalDate.now());
@@ -168,7 +168,7 @@ public class ContractService {
     public Contract getSignedContractByStudentId(Long student_id) throws IdDoesNotExistException {
         Assert.isTrue(student_id != null, "L'id de l'étudiant ne peut pas être null");
         if (studentService.isIDNotValid(student_id)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
         }
         return contractRepository.getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNotNullAndSession_YearGreaterThanEqual(student_id, Year.now());
     }

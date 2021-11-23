@@ -176,7 +176,7 @@ public class ContractControllerTest {
         String uri = "/contracts/managerSign/" + managerSignature
                 + "/" + dummyContract.getId();
         when(contractService.addManagerSignature(any(), any()))
-                .thenThrow(IdDoesNotExistException.class);
+                .thenThrow(new IdDoesNotExistException("Il n'y a pas de contrat associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.put(uri)
@@ -185,7 +185,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le id du contrat n'existe pas");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de contrat associé à cet identifiant");
     }
 
     @Test
@@ -226,7 +226,7 @@ public class ContractControllerTest {
     public void testGetContractReadySignMonitor_withInvalidMonitorId() throws Exception {
         Monitor dummyMonitor = getDummyMonitor();
         when(contractService.getAllUnsignedContractForMonitor(any()))
-                .thenThrow(IdDoesNotExistException.class);
+                .thenThrow(new IdDoesNotExistException("Il n'y a pas de moniteur associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/contracts/monitor/" + dummyMonitor.getId())
@@ -235,7 +235,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le id du moniteur n'existe pas");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de moniteur associé à cet identifiant");
     }
 
     @Test
@@ -284,7 +284,7 @@ public class ContractControllerTest {
         String uri = "/contracts/monitorSign/" + monitorSignature
                 + "/" + dummyContract.getId();
         when(contractService.addMonitorSignature(any(), any()))
-                .thenThrow(IdDoesNotExistException.class);
+                .thenThrow(new IdDoesNotExistException("Il n'y a pas de contrat associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.put(uri)
@@ -293,7 +293,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le id du contrat n'existe pas");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de contrat associé à cet identifiant");
     }
 
     @Test
@@ -334,7 +334,7 @@ public class ContractControllerTest {
     public void testContractNeedsStudentSignature_withInvalidStudentId() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
         long student_id = 1L;
-        when(contractService.getContractByStudentId(any())).thenThrow(IdDoesNotExistException.class);
+        when(contractService.getContractByStudentId(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/contracts/student/" + student_id)
@@ -343,7 +343,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le id de l'étudiant n'existe pas");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
     }
 
     @Test
@@ -392,7 +392,7 @@ public class ContractControllerTest {
         String uri = "/contracts/studentSign/" + studentSignature
                 + "/" + dummyContract.getId();
         when(contractService.addStudentSignature(any(), any()))
-                .thenThrow(IdDoesNotExistException.class);
+                .thenThrow(new IdDoesNotExistException("Il n'y a pas de contrat associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.put(uri)
@@ -401,7 +401,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le id du contrat n'existe pas");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de contrat associé à cet identifiant");
     }
 
     @Test
@@ -495,7 +495,7 @@ public class ContractControllerTest {
     @Test
     public void testGetSignedContractByStudent_withNonExistentId() throws Exception{
         MAPPER.registerModule(new JavaTimeModule());
-        when(contractService.getSignedContractByStudentId(any())).thenThrow(IdDoesNotExistException.class);
+        when(contractService.getSignedContractByStudentId(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         long nonExistentId = 1000L;
         MvcResult mvcResult = mockMvc.perform(
@@ -505,7 +505,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le id de l'étudiant n'existe pas");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
     }
 
     private Contract getDummyContract() {

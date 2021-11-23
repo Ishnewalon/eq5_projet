@@ -30,7 +30,7 @@ public class MonitorService {
     public Monitor getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (!monitorRepository.existsById(aLong))
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de moniteur associé à cet identifiant");
         return monitorRepository.getById(aLong);
     }
 
@@ -41,7 +41,7 @@ public class MonitorService {
     public Monitor update(Monitor monitor) throws IdDoesNotExistException {
         Assert.isTrue(monitor != null, "Monitor est null");
         if (!monitorRepository.existsById(monitor.getId()))
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de moniteur associé à cet identifiant");
         return monitorRepository.save(monitor);
     }
 
@@ -56,7 +56,7 @@ public class MonitorService {
     public void deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (!monitorRepository.existsById(aLong))
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de moniteur associé à cet identifiant");
         monitorRepository.deleteById(aLong);
     }
 
