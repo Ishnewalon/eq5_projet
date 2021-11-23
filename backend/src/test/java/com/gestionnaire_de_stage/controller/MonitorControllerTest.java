@@ -123,6 +123,7 @@ public class MonitorControllerTest {
                         MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
+
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");

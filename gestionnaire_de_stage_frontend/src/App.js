@@ -10,6 +10,8 @@ import Login from "./components/Unauthenticated/Login";
 import {Title} from "./components/SharedComponents/Title/Title";
 import Register from "./components/Unauthenticated/Register/Register";
 import PropTypes from "prop-types";
+import ForgotPassword from "./components/Unauthenticated/ForgotPassword";
+import ResetPassword from "./components/Unauthenticated/ResetPassword";
 
 function App() {
     return <AuthProvider>
@@ -27,6 +29,14 @@ function App() {
                     <RequiredRoute exact={true} path="/register" component={RequireNoAuth}>
                         <Title>Inscription</Title>
                         <Register/>
+                    </RequiredRoute>
+                    <RequiredRoute path="/reset_password/:token" component={RequireNoAuth}>
+                        <Title>Réinitialiser votre mot de passe</Title>
+                        <ResetPassword/>
+                    </RequiredRoute>
+                    <RequiredRoute exact path="/forgot_password" component={RequireNoAuth}>
+                        <Title>Mot de passe oublié</Title>
+                        <ForgotPassword/>
                     </RequiredRoute>
                     <Route exact path="/404" component={NotFound}/>
                     <Redirect to="/404"/>
@@ -54,6 +64,11 @@ RequiredRoute.propTypes = {
     path: PropTypes.string.isRequired,
     component: PropTypes.elementType,
     children: PropTypes.node
+};
+RequiredRoute.defaultProps = {
+    exact: false,
+    component: () => null,
+    children: null
 };
 
 

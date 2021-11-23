@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+@SequenceGenerator(name = "user_seq", initialValue = 6)
 @Data
 @Entity
 @NoArgsConstructor
@@ -35,7 +36,7 @@ public abstract class User implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     private Long id;
 
     @NotBlank

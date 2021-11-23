@@ -21,4 +21,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     List<Student> findAllByPrincipalCurriculumIsNullOrPrincipalCurriculum_IsValid(Boolean isValid);
 
+    Student getByEmail(String email);
 }
