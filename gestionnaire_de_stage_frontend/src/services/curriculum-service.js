@@ -1,5 +1,5 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
-import {swalErr, toast, toastErr} from "../utility";
+import {swalErr, toast, toastErr} from "../../../vue_frontend/src/services/utility";
 
 export async function uploadFile(file, id) {
     let formData = new FormData();

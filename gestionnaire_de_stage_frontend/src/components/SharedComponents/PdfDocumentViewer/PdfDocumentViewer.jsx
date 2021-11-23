@@ -1,7 +1,7 @@
 import {Document, Page, pdfjs} from 'react-pdf';
 
 import {useEffect, useState} from "react";
-import {downloadFile} from "../../../utility";
+import {downloadFile} from "../../../../../vue_frontend/src/services/utility";
 import {FiDownload} from "react-icons/all";
 
 export default function PdfDocumentViewer({file, fileName, showContract = false}) {

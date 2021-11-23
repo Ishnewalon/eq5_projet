@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {getAllApplicants} from '../../services/offerAppService';
 import {useAuth} from "../../services/use-auth";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
-import {toast} from "../../utility";
+import {toast} from "../../../../vue_frontend/src/services/utility";
 import {AiOutlineFile} from "react-icons/all";
 import OfferView from "../Offers/OfferView";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";

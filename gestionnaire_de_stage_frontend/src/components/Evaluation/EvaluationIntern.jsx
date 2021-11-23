@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../SharedComponents/FormField/FormField";
-import {regexEmail, swalErr} from "../../utility";
+import {regexEmail, swalErr} from "../../../../vue_frontend/src/services/utility";
 import {monitorCreateForm} from "../../services/stage-service";
 
 export default function EvaluationIntern() {

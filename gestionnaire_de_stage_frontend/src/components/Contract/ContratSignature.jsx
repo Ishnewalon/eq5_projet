@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {BsPenFill} from "react-icons/all";
 import {managerSignContract, monitorSignContract, studentSignContract} from "../../services/contrat-service";
 import {UserType} from "../../enums/UserTypes";
-import {swalErr, toPdfBlob} from "../../utility";
+import {swalErr, toPdfBlob} from "../../../../vue_frontend/src/services/utility";
 import {FormField} from "../SharedComponents/FormField/FormField";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 

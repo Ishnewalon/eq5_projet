@@ -1,6 +1,6 @@
 import PdfDocumentViewer from "../SharedComponents/PdfDocumentViewer/PdfDocumentViewer";
 import {useEffect, useState} from "react";
-import {toPdfBlob} from "../../utility";
+import {toPdfBlob} from "../../../../vue_frontend/src/services/utility";
 
 export default function ContractSigned({contract}) {
     const [pdf, setPdf] = useState(null);

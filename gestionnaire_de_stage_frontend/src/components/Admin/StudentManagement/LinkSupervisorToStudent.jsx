@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {assignStudentToSupervisor, getSupervisors, getUnassignedStudents} from "../../../services/user-service";
-import {toast} from "../../../utility";
+import {toast} from "../../../../../vue_frontend/src/services/utility";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";

@@ -2,7 +2,7 @@ import React, {createContext, useContext, useState} from 'react';
 import {Redirect} from "react-router-dom";
 import {ManagerModel, MonitorModel, Student, Supervisor} from "../models/User";
 import {methods, requestInit, urlBackend} from "./serviceUtils";
-import {swalErr, toast} from "../utility";
+import {swalErr, toast} from "../../../vue_frontend/src/services/utility";
 import {UserType} from "../enums/UserTypes";
 
 const authContext = createContext({});

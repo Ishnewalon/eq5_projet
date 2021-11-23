@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {getCurriculumWithInvalidCV, validateCurriculum} from "../../services/curriculum-service";
-import {downloadFile, toPdfBlob} from "../../utility";
+import {downloadFile, toPdfBlob} from "../../../../vue_frontend/src/services/utility";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 

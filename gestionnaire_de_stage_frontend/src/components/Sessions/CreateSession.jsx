@@ -1,7 +1,7 @@
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {createSession} from "../../services/session-service";
 import {useState} from "react";
-import {toastErr} from "../../utility";
+import {toastErr} from "../../../../vue_frontend/src/services/utility";
 import {FormField} from "../SharedComponents/FormField/FormField";
 
 export default function CreateSession() {

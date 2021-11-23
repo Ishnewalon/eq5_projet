@@ -1,6 +1,7 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
 import Swal from "sweetalert2";
 import {UserType} from "@/models/RegisterVars";
+import toastErr from "sweetalert2";
 
 const url = `${urlBackend}/contracts`;
 
@@ -76,7 +77,7 @@ export async function getAllOfferAppReadyToSign(idOfferApplication) {
                     return body;
                 if (response.status === 400)
                     Swal.fire({title: body.message, icon: 'error'})
-                return Promise.any([]);
+                return [];
             })
         }, err => console.error(err)
     );
@@ -89,13 +90,13 @@ export async function startSignerFetch(idOfferApplication, idManager) {
     })).then(
         response => {
             return response.json().then((body) => {
-                if (response.ok) {
+                if (response.ok)
                     Swal.fire({title: body.message, icon:'success'})
-                    return true;
-                }
+
                 if (response.status === 400)
                     Swal.fire({title: body.message, icon:'error'})
-                return false;
+
+                return response.ok;
             })
         }, err => console.error(err)
     );
@@ -116,8 +117,8 @@ export async function getSignedContractForStudent(idStudent) {
                 if (response.ok)
                     return body;
                 else
-                    swalErr.fire({text: body.message})
-                return Promise.any(null);
+                    toastErr.fire({text: body.message})
+                return null;
             })
         }, err => console.error(err)
     );

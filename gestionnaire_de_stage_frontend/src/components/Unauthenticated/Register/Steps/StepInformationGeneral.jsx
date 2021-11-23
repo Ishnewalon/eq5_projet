@@ -1,7 +1,7 @@
 import React from "react";
 import FieldEmail from "../../../SharedComponents/Fields/FieldEmail";
 import {Step} from "../../../../enums/Steps";
-import {regexEmail, regexName, regexPhone, toastErr} from "../../../../utility";
+import {regexEmail, regexName, regexPhone, toastErr} from "../../../../../../vue_frontend/src/services/utility";
 import {FormGroup} from "../../../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../../../SharedComponents/FormField/FormField";
 

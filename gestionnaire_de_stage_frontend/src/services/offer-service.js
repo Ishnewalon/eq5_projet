@@ -1,6 +1,6 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
 import OfferDTO from "../models/OfferDTO";
-import {swalErr, toast} from "../utility";
+import {swalErr, toast} from "../../../vue_frontend/src/services/utility";
 
 export async function getAllOffers() {
     return await fetch(`${urlBackend}/offers`, requestInit(methods.GET)).then(

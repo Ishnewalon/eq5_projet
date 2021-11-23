@@ -1,7 +1,7 @@
 import React from "react";
 import {UserType} from "../../../../enums/UserTypes";
 import {Step} from "../../../../enums/Steps";
-import {toastErr} from "../../../../utility";
+import {toastErr} from "../../../../../../vue_frontend/src/services/utility";
 import {FormGroup} from "../../../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../../../SharedComponents/FormField/FormField";
 

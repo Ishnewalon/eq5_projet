@@ -1,6 +1,6 @@
 import React from "react";
 import FieldAddress from "../../../SharedComponents/Fields/FieldAddress";
-import {regexCodePostal, regexName, toastErr} from "../../../../utility";
+import {regexCodePostal, regexName, toastErr} from "../../../../../../vue_frontend/src/services/utility";
 import {UserType} from "../../../../enums/UserTypes";
 import {Step} from "../../../../enums/Steps";
 import {FormGroup} from "../../../SharedComponents/FormGroup/FormGroup";

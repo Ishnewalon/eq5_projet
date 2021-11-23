@@ -3,7 +3,7 @@ import {getAllCurriculumsByStudentWithPrincipal, setPrincipalCurriculum} from ".
 import {useAuth} from "../../services/use-auth";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import {AiOutlineCloseCircle, GoStar, MdOutlinePendingActions} from "react-icons/all";
-import {downloadFile, toPdfBlob} from "../../utility";
+import {downloadFile, toPdfBlob} from "../../../../vue_frontend/src/services/utility";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function CurriculumsStudent() {

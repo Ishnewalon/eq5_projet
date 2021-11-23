@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {getAllOffersByStudentAppliedOn, setInterview} from "../../services/offerAppService";
 import {useAuth} from "../../services/use-auth";
-import {swalErr} from "../../utility";
+import {swalErr} from "../../../../vue_frontend/src/services/utility";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
