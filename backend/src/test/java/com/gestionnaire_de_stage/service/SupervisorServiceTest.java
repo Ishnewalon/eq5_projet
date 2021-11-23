@@ -93,8 +93,8 @@ public class SupervisorServiceTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantConditions")
     public void testUpdate_withNullSupervisor() {
-        //noinspection ConstantConditions
         assertThrows(IllegalArgumentException.class,
                 () -> supervisorService.update(null));
     }

@@ -3,7 +3,6 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.dto.ValidationOffer;
-import com.gestionnaire_de_stage.exception.DoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
@@ -32,10 +31,6 @@ public class OfferController {
         Offer offer;
         try {
             offer = offerService.create(dto);
-        } catch (IllegalArgumentException | DoesNotExistException ie) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(ie.getMessage()));
         } catch (OfferAlreadyExistsException e) {
             return ResponseEntity
                     .badRequest()
@@ -44,6 +39,10 @@ public class OfferController {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage("L'id de la session n'existe pas"));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity
                 .status(HttpStatus.CREATED)

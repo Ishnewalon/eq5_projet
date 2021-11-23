@@ -101,8 +101,8 @@ public class MonitorServiceTest {
 
 
     @Test
+    @SuppressWarnings("ConstantConditions")
     public void testUpdate_withNullMonitor() {
-        //noinspection ConstantConditions
         assertThrows(IllegalArgumentException.class,
                 () -> monitorService.update(null));
     }

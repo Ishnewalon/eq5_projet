@@ -18,19 +18,16 @@ public class PasswordResetToken {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(unique = true)
-    private String token;
+    private String token = UUID.randomUUID().toString();
     @ManyToOne
     private User user;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = false)
-    private Date created;
+    private Date created = new Date();
     private boolean unusable;//TODO maybe un puller?
 
     public PasswordResetToken(User user) {
         this.user = user;
-        created = new Date();
-        token = UUID.randomUUID().toString();
-        unusable = false;
     }
 
 

@@ -10,14 +10,11 @@ export async function forgotPassword(typeUser, email) {
     return await fetch(`${urlBackend}/forgot_password/${typeUser}/${email}`, requestInit(methods.POST, null)).then(
         response => {
             return response.json().then((body) => {
-                if (response.status === 200) {
+                if (response.status === 200)
                     toast.fire({title: body.message})
-                    return true;
-                }
-                if (response.status === 400) {
+                if (response.status === 400)
                     toastErr.fire({title: body.message})
-                }
-                return false;
+                return response.ok;
             })
         }
     );
@@ -30,14 +27,11 @@ export async function resetPassword(token, password) {
     })).then(
         response => {
             return response.json().then((body) => {
-                if (response.status === 200) {
+                if (response.status === 200)
                     toast.fire({title: body.message})
-                    return true;
-                }
-                if (response.status === 400) {
+                if (response.status === 400)
                     toastErr.fire({title: body.message})
-                }
-                return false;
+                return response.ok;
             })
         }
     );

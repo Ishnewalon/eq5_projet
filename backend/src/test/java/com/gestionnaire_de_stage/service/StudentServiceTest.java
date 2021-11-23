@@ -109,8 +109,8 @@ public class StudentServiceTest {
 
 
     @Test
+    @SuppressWarnings("ConstantConditions")
     public void testUpdate_withNullStudent() {
-        //noinspection ConstantConditions
         assertThrows(IllegalArgumentException.class,
                 () -> studentService.update(null));
     }
@@ -213,10 +213,10 @@ public class StudentServiceTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantConditions")
     void testSetPrincipalCurriculum_withStudentNull() {
         Curriculum dummyCurriculum = getDummyCurriculum();
 
-        //noinspection ConstantConditions
         assertThrows(IllegalArgumentException.class,
                 () -> studentService.setPrincipalCurriculum(null, dummyCurriculum.getId()));
     }
