@@ -3,16 +3,14 @@
     <div class="d-flex justify-content-between flex-column">
       div
       <pdf :src="pdfUrl">
-      <form @submit.prevent="startContract">
-        <label>Signature</label>
-        <input type="text" placeholder="Entrez votre signature" class="w-100"
-               v-on:change="e => setSignature(e.target.value)"/>
-        <h6 class="text-white text-center mt-3">En appuyant sur envoyer, vous confirmez avoir lu le
-          contrat et que la signature entrée correspond à la votre.</h6>
-        <button id="invalidateContractBtn" class="btn btn-primary fw-bold w-100 mb-4 mt-0"
-                type="submit">Signez le contrat
-        </button>
-      </form>
+        <form @submit.prevent="startContract">
+          <label>Signature</label>
+          <input type="text" placeholder="Entrez votre signature" class="w-100"
+                 v-on:change="e => setSignature(e.target.value)"/>
+          <h6 class="text-white text-center mt-3">En appuyant sur envoyer, vous confirmez avoir lu le
+            contrat et que la signature entrée correspond à la votre.</h6>
+          <button class="btn btn-primary fw-bold w-100 mb-4 mt-0" type="submit">Signez le contrat</button>
+        </form>
       </pdf>
     </div>
   </div>
@@ -33,20 +31,20 @@ export default {
       pdfUrl: ''
     }
   },
-  components:pdf,
+  components: pdf,
   props: {
     contract: {
       type: Object,
       required: true
     },
-    userType:{
+    userType: {
       type: String,
       default: UserType.STUDENT[0],
       required: true
     }
   },
   created() {
-    this.pdfUrl =  window.url.createObjectURL(toPdfBlob(this.contract.contractPDF));
+    this.pdfUrl = window.url.createObjectURL(toPdfBlob(this.contract.contractPDF));
   },
   methods: {
     setSignature(signature) {
@@ -71,7 +69,7 @@ export default {
         });
       else if (this.userType === UserType.STUDENT[0])
         studentSignContract(this.signature, this.contract.id).then(isSigned => {
-          if(isSigned)
+          if (isSigned)
             this.$emit('removeContract', this.contract.id);
         });
     }

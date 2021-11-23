@@ -14,6 +14,7 @@ import ViewOffers from "@/views/ViewOffers";
 import ManagerResumeValidation from "@/views/ManagerResumeValidation";
 import ViewAppliedStudents from "@/views/ViewAppliedStudents";
 import StartContracts from "@/views/StartContracts";
+import ContractToSignStudent from "@/views/ContractToSignStudent";
 
 
 function guardRoute(to, from, next) {
@@ -65,6 +66,12 @@ const routes = [
         path: '/student/view_offers',
         name: 'Étudiant voit offres',
         component: ViewOffers,
+        beforeEnter: guardRoute
+    },
+    {
+        path:'/student/sign_contract',
+        name: 'Signature du contrat',
+        component: ContractToSignStudent,
         beforeEnter: guardRoute
     },
     {

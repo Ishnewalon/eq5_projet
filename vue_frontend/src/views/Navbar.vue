@@ -38,6 +38,9 @@
       <a>
         <router-link to="/student/upload_resume">Téléverser cv</router-link>
       </a>
+      <a>
+        <router-link to="/student/sign_contract">Signer contrat</router-link>
+      </a>
     </div>
   </nav>
 </template>
