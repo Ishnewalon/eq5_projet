@@ -1,9 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
-import com.gestionnaire_de_stage.exception.CurriculumNotValidException;
-import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
@@ -28,7 +25,7 @@ public class StudentService {
     public Student create(Student student) throws StudentAlreadyExistsException {
         Assert.isTrue(student != null, "Étudiant est null");
         if (isNotValid(student)) {
-            throw new StudentAlreadyExistsException();
+            throw new StudentAlreadyExistsException("Un compte existe déjà pour cet étudiant");
         }
         return studentRepository.save(student);
     }
@@ -36,7 +33,7 @@ public class StudentService {
     public Student getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (isIDNotValid(aLong)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
         }
         return studentRepository.getById(aLong);
     }
@@ -45,13 +42,10 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Student update(Student student, Long aLong) throws IdDoesNotExistException {
-        Assert.isTrue(aLong != null, "ID est null");
+    public Student update(Student student) throws IdDoesNotExistException {
         Assert.isTrue(student != null, "L'étudiant est null");
-        if (isIDNotValid(aLong)) {
-            throw new IdDoesNotExistException();
-        }
-        student.setId(aLong);
+        if (isIDNotValid(student.getId())) 
+             throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
         return studentRepository.save(student);
     }
 
@@ -67,7 +61,7 @@ public class StudentService {
         Assert.isTrue(email != null, "Le courriel est null");
         Assert.isTrue(password != null, "Le mot de passe est null");
         if (!isEmailAndPasswordValid(email, password)) {
-            throw new EmailAndPasswordDoesNotExistException();
+            throw new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid");
         }
         return studentRepository.findStudentByEmailAndPassword(email, password);
     }
@@ -115,6 +109,17 @@ public class StudentService {
 
     private boolean isEmailAndPasswordValid(String email, String password) {
         return studentRepository.existsByEmailAndPassword(email, password);
+    }
+
+    public Student getOneByEmail(String email) throws DoesNotExistException {
+        Assert.notNull(email, "Le courriel est null");
+        if (isEmailInvalid(email))
+            throw new DoesNotExistException("L'email n'existe pas");
+        return studentRepository.getByEmail(email);
+    }
+
+    private boolean isEmailInvalid(String email) {
+        return !studentRepository.existsByEmail(email);
     }
 
 }

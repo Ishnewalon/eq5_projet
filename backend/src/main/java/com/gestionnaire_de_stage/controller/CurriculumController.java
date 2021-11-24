@@ -9,7 +9,8 @@ import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.CurriculumService;
 import com.gestionnaire_de_stage.service.StudentService;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,15 +56,16 @@ public class CurriculumController {
                 .body(new ResponseMessage("File Uploaded Successfully"));//FIXME: Change message
     }
 
-    @GetMapping("/invalid/students")
-    public ResponseEntity<?> getAllCurriculumNotValidatedYet() {
-        List<Curriculum> curriculumList = curriculumService.findAllCurriculumNotValidatedYet();
-        return ResponseEntity.ok(curriculumList);
-    }
-
-    @GetMapping("/valid/students")
-    public ResponseEntity<?> getAllCurriculumValidated() {
-        List<Curriculum> curriculumList = curriculumService.findAllCurriculumValidated();
+    @GetMapping("/student/{id}")
+    public ResponseEntity<?> getAllCurriculumByStudentId(@PathVariable Long id) {
+        List<Curriculum> curriculumList;
+        try {
+            curriculumList = curriculumService.findAllByStudentId(id);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
         return ResponseEntity.ok(curriculumList);
     }
 
@@ -91,11 +93,11 @@ public class CurriculumController {
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Curriculum non existant!"));
+                    .body(new ResponseMessage(e.getMessage()));
         } catch (CurriculumAlreadyTreatedException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Curriculum déjà traité!"));
+                    .body(new ResponseMessage(e.getMessage()));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
@@ -103,31 +105,5 @@ public class CurriculumController {
         }
         String response = validationCurriculum.isValid() ? "Curriculum validé!" : "Curriculum rejeté!";
         return ResponseEntity.ok(new ResponseMessage(response));
-    }
-
-    @GetMapping({"/download", "/download/{idCurriculum}"})//FIXME: Handle differently the url
-    public ResponseEntity<?> downloadById(@PathVariable(required = false) Long idCurriculum) {
-        Curriculum oneById;
-        try {
-            oneById = curriculumService.findOneById(idCurriculum);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Curriculum non existant!"));
-        }
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION,
-                ContentDisposition.attachment().filename(oneById.getName()).build().toString());
-
-        return ResponseEntity
-                .ok()
-                .headers(httpHeaders)
-                .body(oneById.getData());
     }
 }

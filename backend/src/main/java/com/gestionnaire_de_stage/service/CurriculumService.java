@@ -61,7 +61,7 @@ public class CurriculumService {
     public Curriculum getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (!curriculumRepository.existsById(aLong))
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant");
         return curriculumRepository.getById(aLong);
     }
 
@@ -84,18 +84,6 @@ public class CurriculumService {
             curriculumDTOList.add(curriculumDTO);
         }
         return curriculumDTOList;
-    }
-
-    public List<Curriculum> getAll() {
-        return curriculumRepository.findAll();
-    }
-
-    public List<Curriculum> findAllCurriculumNotValidatedYet() {
-        return curriculumRepository.findAllByIsValidIsNull();
-    }
-
-    public List<Curriculum> findAllCurriculumValidated() {
-        return curriculumRepository.findAllByIsValidIsTrue();
     }
 
     public List<Curriculum> findAllByStudent(Student student) throws IllegalArgumentException {
@@ -122,9 +110,9 @@ public class CurriculumService {
         Optional<Curriculum> curriculumOptional = curriculumRepository.findById(idCurriculum);
 
         if (curriculumOptional.isEmpty())
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant");
         if (curriculumOptional.get().getIsValid() != null)
-            throw new CurriculumAlreadyTreatedException();
+            throw new CurriculumAlreadyTreatedException("Ce curriculum a déjà été traité");
 
         Curriculum curriculum = curriculumOptional.get();
         curriculum.setIsValid(valid);
@@ -136,8 +124,13 @@ public class CurriculumService {
         Assert.isTrue(idCurriculum != null, "Le id du curriculum ne peut pas être null");
         Optional<Curriculum> byId = curriculumRepository.findById(idCurriculum);
         if (byId.isEmpty())
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant");
 
         return byId.get();
+    }
+
+    public List<Curriculum> findAllByStudentId(Long id) throws IdDoesNotExistException {
+        Student student = studentService.getOneByID(id);
+        return findAllByStudent(student);
     }
 }

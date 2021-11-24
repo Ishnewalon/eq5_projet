@@ -4,7 +4,7 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ValidationOffer;
 import com.gestionnaire_de_stage.enums.TypeSession;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
+import com.gestionnaire_de_stage.exception.DoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
@@ -78,11 +78,11 @@ public class OfferService {
         return offers.stream().map(this::mapToOfferDTO).collect(Collectors.toList());
     }
 
-    public Offer create(OfferDTO offerDto) throws IllegalArgumentException, OfferAlreadyExistsException, EmailDoesNotExistException, IdDoesNotExistException {
+    public Offer create(OfferDTO offerDto) throws IllegalArgumentException, OfferAlreadyExistsException, IdDoesNotExistException, DoesNotExistException {
         Assert.isTrue(offerDto != null, "Offre est null");
         Offer offer = mapToOffer(offerDto);
         if (offerRepository.findOne(Example.of(offer)).isPresent())
-            throw new OfferAlreadyExistsException();
+            throw new OfferAlreadyExistsException("Cet offre a déjà été créé");
 
         Monitor monitor = monitorService.getOneByEmail(offerDto.getCreator_email());
         offer.setCreator(monitor);
@@ -140,9 +140,9 @@ public class OfferService {
 
     public Offer validation(ValidationOffer validationOffer) throws IdDoesNotExistException, OfferAlreadyTreatedException {
         Assert.isTrue(validationOffer.getId() != null, "L'id est null");
-        if (!offerRepository.existsById(validationOffer.getId())) throw new IdDoesNotExistException();
+        if (!offerRepository.existsById(validationOffer.getId())) throw new IdDoesNotExistException("Il n'y a pas d'offre associé à cet identifiant");
         if (offerRepository.existsByIdAndValidNotNull(validationOffer.getId()))
-            throw new OfferAlreadyTreatedException();
+            throw new OfferAlreadyTreatedException("Cet offre a déjà été traité");
 
         Offer offer = offerRepository.getById(validationOffer.getId());
         offer.setValid(validationOffer.isValid());

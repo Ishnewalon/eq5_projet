@@ -22,7 +22,7 @@ public class ManagerService {
     public Manager create(Manager manager) throws ManagerAlreadyExistsException {
         Assert.isTrue(manager != null, "Le gestionnaire est null");
         if (isNotValid(manager)) {
-            throw new ManagerAlreadyExistsException();
+            throw new ManagerAlreadyExistsException("Un compte existe déjà pour ce gestionnaire");
         }
         return managerRepository.save(manager);
     }
@@ -30,7 +30,7 @@ public class ManagerService {
     public Manager getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "L'id du gestionnaire ne peut pas être null!");
         if (isIDNotValid(aLong)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de gestionnaire associé à cet identifiant");
         }
         return managerRepository.getById(aLong);
     }
@@ -43,7 +43,7 @@ public class ManagerService {
         Assert.isTrue(aLong != null, "ID est null");
         Assert.isTrue(manager != null, "Le gestionnaire est null");
         if (isIDNotValid(aLong)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de gestionnaire associé à cet identifiant");
         }
         manager.setId(aLong);
         return managerRepository.save(manager);
@@ -52,7 +52,7 @@ public class ManagerService {
     public void deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (isIDNotValid(aLong))
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de gestionnaire associé à cet identifiant");
         managerRepository.deleteById(aLong);
     }
 
@@ -60,7 +60,7 @@ public class ManagerService {
         Assert.isTrue(email != null, "Le courriel est null");
         Assert.isTrue(password != null, "Le mot de passe est null");
         if (!isEmailAndPasswordValid(email, password))
-            throw new EmailAndPasswordDoesNotExistException();
+            throw new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid");
         return managerRepository.findManagerByEmailAndPassword(email, password);
     }
 

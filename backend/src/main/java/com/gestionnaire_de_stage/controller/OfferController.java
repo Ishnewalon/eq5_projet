@@ -3,7 +3,6 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.dto.ValidationOffer;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
@@ -32,22 +31,10 @@ public class OfferController {
         Offer offer;
         try {
             offer = offerService.create(dto);
-        } catch (IllegalArgumentException ie) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage(ie.getMessage()));
-        } catch (OfferAlreadyExistsException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Offre existe déjà"));
-        } catch (EmailDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le courriel n'existe pas"));
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("L'id de la session n'existe pas"));
+                    .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -59,7 +46,7 @@ public class OfferController {
         List<Offer> offers;
         try {
             offers = offerService.getOffersByDepartment(department);//TODO: get only offers non applied
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
@@ -73,18 +60,10 @@ public class OfferController {
         try {
             Offer offer = offerService.validation(validationOffer);
             return ResponseEntity.ok(offer);
-        } catch (IdDoesNotExistException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Offre non existante!"));
-        } catch (IllegalArgumentException ie) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(ie.getMessage());
-        } catch (OfferAlreadyTreatedException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Offre déjà traité!"));
+                    .body(new ResponseMessage(e.getMessage()));
         }
     }
 

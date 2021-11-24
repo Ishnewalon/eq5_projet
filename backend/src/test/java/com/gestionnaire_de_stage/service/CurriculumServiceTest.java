@@ -15,7 +15,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -121,14 +124,6 @@ public class CurriculumServiceTest {
                 () -> curriculumService.getOneByID(invalidID));
     }
 
-    @Test
-    public void testGetAll() {
-        when(curriculumRepository.findAll()).thenReturn(getDummyCurriculumList());
-
-        List<Curriculum> actualCurriculumList = curriculumService.getAll();
-
-        assertThat(actualCurriculumList.size()).isGreaterThan(0);
-    }
 
     @Test
     public void testMapToCurriculumDTOList_withValidEntries() {
@@ -143,45 +138,6 @@ public class CurriculumServiceTest {
     }
 
     @Test
-    public void testFindAllCurriculumWithInvalidCurriculum() {
-        List<Curriculum> dummyCurriculumList = getDummyCurriculumList();
-        when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(dummyCurriculumList);
-
-        List<Curriculum> curriculumList = curriculumService.findAllCurriculumNotValidatedYet();
-
-        assertThat(curriculumList).isEqualTo(dummyCurriculumList);
-    }
-
-    @Test
-    public void testFindAllCurriculumsWithInvalidCurriculum_withEmptyList() {
-        when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(Collections.emptyList());
-
-        List<Curriculum> curriculumList = curriculumService.findAllCurriculumNotValidatedYet();
-
-        assertThat(curriculumList).isEmpty();
-    }
-
-    @Test
-    public void testFindAllCurriculumWithValidCurricculum() {
-        List<Curriculum> dummyCurriculumList = getDummyCurriculumValidList();
-        when(curriculumRepository.findAllByIsValidIsTrue()).thenReturn(dummyCurriculumList);
-
-        List<Curriculum> curriculumList = curriculumService.findAllCurriculumValidated();
-
-        assertThat(curriculumList).isEqualTo(dummyCurriculumList);
-    }
-
-
-    @Test
-    public void testFindAllCurriculumsWithValidCurriculum_withEmptyList() {
-        when(curriculumRepository.findAllByIsValidIsTrue()).thenReturn(Collections.emptyList());
-
-        List<Curriculum> curriculumList = curriculumService.findAllCurriculumValidated();
-
-        assertThat(curriculumList).isEmpty();
-    }
-
-    @Test
     public void testFindAllByStudent_withValidStudent() {
         List<Curriculum> curriculumList = getDummyCurriculumValidList();
         Student student = getDummyStudent();
@@ -189,7 +145,7 @@ public class CurriculumServiceTest {
 
         List<Curriculum> actualList = curriculumService.findAllByStudent(student);
 
-        assertThat(actualList).isEqualTo(curriculumList);;
+        assertThat(actualList).isEqualTo(curriculumList);
     }
 
     @Test
@@ -330,6 +286,17 @@ public class CurriculumServiceTest {
                 curriculumService.findOneById(34L));
     }
 
+    @Test
+    public void testFindAllByStudentId() throws Exception {
+        Student dummyStudent = getDummyStudent();
+        List<Curriculum> dummyCurriculumList = getDummyCurriculumList();
+        when(studentService.getOneByID(anyLong())).thenReturn(dummyStudent);
+        when(curriculumRepository.findAllByStudent(any())).thenReturn(dummyCurriculumList);
+
+        List<Curriculum> actualCurriculums = curriculumService.findAllByStudentId(dummyStudent.getId());
+
+        assertThat(actualCurriculums).isEqualTo(dummyCurriculumList);
+    }
 
     private Curriculum getDummyCurriculum() {
         Student dummyStudent = new Student();

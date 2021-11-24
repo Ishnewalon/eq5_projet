@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.DoesNotExistException;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
@@ -27,7 +28,7 @@ public class SupervisorService {
     public Supervisor create(Supervisor supervisor) throws SupervisorAlreadyExistsException {
         Assert.isTrue(supervisor != null, "Superviseur est null");
         if (isNotValid(supervisor)) {
-            throw new SupervisorAlreadyExistsException();
+            throw new SupervisorAlreadyExistsException("Un compte existe déjà pour ce superviseur");
         }
         return supervisorRepository.save(supervisor);
     }
@@ -35,7 +36,7 @@ public class SupervisorService {
     public Supervisor getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (isIdNotValid(aLong)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de superviseur associé à cet identifiant");
         }
         return supervisorRepository.getById(aLong);
     }
@@ -45,20 +46,17 @@ public class SupervisorService {
         return supervisorRepository.findAll();
     }
 
-    public Supervisor update(Supervisor supervisor, Long aLong) throws IdDoesNotExistException {
-        Assert.isTrue(aLong != null, "ID est null");
+    public Supervisor update(Supervisor supervisor) throws IdDoesNotExistException {
         Assert.isTrue(supervisor != null, "Le superviseur est null");
-        if (isIdNotValid(aLong)) {
-            throw new IdDoesNotExistException();
-        }
-        supervisor.setId(aLong);
+        if (isIdNotValid(supervisor.getId())) 
+            throw new IdDoesNotExistException("Il n'y a pas de superviseur associé à cet identifiant");
         return supervisorRepository.save(supervisor);
     }
 
     public void deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (isIdNotValid(aLong)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de superviseur associé à cet identifiant");
         }
         supervisorRepository.deleteById(aLong);
     }
@@ -67,7 +65,7 @@ public class SupervisorService {
         Assert.isTrue(email != null, "Le courriel est null");
         Assert.isTrue(password != null, "Le mot de passe est null");
         if (!isEmailAndPasswordValid(email, password)) {
-            throw new EmailAndPasswordDoesNotExistException();
+            throw new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid");
         }
         return supervisorRepository.findSupervisorByEmailAndPassword(email, password);
     }
@@ -75,9 +73,17 @@ public class SupervisorService {
     public List<OfferApplication> getStudentsStatus(Long supervisor_id) throws IdDoesNotExistException {
         Assert.isTrue(supervisor_id != null, "L'id ne peut pas être null");
         if (isIdNotValid(supervisor_id)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de superviseur associé à cet identifiant");
         }
         return offerApplicationService.getAllBySupervisorId(supervisor_id);
+    }
+
+    public Supervisor getOneByEmail(String email) throws DoesNotExistException {
+        Assert.notNull(email, "Le email est obligatoire");
+        if (isEmailInvalid(email))
+            throw new DoesNotExistException("L'email n'existe pas");
+
+        return supervisorRepository.getByEmail(email);
     }
 
     private boolean isNotValid(Supervisor supervisor) {
@@ -92,4 +98,9 @@ public class SupervisorService {
     private boolean isEmailAndPasswordValid(String email, String password) {
         return supervisorRepository.existsByEmailAndPassword(email, password);
     }
+
+    private boolean isEmailInvalid(String email) {
+        return !supervisorRepository.existsByEmail(email);
+    }
+
 }
