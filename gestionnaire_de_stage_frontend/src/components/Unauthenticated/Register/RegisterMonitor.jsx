@@ -33,7 +33,7 @@ export default function RegisterMonitor() {
             lastName,
             email,
             password,
-            passwordConfirm,
+            confirmation,
             phone,
             address,
             city,
@@ -45,7 +45,7 @@ export default function RegisterMonitor() {
                 setCurentStep(1)
             else if (curentStep === 1)
                 setCurentStep(2)
-            else if (curentStep === 2 && password === passwordConfirm)
+            else if (curentStep === 2 && password === confirmation)
                 endThis(email, password, lastName, firstName, phone, companyName, address, city, postalCode);
         } else if (submitter === 'Précédent')
             setCurentStep(curentStep - 1)

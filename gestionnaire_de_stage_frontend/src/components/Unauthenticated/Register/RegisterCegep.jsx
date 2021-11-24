@@ -19,7 +19,6 @@ export default function RegisterCegep() {
     const [curentStep, setCurentStep] = useState(0)
     const [typeUserText, setTypeUserText] = useState("");
     let show;
-
     const endThis = (matricule, email, password, lastName, firstName, phone) => {
         let user;
         if (matricule.toString().length === 5) {
@@ -42,7 +41,7 @@ export default function RegisterCegep() {
             lastName,
             email,
             password,
-            passwordConfirm,
+            confirmation,
             phone,
         } = data;
         const submitter = e.nativeEvent.submitter.value
@@ -52,7 +51,7 @@ export default function RegisterCegep() {
                 setCurentStep(curentStep + 1)
             } else if (curentStep === 1)
                 setCurentStep(curentStep + 1)
-            else if (curentStep === 2 && password === passwordConfirm)
+            else if (curentStep === 2 && password === confirmation)
                 endThis(matricule, email, password, lastName, firstName, phone)
         } else if (submitter === 'Précédent')
             setCurentStep(curentStep - 1)

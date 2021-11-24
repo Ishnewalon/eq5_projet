@@ -8,7 +8,7 @@ export default function StepPassword({register, errors, prev}) {
                 <FormInput label="Mot de passe" validation={{required: true, minLength: 8}} error={errors.password}
                            name="password" register={register} type="password" placeholder="Votre mot de passe"/>
                 <FormInput label="Confirmez votre mot de passe" validation={{required: true, minLength: 8}}
-                           error={errors.passwordConfirm} name="passwordConfirm" register={register} type="password"
+                           error={errors.confirmation} name="confirmation" register={register} type="password"
                            placeholder="Confirmez votre mot de passe"/>
             </FormGroup>
             <div className="form-group text-center">

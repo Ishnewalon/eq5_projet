@@ -12,8 +12,8 @@ export function FormInput(props) {
 }
 
 FormInput.propTypes = {
-    register: PropTypes.object.isRequired,
-    error: PropTypes.bool.isRequired,
+    register: PropTypes.func.isRequired,
+    error: PropTypes.object,
     name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
