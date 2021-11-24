@@ -12,4 +12,6 @@ public interface SupervisorRepository extends JpaRepository<Supervisor, Long> {
     Supervisor findSupervisorByEmailAndPassword(String email, String password);
 
     Supervisor getByEmail(String email);
+
+    boolean existsByMatricule(String matricule);
 }

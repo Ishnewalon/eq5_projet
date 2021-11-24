@@ -39,6 +39,8 @@ public class SupervisorServiceTest {
     @Test
     public void testCreate_withValidSupervisor() throws SupervisorAlreadyExistsException {
         Supervisor dummySupervisor = getDummySupervisor();
+        when(supervisorRepository.existsByEmail(any())).thenReturn(false);
+        when(supervisorRepository.existsByMatricule(any())).thenReturn(false);
         when(supervisorRepository.save(any())).thenReturn(dummySupervisor);
 
         Supervisor actualSupervisor = supervisorService.create(dummySupervisor);
@@ -53,12 +55,21 @@ public class SupervisorServiceTest {
     }
 
     @Test
-    public void testCreate_alreadyExistsStudent() {
+    public void testCreate_alreadyExistsSupervisor() {
         when(supervisorRepository.existsByEmail(any())).thenReturn(true);
 
         assertThrows(SupervisorAlreadyExistsException.class,
                 () -> supervisorService.create(getDummySupervisor()));
     }
+
+    @Test
+    public void testCreate_alreadyExistsMatricule() {
+        when(supervisorRepository.existsByMatricule(any())).thenReturn(true);
+
+        assertThrows(SupervisorAlreadyExistsException.class,
+                () -> supervisorService.create(getDummySupervisor()));
+    }
+
 
     @Test
     public void testGetByID_withValidID() throws IdDoesNotExistException {

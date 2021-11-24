@@ -65,7 +65,7 @@ class OfferApplicationControllerTest {
 
     @Test
     public void testStudentApplyToOfferAgain() throws Exception {
-        when(offerApplicationService.create(any(), any())).thenThrow(new StudentAlreadyAppliedToOfferException());
+        when(offerApplicationService.create(any(), any())).thenThrow(new StudentAlreadyAppliedToOfferException("Vous avez déjà appliqué(e) sur cette offre"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/apply")
@@ -75,12 +75,12 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Candidature déjà envoyé!");
+        assertThat(response.getContentAsString()).contains("Vous avez déjà appliqué(e) sur cette offre");
     }
 
     @Test
     public void testStudentApplyToOffer_withOfferNonExistant() throws Exception {
-        when(offerApplicationService.create(any(), any())).thenThrow(new IdDoesNotExistException());
+        when(offerApplicationService.create(any(), any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'offre associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/apply")
@@ -90,12 +90,12 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Offre ou étudiant non existant!");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'offre associé à cet identifiant");
     }
 
     @Test
     public void testStudentApplyToOffer_withStudentNonExistant() throws Exception {
-        when(offerApplicationService.create(any(), any())).thenThrow(new IdDoesNotExistException());
+        when(offerApplicationService.create(any(), any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/apply")
@@ -105,7 +105,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Offre ou étudiant non existant!");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
     }
 
     @Test
@@ -144,7 +144,7 @@ class OfferApplicationControllerTest {
 
     @Test
     public void testStudentApplyToOffer_withCvInvalid() throws Exception {
-        when(offerApplicationService.create(any(), any())).thenThrow(new StudentHasNoCurriculumException());
+        when(offerApplicationService.create(any(), any())).thenThrow(new StudentHasNoCurriculumException("Vous devez avoir un curriculum valid avant d'appliquer"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/apply")
@@ -154,7 +154,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Vous devez d'abord ajouter un curriculum!");
+        assertThat(response.getContentAsString()).contains("Vous devez avoir un curriculum valid avant d'appliquer");
     }
 
     @Test
@@ -195,7 +195,7 @@ class OfferApplicationControllerTest {
     public void testGetOffersApplicationStageTrouver_withInvalidId() throws Exception {
         Manager dummyManager = getDummyManager();
         when(offerApplicationService.getOffersApplicationsStageTrouver(any()))
-                .thenThrow(new IdDoesNotExistException());
+                .thenThrow(new IdDoesNotExistException("Il n'y a pas de gestionnaire associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/applications/applicants/manager/" + dummyManager.getId())
@@ -204,7 +204,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le gestionnaire n'existe pas!");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de gestionnaire associé à cet identifiant");
     }
 
     @Test
@@ -306,7 +306,7 @@ class OfferApplicationControllerTest {
     void testSetInterviewDate_withOfferAppIdNotExist() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
         when(offerApplicationService.setInterviewDate(any(), any()))
-                .thenThrow(IdDoesNotExistException.class);
+                .thenThrow(new IdDoesNotExistException("Il n'y a pas d'offre associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/setdate/" + 3L)
@@ -316,14 +316,14 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Impossible de trouver l'offre avec cette ID!");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'offre associé à cet identifiant");
     }
 
     @Test
     void testSetInterviewDate_withDateInvalid() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
         when(offerApplicationService.setInterviewDate(any(), any()))
-                .thenThrow(DateNotValidException.class);
+                .thenThrow(new DateNotValidException("La date choisie est invalide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/setdate/" + 3L)
@@ -333,7 +333,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("La date entrée est invalide!");
+        assertThat(response.getContentAsString()).contains("La date choisie est invalide");
     }
 
     @Test
@@ -407,7 +407,7 @@ class OfferApplicationControllerTest {
     public void testGetAllOffersByStudentAppliedByStatus_withInvalidId() throws Exception {
         Student dummyStudent = getDummyStudent();
         when(offerApplicationService.getAllOffersStudentAppliedAndStatusWaiting(any()))
-                .thenThrow(new IdDoesNotExistException());
+                .thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/applications/applicants/student/" + dummyStudent.getId())
@@ -416,7 +416,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'étudiant n'existe pas");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
     }
 
     @Test
@@ -474,24 +474,6 @@ class OfferApplicationControllerTest {
     }
 
     @Test
-    public void testUpdateStatusIsAccepted_withIdInvalid() throws Exception {
-        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(45433L, true);
-        when(offerApplicationService.updateStatus(any()))
-                .thenThrow(IdDoesNotExistException.class);
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/applications/student/update_status")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(MAPPER.writeValueAsString(updateStatusDTO)))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-
-        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Offre non existante!");
-    }
-
-    @Test
     public void testGetAllOffersByStudentsApplied() throws Exception {
         List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
         Student dummyStudent = getDummyStudent();
@@ -529,7 +511,7 @@ class OfferApplicationControllerTest {
     public void testGetAllOffersByStudentApplied_withInvalidId() throws Exception {
         Student dummyStudent = getDummyStudent();
         when(offerApplicationService.getAllOffersStudentApplied(any()))
-                .thenThrow(new IdDoesNotExistException());
+                .thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/applications/applicants/offerApp/student/" + dummyStudent.getId())
@@ -538,7 +520,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'étudiant n'existe pas");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
     }
 
     private OfferAppDTO getDummyOfferAppDto() {

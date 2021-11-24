@@ -2,7 +2,7 @@ import './App.css';
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import Dashboard from "./components/UserView/Dashboard";
 import React, {createElement} from "react";
-// import 'bootstrap';
+import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "./components/Navbar/Navbar";
 import {AuthProvider, RequireAuth, RequireNoAuth} from "./services/use-auth";
@@ -15,6 +15,7 @@ import ResetPassword from "./components/Unauthenticated/ResetPassword";
 import RegisterMonitor from "./components/Unauthenticated/Register/RegisterMonitor";
 import RegisterCegep from "./components/Unauthenticated/Register/RegisterCegep";
 import {ContainerBox} from "./components/SharedComponents/ContainerBox/ContainerBox";
+import ErrorNotFound from "./components/SharedComponents/ErrorNotFound/ErrorNotFound";
 
 function App() {
     return <AuthProvider>
@@ -79,11 +80,9 @@ RequiredRoute.defaultProps = {
 };
 
 
-//TODO: EMEME
 function NotFound() {
     return (<>
-            <Title>404</Title>
-            <h1>Page not found</h1>
+           <ErrorNotFound/>
         </>
     )
 }

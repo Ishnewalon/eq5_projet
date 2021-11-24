@@ -93,11 +93,11 @@ public class CurriculumController {
         } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Curriculum non existant!"));
+                    .body(new ResponseMessage(e.getMessage()));
         } catch (CurriculumAlreadyTreatedException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Curriculum déjà traité!"));
+                    .body(new ResponseMessage(e.getMessage()));
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()

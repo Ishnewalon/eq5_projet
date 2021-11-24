@@ -36,6 +36,8 @@ public class StudentServiceTest {
     @Test
     public void testCreate_withValidStudent() throws Exception {
         Student dummyStudent = getDummyStudent();
+        when(studentRepository.existsByEmail(any())).thenReturn(false);
+        when(studentRepository.existsByMatricule(any())).thenReturn(false);
         when(studentRepository.save(any())).thenReturn(dummyStudent);
 
         Student actualStudent = studentService.create(dummyStudent);
@@ -53,6 +55,14 @@ public class StudentServiceTest {
     @Test
     public void testCreate_alreadyExistsStudent() {
         when(studentRepository.existsByEmail(any())).thenReturn(true);
+
+        assertThrows(StudentAlreadyExistsException.class,
+                () -> studentService.create(getDummyStudent()));
+    }
+
+    @Test
+    public void testCreate_alreadyExistsMatricule() {
+        when(studentRepository.existsByMatricule(any())).thenReturn(true);
 
         assertThrows(StudentAlreadyExistsException.class,
                 () -> studentService.create(getDummyStudent()));

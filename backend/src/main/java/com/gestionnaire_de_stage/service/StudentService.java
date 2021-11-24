@@ -25,7 +25,10 @@ public class StudentService {
     public Student create(Student student) throws StudentAlreadyExistsException {
         Assert.isTrue(student != null, "Étudiant est null");
         if (isNotValid(student)) {
-            throw new StudentAlreadyExistsException();
+            throw new StudentAlreadyExistsException("Un compte existe déjà pour cet étudiant");
+        }
+        if (isMatriculeValid(student.getMatricule())) {
+            throw new StudentAlreadyExistsException("Le matricule existe déjà");
         }
         return studentRepository.save(student);
     }
@@ -33,7 +36,7 @@ public class StudentService {
     public Student getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (isIDNotValid(aLong)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
         }
         return studentRepository.getById(aLong);
     }
@@ -45,7 +48,7 @@ public class StudentService {
     public Student update(Student student) throws IdDoesNotExistException {
         Assert.isTrue(student != null, "L'étudiant est null");
         if (isIDNotValid(student.getId())) 
-             throw new IdDoesNotExistException();
+             throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
         return studentRepository.save(student);
     }
 
@@ -61,7 +64,7 @@ public class StudentService {
         Assert.isTrue(email != null, "Le courriel est null");
         Assert.isTrue(password != null, "Le mot de passe est null");
         if (!isEmailAndPasswordValid(email, password)) {
-            throw new EmailAndPasswordDoesNotExistException();
+            throw new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid");
         }
         return studentRepository.findStudentByEmailAndPassword(email, password);
     }
@@ -118,8 +121,11 @@ public class StudentService {
         return studentRepository.getByEmail(email);
     }
 
-    private boolean isEmailInvalid(String email) {
+    public boolean isEmailInvalid(String email) {
         return !studentRepository.existsByEmail(email);
+    }
+    public boolean isMatriculeValid(String matricule) {
+        return studentRepository.existsByMatricule(matricule);
     }
 
 }

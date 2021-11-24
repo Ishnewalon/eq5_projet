@@ -6,6 +6,4 @@ public class CurriculumNotValidException extends Exception {
         super(message);
     }
 
-    public CurriculumNotValidException() {
-    }
 }

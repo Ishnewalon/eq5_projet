@@ -96,7 +96,7 @@ public class OfferControllerTest {
     public void testOfferCreate_withInvalidId() throws Exception {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOfferDTO.setIdSession(null);
-        when(offerService.create(any())).thenThrow(IdDoesNotExistException.class);
+        when(offerService.create(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas de session associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/add")
@@ -106,7 +106,7 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).containsIgnoringCase("L'id de la session n'existe pas");
+        assertThat(response.getContentAsString()).containsIgnoringCase("Il n'y a pas de session associé à cet identifiant");
     }
 
     @Test
@@ -114,7 +114,7 @@ public class OfferControllerTest {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
-        when(offerService.create(any())).thenThrow(new OfferAlreadyExistsException());
+        when(offerService.create(any())).thenThrow(new OfferAlreadyExistsException("Cet offre a déjà été créé"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/add")
@@ -124,7 +124,7 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Offre existe déjà");
+        assertThat(response.getContentAsString()).contains("Cet offre a déjà été créé");
     }
 
     @Test
@@ -159,13 +159,13 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).isEqualTo("L'id est null");
+        assertThat(response.getContentAsString()).contains("L'id est null");
     }
 
     @Test
     public void testUpdateOffer_withOfferAlreadyTreated() throws Exception {
         dummyOffer = new Offer();
-        when(offerService.validation(any())).thenThrow(new OfferAlreadyTreatedException());
+        when(offerService.validation(any())).thenThrow(new OfferAlreadyTreatedException("Cet offre a déjà été traité"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/validate")
@@ -175,7 +175,7 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Offre déjà traité!");
+        assertThat(response.getContentAsString()).contains("Cet offre a déjà été traité");
     }
 
     @Test
@@ -198,7 +198,7 @@ public class OfferControllerTest {
     @Test
     public void testUpdateOffer_withInvalidId() throws Exception {
         dummyOffer = getDummyOffer();
-        when(offerService.validation(any())).thenThrow(new IdDoesNotExistException());
+        when(offerService.validation(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'offre associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/validate")
@@ -208,7 +208,7 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Offre non existante!");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'offre associé à cet identifiant");
     }
 
 
