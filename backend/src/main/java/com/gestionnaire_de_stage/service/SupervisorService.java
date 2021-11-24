@@ -83,9 +83,9 @@ public class SupervisorService {
     }
 
     public Supervisor getOneByEmail(String email) throws DoesNotExistException {
-        Assert.notNull(email, "Le email est obligatoire");
+        Assert.notNull(email, "Le courriel est obligatoire");
         if (isEmailInvalid(email))
-            throw new DoesNotExistException("L'email n'existe pas");
+            throw new DoesNotExistException("Le courriel n'existe pas");
 
         return supervisorRepository.getByEmail(email);
     }

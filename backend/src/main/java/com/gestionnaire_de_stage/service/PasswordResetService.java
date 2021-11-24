@@ -29,7 +29,7 @@ public class PasswordResetService {
     }
 
     private PasswordResetToken forgotPassword(User user) {
-        Assert.notNull(user, "Un utilisateur est nécessaire afin de créé un token de récupération de mot de passe");
+        Assert.notNull(user, "Un utilisateur est nécessaire afin de créer un jeton de récupération de mot de passe");
         PasswordResetToken passwordResetToken = new PasswordResetToken(user);
         String message = "Veuillez cliquer sur le lien suivant pour réinitialiser votre mot de passe : http://localhost:3000/reset_password/" + passwordResetToken.getToken();
         sendEmail(user.getEmail(), "Mot de passe oublié", message);
@@ -52,7 +52,7 @@ public class PasswordResetService {
     }
 
     public User resetPassword(PasswordResetTokenDto passwordResetTokenDto) throws DoesNotExistException, IdDoesNotExistException, UnusableTokenException {
-        Assert.notNull(passwordResetTokenDto, "Un token et un mot de passe est nécessaire pour une modification de mot de passe");
+        Assert.notNull(passwordResetTokenDto, "Un jeton et un mot de passe sont nécessaires pour une modification de mot de passe");
         PasswordResetToken passwordResetToken = getOneByToken(passwordResetTokenDto.getToken());
 
         User user = updateUserPassword(passwordResetTokenDto.getPassword(), passwordResetToken.getUser());
@@ -77,11 +77,11 @@ public class PasswordResetService {
 
 
     private PasswordResetToken getOneByToken(String token) throws DoesNotExistException, UnusableTokenException {
-        Assert.notNull(token, "Un token est nécessaire pour une modification de mot de passe");
+        Assert.notNull(token, "Un jeton est nécessaire pour une modification de mot de passe");
         if (doesNotExists(token))
-            throw new DoesNotExistException("Le token n'existe pas");
+            throw new DoesNotExistException("Le jeton n'existe pas");
         if (isTokenUnusable(token))
-            throw new UnusableTokenException("Le token n'est plus utilisable");
+            throw new UnusableTokenException("Le jeton n'est plus utilisable");
 
         return passwordResetTokenRepository.getByToken(token);
     }
