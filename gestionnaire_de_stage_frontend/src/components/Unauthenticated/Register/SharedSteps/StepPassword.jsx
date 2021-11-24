@@ -9,13 +9,13 @@ export default function StepPassword({register, errors, prev}) {
                     <label>Mot de passe</label>
                     <input name="password" placeholder="Votre mot de passe"
                            type="password" {...register("password", {required: true, minLength: 8})}/>
-                    {errors.password && <span>This field is required</span>}
+                    {errors.password && <span>Ce champs est requis!</span>}
                 </FormField>
                 <FormField htmlFor="passwordConfirm">
                     <label>Confirmez votre mot de passe</label>
                     <input name="passwordConfirm" placeholder="Confirmez votre mot de passe" type="password"
                            {...register("passwordConfirm", {required: true, minLength: 8})}/>
-                    {errors.passwordConfirm && <span>This field is required</span>}
+                    {errors.passwordConfirm && <span>Ce champs est requis!</span>}
                 </FormField>
             </FormGroup>
             <div className="form-group text-center">

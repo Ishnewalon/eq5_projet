@@ -92,7 +92,7 @@ function StepCegep({register, errors}) {
                     {errors.matricule && <span>Le matricule dois être de 5 ou 7 chiffres</span>}
                 </FormField>
                 <div className="form-group text-center">
-                    <div className="btn-group">
+                    <div className="btn-group mt-3">
                         <BtnBack/>
                         <input className="btn btn-primary" type="submit" name="next" value="Suivant"/>
                     </div>
