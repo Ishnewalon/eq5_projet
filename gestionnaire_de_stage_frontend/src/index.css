@@ -6,6 +6,7 @@
     --color-light: #eee4db;
     --color-rgb-primary: 79, 101, 125;
     --font-family-primary: 'Montserrat', sans-serif;
+    --color-bg: #d4d6de
 }
 
 #root, html, body {
@@ -15,7 +16,7 @@
     font-family: var(--font-family-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #d4d6de;
+    background-color: var(--color-bg);
     color: var(--color-text) !important;
 }
 

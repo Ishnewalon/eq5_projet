@@ -1,20 +1,20 @@
 .circles:after {
-    content:'';
-    display:inline-block;
-    background:#eee4db;
-    top:50px;
-    left:0;
+    content: '';
+    display: inline-block;
+    background: var(--color-bg);
+    top: 50px;
+    left: 0;
 }
 
 .circles {
-    background: #eee4db;
+    background: var(--color-bg);
     text-align: center;
-    margin-top:60px;
+    margin-top: 60px;
 }
 
 .circles p {
     font-size: 240px;
-    color: #eee4db;
+    color: var(--color-bg);
     padding-top: 60px;
     position: relative;
     z-index: 9;
