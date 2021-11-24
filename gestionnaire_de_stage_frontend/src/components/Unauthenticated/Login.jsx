@@ -30,22 +30,22 @@ export default function Login() {
                     <li className="nav-item">
                         <input type="radio" className="btn-check" name="options-outlined" id="monitor"
                                autoComplete="off" onClick={() => setUserType(UserType.MONITOR[0])} defaultChecked/>
-                        <label className="btn btn-outline-light" htmlFor="monitor">{UserType.MONITOR[1]}</label>
+                        <label className="btn btn-outline-primary" htmlFor="monitor">{UserType.MONITOR[1]}</label>
                     </li>
                     <li className="nav-item">
                         <input type="radio" className="btn-check" name="options-outlined" id="manager"
                                autoComplete="off" onClick={() => setUserType(UserType.MANAGER[0])}/>
-                        <label className="btn btn-outline-light" htmlFor="manager">{UserType.MANAGER[1]}</label>
+                        <label className="btn btn-outline-success" htmlFor="manager">{UserType.MANAGER[1]}</label>
                     </li>
                     <li className="nav-item">
                         <input type="radio" className="btn-check" name="options-outlined" id="student"
                                autoComplete="off" onClick={() => setUserType(UserType.STUDENT[0])}/>
-                        <label className="btn btn-outline-light" htmlFor="student">{UserType.STUDENT[1]}</label>
+                        <label className="btn btn-outline-primary" htmlFor="student">{UserType.STUDENT[1]}</label>
                     </li>
                     <li className="nav-item">
                         <input type="radio" className="btn-check" name="options-outlined" id="supervisor"
                                autoComplete="off" onClick={() => setUserType(UserType.SUPERVISOR[0])}/>
-                        <label className="btn btn-outline-light" htmlFor="supervisor">{UserType.SUPERVISOR[1]}</label>
+                        <label className="btn btn-outline-primary" htmlFor="supervisor">{UserType.SUPERVISOR[1]}</label>
                     </li>
                 </ul>
             </FormGroup>

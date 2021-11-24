@@ -7,9 +7,10 @@ import {BiLogIn, BiLogOut, GiHamburgerMenu} from "react-icons/all";
 
 export default function Navbar() {
     return (
-        <nav className="navbar navbar-expand-lg bg-prim navbar-dark mb-4">
+        <nav className="navbar navbar-expand-lg sticky-top bg-light navbar-light shadow-sm mb-4 no-select">
             <div className="container-fluid">
-                <Link className="navbar-brand" to="/">JISOS</Link>
+                <Link className="navbar-brand bold font-monospace" to="/">JI<span
+                    className="color-emphasis-1">SOS</span></Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                         aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <GiHamburgerMenu/>
@@ -27,9 +28,9 @@ export default function Navbar() {
 
 function LoginLogout() {
     let auth = useAuth();
-    let btn = (<BiLogIn color="white" title="Se connecter" size="25"/>)
+    let btn = (<BiLogIn title="Se connecter" size="25" className={"link-dark"}/>)
     if (auth.user)
-        btn = (<BiLogOut color="white" title="Se deconnecter" size="25"/>)
+        btn = (<BiLogOut title="Se deconnecter" size="25" className={"link-dark"}/>)
 
     const onClick = (e) => {
         if (auth.user) {

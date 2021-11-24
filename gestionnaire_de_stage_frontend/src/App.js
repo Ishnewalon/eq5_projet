@@ -20,7 +20,7 @@ function App() {
     return <AuthProvider>
         <Router>
             <Navbar/>
-            <div className="container">
+            <main className="container">
                 <Switch>
                     <RequiredRoute path="/dashboard" component={RequireAuth}>
                         <Dashboard/>
@@ -48,7 +48,7 @@ function App() {
                     <Route exact path="/404" component={NotFound}/>
                     <Redirect to="/404"/>
                 </Switch>
-            </div>
+            </main>
         </Router>
     </AuthProvider>
 }

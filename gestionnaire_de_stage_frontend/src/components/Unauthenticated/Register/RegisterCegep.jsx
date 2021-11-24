@@ -126,19 +126,19 @@ export default function RegisterCegep() {
 function StepCegep({handleChange, matricule}) {
 
     return (<>
-            <FormGroup>
+            <FormGroup repartition={[12, 12]}>
                 <FormField htmlFor="matricule">
                     <label>Matricule</label>
                     <input name="matricule" placeholder="Matricule" type="number"
                            value={matricule} onChange={handleChange}/>
                 </FormField>
-            </FormGroup>
-            <div className="form-group text-center">
-                <div className="btn-group">
-                    <BtnBack/>
-                    <input className="btn btn-primary" type="submit" name="next" value="Suivant"/>
+                <div className="form-group text-center">
+                    <div className="btn-group">
+                        <BtnBack/>
+                        <input className="btn btn-primary" type="submit" name="next" value="Suivant"/>
+                    </div>
                 </div>
-            </div>
+            </FormGroup>
         </>
     )
 

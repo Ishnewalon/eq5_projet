@@ -17,7 +17,7 @@ export function FormField(props) {
     let labelProps;
     if (label) {
         labelProps = {
-            className: `${label.props.className ? input.props.className + " " : ""}label text-white`
+            className: `${label.props.className ? input.props.className + " " : ""}label`
         };
         if (htmlFor) {
             inputProps.id = htmlFor

@@ -5,7 +5,7 @@ export function Title(props) {
     const {header, children} = props;
     return React.createElement(
         header,
-        {className: "text-light title text-center mb-3"},
+        {className: "title text-center mb-3"},
         children
     );
 }

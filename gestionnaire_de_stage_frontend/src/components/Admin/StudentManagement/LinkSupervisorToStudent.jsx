@@ -41,7 +41,10 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
         )
     }
     if (studentList.length === 0)
-        return <MessageNothingToShow message="Aucun étudiant à associer pour le moment..."/>
+        return <MessageNothingToShow message="Aucun étudiant à associer pour le moment...">
+            Bonne<span className="color-emphasis-1"> nouvelle!</span><br/>
+            Aucune offre <span className="color-emphasis-1">à valider.</span>
+        </MessageNothingToShow>
 
     return (
         <div>
