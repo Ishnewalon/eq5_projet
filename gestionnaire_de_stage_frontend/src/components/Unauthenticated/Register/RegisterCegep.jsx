@@ -84,7 +84,7 @@ function StepCegep({register, errors}) {
                 <FormInput label="Matricule" validation={{required: true, pattern: regexMatricule}}
                            error={errors.matricule} name="matricule" register={register} type="number"
                            placeholder="0000000 (Étudiant) ou 00000 (Superviseur)"
-                           errorMessage="Le matricule dois être de 5 ou 7 chiffres"/>
+                           errorMessage="Le matricule doit être de 5 ou 7 chiffres"/>
                 <div className="form-group text-center">
                     <div className="btn-group mt-3">
                         <BtnBack/>
