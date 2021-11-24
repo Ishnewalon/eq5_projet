@@ -10,11 +10,13 @@ export async function forgotPassword(typeUser, email) {
     return await fetch(`${urlBackend}/forgot_password/${typeUser}/${email}`, requestInit(methods.POST, null)).then(
         response => {
             return response.json().then((body) => {
-                if (response.status === 200)
-                    toast.fire({title: body.message})
+                if (response.status === 200) {
+                    toast.fire({title: body.message}).then(() => {
+                        window.location.href = "/login";
+                    });
+                }
                 if (response.status === 400)
                     toastErr.fire({title: body.message})
-                return response.ok;
             })
         }
     );

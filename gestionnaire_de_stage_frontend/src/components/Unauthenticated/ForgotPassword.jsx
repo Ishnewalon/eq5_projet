@@ -3,32 +3,27 @@ import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../SharedComponents/FormField/FormField";
 import {UserType} from "../../enums/UserTypes";
 import {forgotPassword} from "../../services/user-service";
-import {useHistory} from "react-router-dom";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import Swal from "sweetalert2";
 import {toast} from "../../utility";
 
 export default function ForgotPassword() {
-    let history = useHistory();
     const [email, setEmail] = useState('');
     const [type, setType] = useState(UserType.MONITOR[0]);
 
 
     const submit = e => {
         e.preventDefault();
-        let isOpen = true
-        forgotPassword(type, email).then(
-            bool => {
-                if (bool)
-                    history.push("/login")
-                isOpen = false
-            }
-        );
+        let isFetching = true
+
         toast.fire({
             title: 'Envoi du mail...',
-            didOpen: () => Swal.showLoading(),
+            didOpen: () => {
+                forgotPassword(type, email).then(() => isFetching = false);
+                Swal.showLoading()
+            },
             willClose() {
-                if (isOpen)
+                if (isFetching)
                     Swal.close()
             }
         }).then()
