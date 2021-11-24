@@ -1,48 +1,27 @@
 import React from "react";
 import {FormGroup} from "../../../SharedComponents/FormGroup/FormGroup";
-import {FormField} from "../../../SharedComponents/FormField/FormField";
 import {regexEmail, regexName, regexPhone} from "../../../../utility";
+import {FormInput} from "../../../SharedComponents/FormInput/FormInput";
 
 
 export default function StepInformationGeneral({register, errors, prev}) {
     return (<>
         <FormGroup>
-            <FormField htmlFor="firstName">
-                <label>Prénom</label>
-                <input name="firstName" placeholder="Prenom" className={errors.matricule ? "border-danger" : ""}
-                       type="text" {...register("firstName", {required: true, pattern: regexName})}/>
-                {errors.firstName && <span>Ce champ est obligatoire!</span>}
-            </FormField>
-            <FormField htmlFor="lastName">
-                <label>Nom</label>
-                <input name="lastName" placeholder="Nom" type="text" className={errors.matricule ? "border-danger" : ""}
-                       {...register("lastName", {
-                           required: true,
-                           minLength: 2,
-                           pattern: regexName
-                       })}/>
-                {errors.lastName && <span>Ce champ est obligatoire!</span>}
-            </FormField>
+            <FormInput register={register} error={errors.firstName} name="firstName" label="Prénom" placeholder="Prénom"
+                       type="text" validation={{required: true, pattern: regexName}}/>
+            <FormInput register={register} error={errors.lastName} name="lastName" label="Nom" placeholder="Nom"
+                       type="text" validation={{required: true, pattern: regexName}}/>
         </FormGroup>
         <FormGroup>
-            <FormField htmlFor="email">
-                <label>Votre Email</label>
-                <input placeholder="exemple@email.com" type="email" className={errors.matricule ? "border-danger" : ""}
-                       name="email" {...register("email", {required: true, pattern: regexEmail})}/>
-                {errors.email && <span>Il faut un email valide!</span>}
-            </FormField>
+            <FormInput register={register} error={errors.email} name="email" label="Votre Email"
+                       placeholder="Votre Email"
+                       type="email" validation={{required: true, pattern: regexEmail}}
+                       errorMessage="Il faut un email valide."/>
         </FormGroup>
         <FormGroup>
-            <FormField htmlFor="phone">
-                <label>Téléphone</label>
-                <input name="phone" placeholder="000 000 000" type="tel"
-                       className={errors.matricule ? "border-danger" : ""}
-                       {...register("phone", {
-                           required: true,
-                           pattern: regexPhone
-                       })}/>
-                {errors.phone && <span>Il faut un numéro de téléphone valide!</span>}
-            </FormField>
+            <FormInput register={register} error={errors.phone} name="phone" label="Votre Téléphone"
+                       placeholder="000 000 000" type="tel" validation={{required: true, pattern: regexPhone}}
+                       errorMessage="Il faut un numéro de téléphone valide!"/>
         </FormGroup>
         <div className="form-group text-center">
             <label/>

@@ -9,7 +9,7 @@ import {BtnBack} from "../../SharedComponents/BtnBack";
 import {Title} from "../../SharedComponents/Title/Title";
 import {useForm} from "react-hook-form";
 import {regexMatricule} from "../../../utility";
-import {FormField} from "../../SharedComponents/FormField/FormField";
+import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 
 
 export default function RegisterCegep() {
@@ -82,15 +82,10 @@ export default function RegisterCegep() {
 function StepCegep({register, errors}) {
     return (<>
             <FormGroup repartition={[12, 12]}>
-                <FormField htmlFor="matricule">
-                    <label>Matricule</label>
-                    <input type="number" name="matricule" className={errors.matricule ? "border-danger" : ""}
-                           placeholder="Matricule" {...register("matricule", {
-                        required: true,
-                        pattern: regexMatricule
-                    })} />
-                    {errors.matricule && <span>Le matricule dois être de 5 ou 7 chiffres</span>}
-                </FormField>
+                <FormInput label="Matricule" validation={{required: true, pattern: regexMatricule}}
+                           error={errors.matricule} name="matricule" register={register} type="number"
+                           placeholder="0000000(Étudiant) ou 00000(Superviseur)"
+                           errorMessage="Le matricule dois être de 5 ou 7 chiffres"/>
                 <div className="form-group text-center">
                     <div className="btn-group">
                         <BtnBack/>

@@ -5,10 +5,10 @@ import {MonitorModel} from "../../../models/User";
 import {useHistory} from "react-router-dom";
 import {useAuth} from "../../../services/use-auth";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
-import {FormField} from "../../SharedComponents/FormField/FormField";
 import {BtnBack} from "../../SharedComponents/BtnBack";
 import {useForm} from "react-hook-form";
 import {regexCodePostal, regexName} from "../../../utility";
+import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 
 
 export default function RegisterMonitor() {
@@ -33,6 +33,7 @@ export default function RegisterMonitor() {
             lastName,
             email,
             password,
+            passwordConfirm,
             phone,
             address,
             city,
@@ -44,7 +45,7 @@ export default function RegisterMonitor() {
                 setCurentStep(1)
             else if (curentStep === 1)
                 setCurentStep(2)
-            else if (curentStep === 2)
+            else if (curentStep === 2 && password === passwordConfirm)
                 endThis(email, password, lastName, firstName, phone, companyName, address, city, postalCode);
         } else if (submitter === 'Précédent')
             setCurentStep(curentStep - 1)
@@ -74,35 +75,20 @@ export default function RegisterMonitor() {
 function StepMonitor({register, errors}) {
     return (<>
         <FormGroup>
-            <FormField htmlFor="companyName">
-                <label>Nom de la compagnie</label>
-                <input name="companyName" placeholder="Nom de compagnie"
-                       type="text"
-                       {...register("companyName", {required: true, pattern: regexName})}/>
-                {errors.companyName && <span className="error">Ce champ est obligatoire!</span>}
-            </FormField>
-            <FormField htmlFor="city">
-                <label>Ville</label>
-                <input name="city" placeholder="Ville" type="text"
-                       {...register("city", {required: true, pattern: regexName})}/>
-                {errors.city && <span className="error">Ce champ est obligatoire!</span>}
-            </FormField>
+            <FormInput label="Nom de la compagnie" validation={{require: true, pattern: regexName}}
+                       error={errors.companyName} name="companyName" register={register} type="text"
+                       placeholder="Nom de compagnie"/>
+            <FormInput label="Ville" validation={{required: true, pattern: regexName}} error={errors.city} name="city"
+                       register={register} type="text" placeholder="Ville"/>
         </FormGroup>
         <FormGroup>
-            <FormField htmlFor="address">
-                <label>Adresse de la compagnie</label>
-                <input name="address" placeholder="Rue, boulevard, avenue.." type="text"
-                       {...register("address", {required: true, pattern: regexName})}/>
-                {errors.address && <span className="error">Ce champ est obligatoire!</span>}
-            </FormField>
+            <FormInput label="Adresse" validation={{required: true, pattern: regexName}} error={errors.address}
+                       name="address" register={register} type="text" placeholder="Rue, boulevard, avenue.."/>
         </FormGroup>
         <FormGroup>
-            <FormField htmlFor="postalCode">
-                <label>Code Postale</label>
-                <input name="postalCode" placeholder="H0H 0H0" type="text"
-                       {...register("postalCode", {required: true, pattern: regexCodePostal})}/>
-                {errors.postalCode && <span className="error">Ce champ est obligatoire!</span>}
-            </FormField>
+            <FormInput label="Code postal" validation={{required: true, pattern: regexCodePostal}}
+                       error={errors.postalCode} name="postalCode" register={register} type="text"
+                       placeholder="H0H 0H0"/>
         </FormGroup>
         <div className="form-group text-center">
             <div className="btn-group">
