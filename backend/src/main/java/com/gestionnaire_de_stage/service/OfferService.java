@@ -12,6 +12,7 @@ import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.Session;
 import com.gestionnaire_de_stage.repository.OfferRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -32,7 +33,7 @@ public class OfferService {
     private final SessionService sessionService;
     private final Clock clock;
 
-    public OfferService(OfferRepository offerRepository, MonitorService monitorService, SessionService sessionService, Clock clock) {
+    public OfferService(OfferRepository offerRepository, MonitorService monitorService, SessionService sessionService, @Lazy Clock clock) {
         this.offerRepository = offerRepository;
         this.monitorService = monitorService;
         this.sessionService = sessionService;

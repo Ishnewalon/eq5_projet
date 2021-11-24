@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class OfferApplicationService {
@@ -135,6 +136,14 @@ public class OfferApplicationService {
         }
         offerApplicationRepository.save(offerApplication);
         return updateStatusDTO.isAccepted() ? "Status changé, attendez la signature du contrat" : "Status changé, stage refusé";
+    }
+
+    public int updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(Status status, Status newStatus) throws IllegalArgumentException {
+        Assert.notNull(status, "Les deux status ne peuvent pas être vide");
+        Assert.notNull(newStatus, "Les deux status ne peuvent pas être vide");
+        Assert.isTrue(status != newStatus, "Les deux status ne peuvent pas être identiques");
+
+        return offerApplicationRepository.updateAllOfferApplicationThatWereInAInterviewStatusToStatus(status, newStatus, Year.now());
     }
 
     public List<OfferApplication> getAllBySupervisorId(Long supervisor_id) throws IdDoesNotExistException {
