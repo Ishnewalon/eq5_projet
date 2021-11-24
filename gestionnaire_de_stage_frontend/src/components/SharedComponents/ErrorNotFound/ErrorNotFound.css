@@ -31,7 +31,7 @@
     width: 185px;
     height: 185px;
     border-radius: 50%;
-    background: #253650;
+    background: #304c7b;
     position: absolute;
     z-index: 1;
     top: 60px;
@@ -48,7 +48,7 @@
     border-radius: 50%;
     position: absolute;
     z-index: 1;
-    background: #e0892c;
+    background: #4f657d;
     top: 60px;
     left: 10%;
     animation: 7s medmove infinite cubic-bezier(.32,.04,.15,.75);
@@ -61,7 +61,7 @@
     width: 400px;
     height: 400px;
     border-radius: 50%;
-    background: #4f657d;
+    background: #6494c5;
     position: absolute;
     z-index: 1;
     top: 60px;
