@@ -17,7 +17,10 @@ class User {
 
 
 export class ManagerModel extends User {
-
+    // eslint-disable-next-line no-useless-constructor
+    constructor($email, $password, $lastName, $firstName, $phone) {
+        super($email, $password, $lastName, $firstName, $phone);
+    }
 }
 
 
