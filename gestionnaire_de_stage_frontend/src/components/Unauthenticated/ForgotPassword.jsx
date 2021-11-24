@@ -5,28 +5,40 @@ import {UserType} from "../../enums/UserTypes";
 import {forgotPassword} from "../../services/user-service";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import Swal from "sweetalert2";
-import {toast} from "../../utility";
+import {toast, toastErr} from "../../utility";
+import {useHistory} from "react-router-dom";
 
 export default function ForgotPassword() {
+    let history = useHistory();
     const [email, setEmail] = useState('');
     const [type, setType] = useState(UserType.MONITOR[0]);
 
 
     const submit = e => {
         e.preventDefault();
-        let isFetching = true
-
+        let status
+        let body
         toast.fire({
             title: 'Envoi du mail...',
             didOpen: () => {
-                forgotPassword(type, email).then(() => isFetching = false);
                 Swal.showLoading()
-            },
-            willClose() {
-                if (isFetching)
-                    Swal.close()
+                forgotPassword(type, email).then(
+                    response => {
+                        response.json().then(b => {
+                            status = response.status
+                            body = b
+                            Swal.close()
+                        })
+                    }
+                );
             }
-        }).then()
+        }).then(() => {
+            if (status === 200)
+                toast.fire({title: body.message}).then(
+                    () => history.push('/login'));
+            if (status === 400)
+                toastErr.fire({title: body.message}).then()
+        })
     };
 
     return (
