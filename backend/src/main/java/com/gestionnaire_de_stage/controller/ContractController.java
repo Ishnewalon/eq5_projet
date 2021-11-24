@@ -36,14 +36,14 @@ public class ContractController {
         this.templateEngine = templateEngine;
     }
 
-    @GetMapping("/ready_to_sign")//SESSION : get only contract of current or futur session
+    @GetMapping("/ready_to_sign")//SESSION : get only contract of current or future session
     public ResponseEntity<?> contractsNeedSignature() {
         List<Contract> contractList = contractService.getAllUnsignedContracts();
         return ResponseEntity.ok(contractList);
     }
 
     @PutMapping("/managerSign/{managerSignature}/{contract_id}")
-//SESSION : sign only contract of current or futur session
+//SESSION : sign only contract of current or future session
     public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addManagerSignature(managerSignature, contract_id);
@@ -64,7 +64,7 @@ public class ContractController {
                 .body(new ResponseMessage("Signature fait"));
     }
 
-    @PostMapping("/start")//SESSION : can start only contract of current or futur session
+    @PostMapping("/start")//SESSION : can start only contract of current or future session
     public ResponseEntity<?> createContract(HttpServletRequest request, HttpServletResponse response, @RequestBody ContractStarterDto contractStarterDto) {
         try {
             Contract contract = new Contract();
@@ -83,7 +83,7 @@ public class ContractController {
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
         }
-        return ResponseEntity.ok(new ResponseMessage("Création de contrat réussi!"));
+        return ResponseEntity.ok(new ResponseMessage("Création du contrat avec fait succès"));
     }
 
     @GetMapping("/monitor/{monitor_id}")//SESSION : get only contract of current or futur session

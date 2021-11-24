@@ -106,9 +106,9 @@ public class OfferApplicationService {
     }
 
     public OfferApplication getOneById(Long idOfferApplication) throws IdDoesNotExistException {
-        Assert.isTrue(idOfferApplication != null, "L'id de l'application ne peut pas être null");
+        Assert.isTrue(idOfferApplication != null, "L'identifiant de l'application ne peut pas être vide");
         if (!offerApplicationRepository.existsById(idOfferApplication))
-            throw new IdDoesNotExistException("Il n'y a pas d'offre associé à cet identifiant");
+            throw new IdDoesNotExistException("L'identifiant de l'application ne peut pas être vide");
         return offerApplicationRepository.getById(idOfferApplication);
     }
 
