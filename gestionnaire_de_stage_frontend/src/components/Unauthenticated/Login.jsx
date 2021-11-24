@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import FieldEmail from "../SharedComponents/Fields/FieldEmail";
-import {Link, useHistory} from "react-router-dom";
+import {Link, useHistory, useLocation} from "react-router-dom";
 import {UserType} from "../../enums/UserTypes";
 import {useAuth} from "../../services/use-auth";
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
@@ -9,6 +9,7 @@ import {FormField} from "../SharedComponents/FormField/FormField";
 
 
 export default function Login() {
+    let location = useLocation();
     const history = useHistory();
     let auth = useAuth();
     const [email, setEmail] = useState('')
@@ -63,7 +64,8 @@ export default function Login() {
                 <button className="btn btn-primary btn-login" type={"button"} onClick={connect}>Connexion</button>
             </div>
             <div className="form-group text-center mb-3">
-                <Link className={"float-end mb-3 link"} to="/forgot_password">Mot de passe oublié?</Link>
+                <Link className={"float-end mb-3 link"} to={{pathname: "/forgot_password", state: {from: location}}}>Mot
+                    de passe oublié?</Link>
             </div>
         </ContainerBox>
     )

@@ -7,6 +7,7 @@ import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import Swal from "sweetalert2";
 import {toast, toastErr} from "../../utility";
 import {useHistory} from "react-router-dom";
+import {BtnBack} from "../SharedComponents/BtnBack";
 
 export default function ForgotPassword() {
     let history = useHistory();
@@ -61,7 +62,10 @@ export default function ForgotPassword() {
                     </FormField>
                 </FormGroup>
                 <div className="d-flex justify-content-center mt-3">
-                    <button type="submit" className="btn btn-primary">Envoyer</button>
+                    <div className="btn-group">
+                        <BtnBack/>
+                        <button type="submit" className="btn btn-primary">Envoyer</button>
+                    </div>
                 </div>
             </form>
         </ContainerBox>

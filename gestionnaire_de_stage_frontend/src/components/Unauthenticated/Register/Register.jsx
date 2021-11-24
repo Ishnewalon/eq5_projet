@@ -1,15 +1,18 @@
 import React from "react";
-import {Link, useRouteMatch} from "react-router-dom";
+import {Link, useLocation, useRouteMatch} from "react-router-dom";
 
 
 export default function Register() {
     let {path} = useRouteMatch();
+    let location = useLocation();
 
     return (<>
         <div className="text-center">
             <div className="">
-                <Link className="btn btn-primary" to={`${path}/cegep`}>Membre du cégep</Link>
-                <Link className="btn btn-primary" to={`${path}/monitor`}>Compagnie</Link>
+                <Link className="btn btn-primary" to={{pathname: `${path}/cegep`, state: {from: location}}}
+                      from={"Register"}>Membre du cégep</Link>
+                <Link className="btn btn-primary"
+                      to={{pathname: `${path}/monitor`, state: {from: location}}}>Compagnie</Link>
             </div>
         </div>
     </>);

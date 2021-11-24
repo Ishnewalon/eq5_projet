@@ -3,7 +3,13 @@ import React from "react";
 
 export function BtnBack() {
     let history = useHistory();
-    if (history.length === 0) return null;
-    return <button className="btn btn-primary"
-                   onClick={() => history.length > 0 ? history.goBack() : null}>Retour</button>
+
+    const goBack = e => {
+        e.preventDefault();
+        if (history.location.state)
+            history.goBack()
+        history.push("/login", {from: history.location})
+    };
+    return <button type="button" className="btn btn-primary"
+                   onClick={goBack}>Retour</button>
 }
