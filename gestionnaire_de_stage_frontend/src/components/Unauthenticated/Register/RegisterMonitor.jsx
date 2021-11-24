@@ -75,19 +75,60 @@ export default function RegisterMonitor() {
 function StepMonitor({register, errors}) {
     return (<>
         <FormGroup>
-            <FormInput label="Nom de la compagnie" validation={{require: true, pattern: regexName}}
-                       error={errors.companyName} name="companyName" register={register} type="text"
+            <FormInput label="Nom de la compagnie"
+                       validation={{
+                           required: "Ce champ est obligatoire!",
+                           pattern: {
+                               value: regexName,
+                               message: "Le nom de la compagnie doit contenir au moins 3 caractères et ne doit contenir que des lettres"
+                           }
+                       }}
+                       error={errors.companyName}
+                       name="companyName"
+                       register={register}
+                       type="text"
                        placeholder="Nom de compagnie"/>
-            <FormInput label="Ville" validation={{required: true, pattern: regexName}} error={errors.city} name="city"
-                       register={register} type="text" placeholder="Ville"/>
+            <FormInput label="Ville"
+                       validation={{
+                           required: "Ce champ est obligatoire!",
+                           pattern: {
+                               value: regexName,
+                               message: "Le nom de la ville doit contenir au moins 3 caractères et ne doit contenir que des lettres"
+                           }
+                       }}
+                       error={errors.city}
+                       name="city"
+                       register={register}
+                       type="text"
+                       placeholder="Ville"/>
         </FormGroup>
         <FormGroup>
-            <FormInput label="Adresse" validation={{required: true, pattern: regexName}} error={errors.address}
-                       name="address" register={register} type="text" placeholder="Rue, boulevard, avenue.."/>
+            <FormInput label="Adresse"
+                       validation={{
+                           required: "Ce champ est obligatoire!",
+                           minLength: {
+                               value: 8,
+                               message: "L'adresse doit contenir au moins 8 caractères "
+                           }
+                       }} error={errors.address}
+                       name="address"
+                       register={register}
+                       type="text"
+                       placeholder="Rue, boulevard, avenue.."/>
         </FormGroup>
         <FormGroup>
-            <FormInput label="Code postal" validation={{required: true, pattern: regexCodePostal}}
-                       error={errors.postalCode} name="postalCode" register={register} type="text"
+            <FormInput label="Code postal"
+                       validation={{
+                           required: "Ce champ est obligatoire!",
+                           pattern: {
+                               value: regexCodePostal,
+                               message: "Le code postal doit contenir être sous le format suivant: H0H 0H0"
+                           }
+                       }}
+                       error={errors.postalCode}
+                       name="postalCode"
+                       register={register}
+                       type="text"
                        placeholder="H0H 0H0"/>
         </FormGroup>
         <div className="form-group text-center">

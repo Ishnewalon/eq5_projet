@@ -2,12 +2,12 @@ import {FormField} from "../FormField/FormField";
 import PropTypes from "prop-types";
 
 export function FormInput(props) {
-    const {register, error, label, name, placeholder, type, errorMessage, validation} = props;
+    const {register, error, label, name, placeholder, type, validation} = props;
     return <FormField htmlFor={name}>
         <label>{label}</label>
         <input name={name} placeholder={placeholder} className={error ? "border-danger" : ""}
                type={type} {...register(name, validation)}/>
-        {error && <span>{errorMessage}</span>}
+        {error && <span>{error.message}</span>}
     </FormField>;
 }
 
@@ -23,5 +23,4 @@ FormInput.propTypes = {
 };
 FormInput.defaultProps = {
     placeholder: "",
-    errorMessage: "Ce champ est obligatoire!"
 };

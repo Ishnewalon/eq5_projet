@@ -13,7 +13,7 @@ import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 
 
 export default function RegisterCegep() {
-    const {register, handleSubmit, formState: {errors}} = useForm();
+    const {register, handleSubmit, watch, formState: {errors}} = useForm();
     let history = useHistory();
     let auth = useAuth();
     const [curentStep, setCurentStep] = useState(0)
@@ -66,7 +66,8 @@ export default function RegisterCegep() {
             <StepInformationGeneral register={register} errors={errors} prev={() => setCurentStep(curentStep - 1)}/>
         </>)
     } else if (curentStep === 2)
-        show = <StepPassword register={register} errors={errors} prev={() => setCurentStep(curentStep - 1)}/>
+        show =
+            <StepPassword register={register} errors={errors} watch={watch} prev={() => setCurentStep(curentStep - 1)}/>
 
 
     return <>
@@ -81,10 +82,19 @@ export default function RegisterCegep() {
 function StepCegep({register, errors}) {
     return (<>
             <FormGroup repartition={[12, 12]}>
-                <FormInput label="Matricule" validation={{required: true, pattern: regexMatricule}}
-                           error={errors.matricule} name="matricule" register={register} type="number"
-                           placeholder="0000000 (Étudiant) ou 00000 (Superviseur)"
-                           errorMessage="Le matricule doit être de 5 ou 7 chiffres"/>
+                <FormInput label="Matricule"
+                           validation={{
+                               required: "Vous devez entrez votre matricule pour continuer",
+                               pattern: {
+                                   value: regexMatricule,
+                                   message: "Votre matricule doit être de 5 ou 7 chiffres"
+                               }
+                           }}
+                           error={errors.matricule}
+                           name="matricule"
+                           register={register}
+                           type="number"
+                           placeholder="0000000 (Étudiant) ou 00000 (Superviseur)"/>
                 <div className="form-group text-center">
                     <div className="btn-group mt-3">
                         <BtnBack/>
