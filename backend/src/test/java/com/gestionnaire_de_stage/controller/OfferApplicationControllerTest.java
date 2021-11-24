@@ -65,7 +65,7 @@ class OfferApplicationControllerTest {
 
     @Test
     public void testStudentApplyToOfferAgain() throws Exception {
-        when(offerApplicationService.create(any(), any())).thenThrow(new StudentAlreadyAppliedToOfferException("Vous avez déjà appliqué(e) sur cette offre"));
+        when(offerApplicationService.create(any(), any())).thenThrow(new StudentAlreadyAppliedToOfferException("Vous avez déjà postulé sur cette offre"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/apply")
@@ -75,7 +75,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Vous avez déjà appliqué(e) sur cette offre");
+        assertThat(response.getContentAsString()).contains("Vous avez déjà postulé sur cette offre");
     }
 
     @Test
@@ -112,7 +112,7 @@ class OfferApplicationControllerTest {
     public void testStudentApplyToOffer_withDTOWithNoOfferId() throws Exception {
         OfferAppDTO dummyOfferAppDto = getDummyOfferAppDto();
         dummyOfferAppDto.setIdOffer(null);
-        when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("L'id de l'offre ne peut pas être null"));
+        when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("L'identifiant de l'offre ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/apply")
@@ -122,14 +122,14 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'id de l'offre ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("L'identifiant de l'offre ne peut pas être vide");
     }
 
     @Test
     public void testStudentApplyToOffer_withDTOWithNoStudentId() throws Exception {
         OfferAppDTO dummyOfferAppDto = getDummyOfferAppDto();
         dummyOfferAppDto.setIdStudent(null);
-        when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("Le id du curriculum ne peut pas être null"));
+        when(offerApplicationService.create(any(), any())).thenThrow(new IllegalArgumentException("Le identifiant du curriculum ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/apply")
@@ -139,12 +139,12 @@ class OfferApplicationControllerTest {
 
         MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le id du curriculum ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("Le identifiant du curriculum ne peut pas être vide");
     }
 
     @Test
     public void testStudentApplyToOffer_withCvInvalid() throws Exception {
-        when(offerApplicationService.create(any(), any())).thenThrow(new StudentHasNoCurriculumException("Vous devez avoir un curriculum valid avant d'appliquer"));
+        when(offerApplicationService.create(any(), any())).thenThrow(new StudentHasNoCurriculumException("Vous devez avoir un curriculum principal valide avant de postuler"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/apply")
@@ -154,7 +154,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Vous devez avoir un curriculum valid avant d'appliquer");
+        assertThat(response.getContentAsString()).contains("Vous devez avoir un curriculum principal valide avant de postuler");
     }
 
     @Test
@@ -179,7 +179,7 @@ class OfferApplicationControllerTest {
     public void testGetOffersApplicationStageTrouver_withIdNull() throws Exception {
         Manager dummyManager = getDummyManager();
         when(offerApplicationService.getOffersApplicationsStageTrouver(any()))
-                .thenThrow(new IllegalArgumentException("L'id du gestionnaire ne peut pas être null!"));
+                .thenThrow(new IllegalArgumentException("L'identifiant du gestionnaire ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/applications/applicants/manager/" + dummyManager.getId())
@@ -188,7 +188,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'id du gestionnaire ne peut pas être null!");
+        assertThat(response.getContentAsString()).contains("L'identifiant du gestionnaire ne peut pas être vide");
     }
 
     @Test
@@ -233,7 +233,7 @@ class OfferApplicationControllerTest {
     public void testViewStudentsAppliedOffer_withNullEmail() throws Exception {
         String email = "rolling@email.com";
         when(offerApplicationService.getAllByOfferCreatorEmail(any()))
-                .thenThrow(new IllegalArgumentException("Le courriel ne peut pas être null"));
+                .thenThrow(new IllegalArgumentException("Le courriel ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/applications/applicants/{}", email)
@@ -242,7 +242,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le courriel ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("Le courriel ne peut pas être vide");
     }
 
     @Test
@@ -289,7 +289,7 @@ class OfferApplicationControllerTest {
         MAPPER.registerModule(new JavaTimeModule());
         OfferApplication offerApplication = getDummyOfferApp();
         when(offerApplicationService.setInterviewDate(any(), any()))
-                .thenThrow(new IllegalArgumentException("L'id de l'offre ne peut pas être null"));
+                .thenThrow(new IllegalArgumentException("L'identifiant de l'offre ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/setdate/" + offerApplication.getId())
@@ -299,7 +299,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'id de l'offre ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("L'identifiant de l'offre ne peut pas être vide");
     }
 
     @Test
@@ -357,7 +357,7 @@ class OfferApplicationControllerTest {
     @Test
     void testGetAllByOfferStatusAndStudentID_withNullEntries() throws Exception {
         when(offerApplicationService.getAllByOfferStatusAndStudentID(any(), any()))
-                .thenThrow(new IllegalArgumentException("L'id du student ne peut pas être null"));
+                .thenThrow(new IllegalArgumentException("L'identifiant de l'étudiant ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/applications/all_applied_on/" + 1L)
@@ -366,7 +366,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'id du student ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("L'identifiant de l'étudiant ne peut pas être vide");
     }
 
     @Test
@@ -391,7 +391,7 @@ class OfferApplicationControllerTest {
     public void testGetAllOffersByStudentAppliedByStatus_withIdNull() throws Exception {
         Student dummyStudent = getDummyStudent();
         when(offerApplicationService.getAllOffersStudentAppliedAndStatusWaiting(any()))
-                .thenThrow(new IllegalArgumentException("L'id du student ne peut pas être null"));
+                .thenThrow(new IllegalArgumentException("L'identifiant de l'étudiant ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/applications/applicants/student/" + dummyStudent.getId())
@@ -400,7 +400,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'id du student ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("L'identifiant de l'étudiant ne peut pas être vide");
     }
 
     @Test
@@ -440,7 +440,7 @@ class OfferApplicationControllerTest {
     public void testUpdateStatusIsAccepted() throws Exception {
         OfferApplication offerApplication = getDummyOfferApp();
         UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(offerApplication.getId(), true);
-        when(offerApplicationService.updateStatus(any())).thenReturn("Status changé, attendez la signature du contrat");
+        when(offerApplicationService.updateStatus(any())).thenReturn("Statut changé, attendez la signature du contrat");
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/student/update_status")
@@ -451,7 +451,7 @@ class OfferApplicationControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Status changé, attendez la signature du contrat");
+        assertThat(response.getContentAsString()).contains("Statut changé, attendez la signature du contrat");
 
     }
 
@@ -459,7 +459,7 @@ class OfferApplicationControllerTest {
     public void testUpdateStatusIsAccepted_withIdNull() throws Exception {
         UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(null, true);
         when(offerApplicationService.updateStatus(any()))
-                .thenThrow(new IllegalArgumentException("Le id ne peut pas être null"));
+                .thenThrow(new IllegalArgumentException("L'identifiant de l'offre ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/applications/student/update_status")
@@ -470,7 +470,7 @@ class OfferApplicationControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
 
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le id ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("L'identifiant de l'offre ne peut pas être vide");
     }
 
     @Test
@@ -495,7 +495,7 @@ class OfferApplicationControllerTest {
     public void testGetAllOffersByStudentApplied_withIdNull() throws Exception {
         Student dummyStudent = getDummyStudent();
         when(offerApplicationService.getAllOffersStudentApplied(any()))
-                .thenThrow(new IllegalArgumentException("L'id du student ne peut pas être null"));
+                .thenThrow(new IllegalArgumentException("L'identifiant de l'étudiant ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/applications/applicants/offerApp/student/" + dummyStudent.getId())
@@ -504,7 +504,7 @@ class OfferApplicationControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'id du student ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("L'identifiant de l'étudiant ne peut pas être vide");
     }
 
     @Test
