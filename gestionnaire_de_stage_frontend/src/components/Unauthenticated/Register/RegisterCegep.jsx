@@ -9,7 +9,7 @@ import {BtnBack} from "../../SharedComponents/BtnBack";
 import {Title} from "../../SharedComponents/Title/Title";
 import {useForm} from "react-hook-form";
 import {regexMatricule} from "../../../utility";
-import {FormField} from "../../SharedComponents/FormField/FormField";
+import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 
 
 export default function RegisterCegep() {
@@ -19,7 +19,6 @@ export default function RegisterCegep() {
     const [curentStep, setCurentStep] = useState(0)
     const [typeUserText, setTypeUserText] = useState("");
     let show;
-
     const endThis = (matricule, email, password, lastName, firstName, phone) => {
         let user;
         if (matricule.toString().length === 5) {
@@ -42,7 +41,7 @@ export default function RegisterCegep() {
             lastName,
             email,
             password,
-            passwordConfirm,
+            confirmation,
             phone,
         } = data;
         const submitter = e.nativeEvent.submitter.value
@@ -52,7 +51,7 @@ export default function RegisterCegep() {
                 setCurentStep(curentStep + 1)
             } else if (curentStep === 1)
                 setCurentStep(curentStep + 1)
-            else if (curentStep === 2 && password === passwordConfirm)
+            else if (curentStep === 2 && password === confirmation)
                 endThis(matricule, email, password, lastName, firstName, phone)
         } else if (submitter === 'Précédent')
             setCurentStep(curentStep - 1)
@@ -82,15 +81,10 @@ export default function RegisterCegep() {
 function StepCegep({register, errors}) {
     return (<>
             <FormGroup repartition={[12, 12]}>
-                <FormField htmlFor="matricule">
-                    <label>Matricule</label>
-                    <input type="number" name="matricule" className={errors.matricule ? "border-danger" : ""}
-                           placeholder="Matricule" {...register("matricule", {
-                        required: true,
-                        pattern: regexMatricule
-                    })} />
-                    {errors.matricule && <span>Le matricule dois être de 5 ou 7 chiffres</span>}
-                </FormField>
+                <FormInput label="Matricule" validation={{required: true, pattern: regexMatricule}}
+                           error={errors.matricule} name="matricule" register={register} type="number"
+                           placeholder="0000000(Étudiant) ou 00000(Superviseur)"
+                           errorMessage="Le matricule dois être de 5 ou 7 chiffres"/>
                 <div className="form-group text-center">
                     <div className="btn-group mt-3">
                         <BtnBack/>
