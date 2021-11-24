@@ -12,6 +12,7 @@ import Register from "./components/Unauthenticated/Register/Register";
 import PropTypes from "prop-types";
 import ForgotPassword from "./components/Unauthenticated/ForgotPassword";
 import ResetPassword from "./components/Unauthenticated/ResetPassword";
+import ErrorNotFound from "./components/SharedComponents/ErrorNotFound/ErrorNotFound";
 
 function App() {
     return <AuthProvider>
@@ -72,11 +73,9 @@ RequiredRoute.defaultProps = {
 };
 
 
-//TODO: EMEME
 function NotFound() {
     return (<>
-            <Title>404</Title>
-            <h1>Page not found</h1>
+           <ErrorNotFound/>
         </>
     )
 }
