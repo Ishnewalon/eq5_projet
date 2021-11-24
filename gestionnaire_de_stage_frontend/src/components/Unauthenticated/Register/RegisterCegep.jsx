@@ -2,10 +2,8 @@ import React, {useState} from "react";
 import StepPassword from "./SharedSteps/StepPassword";
 import StepInformationGeneral from "./SharedSteps/StepInformationGeneral";
 import {Student, Supervisor} from "../../../models/User";
-import {Step} from "../../../enums/Steps";
 import {useHistory} from "react-router-dom";
 import {useAuth} from "../../../services/use-auth";
-import {verificationGeneral, verificationPassword} from "./Verifications";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {BtnBack} from "../../SharedComponents/BtnBack";
 import {Title} from "../../SharedComponents/Title/Title";
@@ -15,30 +13,12 @@ import {FormField} from "../../SharedComponents/FormField/FormField";
 
 
 export default function RegisterCegep() {
-    const {register, handleSubmit, watch, formState: {errors}} = useForm();
+    const {register, handleSubmit, formState: {errors}} = useForm();
     let history = useHistory();
     let auth = useAuth();
-    const [curentStep, setCurentStep] = useState(Step.CEGEP)
-    const [previousStep, setPrevStep] = useState([])
+    const [curentStep, setCurentStep] = useState(0)
     const [typeUserText, setTypeUserText] = useState("");
     let show;
-
-
-    const prevStep = () => {
-        setCurentStep(previousStep[previousStep.length - 1]);
-        setPrevStep(prev => {
-            prev.pop()
-            return prev
-        });
-    }
-
-    const nextStep = (current, next) => {
-        setPrevStep(prev => {
-            prev.push(current);
-            return prev;
-        })
-        setCurentStep(next);
-    }
 
     const endThis = (matricule, email, password, lastName, firstName, phone) => {
         let user;
@@ -53,11 +33,9 @@ export default function RegisterCegep() {
                 if (ok) history.push("/login")
             })
         }
-        console.log(user)
     }
 
     const submit = (data, e) => {
-        // e.preventDefault();
         const {
             matricule,
             firstName,
@@ -67,32 +45,29 @@ export default function RegisterCegep() {
             passwordConfirm,
             phone,
         } = data;
-        let submitter = e.nativeEvent.submitter.value
+        const submitter = e.nativeEvent.submitter.value
         if (submitter === 'Suivant') {
-            if (curentStep === Step.CEGEP) {
+            if (curentStep === 0) {
                 setTypeUserText(matricule.toString().length === 5 ? 'Superviseur' : 'Étudiant')
-                nextStep(curentStep, Step.GENERAL)
-            } else if (curentStep === Step.GENERAL && verificationGeneral(firstName, lastName, phone, email))
-                nextStep(curentStep, Step.PASSWORD)
-            else if (curentStep === Step.PASSWORD && verificationPassword(password) && password === passwordConfirm)
+                setCurentStep(curentStep + 1)
+            } else if (curentStep === 1)
+                setCurentStep(curentStep + 1)
+            else if (curentStep === 2 && password === passwordConfirm)
                 endThis(matricule, email, password, lastName, firstName, phone)
         } else if (submitter === 'Précédent')
-            prevStep()
+            setCurentStep(curentStep - 1)
     };
 
 
-    if (curentStep === Step.CEGEP)
-        show = <StepCegep register={register} errors={errors}
-                          watch={watch}/>
-    else if (curentStep === Step.GENERAL) {
+    if (curentStep === 0)
+        show = <StepCegep register={register} errors={errors}/>
+    else if (curentStep === 1) {
         show = (<>
             <Title header="h2">{`Informations générales (${typeUserText})`}</Title>
-            <StepInformationGeneral register={register} errors={errors}
-                                    watch={watch}/>
+            <StepInformationGeneral register={register} errors={errors} prev={() => setCurentStep(curentStep - 1)}/>
         </>)
-    } else if (curentStep === Step.PASSWORD)
-        show = <StepPassword register={register} errors={errors}
-                             watch={watch}/>
+    } else if (curentStep === 2)
+        show = <StepPassword register={register} errors={errors} prev={() => setCurentStep(curentStep - 1)}/>
 
 
     return <>
@@ -109,8 +84,11 @@ function StepCegep({register, errors}) {
             <FormGroup repartition={[12, 12]}>
                 <FormField htmlFor="matricule">
                     <label>Matricule</label>
-                    <input type="number" name="matricule"
-                           placeholder="Matricule" {...register("matricule", {pattern: regexMatricule})} />
+                    <input type="number" name="matricule" className={errors.matricule ? "border-danger" : ""}
+                           placeholder="Matricule" {...register("matricule", {
+                        required: true,
+                        pattern: regexMatricule
+                    })} />
                     {errors.matricule && <span>Le matricule dois être de 5 ou 7 chiffres</span>}
                 </FormField>
                 <div className="form-group text-center">
