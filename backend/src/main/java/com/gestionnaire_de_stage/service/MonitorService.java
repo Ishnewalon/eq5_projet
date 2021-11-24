@@ -79,5 +79,4 @@ public class MonitorService {
     public boolean isIdInvalid(Long id) {
         return !monitorRepository.existsById(id);
     }
-
 }

@@ -27,6 +27,9 @@ public class StudentService {
         if (isNotValid(student)) {
             throw new StudentAlreadyExistsException("Un compte existe déjà pour cet étudiant");
         }
+        if (isMatriculeValid(student.getMatricule())) {
+            throw new StudentAlreadyExistsException("Le matricule existe déjà");
+        }
         return studentRepository.save(student);
     }
 
@@ -118,8 +121,11 @@ public class StudentService {
         return studentRepository.getByEmail(email);
     }
 
-    private boolean isEmailInvalid(String email) {
+    public boolean isEmailInvalid(String email) {
         return !studentRepository.existsByEmail(email);
+    }
+    public boolean isMatriculeValid(String matricule) {
+        return studentRepository.existsByMatricule(matricule);
     }
 
 }
