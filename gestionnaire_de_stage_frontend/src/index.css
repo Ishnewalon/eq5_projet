@@ -8,9 +8,10 @@
     --font-family-primary: 'Montserrat', sans-serif;
 }
 
-body {
-    margin: 0;
+#root, html, body {
+    width: 100%;
     height: 100%;
+    margin: 0;
     font-family: var(--font-family-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -40,12 +41,22 @@ h1, h2, h3, h4, h5, h6 {
     text-decoration-color: var(--color-text) !important;
 }
 
+/*************
+Custom classes
+**************/
 .no-select {
     user-select: none;
     -webkit-user-drag: none;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+}
+
+.link-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline;
 }
 
 /********
@@ -79,7 +90,6 @@ Custom BS
     background: var(--color-primary-hover) !important;
     border-color: rgba(var(--color-rgb-primary), 0.8) !important;
     box-shadow: 0 1px 1px rgba(var(--color-rgb-primary), 0.075) inset, 0 0 8px rgba(var(--color-rgb-primary), 0.6) !important;
-    /*outline: var(--color-primary-hover) !important;*/
     color: var(--color-light) !important;
 }
 
@@ -97,10 +107,6 @@ Custom BS
     color: white !important;
 }
 
-#root, html, body {
-    width: 100%;
-    height: 100%;
-}
 
 .dropzone {
     text-align: center;
@@ -117,13 +123,9 @@ Custom BS
     align-items: center;
 }
 
-.link-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    display: inline;
-}
-
+/***
+Card
+***/
 .card {
     margin: 8px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
@@ -194,8 +196,7 @@ Custom BS
 }
 
 .mega {
-    /*font-size: 4rem; !* 72 / 18 = 4 *!*/
-    font-size: 50px; /* 72 / 18 = 4 */
+    font-size: 50px;
     margin-bottom: auto;
     margin-top: auto;
     color: #192024;

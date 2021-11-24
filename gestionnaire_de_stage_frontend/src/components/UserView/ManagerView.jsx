@@ -69,9 +69,7 @@ export default function ManagerView() {
             </Route>
             <Route exact path={`${path}/session`}>
                 <Title>Ajouter une session</Title>
-                <ContainerBox>
-                    <CreateSession/>
-                </ContainerBox>
+                <CreateSession/>
             </Route>
             <Route path={`${path}/rapports`}>
                 <RapportsView/>

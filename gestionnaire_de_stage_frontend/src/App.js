@@ -2,7 +2,7 @@ import './App.css';
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import Dashboard from "./components/UserView/Dashboard";
 import React, {createElement} from "react";
-import 'bootstrap';
+// import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "./components/Navbar/Navbar";
 import {AuthProvider, RequireAuth, RequireNoAuth} from "./services/use-auth";

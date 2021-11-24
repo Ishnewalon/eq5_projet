@@ -5,6 +5,8 @@ import {UserType} from "../../enums/UserTypes";
 import {forgotPassword} from "../../services/user-service";
 import {useHistory} from "react-router-dom";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import Swal from "sweetalert2";
+import {toast} from "../../utility";
 
 export default function ForgotPassword() {
     let history = useHistory();
@@ -14,12 +16,22 @@ export default function ForgotPassword() {
 
     const submit = e => {
         e.preventDefault();
+        let isOpen = true
         forgotPassword(type, email).then(
             bool => {
                 if (bool)
                     history.push("/login")
+                isOpen = false
             }
         );
+        toast.fire({
+            title: 'Envoi du mail...',
+            didOpen: () => Swal.showLoading(),
+            willClose() {
+                if (isOpen)
+                    Swal.close()
+            }
+        }).then()
     };
 
     return (

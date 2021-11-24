@@ -3,13 +3,13 @@ import React from "react";
 import {useAuth} from "../../services/use-auth";
 import PropTypes from "prop-types";
 import {BiLogIn, BiLogOut, GiHamburgerMenu} from "react-icons/all";
-
+import style from "./Navbar.module.css";
 
 export default function Navbar() {
     return (
-        <nav className="navbar navbar-expand-lg sticky-top bg-light navbar-light shadow-sm mb-4 no-select">
-            <div className="container-fluid">
-                <Link className="navbar-brand bold font-monospace" to="/">JI<span
+        <nav className={`navbar navbar-expand-lg sticky-top bg-light navbar-light shadow-sm mb-4 ${style.bar}`}>
+            <div className={"container-fluid"}>
+                <Link className={`navbar-brand font-monospace ${style.brand}`} to="/">JI<span
                     className="color-emphasis-1">SOS</span></Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                         aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">

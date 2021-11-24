@@ -24,7 +24,7 @@ export default function Login() {
     }
 
     return (
-        <ContainerBox className="w-75">
+        <ContainerBox className="w-50">
             <FormGroup>
                 <ul className="nav nav-pills nav-fill mx-md-5 mx-auto">
                     <li className="nav-item">
@@ -35,7 +35,7 @@ export default function Login() {
                     <li className="nav-item">
                         <input type="radio" className="btn-check" name="options-outlined" id="manager"
                                autoComplete="off" onClick={() => setUserType(UserType.MANAGER[0])}/>
-                        <label className="btn btn-outline-success" htmlFor="manager">{UserType.MANAGER[1]}</label>
+                        <label className="btn btn-outline-primary" htmlFor="manager">{UserType.MANAGER[1]}</label>
                     </li>
                     <li className="nav-item">
                         <input type="radio" className="btn-check" name="options-outlined" id="student"
@@ -49,7 +49,7 @@ export default function Login() {
                     </li>
                 </ul>
             </FormGroup>
-            <FormGroup>
+            <FormGroup repartition={[12, 12]}>
                 <FieldEmail email={email} label="Email" placeholder="Votre Email"
                             handleChanges={(e) => setEmail(e.target.value)}/>
                 <FormField htmlFor="password">
@@ -63,7 +63,7 @@ export default function Login() {
                 <button className="btn btn-primary btn-login" type={"button"} onClick={connect}>Connexion</button>
             </div>
             <div className="form-group text-center mb-3">
-                <Link className={"float-end mb-3 link text-white"} to="/forgot_password">Mot de passe oublié?</Link>
+                <Link className={"float-end mb-3 link"} to="/forgot_password">Mot de passe oublié?</Link>
             </div>
         </ContainerBox>
     )
