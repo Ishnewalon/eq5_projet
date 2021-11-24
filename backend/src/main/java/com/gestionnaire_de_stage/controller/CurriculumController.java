@@ -41,19 +41,15 @@ public class CurriculumController {
         } catch (IOException e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("IO Error: check file integrity!"));//FIXME: Change message
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Invalid Student ID"));//FIXME: Change message
-        } catch (IllegalArgumentException e) {
+                    .body(new ResponseMessage("Erreur de téléversement. Réessayer plus tard"));
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ResponseMessage("File Uploaded Successfully"));//FIXME: Change message
+                .body(new ResponseMessage("Le curriculum a été téléversé avec succès"));
     }
 
     @GetMapping("/student/{id}")
@@ -75,11 +71,7 @@ public class CurriculumController {
             Student student = studentService.getOneByID(studentID);
             StudentCurriculumsDTO studentCurriculumsDTO = curriculumService.allCurriculumsByStudentAsStudentCurriculumsDTO(student);
             return ResponseEntity.ok(studentCurriculumsDTO);
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Invalid Student ID"));
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
@@ -90,15 +82,7 @@ public class CurriculumController {
     public ResponseEntity<?> validate(@RequestBody ValidationCurriculum validationCurriculum) {
         try {
             curriculumService.validate(validationCurriculum.getId(), validationCurriculum.isValid());//FIXME: Change pour objet
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        } catch (CurriculumAlreadyTreatedException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
