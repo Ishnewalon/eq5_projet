@@ -10,7 +10,7 @@ export function FormField(props) {
     if (!input)
         throw new Error("FormField must have either an input, textarea, select, button or radio");
     let label = childList.find(p => p.type === "label")
-
+    let span = childList.find(p => p.type === "span")
     let inputProps = {
         className: `${input.props.className ? input.props.className + " " : ""}form-control mb-1`
     }
@@ -24,13 +24,13 @@ export function FormField(props) {
             labelProps.htmlFor = htmlFor
         }
     }
-
     return <>
         {label ?
             cloneElement(label, labelProps) : null}
         <div className="input-group">
             {cloneElement(input, inputProps)}
         </div>
+        {span ? cloneElement(span, {className: "text-danger mb-3"}) : null}
     </>
 
 }

@@ -6,48 +6,23 @@ import {Step} from "../../../enums/Steps";
 import {useHistory} from "react-router-dom";
 import {useAuth} from "../../../services/use-auth";
 import {verificationGeneral, verificationPassword} from "./Verifications";
-import {regexMatricule, toastErr} from "../../../utility";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
-import {FormField} from "../../SharedComponents/FormField/FormField";
 import {BtnBack} from "../../SharedComponents/BtnBack";
 import {Title} from "../../SharedComponents/Title/Title";
+import {useForm} from "react-hook-form";
+import {regexMatricule} from "../../../utility";
+import {FormField} from "../../SharedComponents/FormField/FormField";
 
 
 export default function RegisterCegep() {
+    const {register, handleSubmit, watch, formState: {errors}} = useForm();
     let history = useHistory();
     let auth = useAuth();
     const [curentStep, setCurentStep] = useState(Step.CEGEP)
     const [previousStep, setPrevStep] = useState([])
-    const [userInfo, setUserInfo] = useState({
-        matricule: '',
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        passwordConfirm: '',
-        phone: '',
-    })
+    const [typeUserText, setTypeUserText] = useState("");
     let show;
-    const {
-        matricule,
-        firstName,
-        lastName,
-        email,
-        password,
-        passwordConfirm,
-        phone,
-    } = userInfo;
 
-    const handleChange = (event) => {
-        const {value, name} = event.target;
-
-        setUserInfo((prev) => {
-            return {
-                ...prev,
-                [name]: value
-            }
-        })
-    }
 
     const prevStep = () => {
         setCurentStep(previousStep[previousStep.length - 1]);
@@ -65,7 +40,7 @@ export default function RegisterCegep() {
         setCurentStep(next);
     }
 
-    const endThis = () => {
+    const endThis = (matricule, email, password, lastName, firstName, phone) => {
         let user;
         if (matricule.toString().length === 5) {
             user = new Supervisor(email, password, lastName, firstName, phone, matricule);
@@ -78,59 +53,65 @@ export default function RegisterCegep() {
                 if (ok) history.push("/login")
             })
         }
+        console.log(user)
     }
 
-    const submit = e => {
-        e.preventDefault();
-        // noinspection JSUnresolvedVariable
+    const submit = (data, e) => {
+        // e.preventDefault();
+        const {
+            matricule,
+            firstName,
+            lastName,
+            email,
+            password,
+            passwordConfirm,
+            phone,
+        } = data;
         let submitter = e.nativeEvent.submitter.value
-
         if (submitter === 'Suivant') {
             if (curentStep === Step.CEGEP) {
-                if (!matricule || !regexMatricule.test(matricule)) {
-                    toastErr.fire({title: 'Matricule invalide!'}).then()
-                    return
-                }
+                setTypeUserText(matricule.toString().length === 5 ? 'Superviseur' : 'Étudiant')
                 nextStep(curentStep, Step.GENERAL)
             } else if (curentStep === Step.GENERAL && verificationGeneral(firstName, lastName, phone, email))
                 nextStep(curentStep, Step.PASSWORD)
             else if (curentStep === Step.PASSWORD && verificationPassword(password) && password === passwordConfirm)
-                endThis()
+                endThis(matricule, email, password, lastName, firstName, phone)
         } else if (submitter === 'Précédent')
             prevStep()
     };
 
 
-    let typeUserText = matricule.toString().length === 5 ? 'Superviseur' : 'Étudiant'
     if (curentStep === Step.CEGEP)
-        show = <StepCegep handleChange={handleChange} matricule={matricule}/>
+        show = <StepCegep register={register} errors={errors}
+                          watch={watch}/>
     else if (curentStep === Step.GENERAL) {
         show = (<>
             <Title header="h2">{`Informations générales (${typeUserText})`}</Title>
-            <StepInformationGeneral handleChange={handleChange} email={email} firstName={firstName}
-                                    lastName={lastName} phone={phone}/>
+            <StepInformationGeneral register={register} errors={errors}
+                                    watch={watch}/>
         </>)
     } else if (curentStep === Step.PASSWORD)
-        show = <StepPassword handleChange={handleChange} password={password} passwordConfirm={passwordConfirm}/>
+        show = <StepPassword register={register} errors={errors}
+                             watch={watch}/>
 
 
-    return (<>
-        <form className="form-container" onSubmit={submit}>
+    return <>
+        <form className="form-container" onSubmit={handleSubmit(submit)}>
             <fieldset>
                 {show}
             </fieldset>
         </form>
-    </>);
+    </>;
 }
 
-function StepCegep({handleChange, matricule}) {
-
+function StepCegep({register, errors}) {
     return (<>
             <FormGroup repartition={[12, 12]}>
                 <FormField htmlFor="matricule">
                     <label>Matricule</label>
-                    <input name="matricule" placeholder="Matricule" type="number"
-                           value={matricule} onChange={handleChange}/>
+                    <input type="number" name="matricule"
+                           placeholder="Matricule" {...register("matricule", {pattern: regexMatricule})} />
+                    {errors.matricule && <span>Le matricule dois être de 5 ou 7 chiffres</span>}
                 </FormField>
                 <div className="form-group text-center">
                     <div className="btn-group">

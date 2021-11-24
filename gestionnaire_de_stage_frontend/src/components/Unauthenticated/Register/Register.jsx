@@ -7,7 +7,7 @@ export default function Register() {
 
     return (<>
         <div className="text-center">
-            <div>
+            <div className="">
                 <Link className="btn btn-primary" to={`${path}/cegep`}>Membre du cégep</Link>
                 <Link className="btn btn-primary" to={`${path}/monitor`}>Compagnie</Link>
             </div>

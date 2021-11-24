@@ -1,30 +1,37 @@
 import React from "react";
-import FieldEmail from "../../../SharedComponents/Fields/FieldEmail";
 import {FormGroup} from "../../../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../../../SharedComponents/FormField/FormField";
+import {regexEmail, regexName, regexPhone} from "../../../../utility";
 
 
-export default function StepInformationGeneral({handleChange, lastName, firstName, email, phone}) {
+export default function StepInformationGeneral({register, errors, watch}) {
     return (<>
         <FormGroup>
             <FormField htmlFor="firstName">
                 <label>Prénom</label>
-                <input name="firstName" placeholder="Prenom" type="text" value={firstName} onChange={handleChange}/>
+                <input name="firstName" placeholder="Prenom"
+                       type="text" {...register("firstName", {pattern: regexName})}/>
+                {errors.matricule && <span>Ce champ est obligatoire!</span>}
             </FormField>
             <FormField htmlFor="lastName">
                 <label>Nom</label>
-                <input name="lastName" placeholder="Nom" type="text" value={lastName} onChange={handleChange}/>
+                <input name="lastName" placeholder="Nom" type="text" {...register("lastName", {pattern: regexName})}/>
+                {errors.matricule && <span>Ce champ est obligatoire!</span>}
             </FormField>
         </FormGroup>
         <FormGroup>
-            <FieldEmail email={email} label="Email" placeholder="Votre Email"
-                        handleChanges={handleChange}/>
+            <FormField htmlFor="email">
+                <label>Votre Email</label>
+                <input placeholder="exemple@email.com" type="email"
+                       name="email" {...register("email", {pattern: regexEmail})}/>
+                {errors.matricule && <span>Il faut un email valide!</span>}
+            </FormField>
         </FormGroup>
         <FormGroup>
             <FormField htmlFor="phone">
                 <label>Téléphone</label>
-                <input name="phone" placeholder="000 000 000" type="tel"
-                       value={phone} onChange={handleChange}/>
+                <input name="phone" placeholder="000 000 000" type="tel"{...register("phone", {pattern: regexPhone})}/>
+                {errors.matricule && <span>Il faut un numéro de téléphone valide!</span>}
             </FormField>
         </FormGroup>
         <div className="form-group text-center">
