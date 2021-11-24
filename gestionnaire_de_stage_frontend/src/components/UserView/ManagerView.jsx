@@ -15,13 +15,27 @@ import {Title} from "../SharedComponents/Title/Title";
 import StudentsCurriculumsOverview from "../Admin/StudentManagement/StudentsCurriculumsOverview";
 import StudentCurriculumValidation from "../Curriculums/StudentCurriculumsValidation";
 import {BtnBack} from "../SharedComponents/BtnBack";
+import IMFFF from "../../assets/images/img1.svg"
+import dwdawd from "../../assets/images/dawdawda.svg"
 
 export default function ManagerView() {
     const {path} = useRouteMatch();
     let auth = useAuth();
     return (<>
             <Route exact path={`${path}`}>
-                <Title>Bonjour {auth.user.firstName}!</Title>
+                <div className="container">
+                    <Title>Bonjour {auth.user.firstName}!</Title>
+                    <section data-description="Add emphasis with color">
+                        <h1 className="mega montserrat bold text-left">
+                            Movement is <span className="color-emphasis-1">here.</span><br/>
+                            And it is here <span className="color-emphasis-1">to stay.</span>
+                        </h1>
+                        <div className="parent">
+                            <img src={dwdawd} alt="dawdadad" className="image2"/>
+                            <img src={IMFFF} alt="allo" className="center image1"/>
+                        </div>
+                    </section>
+                </div>
             </Route>
             <Route exact path={`${path}/manager/contracts/signed`}>
                 <Title>Contrats signés</Title>

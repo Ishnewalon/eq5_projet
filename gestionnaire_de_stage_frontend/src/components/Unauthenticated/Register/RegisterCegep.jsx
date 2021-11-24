@@ -10,6 +10,7 @@ import {regexMatricule, toastErr} from "../../../utility";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 import {BtnBack} from "../../SharedComponents/BtnBack";
+import {Title} from "../../SharedComponents/Title/Title";
 
 
 export default function RegisterCegep() {
@@ -100,12 +101,16 @@ export default function RegisterCegep() {
     };
 
 
+    let typeUserText = matricule.toString().length === 5 ? 'Superviseur' : 'Étudiant'
     if (curentStep === Step.CEGEP)
         show = <StepCegep handleChange={handleChange} matricule={matricule}/>
-    else if (curentStep === Step.GENERAL)
-        show = <StepInformationGeneral handleChange={handleChange} email={email} firstName={firstName}
-                                       lastName={lastName} phone={phone}/>
-    else if (curentStep === Step.PASSWORD)
+    else if (curentStep === Step.GENERAL) {
+        show = (<>
+            <Title header="h2">{`Informations générales (${typeUserText})`}</Title>
+            <StepInformationGeneral handleChange={handleChange} email={email} firstName={firstName}
+                                    lastName={lastName} phone={phone}/>
+        </>)
+    } else if (curentStep === Step.PASSWORD)
         show = <StepPassword handleChange={handleChange} password={password} passwordConfirm={passwordConfirm}/>
 
 

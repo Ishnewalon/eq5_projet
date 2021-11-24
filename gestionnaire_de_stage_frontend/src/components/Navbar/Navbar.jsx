@@ -7,7 +7,7 @@ import {BiLogIn, BiLogOut, GiHamburgerMenu} from "react-icons/all";
 
 export default function Navbar() {
     return (
-        <nav className="navbar navbar-expand-lg bg-dark navbar-dark mb-4">
+        <nav className="navbar navbar-expand-lg bg-prim navbar-dark mb-4">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">JISOS</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
