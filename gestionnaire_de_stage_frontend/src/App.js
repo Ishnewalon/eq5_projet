@@ -47,6 +47,9 @@ function App() {
                         <ForgotPassword/>
                     </RequiredRoute>
                     <Route exact path="/404" component={NotFound}/>
+                    <Route exact path="/">
+                        <Redirect to="/dashboard"/>
+                    </Route>
                     <Redirect to="/404"/>
                 </Switch>
             </main>
@@ -82,7 +85,7 @@ RequiredRoute.defaultProps = {
 
 function NotFound() {
     return (<>
-           <ErrorNotFound/>
+            <ErrorNotFound/>
         </>
     )
 }
