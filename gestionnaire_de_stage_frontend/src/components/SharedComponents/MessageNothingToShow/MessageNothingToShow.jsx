@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import myIllustration from "../../../assets/images/dawdawda.svg";
+import myIllustration from "../../../assets/images/EmptyListImg.svg";
 import style from "./MessageNothingToShow.module.css";
 
 export default function MessageNothingToShow(props) {

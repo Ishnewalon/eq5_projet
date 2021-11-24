@@ -3,6 +3,7 @@ import {useAuth} from "../../services/use-auth";
 import {getAllOfferAppReadyToSign, startSignerFetch} from "../../services/contrat-service";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 
 export default function StartContract() {
     const [offerApplications, setOfferApplications] = useState([])
@@ -29,7 +30,10 @@ export default function StartContract() {
     };
 
     if (offerApplications.length === 0)
-        return <MessageNothingToShow message="Aucun contrat à lancer pour le moment..."/>
+        return (
+            <ContainerBox>
+                <MessageNothingToShow message="Aucun contrat à lancer pour le moment..."/>
+            </ContainerBox>)
     return (
         <Table>
             <TableHeader>
