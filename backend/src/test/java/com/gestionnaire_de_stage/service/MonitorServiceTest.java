@@ -32,6 +32,7 @@ public class MonitorServiceTest {
     public void testCreate_withValidMonitor() throws Exception {
         Monitor dummyMonitor = getDummyMonitor();
         when(monitorRepository.save(any())).thenReturn(dummyMonitor);
+        when(monitorRepository.existsByEmail(any())).thenReturn(false);
 
         Monitor actualMonitor = monitorService.create(dummyMonitor);
 
