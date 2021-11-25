@@ -30,6 +30,34 @@ export default function OfferApplicationsStudentSetStatusFinal() {
     };
 
 
+    const setStatusMessage = (offerApp) => {
+        switch (offerApp.status) {
+            case "CV_ENVOYE":
+                return "N'oubliez pas de confirmer votre date d'entrevue"
+            case "STAGE_REFUSE":
+                return "Plus de chance la prochaine fois!"
+            case "STAGE_TROUVE":
+                return "Contactez votre gestionnaire de stage pour signer votre contrat"
+            case "EN_ATTENTE_ENTREVUE":
+                return timeFormat(offerApp.interviewDate)
+            case "EN_ATTENTE_REPONSE":
+                return changeStatus(offerApp)
+            default:
+                return "Vous n'avez pas encore de réponse"
+        }
+    }
+
+    const changeStatus = (offerApp) => {
+        return (<div className="btn-group">
+            <button className="btn btn-outline-success"
+                    onClick={() => updateStatus(offerApp.id, true)}>Trouvé
+            </button>
+            <button className="btn btn-outline-danger"
+                    onClick={() => updateStatus(offerApp.id, false)}>Refusé
+            </button>
+        </div>)
+    }
+
     const timeFormat = (date) => {
         let dateTimeFormat = new Date(date);
         let day = dateTimeFormat.getDate();
@@ -41,7 +69,7 @@ export default function OfferApplicationsStudentSetStatusFinal() {
         return <> Votre entrevue est le
             <span className={"fw-bold"}>{` ${day}/${month}/${year}`}</span> à
             <span className={"fw-bold"}>{` ${hours}:${minutes}:${seconds}`}</span></>
-    }
+    };
 
 
     if (offerApplications.length === 0)
@@ -61,19 +89,7 @@ export default function OfferApplicationsStudentSetStatusFinal() {
                     <td>{offerApplication.offer.title}</td>
                     <td>{offerApplication.status}</td>
                     <td>
-                        {offerApplication.status === 'STAGE_TROUVE' ? "Contactez votre gestionnaire de stage pour signer votre contrat"
-                            : offerApplication.status === 'STAGE_REFUSE' ? "Plus de chance la prochaine fois!"
-                                : offerApplication.status === 'CV_ENVOYE' ? "N'oubliez pas de confirmer votre date d'entrevue"
-                                    : offerApplication.status === 'EN_ATTENTE_ENTREVUE'
-                                        ? timeFormat(offerApplication.interviewDate)
-                                        : <div className="btn-group">
-                                            <button className="btn btn-outline-success"
-                                                    onClick={() => updateStatus(offerApplication.id, true)}>Trouvé
-                                            </button>
-                                            <button className="btn btn-outline-danger"
-                                                    onClick={() => updateStatus(offerApplication.id, false)}>Refusé
-                                            </button>
-                                        </div>}
+                        {setStatusMessage(offerApplication)}
                     </td>
                     }
                 </TableRow>

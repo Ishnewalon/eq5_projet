@@ -37,19 +37,6 @@ export async function getAllApplicants(email) {
     );
 }
 
-export async function getStudentApplications(id) {
-    return await fetch(`${urlBackend}/applications/applicants/waiting/student/${id}`, requestInit(methods.GET)).then(
-        response => {
-            return response.json().then((body) => {
-                if (response.status === 200)
-                    return body;
-                if (response.status === 400)
-                    toastErr.fire({title: body.message})
-                return Promise.any([]);
-            })
-        }, err => console.error(err)
-    );
-}
 
 export async function getStudentApplicationsOffer(id) {
     return await fetch(`${urlBackend}/applications/applicants/offerApp/student/${id}`, requestInit(methods.GET)).then(
@@ -65,7 +52,7 @@ export async function getStudentApplicationsOffer(id) {
     );
 }
 
-export async function setApplicationsStatusWhenEnAttenteDeReponse(idOfferApp, isAccepted) {
+export async function setApplicationsFinalStatus(idOfferApp, isAccepted) {
     return await fetch(`${urlBackend}/applications/student/update_status`, requestInit(methods.POST, {
         idOfferApplied: idOfferApp,
         isAccepted: isAccepted
