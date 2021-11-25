@@ -8,8 +8,6 @@ import {FormField} from "../../../SharedComponents/FormField/FormField";
 
 export default function StepInformationGeneral({prevStep, nextStep, handleChange, lastName, firstName, email, phone}) {
 
-    const next = (val) => nextStep(val);
-
 
     return (<>
         <FormGroup>
@@ -39,7 +37,7 @@ export default function StepInformationGeneral({prevStep, nextStep, handleChange
                 <button className="btn btn-primary" type={"button"} onClick={prevStep}>Précédent</button>
                 <button className="btn btn-primary" type={"button"} onClick={() => {
                     if (verification(firstName, lastName, email, phone))
-                        next(Step.PASSWORD)
+                        nextStep(Step.PASSWORD)
                 }}>Suivant
                 </button>
             </div>
