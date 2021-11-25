@@ -1,13 +1,16 @@
 import {useState} from "react";
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../SharedComponents/FormField/FormField";
-import {regexEmail, swalErr} from "../../utility";
 import {monitorCreateForm} from "../../services/stage-service";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import StepOne from "../EvaluationsWithSteps/StepOne";
+import {useForm} from "react-hook-form";
+import StepTwo from "../EvaluationsWithSteps/StepTwo";
 
 export default function EvaluationIntern() {
 
-    const [errors, setErrors] = useState({});
+    const {formState:{errors}, handleSubmit, register} = useForm();
+
     const today = new Date();
     const [monitorVisitForm, setMonitorVisitForm] = useState({
         emailEtudiant: '',
@@ -70,178 +73,21 @@ export default function EvaluationIntern() {
         REPOND_PAS: ['REPOND_PAS', 'Répondent pas aux attentes']
     }
 
-    const applyValidationStyleBasedOnChoices = (value, name, validationObj) => {
-        for (const val of Object.values(validationObj))
-            if (value === val[0]) {
-                elementIsRight(name);
-                return true;
-            } else
-                elementIsWrong(name);
-        return false;
-    }
-
-    const elementIsRight = (name) => {
-        document.getElementsByName(name)
-            .forEach(input => {
-                if (!input.classList.contains('border'))
-                    input.classList.add('border');
-
-                input.classList.remove('border-danger');
-                if (!input.classList.contains('border-success'))
-                    input.classList.add('border-success');
-            });
-    }
-
-    const elementIsWrong = (name) => {
-        document.getElementsByName(name)
-            .forEach(input => {
-                if (!input.classList.contains('border'))
-                    input.classList.add('border');
-                input.classList.remove('border-success');
-                if (!input.classList.contains('border-danger'))
-                    input.classList.add('border-danger');
-            });
-    }
-
     const yesAndNoAnswers = {
         OUI: [true, 'Oui'],
         NON: [false, 'Non']
     }
 
-    const validateByNameSelection = (tagName, name, value, element, title) => {
-        let isValid = true;
-        tagName = tagName.toLowerCase();
-        if (tagName === 'select') {
-            if (name.indexOf('question') >= 0)
-                isValid = applyValidationStyleBasedOnChoices(value, name, choixAccords)
-            else if (name.indexOf('appreciation') >= 0)
-                isValid = applyValidationStyleBasedOnChoices(value, name, choixAppreciation);
-            else if (name.indexOf('evaluationDiscute') >= 0 || name.indexOf('entrepriseApprecie') >= 0)
-                isValid = applyValidationStyleBasedOnChoices(value, name, yesAndNoAnswers);
-        } else if (tagName === 'input') {
-            const {type} = element;
-            if (type === 'email') {
-                if (!regexEmail.test(value)) {
-                    isValid = false;
-                    elementIsWrong(name);
-                } else {
-                    elementIsRight(name);
-                }
-            } else if (type === 'number') {
-                if (parseInt(value) === 0) {
-                    isValid = false;
-                    elementIsWrong(name);
-                } else
-                    elementIsRight(name);
-            } else if (type === 'text' || type === 'date') {
-                if (value.length === 0) {
-                    elementIsWrong(name);
-                    isValid = false;
-                } else
-                    elementIsRight(name);
-            }
-        } else if (tagName === 'textarea' && (name.indexOf('formation') >= 0 || name.indexOf('commentairesCinq') >= 0)) {
-            if (value.length === 0) {
-                elementIsWrong(name);
-                isValid = false;
-            } else
-                elementIsRight(name);
-        }
-        if (!isValid)
-            setErrors(prevalue => {
-                return {
-                    ...prevalue,
-                    [name]: title
-                }
-            })
-        return isValid;
-    }
-
-    const handleChange = (event) => {
-        const {value, name} = event.target;
-
-        const element = document.getElementsByName(name)[0];
-        const {tagName, title} = element;
-
-        validateByNameSelection(tagName, name, value, element, title);
-
-        setMonitorVisitForm(prevalue => {
-            return {
-                ...prevalue,
-                [name]: value
-            }
-        })
-    }
-
     const sendVisitForm = (e) => {
         e.preventDefault();
-        setErrors({});
-        let isValid = true;
-        for (const key in monitorVisitForm) {
-            const element = document.getElementsByName(key)[0];
-            const {tagName, title} = element;
-
-            if (!validateByNameSelection(tagName, key, monitorVisitForm[key], element, title)) {
-                isValid = false;
-            }
-        }
-        if (!isValid) {
-            swalErr.fire({text: "Veuillez remplir tous les champs requis!"}).then();
-        } else {
-            monitorCreateForm(monitorVisitForm).then();
-        }
+        monitorCreateForm(monitorVisitForm).then();
     };
 
     return <ContainerBox className={'text-white'}>
-        <div className='px-3 pb-3 pt-1'>
-            <FormGroup>
-                <FormField>
-                    <label>Email de l'élève</label>
-                    <input type="email" name='emailEtudiant' value={monitorVisitForm.emailEtudiant}
-                           onChange={e => handleChange(e)} autoComplete='off'
-                           placeholder="Email de l'élève" title="Le email de l'élève est requis"/>
-                </FormField>
-            </FormGroup>
-            <FormGroup>
-                <FormField>
-                    <label>Nom de l'élève</label>
-                    <input type="text" name='nomStagiaire' value={monitorVisitForm.nomStagiaire}
-                           onChange={e => handleChange(e)} autoComplete='off'
-                           placeholder="Nom de l'élève" title="Le nom de l'élève est requis"/>
-                </FormField>
-                <FormField>
-                    <label>Programme d'études</label>
-                    <input type="text" name='programmeEtudes' value={monitorVisitForm.programmeEtudes}
-                           onChange={e => handleChange(e)}
-                           autoComplete='off' placeholder="Programme d'études"
-                           title="Le programme d'études est requis"/>
-                </FormField>
-                <FormField>
-                    <label>Nom de l'entreprise</label>
-                    <input type="text" name='entrepriseNom' value={monitorVisitForm.entrepriseNom}
-                           onChange={e => handleChange(e)} autoComplete='off' title="Le nom de l'entreprise est requis"
-                           placeholder="Nom de l'entreprise"/>
-                </FormField>
-            </FormGroup>
-            <FormGroup>
-                <FormField>
-                    <label>Fonction</label>
-                    <input type="text" name='fonctionUn' value={monitorVisitForm.fonctionUn}
-                           onChange={e => handleChange(e)} autoComplete='off' placeholder="Fonction"
-                           title="La fonction est requise"/>
-                </FormField>
-                <FormField>
-                    <label>Téléphone</label>
-                    <input type="text" name='phone' value={monitorVisitForm.phone} onInput={e => handleChange(e)}
-                           autoComplete='off' placeholder="Téléphone" title='Le téléphone est requis'/>
-                </FormField>
-            </FormGroup>
-        </div>
+        <StepOne errors={errors} register={register} />
         <hr/>
         <div className='px-3 pb-3 pt-1 rounded'>
-            <h2 className='mt-4 mb-0 text-decoration-underline'>Productivité</h2>
-            <h4 className='mt-4 mb-0'>Capacité d’optimiser son rendement au travail</h4>
-            <blockquote className='mt-3 mb-0'>Le stagiaire est en mesure de:</blockquote>
+
             <FormGroup>
                 <FormField>
                     <label>Planifier et organiser son travail de façon efficace</label>

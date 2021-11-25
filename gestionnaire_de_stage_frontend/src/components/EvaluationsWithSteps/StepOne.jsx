@@ -1,56 +1,104 @@
-import {withRouter} from "react-router-dom";
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../SharedComponents/FormField/FormField";
-import {regexEmail, regexPhone} from "../../utility";
-import {useForm} from "react-hook-form";
-import {BtnBack} from "../SharedComponents/BtnBack";
+import {regexEmail, regexName, regexPhone} from "../../utility";
+import {FormInput} from "../SharedComponents/FormInput/FormInput";
 
-function StepOne({errors, register}){
+export default function StepOne({errors, register}) {
 
     return <div className='px-3 pb-3 pt-1'>
         <h3>Informations générales</h3>
         <FormGroup>
-            <FormField>
-                <label>Email de l'élève</label>
-                <input type="email"
-                       aria-invalid={errors.emailEtudiant ? "true" : "false"}
-                       {...register("emailEtudiant", {required: true, pattern: regexEmail})}
-                       placeholder="Email de l'élève"/>
-                {errors.emailEtudiant.type === "pattern" &&
-                <span className="text-danger">Le email de l'étudiant est requis</span>}
-                {errors.emailEtudiant.type === "required" &&
-                <span className="text-danger">Doit être un courriel valide</span>}
-            </FormField>
+            <FormInput label="Email de l'élève"
+                       validation={
+                           {
+                               required: 'Ce champ est requis',
+                               pattern: {
+                                   value: regexEmail,
+                                   message: 'Veuillez entrer une adresse email valide'
+                               }
+                           }
+                       }
+                       name='emailEtudiant'
+                       register={register}
+                       type='email'
+                       placeholder="Email de l'élève"
+                       error={errors.emailEtudiant}
+            />
         </FormGroup>
         <FormGroup>
-            <FormField>
-                <label>Nom de l'élève</label>
-                <input type="text" {...register("nomEtudiant", {required: true})}/>
-            </FormField>
-            <FormField>
-                <label>Programme d'études</label>
-                <input type="text" {...register("programmeEtudes", {required: true})}/>
-            </FormField>
-            <FormField>
-                <label>Nom de l'entreprise</label>
-                <input type="text" {...register("entrepriseNom", {required: true})} />
-            </FormField>
+            <FormInput label="Nom de l'élève"
+                       validation={
+                           {
+                               required: 'Ce champ est requis',
+                               pattern: {
+                                   value: regexName,
+                                   message: 'Veuillez entrer un nom avec seulement des lettre et des -'
+                               }
+                           }
+                       }
+                       name='nomEtudiant'
+                       register={register}
+                       type='text'
+                       placeholder="Entrez le nom de l'élève"
+                       error={errors.nomEtudiant}
+            />
+            <FormInput label="Programme d'études"
+                       validation={
+                           {
+                               required: 'Ce champ est requis',
+                           }
+                       }
+                       name='programmeEtudes'
+                       register={register}
+                       type='text'
+                       placeholder="Entrez le programme d'études de l'élève"
+                       error={errors.programmeEtudes}
+            />
+            <FormInput label="Nom de l'entreprise"
+                       validation={
+                           {
+                               required: 'Ce champ est requis'
+                           }
+                       }
+                       name='entrepriseNom'
+                       register={register}
+                       type='text'
+                       placeholder="Entrez le nom de l'entreprise"
+                       error={errors.entrepriseNom}
+            />
         </FormGroup>
         <FormGroup>
+            <FormInput label="Fonction"
+                       validation={
+                           {
+                               required: 'Ce champ est requis'
+                           }
+                       }
+                       name='fonctionUn'
+                       register={register}
+                       type='text'
+                       placeholder="Entrez la fonction"
+                       error={errors.fonctionUn}
+            />
             <FormField>
-                <label>Fonction</label>
-                <input type="text" name='fonctionUn' {...register("fonctionUn", {required:true})}/>
-            </FormField>
-            <FormField>
-                <label>Téléphone</label>
-                <input type="text" aria-label={errors.phone ? "true" : "false"} {...register("phone", {required:true, pattern:regexPhone})}/>
-                {errors.phone.type === "pattern" && <span className="text-danger">Le téléphone doit avoir le format suivant : 555-444-3333</span>}
-                {errors.phone.type === "required" && <span className="text-danger">Le téléphone est obligatoire</span>}
+                <FormInput label="Téléphone"
+                           validation={
+                               {
+                                   required: 'Ce champ est requis',
+                                   pattern: {
+                                       value: regexPhone,
+                                       message: 'Le téléphone doit avoir le format suivant : 555-444-3333'
+                                   }
+                               }
+                           }
+                           name='phone'
+                           register={register}
+                           type='tel'
+                           placeholder="Entrez votre numéro de téléphone"
+                           error={errors.phone}
+                />
             </FormField>
         </FormGroup>
-        <BtnBack message='Précédant' />
     </div>
 
 }
-
-export default StepOne;

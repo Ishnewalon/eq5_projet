@@ -1,4 +1,3 @@
-import StepBegin from "./StepBegin";
 
 export default function InterEvaluationStepHandler() {
     const labels = [
@@ -18,7 +17,6 @@ export default function InterEvaluationStepHandler() {
 
 
     return <>
-        <StepBegin />
     </>
 
 }
