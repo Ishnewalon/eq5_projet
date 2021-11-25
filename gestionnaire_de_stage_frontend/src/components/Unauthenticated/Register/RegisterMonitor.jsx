@@ -12,7 +12,10 @@ import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 
 
 export default function RegisterMonitor() {
-    const {register, handleSubmit, watch, formState: {errors}} = useForm();
+    const {register, handleSubmit, watch, formState: {errors}} = useForm({
+        mode: "onSubmit",
+        reValidateMode: "onChange"
+    });
     let history = useHistory();
     let auth = useAuth();
     const [curentStep, setCurentStep] = useState(0)
@@ -63,7 +66,7 @@ export default function RegisterMonitor() {
 
 
     return (<>
-        <form className="form-container" onSubmit={handleSubmit(submit)}>
+        <form className="form-container" onSubmit={handleSubmit(submit)} noValidate>
             <fieldset>
                 {show}
             </fieldset>
