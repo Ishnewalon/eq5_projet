@@ -21,6 +21,7 @@ export default function ForgotPassword() {
         let body
         toast.fire({
             title: 'Envoi du mail...',
+            timer: 120000,
             didOpen: () => {
                 Swal.showLoading()
                 forgotPassword(type, email).then(
