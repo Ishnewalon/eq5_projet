@@ -147,7 +147,7 @@ public class SupervisorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Assignement fait!");
+        assertThat(response.getContentAsString()).contains("Affectation fait!");
     }
 
     @Test
@@ -170,7 +170,7 @@ public class SupervisorControllerTest {
     public void testSupervisorLogin_withInvalidEntries() throws Exception {
         String email = "sinl@gmail.com";
         String password = "weightofworld";
-        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenThrow(new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid"));
+        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenThrow(new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
@@ -179,7 +179,7 @@ public class SupervisorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Courriel ou mot de passe invalid");
+        assertThat(response.getContentAsString()).contains("Courriel ou mot de passe invalide");
     }
 
     @Test
@@ -215,14 +215,14 @@ public class SupervisorControllerTest {
     @Test
     public void testGetAllStudentsStatus_withNullSupervisorId() throws Exception {
         Supervisor dummySupervisor = getDummySupervisor();
-        when(supervisorService.getStudentsStatus(any())).thenThrow(new IllegalArgumentException("ID est null"));
+        when(supervisorService.getStudentsStatus(any())).thenThrow(new IllegalArgumentException("L'identifiant ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId() )
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("ID est null");
+        assertThat(response.getContentAsString()).contains("L'identifiant ne peut pas être vide");
     }
 
     @Test

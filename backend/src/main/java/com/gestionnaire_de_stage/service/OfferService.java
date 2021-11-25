@@ -62,7 +62,7 @@ public class OfferService {
         if (offer == null)
             return null;
 
-        Assert.isTrue(offer.creatorEmail() != null, "Le courriel de l'utilisateur ne peut être null");
+        Assert.isTrue(offer.creatorEmail() != null, "Le courriel du moniteur ne peut être vide");
 
         OfferDTO dto = new OfferDTO();
         dto.setAddress(offer.getAddress());
@@ -79,10 +79,10 @@ public class OfferService {
     }
 
     public Offer create(OfferDTO offerDto) throws IllegalArgumentException, OfferAlreadyExistsException, IdDoesNotExistException, DoesNotExistException {
-        Assert.isTrue(offerDto != null, "Offre est null");
+        Assert.isTrue(offerDto != null, "L'offre ne peut pas être vide");
         Offer offer = mapToOffer(offerDto);
         if (offerRepository.findOne(Example.of(offer)).isPresent())
-            throw new OfferAlreadyExistsException("Cet offre a déjà été créé");
+            throw new OfferAlreadyExistsException("Cette offre a déjà été créée");
 
         Monitor monitor = monitorService.getOneByEmail(offerDto.getCreator_email());
         offer.setCreator(monitor);
@@ -94,7 +94,7 @@ public class OfferService {
     }
 
     public List<Offer> getOffersByDepartment(String department) throws IllegalArgumentException {
-        Assert.isTrue(department != null, "Le département est null ou vide");
+        Assert.isTrue(department != null, "Le département n'est pas précisé");
         int monthValue = LocalDate.now(clock).getMonthValue();
 
         if (monthValue >= Month.SEPTEMBER.getValue())
@@ -139,11 +139,13 @@ public class OfferService {
     }
 
     public Offer validation(ValidationOffer validationOffer) throws IdDoesNotExistException, OfferAlreadyTreatedException {
-        Assert.isTrue(validationOffer.getId() != null, "L'id est null");
-        if (!offerRepository.existsById(validationOffer.getId())) throw new IdDoesNotExistException("Il n'y a pas d'offre associé à cet identifiant");
-        if (offerRepository.existsByIdAndValidNotNull(validationOffer.getId()))
-            throw new OfferAlreadyTreatedException("Cet offre a déjà été traité");
-
+        Assert.isTrue(validationOffer.getId() != null, "L'identifiant de l'offre ne peut pas être vide");
+        if (!offerRepository.existsById(validationOffer.getId())) {
+            throw new IdDoesNotExistException("Il n'y a pas d'offre associée à cet identifiant");
+        }
+        if (offerRepository.existsByIdAndValidNotNull(validationOffer.getId())){
+            throw new OfferAlreadyTreatedException("Cete offre a déjà été traitée");
+        }
         Offer offer = offerRepository.getById(validationOffer.getId());
         offer.setValid(validationOffer.isValid());
 

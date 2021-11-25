@@ -233,7 +233,7 @@ class OfferApplicationServiceTest {
 
         String message = offerApplicationService.updateStatus(updateStatusDTO);
 
-        assertThat(message).contains("Status changé, attendez la signature du contrat");
+        assertThat(message).contains("Statut changé, attendez la signature du contrat");
     }
 
     @Test
@@ -245,7 +245,7 @@ class OfferApplicationServiceTest {
 
         String isAccepted = offerApplicationService.updateStatus(updateStatusDTO);
 
-        assertThat(isAccepted).contains("Status changé, stage refusé");
+        assertThat(isAccepted).contains("Statut changé, stage refusé");
     }
 
     @Test
