@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {getContractForStudent} from '../../services/contrat-service';
 import {UserType} from "../../enums/UserTypes";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 
 export function ContractToSignStudent() {
     const auth = useAuth();
@@ -17,6 +18,8 @@ export function ContractToSignStudent() {
     if (!contract)
         return <MessageNothingToShow message="Vous avez aucun contrat à signer en ce moment."/>
 
-    return <ContratSignature contract={contract} userType={UserType.STUDENT[0]}/>
+    return <ContainerBox>
+        <ContratSignature contract={contract} userType={UserType.STUDENT[0]}/>
+    </ContainerBox>
 
 }

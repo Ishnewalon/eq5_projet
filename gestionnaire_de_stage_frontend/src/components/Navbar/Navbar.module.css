@@ -1,0 +1,7 @@
+.bar {
+    composes: no-select from '../../index.css' !important;
+}
+
+.brand {
+    composes: bold from '../../index.css' !important;
+}
