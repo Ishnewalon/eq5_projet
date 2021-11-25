@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useAuth} from "../../services/use-auth";
-import {getStudentApplications, setApplicationsStatusWhenEnAttenteDeReponse} from "../../services/offerAppService";
+import {getStudentApplicationsOffer, setApplicationsStatusWhenEnAttenteDeReponse} from "../../services/offerAppService";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import {OfferApplicationStatus} from "../../enums/OfferApplicationStatus";
 
 export default function OfferApplicationsStudentSetStatusFinal() {
     const [offerApplications, setOfferApplications] = useState([])
@@ -12,7 +13,7 @@ export default function OfferApplicationsStudentSetStatusFinal() {
             setOfferApplications([])
             return
         }
-        getStudentApplications(auth.user.id).then(
+        getStudentApplicationsOffer(auth.user.id).then(
             data => {
                 setOfferApplications(data)
             })
@@ -45,15 +46,20 @@ export default function OfferApplicationsStudentSetStatusFinal() {
                     <td>{offerApplication.offer.title}</td>
                     <td>{offerApplication.status}</td>
                     <td>
-                        <div className="btn-group">
-                            <button className="btn btn-outline-success"
-                                    onClick={() => updateStatus(offerApplication.id, true)}>Trouvé
-                            </button>
-                            <button className="btn btn-outline-danger"
-                                    onClick={() => updateStatus(offerApplication.id, false)}>Refusé
-                            </button>
-                        </div>
+                        {offerApplication.status === 'STAGE_TROUVE' ? OfferApplicationStatus.STAGE_TROUVE
+                            : offerApplication.status === 'STAGE_REFUSE' ? OfferApplicationStatus.STAGE_REFUSE
+                                : offerApplication.status === 'CV_ENVOYE' ? OfferApplicationStatus.CV_ENVOYE
+                                    : offerApplication.status === 'EN_ATTENTE_ENTREVUE' ? offerApplication.interviewDate
+                                        : <div className="btn-group">
+                                            <button className="btn btn-outline-success"
+                                                    onClick={() => updateStatus(offerApplication.id, true)}>Trouvé
+                                            </button>
+                                            <button className="btn btn-outline-danger"
+                                                    onClick={() => updateStatus(offerApplication.id, false)}>Refusé
+                                            </button>
+                                        </div>}
                     </td>
+                    }
                 </TableRow>
             ))}
         </Table>
