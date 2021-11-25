@@ -6,5 +6,4 @@ public class CurriculumUsedException extends Exception {
         super(message);
     }
 
-    public CurriculumUsedException() {}
 }
