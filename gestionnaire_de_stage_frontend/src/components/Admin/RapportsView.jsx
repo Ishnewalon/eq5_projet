@@ -1,4 +1,4 @@
-import {Link, Route, useRouteMatch} from "react-router-dom";
+import {Link, Route, useLocation, useRouteMatch} from "react-router-dom";
 import React from "react";
 import {Title} from "../SharedComponents/Title/Title";
 import OfferApplicationsList from "../OfferApplications/OfferApplicationsList";
@@ -44,25 +44,27 @@ export default function RapportsView() {
 }
 
 function Menu() {
+    const location = useLocation();
+
     return <>
         <Title>Rapports</Title>
         <CardsView>
             <RapportCard title="Rapport des offres validées"
                          description="Liste de toutes les offres enregistrées et que vous avez validées"
-                         to="/dashboard/rapports/1"/>
+                         to={{pathname:"/dashboard/rapports/1", state:{from:location}}}/>
             <RapportCard title="Rapport des offres non validées"
                          description="Liste de toutes les offres enregistrées et pas encore validées"
-                         to="/dashboard/rapports/2"/>
+                         to={{pathname:"/dashboard/rapports/2", state:{from:location}}}/>
             <RapportCard title="Rapport des étudiants avec leur status"
                          description="Liste des étudiants qui ont appliqué au moins 1 fois"
-                         to="/dashboard/rapports/3"/>
+                         to={{pathname:"/dashboard/rapports/3", state:{from:location}}}/>
             <RapportCard title="Rapport des étudiants pas évalués par le moniteur"
                          description="Liste des étudiants qui ne sont pas encore évalués par le
                              moniteur suite à leur stage"
-                         to="/dashboard/rapports/4"/>
+                         to={{pathname:"/dashboard/rapports/4", state:{from:location}}}/>
             <RapportCard title="Rapport des étudiants dont la compagnie n'est pas évalués"
                          description="Liste des étudiants dont la compagnie n'a pas encore été évaluées par le superviseur"
-                         to="/dashboard/rapports/5"/>
+                         to={{pathname:"/dashboard/rapports/5", state:{from:location}}}/>
         </CardsView>
     </>;
 }
