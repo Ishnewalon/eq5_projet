@@ -6,6 +6,7 @@ import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/Messa
 import {AiOutlineProfile} from "react-icons/all";
 
 export default function OfferApplicationsStudentSetStatusFinal() {
+
     const [offerApplications, setOfferApplications] = useState([])
     let auth = useAuth();
     useEffect(() => {
@@ -19,13 +20,17 @@ export default function OfferApplicationsStudentSetStatusFinal() {
             })
     }, [auth.user])
 
-
     const updateStatus = (idOfferApp, isAccepted) => {
         setApplicationsFinalStatus(idOfferApp, isAccepted).then((ok) => {
-            if (ok)
-                setOfferApplications((prevOffApp) => {
-                    return prevOffApp.filter(offApp => offApp.id !== idOfferApp)
-                })
+            if (ok) {
+                getStudentApplicationsOffer(auth.user.id).then(
+                    data => {
+                        setOfferApplications(data)
+                    })
+                // setOfferApplications((prevOffApp) => {
+                //     return prevOffApp.filter(offApp => offApp.id !== idOfferApp)
+                // })
+            }
         })
     };
 
@@ -45,7 +50,6 @@ export default function OfferApplicationsStudentSetStatusFinal() {
                 return "Aucun status"
         }
     }
-
 
     const setStatusMessage = (offerApp) => {
         switch (offerApp.status) {
@@ -108,7 +112,6 @@ export default function OfferApplicationsStudentSetStatusFinal() {
                     <td>
                         {setStatusMessage(offerApplication)}
                     </td>
-                    }
                 </TableRow>
             ))}
         </Table>
