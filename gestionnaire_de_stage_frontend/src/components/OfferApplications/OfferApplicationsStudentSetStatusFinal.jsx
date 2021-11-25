@@ -29,6 +29,21 @@ export default function OfferApplicationsStudentSetStatusFinal() {
         })
     };
 
+
+    const timeFormat = (date) => {
+        let dateTimeFormat = new Date(date);
+        let day = dateTimeFormat.getDate();
+        let month = dateTimeFormat.getMonth() + 1;
+        let year = dateTimeFormat.getFullYear();
+        let hours = dateTimeFormat.getHours();
+        let minutes = dateTimeFormat.getMinutes();
+        let seconds = dateTimeFormat.getSeconds();
+        return <> Votre entrevue est le
+            <span className={"fw-bold"}>{` ${day}/${month}/${year}`}</span> à
+            <span className={"fw-bold"}>{` ${hours}:${minutes}:${seconds}`}</span></>
+    }
+
+
     if (offerApplications.length === 0)
         return <MessageNothingToShow message="Vous n'avez pas d'offre de stage en attente de réponse"/>
 
@@ -49,7 +64,8 @@ export default function OfferApplicationsStudentSetStatusFinal() {
                         {offerApplication.status === 'STAGE_TROUVE' ? OfferApplicationStatus.STAGE_TROUVE
                             : offerApplication.status === 'STAGE_REFUSE' ? OfferApplicationStatus.STAGE_REFUSE
                                 : offerApplication.status === 'CV_ENVOYE' ? OfferApplicationStatus.CV_ENVOYE
-                                    : offerApplication.status === 'EN_ATTENTE_ENTREVUE' ? offerApplication.interviewDate
+                                    : offerApplication.status === 'EN_ATTENTE_ENTREVUE'
+                                        ? timeFormat(offerApplication.interviewDate)
                                         : <div className="btn-group">
                                             <button className="btn btn-outline-success"
                                                     onClick={() => updateStatus(offerApplication.id, true)}>Trouvé
