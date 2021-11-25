@@ -3,7 +3,9 @@ import {FormField} from "../SharedComponents/FormField/FormField";
 import {regexEmail, regexName, regexPhone} from "../../utility";
 import {FormInput} from "../SharedComponents/FormInput/FormInput";
 
-export default function StepOne({errors, register}) {
+export default function StepOne(props) {
+
+    const {errors, register} = props;
 
     return <div className='px-3 pb-3 pt-1'>
         <h3>Informations générales</h3>
@@ -36,11 +38,11 @@ export default function StepOne({errors, register}) {
                                }
                            }
                        }
-                       name='nomEtudiant'
+                       name='nomStagiaire'
                        register={register}
                        type='text'
                        placeholder="Entrez le nom de l'élève"
-                       error={errors.nomEtudiant}
+                       error={errors.nomStagiaire}
             />
             <FormInput label="Programme d'études"
                        validation={

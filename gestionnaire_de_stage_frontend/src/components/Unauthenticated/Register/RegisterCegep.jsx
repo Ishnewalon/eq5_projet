@@ -69,8 +69,7 @@ export default function RegisterCegep() {
             <StepInformationGeneral register={register} errors={errors} prev={() => setCurentStep(curentStep - 1)}/>
         </>)
     } else if (curentStep === 2)
-        show =
-            <StepPassword register={register} errors={errors} watch={watch} prev={() => setCurentStep(curentStep - 1)}/>
+        show = <StepPassword register={register} errors={errors} watch={watch} prev={() => setCurentStep(curentStep - 1)}/>
 
 
     return <>
