@@ -33,7 +33,7 @@ export default function OfferApplicationsMonitorListOfApplications() {//TODO: li
 }
 
 function PreviewStudent({dto}) {
-
+    // TODO revoir le frontend
     const openFile = () => {
         const decodedChars = atob(dto.file);
         const byteNums = new Array(decodedChars.length);
@@ -57,7 +57,7 @@ function PreviewStudent({dto}) {
         <div className={'row'}>
             <div className="col-12 col-sm-6">
                 <div className={'d-flex justify-content-center align-items-center flex-column p-3 shadow h-100'}>
-                    <h4 className={'p-2 rounded bg-secondary fw-bold text-white'}>{dto.firstName + ', ' + dto.lastName} </h4>
+                    <h4 className={'p-2 rounded fw-bold'}>{dto.firstName + ', ' + dto.lastName} </h4>
                     <div className={'d-flex align-items-center'}>
 
                         <button onClick={openFile} className="ms-2 btn btn-primary"><AiOutlineFile/> {dto.fileName}

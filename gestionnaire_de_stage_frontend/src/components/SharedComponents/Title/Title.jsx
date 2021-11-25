@@ -2,13 +2,19 @@ import React from "react";
 import PropTypes from "prop-types";
 
 export function Title(props) {
+    const {header, children} = props;
     return React.createElement(
-        "h1",
+        header,
         {className: "title text-center mb-3"},
-        props.children
+        children
     );
 }
 
 Title.propTypes = {
+    header: PropTypes.string,
+    h2: PropTypes.bool,
     children: PropTypes.node.isRequired
+};
+Title.defaultProps = {
+    header: "h1"
 };
