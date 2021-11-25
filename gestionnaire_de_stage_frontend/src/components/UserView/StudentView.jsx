@@ -40,15 +40,11 @@ export default function StudentView() {
             </Route>
             <Route exact path={`${path}/voir_mon_contrat`}>
                 <Title>Contrat à signer</Title>
-                <ContainerBox>
-                    <ContractToSignStudent/>
-                </ContainerBox>
+                <ContractToSignStudent/>
             </Route>
             <Route exact path={`${path}/student/contract/signed`}>
                 <Title>Mes contrats</Title>
-                <ContainerBox>
-                    <ContractSignedStudent/>
-                </ContainerBox>
+                <ContractSignedStudent/>
             </Route>
             <Route exact path={`${path}`}>
                 <Title>Bonjour {auth.user.firstName}!</Title>

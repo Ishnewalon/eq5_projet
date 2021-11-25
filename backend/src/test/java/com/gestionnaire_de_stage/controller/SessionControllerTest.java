@@ -50,7 +50,7 @@ public class SessionControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Session créée avec succès!");
+        assertThat(response.getContentAsString()).contains("Session créée avec succès");
     }
 
 
@@ -58,7 +58,7 @@ public class SessionControllerTest {
     public void testCreateSession_whenSessionAlreadyExist() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
         Session session = new Session(1L, TypeSession.HIVER, Year.now());
-        when(sessionService.createSession(any())).thenThrow(new SessionAlreadyExistException("Une Session existe déjà!"));
+        when(sessionService.createSession(any())).thenThrow(new SessionAlreadyExistException("Cette session existe déjà"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/sessions")
@@ -68,7 +68,7 @@ public class SessionControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Une Session existe déjà!");
+        assertThat(response.getContentAsString()).contains("Cette session existe déjà");
     }
 
     @Test

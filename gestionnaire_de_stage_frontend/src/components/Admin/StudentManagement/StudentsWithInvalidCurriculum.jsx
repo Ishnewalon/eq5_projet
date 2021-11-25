@@ -2,9 +2,10 @@ import React, {useEffect, useState} from "react";
 import {getStudentsWithInvalidCv} from "../../../services/user-service";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import {BtnBack} from "../../SharedComponents/BtnBack";
 
 
-export default function StudentWithInvalidCv() {
+export default function StudentsWithInvalidCurriculum() {
 
     const [studentList, setStudentList] = useState([])
 
@@ -20,7 +21,10 @@ export default function StudentWithInvalidCv() {
     }, [])
 
     if (studentList.length === 0) {
-        return <MessageNothingToShow message="Tous les étudiants ont un CV valide"/>
+        return <>
+            <MessageNothingToShow message="Tous les étudiants ont un CV valide"/>
+            <BtnBack/>
+        </>
     }
 
     return (
@@ -41,6 +45,7 @@ export default function StudentWithInvalidCv() {
                     </TableRow>
                 )}
             </Table>
+            <BtnBack/>
         </>
     )
 }

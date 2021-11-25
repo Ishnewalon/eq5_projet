@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @Entity
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -39,4 +41,5 @@ public class Curriculum implements Serializable {
         this.student = student;
         this.isValid = null;
     }
+
 }

@@ -6,7 +6,4 @@ public class IdDoesNotExistException extends Exception {
         super(message);
     }
 
-    public IdDoesNotExistException() {
-    }
-
 }

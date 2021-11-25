@@ -41,8 +41,8 @@ public class CurriculumService {
 
     public Curriculum convertMultipartFileToCurriculum(MultipartFile file, Long studentId)
             throws IOException, IdDoesNotExistException, IllegalArgumentException {
-        Assert.isTrue(file != null, "Fichier est null");
-        Assert.isTrue(studentId != null, "StudentId est null");
+        Assert.isTrue(file != null, "Fichier ne peut pas être vide");
+        Assert.isTrue(studentId != null, "L'identifiant de l'étudiant ne peut pas être vide");
 
         Student student = studentService.getOneByID(studentId);
 
@@ -57,14 +57,14 @@ public class CurriculumService {
     }
 
     public Curriculum create(Curriculum curriculum) throws IllegalArgumentException, IdDoesNotExistException {
-        Assert.isTrue(curriculum != null, "Curriculum est null");
+        Assert.isTrue(curriculum != null, "Le curriculum ne peut pas être vide");
         return curriculumRepository.save(curriculum);
     }
 
     public Curriculum getOneByID(Long aLong) throws IdDoesNotExistException {
-        Assert.isTrue(aLong != null, "ID est null");
+        Assert.isTrue(aLong != null, "L'identifiant du curriculum ne peut pas être vide");
         if (!curriculumRepository.existsById(aLong))
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant");
         return curriculumRepository.getById(aLong);
     }
 
@@ -89,20 +89,8 @@ public class CurriculumService {
         return curriculumDTOList;
     }
 
-    public List<Curriculum> getAll() {
-        return curriculumRepository.findAll();
-    }
-
-    public List<Curriculum> findAllCurriculumNotValidatedYet() {
-        return curriculumRepository.findAllByIsValidIsNull();
-    }
-
-    public List<Curriculum> findAllCurriculumValidated() {
-        return curriculumRepository.findAllByIsValidIsTrue();
-    }
-
     public List<Curriculum> findAllByStudent(Student student) throws IllegalArgumentException {
-        Assert.notNull(student, "L'etudiant ne peut pas être null");
+        Assert.notNull(student, "L'etudiant ne peut pas être vide");
 
         return curriculumRepository.findAllByStudent(student);
     }
@@ -120,14 +108,14 @@ public class CurriculumService {
 
     public boolean validate(Long idCurriculum, boolean valid) throws
             IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
-        Assert.isTrue(idCurriculum != null, "Le id du curriculum ne peut pas être null");
+        Assert.isTrue(idCurriculum != null, "L'identifiant du curriculum ne peut pas être vide");
 
         Optional<Curriculum> curriculumOptional = curriculumRepository.findById(idCurriculum);
 
         if (curriculumOptional.isEmpty())
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant");
         if (curriculumOptional.get().getIsValid() != null)
-            throw new CurriculumAlreadyTreatedException();
+            throw new CurriculumAlreadyTreatedException("Ce curriculum a déjà été traité");
 
         Curriculum curriculum = curriculumOptional.get();
         curriculum.setIsValid(valid);
@@ -136,12 +124,17 @@ public class CurriculumService {
     }
 
     public Curriculum findOneById(Long idCurriculum) throws IllegalArgumentException, IdDoesNotExistException {
-        Assert.isTrue(idCurriculum != null, "Le id du curriculum ne peut pas être null");
+        Assert.isTrue(idCurriculum != null, "L'identifiant du curriculum ne peut pas être vide");
         Optional<Curriculum> byId = curriculumRepository.findById(idCurriculum);
         if (byId.isEmpty())
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant");
 
         return byId.get();
+    }
+
+    public List<Curriculum> findAllByStudentId(Long id) throws IdDoesNotExistException {
+        Student student = studentService.getOneByID(id);
+        return findAllByStudent(student);
     }
 
     public void deleteOneById(Long idCurriculum) throws IllegalArgumentException, IdDoesNotExistException, CurriculumUsedException {
@@ -162,12 +155,3 @@ public class CurriculumService {
         return curriculum == student.getPrincipalCurriculum();
     }
 }
-
-
-
-
-
-
-
-
-

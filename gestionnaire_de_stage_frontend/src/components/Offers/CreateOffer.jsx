@@ -7,6 +7,7 @@ import {useAuth} from "../../services/use-auth";
 import {createOffer} from "../../services/offer-service";
 import FieldAddress from "../SharedComponents/Fields/FieldAddress";
 import OfferDTO from "../../models/OfferDTO";
+import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 
 
 export default function CreateOffer() {
@@ -60,20 +61,20 @@ export default function CreateOffer() {
         </FormField>
     )
 
-    return (<>
-        <FormGroup>
+    return (<ContainerBox className="w-75">
+        <FormGroup repartition={!auth.isManager() ? [12] : null}>
             <FormField>
                 <label>Titre</label>
                 <input name="title" placeholder="Titre" type="text"
                        value={title} onChange={e => setTitle(e.target.value)}/>
             </FormField>
+            {(auth.isManager()) ? monitorEmail : null}
+        </FormGroup>
+        <FormGroup>
             <FormField>
-                <label>Département</label>
-                <select name="choice" id="userTypes"
-                        onChange={e => setDepartement(e.target.value)}>
-                    <option value={DepartmentEnum.info}>{DepartmentEnum.info}</option>
-                    <option value={DepartmentEnum.art}>{DepartmentEnum.art}</option>
-                </select>
+                <label>Description</label>
+                <textarea name="description" placeholder="Description" value={description}
+                          onChange={e => setDescription(e.target.value)}/>
             </FormField>
         </FormGroup>
         <FormGroup>
@@ -86,13 +87,16 @@ export default function CreateOffer() {
                         <option key={session.id} value={session.id}>{session.typeSession + session.year}</option>)}
                 </select>
             </FormField>
+            <FormField>
+                <label>Département</label>
+                <select name="choice" id="userTypes"
+                        onChange={e => setDepartement(e.target.value)}>
+                    <option value={DepartmentEnum.info}>{DepartmentEnum.info}</option>
+                    <option value={DepartmentEnum.art}>{DepartmentEnum.art}</option>
+                </select>
+            </FormField>
         </FormGroup>
         <FormGroup>
-            <FormField>
-                <label>Description</label>
-                <input name="description" placeholder="Description" type="text"
-                       value={description} onChange={e => setDescription(e.target.value)}/>
-            </FormField>
         </FormGroup>
         <FormGroup>
             <FieldAddress label="Adresse ou le stage se situe" address={address}
@@ -103,10 +107,7 @@ export default function CreateOffer() {
                        value={salary} onChange={e => setSalary(e.target.value)}/>
             </FormField>
         </FormGroup>
-        <FormGroup>
-            {(auth.isManager()) ? monitorEmail : <></>}
-        </FormGroup>
-        <FormGroup>
+        <FormGroup repartition={[3, 3, 6]}>
             <FormField>
                 <label>Date de début</label>
                 <input name="dateDebut" placeholder="Date de début" type="date"
@@ -117,13 +118,6 @@ export default function CreateOffer() {
                 <input name="dateFin" placeholder="Date de fin" type="date"
                        value={dateFin} onChange={e => setDateFin(e.target.value)}/>
             </FormField>
-        </FormGroup>
-        <FormGroup>
-            <FormField htmlFor='nbSemaine'>
-                <label>Nombre de semaines</label>
-                <input name='nbSemaine' type="text" value={nbSemaine} placeholder='Nombre de semaines'
-                       onChange={e => setNbSemaine(e.target.value)}/>
-            </FormField>
             <FormField htmlFor='horaireTravail'>
                 <label>Horaire de travail</label>
                 <input name='horaireTravail' type="text" placeholder='Horaire de travail' value={horaireTravail}
@@ -131,14 +125,20 @@ export default function CreateOffer() {
             </FormField>
         </FormGroup>
         <FormGroup>
+            <FormField htmlFor='nbSemaine'>
+                <label>Nombre de semaines</label>
+                <input name='nbSemaine' type="text" value={nbSemaine} placeholder='Nombre de semaines'
+                       onChange={e => setNbSemaine(e.target.value)}/>
+            </FormField>
             <FormField htmlFor='nbHeureSemaine'>
                 <label>Nombre de heures par semaine</label>
-                <input name='nbHeureSemaine' type="text" placeholder='Nombre de heures par semaine' value={nbHeureSemaine} onChange={e => setNbHeureSemaine(e.target.value)}/>
+                <input name='nbHeureSemaine' type="text" placeholder='Nombre de heures par semaine'
+                       value={nbHeureSemaine} onChange={e => setNbHeureSemaine(e.target.value)}/>
             </FormField>
         </FormGroup>
         <div className="form-group text-center">
             <button className="btn btn-primary mt-3" onClick={addOffer}>Ajouter</button>
         </div>
-    </>);
+    </ContainerBox>);
 }
 

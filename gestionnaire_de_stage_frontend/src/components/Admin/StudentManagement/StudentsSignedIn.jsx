@@ -2,9 +2,10 @@ import React, {useEffect, useState} from "react";
 import {getAllStudents} from "../../../services/user-service";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import {BtnBack} from "../../SharedComponents/BtnBack";
 
 
-export default function StudentSignIn() {
+export default function StudentsSignedIn() {
 
     const [studentList, setStudentList] = useState([])
 
@@ -20,7 +21,10 @@ export default function StudentSignIn() {
     }, [])
 
     if (studentList.length === 0) {
-        return <MessageNothingToShow message="Aucun étudiant inscrit"/>
+        return <>
+            <MessageNothingToShow message="Aucun étudiant inscrit"/>
+            <BtnBack/>
+        </>
 
     }
     return (
@@ -41,6 +45,8 @@ export default function StudentSignIn() {
                     </TableRow>
                 )}
             </Table>
+            <BtnBack/>
         </>
+
     )
 }

@@ -56,7 +56,7 @@ export default function ContratSignature({userType, contract, removeContract}) {
                     <input type="text" placeholder="Entrez votre signature" className="w-100"
                            onChange={e => setSignature(e.target.value)}/>
                 </FormField>
-                <h6 className="text-white text-center mt-3">En appuyant sur envoyer, vous confirmez avoir lu le
+                <h6 className="text-center mt-3">En appuyant sur envoyer, vous confirmez avoir lu le
                     contrat et que la signature entrée correspond à la votre.</h6>
                 <button id="invalidateContractBtn" className="btn btn-primary fw-bold w-100 mb-4 mt-0"
                         type="submit">Signez le contrat <BsPenFill/></button>

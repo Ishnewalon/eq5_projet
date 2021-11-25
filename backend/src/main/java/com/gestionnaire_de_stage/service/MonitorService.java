@@ -1,7 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.DoesNotExistException;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
@@ -21,51 +21,49 @@ public class MonitorService {
     }
 
     public Monitor create(Monitor monitor) throws MonitorAlreadyExistsException, IllegalArgumentException {
-        Assert.isTrue(monitor != null, "Monitor est null");
+        Assert.isTrue(monitor != null, "Le moniteur ne peut pas être vide");
         if (emailAlreadyInUse(monitor))
-            throw new MonitorAlreadyExistsException();
+            throw new MonitorAlreadyExistsException("Un compte existe déjà pour ce moniteur");
         return monitorRepository.save(monitor);
     }
 
-    public Monitor getOneByID(Long aLong) throws IdDoesNotExistException {
+    public Monitor getOneByID(Long aLong) throws IdDoesNotExistException { //FIXME Never Used other than tests
         Assert.isTrue(aLong != null, "ID est null");
         if (!monitorRepository.existsById(aLong))
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de moniteur associé à cet identifiant");
         return monitorRepository.getById(aLong);
     }
 
     public List<Monitor> getAll() {
         return monitorRepository.findAll();
-    }
+    } //FIXME Never Used other than tests
 
-    public Monitor update(Monitor monitor, Long aLong) throws IdDoesNotExistException {
-        Assert.isTrue(aLong != null, "ID est null");
+    public Monitor update(Monitor monitor) throws IdDoesNotExistException {
         Assert.isTrue(monitor != null, "Monitor est null");
-        if (!monitorRepository.existsById(aLong))
-            throw new IdDoesNotExistException();
-        monitor.setId(aLong);
+        if (!monitorRepository.existsById(monitor.getId()))
+            throw new IdDoesNotExistException("Il n'y a pas de moniteur associé à cet identifiant");
         return monitorRepository.save(monitor);
     }
 
     public Monitor getOneByEmailAndPassword(String email, String password) throws EmailAndPasswordDoesNotExistException, IllegalArgumentException {
-        Assert.isTrue(email != null, "Le courriel est null");
-        Assert.isTrue(password != null, "Le mot de passe est null");
+        Assert.isTrue(email != null, "Le courriel ne peut pas être vide");
+        Assert.isTrue(password != null, "Le mot de passe ne peut pas être vide");
         if (!monitorRepository.existsByEmailAndPassword(email, password))
-            throw new EmailAndPasswordDoesNotExistException();
+            throw new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid");
         return monitorRepository.findMonitorByEmailAndPassword(email, password);
     }
 
-    public void deleteByID(Long aLong) throws IdDoesNotExistException {
+    public void deleteByID(Long aLong) throws IdDoesNotExistException { //FIXME Never Used other than tests
         Assert.isTrue(aLong != null, "ID est null");
         if (!monitorRepository.existsById(aLong))
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de moniteur associé à cet identifiant");
         monitorRepository.deleteById(aLong);
     }
 
-    public Monitor getOneByEmail(String email) throws EmailDoesNotExistException {
-        Assert.isTrue(email != null, "Le courriel est null");
+    public Monitor getOneByEmail(String email) throws DoesNotExistException {
+        Assert.isTrue(email != null, "Le courriel ne peut pas être vide");
         if (isEmailInvalid(email)) {
-            throw new EmailDoesNotExistException();
+            throw new DoesNotExistException("Le courriel n'existe pas");
         }
         return monitorRepository.getMonitorByEmail(email);
     }

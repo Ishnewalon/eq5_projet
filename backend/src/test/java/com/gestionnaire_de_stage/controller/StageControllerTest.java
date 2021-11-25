@@ -60,7 +60,7 @@ public class StageControllerTest {
     @Test
     public void testFillEvalMilieuStagePDF_withInvalidStudentMatricule() throws Exception {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
-        when(contractService.getContractByStudentMatricule(any())).thenThrow(MatriculeDoesNotExistException.class);
+        when(contractService.getContractByStudentMatricule(any())).thenThrow(new MatriculeDoesNotExistException("Il n'y a pas d'étudiant ayant la matricule"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
@@ -70,13 +70,13 @@ public class StageControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("La matricule de l'étudiant n'existe pas");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant ayant la matricule");
     }
 
     @Test
     public void testFillEvalMilieuStagePDF_withInexistantContract() throws Exception {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
-        when(contractService.getContractByStudentMatricule(any())).thenThrow(ContractDoesNotExistException.class);
+        when(contractService.getContractByStudentMatricule(any())).thenThrow(new ContractDoesNotExistException("Il n'y a pas de contrat qui existe pour la matricule"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
@@ -86,13 +86,13 @@ public class StageControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Cet étudiant n'a pas de stage");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de contrat qui existe pour la matricule");
     }
 
     @Test
     public void testFillEvalMilieuStagePDF_withNullStage() throws Exception {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
-        when(stageService.addEvalMilieuStage(any(),any())).thenThrow(new IllegalArgumentException("Le id du stage n'existe pas"));
+        when(stageService.addEvalMilieuStage(any(),any())).thenThrow(new IllegalArgumentException("Le stage ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
@@ -102,13 +102,13 @@ public class StageControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le id du stage n'existe pas");
+        assertThat(response.getContentAsString()).contains("Le stage ne peut pas être vide");
     }
 
     @Test
     public void testFillEvalMilieuStagePDF_withInvalidStage() throws Exception {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
-        when(stageService.addEvalMilieuStage(any(),any())).thenThrow(StageDoesNotExistException.class);
+        when(stageService.addEvalMilieuStage(any(),any())).thenThrow(new StageDoesNotExistException("Il n'y a pas de stage pour cette étudiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
@@ -118,7 +118,7 @@ public class StageControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le stage n'existe pas");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de stage pour cette étudiant");
     }
 
     @Test
@@ -158,7 +158,7 @@ public class StageControllerTest {
     @Test
     public void testFillEvalStagiairePDF_withNullStudentEmail() throws Exception {
         EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
-        when(stageService.getStageByStudentEmail(any())).thenThrow(new IllegalArgumentException("Le courriel de l'étudiant est null"));
+        when(stageService.getStageByStudentEmail(any())).thenThrow(new IllegalArgumentException("Le courriel de l'étudiant est vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/monitor/fill_form")
@@ -168,13 +168,13 @@ public class StageControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le courriel de l'étudiant est null");
+        assertThat(response.getContentAsString()).contains("Le courriel de l'étudiant est vide");
     }
 
     @Test
     public void testFillEvalStagiairePDF_withInvalidStudentEmail() throws Exception {
         EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
-        when(stageService.getStageByStudentEmail(any())).thenThrow(StageDoesNotExistException.class);
+        when(stageService.getStageByStudentEmail(any())).thenThrow(new StageDoesNotExistException("Il n'y a pas de stage pour cette étudiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/monitor/fill_form")
@@ -184,7 +184,7 @@ public class StageControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le stage n'existe pas pour cette étudiant");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de stage pour cette étudiant");
     }
 
     @Test
@@ -192,7 +192,7 @@ public class StageControllerTest {
         EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
         Stage dummystage = getDummyStage();
         when(stageService.getStageByStudentEmail(any())).thenReturn(dummystage);
-        when(stageService.addEvalStagiaire(any(), any())).thenThrow(new IllegalArgumentException("Le stage ne peut pas être null"));
+        when(stageService.addEvalStagiaire(any(), any())).thenThrow(new IllegalArgumentException("Le stage ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/monitor/fill_form")
@@ -202,7 +202,7 @@ public class StageControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le stage ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("Le stage ne peut pas être vide");
     }
 
     @Test
@@ -210,7 +210,7 @@ public class StageControllerTest {
         EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
         Stage dummystage = getDummyStage();
         when(stageService.getStageByStudentEmail(any())).thenReturn(dummystage);
-        when(stageService.addEvalStagiaire(any(), any())).thenThrow(StageDoesNotExistException.class);
+        when(stageService.addEvalStagiaire(any(), any())).thenThrow(new StageDoesNotExistException("Il n'y a pas de stage pour cette étudiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/monitor/fill_form")
@@ -220,7 +220,7 @@ public class StageControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le stage n'existe pas pour cette étudiant");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de stage pour cette étudiant");
     }
 
     @Test

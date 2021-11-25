@@ -1,9 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
-import com.gestionnaire_de_stage.exception.CurriculumNotValidException;
-import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
@@ -17,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -40,6 +36,8 @@ public class StudentServiceTest {
     @Test
     public void testCreate_withValidStudent() throws Exception {
         Student dummyStudent = getDummyStudent();
+        when(studentRepository.existsByEmail(any())).thenReturn(false);
+        when(studentRepository.existsByMatricule(any())).thenReturn(false);
         when(studentRepository.save(any())).thenReturn(dummyStudent);
 
         Student actualStudent = studentService.create(dummyStudent);
@@ -57,6 +55,14 @@ public class StudentServiceTest {
     @Test
     public void testCreate_alreadyExistsStudent() {
         when(studentRepository.existsByEmail(any())).thenReturn(true);
+
+        assertThrows(StudentAlreadyExistsException.class,
+                () -> studentService.create(getDummyStudent()));
+    }
+
+    @Test
+    public void testCreate_alreadyExistsMatricule() {
+        when(studentRepository.existsByMatricule(any())).thenReturn(true);
 
         assertThrows(StudentAlreadyExistsException.class,
                 () -> studentService.create(getDummyStudent()));
@@ -106,23 +112,17 @@ public class StudentServiceTest {
         when(studentRepository.existsById(any())).thenReturn(true);
         when(studentRepository.save(any())).thenReturn(dummyStudent);
 
-        Student actualStudent = studentService.update(dummyStudent, dummyStudent.getId());
+        Student actualStudent = studentService.update(dummyStudent);
 
         assertThat(actualStudent.getEmail()).isEqualTo(dummyStudent.getEmail());
     }
 
-    @Test
-    public void testUpdate_withNullID() {
-        Student dummyStudent = getDummyStudent();
-
-        assertThrows(IllegalArgumentException.class,
-                () -> studentService.update(dummyStudent, null));
-    }
 
     @Test
+    @SuppressWarnings("ConstantConditions")
     public void testUpdate_withNullStudent() {
         assertThrows(IllegalArgumentException.class,
-                () -> studentService.update(null, 1L));
+                () -> studentService.update(null));
     }
 
     @Test
@@ -131,7 +131,7 @@ public class StudentServiceTest {
         when(studentRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-                () -> studentService.update(dummyStudent, dummyStudent.getId()));
+                () -> studentService.update(dummyStudent));
     }
 
     @Test
@@ -223,6 +223,7 @@ public class StudentServiceTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantConditions")
     void testSetPrincipalCurriculum_withStudentNull() {
         Curriculum dummyCurriculum = getDummyCurriculum();
 
@@ -313,6 +314,31 @@ public class StudentServiceTest {
         boolean isAssigned = studentService.assign(dummyStudent, dummySupervisor);
 
         assertThat(isAssigned).isTrue();
+    }
+
+    @Test
+    public void testGetOneByEmail_withValidEmail() throws DoesNotExistException {
+        Student dummyStudent = getDummyStudent();
+        when(studentRepository.existsByEmail(any())).thenReturn(true);
+        when(studentRepository.getByEmail(any())).thenReturn(dummyStudent);
+
+        Student actual = studentService.getOneByEmail(dummyStudent.getEmail());
+
+        assertThat(actual).isEqualTo(dummyStudent);
+    }
+
+    @Test
+    public void testGetOneByEmail_withNullEmail() {
+        assertThrows(IllegalArgumentException.class,
+                () -> studentService.getOneByEmail(null));
+    }
+
+    @Test
+    public void testGetOneByEmail_withInvalidEmail() {
+        String email = "civfan@email.com";
+        assertThrows(DoesNotExistException.class,
+                () -> studentService.getOneByEmail(email),
+                "L'email n'existe pas");
     }
 
     private Student getDummyStudent() {

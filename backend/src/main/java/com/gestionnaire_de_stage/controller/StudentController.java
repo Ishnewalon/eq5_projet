@@ -37,14 +37,10 @@ public class StudentController {
         Student createdStudent;
         try {
             createdStudent = studentService.create(student);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas être null"));
-        } catch (StudentAlreadyExistsException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Erreur: Ce courriel existe déjà!"));
+                    .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(createdStudent);
     }
@@ -54,14 +50,10 @@ public class StudentController {
         Student student;
         try {
             student = studentService.getOneByEmailAndPassword(email, password);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));
-        } catch (EmailAndPasswordDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
+                    .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity.ok(student);
     }

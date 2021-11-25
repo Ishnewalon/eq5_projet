@@ -76,10 +76,10 @@ function OfferValidation({offer, removeFromList}) {
     return <>
         <OfferView offer={offer}/>
         <div className="d-flex justify-content-between align-items-center mb-4">
-            <button id="validateBtn" className="btn btn-success fw-bold text-white w-50 border-success"
+            <button id="validateBtn" className="btn btn-success fw-bold w-50 border-success"
                     onClick={() => validate(offer, true)}>Valide
             </button>
-            <button id="invalidateBtn" className="btn btn-danger fw-bold text-white w-50 border-danger"
+            <button id="invalidateBtn" className="btn btn-danger fw-bold w-50 border-danger"
                     onClick={() => validate(offer, false)}>Invalide
             </button>
         </div>

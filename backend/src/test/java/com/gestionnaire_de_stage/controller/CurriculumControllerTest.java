@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -27,13 +26,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -67,14 +62,14 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(response.getContentAsString()).contains("File Uploaded Successfully");
+        assertThat(response.getContentAsString()).contains("Le curriculum a été téléversé avec succès");
     }
 
     @Test
     public void uploadCurriculumTest_withInvalidStudentID() throws Exception {
         Long studentId = 1L;
         MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
-        when(curriculumService.convertMultipartFileToCurriculum(any(), any())).thenThrow(IdDoesNotExistException.class);
+        when(curriculumService.convertMultipartFileToCurriculum(any(), any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.multipart("/curriculum/upload")
@@ -84,7 +79,7 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Invalid Student ID");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
     }
 
     @Test
@@ -101,14 +96,14 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("IO Error: check file integrity!");
+        assertThat(response.getContentAsString()).contains("Erreur de téléversement. Réessayer plus tard");
     }
 
     @Test
     public void uploadCurriculumTest_studentIdThrowsIdDoesNotExistException() throws Exception {
         Long studentId = 1L;
         MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
-        when(curriculumService.create(any())).thenThrow(IdDoesNotExistException.class);
+        when(curriculumService.create(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.multipart("/curriculum/upload")
@@ -118,14 +113,14 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Invalid Student ID");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
     }
 
     @Test
     public void uploadCurriculumTest_idStudentNull() throws Exception {
         Long studentId = 1L;
         MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
-        when(curriculumService.create(any())).thenThrow(new IllegalArgumentException("L'étudiant est null"));
+        when(curriculumService.create(any())).thenThrow(new IllegalArgumentException("L'étudiant ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.multipart("/curriculum/upload")
@@ -135,14 +130,14 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'étudiant est null");
+        assertThat(response.getContentAsString()).contains("L'étudiant ne peut pas être vide");
     }
 
     @Test
     public void uploadCurriculumTest_idCurriculumNull() throws Exception {
         Long studentId = 1L;
         MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
-        when(curriculumService.create(any())).thenThrow(new IllegalArgumentException("L'étudiant est null"));
+        when(curriculumService.create(any())).thenThrow(new IllegalArgumentException("L'étudiant ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.multipart("/curriculum/upload")
@@ -152,100 +147,41 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'étudiant est null");
+        assertThat(response.getContentAsString()).contains("L'étudiant ne peut pas être vide");
     }
 
-
     @Test
-    public void testGetAllCurriculumNotValidatedYet_withValidList() throws Exception {
-        List<Curriculum> dummyList = Arrays.asList(new Curriculum(), new Curriculum(), new Curriculum());
-        when(curriculumService.findAllCurriculumNotValidatedYet()).thenReturn(dummyList);
+    public void testGetAllCurriculumByStudentId() throws Exception {
+        Long studentId = 1L;
+        List<Curriculum> dummyCurriculumList = getDummyCurriculumList();
+        when(curriculumService.findAllByStudentId(any())).thenReturn(dummyCurriculumList);
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/curriculum/invalid/students")
+                        MockMvcRequestBuilders.get("/curriculum/student/{0}", studentId)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Curriculum> returnedList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        List<Curriculum> returnedCurriculum = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
         });
-
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-
-        for (int i = 0; i < dummyList.size(); i++) {
-            assertThat(returnedList.get(i).getIsValid()).isEqualTo(dummyList.get(i).getIsValid());
-            assertThat(returnedList.get(i).getName()).isEqualTo(dummyList.get(i).getName());
-            assertThat(returnedList.get(i).getStudent()).isEqualTo(dummyList.get(i).getStudent());
-            assertThat(returnedList.get(i).getId()).isEqualTo(dummyList.get(i).getId());
-            assertThat(returnedList.get(i).getData()).isEqualTo(dummyList.get(i).getData());
-            assertThat(returnedList.get(i).getType()).isEqualTo(dummyList.get(i).getType());
-        }
-
+        assertThat(returnedCurriculum).containsAll(dummyCurriculumList);
     }
 
     @Test
-    public void testGetAllCurriculumNotValidatedYet_withEmptyList() throws Exception {
-        when(curriculumService.findAllCurriculumNotValidatedYet()).thenReturn(Collections.emptyList());
+    public void testGetAllCurriculumByStudentId_withNullId() throws Exception {
+        Long studentId = 1L;
+        when(curriculumService.findAllByStudentId(any()))
+                .thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/curriculum/invalid/students")
+                        MockMvcRequestBuilders.get("/curriculum/student/{0}", studentId)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Curriculum> actualCurriculumList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
-        });
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualCurriculumList).isEmpty();
-
-    }
-
-    @Test
-    public void testGetAllCurriculumValidated_withValidList() throws Exception {
-        Curriculum cv1 = new Curriculum();
-        Curriculum cv2 = new Curriculum();
-        Curriculum cv3 = new Curriculum();
-
-        List<Curriculum> dummyList = Stream.of(cv1, cv2, cv3).peek(c -> c.setIsValid(true)).collect(Collectors.toList());
-
-        when(curriculumService.findAllCurriculumValidated()).thenReturn(dummyList);
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/curriculum/valid/students")
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Curriculum> returnedList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
-        });
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-
-        assertThat(returnedList.size()).isEqualTo(dummyList.size());
-        for (int i = 0; i < dummyList.size(); i++) {
-            assertThat(returnedList.get(i).getIsValid()).isEqualTo(dummyList.get(i).getIsValid());
-            assertThat(returnedList.get(i).getName()).isEqualTo(dummyList.get(i).getName());
-            assertThat(returnedList.get(i).getStudent()).isEqualTo(dummyList.get(i).getStudent());
-            assertThat(returnedList.get(i).getId()).isEqualTo(dummyList.get(i).getId());
-            assertThat(returnedList.get(i).getData()).isEqualTo(dummyList.get(i).getData());
-            assertThat(returnedList.get(i).getType()).isEqualTo(dummyList.get(i).getType());
-        }
-    }
-
-    @Test
-    public void testGetAllCurriculumValidated_withEmptyList() throws Exception {
-        when(curriculumService.findAllCurriculumValidated()).thenReturn(Collections.emptyList());
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/curriculum/valid/students")
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Curriculum> actualCurriculumList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
-        });
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualCurriculumList).isEmpty();
-
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
     }
 
     @Test
@@ -266,7 +202,7 @@ public class CurriculumControllerTest {
     @Test
     public void testValidate_whenCvNonExistent() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, true);
-        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(IdDoesNotExistException.class);
+        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/curriculum/validate")
@@ -275,13 +211,13 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Curriculum non existant!");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de curriculum associé à cet identifiant");
     }
 
     @Test
     public void testValidate_whenCurriculumAlreadyTreated() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, true);
-        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(CurriculumAlreadyTreatedException.class);
+        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(new CurriculumAlreadyTreatedException("Ce curriculum a déjà été traité"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/curriculum/validate")
@@ -290,14 +226,14 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Curriculum déjà traité!");
+        assertThat(response.getContentAsString()).contains("Ce curriculum a déjà été traité");
     }
 
     @Test
     public void testValidate_withIdCurriculumNull() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(null, true);
         when(curriculumService.validate(any(), anyBoolean()))
-                .thenThrow(new IllegalArgumentException("Le id du curriculum ne peut pas être null"));
+                .thenThrow(new IllegalArgumentException("L'identifiant du curriculum ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/curriculum/validate")
@@ -306,7 +242,7 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le id du curriculum ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("L'identifiant du curriculum ne peut pas être vide");
     }
 
     @Test
@@ -327,7 +263,7 @@ public class CurriculumControllerTest {
     @Test
     public void testReject_whenCvNonExistent() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, false);
-        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(IdDoesNotExistException.class);
+        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/curriculum/validate")
@@ -336,13 +272,13 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Curriculum non existant!");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de curriculum associé à cet identifiant");
     }
 
     @Test
     public void testReject_whenCurriculumAlreadyTreated() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, false);
-        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(CurriculumAlreadyTreatedException.class);
+        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(new CurriculumAlreadyTreatedException("Ce curriculum a déjà été traité"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/curriculum/validate")
@@ -351,14 +287,14 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Curriculum déjà traité!");
+        assertThat(response.getContentAsString()).contains("Ce curriculum a déjà été traité");
     }
 
     @Test
     public void testReject_withIdCurriculumNull() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(null, false);
         when(curriculumService.validate(any(), anyBoolean()))
-                .thenThrow(new IllegalArgumentException("Le id du curriculum ne peut pas être null"));
+                .thenThrow(new IllegalArgumentException("L'identifiant du curriculum ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/curriculum/validate")
@@ -367,57 +303,7 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le id du curriculum ne peut pas être null");
-    }
-
-    @Test
-    public void testGetCurriculumById() throws Exception {
-        String text = "some xml";
-        Curriculum dummyCurriculum = getDummyCurriculum();
-        dummyCurriculum.setData(text.getBytes());
-
-        when(curriculumService.findOneById(anyLong())).thenReturn(dummyCurriculum);
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/curriculum/download/{id}", dummyCurriculum.getId())
-                                .contentType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).isEqualTo(text);
-        assertThat(response.getHeader(HttpHeaders.CONTENT_DISPOSITION)).contains(dummyCurriculum.getName());
-    }
-
-    @Test
-    public void testGetCurriculumById_withIdNull() throws Exception {
-        Long id = null;
-        when(curriculumService.findOneById(any()))
-                .thenThrow(new IllegalArgumentException("Le id du curriculum ne peut pas être null"));
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/curriculum/download/{idCurriculum}", id)
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le id du curriculum ne peut pas être null");
-    }
-
-    @Test
-    public void testGetCurriculumById_withCurriculumNonExistant() throws Exception {
-        Long id = 34L;
-        when(curriculumService.findOneById(any())).thenThrow(IdDoesNotExistException.class);
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/curriculum/download/{idCurriculum}", id)
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Curriculum non existant!");
+        assertThat(response.getContentAsString()).contains("L'identifiant du curriculum ne peut pas être vide");
     }
 
     @Test
@@ -430,8 +316,8 @@ public class CurriculumControllerTest {
                 .thenReturn(studentCurriculumsDTO);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/curriculum/all_student/{studentID}", student.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/curriculum/all_student/{studentID}", student.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -446,32 +332,32 @@ public class CurriculumControllerTest {
         when(studentService.getOneByID(any()))
                 .thenReturn(student);
         when(curriculumService.allCurriculumsByStudentAsStudentCurriculumsDTO(any()))
-                .thenThrow(new IllegalArgumentException("L'etudiant ne peut pas être null"));
+                .thenThrow(new IllegalArgumentException("L'etudiant ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/curriculum/all_student/{studentID}", student.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/curriculum/all_student/{studentID}", student.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'etudiant ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("L'etudiant ne peut pas être vide");
     }
 
     @Test
     public void testAllCurriculumsByStudentAsStudentCurriculumsDTO_withIdNotFound() throws Exception {
         Student student = getDummyStudent();
         when(studentService.getOneByID(any()))
-                .thenThrow(IdDoesNotExistException.class);
+                .thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/curriculum/all_student/{studentID}", student.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/curriculum/all_student/{studentID}", student.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Invalid Student ID");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
     }
 
     @Test

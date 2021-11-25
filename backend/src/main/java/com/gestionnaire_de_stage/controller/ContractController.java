@@ -36,14 +36,14 @@ public class ContractController {
         this.templateEngine = templateEngine;
     }
 
-    @GetMapping("/ready_to_sign")//SESSION : get only contract of current or futur session
+    @GetMapping("/ready_to_sign")//SESSION : get only contract of current or future session
     public ResponseEntity<?> contractsNeedSignature() {
         List<Contract> contractList = contractService.getAllUnsignedContracts();
         return ResponseEntity.ok(contractList);
     }
 
     @PutMapping("/managerSign/{managerSignature}/{contract_id}")
-//SESSION : sign only contract of current or futur session
+//SESSION : sign only contract of current or future session
     public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addManagerSignature(managerSignature, contract_id);
@@ -54,21 +54,17 @@ public class ContractController {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             HtmlConverter.convertToPdf(contractHtml, baos);
             contractService.fillPDF(contract, baos);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le id du contrat n'existe pas"));
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseMessage("Signature fait"));
     }
 
-    @PostMapping("/start")//SESSION : can start only contract of current or futur session
+    @PostMapping("/start")//SESSION : can start only contract of current or future session
     public ResponseEntity<?> createContract(HttpServletRequest request, HttpServletResponse response, @RequestBody ContractStarterDto contractStarterDto) {
         try {
             Contract contract = new Contract();
@@ -82,20 +78,12 @@ public class ContractController {
             HtmlConverter.convertToPdf(contractHtml, baos);
             contract.setContractPDF(baos.toByteArray());
             contractService.updateContract(contract);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(new ResponseMessage("L'id du gestionnaire et de l'application doivent exister!"));
-        } catch (StudentAlreadyHaveAContractException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("L'étudiant a déjà un contrat!"));
         }
-        return ResponseEntity.ok(new ResponseMessage("Création de contrat réussi!"));
+        return ResponseEntity.ok(new ResponseMessage("Création du contrat avec fait succès"));
     }
 
     @GetMapping("/monitor/{monitor_id}")//SESSION : get only contract of current or futur session
@@ -103,14 +91,10 @@ public class ContractController {
         List<Contract> contractList;
         try {
             contractList = contractService.getAllUnsignedContractForMonitor(monitor_id);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(e.getMessage());
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le id du moniteur n'existe pas"));
         }
 
         return ResponseEntity.ok(contractList);
@@ -128,14 +112,10 @@ public class ContractController {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             HtmlConverter.convertToPdf(contractHtml, baos);
             contractService.fillPDF(contract, baos);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le id du contrat n'existe pas"));
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -147,16 +127,11 @@ public class ContractController {
         Contract contract;
         try {
             contract = contractService.getContractByStudentId(student_id);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(e.getMessage());
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le id de l'étudiant n'existe pas"));
         }
-
         return ResponseEntity.ok(contract);
     }
 
@@ -172,14 +147,10 @@ public class ContractController {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             HtmlConverter.convertToPdf(contractHtml, baos);
             contractService.fillPDF(contract, baos);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le id du contrat n'existe pas"));
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -203,8 +174,8 @@ public class ContractController {
         Contract studentContract;
         try {
             studentContract = contractService.getSignedContractByStudentId(student_id);
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity.badRequest().body(new ResponseMessage("Le id de l'étudiant n'existe pas"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity.ok(studentContract);
     }
