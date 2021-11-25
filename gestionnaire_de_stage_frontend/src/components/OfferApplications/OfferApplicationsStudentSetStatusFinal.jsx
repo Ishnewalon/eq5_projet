@@ -14,23 +14,15 @@ export default function OfferApplicationsStudentSetStatusFinal() {
             setOfferApplications([])
             return
         }
-        getStudentApplicationsOffer(auth.user.id).then(
-            data => {
-                setOfferApplications(data)
-            })
+        getStudentApplicationsOffer(auth.user.id).then(data => {
+            setOfferApplications(data)
+        })
     }, [auth.user])
 
     const updateStatus = (idOfferApp, isAccepted) => {
         setApplicationsFinalStatus(idOfferApp, isAccepted).then((ok) => {
-            if (ok) {
-                getStudentApplicationsOffer(auth.user.id).then(
-                    data => {
-                        setOfferApplications(data)
-                    })
-                // setOfferApplications((prevOffApp) => {
-                //     return prevOffApp.filter(offApp => offApp.id !== idOfferApp)
-                // })
-            }
+            if (ok)
+                getStudentApplicationsOffer(auth.user.id).then(data => setOfferApplications(data))
         })
     };
 
