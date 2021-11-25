@@ -100,7 +100,7 @@ function OfferApplication({offer, removeFromList}) {
                         </p>
                         <p className="card-listing-date d-flex align-items-center">
                             <BsClockHistory className={"me-1"}/> Il y
-                            a {Math.ceil((new Date().getTime() - new Date(offer.created).getTime()) / (1000 * 3600 * 24))} jour
+                            a {Math.ceil((new Date().getTime() - new Date(offer.created).getTime()) / (1000 * 3600 * 24))} jour(s)
                         </p>
                         <p className="card-salary-range d-flex align-items-center">
                             <MdAttachMoney/> {offer.salary}$/h

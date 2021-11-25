@@ -15,12 +15,12 @@ public class ManagerService {
 
     private final ManagerRepository managerRepository;
 
-    public ManagerService(ManagerRepository managerRepository, StudentService studentService) {
+    public ManagerService(ManagerRepository managerRepository) {
         this.managerRepository = managerRepository;
     }
 
-    public Manager create(Manager manager) throws ManagerAlreadyExistsException {
-        Assert.isTrue(manager != null, "Le gestionnaire est null");
+    public Manager create(Manager manager) throws ManagerAlreadyExistsException { //FIXME Never Used other than tests
+        Assert.isTrue(manager != null, "Le gestionnaire ne peut pas être vide");
         if (isNotValid(manager)) {
             throw new ManagerAlreadyExistsException("Un compte existe déjà pour ce gestionnaire");
         }
@@ -28,7 +28,7 @@ public class ManagerService {
     }
 
     public Manager getOneByID(Long aLong) throws IdDoesNotExistException {
-        Assert.isTrue(aLong != null, "L'id du gestionnaire ne peut pas être null!");
+        Assert.isTrue(aLong != null, "L'identifiant du gestionnaire ne peut pas être vide");
         if (isIDNotValid(aLong)) {
             throw new IdDoesNotExistException("Il n'y a pas de gestionnaire associé à cet identifiant");
         }
@@ -37,9 +37,9 @@ public class ManagerService {
 
     public List<Manager> getAll() {
         return managerRepository.findAll();
-    }
+    }   //FIXME Never Used other than tests
 
-    public Manager update(Manager manager, Long aLong) throws IdDoesNotExistException {
+    public Manager update(Manager manager, Long aLong) throws IdDoesNotExistException { //FIXME Never Used other than tests
         Assert.isTrue(aLong != null, "ID est null");
         Assert.isTrue(manager != null, "Le gestionnaire est null");
         if (isIDNotValid(aLong)) {
@@ -49,7 +49,7 @@ public class ManagerService {
         return managerRepository.save(manager);
     }
 
-    public void deleteByID(Long aLong) throws IdDoesNotExistException {
+    public void deleteByID(Long aLong) throws IdDoesNotExistException { //FIXME Never Used other than tests
         Assert.isTrue(aLong != null, "ID est null");
         if (isIDNotValid(aLong))
             throw new IdDoesNotExistException("Il n'y a pas de gestionnaire associé à cet identifiant");
@@ -57,8 +57,8 @@ public class ManagerService {
     }
 
     public Manager getOneByEmailAndPassword(String email, String password) throws EmailAndPasswordDoesNotExistException {
-        Assert.isTrue(email != null, "Le courriel est null");
-        Assert.isTrue(password != null, "Le mot de passe est null");
+        Assert.isTrue(email != null, "Le courriel ne peut pas être vide");
+        Assert.isTrue(password != null, "Le mot de passe ne peut pas être vide");
         if (!isEmailAndPasswordValid(email, password))
             throw new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid");
         return managerRepository.findManagerByEmailAndPassword(email, password);

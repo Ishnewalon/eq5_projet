@@ -73,10 +73,10 @@ public class OfferApplicationController {
         }
     }
 
-    @GetMapping("/all_applied_on/{studentID}")//SESSION : get offers of current session and future
-    public ResponseEntity<?> getAllByOfferStatusAndStudentID(@PathVariable Long studentID) {
+    @GetMapping("/applicants/cv_sent/{id}")//SESSION : get offers of current session and future
+    public ResponseEntity<?> getAllByOfferStatusAndStudentID(@PathVariable Long id) {
         try {
-            List<OfferApplication> offerApplicationList = offerApplicationService.getAllByOfferStatusAndStudentID(Status.CV_ENVOYE, studentID);
+            List<OfferApplication> offerApplicationList = offerApplicationService.getAllByOfferStatusAndStudentID(Status.CV_ENVOYE, id);
             return ResponseEntity.ok(offerApplicationList);
         } catch (Exception e) {
             return ResponseEntity
@@ -90,19 +90,6 @@ public class OfferApplicationController {
         List<OfferApplication> offerApplicationList;
         try {
             offerApplicationList = offerApplicationService.getOffersApplicationsStageTrouver(id);//SESSION : get application of current session and future
-        } catch (Exception e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        }
-        return ResponseEntity.ok(offerApplicationList);
-    }
-
-    @GetMapping("/applicants/student/{id}")
-    public ResponseEntity<?> getAllOffersAppliedByStatus(@PathVariable Long id) {
-        List<OfferApplication> offerApplicationList;
-        try {
-            offerApplicationList = offerApplicationService.getAllOffersStudentAppliedAndStatusWaiting(id);//SESSION : get offers of current session and future
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()

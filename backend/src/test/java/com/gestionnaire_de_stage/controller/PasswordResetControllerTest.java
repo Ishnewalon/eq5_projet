@@ -47,13 +47,13 @@ public class PasswordResetControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Un email vous a été envoyé pour réinitialiser votre mot de passe");
+        assertThat(response.getContentAsString()).contains("Un courriel vous a été envoyé pour réinitialiser votre mot de passe");
     }
 
     @Test
     public void testForgotPassword_monitor_whenEmailDoesNotExist() throws Exception {
         String email = "monitor@email.com";
-        when(passwordResetService.forgotPasswordMonitor(any())).thenThrow(new DoesNotExistException("Ce email n'existe pas"));
+        when(passwordResetService.forgotPasswordMonitor(any())).thenThrow(new DoesNotExistException("Le courriel n'existe pas"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/forgot_password/monitor/{0}", email)
@@ -62,7 +62,7 @@ public class PasswordResetControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Ce email n'existe pas");
+        assertThat(response.getContentAsString()).contains("Le courriel n'existe pas");
     }
 
     @Test
@@ -77,13 +77,13 @@ public class PasswordResetControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Un email vous a été envoyé pour réinitialiser votre mot de passe");
+        assertThat(response.getContentAsString()).contains("Un courriel vous a été envoyé pour réinitialiser votre mot de passe");
     }
 
     @Test
     public void testForgotPassword_supervisor_whenEmailDoesNotExist() throws Exception {
         String email = "supervisor@email.com";
-        when(passwordResetService.forgotPasswordSupervisor(any())).thenThrow(new DoesNotExistException("Ce email n'existe pas"));
+        when(passwordResetService.forgotPasswordSupervisor(any())).thenThrow(new DoesNotExistException("Le courriel n'existe pas"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/forgot_password/supervisor/{0}", email)
@@ -92,7 +92,7 @@ public class PasswordResetControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Ce email n'existe pas");
+        assertThat(response.getContentAsString()).contains("Le courriel n'existe pas");
     }
 
     @Test
@@ -107,13 +107,13 @@ public class PasswordResetControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Un email vous a été envoyé pour réinitialiser votre mot de passe");
+        assertThat(response.getContentAsString()).contains("Un courriel vous a été envoyé pour réinitialiser votre mot de passe");
     }
 
     @Test
     public void testForgotPassword_student_whenEmailDoesNotExist() throws Exception {
         String email = "student@email.com";
-        when(passwordResetService.forgotPasswordStudent(any())).thenThrow(new DoesNotExistException("Ce email n'existe pas"));
+        when(passwordResetService.forgotPasswordStudent(any())).thenThrow(new DoesNotExistException("Le courriel n'existe pas"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/forgot_password/student/{0}", email)
@@ -122,7 +122,7 @@ public class PasswordResetControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Ce email n'existe pas");
+        assertThat(response.getContentAsString()).contains("Le courriel n'existe pas");
     }
 
 
@@ -144,7 +144,7 @@ public class PasswordResetControllerTest {
 
     @Test
     public void testResetPassword_monitor_withTokenNull() throws Exception {
-        when(passwordResetService.resetPassword(any())).thenThrow(new IllegalArgumentException("Un token est nécessaire pour une modification de mot de passe"));
+        when(passwordResetService.resetPassword(any())).thenThrow(new IllegalArgumentException("Un jeton est nécessaire pour une modification de mot de passe"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/forgot_password/reset")
@@ -154,7 +154,7 @@ public class PasswordResetControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Un token est nécessaire pour une modification de mot de passe");
+        assertThat(response.getContentAsString()).contains("Un jeton est nécessaire pour une modification de mot de passe");
     }
 
     @Test
@@ -174,7 +174,7 @@ public class PasswordResetControllerTest {
 
     @Test
     public void testResetPassword_monitor_withTokenNonExistant() throws Exception {
-        when(passwordResetService.resetPassword(any())).thenThrow(new DoesNotExistException("Ce token n'existe pas"));
+        when(passwordResetService.resetPassword(any())).thenThrow(new DoesNotExistException("Le jeton n'existe pas"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/forgot_password/reset")
@@ -184,12 +184,12 @@ public class PasswordResetControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Ce token n'existe pas");
+        assertThat(response.getContentAsString()).contains("Le jeton n'existe pas");
     }
 
     @Test
     public void testResetPassword_monitor_withTokenUnusable() throws Exception {
-        when(passwordResetService.resetPassword(any())).thenThrow(new UnusableTokenException("Le token n'est plus utilisable"));
+        when(passwordResetService.resetPassword(any())).thenThrow(new UnusableTokenException("Le jeton n'est plus utilisable"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/forgot_password/reset")
@@ -199,7 +199,7 @@ public class PasswordResetControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le token n'est plus utilisable");
+        assertThat(response.getContentAsString()).contains("Le jeton n'est plus utilisable");
     }
 
 
