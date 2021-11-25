@@ -21,7 +21,9 @@ export default function ManagerView() {
     let auth = useAuth();
     return (<>
             <Route exact path={`${path}`}>
-                <Title>Bonjour {auth.user.firstName}!</Title>
+                <div className="container">
+                    <Title>Bonjour {auth.user.firstName}!</Title>
+                </div>
             </Route>
             <Route exact path={`${path}/manager/contracts/signed`}>
                 <Title>Contrats signés</Title>
@@ -32,9 +34,7 @@ export default function ManagerView() {
             <Route path={`${path}/offres`}>
                 <Route exact path={`${path}/offres/ajouter`}>
                     <Title>Ajouter une offre de stage</Title>
-                    <ContainerBox>
-                        <CreateOffer/>
-                    </ContainerBox>
+                    <CreateOffer/>
                 </Route>
                 <Route exact path={`${path}/offres/review`}>
                     <Title>Validation des offres</Title>
@@ -55,9 +55,7 @@ export default function ManagerView() {
             </Route>
             <Route path={`${path}/students/applied`}>
                 <Title>Attribuer des superviseurs aux étudiants</Title>
-                <ContainerBox>
-                    <LinkSupervisorToStudent/>
-                </ContainerBox>
+                <LinkSupervisorToStudent/>
             </Route>
             <Route path={`${path}/students/start`}>
                 <Title>Liste des applications prêtes à être signer</Title>
@@ -71,9 +69,7 @@ export default function ManagerView() {
             </Route>
             <Route exact path={`${path}/session`}>
                 <Title>Ajouter une session</Title>
-                <ContainerBox>
-                    <CreateSession/>
-                </ContainerBox>
+                <CreateSession/>
             </Route>
             <Route path={`${path}/rapports`}>
                 <RapportsView/>

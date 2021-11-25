@@ -1,9 +1,6 @@
 package com.gestionnaire_de_stage.service;
 
-import com.gestionnaire_de_stage.exception.DoesNotExistException;
-import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
@@ -30,7 +27,14 @@ public class SupervisorService {
         if (isNotValid(supervisor)) {
             throw new SupervisorAlreadyExistsException("Un compte existe déjà pour ce superviseur");
         }
+        if (isMatriculeValid(supervisor.getMatricule())) {
+            throw new SupervisorAlreadyExistsException("Le matricule existe déjà");
+        }
         return supervisorRepository.save(supervisor);
+    }
+
+    private boolean isMatriculeValid(String matricule) {
+        return supervisorRepository.existsByMatricule(matricule);
     }
 
     public Supervisor getOneByID(Long aLong) throws IdDoesNotExistException {

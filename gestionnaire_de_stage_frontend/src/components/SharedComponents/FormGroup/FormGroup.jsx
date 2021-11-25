@@ -9,7 +9,7 @@ export function FormGroup(props) {
 
     if (repartition)
         return <>
-            <div className="form-group row">
+            <div className="form-group row mb-3 mx-auto">
                 {React.Children.map(children, (child, index) => {
                     return (<div className={`col-md-${repartition[index]}`} key={index}>
                         {child}
@@ -18,7 +18,7 @@ export function FormGroup(props) {
             </div>
         </>
     return <>
-        <div className="form-group row mb-3">
+        <div className="form-group row mb-3 mx-auto">
             {React.Children.map(children, (child, index) => {
                 return (<div className={`col-md-${12 / count}`} key={index}>
                     {child}

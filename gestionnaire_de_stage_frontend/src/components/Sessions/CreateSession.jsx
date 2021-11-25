@@ -3,6 +3,7 @@ import {createSession} from "../../services/session-service";
 import {useState} from "react";
 import {toastErr} from "../../utility";
 import {FormField} from "../SharedComponents/FormField/FormField";
+import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 
 export default function CreateSession() {
     let currentYear = new Date().getFullYear();
@@ -25,7 +26,7 @@ export default function CreateSession() {
         }).then();
     };
 
-    return <>
+    return <ContainerBox className={"w-50"}>
         <FormGroup>
             <FormField>
                 <label>Année</label>
@@ -48,5 +49,5 @@ export default function CreateSession() {
             <button className="btn btn-primary mt-3" onClick={onclick}>Créez la session</button>
 
         </div>
-    </>
+    </ContainerBox>
 }

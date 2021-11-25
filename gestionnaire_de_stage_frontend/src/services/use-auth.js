@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import {Redirect} from "react-router-dom";
 import {ManagerModel, MonitorModel, Student, Supervisor} from "../models/User";
 import {methods, requestInit, urlBackend} from "./serviceUtils";
@@ -35,7 +35,37 @@ export function RequireNoAuth({children}) {
 
 
 function useProvideAuth() {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(() => {
+        if (sessionStorage.length === 0) return null;
+        let item = sessionStorage.getItem('user');
+        if (item === "undefined" || item === "null") return null;
+        let parse = JSON.parse(item);
+
+        let type = sessionStorage.getItem('type');
+        if (type === Student.prototype.constructor.name)
+            return Object.setPrototypeOf(parse, Student.prototype);
+        if (type === Supervisor.prototype.constructor.name)
+            return Object.setPrototypeOf(parse, Supervisor.prototype);
+        if (type === ManagerModel.prototype.constructor.name)
+            return Object.setPrototypeOf(parse, ManagerModel.prototype);
+        if (type === MonitorModel.prototype.constructor.name)
+            return Object.setPrototypeOf(parse, MonitorModel.prototype);
+        return null;
+    });
+
+
+    useEffect(() => {
+        sessionStorage.setItem('user', JSON.stringify(user));
+        if (isSupervisor())
+            sessionStorage.setItem('type', Supervisor.prototype.constructor.name);
+        else if (isStudent())
+            sessionStorage.setItem('type', Student.prototype.constructor.name);
+        else if (isManager())
+            sessionStorage.setItem('type', ManagerModel.prototype.constructor.name);
+        else if (isMonitor())
+            sessionStorage.setItem('type', MonitorModel.prototype.constructor.name);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
 
     const signupMonitor = async (monitor) => {
         if (!(monitor instanceof MonitorModel) || !monitor)
@@ -44,14 +74,16 @@ function useProvideAuth() {
             response => {
                 response.json().then(
                     body => {
-                        if (response.status === 201)
-                            toast.fire({title: "Compte crée"}).then()
                         if (response.status === 400)
                             swalErr.fire({text: body.message})
-                    }
-                )
-            }, err => console.log(err)
-        );
+                        if (response.status === 201)
+                            toast.fire({title: "Compte crée"}).then()
+                        else
+                            console.error(response)
+                    })
+                return response.ok
+            }
+        ).catch(err => console.log(err));
     }
 
 
@@ -62,14 +94,16 @@ function useProvideAuth() {
             response => {
                 response.json().then(
                     body => {
-                        if (response.status === 201)
-                            toast.fire({title: "Compte crée"}).then()
                         if (response.status === 400)
                             swalErr.fire({text: body.message})
-                    }
-                )
-            }, err => console.log(err)
-        );
+                        if (response.status === 201)
+                            toast.fire({title: "Compte crée"}).then()
+                        else
+                            console.error(response)
+                    })
+                return response.ok
+            }
+        ).catch(err => console.log(err));
     }
 
 
@@ -80,14 +114,16 @@ function useProvideAuth() {
             response => {
                 response.json().then(
                     body => {
-                        if (response.status === 201)
-                            toast.fire({title: "Compte crée"}).then()
                         if (response.status === 400)
                             swalErr.fire({text: body.message})
-                    }
-                )
-            }, err => console.log(err)
-        );
+                        if (response.status === 201)
+                            toast.fire({title: "Compte crée"}).then()
+                        else
+                            console.error(response)
+                    })
+                return response.ok
+            }
+        ).catch(err => console.log(err));
     }
 
     const signIn = async (userType, email, password) => {
@@ -119,6 +155,8 @@ function useProvideAuth() {
     }
     const signOut = () => {
         setUser(false);
+        sessionStorage.removeItem("user");
+        sessionStorage.removeItem("type");
     };
     const isMonitor = () => {
         return user instanceof MonitorModel;

@@ -49,6 +49,7 @@ public abstract class User implements Serializable {
 
     @NotBlank
     @Email(message = "Le courriel doit être valide")
+    @Column(unique = true)
     private String email;
 
     private String phone;

@@ -10,7 +10,7 @@ export default function CurriculumUpload() {
     }
 
     return (
-        <div className="text-white">
+        <div>
             <Dropzone
                 onDrop={handleDrop}
                 accept="application/pdf"
