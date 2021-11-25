@@ -10,7 +10,7 @@ import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import ContractSignedStudent from "../Contract/ContractSignedStudent";
 import CurriculumsStudent from "../Curriculums/CurriculumsStudent";
 import {Title} from "../SharedComponents/Title/Title";
-import InterEvaluationStepHandler from "../EvaluationsWithSteps/InterEvaluationStepHandler";
+import EvaluationIntern from "../Evaluation/EvaluationIntern";
 
 export default function StudentView() {
     let {path} = useRouteMatch();
@@ -46,7 +46,7 @@ export default function StudentView() {
                 <ContractSignedStudent/>
             </Route>
             <Route exact path={`${path}`}>
-                <InterEvaluationStepHandler/>
+                <EvaluationIntern/>
             </Route>
         </>
     )
