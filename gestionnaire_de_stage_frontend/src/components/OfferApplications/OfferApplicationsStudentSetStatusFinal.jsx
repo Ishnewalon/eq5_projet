@@ -29,6 +29,23 @@ export default function OfferApplicationsStudentSetStatusFinal() {
         })
     };
 
+    const setStatus = (offerApp) => {
+        switch (offerApp.status) {
+            case "CV_ENVOYE":
+                return "Cv envoyé"
+            case "STAGE_REFUSE":
+                return "Stage refusé"
+            case "STAGE_TROUVE":
+                return "Stage trouvé"
+            case "EN_ATTENTE_ENTREVUE":
+                return "En attente d'entrevue"
+            case "EN_ATTENTE_REPONSE":
+                return "En attente de réponse"
+            default:
+                return "Aucun status"
+        }
+    }
+
 
     const setStatusMessage = (offerApp) => {
         switch (offerApp.status) {
@@ -87,7 +104,7 @@ export default function OfferApplicationsStudentSetStatusFinal() {
                 <TableRow key={offerApplication.id}>
                     <th>{offerApplication.id}</th>
                     <td>{offerApplication.offer.title}</td>
-                    <td>{offerApplication.status}</td>
+                    <td>{setStatus(offerApplication)}</td>
                     <td>
                         {setStatusMessage(offerApplication)}
                     </td>
