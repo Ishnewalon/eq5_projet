@@ -31,7 +31,7 @@ public class SessionService {
         Assert.isTrue(session.getTypeSession() != null, "Le type de session est obligatoire");
         Assert.isTrue(session.getYear() != null, "L'année est obligatoire");
         if (sessionRepository.existsByTypeSessionAndYear(session.getTypeSession(), session.getYear()))
-            throw new SessionAlreadyExistException("Une Session existe déjà!");
+            throw new SessionAlreadyExistException("Cette session existe déjà");
 
         session.setId(null);
 
@@ -56,9 +56,9 @@ public class SessionService {
     }
 
     public Session getOneBySessionId(Long idSession) throws IdDoesNotExistException {
-        Assert.isTrue(idSession != null, "L'id de la session est obligatoire");
+        Assert.isTrue(idSession != null, "L'identifiant de la session est obligatoire");
         if (!sessionRepository.existsById(idSession))
-            throw new IdDoesNotExistException("Il n'y a pas de session associé à cet identifiant");
+            throw new IdDoesNotExistException("Il n'y a pas de session associée à cet identifiant");
         return sessionRepository.getById(idSession);
     }
 }

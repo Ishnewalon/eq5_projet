@@ -20,7 +20,7 @@ public class StageService {
     }
 
     public Stage create(Stage stage, String matricule) throws EvaluationAlreadyFilledException {
-        Assert.isTrue(stage != null, "Le stage ne peut pas être null");
+        Assert.isTrue(stage != null, "Le stage ne peut pas être vide");
         if (isAlreadyCreated(matricule)) {
             throw new EvaluationAlreadyFilledException("L'évalutation de cet étudiant a déjà été remplie");
         }
@@ -31,7 +31,7 @@ public class StageService {
     }
 
     public Stage addEvalMilieuStage(Stage stage, ByteArrayOutputStream baos) throws StageDoesNotExistException {
-        Assert.isTrue(stage != null, "Le stage ne peut pas être null");
+        Assert.isTrue(stage != null, "Le stage ne peut pas être vide");
         if (isNotValid(stage)) {
             throw new StageDoesNotExistException("Il n'y a pas de stage pour cette étudiant");
         }
@@ -40,7 +40,7 @@ public class StageService {
     }
 
     public Stage getStageByStudentEmail(String email) throws StageDoesNotExistException, EvaluationAlreadyFilledException {
-        Assert.isTrue(email != null, "Le courriel ne peut pas être null");
+        Assert.isTrue(email != null, "Le courriel ne peut pas être vide");
         if (isNotAlreadyCreatedEmail(email)) {
             throw new StageDoesNotExistException("Il n'y a pas de stage pour cette étudiant");
         }
@@ -51,7 +51,7 @@ public class StageService {
     }
 
     public Stage addEvalStagiaire(Stage stage, ByteArrayOutputStream baos) throws StageDoesNotExistException {
-        Assert.isTrue(stage != null, "Le stage ne peut pas être null");
+        Assert.isTrue(stage != null, "Le stage ne peut pas être vide");
         if (isNotValid(stage)) {
             throw new StageDoesNotExistException("Il n'y a pas de stage pour cette étudiant");
         }

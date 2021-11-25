@@ -54,7 +54,7 @@ public class ContractService {
 
     public Contract addManagerSignature(String managerSignature, Long contract_id) throws IllegalArgumentException, IdDoesNotExistException {
         Assert.isTrue(managerSignature != null, "Il faut une signature");
-        Assert.isTrue(contract_id != null, "L'id du contrat ne peut pas être null");
+        Assert.isTrue(contract_id != null, "L'identifiant du contrat ne peut pas être vide");
         if (isContractIdNotValid(contract_id))
             throw new IdDoesNotExistException("Il n'y a pas de contrat associé à cet identifiant");
 
@@ -66,7 +66,7 @@ public class ContractService {
     }
 
     public List<Contract> getAllUnsignedContractForMonitor(Long monitor_id) throws IdDoesNotExistException {
-        Assert.isTrue(monitor_id != null, "L'id du moniteur ne peut pas être null");
+        Assert.isTrue(monitor_id != null, "L'identifiant du moniteur ne peut pas être vide");
         if (monitorService.isIdInvalid(monitor_id)) {
             throw new IdDoesNotExistException("Il n'y a pas de moniteur associé à cet identifiant");
         }
@@ -75,7 +75,7 @@ public class ContractService {
 
     public Contract addMonitorSignature(String monitorSignature, Long contract_id) throws IllegalArgumentException, IdDoesNotExistException {
         Assert.isTrue(monitorSignature != null, "Il faut une signature");
-        Assert.isTrue(contract_id != null, "L'id du contrat ne peut pas être null");
+        Assert.isTrue(contract_id != null, "L'identifiant du contrat ne peut pas être vide");
         if (isContractIdNotValid(contract_id)) {
             throw new IdDoesNotExistException("Il n'y a pas de contrat associé à cet identifiant");
         }
@@ -86,7 +86,7 @@ public class ContractService {
     }
 
     public Contract getContractByStudentId(Long student_id) throws IdDoesNotExistException {
-        Assert.isTrue(student_id != null, "L'id de l'étudiant ne peut pas être null");
+        Assert.isTrue(student_id != null, "L'identifiant de l'étudiant ne peut pas être vide");
         if (studentService.isIDNotValid(student_id)) {
             throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
         }
@@ -94,7 +94,7 @@ public class ContractService {
     }
 
     public Contract getContractByStudentMatricule(String matricule) throws MatriculeDoesNotExistException, ContractDoesNotExistException {
-        Assert.isTrue(matricule != null, "La matricule ne peut pas être null");
+        Assert.isTrue(matricule != null, "La matricule de l'étudiant ne peut pas être vide");
         if (!studentRepository.existsByMatricule(matricule)) {
             throw new MatriculeDoesNotExistException("Il n'y a pas d'étudiant ayant la matricule " + matricule);
         }
@@ -106,7 +106,7 @@ public class ContractService {
 
     public Contract addStudentSignature(String studentSignature, Long contract_id) throws IdDoesNotExistException {
         Assert.isTrue(studentSignature != null, "Il faut une signature");
-        Assert.isTrue(contract_id != null, "L'id du contrat ne peut pas être null");
+        Assert.isTrue(contract_id != null, "L'identifiant du contrat ne peut pas être vide");
         if (isContractIdNotValid(contract_id)) {
             throw new IdDoesNotExistException("Il n'y a pas de contrat associé à cet identifiant");
         }
@@ -117,7 +117,7 @@ public class ContractService {
     }
 
     public Contract fillPDF(Contract contract, ByteArrayOutputStream baos) {
-        Assert.isTrue(contract != null, "Le contract ne peut pas être null");
+        Assert.isTrue(contract != null, "Le contrat ne peut pas être vide");
         contract.setContractPDF(baos.toByteArray());
         return contractRepository.save(contract);
     }
@@ -137,7 +137,7 @@ public class ContractService {
         Curriculum curriculum = offerApplication.getCurriculum();
         Student student = curriculum.getStudent();
         if (doesStudentAlreadyHaveAContract(student.getId(), contract.getSession()))
-            throw new StudentAlreadyHaveAContractException("L'étudiant ayant la matricule " + student.getMatricule() + "a déjà un contrat");
+            throw new StudentAlreadyHaveAContractException("Un contrat existe déjà pour l'étudiant ayant la matricule " + student.getMatricule());
 
         contract.setStudent(student);
         contract.setMonitor(monitor);
@@ -156,17 +156,17 @@ public class ContractService {
     }
 
     public List<Contract> getAllSignedContractsByManager(Long id) throws IllegalArgumentException {
-        Assert.isTrue(id != null, "L'id du manager ne peut pas être null");
+        Assert.isTrue(id != null, "L'identifiant du gestionnaire ne peut pas être vide");
         return contractRepository.getAllByManager_IdAndManagerSignatureNotNullAndSession_YearGreaterThanEqual(id, Year.now());
     }
 
     public List<Contract> getAllSignedContractsByMonitor(Long monitor_id) {
-        Assert.isTrue(monitor_id != null, "L'id du monitor ne peut pas être null");
+        Assert.isTrue(monitor_id != null, "L'identifiant du moniteur ne peut pas être vide");
         return contractRepository.getAllByMonitor_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndSession_YearGreaterThanEqual(monitor_id, Year.now());
     }
 
     public Contract getSignedContractByStudentId(Long student_id) throws IdDoesNotExistException {
-        Assert.isTrue(student_id != null, "L'id de l'étudiant ne peut pas être null");
+        Assert.isTrue(student_id != null, "L'identifiant de l'étudiant ne peut pas être vide");
         if (studentService.isIDNotValid(student_id)) {
             throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
         }
@@ -174,7 +174,7 @@ public class ContractService {
     }
 
     public StudentMonitorOfferDTO buildStudentMonitorOfferDTOFromContract(Contract contract) throws IllegalArgumentException {
-        Assert.notNull(contract, "Le contract ne peut pas être null");
+        Assert.notNull(contract, "Le contrat ne peut pas être vide");
 
         return new StudentMonitorOfferDTO(
                 contract.getStudent(),
@@ -184,7 +184,7 @@ public class ContractService {
     }
 
     public List<StudentMonitorOfferDTO> stageListToStudentMonitorOfferDtoList(List<Stage> stageList) {
-        Assert.notNull(stageList, "La liste de stage ne peut pas être null");
+        Assert.notNull(stageList, "La liste de stage ne peut pas être vide");
 
         return stageList.stream().map((stage) ->
                         buildStudentMonitorOfferDTOFromContract(stage.getContract()))

@@ -36,7 +36,7 @@ public class PasswordResetController {
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
         }
-        return ResponseEntity.ok(new ResponseMessage("Un email vous a été envoyé pour réinitialiser votre mot de passe"));
+        return ResponseEntity.ok(new ResponseMessage("Un courriel vous a été envoyé pour réinitialiser votre mot de passe"));
     }
 
     @PostMapping("/reset")

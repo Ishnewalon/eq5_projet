@@ -51,12 +51,12 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Création de contrat réussi!");
+        assertThat(response.getContentAsString()).contains("Création du contrat avec fait succès");
     }
 
     @Test
     public void testManagerStartContract_whenContractStarterIdManagerNull() throws Exception {
-        when(contractService.gsStartContract(any(), any())).thenThrow(new IllegalArgumentException("L'id du gestionnaire ne peut pas être null!"));
+        when(contractService.gsStartContract(any(), any())).thenThrow(new IllegalArgumentException("L'identifiant du gestionnaire ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
@@ -66,12 +66,12 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'id du gestionnaire ne peut pas être null!");
+        assertThat(response.getContentAsString()).contains("L'identifiant du gestionnaire ne peut pas être vide");
     }
 
     @Test
     public void testManagerStartContract_whenIdOfferApplicationNull() throws Exception {
-        when(contractService.gsStartContract( any(), any())).thenThrow(new IllegalArgumentException("L'id de l'application ne peut pas être null!"));
+        when(contractService.gsStartContract( any(), any())).thenThrow(new IllegalArgumentException("L'identifiant de l'application ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
@@ -81,12 +81,12 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'id de l'application ne peut pas être null!");
+        assertThat(response.getContentAsString()).contains("L'identifiant de l'application ne peut pas être vide");
     }
 
     @Test
     public void testManagerStartContract_whenStudentAlreadyHaveAContract() throws Exception {
-        when(contractService.gsStartContract( any(), any())).thenThrow(new StudentAlreadyHaveAContractException("L'étudiant a déjà un contrat"));
+        when(contractService.gsStartContract( any(), any())).thenThrow(new StudentAlreadyHaveAContractException("Un contrat existe déjà pour l'étudiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
@@ -96,7 +96,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'étudiant a déjà un contrat");
+        assertThat(response.getContentAsString()).contains("Un contrat existe déjà pour l'étudiant");
     }
 
     @Test
@@ -158,7 +158,7 @@ public class ContractControllerTest {
         String uri = "/contracts/managerSign/" + managerSignature
                 + "/" + dummyContract.getId();
         when(contractService.addManagerSignature(any(), any()))
-                .thenThrow(new IllegalArgumentException("La signature, l'id du contrat et du gestionnaire ne peuvent être null"));
+                .thenThrow(new IllegalArgumentException("La signature, l'id du contrat et du gestionnaire ne peuvent être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.put(uri)
@@ -167,7 +167,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("La signature, l'id du contrat et du gestionnaire ne peuvent être null");
+        assertThat(response.getContentAsString()).contains("La signature, l'id du contrat et du gestionnaire ne peuvent être vide");
     }
 
     @Test
@@ -211,7 +211,7 @@ public class ContractControllerTest {
     public void testGetContractReadySignMonitor_withNullMonitorId() throws Exception {
         Monitor dummyMonitor = getDummyMonitor();
         when(contractService.getAllUnsignedContractForMonitor(any()))
-                .thenThrow(new IllegalArgumentException("L'id du moniteur ne peut pas être null"));
+                .thenThrow(new IllegalArgumentException("L'identfiant du moniteur ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/contracts/monitor/" + dummyMonitor.getId())
@@ -220,7 +220,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'id du moniteur ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("L'identfiant du moniteur ne peut pas être vide");
     }
 
     @Test
@@ -266,7 +266,7 @@ public class ContractControllerTest {
         String uri = "/contracts/monitorSign/" + monitorSignature
                 + "/" + dummyContract.getId();
         when(contractService.addMonitorSignature(any(), any()))
-                .thenThrow(new IllegalArgumentException("La signature et l'id du contrat ne peuvent être null"));
+                .thenThrow(new IllegalArgumentException("La signature et l'identifiant du contrat ne peuvent être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.put(uri)
@@ -275,7 +275,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("La signature et l'id du contrat ne peuvent être null");
+        assertThat(response.getContentAsString()).contains("La signature et l'identifiant du contrat ne peuvent être vide");
     }
 
     @Test
@@ -319,7 +319,7 @@ public class ContractControllerTest {
     public void testContractNeedsStudentSignature_withNullStudentId() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
         long student_id = 1L;
-        when(contractService.getContractByStudentId(any())).thenThrow(new IllegalArgumentException("La signature et l'id du contrat ne peuvent être null"));
+        when(contractService.getContractByStudentId(any())).thenThrow(new IllegalArgumentException("La signature et l'identifiant du contrat ne peuvent être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/contracts/student/" + student_id)
@@ -328,7 +328,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("La signature et l'id du contrat ne peuvent être null");
+        assertThat(response.getContentAsString()).contains("La signature et l'identifiant du contrat ne peuvent être vide");
     }
 
     @Test
@@ -374,7 +374,7 @@ public class ContractControllerTest {
         String uri = "/contracts/studentSign/" + studentSignature
                 + "/" + dummyContract.getId();
         when(contractService.addStudentSignature(any(), any()))
-                .thenThrow(new IllegalArgumentException("La signature et l'id du contrat ne peuvent être null"));
+                .thenThrow(new IllegalArgumentException("La signature et l'identifiant du contrat ne peuvent être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.put(uri)
@@ -383,7 +383,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("La signature et l'id du contrat ne peuvent être null");
+        assertThat(response.getContentAsString()).contains("La signature et l'identifiant du contrat ne peuvent être vide");
     }
 
     @Test
