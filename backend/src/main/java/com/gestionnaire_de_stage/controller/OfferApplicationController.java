@@ -98,19 +98,6 @@ public class OfferApplicationController {
         return ResponseEntity.ok(offerApplicationList);
     }
 
-    @GetMapping("/applicants/waiting/student/{id}")
-    public ResponseEntity<?> getAllOffersAppliedByStatusWaiting(@PathVariable Long id) {
-        List<OfferApplication> offerApplicationList;
-        try {
-            offerApplicationList = offerApplicationService.getAllOffersStudentAppliedAndStatusWaiting(id);//SESSION : get offers of current session and future
-        } catch (Exception e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        }
-        return ResponseEntity.ok(offerApplicationList);
-    }
-
     @PostMapping("/student/update_status")
     public ResponseEntity<?> updateStatus(@RequestBody UpdateStatusDTO updateStatusDTO) {
         String message;

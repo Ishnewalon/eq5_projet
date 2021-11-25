@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useAuth} from "../../services/use-auth";
-import {getStudentApplicationsOffer, setApplicationsStatusWhenEnAttenteDeReponse} from "../../services/offerAppService";
+import {getStudentApplicationsOffer, setApplicationsFinalStatus} from "../../services/offerAppService";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {AiOutlineProfile} from "react-icons/all";
@@ -21,7 +21,7 @@ export default function OfferApplicationsStudentSetStatusFinal() {
 
 
     const updateStatus = (idOfferApp, isAccepted) => {
-        setApplicationsStatusWhenEnAttenteDeReponse(idOfferApp, isAccepted).then((ok) => {
+        setApplicationsFinalStatus(idOfferApp, isAccepted).then((ok) => {
             if (ok)
                 setOfferApplications((prevOffApp) => {
                     return prevOffApp.filter(offApp => offApp.id !== idOfferApp)
