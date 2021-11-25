@@ -74,16 +74,15 @@ function useProvideAuth() {
             response => {
                 response.json().then(
                     body => {
+                        if (response.status === 400)
+                            swalErr.fire({text: body.message})
                         if (response.status === 201)
                             toast.fire({title: "Compte crée"}).then()
-                        else {
-                            if (response.status === 400)
-                                swalErr.fire({text: body.message})
+                        else
                             console.error(response)
-                        }
                     })
                 return response.ok
-            }, err => console.log(err)
+            }
         ).catch(err => console.log(err));
     }
 
@@ -95,16 +94,15 @@ function useProvideAuth() {
             response => {
                 response.json().then(
                     body => {
+                        if (response.status === 400)
+                            swalErr.fire({text: body.message})
                         if (response.status === 201)
                             toast.fire({title: "Compte crée"}).then()
-                        else {
-                            if (response.status === 400)
-                                swalErr.fire({text: body.message})
+                        else
                             console.error(response)
-                        }
                     })
                 return response.ok
-            }, err => console.log(err)
+            }
         ).catch(err => console.log(err));
     }
 
@@ -116,16 +114,15 @@ function useProvideAuth() {
             response => {
                 response.json().then(
                     body => {
+                        if (response.status === 400)
+                            swalErr.fire({text: body.message})
                         if (response.status === 201)
                             toast.fire({title: "Compte crée"}).then()
-                        else {
-                            if (response.status === 400)
-                                swalErr.fire({text: body.message})
+                        else
                             console.error(response)
-                        }
                     })
                 return response.ok
-            }, err => console.log(err)
+            }
         ).catch(err => console.log(err));
     }
 
@@ -158,8 +155,8 @@ function useProvideAuth() {
     }
     const signOut = () => {
         setUser(false);
-        localStorage.removeItem("user");
-        localStorage.removeItem("type");
+        sessionStorage.removeItem("user");
+        sessionStorage.removeItem("type");
     };
     const isMonitor = () => {
         return user instanceof MonitorModel;
