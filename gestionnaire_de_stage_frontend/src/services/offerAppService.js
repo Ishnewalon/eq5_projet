@@ -38,7 +38,7 @@ export async function getAllApplicants(email) {
 }
 
 export async function getStudentApplications(id) {
-    return await fetch(`${urlBackend}/applications/applicants/student/${id}`, requestInit(methods.GET)).then(
+    return await fetch(`${urlBackend}/applications/applicants/waiting/student/${id}`, requestInit(methods.GET)).then(
         response => {
             return response.json().then((body) => {
                 if (response.status === 200)
@@ -101,8 +101,8 @@ export async function setInterview(offerAppID, date) {
     );
 }
 
-export async function getAllOffersByStudentAppliedOn(studentID) {
-    return await fetch(`${urlBackend}/applications/all_applied_on/${studentID}`, requestInit(methods.GET)).then(
+export async function getAllOffersByStudentCvSent(id) {
+    return await fetch(`${urlBackend}/applications/applicants/cv_sent/${id}`, requestInit(methods.GET)).then(
         response => {
             return response.json().then((body) => {
                 if (response.status === 200) {

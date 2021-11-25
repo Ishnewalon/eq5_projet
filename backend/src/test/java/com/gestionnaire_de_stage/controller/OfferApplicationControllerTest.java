@@ -343,7 +343,7 @@ class OfferApplicationControllerTest {
                 .thenReturn(offerApplicationList);
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/applications/all_applied_on/" + 1L)
+                        MockMvcRequestBuilders.get("/applications/applicants/cv_sent/" + 1L)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -360,7 +360,7 @@ class OfferApplicationControllerTest {
                 .thenThrow(new IllegalArgumentException("L'id du student ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/applications/all_applied_on/" + 1L)
+                        MockMvcRequestBuilders.get("/applications/applicants/cv_sent/" + 1L)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -376,7 +376,7 @@ class OfferApplicationControllerTest {
         when(offerApplicationService.getAllOffersStudentAppliedAndStatusWaiting(any())).thenReturn(offerApplicationsList);
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/applications/applicants/student/" + dummyStudent.getId())
+                        MockMvcRequestBuilders.get("/applications/applicants/waiting/student/" + dummyStudent.getId())
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -394,7 +394,7 @@ class OfferApplicationControllerTest {
                 .thenThrow(new IllegalArgumentException("L'id du student ne peut pas être null"));
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/applications/applicants/student/" + dummyStudent.getId())
+                        MockMvcRequestBuilders.get("/applications/applicants/waiting/student/" + dummyStudent.getId())
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -410,7 +410,7 @@ class OfferApplicationControllerTest {
                 .thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/applications/applicants/student/" + dummyStudent.getId())
+                        MockMvcRequestBuilders.get("/applications/applicants/waiting/student/" + dummyStudent.getId())
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
