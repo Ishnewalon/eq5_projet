@@ -40,6 +40,9 @@ public class CurriculumServiceTest {
     @Mock
     private OfferService offerService;
 
+    @Mock
+    private OfferApplicationService offerApplicationService;
+
     @Test
     public void testConvertMultipartFileToCurriculum_WithValidData() throws IOException, IdDoesNotExistException {
         Student student = new Student();
@@ -333,10 +336,40 @@ public class CurriculumServiceTest {
 
     @Test
     void testDeleteOneById() throws Exception{
+        when(curriculumRepository.existsById(any())).thenReturn(true);
+        when(curriculumRepository.getById(any())).thenReturn(getDummyCurriculum());
+        when(offerApplicationService.isCurriculumInUse(any())).thenReturn(false);
 
         curriculumService.deleteOneById(1L);
 
         verify(curriculumRepository, times(1)).deleteById(any());
+    }
+
+    @Test
+    void testDeleteOneById_withNullParam() {
+        assertThrows(IllegalArgumentException.class, () ->
+                curriculumService.deleteOneById(null));
+    }
+
+    @Test
+    void testDeleteOneById_withPrincipalCurriculum() {
+        Curriculum curriculum = getDummyCurriculum();
+        curriculum.getStudent().setPrincipalCurriculum(curriculum);
+        when(curriculumRepository.existsById(any())).thenReturn(true);
+        when(curriculumRepository.getById(any())).thenReturn(curriculum);
+
+        assertThrows(CurriculumUsedException.class, () ->
+                curriculumService.deleteOneById(1L));
+    }
+
+    @Test
+    void testDeleteOneById_withCurriculumInUse() {
+        when(curriculumRepository.existsById(any())).thenReturn(true);
+        when(curriculumRepository.getById(any())).thenReturn(getDummyCurriculum());
+        when(offerApplicationService.isCurriculumInUse(any())).thenReturn(true);
+
+        assertThrows(CurriculumUsedException.class, () ->
+                curriculumService.deleteOneById(1L));
     }
 
     private Curriculum getDummyCurriculum() {

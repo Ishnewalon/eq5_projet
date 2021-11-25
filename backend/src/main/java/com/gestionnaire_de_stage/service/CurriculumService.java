@@ -26,15 +26,17 @@ public class CurriculumService {
     private final CurriculumRepository curriculumRepository;
     private final StudentService studentService;
     private final OfferService offerService;
+    private final OfferApplicationService offerApplicationService;
 
     public CurriculumService(
             CurriculumRepository curriculumRepository,
             StudentService studentService,
-            OfferService offerService
-    ) {
+            OfferService offerService,
+            OfferApplicationService offerApplicationService) {
         this.curriculumRepository = curriculumRepository;
         this.studentService = studentService;
         this.offerService = offerService;
+        this.offerApplicationService = offerApplicationService;
     }
 
     public Curriculum convertMultipartFileToCurriculum(MultipartFile file, Long studentId)
@@ -142,13 +144,15 @@ public class CurriculumService {
         return byId.get();
     }
 
-    public void deleteOneById(Long idCurriculum) throws IdDoesNotExistException, CurriculumUsedException {
+    public void deleteOneById(Long idCurriculum) throws IllegalArgumentException, IdDoesNotExistException, CurriculumUsedException {
         Assert.notNull(idCurriculum, "Le id du curriculum ne peut pas être null");
-
         Curriculum curriculum = getOneByID(idCurriculum);
 
         if (isPrincipal(curriculum))
             throw new CurriculumUsedException("Impossible de supprimer. Cela est votre curriculum par defaut");
+
+        if (offerApplicationService.isCurriculumInUse(curriculum))
+            throw new CurriculumUsedException("Impossible de supprimer. Ce curriculum est utilisé");
 
         curriculumRepository.deleteById(idCurriculum);
     }
