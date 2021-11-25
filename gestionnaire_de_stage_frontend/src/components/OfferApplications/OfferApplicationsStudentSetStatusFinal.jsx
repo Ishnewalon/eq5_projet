@@ -53,7 +53,7 @@ export default function OfferApplicationsStudentSetStatusFinal() {
                 <th>#</th>
                 <th>Offre</th>
                 <th>Status</th>
-                <th>Changement de mon status</th>
+                <th></th>
             </TableHeader>
             {offerApplications.map(offerApplication => (
                 <TableRow key={offerApplication.id}>
@@ -63,7 +63,7 @@ export default function OfferApplicationsStudentSetStatusFinal() {
                     <td>
                         {offerApplication.status === 'STAGE_TROUVE' ? OfferApplicationStatus.STAGE_TROUVE
                             : offerApplication.status === 'STAGE_REFUSE' ? OfferApplicationStatus.STAGE_REFUSE
-                                : offerApplication.status === 'CV_ENVOYE' ? OfferApplicationStatus.CV_ENVOYE
+                                : offerApplication.status === 'CV_ENVOYE' ? "QPOWRI QPJHWHRUIOQOLWERHUIJQPUIOQJPWEH`RIOJPE"
                                     : offerApplication.status === 'EN_ATTENTE_ENTREVUE'
                                         ? timeFormat(offerApplication.interviewDate)
                                         : <div className="btn-group">
