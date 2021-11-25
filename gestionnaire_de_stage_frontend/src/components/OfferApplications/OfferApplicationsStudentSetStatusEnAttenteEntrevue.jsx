@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {getAllOffersByStudentAppliedOn, setInterview} from "../../services/offerAppService";
+import {getAllOffersByStudentCvSent, setInterview} from "../../services/offerAppService";
 import {useAuth} from "../../services/use-auth";
 import {swalErr} from "../../utility";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
@@ -10,7 +10,7 @@ export default function OfferApplicationsStudentSetStatusEnAttenteEntrevue() {
     const [offers, setOffers] = useState([])
 
     useEffect(() => {
-        getAllOffersByStudentAppliedOn(auth.user.id)
+        getAllOffersByStudentCvSent(auth.user.id)
             .then(offers => {
                 setOffers(offers);
             })
