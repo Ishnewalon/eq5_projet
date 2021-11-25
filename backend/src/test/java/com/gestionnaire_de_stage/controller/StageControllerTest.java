@@ -92,7 +92,7 @@ public class StageControllerTest {
     @Test
     public void testFillEvalMilieuStagePDF_withNullStage() throws Exception {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
-        when(stageService.addEvalMilieuStage(any(),any())).thenThrow(new IllegalArgumentException("Le id du stage n'existe pas"));
+        when(stageService.addEvalMilieuStage(any(),any())).thenThrow(new IllegalArgumentException("Le stage ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
@@ -102,7 +102,7 @@ public class StageControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le id du stage n'existe pas");
+        assertThat(response.getContentAsString()).contains("Le stage ne peut pas être vide");
     }
 
     @Test
@@ -158,7 +158,7 @@ public class StageControllerTest {
     @Test
     public void testFillEvalStagiairePDF_withNullStudentEmail() throws Exception {
         EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
-        when(stageService.getStageByStudentEmail(any())).thenThrow(new IllegalArgumentException("Le courriel de l'étudiant est null"));
+        when(stageService.getStageByStudentEmail(any())).thenThrow(new IllegalArgumentException("Le courriel de l'étudiant est vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/monitor/fill_form")
@@ -168,7 +168,7 @@ public class StageControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le courriel de l'étudiant est null");
+        assertThat(response.getContentAsString()).contains("Le courriel de l'étudiant est vide");
     }
 
     @Test
@@ -192,7 +192,7 @@ public class StageControllerTest {
         EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
         Stage dummystage = getDummyStage();
         when(stageService.getStageByStudentEmail(any())).thenReturn(dummystage);
-        when(stageService.addEvalStagiaire(any(), any())).thenThrow(new IllegalArgumentException("Le stage ne peut pas être null"));
+        when(stageService.addEvalStagiaire(any(), any())).thenThrow(new IllegalArgumentException("Le stage ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/stages/monitor/fill_form")
@@ -202,7 +202,7 @@ public class StageControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le stage ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("Le stage ne peut pas être vide");
     }
 
     @Test
