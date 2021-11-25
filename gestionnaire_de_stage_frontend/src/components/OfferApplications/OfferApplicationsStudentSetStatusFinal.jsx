@@ -56,11 +56,11 @@ export default function OfferApplicationsStudentSetStatusFinal() {
             case "CV_ENVOYE":
                 return "N'oubliez pas de confirmer votre date d'entrevue"
             case "STAGE_REFUSE":
-                return "Plus de chance la prochaine fois!"
+                return "Votre candidature n’a pas été retenue"
             case "STAGE_TROUVE":
                 return "Contactez votre gestionnaire de stage pour signer votre contrat"
             case "EN_ATTENTE_ENTREVUE":
-                return timeFormat(offerApp.interviewDate)
+                return timeFormatMessage(offerApp.interviewDate)
             case "EN_ATTENTE_REPONSE":
                 return changeStatus(offerApp)
             default:
@@ -77,9 +77,9 @@ export default function OfferApplicationsStudentSetStatusFinal() {
                     onClick={() => updateStatus(offerApp.id, false)}>Refusé
             </button>
         </div>)
-    }
+    };
 
-    const timeFormat = (date) => {
+    const timeFormatMessage = (date) => {
         let dateTimeFormat = new Date(date);
         let day = dateTimeFormat.getDate();
         let month = dateTimeFormat.getMonth() + 1;
@@ -106,12 +106,10 @@ export default function OfferApplicationsStudentSetStatusFinal() {
             </TableHeader>
             {offerApplications.map(offerApplication => (
                 <TableRow key={offerApplication.id}>
-                    <th>{offerApplication.id}</th>
+                    <td>{offerApplication.id}</td>
                     <td>{offerApplication.offer.title}</td>
                     <td>{setStatus(offerApplication)}</td>
-                    <td>
-                        {setStatusMessage(offerApplication)}
-                    </td>
+                    <td>{setStatusMessage(offerApplication)}</td>
                 </TableRow>
             ))}
         </Table>
