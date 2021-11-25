@@ -3,7 +3,7 @@ import {useAuth} from "../../services/use-auth";
 import {getStudentApplicationsOffer, setApplicationsStatusWhenEnAttenteDeReponse} from "../../services/offerAppService";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {OfferApplicationStatus} from "../../enums/OfferApplicationStatus";
+import {AiOutlineProfile} from "react-icons/all";
 
 export default function OfferApplicationsStudentSetStatusFinal() {
     const [offerApplications, setOfferApplications] = useState([])
@@ -53,7 +53,7 @@ export default function OfferApplicationsStudentSetStatusFinal() {
                 <th>#</th>
                 <th>Offre</th>
                 <th>Status</th>
-                <th></th>
+                <th><AiOutlineProfile size={25}/></th>
             </TableHeader>
             {offerApplications.map(offerApplication => (
                 <TableRow key={offerApplication.id}>
@@ -61,9 +61,9 @@ export default function OfferApplicationsStudentSetStatusFinal() {
                     <td>{offerApplication.offer.title}</td>
                     <td>{offerApplication.status}</td>
                     <td>
-                        {offerApplication.status === 'STAGE_TROUVE' ? OfferApplicationStatus.STAGE_TROUVE
-                            : offerApplication.status === 'STAGE_REFUSE' ? OfferApplicationStatus.STAGE_REFUSE
-                                : offerApplication.status === 'CV_ENVOYE' ? "QPOWRI QPJHWHRUIOQOLWERHUIJQPUIOQJPWEH`RIOJPE"
+                        {offerApplication.status === 'STAGE_TROUVE' ? "Contactez votre gestionnaire de stage pour signer votre contrat"
+                            : offerApplication.status === 'STAGE_REFUSE' ? "Plus de chance la prochaine fois!"
+                                : offerApplication.status === 'CV_ENVOYE' ? "N'oubliez pas de confirmer votre date d'entrevue"
                                     : offerApplication.status === 'EN_ATTENTE_ENTREVUE'
                                         ? timeFormat(offerApplication.interviewDate)
                                         : <div className="btn-group">
