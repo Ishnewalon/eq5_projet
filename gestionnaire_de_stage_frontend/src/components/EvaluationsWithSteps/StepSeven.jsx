@@ -3,13 +3,13 @@ import {FieldRadio} from "../SharedComponents/FormInput/FieldRadio";
 import {FormTextarea} from "../SharedComponents/FormTextarea";
 import {FormInput} from "../SharedComponents/FormInput/FormInput";
 
-export default function StepSeven({register, errors, yesAndNoAnswers}) {
+export default function StepSeven({register, errors, choices}) {
     return <div className='px-3 pb-3 pt-1 rounded'>
         <FormGroup>
             <FieldRadio
                 name='entrepriseApprecieEtudiant'
                 register={register}
-                list={Object.values(yesAndNoAnswers)}
+                list={Object.values(choices)}
                 label="L’entreprise aimerait accueillir cet élève pour son prochain stage"
             />
         </FormGroup>
@@ -32,6 +32,7 @@ export default function StepSeven({register, errors, yesAndNoAnswers}) {
                 register={register}
                 type='text'
                 error={errors.nom}
+                placeholder={'Nom'}
             />
             <FormInput
                 label='Fonction'
@@ -40,6 +41,7 @@ export default function StepSeven({register, errors, yesAndNoAnswers}) {
                 register={register}
                 type='text'
                 error={errors.fonctionDeux}
+                placeholder={'Ex: Directeur de la formation'}
             />
         </FormGroup>
         <FormGroup>

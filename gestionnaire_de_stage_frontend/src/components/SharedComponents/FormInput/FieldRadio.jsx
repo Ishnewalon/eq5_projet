@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
 export function FieldRadio(props) {
-    const {list, register, name, label} = props;
+    const {list, register, name, label, classNameLabel} = props;
 
 
     Radio.propTypes = {
@@ -13,8 +13,8 @@ export function FieldRadio(props) {
     };
 
     function Radio(props) {
-        const {name, register, id, value, text, defaultChecked} = props;
-        return <div className="form-check">
+        const {name, register, id, value, text, defaultChecked, classNameLabel} = props;
+        return <div className={'form-check ' + classNameLabel}>
             <input id={id} className="form-check-input" name={name} value={value}
                    type="radio" {...register(name, {required: "Ce champs est obligatoire"})}
                    defaultChecked={defaultChecked}/>
@@ -26,7 +26,8 @@ export function FieldRadio(props) {
         <label>{label}</label>
         {
             list.map((item, index) => {
-                return <Radio key={index} value={item[0]} name={name} register={register} text={item[1]}
+                return <Radio key={index} classNameLabel={classNameLabel} value={item[0]} name={name}
+                              register={register} text={item[1]}
                               id={name + index} defaultChecked={index === 0}/>;
 
             })
@@ -37,6 +38,6 @@ export function FieldRadio(props) {
 FieldRadio.propTypes = {
     name: PropTypes.string.isRequired,
     register: PropTypes.func.isRequired,
-    list: PropTypes.object.isRequired,
+    list: PropTypes.array.isRequired,
     label: PropTypes.string.isRequired,
 };

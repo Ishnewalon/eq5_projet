@@ -8,7 +8,7 @@ import style from "./Navbar.module.css";
 export default function Navbar() {
     let location = useLocation();
     return (
-        <nav className={`navbar navbar-expand-lg sticky-top bg-light navbar-light shadow-sm mb-4 ${style.bar}`}>
+        <nav className={`navbar navbar-expand-lg fixed-top bg-light navbar-light shadow-sm mb-4 ${style.bar}`}>
             <div className={"container-fluid"}>
                 <Link className={`navbar-brand font-monospace ${style.brand}`}
                       to={{pathname: "/", state: {from: location}}}>JI<span

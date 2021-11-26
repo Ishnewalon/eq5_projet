@@ -8,6 +8,9 @@
     --font-family-primary: 'Montserrat', sans-serif;
     --color-bg: #d4d6de
 }
+#root{
+    padding-top:80px !important;
+}
 
 #root, html, body {
     width: 100%;

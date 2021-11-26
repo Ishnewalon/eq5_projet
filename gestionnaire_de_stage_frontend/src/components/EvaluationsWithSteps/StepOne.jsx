@@ -24,8 +24,6 @@ export default function StepOne({errors, register}) {
                 placeholder="Email de l'élève"
                 error={errors.emailEtudiant}
             />
-        </FormGroup>
-        <FormGroup>
             <FormInput
                 label="Nom de l'élève"
                 validation={
@@ -43,6 +41,8 @@ export default function StepOne({errors, register}) {
                 placeholder="Entrez le nom de l'élève"
                 error={errors.nomStagiaire}
             />
+        </FormGroup>
+        <FormGroup>
             <FormInput
                 label="Programme d'études"
                 validation={{required: 'Ce champ est requis'}}
@@ -61,8 +61,6 @@ export default function StepOne({errors, register}) {
                 placeholder="Entrez le nom de l'entreprise"
                 error={errors.entrepriseNom}
             />
-        </FormGroup>
-        <FormGroup>
             <FormInput
                 label="Fonction"
                 validation={{required: 'Ce champ est requis'}}

@@ -1,70 +1,45 @@
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {FormTextarea} from "../SharedComponents/FormTextarea";
-import {FormSelect} from "../SharedComponents/FormInput/FormSelect";
+import {FieldRadio} from "../SharedComponents/FormInput/FieldRadio";
 
-export default function StepTwo({errors, register, choices}) {
+export default function StepTwo({register, choices}) {
 
     return <div className='px-3 pb-3 pt-1 rounded'>
         <h2 className='mt-4 mb-0 text-decoration-underline'>Productivité</h2>
         <h4 className='mt-4 mb-0'>Capacité d’optimiser son rendement au travail</h4>
         <blockquote className='mt-3 mb-0'>Le stagiaire est en mesure de:</blockquote>
         <FormGroup>
-            <FormSelect
-                label='Planifier et organiser son travail de façon efficace'
-                validation={{required: 'Ce champ est requis'}}
+            <FieldRadio
                 name='questionUn'
                 register={register}
-                displayed={[1]}
-                options={Object.values(choices)}
-                fieldValue={0}
-                error={errors.questionUn}
-                defaultMessage={'Choisiser une évaluation'}
+                list={Object.values(choices)}
+                label='Planifier et organiser son travail de façon efficace'
             />
-            <FormSelect
-                label='Comprendre rapidement les directives relatives à son travail'
-                validation={{required: 'Ce champ est requis'}}
+            <FieldRadio
                 name='questionDeux'
                 register={register}
-                displayed={[1]}
-                options={Object.values(choices)}
-                fieldValue={0}
-                error={errors.questionDeux}
-                defaultMessage={'Choisiser une évaluation'}
+                list={Object.values(choices)}
+                label='Comprendre rapidement les directives relatives à son travail'
             />
-            <FormSelect
-                label='Maintenir un rythme de travail soutenu'
-                validation={{required: 'Ce champ est requis'}}
+            <FieldRadio
                 name='questionTrois'
                 register={register}
-                displayed={[1]}
-                options={Object.values(choices)}
-                fieldValue={0}
-                error={errors.questionTrois}
-                defaultMessage={'Choisiser une évaluation'}
+                list={Object.values(choices)}
+                label='Maintenir un rythme de travail soutenu'
             />
         </FormGroup>
-        <FormGroup>
-            <FormSelect
-                label='Établir ses priorités'
-                validation={{required: 'Ce champ est requis'}}
-                register={register}
+        <FormGroup repartition={[4, 4]}>
+            <FieldRadio
                 name='questionQuatre'
-                defaultMessage={'Choisiser une évaluation'}
-                options={Object.values(choices)}
-                fieldValue={0}
-                error={errors.questionQuatre}
-                displayed={[1]}
+                register={register}
+                list={Object.values(choices)}
+                label='Établir ses priorités'
             />
-            <FormSelect
-                label='Respecter les échéanciers'
-                validation={{required: 'Ce champ est requis'}}
+            <FieldRadio
                 name='questionCinq'
                 register={register}
-                displayed={[1]}
-                options={Object.values(choices)}
-                defaultMessage={'Choisiser une évaluation'}
-                error={errors.questionCinq}
-                fieldValue={0}
+                list={Object.values(choices)}
+                label='Respecter les échéanciers'
             />
         </FormGroup>
         <FormGroup>

@@ -1,72 +1,48 @@
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {FormTextarea} from "../SharedComponents/FormTextarea";
-import {FormSelect} from "../SharedComponents/FormInput/FormSelect";
+import {FieldRadio} from "../SharedComponents/FormInput/FieldRadio";
 
-export default function StepThree({errors, register, choices}) {
+export default function StepThree({register, choices}) {
 
     return <div className='px-3 pb-3 pt-1 rounded'>
         <h2 className='mt-4 mb-0 text-decoration-underline'>Qualité du travail</h2>
         <h4 className='mt-4 mb-0'>Capacité de s’acquitter des tâches sous sa responsabilité en s’imposant
             personnellement des normes de qualité</h4>
-        <blockquote className='mt-3 mb-0'>Le stagiaire est en mesure de:</blockquote>
+        <h5 className='mt-3 mb-2'>Le stagiaire est en mesure de:</h5>
         <FormGroup>
-            <FormSelect
-                label='Respecter les mandats qui lui ont été confiés'
-                validation={{required: 'Ce champ est requis'}}
+            <FieldRadio
                 name='questionSix'
                 register={register}
-                options={Object.values(choices)}
-                error={errors.questionSix}
-                defaultMessage={'Ce champ est requis'}
-                displayed={[1]}
-                fieldValue={0}
+                list={Object.values(choices)}
+                label='Respecter les mandats qui lui ont été confiés'
             />
-            <FormSelect
+
+            <FieldRadio
                 label='Porter attention aux détails dans la réalisation de ses
                     tâches'
-                validation={{required: 'Ce champ est requis'}}
                 name='questionSept'
                 register={register}
-                displayed={[1]}
-                options={Object.values(choices)}
-                defaultMessage={'Choisiser une évaluation'}
-                error={errors.questionSept}
-                fieldValue={0}
+                list={Object.values(choices)}
             />
-            <FormSelect
+            <FieldRadio
                 label='Vérifier son travail, s’assurer que rien n’a été oublié'
-                validation={{required: 'Ce champ est requis'}}
                 name='questionHuit'
                 register={register}
-                displayed={[1]}
-                options={Object.values(choices)}
-                defaultMessage={'Choisiser une évaluation'}
-                error={errors.questionHuit}
-                fieldValue={0}
+                list={Object.values(choices)}
             />
         </FormGroup>
-        <FormGroup>
-            <FormSelect
+        <FormGroup repartition={[4, 4]}>
+            <FieldRadio
                 label='Rechercher des occasions de se perfectionner'
-                validation={{required: 'Ce champ est requis'}}
                 name='questionNeuf'
                 register={register}
-                displayed={[1]}
-                options={Object.values(choices)}
-                defaultMessage={'Choisiser une évaluation'}
-                error={errors.questionNeuf}
-                fieldValue={0}
+                list={Object.values(choices)}
             />
-            <FormSelect
+            <FieldRadio
                 label='Faire une bonne analyse des problèmes rencontrés'
-                validation={{required: 'Ce champ est requis'}}
                 name='questionDix'
                 register={register}
-                displayed={[1]}
-                options={Object.values(choices)}
-                defaultMessage={'Choisiser une évaluation'}
-                error={errors.questionDix}
-                fieldValue={0}
+                list={Object.values(choices)}
             />
         </FormGroup>
         <FormGroup>

@@ -8,6 +8,7 @@ import StepFour from "../EvaluationsWithSteps/StepFour";
 import StepFive from "../EvaluationsWithSteps/StepFive";
 import StepSix from "../EvaluationsWithSteps/StepSix";
 import StepSeven from "../EvaluationsWithSteps/StepSeven";
+import Swal from "sweetalert2";
 
 export default function EvaluationIntern() {
 
@@ -33,34 +34,77 @@ export default function EvaluationIntern() {
     }
 
     const yesAndNoAnswers = {
-        OUI: [true, 'Oui'],
-        NON: [false, 'Non']
+        OUI: ["true", 'Oui'],
+        NON: ["false", 'Non']
     }
 
-    const sendVisitForm = (e, data) => {
+    const sendVisitForm = (data, e) => {
         e.preventDefault();
-        monitorCreateForm(data).then();
+        let status, body;
+        Swal.fire({
+            title: `Création de l'évaluation...`,
+            timer: 120000,
+            didOpen: () => {
+                Swal.showLoading()
+                monitorCreateForm(data).then(
+                    response => {
+                        response.json().then(b => {
+                            status = response.status
+                            body = b
+                            Swal.close()
+                        })
+                    }
+                );
+            }
+        }).then(() => {
+            if (status === 200)
+                Swal.fire({title: body.message});
+            if (status === 400)
+                Swal.fire({title: body.message});
+        })
     };
 
     return <ContainerBox>
         <form onSubmit={handleSubmit(sendVisitForm)} noValidate>
-            <StepOne errors={errors} register={register}/>
+            <StepOne
+                errors={errors}
+                register={register}
+            />
             <hr/>
-            <StepTwo errors={errors} register={register} choices={choixAccords}/>
+            <StepTwo
+                register={register}
+                 choices={choixAccords}
+            />
             <hr/>
-            <StepThree errors={errors} register={register} choices={choixAccords}/>
+            <StepThree
+                register={register}
+                choices={choixAccords}
+            />
             <hr/>
-            <StepFour errors={errors} register={register} choices={choixAccords}/>
+            <StepFour
+                register={register}
+                choices={choixAccords}
+            />
             <hr/>
-            <StepFive errors={errors} register={register} choices={choixAccords}/>
+            <StepFive
+                register={register}
+                choices={choixAccords}
+            />
             <hr/>
-            <StepSix register={register} errors={errors} choixAppreciation={choixAppreciation}
-                     yesAndNoAnswers={yesAndNoAnswers}/>
+            <StepSix
+                register={register}
+                errors={errors}
+                choixAppreciation={choixAppreciation}
+                yesAndNoAnswers={yesAndNoAnswers}
+            />
             <hr/>
-            <StepSeven errors={errors} register={register} yesAndNoAnswers={yesAndNoAnswers}/>
-            <button onClick={sendVisitForm} className='btn btn-primary w-100 mt-4 rounded fw-bold'>Créer une
-                évaluation
-                de stage
+            <StepSeven
+                errors={errors}
+                register={register}
+                choices={yesAndNoAnswers}
+            />
+            <button type='submit' className='btn btn-primary w-100 mt-4 rounded fw-bold'>
+                Créer une évaluation de stage
             </button>
         </form>
     </ContainerBox>
