@@ -1,6 +1,6 @@
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
-import {Select} from "../SharedComponents/Select";
-import {FormField} from "../SharedComponents/FormField/FormField";
+import {FormTextarea} from "../SharedComponents/FormTextarea";
+import {FormSelect} from "../SharedComponents/FormInput/FormSelect";
 
 export default function StepThree({errors, register, choices}) {
 
@@ -10,56 +10,72 @@ export default function StepThree({errors, register, choices}) {
             personnellement des normes de qualité</h4>
         <blockquote className='mt-3 mb-0'>Le stagiaire est en mesure de:</blockquote>
         <FormGroup>
-            <Select
+            <FormSelect
                 label='Respecter les mandats qui lui ont été confiés'
                 validation={{required: 'Ce champ est requis'}}
                 name='questionSix'
                 register={register}
-                options={choices}
+                options={Object.values(choices)}
                 error={errors.questionSix}
+                defaultMessage={'Ce champ est requis'}
+                displayed={[1]}
+                fieldValue={0}
             />
-            <Select
+            <FormSelect
                 label='Porter attention aux détails dans la réalisation de ses
                     tâches'
                 validation={{required: 'Ce champ est requis'}}
                 name='questionSept'
                 register={register}
-                options={choices}
+                displayed={[1]}
+                options={Object.values(choices)}
+                defaultMessage={'Choisiser une évaluation'}
                 error={errors.questionSept}
+                fieldValue={0}
             />
-            <Select
+            <FormSelect
                 label='Vérifier son travail, s’assurer que rien n’a été oublié'
                 validation={{required: 'Ce champ est requis'}}
                 name='questionHuit'
                 register={register}
-                options={choices}
+                displayed={[1]}
+                options={Object.values(choices)}
+                defaultMessage={'Choisiser une évaluation'}
                 error={errors.questionHuit}
+                fieldValue={0}
             />
         </FormGroup>
         <FormGroup>
-            <Select
+            <FormSelect
                 label='Rechercher des occasions de se perfectionner'
                 validation={{required: 'Ce champ est requis'}}
                 name='questionNeuf'
                 register={register}
-                options={choices}
+                displayed={[1]}
+                options={Object.values(choices)}
+                defaultMessage={'Choisiser une évaluation'}
                 error={errors.questionNeuf}
+                fieldValue={0}
             />
-            <Select
+            <FormSelect
                 label='Faire une bonne analyse des problèmes rencontrés'
                 validation={{required: 'Ce champ est requis'}}
                 name='questionDix'
                 register={register}
-                options={choices}
+                displayed={[1]}
+                options={Object.values(choices)}
+                defaultMessage={'Choisiser une évaluation'}
                 error={errors.questionDix}
+                fieldValue={0}
             />
         </FormGroup>
         <FormGroup>
-            <FormField>
-                <label>Commentaires</label>
-                <textarea {...register("commentairesDeux")}
-                          placeholder='Commentaires sur la qualité du travail du stagiaire'/>
-            </FormField>
+            <FormTextarea
+                label='Commentaires'
+                name='commentairesDeux'
+                register={register}
+                placeholder='Commentaires sur la qualité du travail du stagiaire'
+            />
         </FormGroup>
     </div>
 }

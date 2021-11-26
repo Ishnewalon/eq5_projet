@@ -1,5 +1,4 @@
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
-import {FormField} from "../SharedComponents/FormField/FormField";
 import {FieldRadio} from "../SharedComponents/FormInput/FieldRadio";
 import {FormTextarea} from "../SharedComponents/FormTextarea";
 import {FormInput} from "../SharedComponents/FormInput/FormInput";
@@ -16,14 +15,12 @@ export default function StepSix({errors, register, choixAppreciation, yesAndNoAn
                 list={Object.values(choixAppreciation)}
                 label='Les habiletés démontrées'
             />
-            <FormField>
-                <FieldRadio
-                    name="evaluationDiscuteAvecEtudiant"
-                    register={register}
-                    list={Object.values(yesAndNoAnswers)}
-                    label='Cette évaluation a été discutée avec le stagiaire'
-                />
-            </FormField>
+            <FieldRadio
+                name="evaluationDiscuteAvecEtudiant"
+                register={register}
+                list={Object.values(yesAndNoAnswers)}
+                label='Cette évaluation a été discutée avec le stagiaire'
+            />
         </FormGroup>
         <FormGroup>
             <FormTextarea
@@ -34,18 +31,16 @@ export default function StepSix({errors, register, choixAppreciation, yesAndNoAn
             />
         </FormGroup>
         <FormGroup>
-            <FormField>
-                <FormInput
-                    label='Veuillez indiquer le nombre d’heures réel par semaine d’encadrement accordé au
-                    stagiaire'
-                    validation={{required: 'Ce champ est requis'}}
-                    name='nbHeuresReelTravailEtudiant'
-                    register={register}
-                    type='number'
-                    error={errors.nbHeuresReelTravailEtudiant}
-                    placeholder='Nombre heures réel par semaine'
-                />
-            </FormField>
+            <FormInput
+                label='Veuillez indiquer le nombre d’heures réel par semaine d’encadrement accordé au
+                stagiaire'
+                validation={{required: 'Ce champ est requis'}}
+                name='nbHeuresReelTravailEtudiant'
+                register={register}
+                type='number'
+                error={errors.nbHeuresReelTravailEtudiant}
+                placeholder='Nombre heures réel par semaine'
+            />
         </FormGroup>
     </div>
 }

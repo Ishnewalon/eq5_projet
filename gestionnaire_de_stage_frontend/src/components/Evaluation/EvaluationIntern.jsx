@@ -42,7 +42,7 @@ export default function EvaluationIntern() {
         monitorCreateForm(data).then();
     };
 
-    return <ContainerBox className={'text-white'}>
+    return <ContainerBox>
         <form onSubmit={handleSubmit(sendVisitForm)} noValidate>
             <StepOne errors={errors} register={register}/>
             <hr/>
