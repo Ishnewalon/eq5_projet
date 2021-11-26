@@ -42,6 +42,11 @@ public class SupervisorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSupervisor);
     }
 
+    @GetMapping("/matricule/{matricule}")
+    public ResponseEntity<?> checkValidMatricule(@PathVariable String matricule) {
+        return ResponseEntity.ok(!supervisorService.isMatriculeValid(matricule));
+    }
+
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
         Supervisor supervisor;

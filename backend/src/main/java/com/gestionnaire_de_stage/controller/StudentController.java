@@ -45,6 +45,11 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdStudent);
     }
 
+    @GetMapping("/matricule/{matricule}")
+    public ResponseEntity<?> checkValidMatricule(@PathVariable String matricule) {
+        return ResponseEntity.ok(!studentService.isMatriculeValid(matricule));
+    }
+
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
         Student student;

@@ -294,6 +294,7 @@ public class StudentControllerTest {
     public void testGetAllStudentsNotYetEvaluatedAsStudentMonitorOfferDTOThrowsIllegalArg() throws Exception {
         when(stageService.getAllWithNoEvalStagiaire()).thenReturn(getDummyStageList());
         when(contractService.stageListToStudentMonitorOfferDtoList(any()))
+
                 .thenThrow(new IllegalArgumentException("La liste de stage ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/not_evaluated")
@@ -334,6 +335,20 @@ public class StudentControllerTest {
         assertThat(response.getContentAsString()).contains("La liste de stage ne peut pas être vide");
     }
 
+    @Test
+    public void testCheckMatricule() throws Exception {
+        when(studentService.isMatriculeValid(any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/student/matricule/{matricule}", "1234567")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("true");
+    }
+
+
     private StudentMonitorOfferDTO getDummyStudentMonitorOfferDTO() {
         return new StudentMonitorOfferDTO(
                 getDummyStudent(),
@@ -370,18 +385,6 @@ public class StudentControllerTest {
         dummyMonitor.setDepartment("Informatique");
         dummyMonitor.setPassword("testPassword");
         return dummyMonitor;
-    }
-
-    private List<Student> getDummyStudentList() {
-        List<Student> dummyStudentList = new ArrayList<>();
-        Long idIterator = 1L;
-        for (int i = 0; i < 3; i++) {
-            Student dummyStudent = getDummyStudent();
-            dummyStudent.setId(idIterator);
-            dummyStudentList.add(dummyStudent);
-            idIterator++;
-        }
-        return dummyStudentList;
     }
 
     private Student getDummyStudent() {

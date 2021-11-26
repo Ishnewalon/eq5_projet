@@ -127,5 +127,4 @@ public class StudentService {
     public boolean isMatriculeValid(String matricule) {
         return studentRepository.existsByMatricule(matricule);
     }
-
 }

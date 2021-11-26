@@ -238,6 +238,19 @@ public class SupervisorControllerTest {
         assertThat(response.getContentAsString()).contains("Il n'y a pas de superviseur associé à cet identifiant");
     }
 
+    @Test
+    public void testCheckMatricule() throws Exception {
+        when(studentService.isMatriculeValid(any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/supervisor/matricule/{matricule}", "12345")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("true");
+    }
+
     private Supervisor getDummySupervisor() {
         Supervisor dummySupervisor = new Supervisor();
         dummySupervisor.setId(1L);

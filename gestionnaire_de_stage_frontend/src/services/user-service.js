@@ -27,6 +27,17 @@ export async function resetPassword(token, password) {
     );
 }
 
+export async function checkMatricule(matricule) {
+    let type = matricule.length === 7 ? "student" : "supervisor";
+    return await fetch(`${urlBackend}/${type}/matricule/${matricule}`, requestInit(methods.GET)).then(
+        response => {
+            return response.json().then((body) => {
+                return body;
+            })
+        }
+    );
+}
+
 export async function getUnassignedStudents() {
     const response = await fetch(`${urlBackend}/student/needAssignement`, requestInit(methods.GET));
     return await response.json();

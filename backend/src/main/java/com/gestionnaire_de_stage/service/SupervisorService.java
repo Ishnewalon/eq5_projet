@@ -33,7 +33,7 @@ public class SupervisorService {
         return supervisorRepository.save(supervisor);
     }
 
-    private boolean isMatriculeValid(String matricule) {
+    public boolean isMatriculeValid(String matricule) {
         return supervisorRepository.existsByMatricule(matricule);
     }
 

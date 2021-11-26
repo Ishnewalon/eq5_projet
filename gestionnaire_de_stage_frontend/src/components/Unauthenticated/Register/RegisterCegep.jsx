@@ -8,8 +8,9 @@ import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {BtnBack} from "../../SharedComponents/BtnBack";
 import {Title} from "../../SharedComponents/Title/Title";
 import {useForm} from "react-hook-form";
-import {regexMatricule} from "../../../utility";
+import {regexMatricule, toast} from "../../../utility";
 import {FormInput} from "../../SharedComponents/FormInput/FormInput";
+import {checkMatricule} from "../../../services/user-service";
 
 
 export default function RegisterCegep() {
@@ -91,7 +92,9 @@ function StepCegep({register, errors}) {
                                pattern: {
                                    value: regexMatricule,
                                    message: "Votre matricule doit être de 5 ou 7 chiffres"
-                               }
+                               },
+                               validate: async (matricule) =>
+                                   await checkMatricule(matricule) || "Matricule déjà utilisé"
                            }}
                            error={errors.matricule}
                            name="matricule"
