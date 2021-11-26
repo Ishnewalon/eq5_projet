@@ -3,9 +3,7 @@ import {FormField} from "../SharedComponents/FormField/FormField";
 import {regexEmail, regexName, regexPhone} from "../../utility";
 import {FormInput} from "../SharedComponents/FormInput/FormInput";
 
-export default function StepOne(props) {
-
-    const {errors, register} = props;
+export default function StepOne({errors, register}) {
 
     return <div className='px-3 pb-3 pt-1'>
         <h3>Informations générales</h3>

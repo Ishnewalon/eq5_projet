@@ -2,9 +2,7 @@ import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {FieldRadio} from "../SharedComponents/FormInput/FieldRadio";
 import {FormTextarea} from "../SharedComponents/FormTextarea";
 
-export default function StepFour(props){
-
-    const {register, choices } = props;
+export default function StepFour({register, choices}){
 
     return  <div className='px-3 pb-3 pt-1 rounded'>
         <h2 className='mt-4 mb-0 text-decoration-underline'>Qualités des relations interpersonnelles</h2>

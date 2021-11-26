@@ -2,10 +2,7 @@ import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../SharedComponents/FormField/FormField";
 import {Select} from "../SharedComponents/Select";
 
-export default function StepTwo(props) {
-
-    const {errors, register, choices} = props;
-
+export default function StepTwo({errors, register, choices}) {
 
     return <div className='px-3 pb-3 pt-1 rounded'>
         <h2 className='mt-4 mb-0 text-decoration-underline'>Productivité</h2>

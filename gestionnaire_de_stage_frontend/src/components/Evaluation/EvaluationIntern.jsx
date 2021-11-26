@@ -136,6 +136,8 @@ export default function EvaluationIntern() {
                     </FormField>
                 </FormGroup>
             </div>
+
+
             <hr/>
             <div className='px-3 pb-3 pt-1 rounded'>
                 <h2 className='mt-4 mb-0 text-decoration-underline'>Appréciation globale du stagiaire</h2>
