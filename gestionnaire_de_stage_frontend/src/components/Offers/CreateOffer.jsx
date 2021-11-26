@@ -22,7 +22,7 @@ export default function CreateOffer() {
     const [sessions, setSessions] = useState([])
 
     useEffect(() => {
-        getCurrentAndFutureSession().then(sessions => setSessions(sessions))
+        getCurrentAndFutureSession().then(sessions => setSessions(sessions.sort((a, b) => a.year - b.year)))
     }, [])
 
     const addOffer = (data, e) => {

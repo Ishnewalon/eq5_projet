@@ -16,7 +16,7 @@ export function FormSelect({
     return (
         <div className="form-floating  mb-2">
             <select id={name} {...register(name, validation)}
-                    className={"form-control" + (error ? " is-invalid" : "")}
+                    className={"form-select " + (error ? " is-invalid" : "")}
                     defaultValue={defaultMessage}>
                 <option disabled value={defaultMessage}>{defaultMessage}</option>
                 {options.map((value, index) => (
