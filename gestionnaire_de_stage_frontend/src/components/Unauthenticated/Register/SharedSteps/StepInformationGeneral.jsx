@@ -2,6 +2,7 @@ import React from "react";
 import {FormGroup} from "../../../SharedComponents/FormGroup/FormGroup";
 import {regexEmail, regexName, regexPhone} from "../../../../utility";
 import {FormInput} from "../../../SharedComponents/FormInput/FormInput";
+import {checkEmail} from "../../../../services/user-service";
 
 
 export default function StepInformationGeneral({register, errors, prev}) {
@@ -45,8 +46,9 @@ export default function StepInformationGeneral({register, errors, prev}) {
                            required: "Ce champ est obligatoire!",
                            pattern: {
                                value: regexEmail,
-                               message: "L'email n'est pas valide!"
-                           }
+                               message: "Le courriel n'est pas valide!"
+                           }, validate: async (email) =>
+                               await checkEmail(email) || "Ce courriel est déjà utilisé"
                        }}/>
         </FormGroup>
         <FormGroup>

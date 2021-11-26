@@ -39,14 +39,14 @@ export async function checkMatricule(matricule) {
 }
 
 export async function checkEmail(email) {
-    let type = email.length === 7 ? "student" : "supervisor";
-    return await fetch(`${urlBackend}/${type}/matricule/${email}`, requestInit(methods.GET)).then(
-        response => {
-            return response.json().then((body) => {
-                return body;
-            })
-        }
-    );
+    // let type = email.length === 7 ? "student" : "supervisor";
+    // return await fetch(`${urlBackend}/${type}/matricule/${email}`, requestInit(methods.GET)).then(
+    //     response => {
+    //         return response.json().then((body) => {
+    //             return body;
+    //         })
+    //     }
+    // );
 }
 
 export async function getUnassignedStudents() {
