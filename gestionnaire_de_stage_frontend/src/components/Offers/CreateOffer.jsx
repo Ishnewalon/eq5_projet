@@ -1,144 +1,192 @@
 import React, {useEffect, useState} from "react";
-import {FormField} from "../SharedComponents/FormField/FormField";
 import {getCurrentAndFutureSession} from "../../services/session-service";
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {DepartmentEnum} from "../../enums/Departement";
 import {useAuth} from "../../services/use-auth";
 import {createOffer} from "../../services/offer-service";
-import FieldAddress from "../SharedComponents/Fields/FieldAddress";
 import OfferDTO from "../../models/OfferDTO";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {FormInput} from "../SharedComponents/FormInput/FormInput";
+import {useForm} from "react-hook-form";
+import {regexEmail} from "../../utility";
+import {FormTextarea} from "../SharedComponents/FormTextarea";
+import {FormSelect} from "../SharedComponents/FormInput/FormSelect";
 
 
 export default function CreateOffer() {
     let auth = useAuth();
-    const [title, setTitle] = useState('')
-    const [department, setDepartement] = useState(DepartmentEnum.info)
-    const [description, setDescription] = useState('')
-    const [address, setAddress] = useState('')
-    const [salary, setSalary] = useState(0)
-    const [creator_email, setCreatorId] = useState(auth.isMonitor() ? auth.user.email : '')
-    const [idSession, setSessionId] = useState(null)
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({
+        mode: "onSubmit",
+        reValidateMode: "onChange"
+    });
     const [sessions, setSessions] = useState([])
-    const [dateDebut, setDateDebut] = useState('');
-    const [dateFin, setDateFin] = useState('');
-    const [nbSemaine, setNbSemaine] = useState('');
-    const [horaireTravail, setHoraireTravail] = useState('');
-    const [nbHeureSemaine, setNbHeureSemaine] = useState('');
 
-    const resetFields = () => {
-        setTitle('')
-        setDescription('')
-        setDepartement(DepartmentEnum.info)
-        setAddress('')
-        setSalary(0)
-        setCreatorId(auth.isMonitor() ? auth.user.email : '')
-        setDateDebut('');
-        setDateFin('');
-        setNbSemaine('');
-        setHoraireTravail('');
-        setNbHeureSemaine('');
-    };
     useEffect(() => {
         getCurrentAndFutureSession().then(sessions => setSessions(sessions))
     }, [])
 
-    const addOffer = e => {
+    const addOffer = (data, e) => {
         e.preventDefault();
+        const {
+            title,
+            department,
+            description,
+            address,
+            salary,
+            creator_email,
+            nbSemaine,
+            dateDebut,
+            dateFin,
+            horaireTravail,
+            nbHeureSemaine,
+            idSession
+        } = data
         let offer = new OfferDTO(title, department, description, address, salary, creator_email, nbSemaine, dateDebut, dateFin, horaireTravail, nbHeureSemaine, parseInt(idSession));
         createOffer(offer).then((b) => {
             if (b === null)
                 return
-            resetFields()
+            reset()
         })
     }
 
     const monitorEmail = (
-        <FormField>
-            <label>Email du moniteur</label>
-            <input name="email" placeholder="Entrez l'email du moniteur" type="text"
-                   value={creator_email} onChange={(e) => setCreatorId(e.target.value)}/>
-        </FormField>
+        <FormInput label="Email du moniteur"
+                   name="creator_email"
+                   error={errors.creator_email}
+                   type="email"
+                   placeholder="Entrez l'email du moniteur"
+                   register={register}
+                   validation={{
+                       required: "Ce champ est obligatoire!",
+                       pattern: {
+                           value: regexEmail,
+                           message: "L'email n'est pas valide!"
+                       }
+                   }}/>
     )
 
     return (<ContainerBox className="w-75">
-        <FormGroup repartition={!auth.isManager() ? [12] : null}>
-            <FormField>
-                <label>Titre</label>
-                <input name="title" placeholder="Titre" type="text"
-                       value={title} onChange={e => setTitle(e.target.value)}/>
-            </FormField>
-            {(auth.isManager()) ? monitorEmail : null}
-        </FormGroup>
-        <FormGroup>
-            <FormField>
-                <label>Description</label>
-                <textarea name="description" placeholder="Description" value={description}
-                          onChange={e => setDescription(e.target.value)}/>
-            </FormField>
-        </FormGroup>
-        <FormGroup>
-            <FormField>
-                <label className="label">Session</label>
-                <select name="sessions" id="session"
-                        onChange={e => setSessionId(e.target.value)} defaultValue="">
-                    <option disabled value="">Choisissez une session</option>
-                    {sessions.map(session =>
-                        <option key={session.id} value={session.id}>{session.typeSession + session.year}</option>)}
-                </select>
-            </FormField>
-            <FormField>
-                <label>Département</label>
-                <select name="choice" id="userTypes"
-                        onChange={e => setDepartement(e.target.value)}>
-                    <option value={DepartmentEnum.info}>{DepartmentEnum.info}</option>
-                    <option value={DepartmentEnum.art}>{DepartmentEnum.art}</option>
-                </select>
-            </FormField>
-        </FormGroup>
-        <FormGroup>
-        </FormGroup>
-        <FormGroup>
-            <FieldAddress label="Adresse ou le stage se situe" address={address}
-                          handleChange={e => setAddress(e.target.value)}/>
-            <FormField>
-                <label>Salaire</label>
-                <input name="salary" placeholder="Salaire" type="number"
-                       value={salary} onChange={e => setSalary(e.target.value)}/>
-            </FormField>
-        </FormGroup>
-        <FormGroup repartition={[3, 3, 6]}>
-            <FormField>
-                <label>Date de début</label>
-                <input name="dateDebut" placeholder="Date de début" type="date"
-                       value={dateDebut} onChange={(e) => setDateDebut(e.target.value)}/>
-            </FormField>
-            <FormField>
-                <label>Date de fin</label>
-                <input name="dateFin" placeholder="Date de fin" type="date"
-                       value={dateFin} onChange={e => setDateFin(e.target.value)}/>
-            </FormField>
-            <FormField htmlFor='horaireTravail'>
-                <label>Horaire de travail</label>
-                <input name='horaireTravail' type="text" placeholder='Horaire de travail' value={horaireTravail}
-                       onChange={e => setHoraireTravail(e.target.value)}/>
-            </FormField>
-        </FormGroup>
-        <FormGroup>
-            <FormField htmlFor='nbSemaine'>
-                <label>Nombre de semaines</label>
-                <input name='nbSemaine' type="text" value={nbSemaine} placeholder='Nombre de semaines'
-                       onChange={e => setNbSemaine(e.target.value)}/>
-            </FormField>
-            <FormField htmlFor='nbHeureSemaine'>
-                <label>Nombre de heures par semaine</label>
-                <input name='nbHeureSemaine' type="text" placeholder='Nombre de heures par semaine'
-                       value={nbHeureSemaine} onChange={e => setNbHeureSemaine(e.target.value)}/>
-            </FormField>
-        </FormGroup>
-        <div className="form-group text-center">
-            <button className="btn btn-primary mt-3" onClick={addOffer}>Ajouter</button>
-        </div>
+        <form onSubmit={handleSubmit(addOffer)} noValidate>
+            <FormGroup repartition={!auth.isManager() ? [12] : null}>
+                <FormInput label="Titre"
+                           name="title"
+                           error={errors.title}
+                           type="text"
+                           placeholder="Titre"
+                           register={register}
+                           validation={{
+                               required: "Ce champ est obligatoire!",
+                           }}/>
+                {(auth.isManager()) ? monitorEmail : null}
+            </FormGroup>
+            <FormGroup>
+                <FormTextarea label="Description"
+                              name="description"
+                              placeholder="Description"
+                              error={errors.description}
+                              register={register}
+                              validation={{
+                                  required: "Ce champ est obligatoire!"
+                              }}/>
+            </FormGroup>
+            <FormGroup>
+                <FormSelect label="Session"
+                            name="idSession"
+                            defaultMessage="Choisissez une session"
+                            options={sessions}
+                            fieldValue={'id'}
+                            displayed={['typeSession', 'year']}
+                            register={register}
+                            error={errors.idSession}
+                            validation={{
+                                required: "Ce champ est obligatoire!",
+                            }}/>
+                <FormSelect label="Département"
+                            name="department"
+                            defaultMessage="Choisissez un département"
+                            options={Object.values(DepartmentEnum)}
+                            fieldValue={0}
+                            displayed={[1]}
+                            register={register}
+                            error={errors.department}
+                            validation={{
+                                required: "Ce champ est obligatoire!",
+                            }}/>
+            </FormGroup>
+            <FormGroup>
+            </FormGroup>
+            <FormGroup>
+                <FormInput label="Adresse ou le stage se situe"
+                           name="address"
+                           error={errors.address}
+                           type="text"
+                           placeholder="Rue, boulevard, avenue.."
+                           register={register}
+                           validation={{
+                               required: "Ce champ est obligatoire!"
+                           }}/>
+                <FormInput label="Salaire"
+                           name="salary"
+                           error={errors.salary}
+                           type="number"
+                           register={register}
+                           validation={{
+                               required: "Ce champ est obligatoire!"
+                           }}/>
+            </FormGroup>
+            <FormGroup repartition={[3, 3, 6]}>
+                <FormInput label="Date de début"
+                           name="dateDebut"
+                           error={errors.dateDebut}
+                           type="date"
+                           placeholder="Date de début"
+                           register={register}
+                           validation={{
+                               required: "Ce champ est obligatoire!"
+                           }}/>
+                <FormInput label="Date de fin"
+                           name="dateFin"
+                           error={errors.dateFin}
+                           type="date"
+                           placeholder="Date de fin"
+                           register={register}
+                           validation={{
+                               required: "Ce champ est obligatoire!"
+                           }}/>
+                <FormInput label="Horaire de travail"
+                           name="horaireTravail"
+                           error={errors.horaireTravail}
+                           type="text"
+                           placeholder="Horaire de travail"
+                           register={register}
+                           validation={{
+                               required: "Ce champ est obligatoire!"
+                           }}/>
+            </FormGroup>
+            <FormGroup>
+                <FormInput label="Nombre de semaines"
+                           name="nbSemaine"
+                           error={errors.nbSemaine}
+                           type="text"
+                           placeholder="Nombre de semaines"
+                           register={register}
+                           validation={{
+                               required: "Ce champ est obligatoire!"
+                           }}/>
+                <FormInput label="Nombre de heures par semaine"
+                           name="nbHeureSemaine"
+                           error={errors.nbHeureSemaine}
+                           type="text"
+                           placeholder="Nombre de heures par semaine"
+                           register={register}
+                           validation={{
+                               required: "Ce champ est obligatoire!"
+                           }}/>
+            </FormGroup>
+            <div className="form-group text-center">
+                <button className="btn btn-primary mt-3" type="submit">Ajouter</button>
+            </div>
+        </form>
     </ContainerBox>);
 }
 

@@ -50,5 +50,5 @@ export const downloadFile = (blob, fileName) => {
     a.click();
 
     URL.revokeObjectURL(myUrl);
-    toast.fire({title: 'Téléchargement en cours'}).then()
+    toast.fire({title: 'Téléchargé!'}).then()
 }
