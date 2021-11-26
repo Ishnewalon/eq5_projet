@@ -3,8 +3,6 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
 import com.gestionnaire_de_stage.dto.ValidationCurriculum;
-import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.CurriculumService;
@@ -89,5 +87,17 @@ public class CurriculumController {
         }
         String response = validationCurriculum.isValid() ? "Curriculum validé!" : "Curriculum rejeté!";
         return ResponseEntity.ok(new ResponseMessage(response));
+    }
+
+    @DeleteMapping("/delete/{curriculumId}")
+    public ResponseEntity<?> deleteOneById(@PathVariable long curriculumId) {
+        try {
+            curriculumService.deleteOneById(curriculumId);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+        return ResponseEntity.ok(new ResponseMessage("Curriculum éffacé avec succès"));
     }
 }
