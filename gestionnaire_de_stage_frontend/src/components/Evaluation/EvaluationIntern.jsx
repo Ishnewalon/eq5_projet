@@ -1,5 +1,3 @@
-import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
-import {FormField} from "../SharedComponents/FormField/FormField";
 import {monitorCreateForm} from "../../services/stage-service";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import StepOne from "../EvaluationsWithSteps/StepOne";
@@ -9,6 +7,7 @@ import StepThree from "../EvaluationsWithSteps/StepThree";
 import StepFour from "../EvaluationsWithSteps/StepFour";
 import StepFive from "../EvaluationsWithSteps/StepFive";
 import StepSix from "../EvaluationsWithSteps/StepSix";
+import StepSeven from "../EvaluationsWithSteps/StepSeven";
 
 export default function EvaluationIntern() {
 
@@ -16,8 +15,6 @@ export default function EvaluationIntern() {
         mode: "onSubmit",
         reValidateMode: "onChange"
     });
-
-    const today = new Date();
 
     const choixAccords = {
         TOTALEMENT_EN_ACCORD: ["TOTALEMENT_EN_ACCORD", "Totalement en accord"],
@@ -55,68 +52,16 @@ export default function EvaluationIntern() {
             <hr/>
             <StepFour errors={errors} register={register} choices={choixAccords}/>
             <hr/>
-            <StepFive errors={errors} register={register} choices={choixAccords} />
+            <StepFive errors={errors} register={register} choices={choixAccords}/>
             <hr/>
-            <StepSix register={register} errors={errors} choixAppreciation={choixAppreciation} yesAndNoAnswers={yesAndNoAnswers}/>
+            <StepSix register={register} errors={errors} choixAppreciation={choixAppreciation}
+                     yesAndNoAnswers={yesAndNoAnswers}/>
             <hr/>
-            <div className='px-3 pb-3 pt-1 rounded'>
-                <FormGroup>
-                    <FormField>
-                        <label>L’entreprise aimerait accueillir cet élève pour son prochain stage</label>
-                        <select
-                            title="Le champ 'L’entreprise aimerait accueillir cet élève pour son prochain stage' doit être rempli"
-                            name='entrepriseApprecieEtudiant'
-                            value={monitorVisitForm.entrepriseApprecieEtudiant} onChange={e => handleChange(e)}>
-                            <option disabled value="">Choisiser une réponse</option>
-                            {Object.values(yesAndNoAnswers).map((c, index) => <option key={index}
-                                                                                      value={c[0]}>{c[1]}</option>)}
-                        </select>
-                    </FormField>
-                </FormGroup>
-                <FormGroup>
-                    <FormField>
-                        <label>La formation technique du stagiaire était-elle suffisante pour accomplir le mandat de
-                            stage?</label>
-                        <textarea title="Le champ 'La formation technique du stagiaire était-elle suffisante pour accomplir le mandat de
-                        stage' doit être rempli" name="formationSuffisanteCommentaire"
-                                  value={monitorVisitForm.formationSuffisanteCommentaire}
-                                  placeholder='Est-ce que la formation était suffisante?'
-                                  onChange={e => handleChange(e)}/>
-                    </FormField>
-                </FormGroup>
-                <FormGroup>
-                    <FormField>
-                        <label>Nom</label>
-                        <input type="text" title='Le nom est requis' name='nom' placeholder='Nom'
-                               value={monitorVisitForm.nom}
-                               onChange={e => handleChange(e)}/>
-                    </FormField>
-                    <FormField>
-                        <label>Fonction</label>
-                        <input type="text" placeholder='Fonction' name='fonctionDeux'
-                               title='La 2ième fonction est requise'
-                               value={monitorVisitForm.fonctionDeux} onChange={e => handleChange(e)}/>
-                    </FormField>
-                </FormGroup>
-                <FormGroup>
-                    <FormField>
-                        <label>Signature</label>
-                        <input type="text" name='monitorSignature' placeholder='Signature'
-                               title="La signature doit être rempli" value={monitorVisitForm.monitorSignature}
-                               onChange={e => handleChange(e)}/>
-                    </FormField>
-                    <FormField>
-                        <label>Date</label>
-                        <input type="date" name='dateSignature' max={today.toString()}
-                               title='La date doit être choisi'
-                               value={monitorVisitForm.dateSignature} onChange={e => handleChange(e)}/>
-                    </FormField>
-                </FormGroup>
-                <button onClick={sendVisitForm} className='btn btn-primary w-100 mt-4 rounded fw-bold'>Créer une
-                    évaluation
-                    de stage
-                </button>
-            </div>
+            <StepSeven errors={errors} register={register} yesAndNoAnswers={yesAndNoAnswers}/>
+            <button onClick={sendVisitForm} className='btn btn-primary w-100 mt-4 rounded fw-bold'>Créer une
+                évaluation
+                de stage
+            </button>
         </form>
     </ContainerBox>
 }

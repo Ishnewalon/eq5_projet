@@ -2,9 +2,9 @@ import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {FieldRadio} from "../SharedComponents/FormInput/FieldRadio";
 import {FormTextarea} from "../SharedComponents/FormTextarea";
 
-export default function StepFour({register, choices}){
+export default function StepFour({register, choices}) {
 
-    return  <div className='px-3 pb-3 pt-1 rounded'>
+    return <div className='px-3 pb-3 pt-1 rounded'>
         <h2 className='mt-4 mb-0 text-decoration-underline'>Qualités des relations interpersonnelles</h2>
         <h4 className='mt-4 mb-0'>Capacité d’établir des interrelations harmonieuses dans son milieu de
             travail</h4>
@@ -16,7 +16,7 @@ export default function StepFour({register, choices}){
                 list={Object.values(choices)}
                 label='Établir facilement des contacts avec les gens'
 
-                />
+            />
             <FieldRadio
                 name='questionDouze'
                 register={register}
@@ -58,7 +58,7 @@ export default function StepFour({register, choices}){
                 label='Commentaires'
                 name='commentairesTrois'
                 register={register}
-                placeholder='Commentaires sur les qualités des relations interpersonnelles du stagiaire' />
+                placeholder='Commentaires sur les qualités des relations interpersonnelles du stagiaire'/>
         </FormGroup>
     </div>
 }
