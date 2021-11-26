@@ -45,11 +45,7 @@ export default function StepOne(props) {
                        error={errors.nomStagiaire}
             />
             <FormInput label="Programme d'études"
-                       validation={
-                           {
-                               required: 'Ce champ est requis',
-                           }
-                       }
+                       validation={{required: 'Ce champ est requis'}}
                        name='programmeEtudes'
                        register={register}
                        type='text'
@@ -57,11 +53,7 @@ export default function StepOne(props) {
                        error={errors.programmeEtudes}
             />
             <FormInput label="Nom de l'entreprise"
-                       validation={
-                           {
-                               required: 'Ce champ est requis'
-                           }
-                       }
+                       validation={{required: 'Ce champ est requis'}}
                        name='entrepriseNom'
                        register={register}
                        type='text'
@@ -71,11 +63,7 @@ export default function StepOne(props) {
         </FormGroup>
         <FormGroup>
             <FormInput label="Fonction"
-                       validation={
-                           {
-                               required: 'Ce champ est requis'
-                           }
-                       }
+                       validation={{required: 'Ce champ est requis'}}
                        name='fonctionUn'
                        register={register}
                        type='text'

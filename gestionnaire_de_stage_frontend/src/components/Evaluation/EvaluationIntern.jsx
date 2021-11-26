@@ -6,59 +6,16 @@ import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import StepOne from "../EvaluationsWithSteps/StepOne";
 import {useForm} from "react-hook-form";
 import StepTwo from "../EvaluationsWithSteps/StepTwo";
+import StepThree from "../EvaluationsWithSteps/StepThree";
 
 export default function EvaluationIntern() {
 
-    const {formState:{errors}, handleSubmit, register, getValues} =  useForm({
+    const {formState: {errors}, handleSubmit, register, getValues} = useForm({
         mode: "onSubmit",
         reValidateMode: "onChange"
     });
 
     const today = new Date();
-    const [monitorVisitForm, setMonitorVisitForm] = useState({
-        emailEtudiant: '',
-        entrepriseNom: '',
-        phone: '',
-        nomStagiaire: '',
-        questionUn: 'TOTALEMENT_EN_ACCORD',
-        questionDeux: 'TOTALEMENT_EN_ACCORD',
-        questionTrois: 'TOTALEMENT_EN_ACCORD',
-        questionQuatre: 'TOTALEMENT_EN_ACCORD',
-        questionCinq: 'TOTALEMENT_EN_ACCORD',
-        questionSix: 'TOTALEMENT_EN_ACCORD',
-        questionSept: 'TOTALEMENT_EN_ACCORD',
-        questionHuit: 'TOTALEMENT_EN_ACCORD',
-        questionNeuf: 'TOTALEMENT_EN_ACCORD',
-        questionDix: 'TOTALEMENT_EN_ACCORD',
-        questionOnze: 'TOTALEMENT_EN_ACCORD',
-        questionDouze: 'TOTALEMENT_EN_ACCORD',
-        questionTreize: 'TOTALEMENT_EN_ACCORD',
-        questionQuatorze: 'TOTALEMENT_EN_ACCORD',
-        questionQuinze: 'TOTALEMENT_EN_ACCORD',
-        questionSeize: 'TOTALEMENT_EN_ACCORD',
-        questionDixSept: 'TOTALEMENT_EN_ACCORD',
-        questionDixHuit: 'TOTALEMENT_EN_ACCORD',
-        questionDixNeuf: 'TOTALEMENT_EN_ACCORD',
-        questionVingt: 'TOTALEMENT_EN_ACCORD',
-        questionVingtUn: 'TOTALEMENT_EN_ACCORD',
-        questionVingtDeux: 'TOTALEMENT_EN_ACCORD',
-        programmeEtudes: '',
-        appreciationGlobale: 'DEPASSE_BEAUCOUP',
-        evaluationDiscuteAvecEtudiant: true,
-        commentairesUn: '',
-        commentairesDeux: '',
-        commentairesTrois: '',
-        commentairesQuatre: '',
-        commentairesCinq: '',
-        entrepriseApprecieEtudiant: true,
-        nbHeuresReelTravailEtudiant: 0,
-        fonctionUn: '',
-        fonctionDeux: '',
-        formationSuffisanteCommentaire: '',
-        nom: '',
-        dateSignature: '',
-        monitorSignature: ''
-    });
 
     const choixAccords = {
         TOTALEMENT_EN_ACCORD: ["TOTALEMENT_EN_ACCORD", "Totalement en accord"],
@@ -81,20 +38,22 @@ export default function EvaluationIntern() {
         NON: [false, 'Non']
     }
 
-    const sendVisitForm = (e) => {
+    const sendVisitForm = (e, data) => {
         e.preventDefault();
-        monitorCreateForm(monitorVisitForm).then();
+        monitorCreateForm(data).then();
     };
 
     return <ContainerBox className={'text-white'}>
-        <form onSubmit={handleSubmit(sendVisitForm)}>
-            <StepOne errors={errors} register={register} />
+        <form onSubmit={handleSubmit(sendVisitForm)} noValidate>
+            <StepOne errors={errors} register={register}/>
             <hr/>
-            <StepTwo errors={errors} register={register} choices={choixAccords} />
+            <StepTwo errors={errors} register={register} choices={choixAccords}/>
             <hr/>
+            <StepThree errors={errors} register={register} choices={choixAccords}/>
             <div className='px-3 pb-3 pt-1 rounded'>
                 <h2 className='mt-4 mb-0 text-decoration-underline'>Qualités des relations interpersonnelles</h2>
-                <h4 className='mt-4 mb-0'>Capacité d’établir des interrelations harmonieuses dans son milieu de travail</h4>
+                <h4 className='mt-4 mb-0'>Capacité d’établir des interrelations harmonieuses dans son milieu de
+                    travail</h4>
                 <blockquote className='mt-3 mb-0'>Le stagiaire est en mesure de:</blockquote>
                 <FormGroup>
                     <FormField>
@@ -145,7 +104,8 @@ export default function EvaluationIntern() {
                     </FormField>
                     <FormField>
                         <label>Être respectueux envers les gens</label>
-                        <select name='questionQuinze' title="Le champ 'Être respectueux envers les gens' doit être rempli"
+                        <select name='questionQuinze'
+                                title="Le champ 'Être respectueux envers les gens' doit être rempli"
                                 value={monitorVisitForm.questionQuinze}
                                 onChange={e => handleChange(e)}>
                             <option disabled value="">Choisiser une évaluation</option>
@@ -176,6 +136,8 @@ export default function EvaluationIntern() {
                 </FormGroup>
             </div>
             <hr/>
+
+
             <div className='px-3 pb-3 pt-1 rounded'>
                 <h2 className='mt-4 mb-0 text-decoration-underline'>Habiletés personnelles</h2>
                 <h4 className='mt-4 mb-0'>Capacité de faire preuve d’attitudes ou de comportements matures et
@@ -358,17 +320,8 @@ export default function EvaluationIntern() {
                                value={monitorVisitForm.dateSignature} onChange={e => handleChange(e)}/>
                     </FormField>
                 </FormGroup>
-                {Object.keys(errors).length > 0 ?
-                    <>
-                        <p className={'my-3'}>Voici la liste des champs à remplir</p>
-                        <ul>
-                            {Object.keys(errors).map((key, index) => <li
-                                key={index}>{errors[key]}</li>)}
-                        </ul>
-                    </>
-                    : <></>
-                }
-                <button onClick={sendVisitForm} className='btn btn-primary w-100 mt-4 rounded fw-bold'>Créer une évaluation
+                <button onClick={sendVisitForm} className='btn btn-primary w-100 mt-4 rounded fw-bold'>Créer une
+                    évaluation
                     de stage
                 </button>
             </div>
