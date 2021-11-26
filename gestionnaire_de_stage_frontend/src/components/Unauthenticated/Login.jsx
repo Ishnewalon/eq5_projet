@@ -29,7 +29,7 @@ export default function Login() {
 
     return (
         <ContainerBox className="w-50">
-            <form onSubmit={handleSubmit(connect)}>
+            <form onSubmit={handleSubmit(connect)} noValidate>
                 <FormGroup>
                     <LoginRadio name="userType" register={register} list={Object.values(UserType)} label=""
                                 validation={{}} error={errors.userType}/>
