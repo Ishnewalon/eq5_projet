@@ -64,8 +64,8 @@ export default function OffersStudentApply() {
             <div className="row">
 
                 {visibleOffers.map((offer, index) =>
-                    <div className="col-md-6 col-12">
-                        <OfferApplication key={index} offer={offer} removeFromList={removeFromList}/>
+                    <div className="col-md-6 col-12" key={index}>
+                        <OfferApplication offer={offer} removeFromList={removeFromList}/>
                     </div>
                 )}
             </div>
