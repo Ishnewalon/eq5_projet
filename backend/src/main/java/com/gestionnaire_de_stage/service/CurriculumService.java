@@ -138,14 +138,14 @@ public class CurriculumService {
     }
 
     public void deleteOneById(Long idCurriculum) throws IllegalArgumentException, IdDoesNotExistException, CurriculumUsedException {
-        Assert.notNull(idCurriculum, "Le id du curriculum ne peut pas être null");
+        Assert.notNull(idCurriculum, "L'identifiant du curriculum ne peut pas être null");
         Curriculum curriculum = getOneByID(idCurriculum);
 
         if (isPrincipal(curriculum))
-            throw new CurriculumUsedException("Impossible de supprimer. Cela est votre curriculum par defaut");
+            throw new CurriculumUsedException("Impossible de supprimer. Cela est votre curriculum par défaut");
 
         if (offerApplicationService.isCurriculumInUse(curriculum))
-            throw new CurriculumUsedException("Impossible de supprimer. Vous avez postulez avec ce curriculum");
+            throw new CurriculumUsedException("Impossible de supprimer. Vous avez postuler avec ce curriculum");
 
         curriculumRepository.deleteById(idCurriculum);
     }

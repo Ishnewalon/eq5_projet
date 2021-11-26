@@ -9,6 +9,7 @@ import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import {AiOutlineCloseCircle, BsTrash, GoStar, MdOutlinePendingActions} from "react-icons/all";
 import {downloadFile, toPdfBlob} from "../../utility";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import Swal from "sweetalert2";
 
 export default function CurriculumsStudent() {
     let auth = useAuth();
@@ -70,16 +71,27 @@ export default function CurriculumsStudent() {
 
     const deleteCurriculum = cv => e => {
         e.preventDefault();
-
-        deleteCurriculumById(cv.id).then(
-            (success) => {
-                if (success){
-                    setCurriculumsWithPrincipal(prev => ({
-                        ...prev,
-                        curriculumList: prev.curriculumList.filter(curriculum => curriculum.id !== cv.id)}));
-                }
+        Swal.fire({
+            title: 'Êtes-vous sûr?',
+            text: "Vous ne pourrez pas revenir en arrière!",
+            icon: 'warning',
+            iconColor: '#ffc107',
+            showDenyButton: true,
+            confirmButtonColor: '#4f657d',
+            confirmButtonText: 'Oui, supprimer!',
+            denyButtonText: 'Annuler'
+        }).then((result) => {
+            if (result.value) {
+                deleteCurriculumById(cv.id)
+                    .then((succes) => {
+                        if (succes)
+                            setCurriculumsWithPrincipal(prev => ({
+                                ...prev,
+                                "curriculumList": prev.curriculumList.filter(c => c.id !== cv.id)
+                            }))
+                    })
             }
-        );
+        })
     };
 
     return (
