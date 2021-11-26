@@ -4,6 +4,7 @@ import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
+import com.gestionnaire_de_stage.exception.CurriculumUsedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.OfferApplication;
@@ -25,15 +26,17 @@ public class CurriculumService {
     private final CurriculumRepository curriculumRepository;
     private final StudentService studentService;
     private final OfferService offerService;
+    private final OfferApplicationService offerApplicationService;
 
     public CurriculumService(
             CurriculumRepository curriculumRepository,
             StudentService studentService,
-            OfferService offerService
-    ) {
+            OfferService offerService,
+            OfferApplicationService offerApplicationService) {
         this.curriculumRepository = curriculumRepository;
         this.studentService = studentService;
         this.offerService = offerService;
+        this.offerApplicationService = offerApplicationService;
     }
 
     public Curriculum convertMultipartFileToCurriculum(MultipartFile file, Long studentId)
@@ -132,5 +135,23 @@ public class CurriculumService {
     public List<Curriculum> findAllByStudentId(Long id) throws IdDoesNotExistException {
         Student student = studentService.getOneByID(id);
         return findAllByStudent(student);
+    }
+
+    public void deleteOneById(Long idCurriculum) throws IllegalArgumentException, IdDoesNotExistException, CurriculumUsedException {
+        Assert.notNull(idCurriculum, "L'identifiant du curriculum ne peut pas être null");
+        Curriculum curriculum = getOneByID(idCurriculum);
+
+        if (isPrincipal(curriculum))
+            throw new CurriculumUsedException("Impossible de supprimer. Cela est votre curriculum par défaut");
+
+        if (offerApplicationService.isCurriculumInUse(curriculum))
+            throw new CurriculumUsedException("Impossible de supprimer. Vous avez postuler avec ce curriculum");
+
+        curriculumRepository.deleteById(idCurriculum);
+    }
+
+    private boolean isPrincipal(Curriculum curriculum) {
+        Student student = curriculum.getStudent();
+        return curriculum == student.getPrincipalCurriculum();
     }
 }

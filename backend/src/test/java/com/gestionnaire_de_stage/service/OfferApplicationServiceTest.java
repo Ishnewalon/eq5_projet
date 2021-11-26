@@ -407,6 +407,23 @@ class OfferApplicationServiceTest {
         );
     }
 
+    @Test
+    void testIsCurriculumInUse() {
+        when(offerApplicationRepository.existsByCurriculum(any())).thenReturn(true);
+
+        boolean actual = offerApplicationService.isCurriculumInUse(getDummyCurriculum());
+
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    void testIsCurriculumInUse_throwsIllegalArg() {
+        when(offerApplicationRepository.existsByCurriculum(any())).thenThrow(IllegalArgumentException.class);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.isCurriculumInUse(getDummyCurriculum()));
+    }
+
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();
         offerApplicationDTO.setOffer(getDummyOffer());

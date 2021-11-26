@@ -2,7 +2,8 @@ export const urlBackend = 'http://localhost:8181'
 export const methods = {
     POST: 'POST',
     GET: 'GET',
-    PUT: 'PUT'
+    PUT: 'PUT',
+    DELETE: 'DELETE'
 }
 export const requestInit = (method, body) => {
     let value = {
