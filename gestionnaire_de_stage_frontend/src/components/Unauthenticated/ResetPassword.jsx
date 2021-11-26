@@ -5,21 +5,17 @@ import StepPassword from "./Register/SharedSteps/StepPassword";
 import {useForm} from "react-hook-form";
 
 export default function ResetPassword() {
+    const history = useHistory();
+    const match = useRouteMatch();
     const {register, handleSubmit, watch, formState: {errors}} = useForm({
         mode: "onSubmit",
     });
-    let history = useHistory();
-    let match = useRouteMatch();
 
     const submit = (data, e) => {
         e.preventDefault();
         const {password} = data;
         resetPassword(match.params.token, password).then(
-            bool => {
-                if (bool)
-                    history.push('/login');
-            }
-        );
+            bool => bool && history.push('/login'));
     };
 
     return (
