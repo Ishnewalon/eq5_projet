@@ -145,7 +145,7 @@ public class CurriculumService {
             throw new CurriculumUsedException("Impossible de supprimer. Cela est votre curriculum par defaut");
 
         if (offerApplicationService.isCurriculumInUse(curriculum))
-            throw new CurriculumUsedException("Impossible de supprimer. Ce curriculum est utilisé");
+            throw new CurriculumUsedException("Impossible de supprimer. Vous avez postulez avec ce curriculum");
 
         curriculumRepository.deleteById(idCurriculum);
     }
