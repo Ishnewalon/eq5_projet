@@ -25,7 +25,7 @@ export function FieldRadio(props) {
     return <>
         <label>{label}</label>
         {
-            Object.values(list).map((item, index) => {
+            list.map((item, index) => {
                 return <Radio key={index} value={item[0]} name={name} register={register} text={item[1]}
                               id={name + index} defaultChecked={index === 0}/>;
 

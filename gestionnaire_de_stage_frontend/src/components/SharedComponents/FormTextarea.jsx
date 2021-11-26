@@ -17,7 +17,7 @@ FormTextarea.propTypes = {
     placeholder: PropTypes.string,
     register: PropTypes.func.isRequired,
     error: PropTypes.object,
-    validation: PropTypes.object.isRequired
+    validation: PropTypes.object
 };
 FormTextarea.defaultProps = {
     placeholder: "",
