@@ -3,6 +3,8 @@ import {Document, Page, pdfjs} from 'react-pdf';
 import {useEffect, useState} from "react";
 import {downloadFile} from "../../../utility";
 import {FiDownload} from "react-icons/all";
+import style from "./PdfDocumentViewer.module.css";
+import CustomScroller from "react-custom-scroller";
 
 export default function PdfDocumentViewer({file, fileName, showContract = false}) {
     const [numPages, setNumPages] = useState(null);
@@ -43,16 +45,17 @@ export default function PdfDocumentViewer({file, fileName, showContract = false}
             {
                 show ?
                     <div>
-                        <div>
-                            <Document
-                                file={file}
-                                onLoadSuccess={onDocumentLoad}
-                                onLoadError={alert}
-
-                            >
-                                <Page pageNumber={pageNumber}/>
-                            </Document>
-                            <p className={'text-center mt-2 border border-white p-2'}>{numPages > 0 ? `Page ${pageNumber} de ${numPages}` : 'Aucune pages'}</p>
+                        <div className="text-center">
+                            <CustomScroller className="ps-4">
+                                <Document
+                                    file={file}
+                                    onLoadSuccess={onDocumentLoad}
+                                    onLoadError={alert}>
+                                    <Page pageNumber={pageNumber} size="A4" className={style.page}/>
+                                </Document>
+                            </CustomScroller>
+                            <span
+                                className={'mt-2 p-2'}>{numPages > 0 ? `Page ${pageNumber} de ${numPages}` : 'Aucune pages'}</span>
                             <div className={"d-flex justify-content-between"}>
                                 <button
                                     type="button"

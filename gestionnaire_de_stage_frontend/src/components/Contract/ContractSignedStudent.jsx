@@ -3,7 +3,6 @@ import {useEffect, useState} from "react";
 import {getSignedContractForStudent} from "../../services/contrat-service";
 import {useAuth} from "../../services/use-auth";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 
 export default function ContractSignedStudent() {
     const auth = useAuth();
@@ -16,7 +15,5 @@ export default function ContractSignedStudent() {
     if (!contract) {
         return <MessageNothingToShow message="Aucun contrat n'a été signé pour l'instant..."/>
     }
-    return <ContainerBox>
-        <ContractSigned contract={contract}/>
-    </ContainerBox>
+    return <ContractSigned contract={contract}/>
 }
