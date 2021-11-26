@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 export function FormSelect({register, error, validation, options, name, label, fieldValue, displayed, defaultMessage}) {
     validation.validate = value => defaultMessage !== value || "Ce champ est obligatoire!"
     return (
-        <div className="form-floating">
+        <div className="form-floating  mb-2">
             <select id={name} {...register(name, validation)}
                     className={"form-control" + (error ? " is-invalid" : "")}
                     defaultValue={defaultMessage}>

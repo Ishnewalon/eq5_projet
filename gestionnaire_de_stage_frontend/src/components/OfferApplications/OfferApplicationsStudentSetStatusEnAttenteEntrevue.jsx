@@ -72,7 +72,7 @@ function OfferApplicationSetInterviewDate({offerApp, removeOffer}) {
                     type="datetime-local"/>
             </td>
             <td>
-                <button className="btn btn-primary" onClick={setInterviewDate(offerApp.id)}>
+                <button className="btn btn-outline-primary" onClick={setInterviewDate(offerApp.id)}>
                     Confirmez votre date d'entrevue
                 </button>
             </td>

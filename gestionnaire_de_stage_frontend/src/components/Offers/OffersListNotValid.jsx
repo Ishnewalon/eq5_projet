@@ -2,11 +2,10 @@ import React, {useEffect, useState} from "react";
 import {getAllOffersInvalid} from '../../services/offer-service'
 import OfferView from './OfferView';
 import {getCurrentAndFutureSession} from "../../services/session-service";
-import {FormField} from "../SharedComponents/FormField/FormField";
-import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {BtnBack} from "../SharedComponents/BtnBack";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
 
 export default function OffersListNotValid() {
 
@@ -48,23 +47,27 @@ export default function OffersListNotValid() {
 
     return (<>
             <ContainerBox>
-                <FormGroup>
-                    <FormField>
-                        <label/>
-                        <select onChange={(e) => setMyVisible(e.target.value)}>
-                            {sessions.map(session =>
-                                <option key={session.id}
-                                        value={session.id}>{session.typeSession + session.year}</option>)}
-                        </select>
-                    </FormField>
-                </FormGroup>
-                <ul>
-                    {visibleOffers.map((offer, index) =>
-                        <li className={"mb-4"} key={index}>
-                            <OfferView offer={offer}/>
-                        </li>
-                    )}
-                </ul>
+                <FormGroupV2>
+                    <Column>
+                        <div className="form-floating">
+                            <select id="session" className="form-select" onChange={e => setMyVisible(e.target.value)}>
+                                {sessions.map(session =>
+                                    <option key={session.id}
+                                            value={session.id}>{session.typeSession + session.year}</option>)}
+                            </select>
+                            <label htmlFor="session">Session</label>
+                        </div>
+                    </Column>
+                </FormGroupV2>
+                <div className="container">
+                    <ul>
+                        {visibleOffers.map((offer, index) =>
+                            <li className={"mb-4"} key={index}>
+                                <OfferView offer={offer}/>
+                            </li>
+                        )}
+                    </ul>
+                </div>
             </ContainerBox>
             <BtnBack/>
 

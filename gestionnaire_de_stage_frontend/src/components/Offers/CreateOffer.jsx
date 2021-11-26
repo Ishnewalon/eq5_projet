@@ -85,8 +85,6 @@ export default function CreateOffer() {
                                }}/>
                 </Column>
                 {(auth.isManager()) && monitorEmail}
-            </FormGroupV2>
-            <FormGroupV2>
                 <Column>
                     <FormTextarea label="Description"
                                   name="description"

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export function FormGroupV2(props) {
     const children = props.children;
-    return <div className="form-group row mb-3 mx-auto">{children}</div>
+    return <div className="form-group row mb-1 mx-auto">{children}</div>
 }
 
 FormGroupV2.propTypes = {

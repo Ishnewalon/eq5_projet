@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 export function FormInput(props) {
     const {register, error, label, name, placeholder, type, validation} = props;
-    return <div className="form-floating mb-3">
+    return <div className="form-floating mb-2">
         <input id={name} name={name} placeholder={placeholder} className={"form-control" + (error ? " is-invalid" : "")}
                type={type} {...register(name, validation)} defaultValue={(type === "number" ? 0 : "")}/>
         <label htmlFor={name}>{label}</label>

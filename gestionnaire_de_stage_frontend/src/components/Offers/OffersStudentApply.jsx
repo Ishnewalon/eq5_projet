@@ -2,12 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {getAllOffersByDepartment} from '../../services/offer-service';
 import {useAuth} from "../../services/use-auth";
 import {getCurrentAndFutureSession} from "../../services/session-service";
-import {FormField} from "../SharedComponents/FormField/FormField";
-import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {applyToOffer} from "../../services/offerAppService";
 import OfferApp from "../../models/OfferApp";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {BsClock, BsClockHistory, MdAttachMoney, MdLocationPin} from "react-icons/all";
+import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
 
 export default function OffersStudentApply() {
     let auth = useAuth();
@@ -51,18 +50,19 @@ export default function OffersStudentApply() {
 
     return (
         <>
-            <FormGroup>
-                <FormField>
-                    <label/>
-                    <select onChange={(e) => setMyVisible(e.target.value)}>
-                        {sessions.map(session =>
-                            <option key={session.id}
-                                    value={session.id}>{session.typeSession + session.year}</option>)}
-                    </select>
-                </FormField>
-            </FormGroup>
+            <FormGroupV2>
+                <Column>
+                    <div className="form-floating">
+                        <select id="session" className="form-select" onChange={e => setMyVisible(e.target.value)}>
+                            {sessions.map(session =>
+                                <option key={session.id}
+                                        value={session.id}>{session.typeSession + session.year}</option>)}
+                        </select>
+                        <label htmlFor="session">Session</label>
+                    </div>
+                </Column>
+            </FormGroupV2>
             <div className="row">
-
                 {visibleOffers.map((offer, index) =>
                     <div className="col-md-6 col-12" key={index}>
                         <OfferApplication offer={offer} removeFromList={removeFromList}/>

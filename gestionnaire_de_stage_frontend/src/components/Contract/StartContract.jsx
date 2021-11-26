@@ -46,7 +46,7 @@ export default function StartContract() {
                 <td>{offerApplication.offer.title}</td>
                 <td>
                     <div className="btn-group">
-                        <button className="btn btn-outline-success"
+                        <button className="btn btn-outline-primary"
                                 onClick={() => startSigner(offerApplication.id, auth.user.id)}>Lancer
                         </button>
                     </div>

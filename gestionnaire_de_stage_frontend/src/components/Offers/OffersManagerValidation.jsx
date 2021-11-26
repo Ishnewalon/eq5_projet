@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {getAllOffersInvalid, validateOffer} from '../../services/offer-service';
 import OfferView from "./OfferView";
-import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
-import {FormField} from "../SharedComponents/FormField/FormField";
 import {getCurrentAndFutureSession} from "../../services/session-service";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
 
 export default function OffersManagerValidation() {
 
@@ -45,17 +44,19 @@ export default function OffersManagerValidation() {
         return <MessageNothingToShow message="Aucune offres à valider pour le moment..."/>
     return (
         <>
-            <div className='container'>
-                <FormGroup>
-                    <FormField>
-                        <label/>
-                        <select className="mb-4" onChange={(e) => setMyVisible(e.target.value)}>
+            <FormGroupV2>
+                <Column>
+                    <div className="form-floating">
+                        <select id="session" className="form-select" onChange={e => setMyVisible(e.target.value)}>
                             {sessions.map(session =>
                                 <option key={session.id}
                                         value={session.id}>{session.typeSession + session.year}</option>)}
                         </select>
-                    </FormField>
-                </FormGroup>
+                        <label htmlFor="session">Session</label>
+                    </div>
+                </Column>
+            </FormGroupV2>
+            <div className="container">
                 <ul>
                     {visibleOffers.map(offer =>
                         <li key={offer.id}>

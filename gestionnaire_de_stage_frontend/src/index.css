@@ -10,8 +10,8 @@
 }
 
 #root, html, body {
-    width: 100%;
-    height: 100%;
+    width: auto;
+    height: 100vh;
     margin: 0;
     font-family: var(--font-family-primary);
     -webkit-font-smoothing: antialiased;
@@ -264,4 +264,8 @@ Card
 
 .image2 {
     height: 400px;
+}
+
+.dddddddd {
+    height: 100vh;
 }

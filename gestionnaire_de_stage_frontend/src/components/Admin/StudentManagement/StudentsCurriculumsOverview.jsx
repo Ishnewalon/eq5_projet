@@ -64,7 +64,7 @@ export default function StudentsCurriculumsOverview() {
                         <td>{getNbOfCurriculumsWithState(cur, false)}</td>
                         <td>{getNbOfCurriculumsWithState(cur, null)}</td>
                         <td>
-                            <button className="btn btn-primary" onClick={() => history.push({
+                            <button className="btn btn-outline-primary" onClick={() => history.push({
                                 pathname: `${path}/student`,
                                 state: {student: student}
                             })}>Voir

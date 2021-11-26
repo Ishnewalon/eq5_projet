@@ -71,7 +71,7 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
                             </FormField>
                         </td>
                         <td>
-                            <button className="btn btn-success" onClick={assign(student.id)}>Accepter</button>
+                            <button className="btn btn-outline-success" onClick={assign(student.id)}>Accepter</button>
                         </td>
                     </TableRow>
                 )}

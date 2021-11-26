@@ -30,7 +30,7 @@ export default function CreateSession() {
         <FormGroup>
             <FormField>
                 <label>Année</label>
-                <select onChange={(e) => setYear(e.target.value)}>
+                <select onChange={e => setYear(e.target.value)}>
                     {years.map((year) =>
                         <option key={year} value={year}>{year}</option>
                     )}
@@ -38,7 +38,7 @@ export default function CreateSession() {
             </FormField>
             <FormField>
                 <label>Période de la session</label>
-                <select onChange={(e) => setTypeSession(e.target.value)} defaultValue="">
+                <select onChange={e => setTypeSession(e.target.value)} defaultValue="">
                     <option disabled value="">Période de la session</option>
                     <option value="HIVER">Session d'hiver</option>
                     <option value="ETE">Session d'été</option>
