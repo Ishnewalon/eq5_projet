@@ -18,7 +18,6 @@ FormInput.propTypes = {
     label: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     type: PropTypes.oneOf(['text', 'number', 'tel', 'email', 'password', 'date']).isRequired,
-    errorMessage: PropTypes.string,
     validation: PropTypes.object.isRequired
 };
 FormInput.defaultProps = {

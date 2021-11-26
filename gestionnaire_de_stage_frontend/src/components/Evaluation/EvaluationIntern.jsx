@@ -7,6 +7,8 @@ import {useForm} from "react-hook-form";
 import StepTwo from "../EvaluationsWithSteps/StepTwo";
 import StepThree from "../EvaluationsWithSteps/StepThree";
 import StepFour from "../EvaluationsWithSteps/StepFour";
+import StepFive from "../EvaluationsWithSteps/StepFive";
+import StepSix from "../EvaluationsWithSteps/StepSix";
 
 export default function EvaluationIntern() {
 
@@ -52,138 +54,10 @@ export default function EvaluationIntern() {
             <StepThree errors={errors} register={register} choices={choixAccords}/>
             <hr/>
             <StepFour errors={errors} register={register} choices={choixAccords}/>
-
-
-            <div className='px-3 pb-3 pt-1 rounded'>
-                <h2 className='mt-4 mb-0 text-decoration-underline'>Habiletés personnelles</h2>
-                <h4 className='mt-4 mb-0'>Capacité de faire preuve d’attitudes ou de comportements matures et
-                    responsables</h4>
-                <blockquote className='mt-3 mb-0'>Le stagiaire est en mesure de:</blockquote>
-                <FormGroup>
-                    <FormField>
-                        <label>Démontrer de l’intérêt et de la motivation au travail</label>
-                        <select name='questionDixSept'
-                                title="Le champ 'Démontrer de l’intérêt et de la motivation au travail' doit être rempli"
-                                value={monitorVisitForm.questionDixSept}
-                                onChange={e => handleChange(e)}>
-                            <option disabled value="">Choisiser une évaluation</option>
-                            {Object.values(choixAccords).map((choix, index) => <option key={index}
-                                                                                       value={choix[0]}>{choix[1]}</option>)}
-                        </select>
-                    </FormField>
-                    <FormField>
-                        <label>Exprimer clairement ses idées</label>
-                        <select name='questionDixHuit' title="Le champ 'Exprimer clairement ses idées' doit être rempli"
-                                value={monitorVisitForm.questionDixHuit}
-                                onChange={e => handleChange(e)}>
-                            <option disabled value="">Choisiser une évaluation</option>
-                            {Object.values(choixAccords).map((choix, index) => <option key={index}
-                                                                                       value={choix[0]}>{choix[1]}</option>)}
-                        </select>
-                    </FormField>
-                    <FormField>
-                        <label>Faire preuve d’initiative</label>
-                        <select name='questionDixNeuf' title="Le champ 'Faire preuve d’initiative' doit être rempli"
-                                value={monitorVisitForm.questionDixNeuf}
-                                onChange={e => handleChange(e)}>
-                            <option disabled value="">Choisiser une évaluation</option>
-                            {Object.values(choixAccords).map((choix, index) => <option key={index}
-                                                                                       value={choix[0]}>{choix[1]}</option>)}
-                        </select>
-                    </FormField>
-                </FormGroup>
-                <FormGroup>
-                    <FormField>
-                        <label>Travailler de façon sécuritaire</label>
-                        <select name='questionVingt' title="Le champ 'Travailler de façon sécuritaire' doit être rempli"
-                                value={monitorVisitForm.questionVingt}
-                                onChange={e => handleChange(e)}>
-                            <option disabled value="">Choisiser une évaluation</option>
-                            {Object.values(choixAccords).map((choix, index) => <option key={index}
-                                                                                       value={choix[0]}>{choix[1]}</option>)}
-                        </select>
-                    </FormField>
-                    <FormField>
-                        <label>Démontrer un bon sens des responsabilités ne
-                            requérant qu’un minimum de supervision</label>
-                        <select name='questionVingtUn' title="Le champ 'Démontrer un bon sens des responsabilités ne
-                        requérant qu’un minimum de supervision' doit être rempli"
-                                value={monitorVisitForm.questionVingtUn}
-                                onChange={e => handleChange(e)}>
-                            <option disabled value="">Choisiser une évaluation</option>
-                            {Object.values(choixAccords).map((choix, index) => <option key={index}
-                                                                                       value={choix[0]}>{choix[1]}</option>)}
-                        </select>
-                    </FormField>
-                    <FormField>
-                        <label>Être ponctuel et assidu à son travail</label>
-                        <select name='questionVingtDeux'
-                                title="Le champ 'Être ponctuel et assidu à son travail' doit être rempli"
-                                value={monitorVisitForm.questionVingtDeux}
-                                onChange={e => handleChange(e)}>
-                            <option disabled value="">Choisiser une évaluation</option>
-                            {Object.values(choixAccords).map((choix, index) => <option key={index}
-                                                                                       value={choix[0]}>{choix[1]}</option>)}
-                        </select>
-                    </FormField>
-                </FormGroup>
-                <FormGroup>
-                    <FormField>
-                        <label>Commentaires</label>
-                        <textarea name='commentairesQuatre' value={monitorVisitForm.commentairesQuatre}
-                                  placeholder='Commentaires sur les habiletés personnelles du stagiaire'
-                                  onChange={e => handleChange(e)}/>
-                    </FormField>
-                </FormGroup>
-            </div>
-
-
             <hr/>
-            <div className='px-3 pb-3 pt-1 rounded'>
-                <h2 className='mt-4 mb-0 text-decoration-underline'>Appréciation globale du stagiaire</h2>
-                <blockquote className='mt-3 mb-0'>Le stagiaire est en mesure de:</blockquote>
-                <FormGroup>
-                    <FormField>
-                        <label>Les habiletés démontrées</label>
-                        <select title={'Les habiletés démontrées doit être rempli'} name='appreciationGlobale'
-                                value={monitorVisitForm.appreciationGlobale}
-                                onChange={e => handleChange(e)}>
-                            <option disabled value="">Choisiser une appréciation</option>
-                            {Object.values(choixAppreciation).map((c, index) => <option key={index}
-                                                                                        value={c[0]}>{c[1]}</option>)}
-                        </select>
-                    </FormField>
-                    <FormField>
-                        <label>Cette évaluation a été discutée avec le stagiaire</label>
-                        <select title="Il faut mentionner si l'évaluation a été discuté avec le stagiaire"
-                                name='evaluationDiscuteAvecEtudiant'
-                                value={monitorVisitForm.evaluationDiscuteAvecEtudiant} onChange={e => handleChange(e)}>
-                            <option disabled value="">Choisiser une réponse</option>
-                            {Object.values(yesAndNoAnswers).map((c, index) => <option key={index}
-                                                                                      value={c[0]}>{c[1]}</option>)}
-                        </select>
-                    </FormField>
-                </FormGroup>
-                <FormGroup>
-                    <FormField>
-                        <label>Précisez votre appréciation</label>
-                        <textarea name='commentairesCinq' title="L'appréciation pour le stagiaire est requis"
-                                  value={monitorVisitForm.commentairesCinq}
-                                  onChange={e => handleChange(e)}
-                                  placeholder='Commentaires sur la productivité du stagiaire'/>
-                    </FormField>
-                </FormGroup>
-                <FormGroup>
-                    <FormField>
-                        <label>Veuillez indiquer le nombre d’heures réel par semaine d’encadrement accordé au
-                            stagiaire</label>
-                        <input type="number" placeholder='Nombre heures réel par semaine' min='0'
-                               name='nbHeuresReelTravailEtudiant'
-                               title="Il faut écrire le nombre d'heures réel par semaine d'encadrement accordé au stagiaire"
-                               value={monitorVisitForm.nbHeuresReelTravailEtudiant} onChange={e => handleChange(e)}/>
-                    </FormField>
-                </FormGroup>
-            </div>
+            <StepFive errors={errors} register={register} choices={choixAccords} />
+            <hr/>
+            <StepSix register={register} errors={errors} choixAppreciation={choixAppreciation} yesAndNoAnswers={yesAndNoAnswers}/>
             <hr/>
             <div className='px-3 pb-3 pt-1 rounded'>
                 <FormGroup>
