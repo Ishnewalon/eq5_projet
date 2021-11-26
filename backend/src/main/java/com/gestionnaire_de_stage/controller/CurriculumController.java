@@ -98,6 +98,6 @@ public class CurriculumController {
                     .status(HttpStatus.BAD_REQUEST)
                     .body(new ResponseMessage(e.getMessage()));
         }
-        return ResponseEntity.ok(new ResponseMessage("Curriculum éffacé avec succes"));
+        return ResponseEntity.ok(new ResponseMessage("Curriculum éffacé avec succès"));
     }
 }
