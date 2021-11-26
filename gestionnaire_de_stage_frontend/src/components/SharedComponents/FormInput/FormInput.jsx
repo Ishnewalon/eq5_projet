@@ -1,14 +1,13 @@
-import {FormField} from "../FormField/FormField";
 import PropTypes from "prop-types";
 
 export function FormInput(props) {
     const {register, error, label, name, placeholder, type, validation} = props;
-    return <FormField htmlFor={name}>
-        <label>{label}</label>
-        <input name={name} placeholder={placeholder} className={error ? "border-danger" : ""}
+    return <div className="form-floating mb-3">
+        <input id={name} name={name} placeholder={placeholder} className={"form-control" + (error ? " is-invalid" : "")}
                type={type} {...register(name, validation)} defaultValue={(type === "number" ? 0 : "")}/>
-        {error && <span>{error.message}</span>}
-    </FormField>;
+        <label htmlFor={name}>{label}</label>
+        {error && <span className="text-danger">{error.message}</span>}
+    </div>
 }
 
 FormInput.propTypes = {

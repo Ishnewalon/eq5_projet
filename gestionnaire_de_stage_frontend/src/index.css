@@ -37,9 +37,23 @@ input, button, select, textarea {
     box-shadow: none !important;
 }
 
+input:not[type = "radio"], select, textarea {
+    border-radius: 1px !important;
+    border: 1px solid var(--color-primary) !important;
+}
+
+input:-webkit-autofill {
+    border: 1px solid var(--color-primary) !important;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-family-primary);
     text-decoration-color: var(--color-text) !important;
+}
+
+::selection {
+    color: white !important;
+    background-color: var(--color-primary) !important;
 }
 
 /*************
@@ -101,13 +115,35 @@ Custom BS
     color: var(--color-primary-hover) !important;
 }
 
-.btn-check:checked + .btn-outline-primary,
-.btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active {
+.btn-check:checked + .btn-outline-primary:hover,
+.btn-outline-primary:hover,
+.btn-outline-primary:active {
     background: var(--color-primary-hover) !important;
     border-color: rgba(var(--color-rgb-primary), 0.8) !important;
     color: white !important;
 }
 
+.btn-check:checked + .btn-outline-primary,
+.btn-outline-primary:focus {
+    background: var(--color-primary) !important;
+    color: white !important;
+}
+
+.form-check-input:checked {
+    background-color: var(--color-primary-hover) !important;
+    border-color: var(--color-primary-hover) !important;
+}
+
+.form-control:focus {
+    border-color: var(--color-primary-hover) !important;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: rgba(var(--color-rgb-primary), 0.8);
+}
 
 .dropzone {
     text-align: center;

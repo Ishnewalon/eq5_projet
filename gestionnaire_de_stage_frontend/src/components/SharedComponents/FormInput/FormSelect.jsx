@@ -1,12 +1,11 @@
 import PropTypes from "prop-types";
-import {FormField} from "../FormField/FormField";
 
 export function FormSelect({register, error, validation, options, name, label, fieldValue, displayed, defaultMessage}) {
     validation.validate = value => defaultMessage !== value || "Ce champ est obligatoire!"
     return (
-        <FormField htmlFor={name}>
-            <label>{label}</label>
-            <select {...register(name, validation)} className={error ? "border-danger" : ""}
+        <div className="form-floating">
+            <select id={name} {...register(name, validation)}
+                    className={"form-control" + (error ? " is-invalid" : "")}
                     defaultValue={defaultMessage}>
                 <option disabled value={defaultMessage}>{defaultMessage}</option>
                 {options.map(value => (
@@ -17,8 +16,9 @@ export function FormSelect({register, error, validation, options, name, label, f
                     </option>
                 ))}
             </select>
-            {error && <span>{error.message}</span>}
-        </FormField>
+            <label htmlFor={name}>{label}</label>
+            {error && <span className="text-danger">{error.message}</span>}
+        </div>
     );
 }
 
