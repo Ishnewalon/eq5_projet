@@ -129,6 +129,19 @@ public class MonitorControllerTest {
         assertThat(response.getContentAsString()).contains("Courriel ou mot de passe invalid");
     }
 
+    @Test
+    public void testCheckEmailValidty() throws Exception {
+        when(monitorService.isEmailInvalid(any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/monitor/email/{email}", "potato@mail.com")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("false");
+    }
+
     private Monitor getDummyMonitor() {
         Monitor dummyMonitor = new Monitor();
         dummyMonitor.setEmail("potato@mail.com");

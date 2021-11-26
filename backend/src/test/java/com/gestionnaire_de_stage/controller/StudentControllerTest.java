@@ -348,6 +348,19 @@ public class StudentControllerTest {
         assertThat(response.getContentAsString()).contains("true");
     }
 
+    @Test
+    public void testCheckEmailValidty() throws Exception {
+        when(studentService.isEmailInvalid(any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/student/email/{email}", "potato@mail.com")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("false");
+    }
+
 
     private StudentMonitorOfferDTO getDummyStudentMonitorOfferDTO() {
         return new StudentMonitorOfferDTO(

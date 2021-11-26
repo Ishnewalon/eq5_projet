@@ -239,7 +239,7 @@ public class SupervisorControllerTest {
     }
 
     @Test
-    public void testCheckMatricule() throws Exception {
+    public void testCheckMatriculeValidty() throws Exception {
         when(studentService.isMatriculeValid(any())).thenReturn(false);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
@@ -249,6 +249,19 @@ public class SupervisorControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString()).contains("true");
+    }
+
+    @Test
+    public void testCheckEmailValidty() throws Exception {
+        when(supervisorService.isEmailInvalid(any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/supervisor/email/{email}", "sinl@gmail.com")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("false");
     }
 
     private Supervisor getDummySupervisor() {

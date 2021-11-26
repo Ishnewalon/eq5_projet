@@ -36,6 +36,11 @@ public class MonitorController {
         }
     }
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> checkValidEmail(@PathVariable String email) {
+        return ResponseEntity.ok(monitorService.isEmailInvalid(email));
+    }
+
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
 
