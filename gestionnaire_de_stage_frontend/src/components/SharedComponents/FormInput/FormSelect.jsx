@@ -1,6 +1,17 @@
 import PropTypes from "prop-types";
 
-export function FormSelect({register, error, validation, options, name, label, fieldValue, displayed, defaultMessage}) {
+export function FormSelect({
+                               register,
+                               error,
+                               validation,
+                               options,
+                               name,
+                               label,
+                               fieldValue,
+                               displayed,
+                               defaultMessage,
+                               self
+                           }) {
     validation.validate = value => defaultMessage !== value || "Ce champ est obligatoire!"
     return (
         <div className="form-floating  mb-2">
@@ -8,9 +19,9 @@ export function FormSelect({register, error, validation, options, name, label, f
                     className={"form-control" + (error ? " is-invalid" : "")}
                     defaultValue={defaultMessage}>
                 <option disabled value={defaultMessage}>{defaultMessage}</option>
-                {options.map(value => (
-                    <option key={value} value={value[fieldValue]}>
-                        {displayed.map(x => (
+                {options.map((value, index) => (
+                    <option key={index} value={self ? value : value[fieldValue]}>
+                        {self ? value : displayed.map(x => (
                             value[x]
                         ))}
                     </option>
@@ -29,8 +40,9 @@ FormSelect.propTypes = {
     label: PropTypes.string.isRequired,
     validation: PropTypes.object.isRequired,
     options: PropTypes.array.isRequired,
-    fieldValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    displayed: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
+    fieldValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    displayed: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+    self: PropTypes.bool,
     defaultMessage: PropTypes.string.isRequired
 };
 
