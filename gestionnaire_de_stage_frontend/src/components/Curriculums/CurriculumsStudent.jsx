@@ -1,8 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {getAllCurriculumsByStudentWithPrincipal, setPrincipalCurriculum} from "../../services/curriculum-service";
+import {
+    deleteCurriculumById,
+    getAllCurriculumsByStudentWithPrincipal,
+    setPrincipalCurriculum
+} from "../../services/curriculum-service";
 import {useAuth} from "../../services/use-auth";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
-import {AiOutlineCloseCircle, GoStar, MdOutlinePendingActions} from "react-icons/all";
+import {AiOutlineCloseCircle, BsTrash, GoStar, MdOutlinePendingActions} from "react-icons/all";
 import {downloadFile, toPdfBlob} from "../../utility";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
@@ -64,12 +68,27 @@ export default function CurriculumsStudent() {
     if (!curriculumsWithPrincipal.curriculumList || curriculumsWithPrincipal.curriculumList.length === 0)
         return <MessageNothingToShow message="Aucun C.V. à afficher"/>
 
+    const deleteCurriculum = cv => e => {
+        e.preventDefault();
+
+        deleteCurriculumById(cv.id).then(
+            (success) => {
+                if (success){
+                    setCurriculumsWithPrincipal(prev => ({
+                        ...prev,
+                        curriculumList: prev.curriculumList.filter(curriculum => curriculum.id !== cv.id)}));
+                }
+            }
+        );
+    };
+
     return (
         <>
             <Table>
                 <TableHeader>
                     <th>Principal</th>
                     <th>Nom</th>
+                    <th>Supprimer</th>
                 </TableHeader>
 
                 {curriculumsWithPrincipal.curriculumList.map((cv, index) =>
@@ -78,6 +97,11 @@ export default function CurriculumsStudent() {
                         <td className={cv.isValid === false ? "text-danger" : ""}>
                             <button className="link-button" onClick={() => downloadFile(toPdfBlob(cv.data), cv.name)}>
                                 {cv.name}
+                            </button>
+                        </td>
+                        <td>
+                            <button className="link-button" onClick={deleteCurriculum(cv)}>
+                                <BsTrash color="red" title="Supprimer ce curriculum" size="20"/>
                             </button>
                         </td>
                     </TableRow>)}
