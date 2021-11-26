@@ -47,8 +47,8 @@ public class StudentService {
 
     public Student update(Student student) throws IdDoesNotExistException {
         Assert.isTrue(student != null, "L'étudiant ne peut pas être vide");
-        if (isIDNotValid(student.getId())) 
-             throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
+        if (isIDNotValid(student.getId()))
+            throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
         return studentRepository.save(student);
     }
 
@@ -124,7 +124,9 @@ public class StudentService {
     public boolean isEmailInvalid(String email) {
         return !studentRepository.existsByEmail(email);
     }
+
     public boolean isMatriculeValid(String matricule) {
         return studentRepository.existsByMatricule(matricule);
     }
+
 }

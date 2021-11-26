@@ -94,7 +94,7 @@ function StepCegep({register, errors}) {
                                    message: "Votre matricule doit être de 5 ou 7 chiffres"
                                },
                                validate: async (matricule) =>
-                                   await checkMatricule(matricule) || "Matricule déjà utilisé"
+                                   await checkMatricule(matricule) || "Ce matricule est déjà utilisé"
                            }}
                            error={errors.matricule}
                            name="matricule"

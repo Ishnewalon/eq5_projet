@@ -72,11 +72,12 @@ public class MonitorService {
         return monitor.getEmail() != null && monitorRepository.existsByEmail(monitor.getEmail());
     }
 
-    private boolean isEmailInvalid(String email) {
+    public boolean isEmailInvalid(String email) {
         return !monitorRepository.existsByEmail(email);
     }
 
     public boolean isIdInvalid(Long id) {
         return !monitorRepository.existsById(id);
     }
+
 }

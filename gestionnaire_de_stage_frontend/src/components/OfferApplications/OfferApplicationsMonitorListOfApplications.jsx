@@ -21,7 +21,6 @@ export default function OfferApplicationsMonitorListOfApplications() {//TODO: li
         return <MessageNothingToShow message="Au moment, aucun étudiant n'a postulé à cette offre"/>
     }
 
-
     return <>
         <ContainerBox>
             {students.map((student, index) =>

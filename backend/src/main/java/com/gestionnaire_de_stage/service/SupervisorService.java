@@ -103,7 +103,7 @@ public class SupervisorService {
         return supervisorRepository.existsByEmailAndPassword(email, password);
     }
 
-    private boolean isEmailInvalid(String email) {
+    public boolean isEmailInvalid(String email) {
         return !supervisorRepository.existsByEmail(email);
     }
 

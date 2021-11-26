@@ -50,6 +50,11 @@ public class StudentController {
         return ResponseEntity.ok(!studentService.isMatriculeValid(matricule));
     }
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> checkValidEmail(@PathVariable String email) {
+        return ResponseEntity.ok(studentService.isEmailInvalid(email));
+    }
+
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
         Student student;
