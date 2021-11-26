@@ -10,21 +10,41 @@ FormGroupV2.propTypes = {
     children: PropTypes.node
 }
 
-Col.propTypes = {
+Column.propTypes = {
     children: PropTypes.node,
     col: PropTypes.shape({
+        xs: PropTypes.number,
         sm: PropTypes.number,
         md: PropTypes.number,
         lg: PropTypes.number,
         xl: PropTypes.number,
+        xxl: PropTypes.number
     }),
-    default: PropTypes.number
+    defaultValue: PropTypes.number
+}
+Column.defaultProps = {
+    col: {
+        xs: 12,
+    },
+    defaultValue: undefined
 }
 
-function Col(props) {
-    const {children, col, default: defaultCol} = props;
-    const {sm, md, lg, xl} = col || {sm: defaultCol, md: defaultCol, lg: defaultCol, xl: defaultCol};
-    return <div className={`col-sm-${sm} col-md-${md} col-lg-${lg} col-xl-${xl}`}>
+export function Column(props) {
+    const {children, col, defaultValue} = props;
+    if (defaultValue)
+        return <div className={`col-${defaultValue}`}>{children}</div>
+
+    const {xs, sm, md, lg, xl, xxl} = {
+        xs: (col && col.xs),
+        sm: col && col.sm,
+        md: col && col.md,
+        lg: col && col.lg,
+        xl: col && col.xl,
+        xxl: col && col.xxl
+    };
+
+    return <div
+        className={`${xs && "col-xs-" + xs} ${sm && "col-sm-" + sm} ${md && "col-md-" + md} ${lg && "col-lg-" + lg} ${xl && "col-xl-" + xl} ${xxl && "col-xxl-" + xxl}`}>
         {children}
     </div>
 }
