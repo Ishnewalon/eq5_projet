@@ -51,20 +51,20 @@ function Menu() {
         <CardsView>
             <RapportCard title="Rapport des offres validées"
                          description="Liste de toutes les offres enregistrées et que vous avez validées"
-                         to={{pathname:"/dashboard/rapports/1", state:{from:location}}}/>
+                         to={{pathname: "/dashboard/rapports/1", state: {from: location}}}/>
             <RapportCard title="Rapport des offres non validées"
                          description="Liste de toutes les offres enregistrées et pas encore validées"
-                         to={{pathname:"/dashboard/rapports/2", state:{from:location}}}/>
+                         to={{pathname: "/dashboard/rapports/2", state: {from: location}}}/>
             <RapportCard title="Rapport des étudiants avec leur status"
                          description="Liste des étudiants qui ont appliqué au moins 1 fois"
-                         to={{pathname:"/dashboard/rapports/3", state:{from:location}}}/>
+                         to={{pathname: "/dashboard/rapports/3", state: {from: location}}}/>
             <RapportCard title="Rapport des étudiants pas évalués par le moniteur"
                          description="Liste des étudiants qui ne sont pas encore évalués par le
                              moniteur suite à leur stage"
-                         to={{pathname:"/dashboard/rapports/4", state:{from:location}}}/>
+                         to={{pathname: "/dashboard/rapports/4", state: {from: location}}}/>
             <RapportCard title="Rapport des étudiants dont la compagnie n'est pas évalués"
                          description="Liste des étudiants dont la compagnie n'a pas encore été évaluées par le superviseur"
-                         to={{pathname:"/dashboard/rapports/5", state:{from:location}}}/>
+                         to={{pathname: "/dashboard/rapports/5", state: {from: location}}}/>
         </CardsView>
     </>;
 }

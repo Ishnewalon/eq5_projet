@@ -54,7 +54,7 @@ export default function StudentsCurriculumsOverview() {
                 <th>Voir</th>
             </TableHeader>
             {students.map((student, index) => {
-                let cur = curriculums.find(curriculums => curriculums.length > 0 && curriculums[0].student.id === student.id)
+                    let cur = curriculums.find(curriculums => curriculums.length > 0 && curriculums[0].student.id === student.id)
                     return <TableRow key={index}>
                         <th>{student.id}</th>
                         <td>{student.firstName} {student.lastName}</td>

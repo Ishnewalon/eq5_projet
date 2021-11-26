@@ -8,7 +8,7 @@ import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {BtnBack} from "../../SharedComponents/BtnBack";
 import {Title} from "../../SharedComponents/Title/Title";
 import {useForm} from "react-hook-form";
-import {regexMatricule, toast} from "../../../utility";
+import {regexMatricule} from "../../../utility";
 import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 import {checkMatricule} from "../../../services/user-service";
 
