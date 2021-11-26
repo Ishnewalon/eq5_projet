@@ -27,7 +27,7 @@ export default function CreateOffer() {
 
     const addOffer = (data, e) => {
         e.preventDefault();
-        const {
+        let {
             title,
             department,
             description,
@@ -41,6 +41,10 @@ export default function CreateOffer() {
             nbHeureSemaine,
             idSession
         } = data
+
+        if (!creator_email)
+            creator_email = auth.user.email;
+
         let offer = new OfferDTO(title, department, description, address, salary, creator_email, nbSemaine, dateDebut, dateFin, horaireTravail, nbHeureSemaine, parseInt(idSession));
         createOffer(offer).then((b) => {
             if (b === null)
@@ -106,7 +110,7 @@ export default function CreateOffer() {
                             defaultMessage="Choisissez un département"
                             options={Object.values(DepartmentEnum)}
                             fieldValue={0}
-                            displayed={[1]}
+                            displayed={[0]}
                             register={register}
                             error={errors.department}
                             validation={{
