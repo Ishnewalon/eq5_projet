@@ -19,10 +19,6 @@ export default function OffersStudentApply() {
     const setMyVisible = (idSession) =>
         setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(idSession)))
 
-    const removeFromList = (id) => {
-        setOffers(prev => prev.filter(items => items.id !== id))
-    }
-
     useEffect(() => {
         getAllOffersByDepartment(auth.user.department)
             .then(offers => {
@@ -72,7 +68,9 @@ export default function OffersStudentApply() {
 
                 {visibleOffers.map((offer, index) =>
                     <div className="col-md-6 col-12">
-                        <OfferApplication key={index} offer={offer} removeFromList={removeFromList}/>
+                        {offerApplication.filter(offerApp => offerApp.offer.id === offer.id).length === 0 &&
+                        <OfferApplication key={index} offer={offer}/>
+                        }
                     </div>
                 )}
             </div>
@@ -80,14 +78,12 @@ export default function OffersStudentApply() {
     );
 }
 
-function OfferApplication({offer, removeFromList}) {
+function OfferApplication(offer) {
     let auth = useAuth();
     const apply = offerId => e => {
         e.preventDefault();
-        applyToOffer(new OfferApp(offerId, auth.user.id)).then(
-            valid => {
-                if (valid) removeFromList(offerId)
-            });
+        applyToOffer(new OfferApp(offerId, auth.user.id)).then(() => {}
+        )
     }
 
     return (
