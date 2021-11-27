@@ -24,7 +24,10 @@ public class NotificationService {
     public void notifyOfCurriculumValidation(Curriculum curriculum) throws IdDoesNotExistException {
         Curriculum previous = curriculumService.getOneByID(curriculum.getId());
         if (curriculum.getIsValid() != previous.getIsValid()) {
-            notificationRepository.save(new Notification(curriculum.getStudent(), "Updated"));
+            notificationRepository.save(new Notification(
+                    curriculum.getStudent(),
+                    "Votre curriculum : " + curriculum.getName() + " à été vérifié. Veuillez voir son état dans vos Curriculums.")
+            );
         }
     }
 }
