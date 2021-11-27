@@ -28,6 +28,7 @@ export async function resetPassword(token, password) {
 }
 
 export async function checkMatricule(matricule) {
+    console.log(matricule);
     let type = matricule.length === 7 ? "student" : "supervisor";
     return await fetch(`${urlBackend}/${type}/matricule/${matricule}`, requestInit(methods.GET)).then(
         response => {
@@ -39,6 +40,7 @@ export async function checkMatricule(matricule) {
 }
 
 export async function checkEmail(email) {
+    console.log(email);
     let valid = await fetch(`${urlBackend}/student/email/${email}`, requestInit(methods.GET)).then(
         response => {
             return response.json().then((body) => {

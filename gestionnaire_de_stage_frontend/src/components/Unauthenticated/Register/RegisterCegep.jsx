@@ -16,7 +16,7 @@ import {checkMatricule} from "../../../services/user-service";
 export default function RegisterCegep() {
     const {register, handleSubmit, watch, formState: {errors}} = useForm({
         mode: "onSubmit",
-        reValidateMode: "onChange"
+        reValidateMode: "onSubmit",
     });
     let history = useHistory();
     let auth = useAuth();

@@ -33,7 +33,7 @@ export default function StepPassword({register, errors, watch, prev}) {
             </FormGroup>
             <div className="form-group text-center">
                 <div className="btn-group">
-                    {prev && <button className="btn btn-secondary" onClick={prev}>Précédent</button>}
+                    {prev && <button className="btn btn-primary" onClick={prev}>Précédent</button>}
                     <input className="btn btn-primary" type="submit" name="next" value={prev ? "Suivant" : "Changer"}/>
                 </div>
             </div>

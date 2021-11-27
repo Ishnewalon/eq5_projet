@@ -14,7 +14,7 @@ import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 export default function RegisterMonitor() {
     const {register, handleSubmit, watch, formState: {errors}} = useForm({
         mode: "onSubmit",
-        reValidateMode: "onChange"
+        reValidateMode: "onSubmit",
     });
     let history = useHistory();
     let auth = useAuth();
