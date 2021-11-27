@@ -1,6 +1,6 @@
-import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
-import {FormTextarea} from "../SharedComponents/FormTextarea";
-import {FieldRadio} from "../SharedComponents/FormInput/FieldRadio";
+import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FormTextarea} from "../../SharedComponents/FormTextarea";
+import {FieldRadio} from "../../SharedComponents/FormInput/FieldRadio";
 
 export default function StepThree({register, choices}) {
 

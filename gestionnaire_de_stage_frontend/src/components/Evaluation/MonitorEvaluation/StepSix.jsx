@@ -1,7 +1,7 @@
-import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
-import {FieldRadio} from "../SharedComponents/FormInput/FieldRadio";
-import {FormTextarea} from "../SharedComponents/FormTextarea";
-import {FormInput} from "../SharedComponents/FormInput/FormInput";
+import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FieldRadio} from "../../SharedComponents/FormInput/FieldRadio";
+import {FormTextarea} from "../../SharedComponents/FormTextarea";
+import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 
 export default function StepSix({errors, register, choixAppreciation, yesAndNoAnswers}) {
 

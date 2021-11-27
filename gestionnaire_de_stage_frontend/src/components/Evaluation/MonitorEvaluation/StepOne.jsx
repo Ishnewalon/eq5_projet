@@ -1,6 +1,6 @@
-import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
-import {regexEmail, regexName, regexPhone} from "../../utility";
-import {FormInput} from "../SharedComponents/FormInput/FormInput";
+import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {regexEmail, regexName, regexPhone} from "../../../utility";
+import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 
 export default function StepOne({errors, register}) {
 

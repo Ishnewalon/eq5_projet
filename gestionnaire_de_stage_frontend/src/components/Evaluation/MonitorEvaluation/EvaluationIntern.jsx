@@ -1,13 +1,13 @@
-import {monitorCreateForm} from "../../services/stage-service";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
-import StepOne from "../EvaluationsWithSteps/StepOne";
+import {monitorCreateForm} from "../../../services/stage-service";
+import {ContainerBox} from "../../SharedComponents/ContainerBox/ContainerBox";
+import StepOne from "./StepOne";
 import {useForm} from "react-hook-form";
-import StepTwo from "../EvaluationsWithSteps/StepTwo";
-import StepThree from "../EvaluationsWithSteps/StepThree";
-import StepFour from "../EvaluationsWithSteps/StepFour";
-import StepFive from "../EvaluationsWithSteps/StepFive";
-import StepSix from "../EvaluationsWithSteps/StepSix";
-import StepSeven from "../EvaluationsWithSteps/StepSeven";
+import StepTwo from "./StepTwo";
+import StepThree from "./StepThree";
+import StepFour from "./StepFour";
+import StepFive from "./StepFive";
+import StepSix from "./StepSix";
+import StepSeven from "./StepSeven";
 import Swal from "sweetalert2";
 
 export default function EvaluationIntern() {

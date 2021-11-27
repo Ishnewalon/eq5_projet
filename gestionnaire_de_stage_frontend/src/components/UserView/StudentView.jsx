@@ -10,7 +10,7 @@ import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import ContractSignedStudent from "../Contract/ContractSignedStudent";
 import CurriculumsStudent from "../Curriculums/CurriculumsStudent";
 import {Title} from "../SharedComponents/Title/Title";
-import EvaluationIntern from "../Evaluation/EvaluationIntern";
+import EvaluationIntern from "../Evaluation/MonitorEvaluation/EvaluationIntern";
 
 export default function StudentView() {
     let {path} = useRouteMatch();

@@ -1,7 +1,7 @@
 import React from "react";
 import {Route, useRouteMatch} from "react-router-dom";
 import {useAuth} from "../../services/use-auth";
-import SupervisorVisitForm from "../Evaluation/SupervisorVisitForm";
+import SupervisorVisitForm from "../Evaluation/SupervisorEvaluation/SupervisorVisitForm";
 import StudentStatusView from "../Admin/StudentManagement/StudentStatusView";
 import {Title} from "../SharedComponents/Title/Title";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
