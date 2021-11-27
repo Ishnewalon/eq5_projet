@@ -12,6 +12,7 @@ import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Session;
+import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
 import com.gestionnaire_de_stage.repository.OfferRepository;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.springframework.context.annotation.Lazy;
@@ -34,15 +35,15 @@ public class OfferService {
     private final MonitorService monitorService;
     private final SessionService sessionService;
     private final StudentRepository studentRepository;
-    private final OfferApplicationService offerApplicationService;
+    private final OfferApplicationRepository offerApplicationRepository;
     private final Clock clock;
 
-    public OfferService(OfferRepository offerRepository, MonitorService monitorService, SessionService sessionService, StudentRepository studentRepository, OfferApplicationService offerApplicationService, @Lazy Clock clock) {
+    public OfferService(OfferRepository offerRepository, MonitorService monitorService, SessionService sessionService, StudentRepository studentRepository, OfferApplicationRepository offerApplicationRepository, @Lazy Clock clock) {
         this.offerRepository = offerRepository;
         this.monitorService = monitorService;
         this.sessionService = sessionService;
         this.studentRepository = studentRepository;
-        this.offerApplicationService = offerApplicationService;
+        this.offerApplicationRepository = offerApplicationRepository;
         this.clock = clock;
     }
 
@@ -148,7 +149,7 @@ public class OfferService {
         if (!studentRepository.existsById(studentId)) {
             throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
         }
-        List<OfferApplication> listOffersApplied = offerApplicationService.getAllOffersStudentApplied(studentId);
+        List<OfferApplication> listOffersApplied = offerApplicationRepository.getAllByCurriculum_StudentId(studentId);
         int monthValue = LocalDate.now(clock).getMonthValue();
 
         if (monthValue >= Month.SEPTEMBER.getValue())
@@ -159,7 +160,8 @@ public class OfferService {
         if (monthValue >= Month.MAY.getValue())
             removeOffersOfWinter(listOffers);
 
-        listOffers.removeAll(listOffersApplied.stream().map(OfferApplication::getOffer).collect(Collectors.toList()));
+        listOffers.removeIf(offer -> listOffersApplied.stream().anyMatch(offerApplication -> offerApplication.getOffer().equals(offer)));
+
         return listOffers;
     }
 }

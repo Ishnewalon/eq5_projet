@@ -9,6 +9,7 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
 import com.gestionnaire_de_stage.model.*;
+import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
 import com.gestionnaire_de_stage.repository.OfferRepository;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ public class OfferServiceTest {
     private StudentRepository studentRepository;
 
     @Mock
-    private OfferApplicationService offerApplicationService;
+    private OfferApplicationRepository offerApplicationRepository;
 
     @Mock
     private SessionService sessionService;
@@ -203,7 +204,7 @@ public class OfferServiceTest {
         doReturn(fixedClock.instant()).when(clock).instant();
         doReturn(fixedClock.getZone()).when(clock).getZone();
         when(offerRepository.findAllByValidIsTrueAndSession_YearGreaterThanEqual(any())).thenReturn(Collections.emptyList());
-        when(offerApplicationService.getAllOffersStudentApplied(any())).thenReturn(getDummyOfferAppList());
+        when(offerApplicationRepository.getAllByCurriculum_StudentId(any())).thenReturn(getDummyOfferAppList());
         when(studentRepository.existsById(any())).thenReturn(true);
 
         List<Offer> actualOfferDtoList = offerService.getOffersNotYetApplied(studentId);
@@ -220,7 +221,7 @@ public class OfferServiceTest {
         doReturn(fixedClock.instant()).when(clock).instant();
         doReturn(fixedClock.getZone()).when(clock).getZone();
         when(offerRepository.findAllByValidIsTrueAndSession_YearGreaterThanEqual(any())).thenReturn(dummyOfferList);
-        when(offerApplicationService.getAllOffersStudentApplied(any())).thenReturn(dummyOfferApplicationList);
+        when(offerApplicationRepository.getAllByCurriculum_StudentId(any())).thenReturn(dummyOfferApplicationList);
         when(studentRepository.existsById(any())).thenReturn(true);
 
         List<Offer> actualOfferList = offerService.getOffersNotYetApplied(studentId);
@@ -229,7 +230,7 @@ public class OfferServiceTest {
     }
 
     @Test
-    public void testGetOffersNotAppliedYet_withNoIdStudent123() {
+    public void testGetOffersNotAppliedYet_withNoIdStudent() {
         assertThrows(IdDoesNotExistException.class,
                 () -> offerService.getOffersNotYetApplied(213123L));
     }

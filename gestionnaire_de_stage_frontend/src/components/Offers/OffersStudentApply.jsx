@@ -1,18 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {getAllOffersByDepartment} from '../../services/offer-service';
 import {useAuth} from "../../services/use-auth";
 import {getCurrentAndFutureSession} from "../../services/session-service";
 import {FormField} from "../SharedComponents/FormField/FormField";
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
-import {applyToOffer, getStudentApplicationsOffer} from "../../services/offerAppService";
+import {applyToOffer} from "../../services/offerAppService";
 import OfferApp from "../../models/OfferApp";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {BsClock, BsClockHistory, MdAttachMoney, MdLocationPin} from "react-icons/all";
+import {getAllOffersNotYetApplied} from "../../services/offer-service";
 
 export default function OffersStudentApply() {
     let auth = useAuth();
     const [offers, setOffers] = useState([])
-    const [offerApplication, setOfferApplications] = useState([])
     const [sessions, setSessions] = useState([]);
     const [visibleOffers, setVisibleOffers] = useState([]);
 
@@ -20,21 +19,17 @@ export default function OffersStudentApply() {
         setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(idSession)))
 
     useEffect(() => {
-        getAllOffersByDepartment(auth.user.department)
+        getAllOffersNotYetApplied(auth.user.id)
             .then(offers => {
+                console.log(offers)
                 setOffers(offers)
             })
             .catch(e => {
                 setOffers([])
                 console.error(e);
             });
-    }, [auth.user.department]);
+    }, [auth.user.id]);
 
-    useEffect(() => {
-        getStudentApplicationsOffer(auth.user.id).then(data => {
-            setOfferApplications(data)
-        })
-    }, [auth.user])
 
     useEffect(() => {
         getCurrentAndFutureSession()
@@ -65,12 +60,9 @@ export default function OffersStudentApply() {
                 </FormField>
             </FormGroup>
             <div className="row">
-
                 {visibleOffers.map((offer, index) =>
-                    <div className="col-md-6 col-12">
-                        {offerApplication.filter(offerApp => offerApp.offer.id === offer.id).length === 0 &&
-                        <OfferApplication key={index} offer={offer}/>
-                        }
+                    <div key={index} className="col-md-6 col-12">
+                        <OfferApplication offer={offer}/>
                     </div>
                 )}
             </div>
@@ -79,10 +71,12 @@ export default function OffersStudentApply() {
 }
 
 function OfferApplication(offer) {
+    console.log(offer)
     let auth = useAuth();
     const apply = offerId => e => {
         e.preventDefault();
-        applyToOffer(new OfferApp(offerId, auth.user.id)).then(() => {}
+        applyToOffer(new OfferApp(offerId, auth.user.id)).then(() => {
+            }
         )
     }
 
@@ -90,29 +84,26 @@ function OfferApplication(offer) {
         <div className="card-holder">
             <div className="card">
                 <div className="card-body">
-                    <h5 className="card-title job-title">{offer.title}</h5>
-                    <div className="card-company-glassdoor">
-                        <p className="card-company-name">{offer.creator.companyName}</p>
-                    </div>
+                    <h5 className="card-title job-title">{offer.offer.title}</h5>
                     <div className="card-job-details">
                         <p className="card-company-location d-flex align-items-center">
-                            <MdLocationPin/> {offer.address}
+                            <MdLocationPin/> {offer.offer.address}
                         </p>
                         <p className="card-job-duration d-flex align-items-center">
-                            <BsClock title="Durée du stage" className={"me-1"}/> {offer.nbSemaine}
+                            <BsClock title="Durée du stage" className={"me-1"}/> {offer.offer.nbSemaine}
                         </p>
                         <p className="card-listing-date d-flex align-items-center">
                             <BsClockHistory className={"me-1"}/> Il y
-                            a {Math.ceil((new Date().getTime() - new Date(offer.created).getTime()) / (1000 * 3600 * 24))} jour(s)
+                            a {Math.ceil((new Date().getTime() - new Date(offer.offer.created).getTime()) / (1000 * 3600 * 24))} jour(s)
                         </p>
                         <p className="card-salary-range d-flex align-items-center">
-                            <MdAttachMoney/> {offer.salary}$/h
+                            <MdAttachMoney/> {offer.offer.salary}$/h
                         </p>
                     </div>
                     <div className="card-job-summary">
-                        <p className="card-text">{offer.description}</p>
+                        <p className="card-text">{offer.offer.description}</p>
                     </div>
-                    <button className="btn btn btn-outline-success" onClick={apply(offer.id)}>
+                    <button className="btn btn btn-outline-success" onClick={apply(offer.offer.id)}>
                         Postuler
                     </button>
                 </div>
