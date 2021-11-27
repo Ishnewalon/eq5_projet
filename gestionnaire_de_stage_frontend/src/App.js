@@ -22,7 +22,7 @@ function App() {
         <Router>
             <Navbar/>
             <main>
-                <div>
+                <div className="container">
                     <Switch>
                         <RequiredRoute path="/dashboard" component={RequireAuth}>
                             <Dashboard/>

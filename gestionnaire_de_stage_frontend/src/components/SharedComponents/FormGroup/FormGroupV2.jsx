@@ -2,12 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 
 export function FormGroupV2(props) {
-    const children = props.children;
-    return <div className="form-group row mb-1 mx-auto">{children}</div>
+    const {children, className} = props;
+    return <div className={`form-group row mb-1 mx-auto ${className}`}>{children}</div>
 }
 
 FormGroupV2.propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
+    className: PropTypes.string
 }
 
 Column.propTypes = {
