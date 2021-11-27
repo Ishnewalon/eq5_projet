@@ -17,7 +17,6 @@ public class SystemConfigurationTest {
     private SystemConfiguration systemConfiguration;
 
     @Test
-    @Disabled
     public void testUpdateRegurlarlyOfferApplicationsStatus() {
         final ThrowingRunnable runnable = () -> verify(systemConfiguration, atLeast(1)).updateRegurlarlyOfferApplicationsStatus();
         await().untilAsserted(runnable);

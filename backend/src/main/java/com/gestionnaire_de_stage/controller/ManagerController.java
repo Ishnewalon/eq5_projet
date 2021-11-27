@@ -29,4 +29,9 @@ public class ManagerController {
                     .body(new ResponseMessage(e.getMessage()));
         }
     }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> checkValidEmail(@PathVariable String email) {
+        return ResponseEntity.ok(managerService.isEmailInvalid(email));
+    }
 }

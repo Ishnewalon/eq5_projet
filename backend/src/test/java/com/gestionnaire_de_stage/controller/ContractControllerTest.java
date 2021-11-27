@@ -51,7 +51,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Création du contrat avec fait succès");
+        assertThat(response.getContentAsString()).contains("Création du contrat faite avec succès");
     }
 
     @Test
@@ -148,7 +148,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Signature fait");
+        assertThat(response.getContentAsString()).contains("Contrat signé");
     }
 
     @Test
@@ -256,7 +256,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Signature fait");
+        assertThat(response.getContentAsString()).contains("Contrat signé");
     }
 
     @Test
@@ -364,7 +364,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Signature fait");
+        assertThat(response.getContentAsString()).contains("Contrat signé");
     }
 
     @Test

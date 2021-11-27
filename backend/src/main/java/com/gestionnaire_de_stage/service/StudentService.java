@@ -97,6 +97,9 @@ public class StudentService {
     }
 
     public boolean assign(Student student, Supervisor supervisor) {
+        if (student.getSupervisor() != null) {
+            return false;
+        }
         student.setSupervisor(supervisor);
         studentRepository.save(student);
         return true;

@@ -74,7 +74,7 @@ function NavItemSpecificForUser() {
                 </Dropdown>
                 <Dropdown title="Contrats">
                     <Link to={{pathname: "/dashboard/voir/futures_stagiaires", state: {from: location}}}>Contrats à
-                        valider</Link>
+                        signer</Link>
                     <Link to={{pathname: "/dashboard/monitor/contracts/signed", state: {from: location}}}>Contrats
                         signés</Link>
                 </Dropdown>
@@ -94,7 +94,7 @@ function NavItemSpecificForUser() {
                     Superviseur</Link>
             </Dropdown>
             <Dropdown title="Contrats">
-                <Link to={{pathname: "/dashboard/contrats/a_signer", state: {from: location}}}>Contrats à valider</Link>
+                <Link to={{pathname: "/dashboard/contrats/a_signer", state: {from: location}}}>Contrats à signer</Link>
                 <Link to={{pathname: "/dashboard/students/start", state: {from: location}}}>Commencer signature</Link>
                 <Link to={{pathname: "/dashboard/manager/contracts/signed", state: {from: location}}}>Contrats
                     signés</Link>
@@ -115,7 +115,7 @@ function NavItemSpecificForUser() {
                     d'entrevue</Link>
             </Dropdown>
             <Dropdown title="Contrat">
-                <Link to={{pathname: "/dashboard/voir_mon_contrat", state: {from: location}}}>Mon contrats</Link>
+                <Link to={{pathname: "/dashboard/voir_mon_contrat", state: {from: location}}}>Mon contrat</Link>
                 <Link to={{pathname: "/dashboard/student/contract/signed", state: {from: location}}}>Mon contrat
                     signé</Link>
             </Dropdown>
