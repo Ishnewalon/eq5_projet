@@ -27,6 +27,7 @@ import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class OfferService {
@@ -160,7 +161,8 @@ public class OfferService {
         if (monthValue >= Month.MAY.getValue())
             removeOffersOfWinter(listOffers);
 
-        listOffers.removeIf(offer -> listOffersApplied.stream().anyMatch(offerApplication -> offerApplication.getOffer().equals(offer)));
+        List<Offer> collect = listOffersApplied.stream().map(OfferApplication::getOffer).collect(Collectors.toList());
+        listOffers.removeAll(collect);
 
         return listOffers;
     }
