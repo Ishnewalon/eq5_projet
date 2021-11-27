@@ -11,7 +11,7 @@
 }
 
 #root {
-    padding-top: var(--nav-height);
+    padding-top: 40px !important;
     display: block;
 }
 
@@ -37,6 +37,7 @@
 }
 
 main {
+    padding-top: 15px;
     height: 100%;
     overflow-y: auto;
 }
