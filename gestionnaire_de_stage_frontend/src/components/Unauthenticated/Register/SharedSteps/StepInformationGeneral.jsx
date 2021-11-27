@@ -35,21 +35,24 @@ export default function StepInformationGeneral({register, errors, prev}) {
                            }
                        }}/>
         </FormGroup>
+
         <FormGroup>
-            <FormInput register={register}
-                       error={errors.email}
-                       name="email"
-                       label="Votre Email"
-                       placeholder="Votre Email"
-                       type="email"
+            <FormInput label="Votre Email"
                        validation={{
                            required: "Ce champ est obligatoire!",
                            pattern: {
                                value: regexEmail,
                                message: "Le courriel n'est pas valide!"
-                           }, validate: async (email) =>
+                           },
+                           validate: async (email) =>
                                await checkEmail(email) || "Ce courriel est déjà utilisé"
-                       }}/>
+                       }}
+                       register={register}
+                       error={errors.email}
+                       name="email"
+                       placeholder="Votre Email"
+                       type="email"
+                       />
         </FormGroup>
         <FormGroup>
             <FormInput register={register}

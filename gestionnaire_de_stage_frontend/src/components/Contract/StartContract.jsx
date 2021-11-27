@@ -38,12 +38,16 @@ export default function StartContract() {
         <Table>
             <TableHeader>
                 <th>#</th>
+                <th>Nom de l'étudiant</th>
                 <th>Offre</th>
+                <th>Date début de stage</th>
                 <th>Commencer le processus de signature</th>
             </TableHeader>
             {offerApplications.map(offerApplication => <TableRow key={offerApplication.id}>
-                <th>{offerApplication.id}</th>
+                <td>{offerApplication.curriculum.student.id}</td>
+                <td>{offerApplication.curriculum.student.firstName} {offerApplication.curriculum.student.lastName}</td>
                 <td>{offerApplication.offer.title}</td>
+                <td>{offerApplication.offer.dateDebut}</td>
                 <td>
                     <div className="btn-group">
                         <button className="btn btn-outline-primary"
