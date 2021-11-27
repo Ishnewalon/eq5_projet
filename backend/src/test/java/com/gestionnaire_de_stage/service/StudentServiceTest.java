@@ -304,7 +304,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    void testAssign() {
+    void testAssign_withUnassignedStudent() {
         Student dummyStudent = getDummyStudent();
         Supervisor dummySupervisor = getDummySupervisor();
         when(studentRepository.save(any())).thenReturn(dummyStudent);
@@ -312,6 +312,17 @@ public class StudentServiceTest {
         boolean isAssigned = studentService.assign(dummyStudent, dummySupervisor);
 
         assertThat(isAssigned).isTrue();
+    }
+
+    @Test
+    void testAssign_withAssignedStudent() {
+        Student dummyStudent = getDummyStudent();
+        Supervisor dummySupervisor = getDummySupervisor();
+        dummyStudent.setSupervisor(dummySupervisor);
+
+        boolean isAssigned = studentService.assign(dummyStudent, dummySupervisor);
+
+        assertThat(isAssigned).isFalse();
     }
 
     @Test

@@ -135,7 +135,7 @@ public class SupervisorControllerTest {
     }
 
     @Test
-    public void testAssign() throws Exception {
+    public void testAssign_withAssignedStudent() throws Exception {
         AssignDto assignDto = new AssignDto(1L, 2L);
         when(studentService.assign(any(), any())).thenReturn(true);
 
@@ -147,8 +147,25 @@ public class SupervisorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Affectation fait!");
+        assertThat(response.getContentAsString()).contains("Affectation faite!");
     }
+
+    @Test
+    public void testAssign_withUnasignedStudent() throws Exception {
+        AssignDto assignDto = new AssignDto(1L, 2L);
+        when(studentService.assign(any(), any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/supervisor/assign/student")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(assignDto)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Affectation rejetée, l'étudiant est déjà assigné!");
+    }
+
 
     @Test
     public void testAssign_withInvalidSupervisorAndStudent() throws Exception {

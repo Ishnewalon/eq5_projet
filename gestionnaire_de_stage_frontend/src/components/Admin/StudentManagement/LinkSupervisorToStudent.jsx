@@ -35,8 +35,12 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
     const assign = (idStudent) => e => {
         e.preventDefault();
         assignStudentToSupervisor(idStudent, supervisorID).then(
-            responseMessage => {
-                toast.fire({title: responseMessage.message}).then();
+            response => {
+                if (response.status === 200)
+                    toast.fire({title: response.message, icon: "success"}).then();
+                else
+                    toast.fire({title: response.message, icon: "error"}).then();
+
             }
         )
     }

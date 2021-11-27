@@ -84,9 +84,12 @@ public class SupervisorController {
                     .body(new ResponseMessage(e.getMessage()));
         }
         boolean assign = studentService.assign(student, supervisor);
-
-        String response = assign ? "Affectation fait!" : "Affectation rejeté, l'étudiant est déjà assigné!";
-        return ResponseEntity.ok(new ResponseMessage(response));
+        if (assign) {
+            return ResponseEntity.ok(new ResponseMessage("Affectation faite!"));
+        }
+        return ResponseEntity
+                .badRequest()
+                .body(new ResponseMessage("Affectation rejetée, l'étudiant est déjà assigné!"));
     }
 
     @GetMapping("/students_status/{supervisor_id}")
