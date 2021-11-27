@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {assignStudentToSupervisor, getSupervisors, getUnassignedStudents} from "../../../services/user-service";
-import {toast} from "../../../utility";
 import {FormField} from "../../SharedComponents/FormField/FormField";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
-export default function LinkSupervisorToStudent() {// TODO: field is linked to supervisor or something
+export default function LinkSupervisorToStudent() {
 
     const [studentList, setStudentList] = useState([])
     const [supervisorList, setSupervisorList] = useState([])
@@ -34,16 +33,20 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
 
     const assign = (idStudent) => e => {
         e.preventDefault();
-        assignStudentToSupervisor(idStudent, supervisorID).then(
-            response => {
-                if (response.status === 200)
-                    toast.fire({title: response.message, icon: "success"}).then();
-                else
-                    toast.fire({title: response.message, icon: "error"}).then();
-
-            }
-        )
+        assignStudentToSupervisor(idStudent, supervisorID).then(() => {
+            getUnassignedStudents()
+                .then(studentList => {
+                    setStudentList(studentList)
+                })
+                .catch(e => {
+                    setStudentList([])
+                    console.error(e);
+                })
+        }).catch(e => {
+            console.error(e);
+        })
     }
+
     if (studentList.length === 0)
         return <MessageNothingToShow message="Aucun étudiant à associer pour le moment...">
             Bonne<span className="color-emphasis-1"> nouvelle!</span><br/>

@@ -117,9 +117,14 @@ export async function assignStudentToSupervisor(idStudent, idSupervisor) {
         idStudent,
         idSupervisor
     };
-    const response = await fetch(`${urlBackend}/supervisor/assign/student`,
-        requestInit(methods.POST, obj));
-    return await response.json();
+    const response = await fetch(`${urlBackend}/supervisor/assign/student`, requestInit(methods.POST, obj));
+    return await response.json().then((body) => {
+        if (response.status === 200)
+            toast.fire({title: body.message})
+        if (response.status === 400)
+            toastErr.fire({title: body.message})
+        return response.ok;
+    })
 }
 
 export async function getStudentsStatus(idSupervisor) {
