@@ -8,7 +8,7 @@ import style from "./Navbar.module.css";
 export default function Navbar() {
     let location = useLocation();
     return (
-        <nav className={`navbar navbar-expand-lg sticky-top bg-light navbar-light shadow-sm mb-4 ${style.bar}`}>
+        <nav className={`navbar navbar-expand-md bg-light navbar-light shadow ${style.bar}`}>
             <div className={"container-fluid"}>
                 <Link className={`navbar-brand font-monospace ${style.brand}`}
                       to={{pathname: "/", state: {from: location}}}>JI<span
@@ -17,7 +17,7 @@ export default function Navbar() {
                         aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <GiHamburgerMenu/>
                 </button>
-                <div className="collapse navbar-collapse justify-content-between" id="navbarText">
+                <div className="navbar-collapse collapse justify-content-between" id="navbarText">
                     <ul className="navbar-nav">
                         <GetNavItems/>
                     </ul>
