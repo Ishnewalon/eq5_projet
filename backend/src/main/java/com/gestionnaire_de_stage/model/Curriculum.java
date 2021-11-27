@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.gestionnaire_de_stage.listener.CurriculumListener;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @Setter
 @EqualsAndHashCode
 @Entity
+@EntityListeners(CurriculumListener.class)
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Curriculum implements Serializable {
