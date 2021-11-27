@@ -4,7 +4,7 @@ import {useAuth} from "../../services/use-auth";
 import {getCurrentAndFutureSession} from "../../services/session-service";
 import {FormField} from "../SharedComponents/FormField/FormField";
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
-import {applyToOffer} from "../../services/offerAppService";
+import {applyToOffer, getStudentApplicationsOffer} from "../../services/offerAppService";
 import OfferApp from "../../models/OfferApp";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {BsClock, BsClockHistory, MdAttachMoney, MdLocationPin} from "react-icons/all";
@@ -12,6 +12,7 @@ import {BsClock, BsClockHistory, MdAttachMoney, MdLocationPin} from "react-icons
 export default function OffersStudentApply() {
     let auth = useAuth();
     const [offers, setOffers] = useState([])
+    const [offerApplication, setOfferApplications] = useState([])
     const [sessions, setSessions] = useState([]);
     const [visibleOffers, setVisibleOffers] = useState([]);
 
@@ -32,6 +33,12 @@ export default function OffersStudentApply() {
                 console.error(e);
             });
     }, [auth.user.department]);
+
+    useEffect(() => {
+        getStudentApplicationsOffer(auth.user.id).then(data => {
+            setOfferApplications(data)
+        })
+    }, [auth.user])
 
     useEffect(() => {
         getCurrentAndFutureSession()
