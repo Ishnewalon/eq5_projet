@@ -3,7 +3,7 @@ import StepPassword from "./SharedSteps/StepPassword";
 import StepInformationGeneral from "./SharedSteps/StepInformationGeneral";
 import {MonitorModel} from "../../../models/User";
 import {useHistory} from "react-router-dom";
-import {useAuth} from "../../../services/use-auth";
+import {useAuth} from "../../../hooks/use-auth";
 import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {BtnBack} from "../../SharedComponents/BtnBack";
 import {useForm} from "react-hook-form";

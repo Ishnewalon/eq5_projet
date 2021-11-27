@@ -1,7 +1,7 @@
 import React from "react";
 import {Link, useHistory, useLocation} from "react-router-dom";
 import {UserType} from "../../enums/UserTypes";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useForm} from "react-hook-form";
 import {FormInput} from "../SharedComponents/FormInput/FormInput";

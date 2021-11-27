@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {getAllApplicants} from '../../services/offerAppService';
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {downloadFile, toPdfBlob} from "../../utility";
 import {AiOutlineFile} from "react-icons/all";

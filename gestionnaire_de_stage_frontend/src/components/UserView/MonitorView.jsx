@@ -5,7 +5,7 @@ import OfferApplicationsMonitorListOfApplications
 import {Route, useRouteMatch} from "react-router-dom";
 import ContractsToSign from "../Contract/ContractsToSign";
 import {UserType} from "../../enums/UserTypes";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import EvaluationIntern from "../Evaluation/EvaluationIntern";
 import ContractsSigned from "../Contract/ContractsSigned";
 import {Title} from "../SharedComponents/Title/Title";

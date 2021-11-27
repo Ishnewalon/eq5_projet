@@ -5,7 +5,7 @@ import React, {createElement} from "react";
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "./components/Navbar/Navbar";
-import {AuthProvider, RequireAuth, RequireNoAuth} from "./services/use-auth";
+import {AuthProvider, RequireAuth, RequireNoAuth} from "./hooks/use-auth";
 import Login from "./components/Unauthenticated/Login";
 import {Title} from "./components/SharedComponents/Title/Title";
 import Register from "./components/Unauthenticated/Register/Register";

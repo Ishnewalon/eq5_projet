@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {getStudentsStatus} from "../../../services/user-service";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
-import {useAuth} from "../../../services/use-auth";
+import {useAuth} from "../../../hooks/use-auth";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function StudentStatusView() {

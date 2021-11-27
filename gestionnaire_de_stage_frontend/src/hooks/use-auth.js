@@ -1,7 +1,7 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import {Redirect} from "react-router-dom";
 import {ManagerModel, MonitorModel, Student, Supervisor} from "../models/User";
-import {methods, requestInit, urlBackend} from "./serviceUtils";
+import {methods, requestInit, urlBackend} from "../services/serviceUtils";
 import {swalErr, toast} from "../utility";
 import {UserType} from "../enums/UserTypes";
 

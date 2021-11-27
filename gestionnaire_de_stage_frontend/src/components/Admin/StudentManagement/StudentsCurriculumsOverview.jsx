@@ -1,6 +1,6 @@
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import React, {useEffect, useState} from "react";
-import {useAuth} from "../../../services/use-auth";
+import {useAuth} from "../../../hooks/use-auth";
 import {getAllStudents} from "../../../services/user-service";
 import {getAllCurriculumsByStudent} from "../../../services/curriculum-service";
 import {useHistory, useRouteMatch} from "react-router-dom";

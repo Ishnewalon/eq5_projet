@@ -1,6 +1,6 @@
 import {Link, useLocation} from "react-router-dom";
 import React from "react";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import PropTypes from "prop-types";
 import {BiLogIn, BiLogOut, GiHamburgerMenu} from "react-icons/all";
 import style from "./Navbar.module.css";

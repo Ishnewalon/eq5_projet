@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {getCurrentAndFutureSession} from "../../services/session-service";
 import {DepartmentEnum} from "../../enums/Departement";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import {createOffer} from "../../services/offer-service";
 import OfferDTO from "../../models/OfferDTO";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";

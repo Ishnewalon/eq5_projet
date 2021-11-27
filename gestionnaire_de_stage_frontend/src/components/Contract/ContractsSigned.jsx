@@ -1,5 +1,5 @@
 import ContractSigned from "./ContractSigned";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import {useEffect, useState} from "react";
 import {getAllSignedContractsForManager, getAllSignedContractsForMonitor} from "../../services/contrat-service";
 import {UserType} from "../../enums/UserTypes";

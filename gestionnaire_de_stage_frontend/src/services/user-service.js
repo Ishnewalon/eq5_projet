@@ -42,41 +42,29 @@ export async function checkMatricule(matricule) {
 export async function checkEmail(email) {
     console.log(email);
     let valid = await fetch(`${urlBackend}/student/email/${email}`, requestInit(methods.GET)).then(
-        response => {
-            return response.json().then((body) => {
-                return body;
-            })
-        }
+        response =>
+            response.json().then(body => body)
     );
     if (!valid)
         return valid;
 
     valid = await fetch(`${urlBackend}/supervisor/email/${email}`, requestInit(methods.GET)).then(
-        response => {
-            return response.json().then((body) => {
-                return body;
-            })
-        }
+        response =>
+            response.json().then(body => body)
     );
     if (!valid)
         return valid;
 
     valid = await fetch(`${urlBackend}/monitor/email/${email}`, requestInit(methods.GET)).then(
-        response => {
-            return response.json().then((body) => {
-                return body;
-            })
-        }
+        response =>
+            response.json().then(body => body)
     );
     if (!valid)
         return valid;
 
     valid = await fetch(`${urlBackend}/manager/email/${email}`, requestInit(methods.GET)).then(
-        response => {
-            return response.json().then((body) => {
-                return body;
-            })
-        }
+        response =>
+            response.json().then(body => body)
     );
     if (!valid)
         return valid;
@@ -120,13 +108,14 @@ export async function assignStudentToSupervisor(idStudent, idSupervisor) {
         idSupervisor
     };
     const response = await fetch(`${urlBackend}/supervisor/assign/student`, requestInit(methods.POST, obj));
-    return await response.json().then((body) => {
-        if (response.status === 200)
-            toast.fire({title: body.message})
-        if (response.status === 400)
-            toastErr.fire({title: body.message})
-        return response.ok;
-    })
+    return await response.json().then(
+        body => {
+            if (response.status === 200)
+                toast.fire({title: body.message})
+            else if (response.status === 400)
+                toastErr.fire({title: body.message})
+            return response.ok;
+        })
 }
 
 export async function getStudentsStatus(idSupervisor) {

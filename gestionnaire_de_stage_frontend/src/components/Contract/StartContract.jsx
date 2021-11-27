@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import {getAllOfferAppReadyToSign, startSignerFetch} from "../../services/contrat-service";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";

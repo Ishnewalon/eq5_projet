@@ -7,7 +7,7 @@ import {Route, useRouteMatch} from "react-router-dom";
 import {UserType} from "../../enums/UserTypes";
 import StartContract from "../Contract/StartContract";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import RapportsView from "../Admin/RapportsView";
 import CreateSession from "../Sessions/CreateSession";
 import ContractsSigned from '../Contract/ContractsSigned';

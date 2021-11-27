@@ -194,65 +194,6 @@ Card
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
-.card-holder {
-    max-width: 100%;
-}
-
-.card-company-name {
-    margin-right: 0.5rem;
-}
-
-.card-company-location {
-    margin-bottom: -0.125rem;
-    margin-right: 1rem;
-}
-
-.card-role-type {
-    margin-bottom: -0.125rem;
-    margin-right: 0.75rem;
-}
-
-.card-listing-date {
-    margin-bottom: -0.125rem;
-    margin-right: 0.75rem;
-}
-
-.card-salary-range {
-    margin-right: 0.75rem;
-    margin-bottom: -0.125rem;
-}
-
-.card-job-duration {
-    margin-right: 0.75rem;
-    margin-bottom: -0.125rem;
-}
-
-.card-company-glassdoor {
-    display: flex;
-    margin-top: -0.5rem;
-    margin-bottom: -0.5rem;
-}
-
-.card-job-details {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
-.card-company-fit {
-    display: flex;
-}
-
-.job-title {
-    font-size: 2rem !important;
-    line-height: 1;
-}
-
-.card-job-summary {
-    display: flex;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
 
 .mega {
     font-size: 50px;
@@ -271,19 +212,4 @@ Card
 
 .color-emphasis-1 {
     color: var(--color-primary-hover);
-}
-
-.text-left {
-    text-align: left;
-}
-
-.messageEmpty {
-    user-select: none;
-    -webkit-user-drag: none;
-    position: relative;
-    max-width: 100%;
-}
-
-.image2 {
-    height: 400px;
 }

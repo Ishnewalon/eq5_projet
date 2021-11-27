@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {getAllOffersByDepartment} from '../../services/offer-service';
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import {getCurrentAndFutureSession} from "../../services/session-service";
 import {applyToOffer} from "../../services/offerAppService";
 import OfferApp from "../../models/OfferApp";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {BsClock, BsClockHistory, MdAttachMoney, MdLocationPin} from "react-icons/all";
 import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
+import styles from "./OffersStudentApply.module.css";
 
 export default function OffersStudentApply() {
     let auth = useAuth();
@@ -84,32 +85,32 @@ function OfferApplication({offer, removeFromList}) {
     }
 
     return (
-        <div className="card-holder">
+        <div className={styles.cardHolder}>
             <div className="card">
                 <div className="card-body">
-                    <h5 className="card-title job-title">{offer.title}</h5>
-                    <div className="card-company-glassdoor">
-                        <p className="card-company-name">{offer.creator.companyName}</p>
+                    <h5 className={`card-title ${styles.jobTitle}`}>{offer.title}</h5>
+                    <div className={styles.cardCompanyGlassdoor}>
+                        <p className={styles.cardCompanyName}>{offer.creator.companyName}</p>
                     </div>
-                    <div className="card-job-details">
-                        <p className="card-company-location d-flex align-items-center">
+                    <div className={styles.cardJobDetails}>
+                        <p className={`d-flex align-items-center ${styles.cardCompanyLocation}`}>
                             <MdLocationPin/> {offer.address}
                         </p>
-                        <p className="card-job-duration d-flex align-items-center">
+                        <p className={`d-flex align-items-center ${styles.cardJobDuration}`}>
                             <BsClock title="Durée du stage" className={"me-1"}/> {offer.nbSemaine}
                         </p>
-                        <p className="card-listing-date d-flex align-items-center">
+                        <p className={`d-flex align-items-center ${styles.cardListingDate}`}>
                             <BsClockHistory className={"me-1"}/> Il y
                             a {Math.ceil((new Date().getTime() - new Date(offer.created).getTime()) / (1000 * 3600 * 24))} jour(s)
                         </p>
-                        <p className="card-salary-range d-flex align-items-center">
+                        <p className={`d-flex align-items-center ${styles.cardSalaryRange}`}>
                             <MdAttachMoney/> {offer.salary}$/h
                         </p>
                     </div>
-                    <div className="card-job-summary">
+                    <div className={styles.cardJobSummary}>
                         <p className="card-text">{offer.description}</p>
                     </div>
-                    <button className="btn btn btn-outline-success" onClick={apply(offer.id)}>
+                    <button className="btn btn-outline-success" onClick={apply(offer.id)}>
                         Postuler
                     </button>
                 </div>

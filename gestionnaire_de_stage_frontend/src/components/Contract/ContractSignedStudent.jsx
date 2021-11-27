@@ -1,7 +1,7 @@
 import ContractSigned from "./ContractSigned";
 import {useEffect, useState} from "react";
 import {getSignedContractForStudent} from "../../services/contrat-service";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function ContractSignedStudent() {

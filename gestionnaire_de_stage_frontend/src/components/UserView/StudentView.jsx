@@ -7,7 +7,7 @@ import OfferApplicationsStudentSetStatusEnAttenteEntrevue
 import {ContractToSignStudent} from "../Contract/ContractToSignStudent";
 import OfferApplicationsStudentSetStatusFinal from "../OfferApplications/OfferApplicationsStudentSetStatusFinal";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import ContractSignedStudent from "../Contract/ContractSignedStudent";
 import CurriculumsStudent from "../Curriculums/CurriculumsStudent";
 import {Title} from "../SharedComponents/Title/Title";

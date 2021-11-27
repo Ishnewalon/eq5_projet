@@ -4,7 +4,7 @@ import {
     getAllCurriculumsByStudentWithPrincipal,
     setPrincipalCurriculum
 } from "../../services/curriculum-service";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import {AiOutlineCloseCircle, BsTrash, GoStar, MdOutlinePendingActions} from "react-icons/all";
 import {downloadFile, toPdfBlob} from "../../utility";
