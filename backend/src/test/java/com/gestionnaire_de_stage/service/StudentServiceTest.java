@@ -258,7 +258,6 @@ public class StudentServiceTest {
 
         assertThrows(IdDoesNotExistException.class,
                 () -> studentService.setPrincipalCurriculum(student, curriculum.getId()));
-
     }
 
     @Test
@@ -272,7 +271,6 @@ public class StudentServiceTest {
 
         assertThrows(CurriculumNotValidException.class,
                 () -> studentService.setPrincipalCurriculum(student, curriculum.getId()));
-
     }
 
     @Test

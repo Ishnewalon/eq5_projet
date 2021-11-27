@@ -82,6 +82,19 @@ public class ManagerControllerTest {
         assertThat(response.getContentAsString()).contains("Courriel ou mot de passe invalid");
     }
 
+    @Test
+    public void testCheckEmailValidty() throws Exception {
+        when(managerService.isEmailInvalid(any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/manager/email/{email}", "potato@gmail.com")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("false");
+    }
+
     private Manager getDummyManager() {
         Manager dummyManager = new Manager();
         dummyManager.setPassword("Test1234");

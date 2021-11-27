@@ -132,8 +132,8 @@ function useProvideAuth() {
                 return response.json().then(
                     body => {
                         if (response.status === 200) {
-                            if (userType === UserType.MONITOR[0]) {
-                                setUser(Object.setPrototypeOf(body, MonitorModel.prototype))
+                                if (userType === UserType.MONITOR[0]) {
+                                    setUser(Object.setPrototypeOf(body, MonitorModel.prototype))
                             } else if (userType === UserType.STUDENT[0]) {
                                 setUser(Object.setPrototypeOf(body, Student.prototype))
                             } else if (userType === UserType.SUPERVISOR[0]) {

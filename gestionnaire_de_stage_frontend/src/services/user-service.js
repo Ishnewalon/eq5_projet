@@ -39,14 +39,47 @@ export async function checkMatricule(matricule) {
 }
 
 export async function checkEmail(email) {
-    // let type = email.length === 7 ? "student" : "supervisor";
-    // return await fetch(`${urlBackend}/${type}/matricule/${email}`, requestInit(methods.GET)).then(
-    //     response => {
-    //         return response.json().then((body) => {
-    //             return body;
-    //         })
-    //     }
-    // );
+    let valid = await fetch(`${urlBackend}/student/email/${email}`, requestInit(methods.GET)).then(
+        response => {
+            return response.json().then((body) => {
+                return body;
+            })
+        }
+    );
+    if (!valid)
+        return valid;
+
+    valid = await fetch(`${urlBackend}/supervisor/email/${email}`, requestInit(methods.GET)).then(
+        response => {
+            return response.json().then((body) => {
+                return body;
+            })
+        }
+    );
+    if (!valid)
+        return valid;
+
+    valid = await fetch(`${urlBackend}/monitor/email/${email}`, requestInit(methods.GET)).then(
+        response => {
+            return response.json().then((body) => {
+                return body;
+            })
+        }
+    );
+    if (!valid)
+        return valid;
+
+    valid = await fetch(`${urlBackend}/manager/email/${email}`, requestInit(methods.GET)).then(
+        response => {
+            return response.json().then((body) => {
+                return body;
+            })
+        }
+    );
+    if (!valid)
+        return valid;
+
+    return true;
 }
 
 export async function getUnassignedStudents() {
@@ -79,7 +112,7 @@ export async function getAllStudentsWithCompanyNotYetEvaluated() {
     return await response.json();
 }
 
-export async function assignStudentToSupervisor(idStudent, idSupervisor) {//TODO BACKEND cant assign twice
+export async function assignStudentToSupervisor(idStudent, idSupervisor) {
     let obj = {
         idStudent,
         idSupervisor
