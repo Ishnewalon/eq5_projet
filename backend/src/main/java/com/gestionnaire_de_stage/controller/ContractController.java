@@ -61,7 +61,7 @@ public class ContractController {
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseMessage("Signature fait"));
+                .body(new ResponseMessage("Contrat signé"));
     }
 
     @PostMapping("/start")//SESSION : can start only contract of current or future session
@@ -83,7 +83,7 @@ public class ContractController {
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
         }
-        return ResponseEntity.ok(new ResponseMessage("Création du contrat avec fait succès"));
+        return ResponseEntity.ok(new ResponseMessage("Création du contrat faite avec succès"));
     }
 
     @GetMapping("/monitor/{monitor_id}")//SESSION : get only contract of current or futur session
@@ -119,7 +119,7 @@ public class ContractController {
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseMessage("Signature fait"));
+                .body(new ResponseMessage("Contrat signé"));
     }
 
     @GetMapping("/student/{student_id}")//SESSION : get only contract of current or futur session
@@ -154,7 +154,7 @@ public class ContractController {
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseMessage("Signature fait"));
+                .body(new ResponseMessage("Contrat signé"));
     }
 
     @GetMapping("/manager/signed/{managerId}")
