@@ -67,7 +67,7 @@ export default function CurriculumsStudent() {
     };
 
     if (!curriculumsWithPrincipal.curriculumList || curriculumsWithPrincipal.curriculumList.length === 0)
-        return <MessageNothingToShow message="Aucun C.V. à afficher"/>
+        return <MessageNothingToShow message="Aucun C.V. à afficher, pensez à téléversez le votre"/>
 
     const deleteCurriculum = cv => e => {
         e.preventDefault();
