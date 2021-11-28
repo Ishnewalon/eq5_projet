@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {assignStudentToSupervisor, getSupervisors, getUnassignedStudents} from "../../../services/user-service";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
@@ -55,11 +55,12 @@ export default function LinkSupervisorToStudent() {
 
 function RowStudent({student, list, removeFromList}) {
     const [supervisorID, setSupervisorID] = useState(null)
+    let memoSupervisorID = useMemo(() => supervisorID, [supervisorID]);
 
     useEffect(() => {
-        if (!supervisorID)
+        if (!memoSupervisorID)
             setSupervisorID(list.length > 0 ? list[0].id : null)
-    }, [list])
+    }, [list, memoSupervisorID])
 
     const assign = (idStudent, idSupervisor) => e => {
         e.preventDefault();
