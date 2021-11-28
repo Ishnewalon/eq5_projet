@@ -40,7 +40,7 @@ export default function OfferApplicationsMonitorListOfApplications() {
     const setStatus = (offerApp) => {
         switch (offerApp.status) {
             case "CV_ENVOYE":
-                return <RiFolderReceivedFill color={"green"} title={"Cv envoyé"} size={27}/>
+                return <RiFolderReceivedFill color={"gold"} title={"Cv envoyé"} size={27}/>
             case "STAGE_REFUSE":
                 return <GiCrossMark color={"red"} title={"Stage refusé"} size={27}/>
             // ImCross ou FaTimes ou FaRegTimesCircle ou FaTimesCircle test les 2 icones durant le review
