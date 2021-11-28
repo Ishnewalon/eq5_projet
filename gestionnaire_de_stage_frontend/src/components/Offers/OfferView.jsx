@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import styles from "./OffersStudentApply.module.css";
+import styles from "./OffersView.module.css";
 import {BsClock, BsClockHistory, FaUserTie, MdAttachMoney, MdLocationPin} from "react-icons/all";
 
 export default function OfferView(props) {

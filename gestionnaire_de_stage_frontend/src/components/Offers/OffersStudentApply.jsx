@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {getAllOffersByDepartment} from '../../services/offer-service';
+import {getAllOffersNotYetApplied} from '../../services/offer-service';
 import {useAuth} from "../../hooks/use-auth";
 import {getCurrentAndFutureSession} from "../../services/session-service";
 import {applyToOffer} from "../../services/offerAppService";
@@ -18,12 +18,8 @@ export default function OffersStudentApply() {
     const setMyVisible = (idSession) =>
         setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(idSession)))
 
-    const removeFromList = (id) => {
-        setOffers(prev => prev.filter(items => items.id !== id))
-    }
-
     useEffect(() => {
-        getAllOffersByDepartment(auth.user.department)
+        getAllOffersNotYetApplied(auth.user.id)
             .then(offers => {
                 setOffers(offers)
             })
@@ -31,7 +27,8 @@ export default function OffersStudentApply() {
                 setOffers([])
                 console.error(e);
             });
-    }, [auth.user.department]);
+    }, [auth.user.id]);
+
 
     useEffect(() => {
         getCurrentAndFutureSession()
@@ -66,7 +63,7 @@ export default function OffersStudentApply() {
             <div className="row">
                 {visibleOffers.map((offer, index) =>
                     <Column col={{lg: 6}} key={index}>
-                        <OfferApplication offer={offer} removeFromList={removeFromList}/>
+                        <OfferApplication offer={offer}/>
                     </Column>
                 )}
             </div>
@@ -74,14 +71,11 @@ export default function OffersStudentApply() {
     );
 }
 
-function OfferApplication({offer, removeFromList}) {
+function OfferApplication({offer}) {
     let auth = useAuth();
     const apply = offerId => e => {
         e.preventDefault();
-        applyToOffer(new OfferApp(offerId, auth.user.id)).then(
-            valid => {
-                if (valid) removeFromList(offerId)
-            });
+        applyToOffer(new OfferApp(offerId, auth.user.id)).then()
     }
 
     const button = (

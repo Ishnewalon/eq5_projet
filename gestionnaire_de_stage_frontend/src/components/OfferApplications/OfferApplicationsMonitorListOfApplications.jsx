@@ -7,7 +7,7 @@ import {AiOutlineFile} from "react-icons/all";
 import OfferView from "../Offers/OfferView";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
-export default function OfferApplicationsMonitorListOfApplications() {//TODO: list of curriculum with a list of applicants inside
+export default function OfferApplicationsMonitorListOfApplications() {
     let auth = useAuth();
     const [offerApplications, setOfferApplications] = useState([]);
     const [offers, setOffers] = useState([]);
