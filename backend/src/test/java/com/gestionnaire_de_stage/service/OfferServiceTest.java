@@ -230,6 +230,23 @@ public class OfferServiceTest {
     }
 
     @Test
+    public void testGetOffersNotAppliedYet_Summer() throws IdDoesNotExistException {
+        List<Offer> dummyOfferList = getDummyOfferList();
+        List<OfferApplication> dummyOfferApplicationList = getDummyOfferAppList();
+        Long studentId = 1L;
+        fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 6, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+        when(offerRepository.findAllByValidIsTrueAndSession_YearGreaterThanEqual(any())).thenReturn(dummyOfferList);
+        when(offerApplicationRepository.getAllByCurriculum_StudentId(any())).thenReturn(dummyOfferApplicationList);
+        when(studentRepository.existsById(any())).thenReturn(true);
+
+        List<Offer> actualOfferList = offerService.getOffersNotYetApplied(studentId);
+
+        assertThat(actualOfferList.size()).isEqualTo(2);
+    }
+
+    @Test
     public void testGetOffersNotAppliedYet_withNoIdStudent() {
         assertThrows(IdDoesNotExistException.class,
                 () -> offerService.getOffersNotYetApplied(213123L));

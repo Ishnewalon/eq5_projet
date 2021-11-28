@@ -27,7 +27,6 @@ import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class OfferService {
@@ -136,7 +135,7 @@ public class OfferService {
         if (!offerRepository.existsById(validationOffer.getId())) {
             throw new IdDoesNotExistException("Il n'y a pas d'offre associée à cet identifiant");
         }
-        if (offerRepository.existsByIdAndValidNotNull(validationOffer.getId())){
+        if (offerRepository.existsByIdAndValidNotNull(validationOffer.getId())) {
             throw new OfferAlreadyTreatedException("Cete offre a déjà été traitée");
         }
         Offer offer = offerRepository.getById(validationOffer.getId());
@@ -152,18 +151,20 @@ public class OfferService {
         }
         List<OfferApplication> listOffersApplied = offerApplicationRepository.getAllByCurriculum_StudentId(studentId);
         int monthValue = LocalDate.now(clock).getMonthValue();
+        List<Offer> collect = listOffersApplied.stream().map(OfferApplication::getOffer).collect(Collectors.toList());
 
-        if (monthValue >= Month.SEPTEMBER.getValue())
-            return offerRepository.findAllByValidIsTrueAndSession_YearGreaterThanEqual(Year.now().plusYears(1));
+        if (monthValue >= Month.SEPTEMBER.getValue()) {
+            List<Offer> listOffers = offerRepository.findAllByValidIsTrueAndSession_YearGreaterThanEqual(Year.now().plusYears(1));
+            listOffers.removeAll(collect);
+            return listOffers;
+        }
 
         List<Offer> listOffers = offerRepository.findAllByValidIsTrueAndSession_YearGreaterThanEqual(Year.now());
 
         if (monthValue >= Month.MAY.getValue())
             removeOffersOfWinter(listOffers);
 
-        List<Offer> collect = listOffersApplied.stream().map(OfferApplication::getOffer).collect(Collectors.toList());
         listOffers.removeAll(collect);
-
         return listOffers;
     }
 }

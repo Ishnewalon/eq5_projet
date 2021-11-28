@@ -15,13 +15,14 @@ export default function OffersStudentApply() {
     const [sessions, setSessions] = useState([]);
     const [visibleOffers, setVisibleOffers] = useState([]);
 
-    const setMyVisible = (idSession) =>
+    const setMyVisible = (idSession) =>{
+        console.log(visibleOffers);
         setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(idSession)))
+    }
 
     useEffect(() => {
         getAllOffersNotYetApplied(auth.user.id)
             .then(offers => {
-                console.log(offers)
                 setOffers(offers)
             })
             .catch(e => {
@@ -35,6 +36,7 @@ export default function OffersStudentApply() {
         getCurrentAndFutureSession()
             .then(sessions => {
                 setSessions(sessions)
+                // console.log(offers)
                 setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(sessions[0].id)))
             })
             .catch(e => {
@@ -70,8 +72,8 @@ export default function OffersStudentApply() {
     );
 }
 
-function OfferApplication(offer) {
-    console.log(offer)
+function OfferApplication({offer}) {
+    // console.log(offer)
     let auth = useAuth();
     const apply = offerId => e => {
         e.preventDefault();
@@ -84,26 +86,26 @@ function OfferApplication(offer) {
         <div className="card-holder">
             <div className="card">
                 <div className="card-body">
-                    <h5 className="card-title job-title">{offer.offer.title}</h5>
+                    <h5 className="card-title job-title">{offer.title}</h5>
                     <div className="card-job-details">
                         <p className="card-company-location d-flex align-items-center">
-                            <MdLocationPin/> {offer.offer.address}
+                            <MdLocationPin/> {offer.address}
                         </p>
                         <p className="card-job-duration d-flex align-items-center">
-                            <BsClock title="Durée du stage" className={"me-1"}/> {offer.offer.nbSemaine}
+                            <BsClock title="Durée du stage" className={"me-1"}/> {offer.nbSemaine}
                         </p>
                         <p className="card-listing-date d-flex align-items-center">
                             <BsClockHistory className={"me-1"}/> Il y
-                            a {Math.ceil((new Date().getTime() - new Date(offer.offer.created).getTime()) / (1000 * 3600 * 24))} jour(s)
+                            a {Math.ceil((new Date().getTime() - new Date(offer.created).getTime()) / (1000 * 3600 * 24))} jour(s)
                         </p>
                         <p className="card-salary-range d-flex align-items-center">
-                            <MdAttachMoney/> {offer.offer.salary}$/h
+                            <MdAttachMoney/> {offer.salary}$/h
                         </p>
                     </div>
                     <div className="card-job-summary">
-                        <p className="card-text">{offer.offer.description}</p>
+                        <p className="card-text">{offer.description}</p>
                     </div>
-                    <button className="btn btn btn-outline-success" onClick={apply(offer.offer.id)}>
+                    <button className="btn btn btn-outline-success" onClick={apply(offer.id)}>
                         Postuler
                     </button>
                 </div>
