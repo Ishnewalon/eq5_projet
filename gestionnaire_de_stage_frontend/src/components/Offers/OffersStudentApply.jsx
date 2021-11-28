@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useAuth} from "../../services/use-auth";
-import {getAllOffersByDepartment} from '../../services/offer-service';
+import {getAllOffersNotYetApplied} from '../../services/offer-service';
 import {useAuth} from "../../hooks/use-auth";
 import {getCurrentAndFutureSession} from "../../services/session-service";
 import {applyToOffer} from "../../services/offerAppService";
@@ -9,8 +8,6 @@ import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/Messa
 import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
 import OfferView from "./OfferView";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
-import {BsClock, BsClockHistory, MdAttachMoney, MdLocationPin} from "react-icons/all";
-import {getAllOffersNotYetApplied} from "../../services/offer-service";
 
 export default function OffersStudentApply() {
     let auth = useAuth();
