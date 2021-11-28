@@ -65,9 +65,9 @@ export default function OffersStudentApply() {
             </FormGroupV2>
             <div className="row">
                 {visibleOffers.map((offer, index) =>
-                    <div className="col-md-6 col-12" key={index}>
+                    <Column col={{lg: 6}} key={index}>
                         <OfferApplication offer={offer} removeFromList={removeFromList}/>
-                    </div>
+                    </Column>
                 )}
             </div>
         </>
