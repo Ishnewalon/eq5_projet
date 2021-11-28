@@ -59,20 +59,16 @@ export default function OffersListNotValid() {
                         </div>
                     </Column>
                 </FormGroupV2>
-                <div className="container">
-                    <ul>
-                        {visibleOffers.map((offer, index) =>
-                            <li className={"mb-4"} key={index}>
-                                <OfferView offer={offer}/>
-                            </li>
-                        )}
-                    </ul>
+                <div className="row">
+                    {visibleOffers.map((offer, index) =>
+                        <Column col={{lg: 6}} key={index}>
+                            <OfferView offer={offer}/>
+                        </Column>
+                    )}
                 </div>
             </ContainerBox>
             <BtnBack/>
-
         </>
-
     )
 }
 

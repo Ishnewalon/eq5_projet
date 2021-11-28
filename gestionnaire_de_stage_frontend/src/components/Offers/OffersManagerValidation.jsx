@@ -56,34 +56,34 @@ export default function OffersManagerValidation() {
                     </div>
                 </Column>
             </FormGroupV2>
-            <div className="container">
-                <ul>
-                    {visibleOffers.map(offer =>
-                        <li key={offer.id}>
-                            <OfferValidation offer={offer} removeFromList={removeFromList}/>
-                        </li>
-                    )}
-                </ul>
+            <div className="row">
+                {visibleOffers.map(offer =>
+                    <Column col={{lg: 6}} key={offer.id}>
+                        <OfferValidation offer={offer} removeFromList={removeFromList}/>
+                    </Column>
+                )}
             </div>
         </>
     );
 }
 
 function OfferValidation({offer, removeFromList}) {
+    const buttons = (
+        <div className={"card-footer d-flex justify-content-around align-content-center"}>
+            <button id="validateBtn" className="btn btn-outline-success fw-bold  border-success"
+                    onClick={() => validate(offer, true)}>Valide
+            </button>
+            <button id="invalidateBtn" className="btn btn-outline-danger fw-bold  border-danger"
+                    onClick={() => validate(offer, false)}>Invalide
+            </button>
+        </div>
+    )
     const validate = (offer, isValid) => {
         validateOffer(offer.id, isValid).then(
             () => removeFromList(offer.id))
     }
     return <>
-        <OfferView offer={offer}/>
-        <div className="d-flex justify-content-between align-items-center mb-4">
-            <button id="validateBtn" className="btn btn-success fw-bold w-50 border-success"
-                    onClick={() => validate(offer, true)}>Valide
-            </button>
-            <button id="invalidateBtn" className="btn btn-danger fw-bold w-50 border-danger"
-                    onClick={() => validate(offer, false)}>Invalide
-            </button>
-        </div>
+        <OfferView offer={offer} footers={buttons}/>
     </>
 }
 

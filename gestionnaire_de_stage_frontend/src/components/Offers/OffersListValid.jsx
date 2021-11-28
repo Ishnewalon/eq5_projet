@@ -59,14 +59,12 @@ export default function OffersListValid() {
                         </div>
                     </Column>
                 </FormGroupV2>
-                <div className="container">
-                    <ul>
+                <div className="row">
                         {visibleOffers.map((offer, index) =>
-                            <li className={"mb-4"} key={index}>
+                            <Column col={{lg: 6}} key={index}>
                                 <OfferView offer={offer}/>
-                            </li>
+                            </Column>
                         )}
-                    </ul>
                 </div>
             </ContainerBox>
             <BtnBack/>
