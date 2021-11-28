@@ -15,22 +15,19 @@ export default function PdfDocumentViewer({file, fileName, showContract = false}
         pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
     }, []);
 
-    const onDocumentLoad = ({numPages}) => {
-        setNumPages(numPages);
-    }
+    const onDocumentLoad = ({numPages}) =>
+        setNumPages(numPages)
 
     const goToNextPage = (e) => {
         e.preventDefault();
-        if (pageNumber < numPages) {
+        if (pageNumber < numPages)
             setPageNumber(pageNumber + 1);
-        }
     }
 
     const goToPreviousPage = (e) => {
         e.preventDefault();
-        if (pageNumber > 1) {
+        if (pageNumber > 1)
             setPageNumber(pageNumber - 1);
-        }
     }
 
     return (
@@ -56,10 +53,14 @@ export default function PdfDocumentViewer({file, fileName, showContract = false}
                                     onLoadError={alert}
                                     loading={<div className="text-center">Chargement...</div>}
                                     noData={<div className="text-center">Aucun document</div>}
-
-                                    className={"shadow-lg"}
-                                >
-                                    <Page pageNumber={pageNumber} className={style.page}/>
+                                    className={"shadow-lg"}>
+                                    {
+                                        Array.from(new Array(numPages), (el, index) => (
+                                            <div key={`page_${index + 1}`}
+                                                 className={pageNumber === index + 1 ? "" : style.pageHide}>
+                                                <Page pageNumber={index + 1} style={style.page}/>
+                                            </div>))
+                                    }
                                 </Document>
                                 <button disabled={pageNumber === numPages} className={"link-button"}
                                         onClick={e => goToNextPage(e)}>
