@@ -89,9 +89,9 @@ function NavItemSpecificForUser() {
                 <Link to={{pathname: "/dashboard/offres/review", state: {from: location}}}>Valider offres</Link>
             </Dropdown>
             <Dropdown title="Étudiants">
-                <Link to={{pathname: "/dashboard/curriculum/review", state: {from: location}}}>Valider Curriculum</Link>
                 <Link to={{pathname: "/dashboard/students/applied", state: {from: location}}}>Associer
                     Superviseur</Link>
+                <Link to={{pathname: "/dashboard/curriculum/review", state: {from: location}}}>Valider Curriculum</Link>
             </Dropdown>
             <Dropdown title="Contrats">
                 <Link to={{pathname: "/dashboard/contrats/a_signer", state: {from: location}}}>Contrats à signer</Link>
