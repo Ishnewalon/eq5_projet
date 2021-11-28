@@ -3,7 +3,7 @@ import {getAllApplicants} from '../../services/offerAppService';
 import {useAuth} from "../../hooks/use-auth";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {downloadFile, toPdfBlob, uniqBy} from "../../utility";
-import {FiDownload} from "react-icons/all";
+import {BiTimeFive, FiDownload, GiCheckMark, GiCrossMark, MdDateRange, RiFolderReceivedFill} from "react-icons/all";
 import OfferView from "../Offers/OfferView";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
@@ -26,6 +26,35 @@ export default function OfferApplicationsMonitorListOfApplications() {
         return <MessageNothingToShow message="Au moment, aucun étudiant n'a postulé à cette offre"/>
     }
 
+    const timeFormatMessage = (date) => {
+        let dateTimeFormat = new Date(date);
+        let day = dateTimeFormat.getDate();
+        let month = dateTimeFormat.getMonth() + 1;
+        let year = dateTimeFormat.getFullYear();
+        let hours = dateTimeFormat.getHours();
+        let minutes = dateTimeFormat.getMinutes();
+        let seconds = dateTimeFormat.getSeconds();
+        return `L'entrevue est le ${day}/${month}/${year} à ${hours}h${minutes}m${seconds}s`;
+    };
+
+    const setStatus = (offerApp) => {
+        switch (offerApp.status) {
+            case "CV_ENVOYE":
+                return <RiFolderReceivedFill color={"green"} title={"Cv envoyé"} size={27}/>
+            case "STAGE_REFUSE":
+                return <GiCrossMark color={"red"} title={"Stage refusé"} size={27}/>
+            // ImCross ou FaTimes ou FaRegTimesCircle ou FaTimesCircle test les 2 icones durant le review
+            case "STAGE_TROUVE":
+                return <GiCheckMark color={"green"} title={"Stage refusé"} size={27}/>
+            case "EN_ATTENTE_ENTREVUE":
+                return <MdDateRange color={"black"} title={timeFormatMessage(offerApp.interviewDate)} size={27}/>
+            case "EN_ATTENTE_REPONSE":
+                return <BiTimeFive color={"black"} title={"En attente de votre réponse"} size={27}/>
+            default:
+                return "Aucun status"
+        }
+    }
+
     const getTableStudents = (index, offerApplications, offer) => {
         let id = offer.id;
         return <div className="card-footer">
@@ -46,7 +75,7 @@ export default function OfferApplicationsMonitorListOfApplications() {
                                 <th>Nom complet</th>
                                 <th>Email</th>
                                 <th>Téléphone</th>
-                                <th>Statut de l'application</th>
+                                <th>Statut</th>
                                 <th>Curriculum</th>
                             </TableHeader>
                             {offerApplications.filter(offerApp => offerApp.offer.id === offer.id).map(offerApp => {
@@ -59,11 +88,12 @@ export default function OfferApplicationsMonitorListOfApplications() {
                                         <td>{`${lastName}, ${firstName}`}</td>
                                         <td>{student.email}</td>
                                         <td>{student.phone}</td>
-                                        <td>{offerApp.status}</td>
+                                        <td>{setStatus(offerApp)}</td>
                                         <td>
                                             <button className="link-button"
-                                                    onClick={() => downloadFile(toPdfBlob(curriculum.data), `${firstName}_${lastName}_${curriculum.id}.pdf`)}>
-                                                <FiDownload/>
+                                                    onClick={() => downloadFile(toPdfBlob(curriculum.data),
+                                                        `${firstName}_${lastName}_${curriculum.id}.pdf`)}>
+                                                <FiDownload color={"black"} title={"Téléchargez le cv"} size={27}/>
                                             </button>
                                         </td>
                                     </TableRow>
