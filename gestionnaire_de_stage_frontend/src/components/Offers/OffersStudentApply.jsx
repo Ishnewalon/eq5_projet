@@ -5,9 +5,9 @@ import {getCurrentAndFutureSession} from "../../services/session-service";
 import {applyToOffer} from "../../services/offerAppService";
 import OfferApp from "../../models/OfferApp";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {BsClock, BsClockHistory, MdAttachMoney, MdLocationPin} from "react-icons/all";
 import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
-import styles from "./OffersStudentApply.module.css";
+import OfferView from "./OfferView";
+import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 
 export default function OffersStudentApply() {
     let auth = useAuth();
@@ -50,7 +50,7 @@ export default function OffersStudentApply() {
     }
 
     return (
-        <>
+        <ContainerBox>
             <FormGroupV2>
                 <Column>
                     <div className="form-floating">
@@ -70,7 +70,7 @@ export default function OffersStudentApply() {
                     </Column>
                 )}
             </div>
-        </>
+        </ContainerBox>
     );
 }
 
@@ -84,38 +84,15 @@ function OfferApplication({offer, removeFromList}) {
             });
     }
 
-    return (
-        <div className={styles.cardHolder}>
-            <div className="card">
-                <div className="card-body">
-                    <h5 className={`card-title ${styles.jobTitle}`}>{offer.title}</h5>
-                    <div className={styles.cardCompanyGlassdoor}>
-                        <p className={styles.cardCompanyName}>{offer.creator.companyName}</p>
-                    </div>
-                    <div className={styles.cardJobDetails}>
-                        <p className={`d-flex align-items-center ${styles.cardCompanyLocation}`}>
-                            <MdLocationPin/> {offer.address}
-                        </p>
-                        <p className={`d-flex align-items-center ${styles.cardJobDuration}`}>
-                            <BsClock title="Durée du stage" className={"me-1"}/> {offer.nbSemaine}
-                        </p>
-                        <p className={`d-flex align-items-center ${styles.cardListingDate}`}>
-                            <BsClockHistory className={"me-1"}/> Il y
-                            a {Math.ceil((new Date().getTime() - new Date(offer.created).getTime()) / (1000 * 3600 * 24))} jour(s)
-                        </p>
-                        <p className={`d-flex align-items-center ${styles.cardSalaryRange}`}>
-                            <MdAttachMoney/> {offer.salary}$/h
-                        </p>
-                    </div>
-                    <div className={styles.cardJobSummary}>
-                        <p className="card-text">{offer.description}</p>
-                    </div>
-                    <button className="btn btn-outline-success" onClick={apply(offer.id)}>
-                        Postuler
-                    </button>
-                </div>
-            </div>
+    const button = (
+        <div className={"card-footer d-flex justify-content-around align-content-center my-1"}>
+            <button className="btn btn-outline-success fw-bold w-50 border-success" onClick={apply(offer.id)}>
+                Postuler
+            </button>
         </div>
+    )
+    return (<>
+            <OfferView offer={offer} footers={button}/>
+        </>
     );
-
 }
