@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, Long> {
-    List<Offer> findAllByDepartmentIgnoreCaseAndValidIsTrueAndSession_YearGreaterThanEqual(String department, Year year);
+    List<Offer> findAllByValidIsTrueAndSession_YearGreaterThanEqual(Year year);
 
     List<Offer> findAllByValidAndSession_YearGreaterThanEqual(Boolean valid, Year year);
 
