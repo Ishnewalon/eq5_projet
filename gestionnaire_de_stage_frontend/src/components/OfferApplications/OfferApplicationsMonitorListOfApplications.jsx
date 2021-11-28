@@ -2,28 +2,32 @@ import React, {useEffect, useState} from 'react';
 import {getAllApplicants} from '../../services/offerAppService';
 import {useAuth} from "../../hooks/use-auth";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
-import {downloadFile, toPdfBlob} from "../../utility";
+import {downloadFile, toPdfBlob, uniqBy} from "../../utility";
 import {AiOutlineFile} from "react-icons/all";
 import OfferView from "../Offers/OfferView";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 
 export default function OfferApplicationsMonitorListOfApplications() {//TODO: list of curriculum with a list of applicants inside
     let auth = useAuth();
-    const [students, setStudents] = useState([]);
-
+    const [offerApplications, setOfferApplications] = useState([]);
+    const [offers, setOffers] = useState([]);
     useEffect(() => {
-        getAllApplicants(auth.user.email).then(v => {
-            setStudents(v)
+        getAllApplicants(auth.user.email).then(offerApp => {
+            setOfferApplications(offerApp);
+            let o = [];
+            offerApp.forEach(v1 => o.push(v1.offer))
+
+            setOffers(uniqBy(o, v => v.id))
         })
     }, [auth.user.email]);
 
-    if (students.length === 0) {
+    if (offerApplications.length === 0) {
         return <MessageNothingToShow message="Au moment, aucun étudiant n'a postulé à cette offre"/>
     }
 
     return <>
         <ContainerBox>
-            {students.map((student, index) =>
+            {offers.map((student, index) =>
                 <div key={index}>
                     <PreviewStudent dto={student}/>
                 </div>)}

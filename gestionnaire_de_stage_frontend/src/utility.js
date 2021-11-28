@@ -52,3 +52,10 @@ export const downloadFile = (blob, fileName) => {
     URL.revokeObjectURL(myUrl);
     toast.fire({title: 'Téléchargé!'}).then()
 }
+export const uniqBy = (a, key) => {
+    let seen = {};
+    return a.filter(function (item) {
+        let k = key(item);
+        return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+    })
+};
