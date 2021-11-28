@@ -218,7 +218,7 @@ public class OfferControllerTest {
         when(offerService.getOffersNotYetApplied(any())).thenReturn(dummyArrayOffer);
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get(String.format("/offers/%s", 1L))
+                        MockMvcRequestBuilders.get("/offers/{0}", 1L)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -235,7 +235,7 @@ public class OfferControllerTest {
                 .thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get(String.format("/offers/%s", 123412L))
+                        MockMvcRequestBuilders.get("/offers/{0}", 123412L)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 

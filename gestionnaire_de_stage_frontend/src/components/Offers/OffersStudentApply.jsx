@@ -73,9 +73,7 @@ function OfferApplication({offer}) {
     let auth = useAuth();
     const apply = offerId => e => {
         e.preventDefault();
-        applyToOffer(new OfferApp(offerId, auth.user.id)).then(() => {
-            }
-        )
+        applyToOffer(new OfferApp(offerId, auth.user.id)).then()
     }
 
     return (
