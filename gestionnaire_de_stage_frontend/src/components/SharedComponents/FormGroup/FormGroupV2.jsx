@@ -27,10 +27,7 @@ Column.propTypes = {
     defaultValue: PropTypes.number
 }
 Column.defaultProps = {
-    // col: {
-    //     xs: 12,
-    // },
-    defaultValue: undefined
+    defaultValue: 12
 }
 
 export function Column(props) {

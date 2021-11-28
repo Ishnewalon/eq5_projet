@@ -54,6 +54,9 @@ export default function PdfDocumentViewer({file, fileName, showContract = false}
                                     file={file}
                                     onLoadSuccess={onDocumentLoad}
                                     onLoadError={alert}
+                                    loading={<div className="text-center">Chargement...</div>}
+                                    noData={<div className="text-center">Aucun document</div>}
+
                                     className={"shadow-lg"}
                                 >
                                     <Page pageNumber={pageNumber} className={style.page}/>

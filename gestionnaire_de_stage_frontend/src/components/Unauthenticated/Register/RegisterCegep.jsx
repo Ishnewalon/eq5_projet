@@ -4,13 +4,13 @@ import StepInformationGeneral from "./SharedSteps/StepInformationGeneral";
 import {Student, Supervisor} from "../../../models/User";
 import {useHistory} from "react-router-dom";
 import {useAuth} from "../../../hooks/use-auth";
-import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {BtnBack} from "../../SharedComponents/BtnBack";
 import {Title} from "../../SharedComponents/Title/Title";
 import {useForm} from "react-hook-form";
 import {regexMatricule} from "../../../utility";
 import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 import {checkMatricule} from "../../../services/user-service";
+import {Column, FormGroupV2} from "../../SharedComponents/FormGroup/FormGroupV2";
 
 
 export default function RegisterCegep() {
@@ -84,8 +84,9 @@ export default function RegisterCegep() {
 }
 
 function StepCegep({register, errors}) {
-    return (<>
-            <FormGroup repartition={[12, 12]}>
+    return (
+        <FormGroupV2>
+            <Column>
                 <FormInput label="Matricule"
                            validation={{
                                required: "Vous devez entrez votre matricule pour continuer",
@@ -101,14 +102,16 @@ function StepCegep({register, errors}) {
                            register={register}
                            type="number"
                            placeholder="0000000 (Étudiant) ou 00000 (Superviseur)"/>
+            </Column>
+            <Column>
                 <div className="form-group text-center">
                     <div className="btn-group mt-3">
                         <BtnBack/>
                         <input className="btn btn-primary" type="submit" name="next" value="Suivant"/>
                     </div>
                 </div>
-            </FormGroup>
-        </>
+            </Column>
+        </FormGroupV2>
     )
 
 }

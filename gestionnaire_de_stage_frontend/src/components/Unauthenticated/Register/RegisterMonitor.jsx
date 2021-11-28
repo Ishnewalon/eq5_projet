@@ -4,11 +4,11 @@ import StepInformationGeneral from "./SharedSteps/StepInformationGeneral";
 import {MonitorModel} from "../../../models/User";
 import {useHistory} from "react-router-dom";
 import {useAuth} from "../../../hooks/use-auth";
-import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {BtnBack} from "../../SharedComponents/BtnBack";
 import {useForm} from "react-hook-form";
 import {regexCodePostal, regexName} from "../../../utility";
 import {FormInput} from "../../SharedComponents/FormInput/FormInput";
+import {Column, FormGroupV2} from "../../SharedComponents/FormGroup/FormGroupV2";
 
 
 export default function RegisterMonitor() {
@@ -77,63 +77,70 @@ export default function RegisterMonitor() {
 
 function StepMonitor({register, errors}) {
     return (<>
-        <FormGroup>
-            <FormInput label="Nom de la compagnie"
-                       validation={{
-                           required: "Ce champ est obligatoire!",
-                           pattern: {
-                               value: regexName,
-                               message: "Le nom de la compagnie doit contenir au moins 3 caractères et ne doit contenir que des lettres"
-                           }
-                       }}
-                       error={errors.companyName}
-                       name="companyName"
-                       register={register}
-                       type="text"
-                       placeholder="Nom de compagnie"/>
-            <FormInput label="Ville"
-                       validation={{
-                           required: "Ce champ est obligatoire!",
-                           pattern: {
-                               value: regexName,
-                               message: "Le nom de la ville doit contenir au moins 3 caractères et ne doit contenir que des lettres"
-                           }
-                       }}
-                       error={errors.city}
-                       name="city"
-                       register={register}
-                       type="text"
-                       placeholder="Ville"/>
-        </FormGroup>
-        <FormGroup>
-            <FormInput label="Adresse"
-                       validation={{
-                           required: "Ce champ est obligatoire!",
-                           minLength: {
-                               value: 8,
-                               message: "L'adresse doit contenir au moins 8 caractères "
-                           }
-                       }} error={errors.address}
-                       name="address"
-                       register={register}
-                       type="text"
-                       placeholder="Rue, boulevard, avenue.."/>
-        </FormGroup>
-        <FormGroup>
-            <FormInput label="Code postal"
-                       validation={{
-                           required: "Ce champ est obligatoire!",
-                           pattern: {
-                               value: regexCodePostal,
-                               message: "Le code postal doit contenir être sous le format suivant: H0H 0H0"
-                           }
-                       }}
-                       error={errors.postalCode}
-                       name="postalCode"
-                       register={register}
-                       type="text"
-                       placeholder="H0H 0H0"/>
-        </FormGroup>
+        <FormGroupV2>
+            <Column>
+                <FormInput label="Nom de la compagnie"
+                           validation={{
+                               required: "Ce champ est obligatoire!",
+                               pattern: {
+                                   value: regexName,
+                                   message: "Le nom de la compagnie doit contenir au moins 3 caractères et ne doit contenir que des lettres"
+                               }
+                           }}
+                           error={errors.companyName}
+                           name="companyName"
+                           register={register}
+                           type="text"
+                           placeholder="Nom de compagnie"/>
+            </Column>
+        </FormGroupV2>
+        <FormGroupV2>
+            <Column>
+
+                <FormInput label="Adresse"
+                           validation={{
+                               required: "Ce champ est obligatoire!",
+                               minLength: {
+                                   value: 8,
+                                   message: "L'adresse doit contenir au moins 8 caractères "
+                               }
+                           }} error={errors.address}
+                           name="address"
+                           register={register}
+                           type="text"
+                           placeholder="Rue, boulevard, avenue.."/>
+            </Column>
+            <Column col={{md: 6}}>
+                <FormInput label="Ville"
+                           validation={{
+                               required: "Ce champ est obligatoire!",
+                               pattern: {
+                                   value: regexName,
+                                   message: "Le nom de la ville doit contenir au moins 3 caractères et ne doit contenir que des lettres"
+                               }
+                           }}
+                           error={errors.city}
+                           name="city"
+                           register={register}
+                           type="text"
+                           placeholder="Ville"/>
+            </Column>
+            <Column col={{md: 6}}>
+                <FormInput label="Code postal"
+                           validation={{
+                               required: "Ce champ est obligatoire!",
+                               pattern: {
+                                   value: regexCodePostal,
+                                   message: "Le code postal doit contenir être sous le format suivant: H0H 0H0"
+                               }
+                           }}
+                           error={errors.postalCode}
+                           name="postalCode"
+                           register={register}
+                           type="text"
+                           placeholder="H0H 0H0"/>
+            </Column>
+        </FormGroupV2>
         <div className="form-group text-center">
             <div className="btn-group">
                 <BtnBack/>
