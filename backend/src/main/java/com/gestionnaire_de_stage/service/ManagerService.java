@@ -37,7 +37,7 @@ public class ManagerService {
 
     public List<Manager> getAll() {
         return managerRepository.findAll();
-    }   //FIXME Never Used other than tests
+    }
 
     public Manager update(Manager manager, Long aLong) throws IdDoesNotExistException { //FIXME Never Used other than tests
         Assert.isTrue(aLong != null, "ID est null");

@@ -452,6 +452,33 @@ public class ContractServiceTest {
                 "La liste de stage ne peut pas être null");
     }
 
+    @Test
+    public void testGetOneByID_withValidID() throws Exception {
+        Long validID = 1L;
+        Contract contract = getDummyContract();
+        when(contractRepository.existsById(any())).thenReturn(true);
+        when(contractRepository.getById(any())).thenReturn(contract);
+
+        Contract actual = contractService.getOneById(validID);
+
+        assertThat(actual).isEqualTo(contract);
+    }
+
+    @Test
+    public void testGetOneByID_withNullID() {
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.getOneById(null));
+    }
+
+    @Test
+    public void testGetOneByID_doesntExistID() {
+        Long invalidID = 5L;
+        when(contractRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> contractService.getOneById(invalidID));
+    }
+
     private List<StudentMonitorOfferDTO> getDummyStudentMonitorOfferDTOList() {
         StudentMonitorOfferDTO dto1 = getDummyStudentMonitorOfferDTO();
         StudentMonitorOfferDTO dto2 = getDummyStudentMonitorOfferDTO();
