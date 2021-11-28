@@ -15,10 +15,8 @@ export default function OffersStudentApply() {
     const [sessions, setSessions] = useState([]);
     const [visibleOffers, setVisibleOffers] = useState([]);
 
-    const setMyVisible = (idSession) =>{
-        console.log(visibleOffers);
+    const setMyVisible = (idSession) =>
         setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(idSession)))
-    }
 
     useEffect(() => {
         getAllOffersNotYetApplied(auth.user.id)
@@ -36,7 +34,6 @@ export default function OffersStudentApply() {
         getCurrentAndFutureSession()
             .then(sessions => {
                 setSessions(sessions)
-                // console.log(offers)
                 setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(sessions[0].id)))
             })
             .catch(e => {
@@ -73,7 +70,6 @@ export default function OffersStudentApply() {
 }
 
 function OfferApplication({offer}) {
-    // console.log(offer)
     let auth = useAuth();
     const apply = offerId => e => {
         e.preventDefault();
