@@ -57,7 +57,7 @@ public class OfferApplicationController {
     @PostMapping("/setdate/{offerAppID}")
     public ResponseEntity<?> setInterviewDate(@PathVariable Long offerAppID, @RequestBody LocalDateTime date) {
         try {
-            OfferApplication offerApplication = offerApplicationService.setInterviewDate(offerAppID, date);//SESSION : check if offer is not outdated
+            OfferApplication offerApplication = offerApplicationService.setInterviewDate(offerAppID, date);
             return ResponseEntity.ok(offerApplication);
         } catch (Exception e) {
             return ResponseEntity
@@ -66,7 +66,7 @@ public class OfferApplicationController {
         }
     }
 
-    @GetMapping("/applicants/cv_sent/{id}")//SESSION : get offers of current session and future
+    @GetMapping("/applicants/cv_sent/{id}")
     public ResponseEntity<?> getAllByOfferStatusAndStudentID(@PathVariable Long id) {
         try {
             List<OfferApplication> offerApplicationList = offerApplicationService.getAllByOfferStatusAndStudentID(Status.CV_ENVOYE, id);
@@ -82,7 +82,7 @@ public class OfferApplicationController {
     public ResponseEntity<?> getOffersApplicationsStageTrouver(@PathVariable Long id) {
         List<OfferApplication> offerApplicationList;
         try {
-            offerApplicationList = offerApplicationService.getOffersApplicationsStageTrouver(id);//SESSION : get application of current session and future
+            offerApplicationList = offerApplicationService.getOffersApplicationsStageTrouver(id);
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
