@@ -55,7 +55,7 @@ export default function OfferApplicationsMonitorListOfApplications() {
         }
     }
 
-    const getTableStudents = (index, offerApplications, offer) => {
+    const getTableStudents = (offerApplications, offer) => {
         let id = offer.id;
         return <div className="card-footer">
             <div className="accordion accordion-flush" id={"accordionFlushExample" + id}>
@@ -108,7 +108,7 @@ export default function OfferApplicationsMonitorListOfApplications() {
     return <>
         <ContainerBox>
             {offers.map((offer, index) =>
-                <OfferView key={index} offer={offer} footers={getTableStudents(index, offerApplications, offer)}/>)}
+                <OfferView key={index} offer={offer} footers={getTableStudents(offerApplications, offer)}/>)}
         </ContainerBox>
     </>;
 }

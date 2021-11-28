@@ -41,6 +41,10 @@ export const toPdfBlob = (pdfFile) => {
     return new Blob([new Uint8Array(numBytes), {type: 'application/pdf'}]);
 }
 
+/**
+ * @param {Blob} blob
+ * @param {string} fileName
+ */
 export const downloadFile = (blob, fileName) => {
     let myUrl = URL.createObjectURL(blob);
 
@@ -52,9 +56,13 @@ export const downloadFile = (blob, fileName) => {
     URL.revokeObjectURL(myUrl);
     toast.fire({title: 'Téléchargé!'}).then()
 }
-export const uniqBy = (a, key) => {
+/**
+ * @param {*[]} list
+ * @param {function(*): *} key
+ */
+export const uniqBy = (list, key) => {
     let seen = {};
-    return a.filter(function (item) {
+    return list.filter(function (item) {
         let k = key(item);
         return seen.hasOwnProperty(k) ? false : (seen[k] = true);
     })
