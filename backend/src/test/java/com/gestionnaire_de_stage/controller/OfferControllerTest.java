@@ -218,7 +218,7 @@ public class OfferControllerTest {
         when(offerService.getOffersNotYetApplied(any())).thenReturn(dummyArrayOffer);
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get(String.format("/offers/%s", 1L))
+                        MockMvcRequestBuilders.get("/offers/{0}", 1L)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
