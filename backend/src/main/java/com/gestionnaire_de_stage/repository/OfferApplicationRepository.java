@@ -25,6 +25,8 @@ public interface OfferApplicationRepository extends JpaRepository<OfferApplicati
 
     List<OfferApplication> getAllByStatusAndCurriculum_StudentIdAndSession_YearGreaterThanEqual(Status status, Long curriculum_student_id, Year session_year);
 
+    List<OfferApplication> getAllByStatusAndSession_YearGreaterThanEqual(Status status, Year session_year);
+
     List<OfferApplication> findAllByCurriculum_Student_Supervisor_IdAndSession_YearGreaterThanEqual(Long curriculum_student_supervisor_id, Year session_year);
 
     @Query("UPDATE OfferApplication t SET t.status = ?2 WHERE t.status = ?1 and t.interviewDate < current_timestamp and t.session in (select s.id from Session s where s.year >= ?3)")

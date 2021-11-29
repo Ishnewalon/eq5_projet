@@ -4,6 +4,7 @@ import {useAuth} from "../../../hooks/use-auth";
 import {getAllStudents} from "../../../services/user-service";
 import {getAllCurriculumsByStudent} from "../../../services/curriculum-service";
 import {useHistory, useRouteMatch} from "react-router-dom";
+import {CgDetailsMore} from "react-icons/all";
 
 export default function StudentsCurriculumsOverview() {
     const [students, setStudents] = useState([]);
@@ -51,7 +52,7 @@ export default function StudentsCurriculumsOverview() {
                 <th>Validé</th>
                 <th>Invalide</th>
                 <th>À valider</th>
-                <th>Voir</th>
+                <th><CgDetailsMore size={26} color={"black"} title={"Voir les détails"}/></th>
             </TableHeader>
             {students.map((student, index) => {
                     let cur = curriculums.find(curriculums => curriculums.length > 0 && curriculums[0].student.id === student.id)
