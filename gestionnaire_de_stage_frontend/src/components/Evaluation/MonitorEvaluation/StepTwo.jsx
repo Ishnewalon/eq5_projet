@@ -1,6 +1,6 @@
-import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
-import {FormTextarea} from "../../SharedComponents/FormTextarea";
-import {FieldRadio} from "../../SharedComponents/FormInput/FieldRadio";
+import {FormGroup} from "../../SharedComponents/Form/FormGroup";
+import {FieldRadio, FieldTextarea} from "../../SharedComponents/Form/FormFields";
+import {Column} from "../../SharedComponents/Column";
 
 export default function StepTwo({register, choices}) {
 
@@ -9,46 +9,58 @@ export default function StepTwo({register, choices}) {
         <h4 className='mt-4 mb-0'>Capacité d’optimiser son rendement au travail</h4>
         <blockquote className='mt-3 mb-0'>Le stagiaire est en mesure de:</blockquote>
         <FormGroup>
-            <FieldRadio
-                name='questionUn'
-                register={register}
-                list={Object.values(choices)}
-                label='Planifier et organiser son travail de façon efficace'
-            />
-            <FieldRadio
-                name='questionDeux'
-                register={register}
-                list={Object.values(choices)}
-                label='Comprendre rapidement les directives relatives à son travail'
-            />
-            <FieldRadio
-                name='questionTrois'
-                register={register}
-                list={Object.values(choices)}
-                label='Maintenir un rythme de travail soutenu'
-            />
-        </FormGroup>
-        <FormGroup repartition={[4, 4]}>
-            <FieldRadio
-                name='questionQuatre'
-                register={register}
-                list={Object.values(choices)}
-                label='Établir ses priorités'
-            />
-            <FieldRadio
-                name='questionCinq'
-                register={register}
-                list={Object.values(choices)}
-                label='Respecter les échéanciers'
-            />
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    name='questionUn'
+                    register={register}
+                    list={Object.values(choices)}
+                    label='Planifier et organiser son travail de façon efficace'
+                />
+            </Column>
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    name='questionDeux'
+                    register={register}
+                    list={Object.values(choices)}
+                    label='Comprendre rapidement les directives relatives à son travail'
+                />
+            </Column>
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    name='questionTrois'
+                    register={register}
+                    list={Object.values(choices)}
+                    label='Maintenir un rythme de travail soutenu'
+                />
+            </Column>
         </FormGroup>
         <FormGroup>
-            <FormTextarea
-                label='Commentaires'
-                name='commentairesUn'
-                register={register}
-                placeholder='Commentaires sur la productivité du stagiaire'
-            />
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    name='questionQuatre'
+                    register={register}
+                    list={Object.values(choices)}
+                    label='Établir ses priorités'
+                />
+            </Column>
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    name='questionCinq'
+                    register={register}
+                    list={Object.values(choices)}
+                    label='Respecter les échéanciers'
+                />
+            </Column>
+        </FormGroup>
+        <FormGroup>
+            <Column>
+                <FieldTextarea
+                    label='Commentaires'
+                    name='commentairesUn'
+                    register={register}
+                    placeholder='Commentaires sur la productivité du stagiaire'
+                />
+            </Column>
         </FormGroup>
     </div>
 }

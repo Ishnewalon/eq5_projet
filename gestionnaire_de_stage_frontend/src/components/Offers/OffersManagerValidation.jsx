@@ -3,7 +3,8 @@ import {getAllOffersInvalid, validateOffer} from '../../services/offer-service';
 import OfferView from "./OfferView";
 import {getCurrentAndFutureSession} from "../../services/session-service";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
+import {FormGroup} from "../SharedComponents/Form/FormGroup";
+import {Column} from "../SharedComponents/Column";
 
 export default function OffersManagerValidation() {
 
@@ -44,7 +45,7 @@ export default function OffersManagerValidation() {
         return <MessageNothingToShow message="Aucune offres à valider pour le moment..."/>
     return (
         <>
-            <FormGroupV2>
+            <FormGroup>
                 <Column>
                     <div className="form-floating">
                         <select id="session" className="form-select" onChange={e => setMyVisible(e.target.value)}>
@@ -55,7 +56,7 @@ export default function OffersManagerValidation() {
                         <label htmlFor="session">Session</label>
                     </div>
                 </Column>
-            </FormGroupV2>
+            </FormGroup>
             <div className="row">
                 {visibleOffers.map(offer =>
                     <Column col={{lg: 6}} key={offer.id}>

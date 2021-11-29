@@ -1,6 +1,6 @@
-import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
-import {FormTextarea} from "../../SharedComponents/FormTextarea";
-import {FieldRadio} from "../../SharedComponents/FormInput/FieldRadio";
+import {FormGroup} from "../../SharedComponents/Form/FormGroup";
+import {FieldRadio, FieldTextarea} from "../../SharedComponents/Form/FormFields";
+import {Column} from "../../SharedComponents/Column";
 
 export default function StepThree({register, choices}) {
 
@@ -10,48 +10,59 @@ export default function StepThree({register, choices}) {
             personnellement des normes de qualité</h4>
         <h5 className='mt-3 mb-2'>Le stagiaire est en mesure de:</h5>
         <FormGroup>
-            <FieldRadio
-                name='questionSix'
-                register={register}
-                list={Object.values(choices)}
-                label='Respecter les mandats qui lui ont été confiés'
-            />
-
-            <FieldRadio
-                label='Porter attention aux détails dans la réalisation de ses
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    name='questionSix'
+                    register={register}
+                    list={Object.values(choices)}
+                    label='Respecter les mandats qui lui ont été confiés'
+                />
+            </Column>
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    label='Porter attention aux détails dans la réalisation de ses
                     tâches'
-                name='questionSept'
-                register={register}
-                list={Object.values(choices)}
-            />
-            <FieldRadio
-                label='Vérifier son travail, s’assurer que rien n’a été oublié'
-                name='questionHuit'
-                register={register}
-                list={Object.values(choices)}
-            />
-        </FormGroup>
-        <FormGroup repartition={[4, 4]}>
-            <FieldRadio
-                label='Rechercher des occasions de se perfectionner'
-                name='questionNeuf'
-                register={register}
-                list={Object.values(choices)}
-            />
-            <FieldRadio
-                label='Faire une bonne analyse des problèmes rencontrés'
-                name='questionDix'
-                register={register}
-                list={Object.values(choices)}
-            />
+                    name='questionSept'
+                    register={register}
+                    list={Object.values(choices)}
+                />
+            </Column>
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    label='Vérifier son travail, s’assurer que rien n’a été oublié'
+                    name='questionHuit'
+                    register={register}
+                    list={Object.values(choices)}
+                />
+            </Column>
         </FormGroup>
         <FormGroup>
-            <FormTextarea
-                label='Commentaires'
-                name='commentairesDeux'
-                register={register}
-                placeholder='Commentaires sur la qualité du travail du stagiaire'
-            />
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    label='Rechercher des occasions de se perfectionner'
+                    name='questionNeuf'
+                    register={register}
+                    list={Object.values(choices)}
+                />
+            </Column>
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    label='Faire une bonne analyse des problèmes rencontrés'
+                    name='questionDix'
+                    register={register}
+                    list={Object.values(choices)}
+                />
+            </Column>
+        </FormGroup>
+        <FormGroup>
+            <Column>
+                <FieldTextarea
+                    label='Commentaires'
+                    name='commentairesDeux'
+                    register={register}
+                    placeholder='Commentaires sur la qualité du travail du stagiaire'
+                />
+            </Column>
         </FormGroup>
     </div>
 }

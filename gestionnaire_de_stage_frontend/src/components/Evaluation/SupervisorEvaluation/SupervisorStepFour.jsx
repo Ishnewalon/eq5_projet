@@ -1,7 +1,6 @@
-import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
-import {FieldRadio} from "../../SharedComponents/FormInput/FieldRadio";
-import {FormInput} from "../../SharedComponents/FormInput/FormInput";
-import {FormField} from "../../SharedComponents/FormField/FormField";
+import {FormGroup} from "../../SharedComponents/Form/FormGroup";
+import {FieldInput, FieldRadio} from "../../SharedComponents/Form/FormFields";
+import {Column} from "../../SharedComponents/Column";
 
 export default function SupervisorStepFour({
                                                watch,
@@ -45,202 +44,238 @@ export default function SupervisorStepFour({
     return <div className='px-3 pb-3 pt-1 rounded'>
         <h4 className='fw-bold p-2 rounded mt-4 mb-0 text-decoration-underline'>Observations générales</h4>
         <FormGroup>
-            <FieldRadio
-                name='questionPreferForInternship'
-                register={register}
-                list={Object.values(choixStage)}
-                label="Ce milieu est à privilégier pour le stage"
-            />
-            <FieldRadio
-                name='questionWelcomeMoreThanTwoIntern'
-                register={register}
-                list={Object.values(choixStagiaires)}
-                label="Ce milieu est ouvert à accueillir deux stagiaires"
-            />
-            <FieldRadio
-                name='questionWelcomeSameIntern'
-                register={register}
-                list={Object.values(yesAndNoAnswers)}
-                label="Ce milieu désire accueillir le même stagiaire pour un prochain stage"
-            />
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    name='questionPreferForInternship'
+                    register={register}
+                    list={Object.values(choixStage)}
+                    label="Ce milieu est à privilégier pour le stage"
+                />
+            </Column>
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    name='questionWelcomeMoreThanTwoIntern'
+                    register={register}
+                    list={Object.values(choixStagiaires)}
+                    label="Ce milieu est ouvert à accueillir deux stagiaires"
+                />
+            </Column>
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    name='questionWelcomeSameIntern'
+                    register={register}
+                    list={Object.values(yesAndNoAnswers)}
+                    label="Ce milieu désire accueillir le même stagiaire pour un prochain stage"
+                />
+            </Column>
         </FormGroup>
-        <FormGroup repartition={[12, 12]}>
+        <FormGroup>
             <h5>Ce milieu offre des quarts de travail variables?</h5>
-            <FieldRadio
-                name='questionShiftsFlexible'
-                register={register}
-                list={Object.values(yesAndNoAnswers)}
-                label=''
-            />
+            <Column>
+                <FieldRadio
+                    name='questionShiftsFlexible'
+                    register={register}
+                    list={Object.values(yesAndNoAnswers)}
+                    label=''
+                />
+            </Column>
         </FormGroup>
         <div>
-            <FormGroup repartition={[2, 5, 5]}>
-                <FormField>
+            <FormGroup>
+                <Column col={{md: 2}} className="form-floating">
                     <label/>
-                    <input type="text" disabled value='Lundi'/>
-                </FormField>
-                <FormInput
-                    label='De'
-                    validation={{}}
-                    name='mondayShiftStart'
-                    register={register}
-                    type='time'
-                    placeholder='Début du quart'
-                    error={errors.mondayShiftStart}
-                />
-                <FormInput
-                    label='À'
-                    validation={{validate: val => checkIfLowerThan(val, mondayShift) || 'La fin du quart doit être après le début'}}
-                    name='mondayShiftEnd'
-                    register={register}
-                    type='time'
-                    placeholder='Fin du quart'
-                    error={errors.mondayShiftEnd}
-                />
+                    <input className="form-control" type="text" disabled value='Lundi'/>
+                </Column>
+                <Column col={{md: 5}}>
+                    <FieldInput
+                        label='De'
+                        validation={{}}
+                        name='mondayShiftStart'
+                        register={register}
+                        type='time'
+                        placeholder='Début du quart'
+                        error={errors.mondayShiftStart}
+                    />
+                </Column>
+                <Column col={{md: 5}}>
+                    <FieldInput
+                        label='À'
+                        validation={{validate: val => checkIfLowerThan(val, mondayShift) || 'La fin du quart doit être après le début'}}
+                        name='mondayShiftEnd'
+                        register={register}
+                        type='time'
+                        placeholder='Fin du quart'
+                        error={errors.mondayShiftEnd}
+                    />
+                </Column>
             </FormGroup>
-            <FormGroup repartition={[2, 5, 5]}>
-                <FormField>
+            <FormGroup>
+                <Column col={{md: 2}} className="form-floating">
                     <label/>
-                    <input type="text" disabled value='Mardi'/>
-                </FormField>
-                <FormInput
-                    label='De'
-                    validation={{}}
-                    name='tuesdayShiftStart'
-                    register={register}
-                    type='time'
-                    placeholder='Début du quart'
-                    error={errors.tuesdayShiftStart}
-                />
-                <FormInput
-                    label='À'
-                    validation={{validate: val => checkIfLowerThan(val, tuesdayShift) || 'La fin du quart doit être après le début'}}
-                    name='tuesdayShiftEnd'
-                    register={register}
-                    type='time'
-                    placeholder='Fin du quart'
-                    error={errors.tuesdayShiftEnd}
-                />
+                    <input className="form-control" type="text" disabled value='Mardi'/>
+                </Column>
+                <Column col={{md: 5}}>
+                    <FieldInput
+                        label='De'
+                        validation={{}}
+                        name='tuesdayShiftStart'
+                        register={register}
+                        type='time'
+                        placeholder='Début du quart'
+                        error={errors.tuesdayShiftStart}
+                    />
+                </Column>
+                <Column col={{md: 5}}>
+                    <FieldInput
+                        label='À'
+                        validation={{validate: val => checkIfLowerThan(val, tuesdayShift) || 'La fin du quart doit être après le début'}}
+                        name='tuesdayShiftEnd'
+                        register={register}
+                        type='time'
+                        placeholder='Fin du quart'
+                        error={errors.tuesdayShiftEnd}
+                    />
+                </Column>
             </FormGroup>
-            <FormGroup repartition={[2, 5, 5]}>
-                <FormField>
+            <FormGroup>
+                <Column col={{md: 2}} className="form-floating">
                     <label/>
-                    <input type="text" disabled value='Mercredi'/>
-                </FormField>
-                <FormInput
-                    label='De'
-                    validation={{}}
-                    name='wednesdayShiftStart'
-                    register={register}
-                    type='time'
-                    placeholder='Début du quart'
-                    error={errors.wednesdayShiftStart}
-                />
-                <FormInput
-                    label='À'
-                    validation={{validate: val => checkIfLowerThan(val, wednesdayShift) || 'La fin du quart doit être après le début'}}
-                    name='wednesdayShiftEnd'
-                    register={register}
-                    type='time'
-                    placeholder='Fin du quart'
-                    error={errors.wednesdayShiftEnd}
-                />
+                    <input className="form-control" type="text" disabled value='Mercredi'/>
+                </Column>
+                <Column col={{md: 5}}>
+                    <FieldInput
+                        label='De'
+                        validation={{}}
+                        name='wednesdayShiftStart'
+                        register={register}
+                        type='time'
+                        placeholder='Début du quart'
+                        error={errors.wednesdayShiftStart}
+                    />
+                </Column>
+                <Column col={{md: 5}}>
+                    <FieldInput
+                        label='À'
+                        validation={{validate: val => checkIfLowerThan(val, wednesdayShift) || 'La fin du quart doit être après le début'}}
+                        name='wednesdayShiftEnd'
+                        register={register}
+                        type='time'
+                        placeholder='Fin du quart'
+                        error={errors.wednesdayShiftEnd}
+                    />
+                </Column>
             </FormGroup>
-            <FormGroup repartition={[2, 5, 5]}>
-                <FormField>
+            <FormGroup>
+                <Column col={{md: 2}} className="form-floating">
                     <label/>
-                    <input type="text" disabled value='Jeudi'/>
-                </FormField>
-                <FormInput
-                    label='De'
-                    validation={{}}
-                    name='thursdayShiftStart'
-                    register={register}
-                    type='time'
-                    placeholder='Début du quart'
-                    error={errors.thursdayShiftStart}
-                />
-                <FormInput
-                    label='À'
-                    validation={{validate: val => checkIfLowerThan(val, thursdayShift) || 'La fin du quart doit être après le début'}}
-                    name='thursdayShiftEnd'
-                    register={register}
-                    type='time'
-                    placeholder='Fin du quart'
-                    error={errors.thursdayShiftEnd}
-                />
+                    <input className="form-control" type="text" disabled value='Jeudi'/>
+                </Column>
+                <Column col={{md: 5}}>
+                    <FieldInput
+                        label='De'
+                        validation={{}}
+                        name='thursdayShiftStart'
+                        register={register}
+                        type='time'
+                        placeholder='Début du quart'
+                        error={errors.thursdayShiftStart}
+                    />
+                </Column>
+                <Column col={{md: 5}}>
+                    <FieldInput
+                        label='À'
+                        validation={{validate: val => checkIfLowerThan(val, thursdayShift) || 'La fin du quart doit être après le début'}}
+                        name='thursdayShiftEnd'
+                        register={register}
+                        type='time'
+                        placeholder='Fin du quart'
+                        error={errors.thursdayShiftEnd}
+                    />
+                </Column>
             </FormGroup>
-            <FormGroup repartition={[2, 5, 5]}>
-                <FormField>
+            <FormGroup>
+                <Column col={{md: 2}} className="form-floating">
                     <label/>
-                    <input type="text" disabled value='Vendredi'/>
-                </FormField>
-                <FormInput
-                    label='De'
-                    validation={{}}
-                    name='fridayShiftStart'
-                    register={register}
-                    type='time'
-                    placeholder='Début du quart'
-                    error={errors.fridayShiftStart}
-                />
-                <FormInput
-                    label='À'
-                    validation={{validate: val => checkIfLowerThan(val, fridayShift) || 'La fin du quart doit être après le début'}}
-                    name='fridayShiftEnd'
-                    register={register}
-                    type='time'
-                    placeholder='Fin du quart'
-                    error={errors.fridayShiftEnd}
-                />
+                    <input className="form-control" type="text" disabled value='Vendredi'/>
+                </Column>
+                <Column col={{md: 5}}>
+                    <FieldInput
+                        label='De'
+                        validation={{}}
+                        name='fridayShiftStart'
+                        register={register}
+                        type='time'
+                        placeholder='Début du quart'
+                        error={errors.fridayShiftStart}
+                    />
+                </Column>
+                <Column col={{md: 5}}>
+                    <FieldInput
+                        label='À'
+                        validation={{validate: val => checkIfLowerThan(val, fridayShift) || 'La fin du quart doit être après le début'}}
+                        name='fridayShiftEnd'
+                        register={register}
+                        type='time'
+                        placeholder='Fin du quart'
+                        error={errors.fridayShiftEnd}
+                    />
+                </Column>
             </FormGroup>
-            <FormGroup repartition={[2, 5, 5]}>
-                <FormField>
+            <FormGroup>
+                <Column col={{md: 2}} className="form-floating">
                     <label/>
-                    <input type="text" disabled value='Samedi'/>
-                </FormField>
-                <FormInput
-                    label='De'
-                    validation={{}}
-                    name='saturdayShiftStart'
-                    register={register}
-                    type='time'
-                    placeholder='Début du quart'
-                    error={errors.saturdayShiftStart}
-                />
-                <FormInput
-                    label='À'
-                    validation={{validate: val => checkIfLowerThan(val, saturdayShift) || 'La fin du quart doit être après le début'}}
-                    name='saturdayShiftEnd'
-                    register={register}
-                    type='time'
-                    placeholder='Fin du quart'
-                    error={errors.saturdayShiftEnd}
-                />
+                    <input className="form-control" type="text" disabled value='Samedi'/>
+                </Column>
+                <Column col={{md: 5}}>
+                    <FieldInput
+                        label='De'
+                        validation={{}}
+                        name='saturdayShiftStart'
+                        register={register}
+                        type='time'
+                        placeholder='Début du quart'
+                        error={errors.saturdayShiftStart}
+                    />
+                </Column>
+                <Column col={{md: 5}}>
+                    <FieldInput
+                        label='À'
+                        validation={{validate: val => checkIfLowerThan(val, saturdayShift) || 'La fin du quart doit être après le début'}}
+                        name='saturdayShiftEnd'
+                        register={register}
+                        type='time'
+                        placeholder='Fin du quart'
+                        error={errors.saturdayShiftEnd}
+                    />
+                </Column>
             </FormGroup>
-            <FormGroup repartition={[2, 5, 5]}>
-                <FormField>
+            <FormGroup>
+                <Column col={{md: 2}} className="form-floating">
                     <label/>
-                    <input type="text" disabled value='Dimanche'/>
-                </FormField>
-                <FormInput
-                    label='De'
-                    validation={{}}
-                    name='sundayShiftStart'
-                    register={register}
-                    type='time'
-                    placeholder='Début du quart'
-                    error={errors.sundayShiftStart}
-                />
-                <FormInput
-                    label='À'
-                    validation={{validate: val => checkIfLowerThan(val, sundayShift) || 'La fin du quart doit être après le début'}}
-                    name='sundayShiftEnd'
-                    register={register}
-                    type='time'
-                    placeholder='Fin du quart'
-                    error={errors.sundayShiftEnd}
-                />
+                    <input className="form-control" type="text" disabled value='Dimanche'/>
+                </Column>
+                <Column col={{md: 5}}>
+                    <FieldInput
+                        label='De'
+                        validation={{}}
+                        name='sundayShiftStart'
+                        register={register}
+                        type='time'
+                        placeholder='Début du quart'
+                        error={errors.sundayShiftStart}
+                    />
+                </Column>
+                <Column col={{md: 5}}>
+                    <FieldInput
+                        label='À'
+                        validation={{validate: val => checkIfLowerThan(val, sundayShift) || 'La fin du quart doit être après le début'}}
+                        name='sundayShiftEnd'
+                        register={register}
+                        type='time'
+                        placeholder='Fin du quart'
+                        error={errors.sundayShiftEnd}
+                    />
+                </Column>
             </FormGroup>
         </div>
     </div>
