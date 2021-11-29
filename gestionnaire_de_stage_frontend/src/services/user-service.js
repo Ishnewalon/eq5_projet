@@ -6,6 +6,18 @@ export async function getSupervisors() {
     return await response.json();
 }
 
+export async function changePassword(typeUser, id, password) {
+    return await fetch(`${urlBackend}/${typeUser}/change_password/${id}`, requestInit(methods.POST, password)).then(response => {
+        return response.json().then(body => {
+            if (response.status === 200)
+                toast.fire({title: body.message,});
+            else if (response.status === 400)
+                toastErr.fire({title: body.message,});
+            return response.ok
+        })
+    })
+}
+
 export async function forgotPassword(typeUser, email) {
     return await fetch(`${urlBackend}/forgot_password/${typeUser}/${email}`, requestInit(methods.POST, null))
 }

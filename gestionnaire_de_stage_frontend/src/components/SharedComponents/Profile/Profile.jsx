@@ -4,6 +4,8 @@ import {regexPassword} from "../../../utility";
 import {FaPen} from "react-icons/all";
 import {Column} from "../FormGroup/FormGroupV2";
 import styles from "./Profile.module.css";
+import {UserType} from "../../../enums/UserTypes";
+import {changePassword} from "../../../services/user-service";
 
 export default function Profile() {
     let auth = useAuth();
@@ -47,8 +49,19 @@ export default function Profile() {
                 return new Promise(resolve => resolve(password))
             }
         }).then(result => {
-            if (result.isConfirmed)
-                alert(JSON.stringify(result))
+            if (result.isConfirmed) {
+                let type
+                if (auth.isMonitor())
+                    type = UserType.MONITOR[0]
+                else if (auth.isStudent())
+                    type = UserType.STUDENT[0]
+                else if (auth.isSupervisor())
+                    type = UserType.SUPERVISOR[0]
+                changePassword(type, user.id, result.value).then(ok => {
+                    if (ok)
+                        user.password = result.value;
+                })
+            }
         })
     }
 

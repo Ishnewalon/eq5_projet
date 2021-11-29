@@ -17,8 +17,13 @@ export const requestInit = (method, body) => {
         }
     }
 
-    if (body && (method === methods.POST || method === methods.PUT))
-        value['body'] = JSON.stringify(body)
+    if (body && (method === methods.POST || method === methods.PUT)) {
+        if (typeof body === "string")
+            value['body'] = body
+        else
+            value['body'] = JSON.stringify(body)
+
+    }
     return value
 }
 
