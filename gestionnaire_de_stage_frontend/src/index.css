@@ -92,7 +92,7 @@ Custom classes
 .link-button {
     background-color: transparent;
     border: none;
-    cursor: pointer;
+    cursor: pointer !important;
     display: inline;
 }
 
@@ -272,3 +272,23 @@ PROGRESS BAR
     clip: rect(0, auto, auto, 0);
     transition: all 0.5s ease-in-out;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,45 @@
+.userCardFull {
+    overflow: hidden;
+    background: var(--bs-white);
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+    box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+    border: none;
+    margin: 0 30px;
+    user-select: none;
+}
+
+.cardBlock {
+    padding: 1.25rem
+}
+
+.titleCol {
+    font-weight: 600;
+    margin-bottom: 5px !important;
+}
+
+.userProfile {
+    background: -webkit-gradient(linear, left top, right top, from(var(--color-primary)), to(var(--color-primary-hover)));
+    background: linear-gradient(to right, var(--color-primary-hover), var(--color-primary));
+    padding: 20px 0;
+}
+
+.fontWeight600 {
+    font-weight: 600
+}
+
+.borderTitle {
+    composes: fontWeight600;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.informations {
+    composes: borderTitle;
+    padding-bottom: 5px !important;
+    margin-bottom: 10px;
+
+}
+
+.imgRadius {
+    border-radius: 5px
+}

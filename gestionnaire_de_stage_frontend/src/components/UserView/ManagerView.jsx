@@ -15,6 +15,7 @@ import {Title} from "../SharedComponents/Title/Title";
 import StudentsCurriculumsOverview from "../Admin/StudentManagement/StudentsCurriculumsOverview";
 import StudentCurriculumValidation from "../Curriculums/StudentCurriculumsValidation";
 import {BtnBack} from "../SharedComponents/BtnBack";
+import Profile from "../SharedComponents/Profile/Profile";
 
 export default function ManagerView() {
     const {path} = useRouteMatch();
@@ -23,6 +24,7 @@ export default function ManagerView() {
             <Route exact path={`${path}`}>
                 <div className="container">
                     <Title>Bonjour {auth.user.firstName}!</Title>
+                    <Profile/>
                 </div>
             </Route>
             <Route exact path={`${path}/manager/contracts/signed`}>

@@ -5,6 +5,7 @@ import SupervisorVisitForm from "../Evaluation/SupervisorVisitForm";
 import StudentStatusView from "../Admin/StudentManagement/StudentStatusView";
 import {Title} from "../SharedComponents/Title/Title";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import Profile from "../SharedComponents/Profile/Profile";
 
 export default function SupervisorView() {
     const {path} = useRouteMatch();
@@ -21,6 +22,7 @@ export default function SupervisorView() {
         </Route>
         <Route exact path={`${path}`}>
             <h1 className="text-center">Bonjour {auth.user.firstName}!</h1>
+            <Profile/>
         </Route>
     </>);
 }
