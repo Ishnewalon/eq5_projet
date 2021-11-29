@@ -33,7 +33,7 @@ function App() {
                         </RequiredRoute>
                         <RequiredRoute path="/register" component={RequireNoAuth}>
                             <Title>Inscription</Title>
-                            <ContainerBox className="w-50">
+                            <ContainerBox>
                                 <Route exact path="/register" component={Register}/>
                                 <Route exact path="/register/monitor" component={RegisterMonitor}/>
                                 <Route exact path="/register/cegep" component={RegisterCegep}/>

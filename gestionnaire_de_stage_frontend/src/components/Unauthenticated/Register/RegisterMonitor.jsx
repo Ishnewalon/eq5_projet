@@ -9,6 +9,8 @@ import {useForm} from "react-hook-form";
 import {regexCodePostal, regexName} from "../../../utility";
 import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 import {Column, FormGroupV2} from "../../SharedComponents/FormGroup/FormGroupV2";
+import {Title} from "../../SharedComponents/Title/Title";
+import {ProgressBar} from "../../SharedComponents/ProgressBar";
 
 
 export default function RegisterMonitor() {
@@ -18,7 +20,7 @@ export default function RegisterMonitor() {
     });
     let history = useHistory();
     let auth = useAuth();
-    const [curentStep, setCurentStep] = useState(0)
+    const [currentStep, setCurrentStep] = useState(0)
     let show;
 
 
@@ -44,29 +46,41 @@ export default function RegisterMonitor() {
             companyName
         } = data;
         if (submitter === 'Suivant') {
-            if (curentStep === 0)
-                setCurentStep(1)
-            else if (curentStep === 1)
-                setCurentStep(2)
-            else if (curentStep === 2 && password === confirmation)
+            if (currentStep === 0)
+                setCurrentStep(1)
+            else if (currentStep === 1)
+                setCurrentStep(2)
+            else if (currentStep === 2 && password === confirmation)
                 endThis(email, password, lastName, firstName, phone, companyName, address, city, postalCode);
         } else if (submitter === 'Précédent')
-            setCurentStep(curentStep - 1)
+            setCurrentStep(currentStep - 1)
     };
 
 
-    if (curentStep === 0)
+    if (currentStep === 0)
         show = <StepMonitor register={register} errors={errors} watch={watch}/>
-    else if (curentStep === 1)
+    else if (currentStep === 1)
         show = <StepInformationGeneral register={register} errors={errors} watch={watch}
-                                       prev={() => setCurentStep(curentStep - 1)}/>
-    else if (curentStep === 2)
+                                       prev={() => setCurrentStep(currentStep - 1)}/>
+    else if (currentStep === 2)
         show =
-            <StepPassword register={register} errors={errors} watch={watch} prev={() => setCurentStep(curentStep - 1)}/>
+            <StepPassword register={register} errors={errors} watch={watch}
+                          prev={() => setCurrentStep(currentStep - 1)}/>
+
+    function getTitle() {
+        if (currentStep === 0)
+            return <Title header="h5">Informations de la compagnie</Title>
+        else if (currentStep === 1)
+            return <Title header="h5">{`Informations générales (Moniteur)`}</Title>
+        else if (currentStep === 2)
+            return <Title header="h5">Mot de passe</Title>
+    }
 
 
     return (<>
         <form className="form-container" onSubmit={handleSubmit(submit)} noValidate>
+            <ProgressBar totalSteps={3} currentStep={currentStep}/>
+            {getTitle()}
             <fieldset>
                 {show}
             </fieldset>

@@ -59,8 +59,9 @@ export async function getContractForStudent(userId) {
                         return body;
                     else if (response.status === 400)
                         swalErr.fire({text: body.message})
-                    return [];
-                }), err => console.error(err));
+                    return null;
+                }), err => console.error(err))
+        .catch(err => console.error(err));
 }
 
 export async function getAllOfferAppReadyToSign(idManager) {
