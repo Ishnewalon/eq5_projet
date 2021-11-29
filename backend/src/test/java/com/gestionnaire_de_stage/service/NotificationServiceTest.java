@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -46,6 +47,23 @@ public class NotificationServiceTest {
 
     @Mock
     private NotificationRepository notificationRepository;
+
+    @Test
+    void testGetAllByUserId() {
+        List<Notification> notifications = getDummyNotificationList();
+        Student student = getDummyStudent();
+        when(notificationRepository.findAllByTargetedUser_Id(any())).thenReturn(notifications);
+
+        List<Notification> actual = notificationService.getAllByUserId(student.getId());
+
+        assertThat(actual).hasSizeGreaterThan(0);
+    }
+
+    @Test
+    void testGetAllByUserId_withNullParams() {
+        assertThrows(IllegalArgumentException.class, () ->
+                notificationService.getAllByUserId(null));
+    }
 
     @Test
     void testNotifyOfCurriculumValidation() throws IdDoesNotExistException {
@@ -301,6 +319,20 @@ public class NotificationServiceTest {
 
         assertThrows(IdDoesNotExistException.class, () ->
                 notificationService.notifyOfOfferAppInterviewSet(getDummyOfferApp()));
+    }
+
+    private List<Notification> getDummyNotificationList() {
+        return List.of(
+                getDummyNotification(),
+                getDummyNotification(),
+                getDummyNotification());
+    }
+
+    private Notification getDummyNotification() {
+        return new Notification(
+                getDummyStudent(),
+                "a test message"
+        );
     }
 
     private Contract getDummyContract() {

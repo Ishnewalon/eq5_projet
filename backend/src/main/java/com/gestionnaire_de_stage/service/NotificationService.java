@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -38,6 +40,12 @@ public class NotificationService {
         this.studentService = studentService;
         this.offerApplicationService = offerApplicationService;
         this.contractService = contractService;
+    }
+
+    public List<Notification> getAllByUserId(Long userId) throws IllegalArgumentException {
+        Assert.notNull(userId, "Le userId ne peut pas être vide");
+
+        return notificationRepository.findAllByTargetedUser_Id(userId);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -87,9 +95,12 @@ public class NotificationService {
         if (offerApplication.getInterviewDate() != previous.getInterviewDate()) {
             Curriculum curriculum = offerApplication.getCurriculum();
             Student student = curriculum.getStudent();
+            Offer offer = offerApplication.getOffer();
             notificationRepository.save(new Notification(
-                    student.getSupervisor(),
-                    "Un de vos étudiant a un entrevue prochainement."
+                    offer.getCreator(),
+                    "N'oubliez pas votre entrevue avec " + student.getLastName() +
+                            ", " + student.getFirstName() + " le " +
+                            offerApplication.getInterviewDate()
             ));
         }
     }
@@ -134,16 +145,20 @@ public class NotificationService {
         Contract previous = contractService.getOneById(contract.getId());
 
         if (!Objects.equals(contract.getManagerSignature(), previous.getManagerSignature())){
+            Student student = contract.getStudent();
             notificationRepository.save(new Notification(
                     contract.getMonitor(),
-                    "Un contrat est prêt à être signé."
+                    "Votre contrat avec l'étudiant " + student.getLastName() +
+                            ", " + student.getFirstName() + " est prêt à être signé."
             ));
         }
 
         if (!Objects.equals(contract.getMonitorSignature(), previous.getMonitorSignature())){
+            Offer offer = contract.getOffer();
             notificationRepository.save(new Notification(
                     contract.getStudent(),
-                    "Un contrat est prêt à être signé."
+                    "Votre contrat pour le post de " + offer.getTitle() +
+                            " est prêt à être signé."
             ));
         }
     }
