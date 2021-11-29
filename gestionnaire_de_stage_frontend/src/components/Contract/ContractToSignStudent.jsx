@@ -11,7 +11,8 @@ export function ContractToSignStudent() {
     const [contract, setContract] = useState(null);
 
     useEffect(() => {
-        getContractForStudent(auth.user.id).then(contract => setContract(contract));
+        getContractForStudent(auth.user.id)
+            .then(contract => setContract(contract))
     }, [auth.user.id]);
 
 

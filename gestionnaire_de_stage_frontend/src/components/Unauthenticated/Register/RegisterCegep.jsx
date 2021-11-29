@@ -12,7 +12,6 @@ import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 import {checkMatricule} from "../../../services/user-service";
 import {Column, FormGroupV2} from "../../SharedComponents/FormGroup/FormGroupV2";
 
-
 export default function RegisterCegep() {
     const {register, handleSubmit, watch, formState: {errors}} = useForm({
         mode: "onSubmit",
@@ -74,8 +73,50 @@ export default function RegisterCegep() {
             <StepPassword register={register} errors={errors} watch={watch} prev={() => setCurentStep(curentStep - 1)}/>
 
 
+    const getPercentage = () => {
+        if (curentStep === 0)
+            return "0%"
+        else if (curentStep === 1)
+            return "50%"
+        else if (curentStep === 2)
+            return "100%"
+    };
+
+    function getTitle() {
+        if (curentStep === 0)
+            return <Title header="h5">Matricule</Title>
+        else if (curentStep === 1)
+            return <Title header="h5">{`Informations générales (${typeUserText})`}</Title>
+        else if (curentStep === 2)
+            return <Title header="h5">Mot de passe</Title>
+    }
+
     return <>
         <form className="form-container" onSubmit={handleSubmit(submit)} noValidate>
+            <div className="d-flex justify-content-center mb-3">
+                <div className="w-75 position-relative">
+                    <div className="RSPBprogressBar">
+                        <div className="RSPBstep"
+                             style={{left: "0%", transitionDuration: "300ms", transform: "translateX(-50%) scale(1)"}}>
+                            <div className={"indexedStep" + (curentStep >= 0 ? " accomplished" : "")}>1</div>
+                        </div>
+                        <div className="RSPBstep"
+                             style={{left: "50%", transitionDuration: "300ms", transform: "translateX(-50%) scale(1)"}}>
+                            <div className={"indexedStep" + (curentStep >= 1 ? " accomplished" : "")}>2</div>
+                        </div>
+                        <div className="RSPBstep"
+                             style={{
+                                 left: "100%",
+                                 transitionDuration: "300ms",
+                                 transform: "translateX(-50%) scale(1)"
+                             }}>
+                            <div className={"indexedStep" + (curentStep >= 2 ? " accomplished" : "")}>3</div>
+                        </div>
+                        <div className="RSPBprogression" style={{width: getPercentage()}}/>
+                    </div>
+                </div>
+            </div>
+            {getTitle()}
             <fieldset>
                 {show}
             </fieldset>
