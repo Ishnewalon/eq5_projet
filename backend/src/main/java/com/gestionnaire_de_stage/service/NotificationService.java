@@ -43,7 +43,7 @@ public class NotificationService {
     public List<Notification> getAllByUserId(Long userId) throws IllegalArgumentException {
         Assert.notNull(userId, "Le userId ne peut pas être vide");
 
-        return notificationRepository.findAllByTargetedUser_Id(userId);
+        return notificationRepository.findAllByTargetedUser_IdOrderByCreatedDateDesc(userId);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)

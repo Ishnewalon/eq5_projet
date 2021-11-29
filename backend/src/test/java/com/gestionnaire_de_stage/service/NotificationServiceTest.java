@@ -52,7 +52,7 @@ public class NotificationServiceTest {
     void testGetAllByUserId() {
         List<Notification> notifications = getDummyNotificationList();
         Student student = getDummyStudent();
-        when(notificationRepository.findAllByTargetedUser_Id(any())).thenReturn(notifications);
+        when(notificationRepository.findAllByTargetedUser_IdOrderByCreatedDateDesc(any())).thenReturn(notifications);
 
         List<Notification> actual = notificationService.getAllByUserId(student.getId());
 
