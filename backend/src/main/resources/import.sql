@@ -7,7 +7,7 @@ INSERT INTO OFFER VALUES(1, '1000, avenue Bouchard', now(), now(), now(), 'Infor
 -- INSERT INTO OFFER VALUES(14, '1000, avenue Bouchard', now(), now(), now(), 'Informatique', 'Dev React', 'Lundi au Vendredi', '35h', '15 semaines', 28, 'Dev', NULL, 2, 3);
 INSERT INTO SUPERVISOR VALUES(4, 'supervisor@email.com', 'Sup', 'ervisor', 'UnMotDePasse1234','5141234567', 'Informatique', '12345');
 INSERT INTO STUDENT VALUES(3, 'student@email.com', 'Imem', 'Belcadi', 'UnMotDePasse1234', '5141234567', '1100, avenue Bouchard', 'Lachine', 'Informatique', '1234567', 'H0H0H0', NULL, NULL);
-INSERT INTO STUDENT VALUES(5, 'student1@email.com', 'John', 'Kalouy', 'UnMotDePasse1234', '5141234567', '1100, avenue Bouchard', 'Lachine', 'Informatique', '7654321', 'H0H0H0', NULL, 4);
+INSERT INTO STUDENT VALUES(5, 'student1@email.com', 'John', 'Kalouy', 'UnMotDePasse1234', '5141234567', '1100, avenue Bouchard', 'Lachine', 'Informatique', '7654321', 'H0H0H0', NULL, NULL);
 
 INSERT INTO CURRICULUM VALUES(13, FILE_READ('src/main/resources/contratTemplate.pdf'), true, 'test.pdf', 'application/pdf', 5)
 INSERT INTO OFFER_APPLICATION VALUES(12, DATEADD('WEEK', -1, now()), 'EN_ATTENTE_ENTREVUE', 13, 1, 3);

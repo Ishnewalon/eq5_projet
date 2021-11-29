@@ -64,8 +64,7 @@ public class SupervisorController {
 
     @GetMapping
     public ResponseEntity<?> getAllSupervisor() {
-        List<Supervisor> supervisorList = supervisorService.getAll();
-        return ResponseEntity.ok(supervisorList);
+        return ResponseEntity.ok(supervisorService.getAll());
     }
 
     @PostMapping("/assign/student")
