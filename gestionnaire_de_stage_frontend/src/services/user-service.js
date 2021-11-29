@@ -75,16 +75,6 @@ export async function getUnassignedStudents() {
     return await response.json();
 }
 
-export async function getStudentsWithoutCv() {
-    const response = await fetch(`${urlBackend}/student/no_cv`, requestInit(methods.GET));
-    return await response.json();
-}
-
-export async function getStudentsWithInvalidCv() {
-    const response = await fetch(`${urlBackend}/student/cv_invalid`, requestInit(methods.GET));
-    return await response.json();
-}
-
 export async function getAllStudents() {
     const response = await fetch(`${urlBackend}/student`, requestInit(methods.GET));
     return await response.json();

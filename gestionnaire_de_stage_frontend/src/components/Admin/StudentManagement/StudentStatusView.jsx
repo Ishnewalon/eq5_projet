@@ -34,7 +34,7 @@ export default function StudentStatusView() {
             case "EN_ATTENTE_REPONSE":
                 return <BiTimeFive color={"black"} title={"L'étudiant est en attente de réponse"} size={27}/>
             default:
-                return "Aucun status"
+                return "Aucun statut"
         }
     }
 
@@ -52,7 +52,6 @@ export default function StudentStatusView() {
                     <th>Status</th>
                 </TableHeader>
                 {offerAppList.map((offerApp, index) =>
-
                     <TableRow key={index}>
                         <td>{offerApp.curriculum.student.id}</td>
                         <td>{offerApp.curriculum.student.firstName} {offerApp.curriculum.student.lastName}</td>

@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import {assignStudentToSupervisor, getSupervisors, getUnassignedStudents} from "../../../services/user-service";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import {FaLink} from "react-icons/all";
 
 export default function LinkSupervisorToStudent() {
     const [studentList, setStudentList] = useState([])
@@ -39,7 +40,7 @@ export default function LinkSupervisorToStudent() {
                     <th>#</th>
                     <th>Étudiant</th>
                     <th>Superviseur</th>
-                    <th>Accepter</th>
+                    <th><FaLink size={25} color={"#18A999"} title={"Associer un étudiant à un superviseur"}/></th>
                 </TableHeader>
                 {studentList.map((student, index) =>
                     <RowStudent key={index} student={student} list={supervisorList} removeFromList={removeFromList}/>
@@ -86,7 +87,7 @@ function RowStudent({student, list, removeFromList}) {
             </td>
             <td>
                 <button disabled={list.length === 0} className="btn btn-outline-primary"
-                        onClick={assign(student.id, supervisorID)}>Accepter
+                        onClick={assign(student.id, supervisorID)}>Associer
                 </button>
             </td>
         </TableRow>

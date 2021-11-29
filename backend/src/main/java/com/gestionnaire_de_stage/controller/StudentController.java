@@ -2,8 +2,6 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.dto.StudentMonitorOfferDTO;
-import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.ContractService;
@@ -84,16 +82,6 @@ public class StudentController {
     @GetMapping
     public List<Student> getAllStudents() {
         return studentService.getAll();
-    }
-
-    @GetMapping("/no_cv")
-    public List<Student> getAllStudentsWithoutCv() {
-        return studentService.getAllStudentWithoutCv();
-    }
-
-    @GetMapping("/cv_invalid")
-    public List<Student> getAllStudentsWithInvalidCv() {
-        return studentService.getAllStudentWithInvalidCv();
     }
 
     @GetMapping("/needAssignement")

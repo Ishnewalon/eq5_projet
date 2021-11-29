@@ -16,7 +16,7 @@ export default function SupervisorView() {
             </ContainerBox>
         </Route>
         <Route exact path={`${path}/students/status`}>
-            <Title>Status des étudiants qui vous sont attribués</Title>
+            <Title>Statut des étudiants qui vous sont attribués</Title>
             <StudentStatusView/>
         </Route>
         <Route exact path={`${path}`}>

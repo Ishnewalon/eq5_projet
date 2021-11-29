@@ -72,7 +72,7 @@ export default function OfferApplicationsMonitorListOfApplications() {
                                 <th>Email</th>
                                 <th>Téléphone</th>
                                 <th>Statut</th>
-                                <th>Curriculum</th>
+                                <th>Cv</th>
                             </TableHeader>
                             {offerApplications.filter(offerApp => offerApp.offer.id === offer.id).map(offerApp => {
                                     let curriculum = offerApp.curriculum;

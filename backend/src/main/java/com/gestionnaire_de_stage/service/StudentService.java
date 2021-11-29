@@ -88,14 +88,6 @@ public class StudentService {
         return studentRepository.getAllByPrincipalCurriculum_IsValidAndSupervisorNull(true);
     }
 
-    public List<Student> getAllStudentWithoutCv() {
-        return studentRepository.findAllByPrincipalCurriculumIsNull();
-    }
-
-    public List<Student> getAllStudentWithInvalidCv() {
-        return studentRepository.findAllByPrincipalCurriculumIsNullOrPrincipalCurriculum_IsValid(false);
-    }
-
     public boolean assign(Student student, Supervisor supervisor) {
         if (student.getSupervisor() != null) {
             return false;
