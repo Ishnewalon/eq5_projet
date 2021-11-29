@@ -85,7 +85,7 @@ export default function OfferApplicationsStudentSetStatusFinal() {
     };
 
     if (offerApplications.length === 0)
-        return <MessageNothingToShow message="Vous n'avez pas appliqué encore.."/>
+        return <MessageNothingToShow message="Vous n'avez pas appliqué encore..."/>
 
     return (<>
         <Table>
