@@ -52,9 +52,15 @@ public class MonitorController {
         }
     }
 
-    @PostMapping("/change_password/{id}")
+    @PutMapping("/change_password/{id}")
     public ResponseEntity<?> UpdatePassword(@PathVariable Long id, @RequestBody String password) {
-        monitorService.changePassword(id, password);
+        try {
+            monitorService.changePassword(id, password);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
         return ResponseEntity.ok(new ResponseMessage("Mot de passe changé avec succès"));
     }
 }

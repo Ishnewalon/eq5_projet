@@ -62,7 +62,8 @@ export default function StudentCurriculumValidation() {
                     <th>{cv.id}</th>
                     <td>{cv.name}</td>
                     <td>
-                        <div onClick={() => downloadFile(toPdfBlob(cv.data), `${cv.student.firstName}_${cv.student.lastName}_${cv.id}.pdf`)}>
+                        <div
+                            onClick={() => downloadFile(toPdfBlob(cv.data), `${cv.student.firstName}_${cv.student.lastName}_${cv.id}.pdf`)}>
                             <FiDownload color={"black"} title={"Téléchargez le cv"} size={27}/>
                         </div>
                     </td>

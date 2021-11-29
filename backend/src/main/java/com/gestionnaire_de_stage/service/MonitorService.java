@@ -80,8 +80,8 @@ public class MonitorService {
         return !monitorRepository.existsById(id);
     }
 
-    public Monitor changePassword(Long id, String password) {
-        Monitor monitor = monitorRepository.getById(id);
+    public Monitor changePassword(Long id, String password) throws IdDoesNotExistException {
+        Monitor monitor = getOneByID(id);
         monitor.setPassword(password);
         return monitorRepository.save(monitor);
     }

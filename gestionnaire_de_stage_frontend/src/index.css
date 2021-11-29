@@ -17,7 +17,6 @@
 
 #root, html, body {
     display: block;
-    /*width: auto;*/
     height: 100vh;
     margin: 0;
     padding: 0;
@@ -174,11 +173,6 @@ Custom BS
     background-color: #bcbcd2;
     color: black;
     margin-bottom: 20px;
-}
-
-.form-container {
-    /*justify-content: center;*/
-    /*align-items: center;*/
 }
 
 /***

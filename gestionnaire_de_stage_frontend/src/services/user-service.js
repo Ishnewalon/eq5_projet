@@ -7,7 +7,7 @@ export async function getSupervisors() {
 }
 
 export async function changePassword(typeUser, id, password) {
-    return await fetch(`${urlBackend}/${typeUser}/change_password/${id}`, requestInit(methods.POST, password)).then(response => {
+    return await fetch(`${urlBackend}/${typeUser}/change_password/${id}`, requestInit(methods.PUT, password)).then(response => {
         return response.json().then(body => {
             if (response.status === 200)
                 toast.fire({title: body.message,});
@@ -51,35 +51,37 @@ export async function checkMatricule(matricule) {
 }
 
 export async function checkEmail(email) {
-    let valid = await fetch(`${urlBackend}/student/email/${email}`, requestInit(methods.GET)).then(
-        response =>
-            response.json().then(body => body)
-    );
-    if (!valid)
-        return valid;
+    if (!(await checkEmailExistStudent(email)))
+        return false;
+    if (!(await checkEmailExistSupervisor(email)))
+        return false;
+    if (!(await checkEmailExistManager(email)))
+        return false;
+    return await checkEmailExistMonitor(email);
+}
 
-    valid = await fetch(`${urlBackend}/supervisor/email/${email}`, requestInit(methods.GET)).then(
-        response =>
-            response.json().then(body => body)
+async function checkEmailExistStudent(email) {
+    return await fetch(`${urlBackend}/student/email/${email}`, requestInit(methods.GET)).then(
+        response => response.json().then(body => body)
     );
-    if (!valid)
-        return valid;
+}
 
-    valid = await fetch(`${urlBackend}/monitor/email/${email}`, requestInit(methods.GET)).then(
-        response =>
-            response.json().then(body => body)
+async function checkEmailExistSupervisor(email) {
+    return await fetch(`${urlBackend}/supervisor/email/${email}`, requestInit(methods.GET)).then(
+        response => response.json().then(body => body)
     );
-    if (!valid)
-        return valid;
+}
 
-    valid = await fetch(`${urlBackend}/manager/email/${email}`, requestInit(methods.GET)).then(
-        response =>
-            response.json().then(body => body)
+async function checkEmailExistManager(email) {
+    return await fetch(`${urlBackend}/manager/email/${email}`, requestInit(methods.GET)).then(
+        response => response.json().then(body => body)
     );
-    if (!valid)
-        return valid;
+}
 
-    return true;
+async function checkEmailExistMonitor(email) {
+    return await fetch(`${urlBackend}/monitor/email/${email}`, requestInit(methods.GET)).then(
+        response => response.json().then(body => body)
+    );
 }
 
 export async function getUnassignedStudents() {

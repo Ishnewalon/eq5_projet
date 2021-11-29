@@ -288,7 +288,7 @@ public class SupervisorControllerTest {
         when(supervisorService.changePassword(any(), any())).thenReturn(dummySupervisor);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/supervisor/change_password/{id}", dummySupervisor.getId())
+                        .put("/supervisor/change_password/{id}", dummySupervisor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(newPassword))
                 .andReturn();
