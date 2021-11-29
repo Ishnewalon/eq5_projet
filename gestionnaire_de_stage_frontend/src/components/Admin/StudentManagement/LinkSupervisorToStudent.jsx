@@ -1,15 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {assignStudentToSupervisor, getSupervisors, getUnassignedStudents} from "../../../services/user-service";
-import {toast} from "../../../utility";
-import {FormField} from "../../SharedComponents/FormField/FormField";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import {FaLink} from "react-icons/all";
 
-export default function LinkSupervisorToStudent() {// TODO: field is linked to supervisor or something
-
+export default function LinkSupervisorToStudent() {
     const [studentList, setStudentList] = useState([])
     const [supervisorList, setSupervisorList] = useState([])
-    const [supervisorID, setSupervisorId] = useState(null)
 
     useEffect(() => {
         getUnassignedStudents()
@@ -23,28 +20,18 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
         getSupervisors()
             .then(supervisorList => {
                 setSupervisorList(supervisorList)
-                setSupervisorId(supervisorList[0].id)
             })
             .catch(e => {
                 setSupervisorList([])
                 console.error(e);
             });
-
     }, [])
 
-    const assign = (idStudent) => e => {
-        e.preventDefault();
-        assignStudentToSupervisor(idStudent, supervisorID).then(
-            responseMessage => {
-                toast.fire({title: responseMessage.message}).then();
-            }
-        )
-    }
+    const removeFromList = (studentID) =>
+        setStudentList(studentList.filter(student => student.id !== studentID))
+
     if (studentList.length === 0)
-        return <MessageNothingToShow message="Aucun étudiant à associer pour le moment...">
-            Bonne<span className="color-emphasis-1"> nouvelle!</span><br/>
-            Aucune offre <span className="color-emphasis-1">à valider.</span>
-        </MessageNothingToShow>
+        return <MessageNothingToShow message="Aucun étudiant à associer pour le moment..."/>
 
     return (
         <div>
@@ -53,32 +40,56 @@ export default function LinkSupervisorToStudent() {// TODO: field is linked to s
                     <th>#</th>
                     <th>Étudiant</th>
                     <th>Superviseur</th>
-                    <th>Accepter</th>
+                    <th><FaLink size={25} color={"#18A999"} title={"Associer un étudiant à un superviseur"}/></th>
                 </TableHeader>
                 {studentList.map((student, index) =>
-                    <TableRow key={index}>
-                        <th>{student.id}</th>
-                        <td>{student.firstName} {student.lastName}</td>
-                        <td>
-                            <FormField>
-                                <select onChange={() => setSupervisorId('supervisorID')}>
-                                    {supervisorList.map((supervisor, indexSupervisor) =>
-                                        <option key={indexSupervisor} value={supervisor.id}>
-                                            {supervisor.lastName}, {supervisor.firstName}
-                                        </option>
-                                    )}
-                                </select>
-                            </FormField>
-                        </td>
-                        <td>
-                            <button className="btn btn-success" onClick={assign(student.id)}>Accepter</button>
-                        </td>
-                    </TableRow>
+                    <RowStudent key={index} student={student} list={supervisorList} removeFromList={removeFromList}/>
                 )}
             </Table>
         </div>
     )
-
 }
 
+function RowStudent({student, list, removeFromList}) {
+    const [supervisorID, setSupervisorID] = useState(null)
+    let memoSupervisorID = useMemo(() => supervisorID, [supervisorID]);
 
+    useEffect(() => {
+        if (!memoSupervisorID)
+            setSupervisorID(list.length > 0 ? list[0].id : null)
+    }, [list, memoSupervisorID])
+
+    const assign = (idStudent, idSupervisor) => e => {
+        e.preventDefault();
+        assignStudentToSupervisor(idStudent, idSupervisor)
+            .then(
+                () => removeFromList(idStudent))
+            .catch(e => {
+                console.error(e);
+            })
+    }
+
+    return (
+        <TableRow>
+            <th>{student.id}</th>
+            <td>{student.firstName} {student.lastName}</td>
+            <td>
+                <div className="form-group">
+                    <select disabled={list.length === 0} className="form-select"
+                            onChange={e => setSupervisorID(e.target.value)} defaultValue="">
+                        {list.length > 0 ? list.map((supervisor, indexSupervisor) =>
+                            <option key={indexSupervisor} value={supervisor.id}>
+                                {supervisor.lastName}, {supervisor.firstName}
+                            </option>
+                        ) : <option disabled value="">Aucun superviseur à assigner</option>}
+                    </select>
+                </div>
+            </td>
+            <td>
+                <button disabled={list.length === 0} className="btn btn-outline-primary"
+                        onClick={assign(student.id, supervisorID)}>Associer
+                </button>
+            </td>
+        </TableRow>
+    )
+}

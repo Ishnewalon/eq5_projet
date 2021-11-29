@@ -1,16 +1,11 @@
 package com.gestionnaire_de_stage.controller;
 
-import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.enums.Status;
-import com.gestionnaire_de_stage.exception.DateNotValidException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
-import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
 import com.gestionnaire_de_stage.model.OfferApplication;
-import com.gestionnaire_de_stage.service.CurriculumService;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.OfferApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +20,9 @@ import static org.springframework.http.HttpStatus.CREATED;
 @CrossOrigin
 public class OfferApplicationController {
     private final OfferApplicationService offerApplicationService;
-    private final CurriculumService curriculumService;
 
-    public OfferApplicationController(OfferApplicationService offerApplicationService, CurriculumService curriculumService) {
+    public OfferApplicationController(OfferApplicationService offerApplicationService) {
         this.offerApplicationService = offerApplicationService;
-        this.curriculumService = curriculumService;
     }
 
     @PostMapping("/apply")
@@ -49,22 +42,34 @@ public class OfferApplicationController {
     @GetMapping("/applicants/{email}")
     public ResponseEntity<?> viewApplicantList(@PathVariable String email) {
         List<OfferApplication> offerApplicationList;
-        List<CurriculumDTO> curriculumDTOList;
         try {
-            offerApplicationList = offerApplicationService.getAllByOfferCreatorEmail(email);//SESSION : get only offer of current session or future
-            curriculumDTOList = curriculumService.mapToCurriculumDTOList(offerApplicationList);
+            offerApplicationList = offerApplicationService.getAllByOfferCreatorEmail(email);
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
         }
-        return ResponseEntity.ok(curriculumDTOList);//TODO: Send list offer with list of cv_applicants
+        return ResponseEntity.ok(offerApplicationList);
+    }
+
+
+    @GetMapping("/applicants/manager/{id}")
+    public ResponseEntity<?> getOffersApplicationsStageTrouver(@PathVariable Long id) {
+        List<OfferApplication> offerApplicationList;
+        try {
+            offerApplicationList = offerApplicationService.getOffersApplicationsStageTrouverManagerId(id);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+        return ResponseEntity.ok(offerApplicationList);
     }
 
     @PostMapping("/setdate/{offerAppID}")
     public ResponseEntity<?> setInterviewDate(@PathVariable Long offerAppID, @RequestBody LocalDateTime date) {
         try {
-            OfferApplication offerApplication = offerApplicationService.setInterviewDate(offerAppID, date);//SESSION : check if offer is not outdated
+            OfferApplication offerApplication = offerApplicationService.setInterviewDate(offerAppID, date);
             return ResponseEntity.ok(offerApplication);
         } catch (Exception e) {
             return ResponseEntity
@@ -73,7 +78,7 @@ public class OfferApplicationController {
         }
     }
 
-    @GetMapping("/applicants/cv_sent/{id}")//SESSION : get offers of current session and future
+    @GetMapping("/applicants/cv_sent/{id}")
     public ResponseEntity<?> getAllByOfferStatusAndStudentID(@PathVariable Long id) {
         try {
             List<OfferApplication> offerApplicationList = offerApplicationService.getAllByOfferStatusAndStudentID(Status.CV_ENVOYE, id);
@@ -85,17 +90,11 @@ public class OfferApplicationController {
         }
     }
 
-    @GetMapping("/applicants/manager/{id}")
-    public ResponseEntity<?> getOffersApplicationsStageTrouver(@PathVariable Long id) {
-        List<OfferApplication> offerApplicationList;
-        try {
-            offerApplicationList = offerApplicationService.getOffersApplicationsStageTrouver(id);//SESSION : get application of current session and future
-        } catch (Exception e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        }
-        return ResponseEntity.ok(offerApplicationList);
+    @GetMapping("/applicants/supervisor")
+    public ResponseEntity<?> getOffersApplicationsStageTrouver() {
+        List<Student> studentList = offerApplicationService.getOffersApplicationsStageTrouver();
+
+        return ResponseEntity.ok(studentList);
     }
 
     @PostMapping("/student/update_status")

@@ -187,6 +187,16 @@ public class ManagerServiceTest {
                 () -> managerService.getOneByEmailAndPassword(dummyManager.getEmail(), dummyManager.getPassword()));
     }
 
+    @Test
+    public void testCheckEmailValidity() {
+        String email = "oussamakably@gmail.com";
+        when(managerRepository.existsByEmail(any())).thenReturn(true);
+
+        boolean isValid = managerService.isEmailInvalid(email);
+
+        assertThat(isValid).isFalse();
+    }
+
     private Manager getDummyManager() {
         Manager dummyManager = new Manager();
         dummyManager.setPassword("Test1234");

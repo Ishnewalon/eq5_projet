@@ -1,4 +1,3 @@
-import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {UserType} from "../../enums/UserTypes";
 import {forgotPassword} from "../../services/user-service";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
@@ -9,6 +8,7 @@ import {BtnBack} from "../SharedComponents/BtnBack";
 import {FormSelect} from "../SharedComponents/FormInput/FormSelect";
 import {useForm} from "react-hook-form";
 import {FormInput} from "../SharedComponents/FormInput/FormInput";
+import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
 
 export default function ForgotPassword() {
     const history = useHistory();
@@ -24,7 +24,7 @@ export default function ForgotPassword() {
         toast.fire({
             title: 'Envoi du mail...',
             timer: 120000,
-            didOpen: () => {
+            willOpen: () => {
                 Swal.showLoading()
                 forgotPassword(userType, email).then(
                     response => {
@@ -48,26 +48,30 @@ export default function ForgotPassword() {
     return (
         <ContainerBox className="w-50">
             <form onSubmit={handleSubmit(submit)}>
-                <FormGroup repartition={[12, 12]}>
-                    <FormSelect label="Type d'utilisateur"
-                                name="userType"
-                                defaultMessage="Choisissez un type d'utilisateur!"
-                                options={Object.values(UserType).filter(type => type !== UserType.MANAGER)}
-                                fieldValue={0}
-                                displayed={[1]}
-                                register={register}
-                                error={errors.userType}
-                                validation={{required: 'Ce champ est requis!'}}
-                    />
-                    <FormInput label="Entrez votre courriel"
-                               name="email"
-                               type="email"
-                               placeholder="Email"
-                               register={register}
-                               error={errors.email}
-                               validation={{required: 'Ce champ est requis!'}}
-                    />
-                </FormGroup>
+                <FormGroupV2>
+                    <Column col={{sm: 6}}>
+                        <FormSelect label="Type d'utilisateur"
+                                    name="userType"
+                                    defaultMessage="Choisissez un type d'utilisateur!"
+                                    options={Object.values(UserType).filter(type => type !== UserType.MANAGER)}
+                                    fieldValue={0}
+                                    displayed={[1]}
+                                    register={register}
+                                    error={errors.userType}
+                                    validation={{required: 'Ce champ est requis!'}}
+                        />
+                    </Column>
+                    <Column col={{sm: 6}}>
+                        <FormInput label="Entrez votre courriel"
+                                   name="email"
+                                   type="email"
+                                   placeholder="Email"
+                                   register={register}
+                                   error={errors.email}
+                                   validation={{required: 'Ce champ est requis!'}}
+                        />
+                    </Column>
+                </FormGroupV2>
                 <div className="d-flex justify-content-center mt-3">
                     <div className="btn-group">
                         <BtnBack/>

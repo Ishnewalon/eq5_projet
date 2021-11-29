@@ -156,8 +156,8 @@ public class StudentControllerTest {
         when(studentService.setPrincipalCurriculum(any(), any())).thenReturn(student);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -173,8 +173,8 @@ public class StudentControllerTest {
                 .thenThrow(new IllegalArgumentException("L'identifiant de l'étudiant ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -190,8 +190,8 @@ public class StudentControllerTest {
                 .thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -208,8 +208,8 @@ public class StudentControllerTest {
                 .thenThrow(new CurriculumNotValidException("Le curriculum doit être valide"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -241,35 +241,8 @@ public class StudentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Student> actualStudentList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualStudentList).isEqualTo(list);
-    }
-
-    @Test
-    public void testGetAllStudentWithoutCv() throws Exception {
-        List<Student> list = Arrays.asList(new Student(), new Student());
-        when(studentService.getAllStudentWithoutCv()).thenReturn(Arrays.asList(new Student(), new Student()));
-
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/no_cv")
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Student> actualStudentList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualStudentList).isEqualTo(list);
-    }
-
-    @Test
-    public void testGetAllStudentWithInvalidCv() throws Exception {
-        List<Student> list = Arrays.asList(new Student(), new Student());
-        when(studentService.getAllStudentWithInvalidCv()).thenReturn(Arrays.asList(new Student(), new Student()));
-
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/cv_invalid")
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Student> actualStudentList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<Student> actualStudentList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualStudentList).isEqualTo(list);
     }
@@ -285,7 +258,8 @@ public class StudentControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         final List<StudentMonitorOfferDTO> actual =
-                MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+                MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+                });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actual.size()).isEqualTo(studentMonitorOfferDTOList.size());
     }
@@ -294,6 +268,7 @@ public class StudentControllerTest {
     public void testGetAllStudentsNotYetEvaluatedAsStudentMonitorOfferDTOThrowsIllegalArg() throws Exception {
         when(stageService.getAllWithNoEvalStagiaire()).thenReturn(getDummyStageList());
         when(contractService.stageListToStudentMonitorOfferDtoList(any()))
+
                 .thenThrow(new IllegalArgumentException("La liste de stage ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/not_evaluated")
@@ -315,7 +290,8 @@ public class StudentControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         final List<StudentMonitorOfferDTO> actual =
-                MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+                MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+                });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actual.size()).isEqualTo(studentMonitorOfferDTOList.size());
     }
@@ -333,6 +309,50 @@ public class StudentControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("La liste de stage ne peut pas être vide");
     }
+
+    @Test
+    public void testCheckMatricule() throws Exception {
+        when(studentService.isMatriculeValid(any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/student/matricule/{matricule}", "1234567")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("true");
+    }
+
+    @Test
+    public void testCheckEmailValidty() throws Exception {
+        when(studentService.isEmailInvalid(any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/student/email/{email}", "potato@mail.com")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("false");
+    }
+
+    @Test
+    public void testChangePassword() throws Exception {
+        Student dummyStudent = getDummyStudent();
+        String newPassword = "newPassword";
+        when(studentService.changePassword(any(), any())).thenReturn(dummyStudent);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .post("/student/change_password/{id}", dummyStudent.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newPassword))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Mot de passe changé avec succès");
+    }
+
 
     private StudentMonitorOfferDTO getDummyStudentMonitorOfferDTO() {
         return new StudentMonitorOfferDTO(
@@ -370,18 +390,6 @@ public class StudentControllerTest {
         dummyMonitor.setDepartment("Informatique");
         dummyMonitor.setPassword("testPassword");
         return dummyMonitor;
-    }
-
-    private List<Student> getDummyStudentList() {
-        List<Student> dummyStudentList = new ArrayList<>();
-        Long idIterator = 1L;
-        for (int i = 0; i < 3; i++) {
-            Student dummyStudent = getDummyStudent();
-            dummyStudent.setId(idIterator);
-            dummyStudentList.add(dummyStudent);
-            idIterator++;
-        }
-        return dummyStudentList;
     }
 
     private Student getDummyStudent() {
@@ -429,7 +437,7 @@ public class StudentControllerTest {
         Stage stage1 = getDummyStage();
         Stage stage2 = getDummyStage();
         stage2.setId(2L);
-        
+
         Stage stage3 = getDummyStage();
         stage3.setId(3L);
         return List.of(stage1, stage2, stage3);

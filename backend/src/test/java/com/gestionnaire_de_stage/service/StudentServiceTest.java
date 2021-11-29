@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
@@ -258,7 +259,6 @@ public class StudentServiceTest {
 
         assertThrows(IdDoesNotExistException.class,
                 () -> studentService.setPrincipalCurriculum(student, curriculum.getId()));
-
     }
 
     @Test
@@ -272,7 +272,6 @@ public class StudentServiceTest {
 
         assertThrows(CurriculumNotValidException.class,
                 () -> studentService.setPrincipalCurriculum(student, curriculum.getId()));
-
     }
 
     @Test
@@ -286,27 +285,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testGetAllStudentWithoutCv() {
-        List<Student> dummyStudentList = getDummyStudentList();
-        when(studentRepository.findAllByPrincipalCurriculumIsNull()).thenReturn(dummyStudentList);
-
-        List<Student> actualStudentList = studentService.getAllStudentWithoutCv();
-
-        assertThat(actualStudentList.size()).isEqualTo(dummyStudentList.size());
-    }
-
-    @Test
-    public void testGetAllStudentWithInvalidCv() {
-        List<Student> dummyStudentList = getDummyStudentList();
-        when(studentRepository.findAllByPrincipalCurriculumIsNullOrPrincipalCurriculum_IsValid(any())).thenReturn(dummyStudentList);
-
-        List<Student> actualStudentList = studentService.getAllStudentWithInvalidCv();
-
-        assertThat(actualStudentList.size()).isEqualTo(dummyStudentList.size());
-    }
-
-    @Test
-    void testAssign() {
+    void testAssign_withUnassignedStudent() {
         Student dummyStudent = getDummyStudent();
         Supervisor dummySupervisor = getDummySupervisor();
         when(studentRepository.save(any())).thenReturn(dummyStudent);
@@ -314,6 +293,17 @@ public class StudentServiceTest {
         boolean isAssigned = studentService.assign(dummyStudent, dummySupervisor);
 
         assertThat(isAssigned).isTrue();
+    }
+
+    @Test
+    void testAssign_withAssignedStudent() {
+        Student dummyStudent = getDummyStudent();
+        Supervisor dummySupervisor = getDummySupervisor();
+        dummyStudent.setSupervisor(dummySupervisor);
+
+        boolean isAssigned = studentService.assign(dummyStudent, dummySupervisor);
+
+        assertThat(isAssigned).isFalse();
     }
 
     @Test
@@ -339,6 +329,18 @@ public class StudentServiceTest {
         assertThrows(DoesNotExistException.class,
                 () -> studentService.getOneByEmail(email),
                 "L'email n'existe pas");
+    }
+
+    @Test
+    public void testChangePassword() {
+        Student dummyStudent = getDummyStudent();
+        when(studentRepository.getById(any())).thenReturn(dummyStudent);
+        when(studentRepository.save(any())).thenReturn(dummyStudent);
+
+        Student actualStudent = studentService.changePassword(dummyStudent.getId(), "newPassword");
+
+        assertThat(actualStudent.getPassword()).isEqualTo("newPassword");
+        assertThat(actualStudent.getId()).isEqualTo(dummyStudent.getId());
     }
 
     private Student getDummyStudent() {

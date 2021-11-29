@@ -7,7 +7,7 @@ import {Route, useRouteMatch} from "react-router-dom";
 import {UserType} from "../../enums/UserTypes";
 import StartContract from "../Contract/StartContract";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import RapportsView from "../Admin/RapportsView";
 import CreateSession from "../Sessions/CreateSession";
 import ContractsSigned from '../Contract/ContractsSigned';
@@ -15,6 +15,7 @@ import {Title} from "../SharedComponents/Title/Title";
 import StudentsCurriculumsOverview from "../Admin/StudentManagement/StudentsCurriculumsOverview";
 import StudentCurriculumValidation from "../Curriculums/StudentCurriculumsValidation";
 import {BtnBack} from "../SharedComponents/BtnBack";
+import Profile from "../SharedComponents/Profile/Profile";
 
 export default function ManagerView() {
     const {path} = useRouteMatch();
@@ -23,6 +24,7 @@ export default function ManagerView() {
             <Route exact path={`${path}`}>
                 <div className="container">
                     <Title>Bonjour {auth.user.firstName}!</Title>
+                    <Profile/>
                 </div>
             </Route>
             <Route exact path={`${path}/manager/contracts/signed`}>

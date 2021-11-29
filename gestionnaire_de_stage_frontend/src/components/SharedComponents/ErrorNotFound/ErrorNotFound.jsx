@@ -13,9 +13,9 @@ export default function ErrorNotFound() {
                     <span className="circle big"/>
                     <span className="circle med"/>
                     <span className="circle small"/>
-                        <button className="btn btn-primary" onClick={() => history.push("/login")}>
-                            Retour à l'accueil
-                        </button>
+                    <button className="btn btn-primary" onClick={() => history.push("/login")}>
+                        Retour à l'accueil
+                    </button>
                 </div>
             </section>
         </>

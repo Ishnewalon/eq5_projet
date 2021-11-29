@@ -1,13 +1,13 @@
 import React from "react";
 import {Link, useHistory, useLocation} from "react-router-dom";
 import {UserType} from "../../enums/UserTypes";
-import {useAuth} from "../../services/use-auth";
-import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
+import {useAuth} from "../../hooks/use-auth";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {useForm} from "react-hook-form";
 import {FormInput} from "../SharedComponents/FormInput/FormInput";
 import {regexEmail} from "../../utility";
 import PropTypes from "prop-types";
+import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
 
 export default function Login() {
     const {register, handleSubmit, formState: {errors}} = useForm({
@@ -29,34 +29,43 @@ export default function Login() {
     return (
         <ContainerBox className="w-50">
             <form onSubmit={handleSubmit(connect)} noValidate>
-                <FormGroup>
-                    <LoginRadio name="userType" register={register} list={Object.values(UserType)} label=""
-                                validation={{}} error={errors.userType}/>
-                </FormGroup>
-                <FormGroup repartition={[12, 12]}>
-                    <FormInput label="Votre Email"
-                               name="email"
-                               type="email"
-                               placeholder="Votre Email"
-                               register={register}
-                               error={errors.email}
-                               validation={{
-                                   required: "Ce champ est requis",
-                                   pattern: {
-                                       value: regexEmail,
-                                       message: "Veuillez entrer un email valide"
-                                   }
-                               }}/>
-                    <FormInput label="Mot de passe"
-                               name="password"
-                               type="password"
-                               placeholder="Votre mot de passe"
-                               register={register}
-                               error={errors.password}
-                               validation={{
-                                   required: "Ce champ est requis",
-                               }}/>
-                </FormGroup>
+                <FormGroupV2 className={"mb-3"}>
+                    <Column>
+                        <LoginRadio name="userType" register={register} list={Object.values(UserType)}
+                                    validation={{}} error={errors.userType}/>
+                    </Column>
+                </FormGroupV2>
+                <FormGroupV2>
+                    <Column>
+                        <FormInput label="Votre Email"
+                                   name="email"
+                                   type="email"
+                                   placeholder="Votre Email"
+                                   register={register}
+                                   error={errors.email}
+                                   validation={{
+                                       required: "Ce champ est requis",
+                                       pattern: {
+                                           value: regexEmail,
+                                           message: "Veuillez entrer un email valide"
+                                       }
+                                   }}
+                                   autoComplete="email"/>
+                    </Column>
+                    <Column>
+                        <FormInput label="Mot de passe"
+                                   name="password"
+                                   type="password"
+                                   placeholder="Votre mot de passe"
+                                   register={register}
+                                   error={errors.password}
+                                   validation={{
+                                       required: "Ce champ est requis",
+                                   }}
+                                   autoComplete="current-password"
+                        />
+                    </Column>
+                </FormGroupV2>
                 <div className="form-group text-center">
                     <label/>
                     <input className="btn btn-primary btn-login" type="submit" value="Connexion"/>

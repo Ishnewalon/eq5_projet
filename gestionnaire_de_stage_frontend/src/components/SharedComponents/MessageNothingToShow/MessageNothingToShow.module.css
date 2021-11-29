@@ -1,12 +1,17 @@
 .image2 {
-    height: 400px;
     composes: no-select from "../../../index.css";
+    height: 400px;
 }
 
 .title {
-    composes: text-left bold montserrat mega from "../../../index.css";
+    composes: bold montserrat mega from "../../../index.css";
+    text-align: left;
 }
 
 .nothing-to-show {
-    composes: messageEmpty from "../../../index.css";
+    user-select: none;
+    -webkit-user-drag: none;
+    position: relative;
+    max-width: 100%;
 }
+

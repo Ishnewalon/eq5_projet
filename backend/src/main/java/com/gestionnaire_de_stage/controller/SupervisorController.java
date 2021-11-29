@@ -2,9 +2,6 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.AssignDto;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
@@ -42,6 +39,16 @@ public class SupervisorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSupervisor);
     }
 
+    @GetMapping("/matricule/{matricule}")
+    public ResponseEntity<?> checkValidMatricule(@PathVariable String matricule) {
+        return ResponseEntity.ok(!supervisorService.isMatriculeValid(matricule));
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> checkValidEmail(@PathVariable String email) {
+        return ResponseEntity.ok(supervisorService.isEmailInvalid(email));
+    }
+
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
         Supervisor supervisor;
@@ -74,9 +81,12 @@ public class SupervisorController {
                     .body(new ResponseMessage(e.getMessage()));
         }
         boolean assign = studentService.assign(student, supervisor);
-
-        String response = assign ? "Affectation fait!" : "Affectation rejeté, l'étudiant est déjà assigné!";
-        return ResponseEntity.ok(new ResponseMessage(response));
+        if (assign) {
+            return ResponseEntity.ok(new ResponseMessage("Affectation faite!"));
+        }
+        return ResponseEntity
+                .badRequest()
+                .body(new ResponseMessage("Affectation rejetée, l'étudiant est déjà assigné!"));
     }
 
     @GetMapping("/students_status/{supervisor_id}")
@@ -91,5 +101,11 @@ public class SupervisorController {
         }
         return ResponseEntity
                 .ok(offerApplicationList);
+    }
+
+    @PostMapping("/change_password/{id}")
+    public ResponseEntity<?> UpdatePassword(@PathVariable Long id, @RequestBody String password) {
+        supervisorService.changePassword(id, password);
+        return ResponseEntity.ok(new ResponseMessage("Mot de passe changé avec succès"));
     }
 }
