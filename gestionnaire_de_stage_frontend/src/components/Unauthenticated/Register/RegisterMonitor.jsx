@@ -69,7 +69,7 @@ export default function RegisterMonitor() {
 
     function getTitle() {
         if (currentStep === 0)
-            return <Title header="h5">Matricule</Title>
+            return <Title header="h5">Informations de la compagnie</Title>
         else if (currentStep === 1)
             return <Title header="h5">{`Informations générales (Moniteur)`}</Title>
         else if (currentStep === 2)
