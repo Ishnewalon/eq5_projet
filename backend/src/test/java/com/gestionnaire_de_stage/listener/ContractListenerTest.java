@@ -1,7 +1,6 @@
 package com.gestionnaire_de_stage.listener;
 
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.service.BeanService;
 import com.gestionnaire_de_stage.service.NotificationService;
 import org.junit.jupiter.api.Test;
@@ -14,12 +13,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mockStatic;
 
 @ExtendWith(MockitoExtension.class)
-public class CurriculumListenerTest {
+public class ContractListenerTest {
 
     @InjectMocks
-    private CurriculumListener curriculumListener;
+    private ContractListener contractListener;
 
     @Mock
     private BeanService beanService;
@@ -29,26 +29,25 @@ public class CurriculumListenerTest {
 
     @Test
     void preUpdateTest() throws Exception {
-        doNothing().when(notificationService).notifyOfCurriculumValidation(any());
+        doNothing().when(notificationService).notifyOfContractSignature(any());
         try (MockedStatic<BeanService> classMock = mockStatic(BeanService.class)) {
             classMock.when(() -> BeanService.getBean((Class<?>) any(Class.class)))
                     .thenReturn(notificationService);
 
-            curriculumListener.preUpdate(new Curriculum());
+            contractListener.preUpdate(new Contract());
 
-            verify(notificationService, times(1)).notifyOfCurriculumValidation(any());
+            verify(notificationService, times(1)).notifyOfContractSignature(any());
         }
     }
 
     @Test
     void preUpdateTest_catchesException() throws Exception {
-        doThrow(IdDoesNotExistException.class).when(notificationService).notifyOfCurriculumValidation(any());
+        doThrow(IllegalArgumentException.class).when(notificationService).notifyOfContractSignature(any());
         try (MockedStatic<BeanService> classMock = mockStatic(BeanService.class)) {
             classMock.when(() -> BeanService.getBean((Class<?>) any(Class.class)))
                     .thenReturn(notificationService);
 
-            assertDoesNotThrow(() -> curriculumListener.preUpdate(new Curriculum()));
+            assertDoesNotThrow(() -> contractListener.preUpdate(new Contract()));
         }
     }
-
 }

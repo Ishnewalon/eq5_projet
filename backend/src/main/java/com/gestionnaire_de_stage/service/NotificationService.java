@@ -65,6 +65,36 @@ public class NotificationService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void notifyOfOfferAppStatusSetToStageTrouve(OfferApplication offerApplication) throws IdDoesNotExistException, IllegalArgumentException {
+        Assert.notNull(offerApplication, "Le offerApplication ne peut pas être vide");
+        OfferApplication previous = offerApplicationService.getOneById(offerApplication.getId());
+
+        if (offerApplication.getStatus() != previous.getStatus() && offerApplication.getStatus() == Status.STAGE_TROUVE) {
+            List<Manager> managers = managerService.getAll();
+            managers.forEach(manager ->
+                    notificationRepository.save(new Notification(
+                            manager,
+                            "Un étudiant est prêt pour débuter la signature de contrat."
+                    )));
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void notifyOfOfferAppInterviewSet(OfferApplication offerApplication) throws IdDoesNotExistException, IllegalArgumentException {
+        Assert.notNull(offerApplication, "Le offerApplication ne peut pas être vide");
+        OfferApplication previous = offerApplicationService.getOneById(offerApplication.getId());
+
+        if (offerApplication.getInterviewDate() != previous.getInterviewDate()) {
+            Curriculum curriculum = offerApplication.getCurriculum();
+            Student student = curriculum.getStudent();
+            notificationRepository.save(new Notification(
+                    student.getSupervisor(),
+                    "Un de vos étudiant a un entrevue prochainement."
+            ));
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void notifyOfNewOffer(Offer offer) throws IllegalArgumentException {
         Assert.notNull(offer, "Le offer ne peut pas être vide");
 
@@ -95,36 +125,6 @@ public class NotificationService {
                                 "Une nouvelle offre de stage est à été publiée."
                         )));
             }
-        }
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void notifyOfOfferAppStatusSetToStageTrouve(OfferApplication offerApplication) throws IdDoesNotExistException, IllegalArgumentException {
-        Assert.notNull(offerApplication, "Le offerApplication ne peut pas être vide");
-        OfferApplication previous = offerApplicationService.getOneById(offerApplication.getId());
-
-        if (offerApplication.getStatus() != previous.getStatus() && offerApplication.getStatus() == Status.STAGE_TROUVE) {
-            List<Manager> managers = managerService.getAll();
-            managers.forEach(manager ->
-                    notificationRepository.save(new Notification(
-                            manager,
-                            "Un étudiant est prêt pour débuter la signature de contrat."
-                    )));
-        }
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void notifyOfOfferAppInterviewSet(OfferApplication offerApplication) throws IdDoesNotExistException, IllegalArgumentException {
-        Assert.notNull(offerApplication, "Le offerApplication ne peut pas être vide");
-        OfferApplication previous = offerApplicationService.getOneById(offerApplication.getId());
-
-        if (offerApplication.getInterviewDate() != previous.getInterviewDate()) {
-            Curriculum curriculum = offerApplication.getCurriculum();
-            Student student = curriculum.getStudent();
-            notificationRepository.save(new Notification(
-                    student.getSupervisor(),
-                    "Un de vos étudiant a un entrevue prochainement."
-            ));
         }
     }
 
