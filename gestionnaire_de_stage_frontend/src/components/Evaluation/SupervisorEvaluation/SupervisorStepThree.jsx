@@ -84,14 +84,6 @@ export default function SupervisorStepThree({register, choixAccords, errors}) {
             </Column>
         </FormGroup>
         <FormGroup>
-            <Column>
-                <FieldTextarea
-                    label="Commentaires"
-                    name='commentaires'
-                    register={register}
-                    error={errors.commentaires}
-                />
-            </Column>
             <Column col={{md: 4}}>
                 <FieldRadio
                     name='questionHyegiene'

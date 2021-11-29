@@ -43,7 +43,7 @@ export default function SupervisorStepOne({register, errors}) {
                 <FieldInput
                     label='Personne contact'
                     validation={{required: 'Ce champ est requis'}}
-                    name='contactPerso'
+                    name='contactPerson'
                     register={register}
                     type='text'
                     placeholder='Persone contact'

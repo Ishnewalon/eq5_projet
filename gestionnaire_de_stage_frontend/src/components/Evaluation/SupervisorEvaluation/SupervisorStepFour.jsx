@@ -10,21 +10,19 @@ export default function SupervisorStepFour({
                                                yesAndNoAnswers,
                                                errors
                                            }) {
-    const isShiftFlexible = watch('questionShiftsFlexible', "");
-
     const mondayShift = watch("mondayShiftStart", "");
 
     const tuesdayShift = watch("tuesdayShiftStart", "");
 
-    const wednesdayShift = watch("wednesdayStart", "");
+    const wednesdayShift = watch("wednesdayShiftStart", "");
 
-    const thursdayShift = watch("thursdayStart", "");
+    const thursdayShift = watch("thursdayShiftStart", "");
 
-    const fridayShift = watch("fridayStart", "");
+    const fridayShift = watch("fridayShiftStart", "");
 
-    const saturdayShift = watch("saturdayStart", "");
+    const saturdayShift = watch("saturdayShiftStart", "");
 
-    const sundayShift = watch("sundayStart", "");
+    const sundayShift = watch("sundayShiftStart", "");
 
 
     const checkIfLowerThan = (val, previous) => {
