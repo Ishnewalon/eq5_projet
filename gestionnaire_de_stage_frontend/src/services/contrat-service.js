@@ -63,8 +63,8 @@ export async function getContractForStudent(userId) {
                 }), err => console.error(err));
 }
 
-export async function getAllOfferAppReadyToSign(idOfferApplication) {
-    return await fetch(`${urlBackend}/applications/applicants/manager/${idOfferApplication}`, requestInit(methods.GET)).then(
+export async function getAllOfferAppReadyToSign(idManager) {
+    return await fetch(`${urlBackend}/applications/applicants/manager/${idManager}`, requestInit(methods.GET)).then(
         response =>
             response.json().then((body) => {
                 if (response.status === 200)

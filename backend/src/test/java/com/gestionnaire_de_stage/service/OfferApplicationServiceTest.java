@@ -6,10 +6,7 @@ import com.gestionnaire_de_stage.exception.DateNotValidException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
-import com.gestionnaire_de_stage.model.Curriculum;
-import com.gestionnaire_de_stage.model.Offer;
-import com.gestionnaire_de_stage.model.OfferApplication;
-import com.gestionnaire_de_stage.model.Student;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import org.junit.jupiter.api.Test;
@@ -408,6 +405,37 @@ class OfferApplicationServiceTest {
                 () -> offerApplicationService.isCurriculumInUse(getDummyCurriculum()));
     }
 
+    @Test
+    void testGetOffersApplicationStageTrouverIdManager() throws IdDoesNotExistException {
+        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
+        Manager dummyManager = getDummyManager();
+        when(managerService.isIDNotValid(any())).thenReturn(false);
+        when(offerApplicationRepository.getAllByStatusAndSession_YearGreaterThanEqual(Status.STAGE_TROUVE, Year.now()))
+                .thenReturn(offerApplicationList);
+
+        List<OfferApplication> actualOfferAppList = offerApplicationService
+                .getOffersApplicationsStageTrouverManagerId(dummyManager.getId());
+
+        assertThat(actualOfferAppList.size()).isEqualTo(offerApplicationList.size());
+        assertThat(actualOfferAppList).isEqualTo(offerApplicationList);
+    }
+
+    @Test
+    void testGetOffersApplicationStageTrouver_withIdNull() {
+
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.getOffersApplicationsStageTrouverManagerId(null));
+    }
+
+    @Test
+    void testGetOffersApplicationStageTrouver_withIdInvalid() {
+        Manager dummyManager = getDummyManager();
+        when(managerService.isIDNotValid(any())).thenReturn(true);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerApplicationService.getOffersApplicationsStageTrouverManagerId(dummyManager.getId()));
+    }
+
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();
         offerApplicationDTO.setOffer(getDummyOffer());
@@ -416,6 +444,16 @@ class OfferApplicationServiceTest {
         offerApplicationDTO.setStatus(Status.CV_ENVOYE);
 
         return offerApplicationDTO;
+    }
+
+    private Manager getDummyManager() {
+        Manager dummyManager = new Manager();
+        dummyManager.setId(1L);
+        dummyManager.setLastName("Candle");
+        dummyManager.setFirstName("Tea");
+        dummyManager.setEmail("admin@admin.com");
+        dummyManager.setPassword("admin");
+        return dummyManager;
     }
 
     private Offer getDummyOffer() {

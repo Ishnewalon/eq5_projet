@@ -54,6 +54,20 @@ public class OfferApplicationController {
         return ResponseEntity.ok(offerApplicationList);
     }
 
+
+    @GetMapping("/applicants/manager/{id}")
+    public ResponseEntity<?> getOffersApplicationsStageTrouver(@PathVariable Long id) {
+        List<OfferApplication> offerApplicationList;
+        try {
+            offerApplicationList = offerApplicationService.getOffersApplicationsStageTrouverManagerId(id);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+        return ResponseEntity.ok(offerApplicationList);
+    }
+
     @PostMapping("/setdate/{offerAppID}")
     public ResponseEntity<?> setInterviewDate(@PathVariable Long offerAppID, @RequestBody LocalDateTime date) {
         try {
