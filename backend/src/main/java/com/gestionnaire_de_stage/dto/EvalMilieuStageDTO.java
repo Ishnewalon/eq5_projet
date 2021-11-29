@@ -75,6 +75,22 @@ public class EvalMilieuStageDTO {
 
     String questionQuatorzeHeuresUnF;
 
+    String questionQuatorzeHeuresUnG;
+
+    String questionQuatorzeHeuresUnH;
+
+    String questionQuatorzeHeuresUnI;
+
+    String questionQuatorzeHeuresUnJ;
+
+    String questionQuatorzeHeuresUnK;
+
+    String questionQuatorzeHeuresUnL;
+
+    String questionQuatorzeHeuresUnM;
+
+    String questionQuatorzeHeuresUnN;
+
     String questionQuinze;
 
     String signatureSuperviseur;
