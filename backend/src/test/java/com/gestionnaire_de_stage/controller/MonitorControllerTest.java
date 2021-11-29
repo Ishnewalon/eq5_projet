@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.MonitorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,8 +143,26 @@ public class MonitorControllerTest {
         assertThat(response.getContentAsString()).contains("false");
     }
 
+    @Test
+    public void testChangePassword() throws Exception {
+        Monitor dummyMonitor = getDummyMonitor();
+        String newPassword = "newPassword";
+        when(monitorService.changePassword(any(), any())).thenReturn(dummyMonitor);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .post("/monitor/changePassword/{id}", dummyMonitor.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newPassword))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Mot de passe changé avec succès");
+    }
+
     private Monitor getDummyMonitor() {
         Monitor dummyMonitor = new Monitor();
+        dummyMonitor.setId(1L);
         dummyMonitor.setEmail("potato@mail.com");
         dummyMonitor.setPassword("secretPasswordShhhh");
         dummyMonitor.setFirstName("toto");

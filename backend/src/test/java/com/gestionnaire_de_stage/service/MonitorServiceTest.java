@@ -5,6 +5,7 @@ import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.MonitorRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -221,6 +222,18 @@ public class MonitorServiceTest {
         boolean idInvalid = monitorService.isIdInvalid(1L);
 
         assertThat(idInvalid).isTrue();
+    }
+
+    @Test
+    public void testChangePassword() {
+        Monitor dummyMonitor = getDummyMonitor();
+        when(monitorRepository.getById(any())).thenReturn(dummyMonitor);
+        when(monitorRepository.save(any())).thenReturn(dummyMonitor);
+
+        Monitor monitor = monitorService.changePassword(dummyMonitor.getId(), "newPassword");
+
+        assertThat(monitor.getPassword()).isEqualTo("newPassword");
+        assertThat(monitor.getId()).isEqualTo(dummyMonitor.getId());
     }
 
     private Monitor getDummyMonitor() {
