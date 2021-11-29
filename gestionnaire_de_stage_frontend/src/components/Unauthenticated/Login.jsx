@@ -49,7 +49,8 @@ export default function Login() {
                                            value: regexEmail,
                                            message: "Veuillez entrer un email valide"
                                        }
-                                   }}/>
+                                   }}
+                                   autoComplete="email"/>
                     </Column>
                     <Column>
                         <FormInput label="Mot de passe"
@@ -60,7 +61,9 @@ export default function Login() {
                                    error={errors.password}
                                    validation={{
                                        required: "Ce champ est requis",
-                                   }}/>
+                                   }}
+                                   autoComplete="current-password"
+                        />
                     </Column>
                 </FormGroupV2>
                 <div className="form-group text-center">

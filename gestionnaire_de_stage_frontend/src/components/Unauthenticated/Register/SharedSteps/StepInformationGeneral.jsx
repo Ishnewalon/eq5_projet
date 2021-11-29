@@ -13,6 +13,7 @@ export default function StepInformationGeneral({register, errors, prev}) {
                            error={errors.firstName}
                            name="firstName"
                            label="Prénom"
+                           autoComplete="given-name"
                            placeholder="Prénom"
                            type="text"
                            validation={{
@@ -30,6 +31,7 @@ export default function StepInformationGeneral({register, errors, prev}) {
                            label="Nom"
                            placeholder="Nom"
                            type="text"
+                           autoComplete="family-name"
                            validation={{
                                required: "Ce champ est obligatoire!",
                                pattern: {
@@ -52,6 +54,7 @@ export default function StepInformationGeneral({register, errors, prev}) {
                            register={register}
                            error={errors.email}
                            name="email"
+                           autoComplete="email"
                            placeholder="Votre Email"
                            type="email"
                 />
@@ -63,6 +66,7 @@ export default function StepInformationGeneral({register, errors, prev}) {
                            label="Votre Téléphone"
                            placeholder="000 000 000"
                            type="tel"
+                           autoComplete="tel-country-code"
                            validation={{
                                required: "Ce champ est obligatoire!",
                                pattern: {

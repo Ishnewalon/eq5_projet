@@ -111,8 +111,9 @@ function StepCegep({register, errors}) {
                            error={errors.matricule}
                            name="matricule"
                            register={register}
-                           type="number"
-                           placeholder="0000000 (Étudiant) ou 00000 (Superviseur)"/>
+                           type="text"
+                           placeholder="0000000 (Étudiant) ou 00000 (Superviseur)"
+                           autoComplete="on"/>
             </Column>
             <Column>
                 <div className="form-group text-center">

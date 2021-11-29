@@ -105,12 +105,12 @@ function StepMonitor({register, errors}) {
                            name="companyName"
                            register={register}
                            type="text"
-                           placeholder="Nom de compagnie"/>
+                           placeholder="Nom de compagnie"
+                           autoComplete="organization-title"/>
             </Column>
         </FormGroupV2>
         <FormGroupV2>
             <Column>
-
                 <FormInput label="Adresse"
                            validation={{
                                required: "Ce champ est obligatoire!",
@@ -121,6 +121,7 @@ function StepMonitor({register, errors}) {
                            }} error={errors.address}
                            name="address"
                            register={register}
+                           autoComplete="street-address"
                            type="text"
                            placeholder="Rue, boulevard, avenue.."/>
             </Column>
@@ -137,6 +138,7 @@ function StepMonitor({register, errors}) {
                            name="city"
                            register={register}
                            type="text"
+                           autoComplete="address-level2"
                            placeholder="Ville"/>
             </Column>
             <Column col={{md: 6}}>
@@ -152,6 +154,7 @@ function StepMonitor({register, errors}) {
                            name="postalCode"
                            register={register}
                            type="text"
+                           autoComplete="postal-code"
                            placeholder="H0H 0H0"/>
             </Column>
         </FormGroupV2>

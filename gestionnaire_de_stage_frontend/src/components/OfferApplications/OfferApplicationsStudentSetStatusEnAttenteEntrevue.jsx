@@ -65,6 +65,7 @@ function OfferApplicationSetInterviewDate({offerApp, removeOffer}) {
             <td>{offerApp.offer.title}</td>
             <td>
                 <input
+                    className="form-control"
                     onChange={(e) => setDate(e.target.value)}
                     id="date"
                     min={min.toISOString().slice(0, -8)}

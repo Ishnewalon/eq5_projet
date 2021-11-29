@@ -20,7 +20,8 @@ export default function StepPassword({register, errors, watch, prev}) {
                                name="password"
                                register={register}
                                type="password"
-                               placeholder="Votre mot de passe"/>
+                               placeholder="Votre mot de passe"
+                               autoComplete={"new-password"}/>
                 </Column>
                 <Column>
                     <FormInput label="Confirmez votre mot de passe"
@@ -32,7 +33,9 @@ export default function StepPassword({register, errors, watch, prev}) {
                                name="confirmation"
                                register={register}
                                type="password"
-                               placeholder="Confirmez votre mot de passe"/>
+                               placeholder="Confirmez votre mot de passe"
+                               autoComplete={"new-password"}
+                    />
                 </Column>
             </FormGroupV2>
             <div className="form-group text-center">
