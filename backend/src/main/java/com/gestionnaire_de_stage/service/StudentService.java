@@ -117,8 +117,8 @@ public class StudentService {
         return studentRepository.getByEmail(email);
     }
 
-    public Student changePassword(Long id, String password) {
-        Student student = studentRepository.getById(id);
+    public Student changePassword(Long id, String password) throws IdDoesNotExistException {
+        Student student = getOneByID(id);
         student.setPassword(password);
         return studentRepository.save(student);
     }
