@@ -1,6 +1,11 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
 import {toast, toastErr} from "../utility";
 
+export async function getNotificationsByUser(userId) {
+    const response = await fetch(`${urlBackend}/notification/all/${userId}`, requestInit(methods.GET));
+    return await response.json();
+}
+
 export async function getSupervisors() {
     const response = await fetch(`${urlBackend}/supervisor`, requestInit(methods.GET));
     return await response.json();
