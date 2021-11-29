@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.StudentRepository;
@@ -114,6 +115,12 @@ public class StudentService {
         if (isEmailInvalid(email))
             throw new DoesNotExistException("Le courriel n'existe pas");
         return studentRepository.getByEmail(email);
+    }
+
+    public Student changePassword(Long id, String password) {
+        Student student = studentRepository.getById(id);
+        student.setPassword(password);
+        return studentRepository.save(student);
     }
 
     public boolean isEmailInvalid(String email) {

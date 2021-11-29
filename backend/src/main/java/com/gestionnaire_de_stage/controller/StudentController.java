@@ -121,4 +121,17 @@ public class StudentController {
                     .body(new ResponseMessage(e.getMessage()));
         }
     }
+
+    @PostMapping("/changePassword/{id}")
+    public ResponseEntity<?> create(@PathVariable Long id, @RequestBody String password) {
+        try {
+            studentService.changePassword(id, password);
+            return ResponseEntity.ok(new ResponseMessage("Mot de passe changé avec succès"));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+    }
+
 }

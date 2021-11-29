@@ -54,7 +54,7 @@ public class ManagerControllerTest {
     public void testManagerLogin_withNullEntries() throws Exception {
         String email = null;
         String password = null;
-        when(managerService.getOneByEmailAndPassword(any(),any())).thenThrow(new IllegalArgumentException("Courriel et mot de passe ne peuvent pas être vide"));
+        when(managerService.getOneByEmailAndPassword(any(), any())).thenThrow(new IllegalArgumentException("Courriel et mot de passe ne peuvent pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/manager/" + email + "/" + password)
@@ -70,7 +70,7 @@ public class ManagerControllerTest {
     public void testSupervisorLogin_withInvalidEntries() throws Exception {
         String email = "qerw@qwetq.com";
         String password = "qwreqwer";
-        when(managerService.getOneByEmailAndPassword(any(),any())).thenThrow(new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid"));
+        when(managerService.getOneByEmailAndPassword(any(), any())).thenThrow(new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/manager/" + email + "/" + password)
@@ -97,6 +97,7 @@ public class ManagerControllerTest {
 
     private Manager getDummyManager() {
         Manager dummyManager = new Manager();
+        dummyManager.setId(1L);
         dummyManager.setPassword("Test1234");
         dummyManager.setEmail("oussamakablsy@gmail.com");
         dummyManager.setFirstName("Oussama");

@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
@@ -328,6 +329,18 @@ public class StudentServiceTest {
         assertThrows(DoesNotExistException.class,
                 () -> studentService.getOneByEmail(email),
                 "L'email n'existe pas");
+    }
+
+    @Test
+    public void testChangePassword() {
+        Student dummyStudent = getDummyStudent();
+        when(studentRepository.getById(any())).thenReturn(dummyStudent);
+        when(studentRepository.save(any())).thenReturn(dummyStudent);
+
+        Student actualStudent = studentService.changePassword(dummyStudent.getId(), "newPassword");
+
+        assertThat(actualStudent.getPassword()).isEqualTo("newPassword");
+        assertThat(actualStudent.getId()).isEqualTo(dummyStudent.getId());
     }
 
     private Student getDummyStudent() {

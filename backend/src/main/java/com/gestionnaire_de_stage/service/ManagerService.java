@@ -80,5 +80,4 @@ public class ManagerService {
         return managerRepository.existsByEmailAndPassword(email, password);
     }
 
-
 }
