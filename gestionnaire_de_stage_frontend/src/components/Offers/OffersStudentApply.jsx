@@ -5,7 +5,7 @@ import {getCurrentAndFutureSession} from "../../services/session-service";
 import {applyToOffer} from "../../services/offerAppService";
 import OfferApp from "../../models/OfferApp";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
+import {Column, FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import OfferView from "./OfferView";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 
@@ -48,7 +48,7 @@ export default function OffersStudentApply() {
 
     return (
         <ContainerBox>
-            <FormGroupV2>
+            <FormGroup>
                 <Column>
                     <div className="form-floating">
                         <select id="session" className="form-select" onChange={e => setMyVisible(e.target.value)}>
@@ -59,7 +59,7 @@ export default function OffersStudentApply() {
                         <label htmlFor="session">Session</label>
                     </div>
                 </Column>
-            </FormGroupV2>
+            </FormGroup>
             <div className="row">
                 {visibleOffers.map((offer, index) =>
                     <Column col={{lg: 6}} key={index}>

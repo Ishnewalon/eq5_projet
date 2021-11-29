@@ -15,7 +15,7 @@
     display: block;
 }
 #root{
-    padding-top:80px !important;
+    padding-top: 58px !important;
 }
 
 #root, html, body {
@@ -35,7 +35,6 @@
     position: absolute !important;
     top: 0 !important;
     width: 100% !important;
-    padding: 0 20px !important;
 }
 
 main {

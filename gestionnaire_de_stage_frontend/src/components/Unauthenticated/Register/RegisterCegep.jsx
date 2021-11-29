@@ -10,7 +10,7 @@ import {useForm} from "react-hook-form";
 import {regexMatricule} from "../../../utility";
 import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 import {checkMatricule} from "../../../services/user-service";
-import {Column, FormGroupV2} from "../../SharedComponents/FormGroup/FormGroupV2";
+import {Column, FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {ProgressBar} from "../../SharedComponents/ProgressBar";
 
 export default function RegisterCegep() {
@@ -96,7 +96,7 @@ export default function RegisterCegep() {
 
 function StepCegep({register, errors}) {
     return (
-        <FormGroupV2>
+        <FormGroup>
             <Column>
                 <FormInput label="Matricule"
                            validation={{
@@ -123,7 +123,7 @@ function StepCegep({register, errors}) {
                     </div>
                 </div>
             </Column>
-        </FormGroupV2>
+        </FormGroup>
     )
 
 }

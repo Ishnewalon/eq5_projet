@@ -8,7 +8,7 @@ import {BtnBack} from "../SharedComponents/BtnBack";
 import {FormSelect} from "../SharedComponents/FormInput/FormSelect";
 import {useForm} from "react-hook-form";
 import {FormInput} from "../SharedComponents/FormInput/FormInput";
-import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
+import {Column, FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 
 export default function ForgotPassword() {
     const history = useHistory();
@@ -48,7 +48,7 @@ export default function ForgotPassword() {
     return (
         <ContainerBox className="w-50">
             <form onSubmit={handleSubmit(submit)}>
-                <FormGroupV2>
+                <FormGroup>
                     <Column col={{sm: 6}}>
                         <FormSelect label="Type d'utilisateur"
                                     name="userType"
@@ -71,7 +71,7 @@ export default function ForgotPassword() {
                                    validation={{required: 'Ce champ est requis!'}}
                         />
                     </Column>
-                </FormGroupV2>
+                </FormGroup>
                 <div className="d-flex justify-content-center mt-3">
                     <div className="btn-group">
                         <BtnBack/>

@@ -2,7 +2,7 @@ import {createSession} from "../../services/session-service";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {FormSelect} from "../SharedComponents/FormInput/FormSelect";
 import {useForm} from "react-hook-form";
-import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
+import {Column, FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 
 export default function CreateSession() {
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onSubmit",});
@@ -16,7 +16,7 @@ export default function CreateSession() {
 
     return <ContainerBox className={"w-50"}>
         <form onSubmit={handleSubmit(submit)}>
-            <FormGroupV2>
+            <FormGroup>
                 <Column col={{md: 6}}>
                     <FormSelect label="Année"
                                 name={"year"}
@@ -40,7 +40,7 @@ export default function CreateSession() {
                                 defaultMessage="Choisissez une année"
                                 validation={{}}/>
                 </Column>
-            </FormGroupV2>
+            </FormGroup>
             <div className="text-center">
                 <input className="btn btn-primary mt-3" type="submit" value="Créez la session"/>
             </div>

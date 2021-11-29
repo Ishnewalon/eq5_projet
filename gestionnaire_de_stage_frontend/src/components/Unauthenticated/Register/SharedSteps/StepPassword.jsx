@@ -1,12 +1,12 @@
 import React, {useRef} from "react";
 import {FormInput} from "../../../SharedComponents/FormInput/FormInput";
-import {Column, FormGroupV2} from "../../../SharedComponents/FormGroup/FormGroupV2";
+import {Column, FormGroup} from "../../../SharedComponents/FormGroup/FormGroup";
 
 export default function StepPassword({register, errors, watch, prev}) {
     const password = useRef({});
     password.current = watch("password", "");
     return (<>
-            <FormGroupV2>
+            <FormGroup>
                 <Column>
                     <FormInput label="Mot de passe"
                                validation={{
@@ -37,7 +37,7 @@ export default function StepPassword({register, errors, watch, prev}) {
                                autoComplete={"new-password"}
                     />
                 </Column>
-            </FormGroupV2>
+            </FormGroup>
             <div className="form-group text-center">
                 <div className="btn-group">
                     {prev && <button className="btn btn-primary" onClick={prev}>Précédent</button>}

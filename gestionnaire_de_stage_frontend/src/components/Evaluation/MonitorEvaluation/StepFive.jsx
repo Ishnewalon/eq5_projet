@@ -1,6 +1,6 @@
-import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {FieldRadio} from "../../SharedComponents/FormInput/FieldRadio";
 import {FormTextarea} from "../../SharedComponents/FormTextarea";
+import {Column, FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 
 export default function StepFive({register, choices}) {
 
@@ -10,45 +10,57 @@ export default function StepFive({register, choices}) {
             responsables</h4>
         <blockquote className='mt-3 mb-0'>Le stagiaire est en mesure de:</blockquote>
         <FormGroup>
-            <FieldRadio
-                label="Démontrer de l’intérêt et de la motivation au travail"
-                name='questionDixSept'
-                register={register}
-                list={Object.values(choices)}
-            />
-            <FieldRadio
-                label='Exprimer clairement ses idées'
-                name='questionDixHuit'
-                register={register}
-                list={Object.values(choices)}
-            />
-            <FieldRadio
-                label='Faire preuve d’initiative'
-                name='questionDixNeuf'
-                register={register}
-                list={Object.values(choices)}
-            />
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    label="Démontrer de l’intérêt et de la motivation au travail"
+                    name='questionDixSept'
+                    register={register}
+                    list={Object.values(choices)}
+                />
+            </Column>
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    label='Exprimer clairement ses idées'
+                    name='questionDixHuit'
+                    register={register}
+                    list={Object.values(choices)}
+                />
+            </Column>
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    label='Faire preuve d’initiative'
+                    name='questionDixNeuf'
+                    register={register}
+                    list={Object.values(choices)}
+                />
+            </Column>
         </FormGroup>
         <FormGroup>
-            <FieldRadio
-                name='questionVingt'
-                register={register}
-                list={Object.values(choices)}
-                label='Travailler de façon sécuritaire'
-            />
-            <FieldRadio
-                name={'questionVingUn'}
-                register={register}
-                list={Object.values(choices)}
-                label='Démontrer un bon sens des responsabilités ne
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    name='questionVingt'
+                    register={register}
+                    list={Object.values(choices)}
+                    label='Travailler de façon sécuritaire'
+                />
+            </Column>
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    name={'questionVingUn'}
+                    register={register}
+                    list={Object.values(choices)}
+                    label='Démontrer un bon sens des responsabilités ne
                         requérant qu’un minimum de supervision'
-            />
-            <FieldRadio
-                name='questionVingDeux'
-                register={register}
-                list={Object.values(choices)}
-                label='Être ponctuel et assidu à son travail'
-            />
+                />
+            </Column>
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    name='questionVingDeux'
+                    register={register}
+                    list={Object.values(choices)}
+                    label='Être ponctuel et assidu à son travail'
+                />
+            </Column>
         </FormGroup>
         <FormGroup>
             <FormTextarea

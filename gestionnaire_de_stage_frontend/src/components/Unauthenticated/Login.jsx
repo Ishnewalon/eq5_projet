@@ -7,7 +7,7 @@ import {useForm} from "react-hook-form";
 import {FormInput} from "../SharedComponents/FormInput/FormInput";
 import {regexEmail} from "../../utility";
 import PropTypes from "prop-types";
-import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
+import {Column, FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 
 export default function Login() {
     const {register, handleSubmit, formState: {errors}} = useForm({
@@ -29,13 +29,13 @@ export default function Login() {
     return (
         <ContainerBox className="w-50">
             <form onSubmit={handleSubmit(connect)} noValidate>
-                <FormGroupV2 className={"mb-3"}>
+                <FormGroup className={"mb-3"}>
                     <Column>
                         <LoginRadio name="userType" register={register} list={Object.values(UserType)}
                                     validation={{}} error={errors.userType}/>
                     </Column>
-                </FormGroupV2>
-                <FormGroupV2>
+                </FormGroup>
+                <FormGroup>
                     <Column>
                         <FormInput label="Votre Email"
                                    name="email"
@@ -65,7 +65,7 @@ export default function Login() {
                                    autoComplete="current-password"
                         />
                     </Column>
-                </FormGroupV2>
+                </FormGroup>
                 <div className="form-group text-center">
                     <label/>
                     <input className="btn btn-primary btn-login" type="submit" value="Connexion"/>

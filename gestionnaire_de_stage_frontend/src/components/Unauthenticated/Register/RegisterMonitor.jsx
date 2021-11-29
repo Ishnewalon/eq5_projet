@@ -8,7 +8,7 @@ import {BtnBack} from "../../SharedComponents/BtnBack";
 import {useForm} from "react-hook-form";
 import {regexCodePostal, regexName} from "../../../utility";
 import {FormInput} from "../../SharedComponents/FormInput/FormInput";
-import {Column, FormGroupV2} from "../../SharedComponents/FormGroup/FormGroupV2";
+import {Column, FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {Title} from "../../SharedComponents/Title/Title";
 import {ProgressBar} from "../../SharedComponents/ProgressBar";
 
@@ -91,7 +91,7 @@ export default function RegisterMonitor() {
 
 function StepMonitor({register, errors}) {
     return (<>
-        <FormGroupV2>
+        <FormGroup>
             <Column>
                 <FormInput label="Nom de la compagnie"
                            validation={{
@@ -108,8 +108,8 @@ function StepMonitor({register, errors}) {
                            placeholder="Nom de compagnie"
                            autoComplete="organization-title"/>
             </Column>
-        </FormGroupV2>
-        <FormGroupV2>
+        </FormGroup>
+        <FormGroup>
             <Column>
                 <FormInput label="Adresse"
                            validation={{
@@ -157,7 +157,7 @@ function StepMonitor({register, errors}) {
                            autoComplete="postal-code"
                            placeholder="H0H 0H0"/>
             </Column>
-        </FormGroupV2>
+        </FormGroup>
         <div className="form-group text-center">
             <div className="btn-group">
                 <BtnBack/>

@@ -10,7 +10,7 @@ import {useForm} from "react-hook-form";
 import {regexEmail} from "../../utility";
 import {FormTextarea} from "../SharedComponents/FormTextarea";
 import {FormSelect} from "../SharedComponents/FormInput/FormSelect";
-import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
+import {Column, FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 
 
 export default function CreateOffer() {
@@ -72,7 +72,7 @@ export default function CreateOffer() {
     )
     return (<ContainerBox className="w-75">
         <form onSubmit={handleSubmit(addOffer)} noValidate>
-            <FormGroupV2>
+            <FormGroup>
                 <Column col={{md: auth.isManager() ? 6 : 12}}>
                     <FormInput label="Titre"
                                name="title"
@@ -95,8 +95,8 @@ export default function CreateOffer() {
                                       required: "Ce champ est obligatoire!"
                                   }}/>
                 </Column>
-            </FormGroupV2>
-            <FormGroupV2>
+            </FormGroup>
+            <FormGroup>
                 <Column col={{md: 6}}>
                     <FormSelect label="Session"
                                 name="idSession"
@@ -123,8 +123,8 @@ export default function CreateOffer() {
                                     required: "Ce champ est obligatoire!",
                                 }}/>
                 </Column>
-            </FormGroupV2>
-            <FormGroupV2>
+            </FormGroup>
+            <FormGroup>
                 <Column col={{md: 6}}>
                     <FormInput label="Adresse ou le stage se situe"
                                name="address"
@@ -146,8 +146,8 @@ export default function CreateOffer() {
                                    required: "Ce champ est obligatoire!"
                                }}/>
                 </Column>
-            </FormGroupV2>
-            <FormGroupV2>
+            </FormGroup>
+            <FormGroup>
                 <Column col={{md: 6, lg: 3}}>
                     <FormInput label="Date de début"
                                name="dateDebut"
@@ -203,7 +203,7 @@ export default function CreateOffer() {
                                    required: "Ce champ est obligatoire!"
                                }}/>
                 </Column>
-            </FormGroupV2>
+            </FormGroup>
             <div className="form-group text-center">
                 <button className="btn btn-primary mt-3" type="submit">Ajouter</button>
             </div>

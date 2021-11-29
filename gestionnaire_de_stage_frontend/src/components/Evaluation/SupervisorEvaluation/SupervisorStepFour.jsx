@@ -1,7 +1,6 @@
-import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 import {FieldRadio} from "../../SharedComponents/FormInput/FieldRadio";
 import {FormInput} from "../../SharedComponents/FormInput/FormInput";
-import {FormField} from "../../SharedComponents/FormField/FormField";
+import {Column, FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 
 export default function SupervisorStepFour({
                                                watch,
@@ -27,7 +26,7 @@ export default function SupervisorStepFour({
 
 
     const checkIfLowerThan = (val, previous) => {
-        if(!val || !previous)
+        if (!val || !previous)
             return true;
 
         let nextTime = val.split(":").map(n => parseInt(n));
@@ -35,48 +34,57 @@ export default function SupervisorStepFour({
 
         if (nextTime[0] > previousTime[0])
             return true;
-        else if(nextTime[0] === previousTime[0])
-            if(nextTime[1] > previousTime[1])
+        else if (nextTime[0] === previousTime[0])
+            if (nextTime[1] > previousTime[1])
                 return true;
     }
 
     return <div className='px-3 pb-3 pt-1 rounded'>
         <h4 className='fw-bold p-2 rounded mt-4 mb-0 text-decoration-underline'>Observations générales</h4>
         <FormGroup>
-            <FieldRadio
-                name='questionOnze'
-                register={register}
-                list={Object.values(choixStage)}
-                label="Ce milieu est à privilégier pour le stage"
-            />
-            <FieldRadio
-                name='questionDouze'
-                register={register}
-                list={Object.values(choixStagiaires)}
-                label="Ce milieu est ouvert à accueillir deux stagiaires"
-            />
-            <FieldRadio
-                name='questionTreize'
-                register={register}
-                list={Object.values(yesAndNoAnswers)}
-                label="Ce milieu désire accueillir le même stagiaire pour un prochain stage"
-            />
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    name='questionOnze'
+                    register={register}
+                    list={Object.values(choixStage)}
+                    label="Ce milieu est à privilégier pour le stage"
+                />
+            </Column>
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    name='questionDouze'
+                    register={register}
+                    list={Object.values(choixStagiaires)}
+                    label="Ce milieu est ouvert à accueillir deux stagiaires"
+                />
+            </Column>
+            <Column col={{md: 4}}>
+                <FieldRadio
+                    name='questionTreize'
+                    register={register}
+                    list={Object.values(yesAndNoAnswers)}
+                    label="Ce milieu désire accueillir le même stagiaire pour un prochain stage"
+                />
+            </Column>
         </FormGroup>
-        <FormGroup repartition={[12, 12]}>
+        <FormGroup>
             <h5>Ce milieu offre des quarts de travail variables?</h5>
-            <FieldRadio
-                name='questionQuatorze'
-                register={register}
-                list={Object.values(yesAndNoAnswers)}
-                label=''
-            />
+            <Column>
+                <FieldRadio
+                    name='questionQuatorze'
+                    register={register}
+                    list={Object.values(yesAndNoAnswers)}
+                    label=''
+                />
+            </Column>
         </FormGroup>
-            <div>
-                <FormGroup repartition={[2, 5, 5]}>
-                    <FormField>
-                        <label/>
-                        <input type="text" disabled value='Lundi'/>
-                    </FormField>
+        <div>
+            <FormGroup>
+                <Column col={{md: 2}} className="form-floating">
+                    <label/>
+                    <input className="form-control" type="text" disabled value='Lundi'/>
+                </Column>
+                <Column col={{md: 5}}>
                     <FormInput
                         label='De'
                         validation={{}}
@@ -86,6 +94,8 @@ export default function SupervisorStepFour({
                         placeholder='Début du quart'
                         error={errors.questionQuatorzeHeuresUnA}
                     />
+                </Column>
+                <Column col={{md: 5}}>
                     <FormInput
                         label='À'
                         validation={{validate: val => checkIfLowerThan(val, mondayShift) || 'La fin du quart doit être après le début'}}
@@ -95,12 +105,14 @@ export default function SupervisorStepFour({
                         placeholder='Fin du quart'
                         error={errors.questionQuatorzeHeuresUnB}
                     />
-                </FormGroup>
-                <FormGroup repartition={[2, 5, 5]}>
-                    <FormField>
-                        <label/>
-                        <input type="text" disabled value='Mardi'/>
-                    </FormField>
+                </Column>
+            </FormGroup>
+            <FormGroup>
+                <Column col={{md: 2}} className="form-floating">
+                    <label/>
+                    <input className="form-control" type="text" disabled value='Mardi'/>
+                </Column>
+                <Column col={{md: 5}}>
                     <FormInput
                         label='De'
                         validation={{}}
@@ -110,21 +122,25 @@ export default function SupervisorStepFour({
                         placeholder='Début du quart'
                         error={errors.questionQuatorzeHeuresUnC}
                     />
+                </Column>
+                <Column col={{md: 5}}>
                     <FormInput
                         label='À'
-                        validation={{ validate: val => checkIfLowerThan(val, tuesdayShift) || 'La fin du quart doit être après le début'}}
+                        validation={{validate: val => checkIfLowerThan(val, tuesdayShift) || 'La fin du quart doit être après le début'}}
                         name='questionQuatorzeHeuresUnD'
                         register={register}
                         type='time'
                         placeholder='Fin du quart'
                         error={errors.questionQuatorzeHeuresUnD}
                     />
-                </FormGroup>
-                <FormGroup repartition={[2, 5, 5]}>
-                    <FormField>
-                        <label/>
-                        <input type="text" disabled value='Mercredi'/>
-                    </FormField>
+                </Column>
+            </FormGroup>
+            <FormGroup>
+                <Column col={{md: 2}} className="form-floating">
+                    <label/>
+                    <input className="form-control" type="text" disabled value='Mercredi'/>
+                </Column>
+                <Column col={{md: 5}}>
                     <FormInput
                         label='De'
                         validation={{}}
@@ -134,6 +150,8 @@ export default function SupervisorStepFour({
                         placeholder='Début du quart'
                         error={errors.questionQuatorzeHeuresUnE}
                     />
+                </Column>
+                <Column col={{md: 5}}>
                     <FormInput
                         label='À'
                         validation={{validate: val => checkIfLowerThan(val, wednesdayShift) || 'La fin du quart doit être après le début'}}
@@ -143,12 +161,14 @@ export default function SupervisorStepFour({
                         placeholder='Fin du quart'
                         error={errors.questionQuatorzeHeuresUnF}
                     />
-                </FormGroup>
-                <FormGroup repartition={[2, 5, 5]}>
-                    <FormField>
-                        <label/>
-                        <input type="text" disabled value='Jeudi'/>
-                    </FormField>
+                </Column>
+            </FormGroup>
+            <FormGroup>
+                <Column col={{md: 2}} className="form-floating">
+                    <label/>
+                    <input className="form-control" type="text" disabled value='Jeudi'/>
+                </Column>
+                <Column col={{md: 5}}>
                     <FormInput
                         label='De'
                         validation={{}}
@@ -158,6 +178,8 @@ export default function SupervisorStepFour({
                         placeholder='Début du quart'
                         error={errors.questionQuatorzeHeuresUnG}
                     />
+                </Column>
+                <Column col={{md: 5}}>
                     <FormInput
                         label='À'
                         validation={{validate: val => checkIfLowerThan(val, thursdayShift) || 'La fin du quart doit être après le début'}}
@@ -167,12 +189,14 @@ export default function SupervisorStepFour({
                         placeholder='Fin du quart'
                         error={errors.questionQuatorzeHeuresUnH}
                     />
-                </FormGroup>
-                <FormGroup repartition={[2, 5, 5]}>
-                    <FormField>
-                        <label/>
-                        <input type="text" disabled value='Vendredi'/>
-                    </FormField>
+                </Column>
+            </FormGroup>
+            <FormGroup>
+                <Column col={{md: 2}} className="form-floating">
+                    <label/>
+                    <input className="form-control" type="text" disabled value='Vendredi'/>
+                </Column>
+                <Column col={{md: 5}}>
                     <FormInput
                         label='De'
                         validation={{}}
@@ -182,21 +206,25 @@ export default function SupervisorStepFour({
                         placeholder='Début du quart'
                         error={errors.questionQuatorzeHeuresUnI}
                     />
+                </Column>
+                <Column col={{md: 5}}>
                     <FormInput
                         label='À'
-                        validation={{ validate: val => checkIfLowerThan(val, fridayShift) || 'La fin du quart doit être après le début'}}
+                        validation={{validate: val => checkIfLowerThan(val, fridayShift) || 'La fin du quart doit être après le début'}}
                         name='questionQuatorzeHeuresUnJ'
                         register={register}
                         type='time'
                         placeholder='Fin du quart'
                         error={errors.questionQuatorzeHeuresUnJ}
                     />
-                </FormGroup>
-                <FormGroup repartition={[2, 5, 5]}>
-                    <FormField>
-                        <label/>
-                        <input type="text" disabled value='Samedi'/>
-                    </FormField>
+                </Column>
+            </FormGroup>
+            <FormGroup>
+                <Column col={{md: 2}} className="form-floating">
+                    <label/>
+                    <input className="form-control" type="text" disabled value='Samedi'/>
+                </Column>
+                <Column col={{md: 5}}>
                     <FormInput
                         label='De'
                         validation={{}}
@@ -206,6 +234,8 @@ export default function SupervisorStepFour({
                         placeholder='Début du quart'
                         error={errors.questionQuatorzeHeuresUnK}
                     />
+                </Column>
+                <Column col={{md: 5}}>
                     <FormInput
                         label='À'
                         validation={{validate: val => checkIfLowerThan(val, saturdayShift) || 'La fin du quart doit être après le début'}}
@@ -215,12 +245,14 @@ export default function SupervisorStepFour({
                         placeholder='Fin du quart'
                         error={errors.questionQuatorzeHeuresUnL}
                     />
-                </FormGroup>
-                <FormGroup repartition={[2, 5, 5]}>
-                    <FormField>
-                        <label/>
-                        <input type="text" disabled value='Dimanche'/>
-                    </FormField>
+                </Column>
+            </FormGroup>
+            <FormGroup>
+                <Column col={{md: 2}} className="form-floating">
+                    <label/>
+                    <input className="form-control" type="text" disabled value='Dimanche'/>
+                </Column>
+                <Column col={{md: 5}}>
                     <FormInput
                         label='De'
                         validation={{}}
@@ -230,6 +262,8 @@ export default function SupervisorStepFour({
                         placeholder='Début du quart'
                         error={errors.questionQuatorzeHeuresUnM}
                     />
+                </Column>
+                <Column col={{md: 5}}>
                     <FormInput
                         label='À'
                         validation={{validate: val => checkIfLowerThan(val, sundayShift) || 'La fin du quart doit être après le début'}}
@@ -239,7 +273,8 @@ export default function SupervisorStepFour({
                         placeholder='Fin du quart'
                         error={errors.questionQuatorzeHeuresUnN}
                     />
-                </FormGroup>
-            </div>
+                </Column>
+            </FormGroup>
+        </div>
     </div>
 }

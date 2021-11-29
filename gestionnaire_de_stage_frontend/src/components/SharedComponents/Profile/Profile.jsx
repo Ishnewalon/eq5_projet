@@ -2,7 +2,7 @@ import {useAuth} from "../../../hooks/use-auth";
 import Swal from "sweetalert2";
 import {regexPassword} from "../../../utility";
 import {FaPen} from "react-icons/all";
-import {Column} from "../FormGroup/FormGroupV2";
+import {Column} from "../FormGroup/FormGroup";
 import styles from "./Profile.module.css";
 import {UserType} from "../../../enums/UserTypes";
 import {changePassword} from "../../../services/user-service";

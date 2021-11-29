@@ -1,11 +1,11 @@
 import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 import {regexCodePostal, regexMatriculeEtudiant, regexPhone} from "../../../utility";
-import {Column, FormGroupV2} from "../../SharedComponents/FormGroup/FormGroupV2";
+import {Column, FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
 
 export default function SupervisorStepOne({register, errors}) {
     return <div className='px-3 pb-3 pt-1 rounded'>
         <h4 className='mt-4 mb-0 text-decoration-underline'>Identification de l'entreprise</h4>
-        <FormGroupV2>
+        <FormGroup>
             <Column>
                 <FormInput
                     label='Matricule Étudiant'
@@ -23,8 +23,8 @@ export default function SupervisorStepOne({register, errors}) {
                     error={errors.matriculeEtudiant}
                 />
             </Column>
-        </FormGroupV2>
-        <FormGroupV2>
+        </FormGroup>
+        <FormGroup>
             <Column col={{lg: 6}}>
                 <FormInput
                     label="Nom de l'entreprise"
@@ -47,8 +47,8 @@ export default function SupervisorStepOne({register, errors}) {
                     error={errors.personneContact}
                 />
             </Column>
-        </FormGroupV2>
-        <FormGroupV2>
+        </FormGroup>
+        <FormGroup>
             <Column col={{lg: 6}}>
                 <FormInput
                     label='Téléphone'
@@ -77,8 +77,8 @@ export default function SupervisorStepOne({register, errors}) {
                     error={errors.telecopieur}
                 />
             </Column>
-        </FormGroupV2>
-        <FormGroupV2>
+        </FormGroup>
+        <FormGroup>
             <Column col={{lg: 4}}>
                 <FormInput
                     label='Adresse'
@@ -118,6 +118,6 @@ export default function SupervisorStepOne({register, errors}) {
                     placeholder='Ville'
                 />
             </Column>
-        </FormGroupV2>
+        </FormGroup>
     </div>
 }

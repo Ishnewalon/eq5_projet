@@ -2,12 +2,12 @@ import React from "react";
 import {regexEmail, regexName, regexPhone} from "../../../../utility";
 import {FormInput} from "../../../SharedComponents/FormInput/FormInput";
 import {checkEmail} from "../../../../services/user-service";
-import {Column, FormGroupV2} from "../../../SharedComponents/FormGroup/FormGroupV2";
+import {Column, FormGroup} from "../../../SharedComponents/FormGroup/FormGroup";
 
 
 export default function StepInformationGeneral({register, errors, prev}) {
     return (<>
-        <FormGroupV2>
+        <FormGroup>
             <Column col={{lg: 6}}>
                 <FormInput register={register}
                            error={errors.firstName}
@@ -75,7 +75,7 @@ export default function StepInformationGeneral({register, errors, prev}) {
                                }
                            }}/>
             </Column>
-        </FormGroupV2>
+        </FormGroup>
         <div className="form-group text-center">
             <label/>
             <div className="btn-group">
