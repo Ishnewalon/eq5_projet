@@ -103,7 +103,7 @@ public class SupervisorController {
                 .ok(offerApplicationList);
     }
 
-    @PostMapping("/changePassword/{id}")
+    @PostMapping("/change_password/{id}")
     public ResponseEntity<?> UpdatePassword(@PathVariable Long id, @RequestBody String password) {
         supervisorService.changePassword(id, password);
         return ResponseEntity.ok(new ResponseMessage("Mot de passe changé avec succès"));

@@ -343,7 +343,7 @@ public class StudentControllerTest {
         when(studentService.changePassword(any(), any())).thenReturn(dummyStudent);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/student/changePassword/{id}", dummyStudent.getId())
+                        .post("/student/change_password/{id}", dummyStudent.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(newPassword))
                 .andReturn();
