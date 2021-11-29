@@ -2,15 +2,15 @@ package com.gestionnaire_de_stage.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
-@EqualsAndHashCode(callSuper = true)
 @Setter
 @Getter
 @Entity
@@ -37,4 +37,17 @@ public class Student extends User {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Supervisor supervisor;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Student student = (Student) o;
+        return Objects.equals(getId(), student.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 }

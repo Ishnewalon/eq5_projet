@@ -1,10 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.*;
-import com.gestionnaire_de_stage.model.Curriculum;
-import com.gestionnaire_de_stage.model.Manager;
-import com.gestionnaire_de_stage.model.Student;
-import com.gestionnaire_de_stage.model.Supervisor;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import com.gestionnaire_de_stage.repository.StudentRepository;
 import org.junit.jupiter.api.Test;
@@ -332,16 +329,25 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testChangePassword() {
+    public void testChangePassword() throws IdDoesNotExistException {
         Student dummyStudent = getDummyStudent();
+        when(studentRepository.existsById(any())).thenReturn(true);
         when(studentRepository.getById(any())).thenReturn(dummyStudent);
         when(studentRepository.save(any())).thenReturn(dummyStudent);
 
-        Student actualStudent = studentService.changePassword(dummyStudent.getId(), "newPassword");
+        Student actual = studentService.changePassword(dummyStudent.getId(), "newPassword");
 
-        assertThat(actualStudent.getPassword()).isEqualTo("newPassword");
-        assertThat(actualStudent.getId()).isEqualTo(dummyStudent.getId());
+        assertThat(actual.getPassword()).isEqualTo("newPassword");
+        assertThat(actual.getId()).isEqualTo(dummyStudent.getId());
     }
+
+
+    @Test
+    public void testChangePassword_withInvalidId() {
+        assertThrows(IdDoesNotExistException.class,
+                () -> studentService.changePassword(1L, "newPassword"));
+    }
+
 
     private Student getDummyStudent() {
         Student dummyStudent = new Student();

@@ -5,7 +5,6 @@ import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.OfferApplication;
-import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import org.springframework.stereotype.Service;
@@ -28,12 +27,10 @@ public class SupervisorService {
 
     public Supervisor create(Supervisor supervisor) throws SupervisorAlreadyExistsException {
         Assert.isTrue(supervisor != null, "Superviseur ne peut pas être vide");
-        if (isNotValid(supervisor)) {
+        if (isNotValid(supervisor))
             throw new SupervisorAlreadyExistsException("Un compte existe déjà pour ce superviseur");
-        }
-        if (isMatriculeValid(supervisor.getMatricule())) {
+        if (isMatriculeValid(supervisor.getMatricule()))
             throw new SupervisorAlreadyExistsException("La matricule existe déjà");
-        }
         return supervisorRepository.save(supervisor);
     }
 
@@ -43,12 +40,10 @@ public class SupervisorService {
 
     public Supervisor getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "L'identifiant ne peut pas être vide");
-        if (isIdNotValid(aLong)) {
+        if (isIdNotValid(aLong))
             throw new IdDoesNotExistException("Il n'y a pas de superviseur associé à cet identifiant");
-        }
         return supervisorRepository.getById(aLong);
     }
-
 
     public List<Supervisor> getAll() {
         return supervisorRepository.findAll();
@@ -63,26 +58,23 @@ public class SupervisorService {
 
     public void deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "L'identifiant ne peut pas être vide");
-        if (isIdNotValid(aLong)) {
+        if (isIdNotValid(aLong))
             throw new IdDoesNotExistException("Il n'y a pas de superviseur associé à cet identifiant");
-        }
         supervisorRepository.deleteById(aLong);
     }
 
     public Supervisor getOneByEmailAndPassword(String email, String password) throws EmailAndPasswordDoesNotExistException {
         Assert.isTrue(email != null, "Le courriel ne peut pas être vide");
         Assert.isTrue(password != null, "Le mot de passe ne peut pas être vide");
-        if (!isEmailAndPasswordValid(email, password)) {
+        if (!isEmailAndPasswordValid(email, password))
             throw new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid");
-        }
         return supervisorRepository.findSupervisorByEmailAndPassword(email, password);
     }
 
     public List<OfferApplication> getStudentsStatus(Long supervisor_id) throws IdDoesNotExistException {
         Assert.isTrue(supervisor_id != null, "L'identifiant ne peut pas être vide");
-        if (isIdNotValid(supervisor_id)) {
+        if (isIdNotValid(supervisor_id))
             throw new IdDoesNotExistException("Il n'y a pas de superviseur associé à cet identifiant");
-        }
         return offerApplicationService.getAllBySupervisorId(supervisor_id);
     }
 
@@ -111,8 +103,8 @@ public class SupervisorService {
         return !supervisorRepository.existsByEmail(email);
     }
 
-    public Supervisor changePassword(Long id, String password) {
-        Supervisor supervisor = supervisorRepository.getById(id);
+    public Supervisor changePassword(Long id, String password) throws IdDoesNotExistException {
+        Supervisor supervisor = getOneByID(id);
         supervisor.setPassword(password);
         return supervisorRepository.save(supervisor);
     }

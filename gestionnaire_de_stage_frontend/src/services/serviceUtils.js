@@ -5,7 +5,7 @@ export const methods = {
     PUT: 'PUT',
     DELETE: 'DELETE'
 }
-export const requestInit = (method, body) => {
+export const requestInit = (method, body, isString) => {
     let value = {
         method: method,
         mode: 'cors', // no-cors, *cors, same-origin
@@ -18,11 +18,10 @@ export const requestInit = (method, body) => {
     }
 
     if (body && (method === methods.POST || method === methods.PUT)) {
-        if (typeof body === "string")
+        if (isString)
             value['body'] = body
         else
             value['body'] = JSON.stringify(body)
-
     }
     return value
 }

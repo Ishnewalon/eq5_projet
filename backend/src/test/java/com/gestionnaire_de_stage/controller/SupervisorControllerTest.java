@@ -298,6 +298,21 @@ public class SupervisorControllerTest {
         assertThat(response.getContentAsString()).contains("Mot de passe changé avec succès");
     }
 
+    @Test
+    public void testChangePassword_withInvalidId() throws Exception {
+        String newPassword = "newPassword";
+        when(supervisorService.changePassword(any(), any())).thenThrow(new IllegalArgumentException("Id invalide"));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .put("/supervisor/change_password/{id}", 123412L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newPassword))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Id invalide");
+    }
 
     private Supervisor getDummySupervisor() {
         Supervisor dummySupervisor = new Supervisor();
