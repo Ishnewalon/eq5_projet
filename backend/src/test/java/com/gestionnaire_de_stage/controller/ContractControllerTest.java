@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
+import com.gestionnaire_de_stage.exception.StudentIsNotAssignedException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.service.ContractService;
 import org.junit.jupiter.api.Test;
@@ -112,6 +113,21 @@ public class ContractControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Il n'y a pas d'offre associé à cet identifiant");
+    }
+
+    @Test
+    public void testManagerStartContract_whenStudentIsntAssigned() throws Exception {
+        when(contractService.gsStartContract( any(), any())).thenThrow(new StudentIsNotAssignedException("L'étudiant doit être affecté à un superviseur avant de créer un contrat"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.post("/contracts/start")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(new ContractStarterDto(1L, 1L))))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'étudiant doit être affecté à un superviseur avant de créer un contrat");
     }
 
     @Test

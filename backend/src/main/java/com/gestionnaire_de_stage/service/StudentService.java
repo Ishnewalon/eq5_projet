@@ -131,8 +131,4 @@ public class StudentService {
         return studentRepository.existsByMatricule(matricule);
     }
 
-    public boolean isStudentNotAssigned(Long id) {
-        return studentRepository.existsByIdAndSupervisorNull(id);
-    }
-
 }

@@ -134,7 +134,7 @@ public class ContractService {
         Student student = curriculum.getStudent();
         if (doesStudentAlreadyHaveAContract(student.getId(), contract.getSession()))
             throw new StudentAlreadyHaveAContractException("Un contrat existe déjà pour l'étudiant ayant la matricule " + student.getMatricule());
-        if (studentService.isStudentNotAssigned(student.getId())) {
+        if (studentRepository.existsByIdAndSupervisorNull(student.getId())) {
             throw new StudentIsNotAssignedException("L'étudiant doit être affecté à un superviseur avant de créer un contrat");
         }
         contract.setStudent(student);
