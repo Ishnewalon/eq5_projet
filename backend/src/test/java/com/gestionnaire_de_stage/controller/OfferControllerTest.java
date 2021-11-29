@@ -213,13 +213,12 @@ public class OfferControllerTest {
 
 
     @Test
-    public void testGetOffersByDepartment() throws Exception {
-        String department = "myDepartment";
+    public void testGetOffersNotYetApplied() throws Exception {
         List<Offer> dummyArrayOffer = getDummyArrayOffer();
-        when(offerService.getOffersByDepartment(any())).thenReturn(dummyArrayOffer);
+        when(offerService.getOffersNotYetApplied(any())).thenReturn(dummyArrayOffer);
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get(String.format("/offers/%s", department))
+                        MockMvcRequestBuilders.get("/offers/{0}", 1L)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -231,33 +230,53 @@ public class OfferControllerTest {
     }
 
     @Test
-    public void testGetOffersByDepartment_withNoOffer() throws Exception {
-        String department = "myDepartmentWithNoOffer";
+    public void testGetOffersNotYetApplied_withInvalidStudent() throws Exception {
+        when(offerService.getOffersNotYetApplied(any()))
+                .thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/offers/{0}", department)
+                        MockMvcRequestBuilders.get("/offers/{0}", 123412L)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
+    }
+
+
+    @Test
+    void testGetValidOffers() throws Exception {
+        List<Offer> dummyArrayOffer = getDummyArrayOffer();
+        when(offerService.getValidOffers()).thenReturn(dummyArrayOffer);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/offers/valid")
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         List<Offer> returnedOffers = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
         });
-        assertThat(returnedOffers).isEmpty();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
     }
 
     @Test
-    public void testGetOffersByDepartment_withNoDepartment() throws Exception {
-        when(offerService.getOffersByDepartment(any())).thenThrow(new IllegalArgumentException("Le département n'est pas précisé"));
+    void testGetNotValidatedOffers() throws Exception {
+        List<Offer> dummyArrayOffer = getDummyArrayOffer();
+        when(offerService.getNotValidatedOffers()).thenReturn(dummyArrayOffer);
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/offers/")
+                        MockMvcRequestBuilders.get("/offers/not_validated")
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(response.getContentAsString()).contains("Le département n'est pas précisé");
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        List<Offer> returnedOffers = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
     }
 
     private List<Offer> getDummyArrayOffer() {
@@ -291,39 +310,5 @@ public class OfferControllerTest {
         offerDTO.setTitle("Offer title");
         offerDTO.setDepartment("Department name");
         return offerDTO;
-    }
-
-    @Test
-    void getValidOffers() throws Exception {
-        List<Offer> dummyArrayOffer = getDummyArrayOffer();
-        when(offerService.getValidOffers()).thenReturn(dummyArrayOffer);
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/offers/valid")
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Offer> returnedOffers = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
-        });
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
-    }
-
-    @Test
-    void getNotValidatedOffers() throws Exception {
-        List<Offer> dummyArrayOffer = getDummyArrayOffer();
-        when(offerService.getNotValidatedOffers()).thenReturn(dummyArrayOffer);
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/offers/not_validated")
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Offer> returnedOffers = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
-        });
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
     }
 }
