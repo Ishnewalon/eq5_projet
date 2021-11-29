@@ -7,7 +7,7 @@ export async function getSupervisors() {
 }
 
 export async function changePassword(typeUser, id, password) {
-    return await fetch(`${urlBackend}/${typeUser}/change_password/${id}`, requestInit(methods.POST, password)).then(response => {
+    return await fetch(`${urlBackend}/${typeUser}/change_password/${id}`, requestInit(methods.PUT, password)).then(response => {
         return response.json().then(body => {
             if (response.status === 200)
                 toast.fire({title: body.message,});
@@ -60,31 +60,27 @@ export async function checkEmail(email) {
     return await checkEmailExistMonitor(email);
 }
 
-async function checkEmailExistStudent(email){
+async function checkEmailExistStudent(email) {
     return await fetch(`${urlBackend}/student/email/${email}`, requestInit(methods.GET)).then(
-        response =>
-            response.json().then(body => body)
+        response => response.json().then(body => body)
     );
 }
 
 async function checkEmailExistSupervisor(email) {
     return await fetch(`${urlBackend}/supervisor/email/${email}`, requestInit(methods.GET)).then(
-        response =>
-            response.json().then(body => body)
+        response => response.json().then(body => body)
     );
 }
 
 async function checkEmailExistManager(email) {
     return await fetch(`${urlBackend}/manager/email/${email}`, requestInit(methods.GET)).then(
-        response =>
-            response.json().then(body => body)
+        response => response.json().then(body => body)
     );
 }
 
 async function checkEmailExistMonitor(email) {
     return await fetch(`${urlBackend}/monitor/email/${email}`, requestInit(methods.GET)).then(
-        response =>
-            response.json().then(body => body)
+        response => response.json().then(body => body)
     );
 }
 

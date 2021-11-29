@@ -150,7 +150,7 @@ public class MonitorControllerTest {
         when(monitorService.changePassword(any(), any())).thenReturn(dummyMonitor);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/monitor/change_password/{id}", dummyMonitor.getId())
+                        .put("/monitor/change_password/{id}", dummyMonitor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(newPassword))
                 .andReturn();
