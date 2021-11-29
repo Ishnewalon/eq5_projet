@@ -39,35 +39,41 @@ export async function checkMatricule(matricule) {
 }
 
 export async function checkEmail(email) {
-    let valid = await fetch(`${urlBackend}/student/email/${email}`, requestInit(methods.GET)).then(
+    if (!(await checkEmailExistStudent(email)))
+        return false;
+    if (!(await checkEmailExistSupervisor(email)))
+        return false;
+    if (!(await checkEmailExistManager(email)))
+        return false;
+    return await checkEmailExistMonitor(email);
+}
+
+async function checkEmailExistStudent(email){
+    return await fetch(`${urlBackend}/student/email/${email}`, requestInit(methods.GET)).then(
         response =>
             response.json().then(body => body)
     );
-    if (!valid)
-        return valid;
+}
 
-    valid = await fetch(`${urlBackend}/supervisor/email/${email}`, requestInit(methods.GET)).then(
+async function checkEmailExistSupervisor(email) {
+    return await fetch(`${urlBackend}/supervisor/email/${email}`, requestInit(methods.GET)).then(
         response =>
             response.json().then(body => body)
     );
-    if (!valid)
-        return valid;
+}
 
-    valid = await fetch(`${urlBackend}/monitor/email/${email}`, requestInit(methods.GET)).then(
+async function checkEmailExistManager(email) {
+    return await fetch(`${urlBackend}/manager/email/${email}`, requestInit(methods.GET)).then(
         response =>
             response.json().then(body => body)
     );
-    if (!valid)
-        return valid;
+}
 
-    valid = await fetch(`${urlBackend}/manager/email/${email}`, requestInit(methods.GET)).then(
+async function checkEmailExistMonitor(email) {
+    return await fetch(`${urlBackend}/monitor/email/${email}`, requestInit(methods.GET)).then(
         response =>
             response.json().then(body => body)
     );
-    if (!valid)
-        return valid;
-
-    return true;
 }
 
 export async function getUnassignedStudents() {
