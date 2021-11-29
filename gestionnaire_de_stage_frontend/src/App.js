@@ -16,6 +16,7 @@ import RegisterMonitor from "./components/Unauthenticated/Register/RegisterMonit
 import RegisterCegep from "./components/Unauthenticated/Register/RegisterCegep";
 import {ContainerBox} from "./components/SharedComponents/ContainerBox/ContainerBox";
 import ErrorNotFound from "./components/SharedComponents/ErrorNotFound/ErrorNotFound";
+import Notifications from "./components/SharedComponents/Notifications/Notifications";
 
 function App() {
     return <AuthProvider>
@@ -25,6 +26,7 @@ function App() {
                 <Switch>
                     <RequiredRoute path="/dashboard" component={RequireAuth}>
                         <Dashboard/>
+                        <Notifications/>
                     </RequiredRoute>
                     <RequiredRoute exact path="/login" component={RequireNoAuth}>
                         <Title>Se connecter</Title>
