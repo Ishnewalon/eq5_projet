@@ -111,8 +111,8 @@ public class SupervisorService {
         return !supervisorRepository.existsByEmail(email);
     }
 
-    public Supervisor changePassword(Long id, String password) {
-        Supervisor supervisor = supervisorRepository.getById(id);
+    public Supervisor changePassword(Long id, String password) throws IdDoesNotExistException {
+        Supervisor supervisor = getOneByID(id);
         supervisor.setPassword(password);
         return supervisorRepository.save(supervisor);
     }

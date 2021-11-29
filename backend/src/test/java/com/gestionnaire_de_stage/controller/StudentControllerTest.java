@@ -353,6 +353,22 @@ public class StudentControllerTest {
         assertThat(response.getContentAsString()).contains("Mot de passe changé avec succès");
     }
 
+    @Test
+    public void testChangePassword_withInvalidId() throws Exception {
+        String newPassword = "newPassword";
+        when(studentService.changePassword(any(), any())).thenThrow(new IllegalArgumentException("Id invalide"));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .put("/student/change_password/{id}", 123412L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newPassword))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Id invalide");
+    }
+
 
     private StudentMonitorOfferDTO getDummyStudentMonitorOfferDTO() {
         return new StudentMonitorOfferDTO(
