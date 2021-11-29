@@ -6,7 +6,10 @@ import com.gestionnaire_de_stage.exception.DateNotValidException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
-import com.gestionnaire_de_stage.model.*;
+import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.model.OfferApplication;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import org.junit.jupiter.api.Test;
@@ -24,7 +27,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class OfferApplicationServiceTest {
@@ -206,7 +209,7 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    public void testUpdateStatus_withTrue() throws IdDoesNotExistException {
+    public void testUpdateStatus_withTrue() {
         OfferApplication dummyOfferApplication = getDummyOfferApp();
         UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), true);
         when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
@@ -218,7 +221,7 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    public void testUpdateStatus_withFalse() throws IdDoesNotExistException {
+    public void testUpdateStatus_withFalse() {
         OfferApplication dummyOfferApplication = getDummyOfferApp();
         UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), false);
         when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
@@ -366,25 +369,25 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    void testUpdateAllOfferStatus_withNullOldStatus(){
+    void testUpdateAllOfferStatus_withNullOldStatus() {
         assertThrows(IllegalArgumentException.class,
                 () -> offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(null, Status.EN_ATTENTE_REPONSE),
                 "Le deux status ne peut pas être vide");
     }
 
     @Test
-    void testUpdateAllOfferStatus_withNullNewStatus(){
+    void testUpdateAllOfferStatus_withNullNewStatus() {
         assertThrows(IllegalArgumentException.class,
-            () -> offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(Status.EN_ATTENTE_ENTREVUE, null),
-        "Le deux status ne peut pas être vide"
+                () -> offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(Status.EN_ATTENTE_ENTREVUE, null),
+                "Le deux status ne peut pas être vide"
         );
     }
 
     @Test
-    void testUpdateAllOfferStatus_withSameStatus(){
+    void testUpdateAllOfferStatus_withSameStatus() {
         assertThrows(IllegalArgumentException.class,
-            () -> offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(Status.EN_ATTENTE_ENTREVUE, Status.EN_ATTENTE_ENTREVUE),
-    "Les deux status ne peuvent pas être identique"
+                () -> offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(Status.EN_ATTENTE_ENTREVUE, Status.EN_ATTENTE_ENTREVUE),
+                "Les deux status ne peuvent pas être identique"
         );
     }
 
@@ -437,20 +440,6 @@ class OfferApplicationServiceTest {
         dummyStudent.setMatricule("4673943");
         dummyStudent.setPrincipalCurriculum(new Curriculum());
         return dummyStudent;
-    }
-
-    private Manager getDummyManager() {
-        Manager dummyManager = new Manager();
-        dummyManager.setId(1L);
-        dummyManager.setLastName("Candle");
-        dummyManager.setFirstName("Tea");
-        dummyManager.setEmail("admin@admin.com");
-        dummyManager.setPassword("admin");
-        return dummyManager;
-    }
-
-    private UpdateStatusDTO getDummuyUpdateStatusDTO() {
-        return new UpdateStatusDTO(1L, true);
     }
 
     private Curriculum getDummyCurriculum() {

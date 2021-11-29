@@ -28,5 +28,6 @@ public class OfferApplication {//TODO : session
 
     @OneToOne
     private Session session;
+
 }
 

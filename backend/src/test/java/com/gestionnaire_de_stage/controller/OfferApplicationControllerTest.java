@@ -10,7 +10,10 @@ import com.gestionnaire_de_stage.exception.DateNotValidException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
-import com.gestionnaire_de_stage.model.*;
+import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.model.OfferApplication;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.CurriculumService;
 import com.gestionnaire_de_stage.service.OfferApplicationService;
 import org.junit.jupiter.api.Test;
@@ -158,7 +161,6 @@ class OfferApplicationControllerTest {
 
     @Test
     public void testGetOffersApplicationStageTrouver() throws Exception {
-        List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
         List<Student> studentList = getDummyStudentList();
         when(offerApplicationService.getOffersApplicationsStageTrouver()).thenReturn(studentList);
 

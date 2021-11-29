@@ -98,10 +98,14 @@ public class OfferApplicationService {
     }
 
     public List<Student> getOffersApplicationsStageTrouver() {
-        List<OfferApplication> offerApplicationList =  offerApplicationRepository.getAllByStatusAndSession_YearGreaterThanEqualAndCurriculum_Student_SupervisorIsNull(Status.STAGE_TROUVE, Year.now());
+        List<OfferApplication> offerApplicationList = offerApplicationRepository.getAllByStatusAndSession_YearGreaterThanEqualAndCurriculum_Student_SupervisorIsNull(Status.STAGE_TROUVE, Year.now());
 
-        return offerApplicationList.stream().map(offerApplication ->
-                offerApplication.getCurriculum().getStudent()).distinct().collect(Collectors.toList());
+        return offerApplicationList.stream()
+                .map(offerApplication -> getStudent(offerApplication.getCurriculum())).distinct().collect(Collectors.toList());
+    }
+
+    private Student getStudent(Curriculum curriculum) {
+        return curriculum != null ? curriculum.getStudent() : null;
     }
 
     public OfferApplication getOneById(Long idOfferApplication) throws IdDoesNotExistException {
