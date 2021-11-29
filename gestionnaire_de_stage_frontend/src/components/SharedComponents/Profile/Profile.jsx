@@ -18,20 +18,15 @@ export default function Profile() {
             confirmButtonText: 'Changer',
             cancelButtonText: 'Annuler',
             html:
-                `<div>
-                    <div>
+                `<form>
+                        <input type="text" name="email" value="..." autocomplete="username email" style="display: none;">
                         <label for="oldPassword">Ancien mot de passe</label>
-                        <input type="password" id="oldPassword" class="form-control" />
-                    </div>
-                    <div>
+                        <input type="password" id="oldPassword" class="form-control" autocomplete="current-password" />
                         <label for="newPassword">Nouveau mot de passe</label>
-                        <input type="password" id="newPassword" class="form-control" />
-                    </div>
-                    <div>
+                        <input type="password" id="newPassword" class="form-control" autocomplete="new-password" />
                         <label for="confirmPassword">Confirmer le mot de passe</label>
-                        <input type="password" id="confirmPassword" class="form-control" />
-                    </div>
-                </div>`,
+                        <input type="password" id="confirmPassword" class="form-control" autocomplete="new-password" />
+                </form>`,
             preConfirm: () => {
                 let oldPassword = document.getElementById('oldPassword').value;
                 let password = document.getElementById('newPassword').value;
