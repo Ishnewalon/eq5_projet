@@ -73,7 +73,7 @@ export async function checkEmail(email) {
 }
 
 export async function getUnassignedStudents() {
-    const response = await fetch(`${urlBackend}/student/needAssignement`, requestInit(methods.GET));
+    const response = await fetch(`${urlBackend}/applications/applicants/supervisor`, requestInit(methods.GET));
     return await response.json();
 }
 

@@ -30,10 +30,8 @@ export default function LinkSupervisorToStudent() {
         setStudentList(studentList.filter(student => student.id !== studentID))
 
     if (studentList.length === 0)
-        return <MessageNothingToShow message="Aucun étudiant à associer pour le moment...">
-            Bonne<span className="color-emphasis-1"> nouvelle!</span><br/>
-            Aucune offre <span className="color-emphasis-1">à valider.</span>
-        </MessageNothingToShow>
+        return <MessageNothingToShow message="Aucun étudiant à associer pour le moment..."/>
+
     return (
         <div>
             <Table className={"w-75 mx-auto"}>
@@ -51,7 +49,6 @@ export default function LinkSupervisorToStudent() {
     )
 
 }
-
 
 function RowStudent({student, list, removeFromList}) {
     const [supervisorID, setSupervisorID] = useState(null)
