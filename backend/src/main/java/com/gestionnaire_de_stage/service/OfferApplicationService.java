@@ -156,4 +156,9 @@ public class OfferApplicationService {
     public List<OfferApplication> getAllOffersApplication() {
         return offerApplicationRepository.findAll();
     }
+
+    public boolean isCurriculumInUse(Curriculum curriculum) throws IllegalArgumentException {
+        Assert.notNull(curriculum, "Le curriculum ne peut pas être vide");
+        return offerApplicationRepository.existsByCurriculum(curriculum);
+    }
 }

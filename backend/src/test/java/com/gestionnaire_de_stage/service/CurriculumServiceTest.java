@@ -4,6 +4,7 @@ import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
+import com.gestionnaire_de_stage.exception.CurriculumUsedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
@@ -24,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SuppressWarnings("ConstantConditions")
 @ExtendWith(MockitoExtension.class)
@@ -41,6 +42,9 @@ public class CurriculumServiceTest {
 
     @Mock
     private OfferService offerService;
+
+    @Mock
+    private OfferApplicationService offerApplicationService;
 
     @Test
     public void testConvertMultipartFileToCurriculum_WithValidData() throws IOException, IdDoesNotExistException {
@@ -296,6 +300,44 @@ public class CurriculumServiceTest {
         List<Curriculum> actualCurriculums = curriculumService.findAllByStudentId(dummyStudent.getId());
 
         assertThat(actualCurriculums).isEqualTo(dummyCurriculumList);
+    }
+
+    @Test
+    void testDeleteOneById() throws Exception{
+        when(curriculumRepository.existsById(any())).thenReturn(true);
+        when(curriculumRepository.getById(any())).thenReturn(getDummyCurriculum());
+        when(offerApplicationService.isCurriculumInUse(any())).thenReturn(false);
+
+        curriculumService.deleteOneById(1L);
+
+        verify(curriculumRepository, times(1)).deleteById(any());
+    }
+
+    @Test
+    void testDeleteOneById_withNullParam() {
+        assertThrows(IllegalArgumentException.class, () ->
+                curriculumService.deleteOneById(null));
+    }
+
+    @Test
+    void testDeleteOneById_withPrincipalCurriculum() {
+        Curriculum curriculum = getDummyCurriculum();
+        curriculum.getStudent().setPrincipalCurriculum(curriculum);
+        when(curriculumRepository.existsById(any())).thenReturn(true);
+        when(curriculumRepository.getById(any())).thenReturn(curriculum);
+
+        assertThrows(CurriculumUsedException.class, () ->
+                curriculumService.deleteOneById(1L));
+    }
+
+    @Test
+    void testDeleteOneById_withCurriculumInUse() {
+        when(curriculumRepository.existsById(any())).thenReturn(true);
+        when(curriculumRepository.getById(any())).thenReturn(getDummyCurriculum());
+        when(offerApplicationService.isCurriculumInUse(any())).thenReturn(true);
+
+        assertThrows(CurriculumUsedException.class, () ->
+                curriculumService.deleteOneById(1L));
     }
 
     private Curriculum getDummyCurriculum() {

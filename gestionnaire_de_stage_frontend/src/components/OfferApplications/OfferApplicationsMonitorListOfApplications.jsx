@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {getAllApplicants} from '../../services/offerAppService';
 import {useAuth} from "../../services/use-auth";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
-import {toast} from "../../utility";
+import {downloadFile, toPdfBlob} from "../../utility";
 import {AiOutlineFile} from "react-icons/all";
 import OfferView from "../Offers/OfferView";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
@@ -33,25 +33,6 @@ export default function OfferApplicationsMonitorListOfApplications() {//TODO: li
 }
 
 function PreviewStudent({dto}) {
-    // TODO revoir le frontend
-    const openFile = () => {
-        const decodedChars = atob(dto.file);
-        const byteNums = new Array(decodedChars.length);
-        for (let i = 0; i < decodedChars.length; i++)
-            byteNums[i] = decodedChars.charCodeAt(i);
-
-        // noinspection JSCheckFunctionSignatures
-        const blob = new Blob([new Uint8Array(byteNums), {type: 'application/pdf'}]);
-
-        let url = window.URL.createObjectURL(blob);
-
-        const a = document.createElement('a')
-        a.href = url
-        a.download = dto.fileName;
-        a.click();
-        URL.revokeObjectURL(url)
-        toast.fire({title: 'Téléchargé'}).then()
-    }
 
     return <div className=" p-3 mt-5 border-left border-right border-light">
         <div className={'row'}>
@@ -60,7 +41,8 @@ function PreviewStudent({dto}) {
                     <h4 className={'p-2 rounded fw-bold'}>{dto.firstName + ', ' + dto.lastName} </h4>
                     <div className={'d-flex align-items-center'}>
 
-                        <button onClick={openFile} className="ms-2 btn btn-primary"><AiOutlineFile/> {dto.fileName}
+                        <button onClick={() => downloadFile(toPdfBlob(dto.file), dto.fileName)}
+                                className="ms-2 btn btn-primary"><AiOutlineFile/> {dto.fileName}
                         </button>
                     </div>
                 </div>

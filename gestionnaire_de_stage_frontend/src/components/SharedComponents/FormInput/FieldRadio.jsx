@@ -13,10 +13,11 @@ export function FieldRadio(props) {
     };
 
     function Radio(props) {
-        const {name, register, id, value, text} = props;
+        const {name, register, id, value, text, defaultChecked} = props;
         return <div className="form-check">
             <input id={id} className="form-check-input" name={name} value={value}
-                   type="radio" {...register(name, {required: "Ce champs est obligatoire"})}/>
+                   type="radio" {...register(name, {required: "Ce champs est obligatoire"})}
+                   defaultChecked={defaultChecked}/>
             <label className="form-check-label" htmlFor={id}>{text}</label>
         </div>
     }
@@ -26,7 +27,7 @@ export function FieldRadio(props) {
         {
             Object.values(list).map((item, index) => {
                 return <Radio key={index} value={item[0]} name={name} register={register} text={item[1]}
-                              id={name + index}/>;
+                              id={name + index} defaultChecked={index === 0}/>;
 
             })
         }
