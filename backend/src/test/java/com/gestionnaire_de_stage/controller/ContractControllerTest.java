@@ -10,6 +10,7 @@ import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
 import com.gestionnaire_de_stage.exception.StudentIsNotAssignedException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.service.ContractService;
+import com.gestionnaire_de_stage.service.StageService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -39,6 +40,9 @@ public class ContractControllerTest {
 
     @MockBean
     private ContractService contractService;
+
+    @MockBean
+    private StageService stageService;
 
     private final ObjectMapper MAPPER = new ObjectMapper();
 
