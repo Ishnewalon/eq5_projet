@@ -3,7 +3,7 @@ import {getStudentsStatus} from "../../../services/user-service";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import {useAuth} from "../../../hooks/use-auth";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {BiTimeFive, FaRegTimesCircle, GiCheckMark, MdDateRange, RiFolderReceivedFill} from "react-icons/all";
+import {AiOutlineCheckCircle, BiTimeFive, FaRegTimesCircle, MdDateRange, RiFolderReceivedFill} from "react-icons/all";
 
 export default function StudentStatusView() {
 
@@ -28,7 +28,7 @@ export default function StudentStatusView() {
             case "STAGE_REFUSE":
                 return <FaRegTimesCircle color={"red"} title={"L'étudiant a été refusé"} size={27}/>
             case "STAGE_TROUVE":
-                return <GiCheckMark color={"green"} title={"L'étudiant a été accepté"} size={27}/>
+                return <AiOutlineCheckCircle color={"green"} title={"L'étudiant a été accepté"} size={27}/>
             case "EN_ATTENTE_ENTREVUE":
                 return <MdDateRange color={"black"} title={timeFormatMessage(offerApp.interviewDate)} size={27}/>
             case "EN_ATTENTE_REPONSE":

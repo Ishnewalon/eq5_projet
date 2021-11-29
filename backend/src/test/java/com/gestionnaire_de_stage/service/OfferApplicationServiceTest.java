@@ -125,34 +125,15 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    void testGetOffersApplicationStageTrouver() throws IdDoesNotExistException {
+    void testGetOffersApplicationStageTrouver() {
         List<OfferApplication> offerApplicationList = getDummyOfferAppList();
-        Manager dummyManager = getDummyManager();
-        when(managerService.isIDNotValid(any())).thenReturn(false);
-        when(offerApplicationRepository.getAllByStatusAndSession_YearGreaterThanEqual(Status.STAGE_TROUVE, Year.now()))
+        when(offerApplicationRepository.getAllByStatusAndSession_YearGreaterThanEqualAndCurriculum_Student_SupervisorIsNull(Status.STAGE_TROUVE, Year.now()))
                 .thenReturn(offerApplicationList);
 
-        List<OfferApplication> actualOfferAppList = offerApplicationService
-                .getOffersApplicationsStageTrouver(dummyManager.getId());
+        List<Student> actualOfferStudent = offerApplicationService
+                .getOffersApplicationsStageTrouver();
 
-        assertThat(actualOfferAppList.size()).isEqualTo(offerApplicationList.size());
-        assertThat(actualOfferAppList).isEqualTo(offerApplicationList);
-    }
-
-    @Test
-    void testGetOffersApplicationStageTrouver_withIdNull() {
-
-        assertThrows(IllegalArgumentException.class,
-                () -> offerApplicationService.getOffersApplicationsStageTrouver(null));
-    }
-
-    @Test
-    void testGetOffersApplicationStageTrouver_withIdInvalid() {
-        Manager dummyManager = getDummyManager();
-        when(managerService.isIDNotValid(any())).thenReturn(true);
-
-        assertThrows(IdDoesNotExistException.class,
-                () -> offerApplicationService.getOffersApplicationsStageTrouver(dummyManager.getId()));
+        assertThat(actualOfferStudent).hasSizeGreaterThan(0);
     }
 
 

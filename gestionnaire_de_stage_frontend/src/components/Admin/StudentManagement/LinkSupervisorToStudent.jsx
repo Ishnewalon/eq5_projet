@@ -47,7 +47,6 @@ export default function LinkSupervisorToStudent() {
             </Table>
         </div>
     )
-
 }
 
 function RowStudent({student, list, removeFromList}) {

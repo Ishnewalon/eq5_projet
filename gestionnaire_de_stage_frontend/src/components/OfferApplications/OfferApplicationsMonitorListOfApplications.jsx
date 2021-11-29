@@ -4,10 +4,10 @@ import {useAuth} from "../../hooks/use-auth";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {downloadFile, toPdfBlob, uniqBy} from "../../utility";
 import {
+    AiOutlineCheckCircle,
     BiTimeFive,
     FaRegTimesCircle,
     FiDownload,
-    GiCheckMark,
     MdDateRange,
     RiFolderReceivedFill
 } from "react-icons/all";
@@ -41,7 +41,7 @@ export default function OfferApplicationsMonitorListOfApplications() {
             case "STAGE_REFUSE":
                 return <FaRegTimesCircle color={"red"} title={"Étudiant refusé"} size={27}/>
             case "STAGE_TROUVE":
-                return <GiCheckMark color={"green"} title={"Étudiant accepté"} size={27}/>
+                return <AiOutlineCheckCircle color={"green"} title={"Étudiant accepté"} size={27}/>
             case "EN_ATTENTE_ENTREVUE":
                 return <MdDateRange color={"black"} title={timeFormatMessage(offerApp.interviewDate)} size={27}/>
             case "EN_ATTENTE_REPONSE":

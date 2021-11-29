@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OfferApplicationService {
@@ -96,12 +97,11 @@ public class OfferApplicationService {
                 !date.isBefore(LocalDateTime.now().plusMonths(2));
     }
 
-    public List<OfferApplication> getOffersApplicationsStageTrouver(Long id) throws IdDoesNotExistException {//TODO combine with getAllOffersStudentApplied
-        Assert.isTrue(id != null, "L'identifiant du gestionnaire ne peut pas être vide");
-        if (managerService.isIDNotValid(id))
-            throw new IdDoesNotExistException("Il n'y a pas de gestionnaire associé à cet identifiant");
+    public List<Student> getOffersApplicationsStageTrouver() {
+        List<OfferApplication> offerApplicationList =  offerApplicationRepository.getAllByStatusAndSession_YearGreaterThanEqualAndCurriculum_Student_SupervisorIsNull(Status.STAGE_TROUVE, Year.now());
 
-        return offerApplicationRepository.getAllByStatusAndSession_YearGreaterThanEqual(Status.STAGE_TROUVE, Year.now());
+        return offerApplicationList.stream().map(offerApplication ->
+                offerApplication.getCurriculum().getStudent()).distinct().collect(Collectors.toList());
     }
 
     public OfferApplication getOneById(Long idOfferApplication) throws IdDoesNotExistException {
