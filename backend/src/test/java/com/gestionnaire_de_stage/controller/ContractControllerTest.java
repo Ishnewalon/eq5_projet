@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
+import com.gestionnaire_de_stage.enums.TypeSession;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
 import com.gestionnaire_de_stage.exception.StudentIsNotAssignedException;
@@ -21,6 +22,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -528,12 +530,42 @@ public class ContractControllerTest {
     private Contract getDummyContract() {
         Contract dummyContract = new Contract();
         dummyContract.setId(1L);
-        dummyContract.setStudent(new Student());
+        dummyContract.setStudent(getDummyStudent());
         dummyContract.setOffer(getDummyOffer());
         dummyContract.setManager(getDummyManager());
         dummyContract.setManagerSignature("Joe Janson");
         dummyContract.setManagerSignDate(LocalDate.now());
+
+        Session dummySession = new Session();
+        dummySession.setTypeSession(TypeSession.HIVER);
+        dummySession.setYear(Year.now());
+        dummyContract.setSession(dummySession);
         return dummyContract;
+    }
+
+    private Student getDummyStudent() {
+        Student dummyStudent = new Student();
+        dummyStudent.setId(1L);
+        dummyStudent.setLastName("Candle");
+        dummyStudent.setFirstName("Tea");
+        dummyStudent.setEmail("cant@outlook.com");
+        dummyStudent.setPassword("cantPass");
+        dummyStudent.setDepartment("info");
+        dummyStudent.setMatricule("4673943");
+        dummyStudent.setSupervisor(getDummySupervisor());
+        return dummyStudent;
+    }
+
+    private Supervisor getDummySupervisor() {
+        Supervisor dummySupervisor = new Supervisor();
+        dummySupervisor.setId(1L);
+        dummySupervisor.setLastName("Keys");
+        dummySupervisor.setFirstName("Harold");
+        dummySupervisor.setEmail("keyh@gmail.com");
+        dummySupervisor.setPassword("galaxy29");
+        dummySupervisor.setDepartment("Comptabilité");
+        dummySupervisor.setMatricule("04736");
+        return dummySupervisor;
     }
 
     private List<Contract> getDummyContractList() {
