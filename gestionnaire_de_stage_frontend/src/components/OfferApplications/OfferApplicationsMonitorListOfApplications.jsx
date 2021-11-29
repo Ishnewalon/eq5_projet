@@ -3,10 +3,18 @@ import {getAllApplicants} from '../../services/offerAppService';
 import {useAuth} from "../../hooks/use-auth";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {downloadFile, toPdfBlob, uniqBy} from "../../utility";
-import {BiTimeFive, FiDownload, GiCheckMark, GiCrossMark, MdDateRange, RiFolderReceivedFill} from "react-icons/all";
+import {
+    AiOutlineCheckCircle,
+    BiTimeFive,
+    FaRegTimesCircle,
+    FiDownload,
+    MdDateRange,
+    RiFolderReceivedFill
+} from "react-icons/all";
 import OfferView from "../Offers/OfferView";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
+import {timeFormatMessage} from "../Admin/StudentManagement/StudentStatusView";
 
 export default function OfferApplicationsMonitorListOfApplications() {
     let auth = useAuth();
@@ -26,26 +34,14 @@ export default function OfferApplicationsMonitorListOfApplications() {
         return <MessageNothingToShow message="Au moment, aucun étudiant n'a postulé à cette offre"/>
     }
 
-    const timeFormatMessage = (date) => {
-        let dateTimeFormat = new Date(date);
-        let day = dateTimeFormat.getDate();
-        let month = dateTimeFormat.getMonth() + 1;
-        let year = dateTimeFormat.getFullYear();
-        let hours = dateTimeFormat.getHours();
-        let minutes = dateTimeFormat.getMinutes();
-        let seconds = dateTimeFormat.getSeconds();
-        return `L'entrevue est le ${day}/${month}/${year} à ${hours}h${minutes}m${seconds}s`;
-    };
-
     const setStatus = (offerApp) => {
         switch (offerApp.status) {
             case "CV_ENVOYE":
-                return <RiFolderReceivedFill color={"gold"} title={"Cv envoyé"} size={27}/>
+                return <RiFolderReceivedFill color={"gold"} title={"L'étudiant a envoyé son cv"} size={27}/>
             case "STAGE_REFUSE":
-                return <GiCrossMark color={"red"} title={"Stage refusé"} size={27}/>
-            // ImCross ou FaTimes ou FaRegTimesCircle ou FaTimesCircle test les 2 icones durant le review
+                return <FaRegTimesCircle color={"red"} title={"Étudiant refusé"} size={27}/>
             case "STAGE_TROUVE":
-                return <GiCheckMark color={"green"} title={"Stage refusé"} size={27}/>
+                return <AiOutlineCheckCircle color={"green"} title={"Étudiant accepté"} size={27}/>
             case "EN_ATTENTE_ENTREVUE":
                 return <MdDateRange color={"black"} title={timeFormatMessage(offerApp.interviewDate)} size={27}/>
             case "EN_ATTENTE_REPONSE":
@@ -76,7 +72,7 @@ export default function OfferApplicationsMonitorListOfApplications() {
                                 <th>Email</th>
                                 <th>Téléphone</th>
                                 <th>Statut</th>
-                                <th>Curriculum</th>
+                                <th>Cv</th>
                             </TableHeader>
                             {offerApplications.filter(offerApp => offerApp.offer.id === offer.id).map(offerApp => {
                                     let curriculum = offerApp.curriculum;

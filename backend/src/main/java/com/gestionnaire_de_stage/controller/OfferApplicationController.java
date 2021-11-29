@@ -5,13 +5,15 @@ import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.model.OfferApplication;
-import com.gestionnaire_de_stage.service.CurriculumService;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.OfferApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -20,11 +22,9 @@ import static org.springframework.http.HttpStatus.CREATED;
 @CrossOrigin
 public class OfferApplicationController {
     private final OfferApplicationService offerApplicationService;
-    private final CurriculumService curriculumService;
 
-    public OfferApplicationController(OfferApplicationService offerApplicationService, CurriculumService curriculumService) {
+    public OfferApplicationController(OfferApplicationService offerApplicationService) {
         this.offerApplicationService = offerApplicationService;
-        this.curriculumService = curriculumService;
     }
 
     @PostMapping("/apply")
@@ -78,17 +78,11 @@ public class OfferApplicationController {
         }
     }
 
-    @GetMapping("/applicants/manager/{id}")
-    public ResponseEntity<?> getOffersApplicationsStageTrouver(@PathVariable Long id) {
-        List<OfferApplication> offerApplicationList;
-        try {
-            offerApplicationList = offerApplicationService.getOffersApplicationsStageTrouver(id);
-        } catch (Exception e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        }
-        return ResponseEntity.ok(offerApplicationList);
+    @GetMapping("/applicants/supervisor")
+    public ResponseEntity<?> getOffersApplicationsStageTrouver() {
+        List<Student> studentList = offerApplicationService.getOffersApplicationsStageTrouver();
+
+        return ResponseEntity.ok(studentList);
     }
 
     @PostMapping("/student/update_status")
