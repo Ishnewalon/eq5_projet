@@ -80,4 +80,9 @@ public class MonitorService {
         return !monitorRepository.existsById(id);
     }
 
+    public Monitor changePassword(Long id, String password) {
+        Monitor monitor = monitorRepository.getById(id);
+        monitor.setPassword(password);
+        return monitorRepository.save(monitor);
+    }
 }

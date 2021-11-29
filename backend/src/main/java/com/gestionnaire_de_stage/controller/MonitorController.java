@@ -1,8 +1,6 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.service.MonitorService;
 import org.springframework.http.HttpStatus;
@@ -52,5 +50,11 @@ public class MonitorController {
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
         }
+    }
+
+    @PostMapping("/change_password/{id}")
+    public ResponseEntity<?> UpdatePassword(@PathVariable Long id, @RequestBody String password) {
+        monitorService.changePassword(id, password);
+        return ResponseEntity.ok(new ResponseMessage("Mot de passe changé avec succès"));
     }
 }

@@ -336,6 +336,23 @@ public class StudentControllerTest {
         assertThat(response.getContentAsString()).contains("false");
     }
 
+    @Test
+    public void testChangePassword() throws Exception {
+        Student dummyStudent = getDummyStudent();
+        String newPassword = "newPassword";
+        when(studentService.changePassword(any(), any())).thenReturn(dummyStudent);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .post("/student/change_password/{id}", dummyStudent.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newPassword))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Mot de passe changé avec succès");
+    }
+
 
     private StudentMonitorOfferDTO getDummyStudentMonitorOfferDTO() {
         return new StudentMonitorOfferDTO(

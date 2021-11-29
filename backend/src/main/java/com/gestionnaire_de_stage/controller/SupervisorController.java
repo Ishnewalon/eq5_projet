@@ -2,9 +2,6 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.AssignDto;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
@@ -104,5 +101,11 @@ public class SupervisorController {
         }
         return ResponseEntity
                 .ok(offerApplicationList);
+    }
+
+    @PostMapping("/change_password/{id}")
+    public ResponseEntity<?> UpdatePassword(@PathVariable Long id, @RequestBody String password) {
+        supervisorService.changePassword(id, password);
+        return ResponseEntity.ok(new ResponseMessage("Mot de passe changé avec succès"));
     }
 }
