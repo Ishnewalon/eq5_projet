@@ -1,6 +1,7 @@
 import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 import {regexCodePostal, regexMatriculeEtudiant, regexPhone} from "../../../utility";
 import {Column, FormGroupV2} from "../../SharedComponents/FormGroup/FormGroupV2";
+import {checkMatricule} from "../../../services/user-service";
 
 export default function SupervisorStepOne({register, errors}) {
     return <div className='px-3 pb-3 pt-1 rounded'>
@@ -14,7 +15,8 @@ export default function SupervisorStepOne({register, errors}) {
                         pattern: {
                             value: regexMatriculeEtudiant,
                             message: "La matricule de l'étudiant n'est pas valide!"
-                        }
+                        },
+                        validate: async (matricule) => !await checkMatricule(matricule) || "Ce matricule étudiant n'existe pas!"
                     }}
                     name='matriculeEtudiant'
                     register={register}
