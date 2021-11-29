@@ -26,7 +26,7 @@ export default function SupervisorStepTwo({register, errors, oneOrTwo}){
                 placeholder='Date du stage'
             />
             <FieldRadio
-                name='stageCourant'
+                name='currentIntern'
                 register={register}
                 list={Object.values(oneOrTwo)}
                 label='Stage'

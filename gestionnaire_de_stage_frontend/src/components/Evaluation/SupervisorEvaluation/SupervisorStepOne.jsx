@@ -18,11 +18,11 @@ export default function SupervisorStepOne({register, errors}) {
                         },
                         validate: async (matricule) => !await checkMatricule(matricule) || "Ce matricule étudiant n'existe pas!"
                     }}
-                    name='matriculeEtudiant'
+                    name='studentMatricule'
                     register={register}
                     type='number'
                     placeholder="La matricule de l'étudiant (7 chiffres)"
-                    error={errors.matriculeEtudiant}
+                    error={errors.studentMatricule}
                 />
             </Column>
         </FormGroupV2>
@@ -31,10 +31,10 @@ export default function SupervisorStepOne({register, errors}) {
                 <FormInput
                     label="Nom de l'entreprise"
                     validation={{required: 'Ce champ est requis'}}
-                    name='entrepriseNom'
+                    name='companyName'
                     register={register}
                     type='text'
-                    error={errors.entrepriseNom}
+                    error={errors.companyName}
                     placeholder="Nom de l'entreprise"
                 />
             </Column>
@@ -42,11 +42,11 @@ export default function SupervisorStepOne({register, errors}) {
                 <FormInput
                     label='Personne contact'
                     validation={{required: 'Ce champ est requis'}}
-                    name='personneContact'
+                    name='contactPerso'
                     register={register}
                     type='text'
                     placeholder='Persone contact'
-                    error={errors.personneContact}
+                    error={errors.contactPerson}
                 />
             </Column>
         </FormGroupV2>
@@ -72,11 +72,11 @@ export default function SupervisorStepOne({register, errors}) {
                 <FormInput
                     label='Télécopieur'
                     validation={{required: 'Ce champ est requis'}}
-                    name='telecopieur'
+                    name='fax'
                     register={register}
                     type='text'
                     placeholder='Télécopieur'
-                    error={errors.telecopieur}
+                    error={errors.fax}
                 />
             </Column>
         </FormGroupV2>
@@ -112,11 +112,11 @@ export default function SupervisorStepOne({register, errors}) {
             <Column col={{md: 6, lg: 4}}>
                 <FormInput
                     label='Ville'
-                    validation={{required: 'Ce champ est} requis'}}
-                    name='ville'
+                    validation={{required: 'Ce champ est requis'}}
+                    name='city'
                     register={register}
                     type='text'
-                    error={errors.ville}
+                    error={errors.city}
                     placeholder='Ville'
                 />
             </Column>

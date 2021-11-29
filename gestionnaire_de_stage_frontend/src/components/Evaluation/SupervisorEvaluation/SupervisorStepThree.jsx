@@ -9,20 +9,20 @@ export default function SupervisorStepThree({register, choixAccords, errors}){
         <h4 className='fw-bold p-2 rounded mt-4 mb-0 text-decoration-underline'>Évaluation</h4>
         <FormGroup>
             <FieldRadio
-                name='questionUn'
+                name='questionTaskGivenWereInContract'
                 register={register}
                 list={Object.values(choixAccords)}
                 label='Les tâches confiées au stagiaire sont conformes aux tâches annoncées dans l’entente de
                             stage?'
             />
             <FieldRadio
-                name='questionDeux'
+                name='questionInternshipEasyToIntegrateInterns'
                 register={register}
                 list={Object.values(choixAccords)}
                 label='Des mesures d’accueil facilitent l’intégration du nouveau stagiaire?'
             />
             <FieldRadio
-                name='questionTrois'
+                name='questionWasEnoughTimeToTrainIntern'
                 register={register}
                 list={Object.values(choixAccords)}
                 label='Le temps réel consacré à l’encadrement du stagiaire est suffisant?'
@@ -37,10 +37,10 @@ export default function SupervisorStepThree({register, choixAccords, errors}){
                         message: 'Le nombre d\'heures doit être supérieur ou égale à 0'
                     }
                 }}
-                name='nbHeuresMoisUn'
+                name='nbHoursMonthOne'
                 register={register}
                 type='number'
-                error={errors.nbHeuresMoisUn}
+                error={errors.nbHoursMonthOne}
                 placeholder="1er mois"
             />
             <FormInput
@@ -51,11 +51,11 @@ export default function SupervisorStepThree({register, choixAccords, errors}){
                         message: 'Le nombre d\'heures doit être supérieur ou égale à 0'
                     }
                 }}
-                name='nbHeuresMoisDeux'
+                name='nbHoursMonthTwo'
                 register={register}
                 type='number'
                 placeholder='2ième mois'
-                error={errors.nbHeuresMoisDeux}
+                error={errors.nbHoursMonthTwo}
             />
             <FormInput
                 label="Nombre d'heures pour le 3ième mois?"
@@ -65,29 +65,29 @@ export default function SupervisorStepThree({register, choixAccords, errors}){
                         message: 'Le nombre d\'heures doit être supérieur ou égale à 0'
                     }
                 }}
-                name='nbHeuresMoisTrois'
+                name='nbHoursMonthThree'
                 register={register}
                 type='number'
-                error={errors.nbHeuresMoisTrois}
+                error={errors.nbHoursMonthThree}
                 placeholder="3ième mois"
             />
         </FormGroup>
         <FormGroup>
             <FieldRadio
-                name='questionQuatre'
+                name='questionHyegiene'
                 register={register}
                 list={Object.values(choixAccords)}
                 label="L'environnement de travail respecte les normes d’hygiène et de sécurité au
                             travail?"
             />
             <FieldRadio
-                name='questionCinq'
+                name='questionWorkEnvironmentNice'
                 register={register}
                 list={Object.values(choixAccords)}
                 label="Le climat de travail est agréable?"
             />
             <FieldRadio
-                name='questionSix'
+                name='questionWorkAccesibleByMetro'
                 register={register}
                 list={Object.values(choixAccords)}
                 label="Le milieu de stage est accessible par transport en commun?"
@@ -95,7 +95,7 @@ export default function SupervisorStepThree({register, choixAccords, errors}){
         </FormGroup>
         <FormGroup>
             <FieldRadio
-                name='questionSept'
+                name='questionSalaryInterestingForIntern'
                 register={register}
                 list={Object.values(choixAccords)}
                 label="Le salaire offert est intéressant pour le stagiaire?"
@@ -109,7 +109,7 @@ export default function SupervisorStepThree({register, choixAccords, errors}){
                 }}
                 register={register}
                 type='number'
-                name='salaireStagiaire'
+                name='salaryIntern'
                 error={errors.salaireStagiaire}
                 placeholder='Salaire par heure'
                 label='Préciser le salaire par heure'
@@ -117,19 +117,19 @@ export default function SupervisorStepThree({register, choixAccords, errors}){
         </FormGroup>
         <FormGroup>
             <FieldRadio
-                name='questionHuit'
+                name='questionSupervisorFacilitateInternship'
                 register={register}
                 list={Object.values(choixAccords)}
                 label="La communication avec le superviseur de stage facilite le déroulement du stage?"
             />
             <FieldRadio
-                name='questionNeuf'
+                name='questionTaskGivenWereAdequate'
                 register={register}
                 list={Object.values(choixAccords)}
                 label="L’équipement fourni est adéquat pour réaliser les tâches confiées?"
             />
             <FieldRadio
-                name='questionDix'
+                name='questionTravailAcceptable'
                 register={register}
                 list={Object.values(choixAccords)}
                 label="Le volume de travail est acceptable?"
@@ -138,7 +138,7 @@ export default function SupervisorStepThree({register, choixAccords, errors}){
         <FormGroup>
             <FormTextarea
                 label='Commentaires'
-                name='commentaires'
+                name='comments'
                 register={register}
             />
         </FormGroup>
