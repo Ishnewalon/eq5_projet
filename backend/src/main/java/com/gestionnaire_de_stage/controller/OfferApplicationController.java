@@ -91,7 +91,7 @@ public class OfferApplicationController {
     }
 
     @GetMapping("/applicants/supervisor")
-    public ResponseEntity<?> getOffersApplicationsStageTrouver() {
+    public ResponseEntity<?> getOffersApplicationsStageTrouverForSupervisor() {
         List<Student> studentList = offerApplicationService.getOffersApplicationsStageTrouver();
 
         return ResponseEntity.ok(studentList);
