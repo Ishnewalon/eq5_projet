@@ -52,13 +52,14 @@ export default function SupervisorVisitForm() {
     return <div>
         <form action="" onSubmit={handleSubmit(sendEvaluation)}>
             <h1 className='text-center text-decoration-underline'>Évaluation de stage</h1>
-            <SupervisorStepOne register={register} errors={errors} />
+            <SupervisorStepOne register={register} errors={errors}/>
             <hr/>
-            <SupervisorStepTwo errors={errors} register={register} oneOrTwo={oneOrTwo} />
+            <SupervisorStepTwo errors={errors} register={register} oneOrTwo={oneOrTwo}/>
             <hr/>
-            <SupervisorStepThree errors={errors} register={register} choixAccords={choixAccords} />
+            <SupervisorStepThree errors={errors} register={register} choixAccords={choixAccords}/>
             <hr/>
-            <SupervisorStepFour watch={watch} register={register}  errors={errors} yesAndNoAnswers={yesAndNoAnswers} choixStage={choixStage} choixStagiaires={choixStagiaires} />
+            <SupervisorStepFour watch={watch} register={register} errors={errors} yesAndNoAnswers={yesAndNoAnswers}
+                                choixStage={choixStage} choixStagiaires={choixStagiaires}/>
             <button type='submit' className='btn btn-primary w-100 mt-4'>Créer un formulaire de visite</button>
         </form>
     </div>

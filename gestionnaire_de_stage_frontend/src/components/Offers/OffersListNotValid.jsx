@@ -3,9 +3,10 @@ import {getAllOffersInvalid} from '../../services/offer-service'
 import OfferView from './OfferView';
 import {getCurrentAndFutureSession} from "../../services/session-service";
 import {BtnBack} from "../SharedComponents/BtnBack";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {Column, FormGroup} from "../SharedComponents/FormGroup/FormGroup";
+import {FormGroup} from "../SharedComponents/Form/FormGroup";
+import {Column} from "../SharedComponents/Column";
 
 export default function OffersListNotValid() {
 

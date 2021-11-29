@@ -1,14 +1,15 @@
-import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 import {regexCodePostal, regexMatriculeEtudiant, regexPhone} from "../../../utility";
-import {Column, FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FormGroup} from "../../SharedComponents/Form/FormGroup";
 import {checkMatricule} from "../../../services/user-service";
+import {FieldInput} from "../../SharedComponents/Form/FormFields";
+import {Column} from "../../SharedComponents/Column";
 
 export default function SupervisorStepOne({register, errors}) {
     return <div className='px-3 pb-3 pt-1 rounded'>
         <h4 className='mt-4 mb-0 text-decoration-underline'>Identification de l'entreprise</h4>
         <FormGroup>
             <Column>
-                <FormInput
+                <FieldInput
                     label='Matricule Étudiant'
                     validation={{
                         required: 'Ce champ est requis',
@@ -28,7 +29,7 @@ export default function SupervisorStepOne({register, errors}) {
         </FormGroup>
         <FormGroup>
             <Column col={{lg: 6}}>
-                <FormInput
+                <FieldInput
                     label="Nom de l'entreprise"
                     validation={{required: 'Ce champ est requis'}}
                     name='entrepriseNom'
@@ -39,7 +40,7 @@ export default function SupervisorStepOne({register, errors}) {
                 />
             </Column>
             <Column col={{lg: 6}}>
-                <FormInput
+                <FieldInput
                     label='Personne contact'
                     validation={{required: 'Ce champ est requis'}}
                     name='personneContact'
@@ -52,7 +53,7 @@ export default function SupervisorStepOne({register, errors}) {
         </FormGroup>
         <FormGroup>
             <Column col={{lg: 6}}>
-                <FormInput
+                <FieldInput
                     label='Téléphone'
                     validation={{
                         required: 'Ce champ est requis',
@@ -69,7 +70,7 @@ export default function SupervisorStepOne({register, errors}) {
                 />
             </Column>
             <Column col={{lg: 6}}>
-                <FormInput
+                <FieldInput
                     label='Télécopieur'
                     validation={{required: 'Ce champ est requis'}}
                     name='telecopieur'
@@ -82,7 +83,7 @@ export default function SupervisorStepOne({register, errors}) {
         </FormGroup>
         <FormGroup>
             <Column col={{lg: 4}}>
-                <FormInput
+                <FieldInput
                     label='Adresse'
                     validation={{required: 'Ce champ est requis'}}
                     name='adresse'
@@ -93,7 +94,7 @@ export default function SupervisorStepOne({register, errors}) {
                 />
             </Column>
             <Column col={{md: 6, lg: 4}}>
-                <FormInput
+                <FieldInput
                     label='Code postal'
                     validation={{
                         required: 'Ce champ est requis',
@@ -110,7 +111,7 @@ export default function SupervisorStepOne({register, errors}) {
                 />
             </Column>
             <Column col={{md: 6, lg: 4}}>
-                <FormInput
+                <FieldInput
                     label='Ville'
                     validation={{required: 'Ce champ est} requis'}}
                     name='ville'

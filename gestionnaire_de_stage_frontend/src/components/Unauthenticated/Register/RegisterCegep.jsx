@@ -5,13 +5,14 @@ import {Student, Supervisor} from "../../../models/User";
 import {useHistory} from "react-router-dom";
 import {useAuth} from "../../../hooks/use-auth";
 import {BtnBack} from "../../SharedComponents/BtnBack";
-import {Title} from "../../SharedComponents/Title/Title";
+import {Title} from "../../SharedComponents/Title";
 import {useForm} from "react-hook-form";
 import {regexMatricule} from "../../../utility";
-import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 import {checkMatricule} from "../../../services/user-service";
-import {Column, FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FormGroup} from "../../SharedComponents/Form/FormGroup";
 import {ProgressBar} from "../../SharedComponents/ProgressBar";
+import {FieldInput} from "../../SharedComponents/Form/FormFields";
+import {Column} from "../../SharedComponents/Column";
 
 export default function RegisterCegep() {
     const {register, handleSubmit, watch, formState: {errors}} = useForm({
@@ -98,22 +99,22 @@ function StepCegep({register, errors}) {
     return (
         <FormGroup>
             <Column>
-                <FormInput label="Matricule"
-                           validation={{
-                               required: "Vous devez entrez votre matricule pour continuer",
-                               pattern: {
-                                   value: regexMatricule,
-                                   message: "Votre matricule doit être de 5 ou 7 chiffres"
-                               },
-                               validate: async (matricule) =>
-                                   await checkMatricule(matricule) || "Ce matricule est déjà utilisé"
-                           }}
-                           error={errors.matricule}
-                           name="matricule"
-                           register={register}
-                           type="text"
-                           placeholder="0000000 (Étudiant) ou 00000 (Superviseur)"
-                           autoComplete="on"/>
+                <FieldInput label="Matricule"
+                            validation={{
+                                required: "Vous devez entrez votre matricule pour continuer",
+                                pattern: {
+                                    value: regexMatricule,
+                                    message: "Votre matricule doit être de 5 ou 7 chiffres"
+                                },
+                                validate: async (matricule) =>
+                                    await checkMatricule(matricule) || "Ce matricule est déjà utilisé"
+                            }}
+                            error={errors.matricule}
+                            name="matricule"
+                            register={register}
+                            type="text"
+                            placeholder="0000000 (Étudiant) ou 00000 (Superviseur)"
+                            autoComplete="on"/>
             </Column>
             <Column>
                 <div className="form-group text-center">

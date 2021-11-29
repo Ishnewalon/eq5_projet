@@ -1,6 +1,6 @@
-import {FieldRadio} from "../../SharedComponents/FormInput/FieldRadio";
-import {FormInput} from "../../SharedComponents/FormInput/FormInput";
-import {Column, FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FormGroup} from "../../SharedComponents/Form/FormGroup";
+import {FieldInput, FieldRadio} from "../../SharedComponents/Form/FormFields";
+import {Column} from "../../SharedComponents/Column";
 
 export default function SupervisorStepFour({
                                                watch,
@@ -85,7 +85,7 @@ export default function SupervisorStepFour({
                     <input className="form-control" type="text" disabled value='Lundi'/>
                 </Column>
                 <Column col={{md: 5}}>
-                    <FormInput
+                    <FieldInput
                         label='De'
                         validation={{}}
                         name='questionQuatorzeHeuresUnA'
@@ -96,7 +96,7 @@ export default function SupervisorStepFour({
                     />
                 </Column>
                 <Column col={{md: 5}}>
-                    <FormInput
+                    <FieldInput
                         label='À'
                         validation={{validate: val => checkIfLowerThan(val, mondayShift) || 'La fin du quart doit être après le début'}}
                         name='questionQuatorzeHeuresUnB'
@@ -113,7 +113,7 @@ export default function SupervisorStepFour({
                     <input className="form-control" type="text" disabled value='Mardi'/>
                 </Column>
                 <Column col={{md: 5}}>
-                    <FormInput
+                    <FieldInput
                         label='De'
                         validation={{}}
                         name='questionQuatorzeHeuresUnC'
@@ -124,7 +124,7 @@ export default function SupervisorStepFour({
                     />
                 </Column>
                 <Column col={{md: 5}}>
-                    <FormInput
+                    <FieldInput
                         label='À'
                         validation={{validate: val => checkIfLowerThan(val, tuesdayShift) || 'La fin du quart doit être après le début'}}
                         name='questionQuatorzeHeuresUnD'
@@ -141,7 +141,7 @@ export default function SupervisorStepFour({
                     <input className="form-control" type="text" disabled value='Mercredi'/>
                 </Column>
                 <Column col={{md: 5}}>
-                    <FormInput
+                    <FieldInput
                         label='De'
                         validation={{}}
                         name='questionQuatorzeHeuresUnE'
@@ -152,7 +152,7 @@ export default function SupervisorStepFour({
                     />
                 </Column>
                 <Column col={{md: 5}}>
-                    <FormInput
+                    <FieldInput
                         label='À'
                         validation={{validate: val => checkIfLowerThan(val, wednesdayShift) || 'La fin du quart doit être après le début'}}
                         name='questionQuatorzeHeuresUnF'
@@ -169,7 +169,7 @@ export default function SupervisorStepFour({
                     <input className="form-control" type="text" disabled value='Jeudi'/>
                 </Column>
                 <Column col={{md: 5}}>
-                    <FormInput
+                    <FieldInput
                         label='De'
                         validation={{}}
                         name='questionQuatorzeHeuresUnG'
@@ -180,7 +180,7 @@ export default function SupervisorStepFour({
                     />
                 </Column>
                 <Column col={{md: 5}}>
-                    <FormInput
+                    <FieldInput
                         label='À'
                         validation={{validate: val => checkIfLowerThan(val, thursdayShift) || 'La fin du quart doit être après le début'}}
                         name='questionQuatorzeHeuresUnH'
@@ -197,7 +197,7 @@ export default function SupervisorStepFour({
                     <input className="form-control" type="text" disabled value='Vendredi'/>
                 </Column>
                 <Column col={{md: 5}}>
-                    <FormInput
+                    <FieldInput
                         label='De'
                         validation={{}}
                         name='questionQuatorzeHeuresUnI'
@@ -208,7 +208,7 @@ export default function SupervisorStepFour({
                     />
                 </Column>
                 <Column col={{md: 5}}>
-                    <FormInput
+                    <FieldInput
                         label='À'
                         validation={{validate: val => checkIfLowerThan(val, fridayShift) || 'La fin du quart doit être après le début'}}
                         name='questionQuatorzeHeuresUnJ'
@@ -225,7 +225,7 @@ export default function SupervisorStepFour({
                     <input className="form-control" type="text" disabled value='Samedi'/>
                 </Column>
                 <Column col={{md: 5}}>
-                    <FormInput
+                    <FieldInput
                         label='De'
                         validation={{}}
                         name='questionQuatorzeHeuresUnK'
@@ -236,7 +236,7 @@ export default function SupervisorStepFour({
                     />
                 </Column>
                 <Column col={{md: 5}}>
-                    <FormInput
+                    <FieldInput
                         label='À'
                         validation={{validate: val => checkIfLowerThan(val, saturdayShift) || 'La fin du quart doit être après le début'}}
                         name='questionQuatorzeHeuresUnL'
@@ -253,7 +253,7 @@ export default function SupervisorStepFour({
                     <input className="form-control" type="text" disabled value='Dimanche'/>
                 </Column>
                 <Column col={{md: 5}}>
-                    <FormInput
+                    <FieldInput
                         label='De'
                         validation={{}}
                         name='questionQuatorzeHeuresUnM'
@@ -264,7 +264,7 @@ export default function SupervisorStepFour({
                     />
                 </Column>
                 <Column col={{md: 5}}>
-                    <FormInput
+                    <FieldInput
                         label='À'
                         validation={{validate: val => checkIfLowerThan(val, sundayShift) || 'La fin du quart doit être après le début'}}
                         name='questionQuatorzeHeuresUnN'

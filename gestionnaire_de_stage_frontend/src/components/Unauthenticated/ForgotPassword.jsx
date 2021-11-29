@@ -1,14 +1,14 @@
 import {UserType} from "../../enums/UserTypes";
 import {forgotPassword} from "../../services/user-service";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
 import Swal from "sweetalert2";
 import {toast, toastErr} from "../../utility";
 import {useHistory} from "react-router-dom";
 import {BtnBack} from "../SharedComponents/BtnBack";
-import {FormSelect} from "../SharedComponents/FormInput/FormSelect";
 import {useForm} from "react-hook-form";
-import {FormInput} from "../SharedComponents/FormInput/FormInput";
-import {Column, FormGroup} from "../SharedComponents/FormGroup/FormGroup";
+import {FormGroup} from "../SharedComponents/Form/FormGroup";
+import {FieldInput, FieldSelect} from "../SharedComponents/Form/FormFields";
+import {Column} from "../SharedComponents/Column";
 
 export default function ForgotPassword() {
     const history = useHistory();
@@ -50,25 +50,25 @@ export default function ForgotPassword() {
             <form onSubmit={handleSubmit(submit)}>
                 <FormGroup>
                     <Column col={{sm: 6}}>
-                        <FormSelect label="Type d'utilisateur"
-                                    name="userType"
-                                    defaultMessage="Choisissez un type d'utilisateur!"
-                                    options={Object.values(UserType).filter(type => type !== UserType.MANAGER)}
-                                    fieldValue={0}
-                                    displayed={[1]}
-                                    register={register}
-                                    error={errors.userType}
-                                    validation={{required: 'Ce champ est requis!'}}
+                        <FieldSelect label="Type d'utilisateur"
+                                     name="userType"
+                                     defaultMessage="Choisissez un type d'utilisateur!"
+                                     options={Object.values(UserType).filter(type => type !== UserType.MANAGER)}
+                                     fieldValue={0}
+                                     displayed={[1]}
+                                     register={register}
+                                     error={errors.userType}
+                                     validation={{required: 'Ce champ est requis!'}}
                         />
                     </Column>
                     <Column col={{sm: 6}}>
-                        <FormInput label="Entrez votre courriel"
-                                   name="email"
-                                   type="email"
-                                   placeholder="Email"
-                                   register={register}
-                                   error={errors.email}
-                                   validation={{required: 'Ce champ est requis!'}}
+                        <FieldInput label="Entrez votre courriel"
+                                    name="email"
+                                    type="email"
+                                    placeholder="Email"
+                                    register={register}
+                                    error={errors.email}
+                                    validation={{required: 'Ce champ est requis!'}}
                         />
                     </Column>
                 </FormGroup>

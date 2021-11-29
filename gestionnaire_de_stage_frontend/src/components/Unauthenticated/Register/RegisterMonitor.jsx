@@ -7,10 +7,11 @@ import {useAuth} from "../../../hooks/use-auth";
 import {BtnBack} from "../../SharedComponents/BtnBack";
 import {useForm} from "react-hook-form";
 import {regexCodePostal, regexName} from "../../../utility";
-import {FormInput} from "../../SharedComponents/FormInput/FormInput";
-import {Column, FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
-import {Title} from "../../SharedComponents/Title/Title";
+import {FormGroup} from "../../SharedComponents/Form/FormGroup";
+import {Title} from "../../SharedComponents/Title";
 import {ProgressBar} from "../../SharedComponents/ProgressBar";
+import {FieldInput} from "../../SharedComponents/Form/FormFields";
+import {Column} from "../../SharedComponents/Column";
 
 
 export default function RegisterMonitor() {
@@ -93,69 +94,69 @@ function StepMonitor({register, errors}) {
     return (<>
         <FormGroup>
             <Column>
-                <FormInput label="Nom de la compagnie"
-                           validation={{
-                               required: "Ce champ est obligatoire!",
-                               pattern: {
-                                   value: regexName,
-                                   message: "Le nom de la compagnie doit contenir au moins 3 caractères et ne doit contenir que des lettres"
-                               }
-                           }}
-                           error={errors.companyName}
-                           name="companyName"
-                           register={register}
-                           type="text"
-                           placeholder="Nom de compagnie"
-                           autoComplete="organization-title"/>
+                <FieldInput label="Nom de la compagnie"
+                            validation={{
+                                required: "Ce champ est obligatoire!",
+                                pattern: {
+                                    value: regexName,
+                                    message: "Le nom de la compagnie doit contenir au moins 3 caractères et ne doit contenir que des lettres"
+                                }
+                            }}
+                            error={errors.companyName}
+                            name="companyName"
+                            register={register}
+                            type="text"
+                            placeholder="Nom de compagnie"
+                            autoComplete="organization-title"/>
             </Column>
         </FormGroup>
         <FormGroup>
             <Column>
-                <FormInput label="Adresse"
-                           validation={{
-                               required: "Ce champ est obligatoire!",
-                               minLength: {
-                                   value: 8,
-                                   message: "L'adresse doit contenir au moins 8 caractères "
-                               }
-                           }} error={errors.address}
-                           name="address"
-                           register={register}
-                           autoComplete="street-address"
-                           type="text"
-                           placeholder="Rue, boulevard, avenue.."/>
+                <FieldInput label="Adresse"
+                            validation={{
+                                required: "Ce champ est obligatoire!",
+                                minLength: {
+                                    value: 8,
+                                    message: "L'adresse doit contenir au moins 8 caractères "
+                                }
+                            }} error={errors.address}
+                            name="address"
+                            register={register}
+                            autoComplete="street-address"
+                            type="text"
+                            placeholder="Rue, boulevard, avenue.."/>
             </Column>
             <Column col={{md: 6}}>
-                <FormInput label="Ville"
-                           validation={{
-                               required: "Ce champ est obligatoire!",
-                               pattern: {
-                                   value: regexName,
-                                   message: "Le nom de la ville doit contenir au moins 3 caractères et ne doit contenir que des lettres"
-                               }
-                           }}
-                           error={errors.city}
-                           name="city"
-                           register={register}
-                           type="text"
-                           autoComplete="address-level2"
-                           placeholder="Ville"/>
+                <FieldInput label="Ville"
+                            validation={{
+                                required: "Ce champ est obligatoire!",
+                                pattern: {
+                                    value: regexName,
+                                    message: "Le nom de la ville doit contenir au moins 3 caractères et ne doit contenir que des lettres"
+                                }
+                            }}
+                            error={errors.city}
+                            name="city"
+                            register={register}
+                            type="text"
+                            autoComplete="address-level2"
+                            placeholder="Ville"/>
             </Column>
             <Column col={{md: 6}}>
-                <FormInput label="Code postal"
-                           validation={{
-                               required: "Ce champ est obligatoire!",
-                               pattern: {
-                                   value: regexCodePostal,
-                                   message: "Le code postal doit contenir être sous le format suivant: H0H 0H0"
-                               }
-                           }}
-                           error={errors.postalCode}
-                           name="postalCode"
-                           register={register}
-                           type="text"
-                           autoComplete="postal-code"
-                           placeholder="H0H 0H0"/>
+                <FieldInput label="Code postal"
+                            validation={{
+                                required: "Ce champ est obligatoire!",
+                                pattern: {
+                                    value: regexCodePostal,
+                                    message: "Le code postal doit contenir être sous le format suivant: H0H 0H0"
+                                }
+                            }}
+                            error={errors.postalCode}
+                            name="postalCode"
+                            register={register}
+                            type="text"
+                            autoComplete="postal-code"
+                            placeholder="H0H 0H0"/>
             </Column>
         </FormGroup>
         <div className="form-group text-center">

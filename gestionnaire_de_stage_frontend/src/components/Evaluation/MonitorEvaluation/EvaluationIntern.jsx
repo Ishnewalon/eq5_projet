@@ -1,5 +1,5 @@
 import {monitorCreateForm} from "../../../services/stage-service";
-import {ContainerBox} from "../../SharedComponents/ContainerBox/ContainerBox";
+import {ContainerBox} from "../../SharedComponents/ContainerBox";
 import StepOne from "./StepOne";
 import {useForm} from "react-hook-form";
 import StepTwo from "./StepTwo";
@@ -73,7 +73,7 @@ export default function EvaluationIntern() {
             <hr/>
             <StepTwo
                 register={register}
-                 choices={choixAccords}
+                choices={choixAccords}
             />
             <hr/>
             <StepThree

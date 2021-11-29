@@ -6,11 +6,11 @@ import OfferApplicationsStudentSetStatusEnAttenteEntrevue
     from "../OfferApplications/OfferApplicationsStudentSetStatusEnAttenteEntrevue";
 import {ContractToSignStudent} from "../Contract/ContractToSignStudent";
 import OfferApplicationsStudentSetStatusFinal from "../OfferApplications/OfferApplicationsStudentSetStatusFinal";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
 import {useAuth} from "../../hooks/use-auth";
 import ContractSignedStudent from "../Contract/ContractSignedStudent";
 import CurriculumsStudent from "../Curriculums/CurriculumsStudent";
-import {Title} from "../SharedComponents/Title/Title";
+import {Title} from "../SharedComponents/Title";
 import EvaluationIntern from "../Evaluation/MonitorEvaluation/EvaluationIntern";
 import Profile from "../SharedComponents/Profile/Profile";
 

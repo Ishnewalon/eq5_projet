@@ -5,9 +5,10 @@ import {getCurrentAndFutureSession} from "../../services/session-service";
 import {applyToOffer} from "../../services/offerAppService";
 import OfferApp from "../../models/OfferApp";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {Column, FormGroup} from "../SharedComponents/FormGroup/FormGroup";
+import {FormGroup} from "../SharedComponents/Form/FormGroup";
 import OfferView from "./OfferView";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
+import {Column} from "../SharedComponents/Column";
 
 export default function OffersStudentApply() {
     let auth = useAuth();

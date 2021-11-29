@@ -3,7 +3,7 @@ import {useAuth} from "../../hooks/use-auth";
 import {getAllOfferAppReadyToSign, startSignerFetch} from "../../services/contrat-service";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
 import {BsFillPenFill} from "react-icons/all";
 
 export default function StartContract() {

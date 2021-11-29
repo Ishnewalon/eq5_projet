@@ -3,7 +3,8 @@ import {getAllOffersInvalid, validateOffer} from '../../services/offer-service';
 import OfferView from "./OfferView";
 import {getCurrentAndFutureSession} from "../../services/session-service";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {Column, FormGroup} from "../SharedComponents/FormGroup/FormGroup";
+import {FormGroup} from "../SharedComponents/Form/FormGroup";
+import {Column} from "../SharedComponents/Column";
 
 export default function OffersManagerValidation() {
 

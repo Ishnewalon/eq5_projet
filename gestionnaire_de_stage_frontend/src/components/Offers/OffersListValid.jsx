@@ -2,10 +2,11 @@ import React, {useEffect, useState} from "react";
 import {getAllOffersValid} from '../../services/offer-service'
 import OfferView from './OfferView';
 import {getCurrentAndFutureSession} from "../../services/session-service";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
 import {BtnBack} from "../SharedComponents/BtnBack";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {Column, FormGroup} from "../SharedComponents/FormGroup/FormGroup";
+import {FormGroup} from "../SharedComponents/Form/FormGroup";
+import {Column} from "../SharedComponents/Column";
 
 export default function OffersListValid() {
 

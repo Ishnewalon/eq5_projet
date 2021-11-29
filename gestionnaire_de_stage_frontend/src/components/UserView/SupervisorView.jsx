@@ -3,8 +3,8 @@ import {Route, useRouteMatch} from "react-router-dom";
 import {useAuth} from "../../hooks/use-auth";
 import SupervisorVisitForm from "../Evaluation/SupervisorEvaluation/SupervisorVisitForm";
 import StudentStatusView from "../Admin/StudentManagement/StudentStatusView";
-import {Title} from "../SharedComponents/Title/Title";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {Title} from "../SharedComponents/Title";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
 import Profile from "../SharedComponents/Profile/Profile";
 
 export default function SupervisorView() {

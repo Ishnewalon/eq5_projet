@@ -1,6 +1,6 @@
-import {FieldRadio} from "../../SharedComponents/FormInput/FieldRadio";
-import {FormTextarea} from "../../SharedComponents/FormTextarea";
-import {Column, FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FormGroup} from "../../SharedComponents/Form/FormGroup";
+import {FieldRadio, FieldTextarea} from "../../SharedComponents/Form/FormFields";
+import {Column} from "../../SharedComponents/Column";
 
 export default function StepFive({register, choices}) {
 
@@ -63,12 +63,14 @@ export default function StepFive({register, choices}) {
             </Column>
         </FormGroup>
         <FormGroup>
-            <FormTextarea
-                label='Commentaires'
-                name='commentairesQuatre'
-                register={register}
-                placeholder='Commentaires sur les habiletés personnelles du stagiaire'
-            />
+            <Column>
+                <FieldTextarea
+                    label='Commentaires'
+                    name='commentairesQuatre'
+                    register={register}
+                    placeholder='Commentaires sur les habiletés personnelles du stagiaire'
+                />
+            </Column>
         </FormGroup>
     </div>
 }

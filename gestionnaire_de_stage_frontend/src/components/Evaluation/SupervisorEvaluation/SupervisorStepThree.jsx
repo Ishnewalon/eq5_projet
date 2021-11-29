@@ -1,7 +1,6 @@
-import {FieldRadio} from "../../SharedComponents/FormInput/FieldRadio";
-import {FormInput} from "../../SharedComponents/FormInput/FormInput";
-import {FormTextarea} from "../../SharedComponents/FormTextarea";
-import {Column, FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FormGroup} from "../../SharedComponents/Form/FormGroup";
+import {FieldInput, FieldRadio, FieldTextarea} from "../../SharedComponents/Form/FormFields";
+import {Column} from "../../SharedComponents/Column";
 
 export default function SupervisorStepThree({register, choixAccords, errors}) {
 
@@ -36,7 +35,7 @@ export default function SupervisorStepThree({register, choixAccords, errors}) {
         </FormGroup>
         <FormGroup>
             <Column col={{lg: 4}}>
-                <FormInput
+                <FieldInput
                     label="Nombre d'heures pour le 1er mois?"
                     validation={{
                         required: 'Ce champ est requis', min: {
@@ -52,7 +51,7 @@ export default function SupervisorStepThree({register, choixAccords, errors}) {
                 />
             </Column>
             <Column col={{lg: 4}}>
-                <FormInput
+                <FieldInput
                     label="Nombre d'heures pour le 2ième mois?"
                     validation={{
                         required: 'Ce champ est requis', min: {
@@ -68,7 +67,7 @@ export default function SupervisorStepThree({register, choixAccords, errors}) {
                 />
             </Column>
             <Column col={{lg: 4}}>
-                <FormInput
+                <FieldInput
                     label="Nombre d'heures pour le 3ième mois?"
                     validation={{
                         required: 'Ce champ est requis', min: {
@@ -86,7 +85,7 @@ export default function SupervisorStepThree({register, choixAccords, errors}) {
         </FormGroup>
         <FormGroup>
             <Column>
-                <FormTextarea
+                <FieldTextarea
                     label="Commentaires"
                     name='commentaires'
                     register={register}
@@ -129,7 +128,7 @@ export default function SupervisorStepThree({register, choixAccords, errors}) {
                 />
             </Column>
             <Column col={{md: 8}}>
-                <FormInput
+                <FieldInput
                     validation={{
                         required: 'Ce champ est requis', min: {
                             value: 0,
@@ -173,7 +172,7 @@ export default function SupervisorStepThree({register, choixAccords, errors}) {
         </FormGroup>
         <FormGroup>
             <Column>
-                <FormTextarea
+                <FieldTextarea
                     label='Commentaires'
                     name='commentaires'
                     register={register}

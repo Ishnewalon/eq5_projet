@@ -1,7 +1,6 @@
-import {FieldRadio} from "../../SharedComponents/FormInput/FieldRadio";
-import {FormTextarea} from "../../SharedComponents/FormTextarea";
-import {FormInput} from "../../SharedComponents/FormInput/FormInput";
-import {Column, FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FormGroup} from "../../SharedComponents/Form/FormGroup";
+import {FieldInput, FieldRadio, FieldTextarea} from "../../SharedComponents/Form/FormFields";
+import {Column} from "../../SharedComponents/Column";
 
 export default function StepSeven({register, errors, choices}) {
     return <div className='px-3 pb-3 pt-1 rounded'>
@@ -17,7 +16,7 @@ export default function StepSeven({register, errors, choices}) {
         </FormGroup>
         <FormGroup>
             <Column>
-                <FormTextarea
+                <FieldTextarea
                     label='La formation technique du stagiaire était-elle suffisante pour accomplir le mandat de
                 stage?'
                     name='formationSuffisanteCommentaire'
@@ -30,7 +29,7 @@ export default function StepSeven({register, errors, choices}) {
         </FormGroup>
         <FormGroup>
             <Column col={{lg: 6}}>
-                <FormInput
+                <FieldInput
                     label='Nom'
                     validation={{required: 'Ce champ est requis'}}
                     name='nom'
@@ -41,7 +40,7 @@ export default function StepSeven({register, errors, choices}) {
                 />
             </Column>
             <Column col={{lg: 6}}>
-                <FormInput
+                <FieldInput
                     label='Fonction'
                     validation={{required: 'Ce champ est requis'}}
                     name='fonctionDeux'
@@ -54,7 +53,7 @@ export default function StepSeven({register, errors, choices}) {
         </FormGroup>
         <FormGroup>
             <Column col={{lg: 6}}>
-                <FormInput
+                <FieldInput
                     label='Signature'
                     validation={{required: 'Ce champ est requis'}}
                     name={'monitorSignature'}
@@ -65,7 +64,7 @@ export default function StepSeven({register, errors, choices}) {
                 />
             </Column>
             <Column col={{lg: 6}}>
-                <FormInput
+                <FieldInput
                     label='Date de la signature'
                     validation={{required: 'Ce champ est requis'}}
                     name='dateSignature'

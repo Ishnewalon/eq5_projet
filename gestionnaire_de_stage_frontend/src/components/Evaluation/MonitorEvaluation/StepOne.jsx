@@ -1,6 +1,7 @@
 import {regexEmail, regexName, regexPhone} from "../../../utility";
-import {FormInput} from "../../SharedComponents/FormInput/FormInput";
-import {Column, FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FormGroup} from "../../SharedComponents/Form/FormGroup";
+import {FieldInput} from "../../SharedComponents/Form/FormFields";
+import {Column} from "../../SharedComponents/Column";
 
 export default function StepOne({errors, register}) {
 
@@ -8,7 +9,7 @@ export default function StepOne({errors, register}) {
         <h3>Informations générales</h3>
         <FormGroup>
             <Column col={{lg: 6}}>
-                <FormInput
+                <FieldInput
                     label="Email de l'élève"
                     validation={
                         {
@@ -27,7 +28,7 @@ export default function StepOne({errors, register}) {
                 />
             </Column>
             <Column col={{lg: 6}}>
-                <FormInput
+                <FieldInput
                     label="Nom de l'élève"
                     validation={
                         {
@@ -48,7 +49,7 @@ export default function StepOne({errors, register}) {
         </FormGroup>
         <FormGroup>
             <Column col={{md: 6, lg: 3}}>
-                <FormInput
+                <FieldInput
                     label="Programme d'études"
                     validation={{required: 'Ce champ est requis'}}
                     name='programmeEtudes'
@@ -59,7 +60,7 @@ export default function StepOne({errors, register}) {
                 />
             </Column>
             <Column col={{md: 6, lg: 3}}>
-                <FormInput
+                <FieldInput
                     label="Nom de l'entreprise"
                     validation={{required: 'Ce champ est requis'}}
                     name='entrepriseNom'
@@ -70,7 +71,7 @@ export default function StepOne({errors, register}) {
                 />
             </Column>
             <Column col={{md: 6, lg: 3}}>
-                <FormInput
+                <FieldInput
                     label="Fonction"
                     validation={{required: 'Ce champ est requis'}}
                     name='fonctionUn'
@@ -81,7 +82,7 @@ export default function StepOne({errors, register}) {
                 />
             </Column>
             <Column col={{md: 6, lg: 3}}>
-                <FormInput
+                <FieldInput
                     label="Téléphone"
                     validation={
                         {

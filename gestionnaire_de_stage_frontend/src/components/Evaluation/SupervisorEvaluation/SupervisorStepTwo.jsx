@@ -1,6 +1,6 @@
-import {FormInput} from "../../SharedComponents/FormInput/FormInput";
-import {FieldRadio} from "../../SharedComponents/FormInput/FieldRadio";
-import {Column, FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FormGroup} from "../../SharedComponents/Form/FormGroup";
+import {FieldInput, FieldRadio} from "../../SharedComponents/Form/FormFields";
+import {Column} from "../../SharedComponents/Column";
 
 export default function SupervisorStepTwo({register, errors, oneOrTwo}) {
 
@@ -8,7 +8,7 @@ export default function SupervisorStepTwo({register, errors, oneOrTwo}) {
         <h4 className='mt-4 mb-0 text-decoration-underline'>Identification du stagiaire</h4>
         <FormGroup>
             <Column col={{md: 6, lg: 4}}>
-                <FormInput
+                <FieldInput
                     label='Nom du stagiaire'
                     validation={{required: 'Ce champ est requis'}}
                     name='nomStagiaire'
@@ -19,7 +19,7 @@ export default function SupervisorStepTwo({register, errors, oneOrTwo}) {
                 />
             </Column>
             <Column col={{md: 6, lg: 4}}>
-                <FormInput
+                <FieldInput
                     label='Date du stage'
                     validation={{required: 'Ce champ est requis'}}
                     name='dateStage'

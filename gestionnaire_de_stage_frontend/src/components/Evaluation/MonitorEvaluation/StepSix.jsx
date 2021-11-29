@@ -1,7 +1,6 @@
-import {FieldRadio} from "../../SharedComponents/FormInput/FieldRadio";
-import {FormTextarea} from "../../SharedComponents/FormTextarea";
-import {FormInput} from "../../SharedComponents/FormInput/FormInput";
-import {Column, FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {FormGroup} from "../../SharedComponents/Form/FormGroup";
+import {FieldInput, FieldRadio, FieldTextarea} from "../../SharedComponents/Form/FormFields";
+import {Column} from "../../SharedComponents/Column";
 
 export default function StepSix({errors, register, choixAppreciation, yesAndNoAnswers}) {
 
@@ -28,7 +27,7 @@ export default function StepSix({errors, register, choixAppreciation, yesAndNoAn
         </FormGroup>
         <FormGroup>
             <Column>
-                <FormInput
+                <FieldInput
                     label='Veuillez indiquer le nombre d’heures réel par semaine d’encadrement accordé au
                 stagiaire'
                     validation={{required: 'Ce champ est requis'}}
@@ -38,7 +37,7 @@ export default function StepSix({errors, register, choixAppreciation, yesAndNoAn
                     error={errors.nbHeuresReelTravailEtudiant}
                     placeholder='Nombre heures réel par semaine'
                 />
-                <FormTextarea
+                <FieldTextarea
                     label='Précisez votre appréciation'
                     name='commentairesCinq'
                     register={register}
