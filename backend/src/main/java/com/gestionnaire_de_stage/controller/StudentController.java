@@ -123,7 +123,7 @@ public class StudentController {
     }
 
     @PostMapping("/changePassword/{id}")
-    public ResponseEntity<?> create(@PathVariable Long id, @RequestBody String password) {
+    public ResponseEntity<?> UpdatePassword(@PathVariable Long id, @RequestBody String password) {
         try {
             studentService.changePassword(id, password);
             return ResponseEntity.ok(new ResponseMessage("Mot de passe changé avec succès"));

@@ -281,6 +281,24 @@ public class SupervisorControllerTest {
         assertThat(response.getContentAsString()).contains("false");
     }
 
+    @Test
+    public void testChangePassword() throws Exception {
+        Supervisor dummySupervisor = getDummySupervisor();
+        String newPassword = "newPassword";
+        when(supervisorService.changePassword(any(), any())).thenReturn(dummySupervisor);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .post("/supervisor/changePassword/{id}", dummySupervisor.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newPassword))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Mot de passe changé avec succès");
+    }
+
+
     private Supervisor getDummySupervisor() {
         Supervisor dummySupervisor = new Supervisor();
         dummySupervisor.setId(1L);

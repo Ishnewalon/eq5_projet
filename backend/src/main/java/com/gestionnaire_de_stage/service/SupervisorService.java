@@ -5,6 +5,7 @@ import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.OfferApplication;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import org.springframework.stereotype.Service;
@@ -110,4 +111,9 @@ public class SupervisorService {
         return !supervisorRepository.existsByEmail(email);
     }
 
+    public Supervisor changePassword(Long id, String password) {
+        Supervisor supervisor = supervisorRepository.getById(id);
+        supervisor.setPassword(password);
+        return supervisorRepository.save(supervisor);
+    }
 }
