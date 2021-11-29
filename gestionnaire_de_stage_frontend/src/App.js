@@ -1,4 +1,3 @@
-import './App.css';
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import Dashboard from "./components/UserView/Dashboard";
 import React, {createElement} from "react";

@@ -14,7 +14,8 @@
     padding-top: 40px !important;
     display: block;
 }
-#root{
+
+#root {
     padding-top: 58px !important;
 }
 
@@ -35,6 +36,10 @@
     position: absolute !important;
     top: 0 !important;
     width: 100% !important;
+}
+
+* {
+    font-family: 'Roboto', 'Times New Roman', sans-serif;
 }
 
 main {
