@@ -3,10 +3,7 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.dto.StudentMonitorOfferDTO;
 import com.gestionnaire_de_stage.enums.Status;
-import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.ContractRepository;
 import com.gestionnaire_de_stage.repository.StudentRepository;
@@ -106,6 +103,7 @@ public class ContractServiceTest {
         when(offerApplicationService.getOneById(any())).thenReturn(dummyOfferApplication);
         when(contractRepository.save(any())).thenReturn(dummyFilledContract);
         when(contractService.doesStudentAlreadyHaveAContract(any(), any())).thenReturn(false);
+        when(studentService.isStudentNotAssigned(any())).thenReturn(false);
 
         Contract contract = contractService.gsStartContract(getDummyContract(), new ContractStarterDto(dummyManager.getId(), dummyOfferApplication.getId()));
 
@@ -121,6 +119,19 @@ public class ContractServiceTest {
         when(contractService.doesStudentAlreadyHaveAContract(any(), any())).thenReturn(true);
 
         assertThrows(StudentAlreadyHaveAContractException.class,
+                () -> contractService.gsStartContract(getDummyContract(), new ContractStarterDto(dummyManager.getId(), dummyOfferApplication.getId())));
+    }
+
+    @Test
+    public void testGsStartContract_whenStudentNotAssigneSupervisor() throws Exception {
+        Manager dummyManager = getDummyManager();
+        OfferApplication dummyOfferApplication = getDummyOfferApplication();
+        when(managerService.getOneByID(any())).thenReturn(dummyManager);
+        when(offerApplicationService.getOneById(any())).thenReturn(dummyOfferApplication);
+        when(contractService.doesStudentAlreadyHaveAContract(any(), any())).thenReturn(false);
+        when(studentService.isStudentNotAssigned(any())).thenReturn(true);
+
+        assertThrows(StudentIsNotAssignedException.class,
                 () -> contractService.gsStartContract(getDummyContract(), new ContractStarterDto(dummyManager.getId(), dummyOfferApplication.getId())));
     }
 
