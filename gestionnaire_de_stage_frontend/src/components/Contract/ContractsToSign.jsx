@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import ContractSignature from "./ContratSignature";
 import {getAllContractsToBeSignedForMonitor, getAllContractsToBeStarted} from "../../services/contrat-service";
 import {UserType} from "../../enums/UserTypes";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 

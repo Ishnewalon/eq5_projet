@@ -1,5 +1,5 @@
 import ContratSignature from "./ContratSignature";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import {useEffect, useState} from "react";
 import {getContractForStudent} from '../../services/contrat-service';
 import {UserType} from "../../enums/UserTypes";
@@ -11,7 +11,8 @@ export function ContractToSignStudent() {
     const [contract, setContract] = useState(null);
 
     useEffect(() => {
-        getContractForStudent(auth.user.id).then(contract => setContract(contract));
+        getContractForStudent(auth.user.id)
+            .then(contract => setContract(contract))
     }, [auth.user.id]);
 
 

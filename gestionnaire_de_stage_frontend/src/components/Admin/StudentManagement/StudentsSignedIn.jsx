@@ -35,6 +35,7 @@ export default function StudentsSignedIn() {
                     <th>Étudiant</th>
                     <th>Matricule</th>
                     <th>Adresse électronique</th>
+                    <th>Téléphone</th>
                 </TableHeader>
                 {studentList.map((student, index) =>
                     <TableRow key={index}>
@@ -42,6 +43,7 @@ export default function StudentsSignedIn() {
                         <td>{student.firstName} {student.lastName}</td>
                         <td>{student.matricule}</td>
                         <td>{student.email}</td>
+                        <td>{student.phone}</td>
                     </TableRow>
                 )}
             </Table>

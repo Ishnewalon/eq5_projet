@@ -2,7 +2,8 @@ import {Document, Page, pdfjs} from 'react-pdf';
 
 import {useEffect, useState} from "react";
 import {downloadFile} from "../../../utility";
-import {FiDownload} from "react-icons/all";
+import {BiLeftArrowAlt, BiRightArrowAlt, FiDownload} from "react-icons/all";
+import style from "./PdfDocumentViewer.module.css";
 
 export default function PdfDocumentViewer({file, fileName, showContract = false}) {
     const [numPages, setNumPages] = useState(null);
@@ -14,56 +15,61 @@ export default function PdfDocumentViewer({file, fileName, showContract = false}
         pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
     }, []);
 
-    const onDocumentLoad = ({numPages}) => {
-        setNumPages(numPages);
-    }
+    const onDocumentLoad = ({numPages}) =>
+        setNumPages(numPages)
 
     const goToNextPage = (e) => {
         e.preventDefault();
-        if (pageNumber < numPages) {
+        if (pageNumber < numPages)
             setPageNumber(pageNumber + 1);
-        }
     }
 
     const goToPreviousPage = (e) => {
         e.preventDefault();
-        if (pageNumber > 1) {
+        if (pageNumber > 1)
             setPageNumber(pageNumber - 1);
-        }
     }
 
     return (
         <div className={"d-flex justify-content-center align-items-center flex-column"}>
             <div className="btn-group my-3">
-                <button className={"btn btn-primary"}
+                <button className={"btn btn-outline-primary"}
                         onClick={() => setShow(!show)}>{(show ? 'Cacher' : 'Montrer') + ' pdf'}</button>
-                <button className='btn btn-primary'
+                <button className='btn btn-outline-primary'
                         onClick={() => downloadFile(file, fileName)}><FiDownload/></button>
             </div>
             {
                 show ?
                     <div>
-                        <div>
-                            <Document
-                                file={file}
-                                onLoadSuccess={onDocumentLoad}
-                                onLoadError={alert}
-
-                            >
-                                <Page pageNumber={pageNumber}/>
-                            </Document>
-                            <p className={'text-center mt-2 border border-white p-2'}>{numPages > 0 ? `Page ${pageNumber} de ${numPages}` : 'Aucune pages'}</p>
-                            <div className={"d-flex justify-content-between"}>
-                                <button
-                                    type="button"
-                                    className={"btn btn-primary"}
-                                    id="previousBtn"
-                                    onClick={(e) => goToPreviousPage(e)}>Précédent
+                        <div className="text-center">
+                            <div className="d-flex">
+                                <button disabled={pageNumber === 1} className="link-button disabled"
+                                        onClick={e => goToPreviousPage(e)}>
+                                    <BiLeftArrowAlt size={40} title="Précédent"/>
                                 </button>
-                                <button type="button" className={"btn btn-primary "} onClick={(e) => goToNextPage(e)}
-                                        id="nextBtn">Prochain
+                                <Document
+                                    file={file}
+                                    onLoadSuccess={onDocumentLoad}
+                                    onLoadError={alert}
+                                    loading={<div className="text-center">Chargement...</div>}
+                                    noData={<div className="text-center">Aucun document</div>}
+                                    className={"shadow-lg"}>
+                                    {
+                                        Array.from(new Array(numPages), (el, index) => (
+                                            <div key={`page_${index + 1}`}
+                                                 className={pageNumber === index + 1 ? "" : style.pageHide}>
+                                                <Page pageNumber={index + 1} style={style.page}/>
+                                            </div>))
+                                    }
+                                </Document>
+                                <button disabled={pageNumber === numPages} className={"link-button"}
+                                        onClick={e => goToNextPage(e)}>
+                                    <BiRightArrowAlt size={40} title="Suivant"/>
                                 </button>
                             </div>
+                            <span className={'mt-2 p-2'}>
+                                {numPages > 0 ? `Page ${pageNumber} de ${numPages}` : 'Aucune pages'}
+                            </span>
                         </div>
                     </div>
                     : <></>

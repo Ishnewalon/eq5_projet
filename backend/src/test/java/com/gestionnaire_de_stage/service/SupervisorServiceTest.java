@@ -5,10 +5,7 @@ import com.gestionnaire_de_stage.exception.DoesNotExistException;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
-import com.gestionnaire_de_stage.model.Curriculum;
-import com.gestionnaire_de_stage.model.Offer;
-import com.gestionnaire_de_stage.model.OfferApplication;
-import com.gestionnaire_de_stage.model.Supervisor;
+import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -243,6 +240,18 @@ public class SupervisorServiceTest {
         assertThrows(DoesNotExistException.class,
                 () -> supervisorService.getOneByEmail(email),
                 "L'email n'existe pas");
+    }
+
+    @Test
+    public void testChangePassword() {
+        Supervisor dummySupervisor = getDummySupervisor();
+        when(supervisorRepository.getById(any())).thenReturn(dummySupervisor);
+        when(supervisorRepository.save(any())).thenReturn(dummySupervisor);
+
+        Supervisor actualSupervisor = supervisorService.changePassword(dummySupervisor.getId(), "newPassword");
+
+        Assertions.assertThat(actualSupervisor.getPassword()).isEqualTo("newPassword");
+        Assertions.assertThat(actualSupervisor.getId()).isEqualTo(dummySupervisor.getId());
     }
 
     private Supervisor getDummySupervisor() {

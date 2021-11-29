@@ -7,13 +7,16 @@ import OfferApplicationsStudentSetStatusEnAttenteEntrevue
 import {ContractToSignStudent} from "../Contract/ContractToSignStudent";
 import OfferApplicationsStudentSetStatusFinal from "../OfferApplications/OfferApplicationsStudentSetStatusFinal";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {useAuth} from "../../hooks/use-auth";
 import ContractSignedStudent from "../Contract/ContractSignedStudent";
 import CurriculumsStudent from "../Curriculums/CurriculumsStudent";
 import {Title} from "../SharedComponents/Title/Title";
 import EvaluationIntern from "../Evaluation/MonitorEvaluation/EvaluationIntern";
+import Profile from "../SharedComponents/Profile/Profile";
 
 export default function StudentView() {
     let {path} = useRouteMatch();
+    let auth = useAuth();
     return (<>
             <Route exact path={`${path}/televerser`}>
                 <Title>Téléverser mon CV</Title>
@@ -46,6 +49,8 @@ export default function StudentView() {
                 <ContractSignedStudent/>
             </Route>
             <Route exact path={`${path}`}>
+                <Title>Bonjour {auth.user.firstName}!</Title>
+                <Profile/>
                 <EvaluationIntern/>
             </Route>
         </>

@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.config;
 
 import org.awaitility.core.ThrowingRunnable;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;

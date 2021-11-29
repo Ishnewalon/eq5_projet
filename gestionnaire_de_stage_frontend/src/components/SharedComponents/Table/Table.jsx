@@ -19,7 +19,7 @@ export function Table(props) {
     });
     return (
         <table
-            className={"table table-light table-striped table-borderless text-center rounded-3 shadow-lg w-75 mx-auto " + className}>
+            className={"table table-light table-striped table-borderless text-center rounded-3 shadow-lg mx-auto " + className}>
             <thead>
             {tableHeader}
             </thead>
