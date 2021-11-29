@@ -41,12 +41,12 @@ public class OfferController {
                 .body(offer);
     }
 
-    @GetMapping({"/", "/{department}"}) //FIXME Handle exception
-    public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {//TODO get the student ID instead of the department
+    @GetMapping({"/{studentId}"})
+    public ResponseEntity<?> getListOffersNotYetApplied(@PathVariable Long studentId) {
         List<Offer> offers;
         try {
-            offers = offerService.getOffersByDepartment(department);//TODO: get only offers non applied
-        } catch (Exception e) {
+            offers = offerService.getOffersNotYetApplied(studentId);
+        } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));

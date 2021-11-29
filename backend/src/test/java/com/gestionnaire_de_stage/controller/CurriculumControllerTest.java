@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
 import com.gestionnaire_de_stage.dto.ValidationCurriculum;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
+import com.gestionnaire_de_stage.exception.CurriculumUsedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
 import com.gestionnaire_de_stage.model.Student;
@@ -23,12 +24,13 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @WebMvcTest(CurriculumController.class)
 public class CurriculumControllerTest {
@@ -356,6 +358,55 @@ public class CurriculumControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
+    }
+
+    @Test
+    public void testDeleteOneById() throws Exception {
+        Curriculum curriculum = getDummyCurriculum();
+        doNothing().when(curriculumService).deleteOneById(any());
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.delete("/curriculum/delete/{curriculumId}", curriculum.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Curriculum éffacé");
+    }
+
+    @Test
+    void testDeleteOneById_throwsIllegalArg() throws Exception {
+        Curriculum curriculum = getDummyCurriculum();
+        doThrow(new IllegalArgumentException("No null values!"))
+                .when(curriculumService)
+                .deleteOneById(any());
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.delete("/curriculum/delete/{curriculumId}", curriculum.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("No null values!");
+    }
+
+    @Test
+    void testDeleteOneById_throwsCurriculumUsedException() throws Exception {
+        Curriculum curriculum = getDummyCurriculum();
+        doThrow(new CurriculumUsedException("Impossible de supprimer."))
+                .when(curriculumService)
+                .deleteOneById(any());
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.delete("/curriculum/delete/{curriculumId}", curriculum.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Impossible de supprimer.");
     }
 
     private StudentCurriculumsDTO getDummyStudentCurriculumsDTO() {

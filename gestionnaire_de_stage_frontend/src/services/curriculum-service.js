@@ -73,6 +73,22 @@ export async function setPrincipalCurriculum(studentID, curriculumID) {
     );
 }
 
+export async function deleteCurriculumById(curriculumID) {
+    return await fetch(`${urlBackend}/curriculum/delete/${curriculumID}`,
+        requestInit(methods.DELETE)).then(
+        response => {
+            return response.json().then(
+                body => {
+                    if (response.status === 200)
+                        toast.fire({title: body.message, icon: 'success'})
+                    else if (response.status === 400)
+                        toast.fire({title: body.message, icon: 'error'})
+                    return response.ok
+                })
+        }, err => console.error(err)
+    );
+}
+
 export async function validateCurriculum(id, valid) {
     let obj = {
         id,

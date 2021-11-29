@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {getAllOffersByDepartment} from '../../services/offer-service';
 import {useAuth} from "../../services/use-auth";
 import {getCurrentAndFutureSession} from "../../services/session-service";
 import {FormField} from "../SharedComponents/FormField/FormField";
@@ -8,6 +7,7 @@ import {applyToOffer} from "../../services/offerAppService";
 import OfferApp from "../../models/OfferApp";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {BsClock, BsClockHistory, MdAttachMoney, MdLocationPin} from "react-icons/all";
+import {getAllOffersNotYetApplied} from "../../services/offer-service";
 
 export default function OffersStudentApply() {
     let auth = useAuth();
@@ -18,12 +18,8 @@ export default function OffersStudentApply() {
     const setMyVisible = (idSession) =>
         setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(idSession)))
 
-    const removeFromList = (id) => {
-        setOffers(prev => prev.filter(items => items.id !== id))
-    }
-
     useEffect(() => {
-        getAllOffersByDepartment(auth.user.department)
+        getAllOffersNotYetApplied(auth.user.id)
             .then(offers => {
                 setOffers(offers)
             })
@@ -31,7 +27,8 @@ export default function OffersStudentApply() {
                 setOffers([])
                 console.error(e);
             });
-    }, [auth.user.department]);
+    }, [auth.user.id]);
+
 
     useEffect(() => {
         getCurrentAndFutureSession()
@@ -62,10 +59,9 @@ export default function OffersStudentApply() {
                 </FormField>
             </FormGroup>
             <div className="row">
-
                 {visibleOffers.map((offer, index) =>
-                    <div className="col-md-6 col-12">
-                        <OfferApplication key={index} offer={offer} removeFromList={removeFromList}/>
+                    <div key={index} className="col-md-6 col-12">
+                        <OfferApplication offer={offer}/>
                     </div>
                 )}
             </div>
@@ -73,14 +69,11 @@ export default function OffersStudentApply() {
     );
 }
 
-function OfferApplication({offer, removeFromList}) {
+function OfferApplication({offer}) {
     let auth = useAuth();
     const apply = offerId => e => {
         e.preventDefault();
-        applyToOffer(new OfferApp(offerId, auth.user.id)).then(
-            valid => {
-                if (valid) removeFromList(offerId)
-            });
+        applyToOffer(new OfferApp(offerId, auth.user.id)).then()
     }
 
     return (
@@ -88,9 +81,6 @@ function OfferApplication({offer, removeFromList}) {
             <div className="card">
                 <div className="card-body">
                     <h5 className="card-title job-title">{offer.title}</h5>
-                    <div className="card-company-glassdoor">
-                        <p className="card-company-name">{offer.creator.companyName}</p>
-                    </div>
                     <div className="card-job-details">
                         <p className="card-company-location d-flex align-items-center">
                             <MdLocationPin/> {offer.address}

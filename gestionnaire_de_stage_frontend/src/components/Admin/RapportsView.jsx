@@ -25,7 +25,7 @@ export default function RapportsView() {
                 <OffersListNotValid/>
             </Route>
             <Route exact path={`${path}/3`}>
-                <Title>Status de tous les étudiants</Title>
+                <Title>Statut de tous les étudiants</Title>
                 <StudentsStatus/>
             </Route>
             <Route exact path={`${path}/4`}>

@@ -9,7 +9,6 @@ import {FormInput} from "../SharedComponents/FormInput/FormInput";
 import {regexEmail} from "../../utility";
 import PropTypes from "prop-types";
 
-
 export default function Login() {
     const {register, handleSubmit, formState: {errors}} = useForm({
         mode: "onSubmit",
@@ -29,7 +28,7 @@ export default function Login() {
 
     return (
         <ContainerBox className="w-50">
-            <form onSubmit={handleSubmit(connect)}>
+            <form onSubmit={handleSubmit(connect)} noValidate>
                 <FormGroup>
                     <LoginRadio name="userType" register={register} list={Object.values(UserType)} label=""
                                 validation={{}} error={errors.userType}/>
@@ -76,13 +75,13 @@ export default function Login() {
 function LoginRadio(props) {
     const {list, register, name} = props;
 
-    return <ul className="nav nav-pills nav-fill mx-md-5 mx-auto">
+    return <ul className={`nav nav-pills nav-fill`}>
         {Object.values(list).map((item, index) => {
-            return <li className="nav-item" key={index}>
+            return <li className={`nav-item col-sm-12 col-md-6 col-lg-4 col-xl-2 m-1`} key={index}>
                 <input id={item[0]} className="btn-check" name={name} value={item[0]}
                        type="radio" {...register(name, {required: "Ce champs est obligatoire"})}
                        defaultChecked={index === 0}/>
-                <label className="btn btn-outline-primary" htmlFor={item[0]}>{item[1]}</label>
+                <label className={`btn btn-outline-primary w-100`} htmlFor={item[0]}>{item[1]}</label>
             </li>
         })}
     </ul>
