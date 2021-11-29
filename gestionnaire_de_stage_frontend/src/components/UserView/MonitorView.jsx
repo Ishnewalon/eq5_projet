@@ -9,6 +9,7 @@ import {useAuth} from "../../hooks/use-auth";
 import EvaluationIntern from "../Evaluation/EvaluationIntern";
 import ContractsSigned from "../Contract/ContractsSigned";
 import {Title} from "../SharedComponents/Title/Title";
+import Profile from "../SharedComponents/Profile/Profile";
 
 export default function MonitorView() {
     let {path} = useRouteMatch();
@@ -36,6 +37,7 @@ export default function MonitorView() {
         </Route>
         <Route exact path={`${path}`}>
             <Title>Bonjour {auth.user.firstName}!</Title>
+            <Profile/>
         </Route>
     </>;
 }

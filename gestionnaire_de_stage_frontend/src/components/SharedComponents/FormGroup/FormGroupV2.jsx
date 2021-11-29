@@ -24,16 +24,18 @@ Column.propTypes = {
         xl: PropTypes.number,
         xxl: PropTypes.number
     }),
-    defaultValue: PropTypes.number
+    defaultValue: PropTypes.number,
+    className: PropTypes.string
 }
 Column.defaultProps = {
-    defaultValue: 12
+    defaultValue: 12,
+    className: undefined
 }
 
 export function Column(props) {
-    const {children, col, defaultValue} = props;
+    const {children, col, defaultValue, className} = props;
     if (!col)
-        return <div className={`col-${defaultValue}`}>{children}</div>
+        return <div className={`col-${defaultValue} ${className}`}>{children}</div>
 
     const {xs, sm, md, lg, xl, xxl} = {
         xs: col && col.xs,
@@ -45,7 +47,7 @@ export function Column(props) {
     };
 
     return <div
-        className={`${xs ? "col-xs-" + xs : ""}${sm ? " col-sm-" + sm : ""}${md ? " col-md-" + md : ""}${lg ? " col-lg-" + lg : ""}${xl ? " col-xl-" + xl : ""}${xxl ? " col-xxl-" + xxl : ""}`}>
+        className={`${xs ? "col-xs-" + xs : ""}${sm ? " col-sm-" + sm : ""}${md ? " col-md-" + md : ""}${lg ? " col-lg-" + lg : ""}${xl ? " col-xl-" + xl : ""}${xxl ? " col-xxl-" + xxl : ""} ${className ? className : ""}`}>
         {children}
     </div>
 }
