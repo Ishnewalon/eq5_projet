@@ -422,7 +422,6 @@ class OfferApplicationServiceTest {
 
     @Test
     void testGetOffersApplicationStageTrouver_withIdNull() {
-
         assertThrows(IllegalArgumentException.class,
                 () -> offerApplicationService.getOffersApplicationsStageTrouverManagerId(null));
     }

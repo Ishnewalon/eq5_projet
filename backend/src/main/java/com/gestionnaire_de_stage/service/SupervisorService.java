@@ -1,6 +1,9 @@
 package com.gestionnaire_de_stage.service;
 
-import com.gestionnaire_de_stage.exception.*;
+import com.gestionnaire_de_stage.exception.DoesNotExistException;
+import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
+import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
+import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
@@ -52,7 +55,7 @@ public class SupervisorService {
 
     public Supervisor update(Supervisor supervisor) throws IdDoesNotExistException {
         Assert.isTrue(supervisor != null, "Le superviseur ne peut pas être vide");
-        if (isIdNotValid(supervisor.getId())) 
+        if (isIdNotValid(supervisor.getId()))
             throw new IdDoesNotExistException("Il n'y a pas de superviseur associé à cet identifiant");
         return supervisorRepository.save(supervisor);
     }

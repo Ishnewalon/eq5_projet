@@ -22,7 +22,7 @@ public class SessionService {
     private final SessionRepository sessionRepository;
     private final Clock clock;
 
-    public SessionService(SessionRepository sessionRepository,@Lazy Clock clock) {
+    public SessionService(SessionRepository sessionRepository, @Lazy Clock clock) {
         this.sessionRepository = sessionRepository;
         this.clock = clock;
     }

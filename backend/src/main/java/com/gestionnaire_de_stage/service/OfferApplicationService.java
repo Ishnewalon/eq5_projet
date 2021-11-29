@@ -104,6 +104,7 @@ public class OfferApplicationService {
 
         return offerApplicationRepository.getAllByStatusAndSession_YearGreaterThanEqual(Status.STAGE_TROUVE, Year.now());
     }
+
     public List<Student> getOffersApplicationsStageTrouver() {
         List<OfferApplication> offerApplicationList = offerApplicationRepository.getAllByStatusAndSession_YearGreaterThanEqualAndCurriculum_Student_SupervisorIsNull(Status.STAGE_TROUVE, Year.now());
 
