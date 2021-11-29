@@ -11,6 +11,7 @@ import {regexMatricule} from "../../../utility";
 import {FormInput} from "../../SharedComponents/FormInput/FormInput";
 import {checkMatricule} from "../../../services/user-service";
 import {Column, FormGroupV2} from "../../SharedComponents/FormGroup/FormGroupV2";
+import {ProgressBar} from "../../SharedComponents/ProgressBar";
 
 export default function RegisterCegep() {
     const {register, handleSubmit, watch, formState: {errors}} = useForm({
@@ -19,7 +20,7 @@ export default function RegisterCegep() {
     });
     let history = useHistory();
     let auth = useAuth();
-    const [curentStep, setCurentStep] = useState(0)
+    const [currentStep, setCurrentStep] = useState(0)
     const [typeUserText, setTypeUserText] = useState("");
     let show;
     const endThis = (matricule, email, password, lastName, firstName, phone) => {
@@ -49,73 +50,42 @@ export default function RegisterCegep() {
         } = data;
         const submitter = e.nativeEvent.submitter.value
         if (submitter === 'Suivant') {
-            if (curentStep === 0) {
+            if (currentStep === 0) {
                 setTypeUserText(matricule.toString().length === 5 ? 'Superviseur' : 'Étudiant')
-                setCurentStep(curentStep + 1)
-            } else if (curentStep === 1)
-                setCurentStep(curentStep + 1)
-            else if (curentStep === 2 && password === confirmation)
+                setCurrentStep(currentStep + 1)
+            } else if (currentStep === 1)
+                setCurrentStep(currentStep + 1)
+            else if (currentStep === 2 && password === confirmation)
                 endThis(matricule, email, password, lastName, firstName, phone)
         } else if (submitter === 'Précédent')
-            setCurentStep(curentStep - 1)
+            setCurrentStep(currentStep - 1)
     };
 
 
-    if (curentStep === 0)
+    if (currentStep === 0)
         show = <StepCegep register={register} errors={errors}/>
-    else if (curentStep === 1) {
+    else if (currentStep === 1) {
         show = (<>
-            <Title header="h2">{`Informations générales (${typeUserText})`}</Title>
-            <StepInformationGeneral register={register} errors={errors} prev={() => setCurentStep(curentStep - 1)}/>
+            <StepInformationGeneral register={register} errors={errors} prev={() => setCurrentStep(currentStep - 1)}/>
         </>)
-    } else if (curentStep === 2)
+    } else if (currentStep === 2)
         show =
-            <StepPassword register={register} errors={errors} watch={watch} prev={() => setCurentStep(curentStep - 1)}/>
+            <StepPassword register={register} errors={errors} watch={watch}
+                          prev={() => setCurrentStep(currentStep - 1)}/>
 
-
-    const getPercentage = () => {
-        if (curentStep === 0)
-            return "0%"
-        else if (curentStep === 1)
-            return "50%"
-        else if (curentStep === 2)
-            return "100%"
-    };
 
     function getTitle() {
-        if (curentStep === 0)
+        if (currentStep === 0)
             return <Title header="h5">Matricule</Title>
-        else if (curentStep === 1)
+        else if (currentStep === 1)
             return <Title header="h5">{`Informations générales (${typeUserText})`}</Title>
-        else if (curentStep === 2)
+        else if (currentStep === 2)
             return <Title header="h5">Mot de passe</Title>
     }
 
     return <>
         <form className="form-container" onSubmit={handleSubmit(submit)} noValidate>
-            <div className="d-flex justify-content-center mb-3">
-                <div className="w-75 position-relative">
-                    <div className="RSPBprogressBar">
-                        <div className="RSPBstep"
-                             style={{left: "0%", transitionDuration: "300ms", transform: "translateX(-50%) scale(1)"}}>
-                            <div className={"indexedStep" + (curentStep >= 0 ? " accomplished" : "")}>1</div>
-                        </div>
-                        <div className="RSPBstep"
-                             style={{left: "50%", transitionDuration: "300ms", transform: "translateX(-50%) scale(1)"}}>
-                            <div className={"indexedStep" + (curentStep >= 1 ? " accomplished" : "")}>2</div>
-                        </div>
-                        <div className="RSPBstep"
-                             style={{
-                                 left: "100%",
-                                 transitionDuration: "300ms",
-                                 transform: "translateX(-50%) scale(1)"
-                             }}>
-                            <div className={"indexedStep" + (curentStep >= 2 ? " accomplished" : "")}>3</div>
-                        </div>
-                        <div className="RSPBprogression" style={{width: getPercentage()}}/>
-                    </div>
-                </div>
-            </div>
+            <ProgressBar totalSteps={3} currentStep={currentStep}/>
             {getTitle()}
             <fieldset>
                 {show}

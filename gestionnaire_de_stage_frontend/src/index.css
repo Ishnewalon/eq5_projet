@@ -226,7 +226,7 @@ Card
 /***********
 PROGRESS BAR
 ************/
-.indexedStep {
+.ps-indexedStep {
     color: var(--color-primary-hover) !important;
     width: 20px !important;
     height: 20px !important;
@@ -241,7 +241,7 @@ PROGRESS BAR
     transition: all 0.5s ease-in-out;
 }
 
-.RSPBprogressBar {
+.ps-progressBar {
     width: 100% !important;
     max-width: 100% !important;
     height: 20px !important;
@@ -253,33 +253,22 @@ PROGRESS BAR
     background-color: #e0e0ec;
 }
 
-.RSPBstep {
+.ps-step {
     z-index: 10 !important;
     transform: translateX(0) scale(1) !important;
     transition: all 0.5s ease-in-out;
 }
 
-.indexedStep.accomplished {
+.ps-indexedStep.accomplished {
     color: var(--color-light) !important;
     background-color: var(--color-primary-hover) !important;
 }
 
-.RSPBprogression {
+.ps-progression {
     background-color: var(--color-primary) !important;
     height: 4px;
     z-index: 1;
     position: absolute !important;
     clip: rect(0, auto, auto, 0);
     transition: all 0.5s ease-in-out;
-}
-
-.transitionStep {
-    filter: grayscale(1) !important;
-    transform: translateX(0) !important;
-    /*transition: filter 0.5s ease-in-out;*/
-}
-
-.transitionStep.accomplished {
-    transform: translateX(50) !important;
-    filter: grayscale(0) !important;
 }
