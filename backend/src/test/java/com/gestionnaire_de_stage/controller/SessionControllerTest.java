@@ -27,14 +27,11 @@ import static org.mockito.Mockito.when;
 
 @WebMvcTest(SessionController.class)
 public class SessionControllerTest {
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private SessionService sessionService;
-
-    private final ObjectMapper MAPPER = new ObjectMapper();
-
 
     @Test
     public void testCreateSession() throws Exception {

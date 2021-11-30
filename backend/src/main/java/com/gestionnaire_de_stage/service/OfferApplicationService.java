@@ -106,7 +106,8 @@ public class OfferApplicationService {
     }
 
     public List<Student> getOffersApplicationsStageTrouver() {
-        List<OfferApplication> offerApplicationList = offerApplicationRepository.getAllByStatusAndSession_YearGreaterThanEqualAndCurriculum_Student_SupervisorIsNull(Status.STAGE_TROUVE, Year.now());
+        List<OfferApplication> offerApplicationList = offerApplicationRepository
+                .getAllByStatusAndSession_YearGreaterThanEqualAndCurriculum_Student_SupervisorIsNull(Status.STAGE_TROUVE, Year.now());
 
         return offerApplicationList.stream()
                 .map(offerApplication -> getStudent(offerApplication.getCurriculum())).distinct().collect(Collectors.toList());

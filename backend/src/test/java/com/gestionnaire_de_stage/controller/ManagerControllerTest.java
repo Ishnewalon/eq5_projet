@@ -23,13 +23,11 @@ import static org.mockito.Mockito.when;
 @SuppressWarnings("ConstantConditions")
 public class ManagerControllerTest {
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private ManagerService managerService;
-
-    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void testManagerLogin_withValidEntries() throws Exception {

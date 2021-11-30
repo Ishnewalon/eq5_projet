@@ -65,8 +65,7 @@ public class SupervisorController {
 
     @GetMapping
     public ResponseEntity<?> getAllSupervisor() {
-        List<Supervisor> supervisorList = supervisorService.getAll();
-        return ResponseEntity.ok(supervisorList);
+        return ResponseEntity.ok(supervisorService.getAll());
     }
 
     @PostMapping("/assign/student")
@@ -105,7 +104,7 @@ public class SupervisorController {
     }
 
     @PutMapping("/change_password/{id}")
-    public ResponseEntity<?> UpdatePassword(@PathVariable Long id, @RequestBody String password) {
+    public ResponseEntity<?> updatePassword(@PathVariable Long id, @RequestBody String password) {
         try {
             supervisorService.changePassword(id, password);
         } catch (Exception e) {
