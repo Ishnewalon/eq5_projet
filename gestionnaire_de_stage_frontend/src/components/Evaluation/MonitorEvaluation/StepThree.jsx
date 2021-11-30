@@ -12,7 +12,7 @@ export default function StepThree({register, choices}) {
         <FormGroup>
             <Column col={{md: 4}}>
                 <FieldRadio
-                    name='questionSix'
+                    name='questionStudentRespectTaskGiven'
                     register={register}
                     list={Object.values(choices)}
                     label='Respecter les mandats qui lui ont été confiés'
@@ -22,7 +22,7 @@ export default function StepThree({register, choices}) {
                 <FieldRadio
                     label='Porter attention aux détails dans la réalisation de ses
                     tâches'
-                    name='questionSept'
+                    name='questionStudentPaysAttentionToDetails'
                     register={register}
                     list={Object.values(choices)}
                 />
@@ -30,7 +30,7 @@ export default function StepThree({register, choices}) {
             <Column col={{md: 4}}>
                 <FieldRadio
                     label='Vérifier son travail, s’assurer que rien n’a été oublié'
-                    name='questionHuit'
+                    name='questionStudentValidateHisWork'
                     register={register}
                     list={Object.values(choices)}
                 />
@@ -40,7 +40,7 @@ export default function StepThree({register, choices}) {
             <Column col={{md: 4}}>
                 <FieldRadio
                     label='Rechercher des occasions de se perfectionner'
-                    name='questionNeuf'
+                    name='questionStudentTakeInitiativeToPerfectHimself'
                     register={register}
                     list={Object.values(choices)}
                 />
@@ -48,7 +48,7 @@ export default function StepThree({register, choices}) {
             <Column col={{md: 4}}>
                 <FieldRadio
                     label='Faire une bonne analyse des problèmes rencontrés'
-                    name='questionDix'
+                    name='questionStudentAnalyzeProblemsGiven'
                     register={register}
                     list={Object.values(choices)}
                 />
@@ -58,7 +58,7 @@ export default function StepThree({register, choices}) {
             <Column>
                 <FieldTextarea
                     label='Commentaires'
-                    name='commentairesDeux'
+                    name='commentsQualityOfWorkIntern'
                     register={register}
                     placeholder='Commentaires sur la qualité du travail du stagiaire'
                 />

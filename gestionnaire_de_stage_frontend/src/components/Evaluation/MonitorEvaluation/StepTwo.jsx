@@ -11,7 +11,7 @@ export default function StepTwo({register, choices}) {
         <FormGroup>
             <Column col={{md: 4}}>
                 <FieldRadio
-                    name='questionUn'
+                    name='questionStudentCanOrganizeWork'
                     register={register}
                     list={Object.values(choices)}
                     label='Planifier et organiser son travail de façon efficace'
@@ -19,7 +19,7 @@ export default function StepTwo({register, choices}) {
             </Column>
             <Column col={{md: 4}}>
                 <FieldRadio
-                    name='questionDeux'
+                    name='questionUnderstandDirectives'
                     register={register}
                     list={Object.values(choices)}
                     label='Comprendre rapidement les directives relatives à son travail'
@@ -27,7 +27,7 @@ export default function StepTwo({register, choices}) {
             </Column>
             <Column col={{md: 4}}>
                 <FieldRadio
-                    name='questionTrois'
+                    name='questionStudentMaintainRythmForWork'
                     register={register}
                     list={Object.values(choices)}
                     label='Maintenir un rythme de travail soutenu'
@@ -37,7 +37,7 @@ export default function StepTwo({register, choices}) {
         <FormGroup>
             <Column col={{md: 4}}>
                 <FieldRadio
-                    name='questionQuatre'
+                    name='questionStudentHasTheRightPriorities'
                     register={register}
                     list={Object.values(choices)}
                     label='Établir ses priorités'
@@ -45,7 +45,7 @@ export default function StepTwo({register, choices}) {
             </Column>
             <Column col={{md: 4}}>
                 <FieldRadio
-                    name='questionCinq'
+                    name='questionStudentRespectSchedule'
                     register={register}
                     list={Object.values(choices)}
                     label='Respecter les échéanciers'
@@ -56,7 +56,7 @@ export default function StepTwo({register, choices}) {
             <Column>
                 <FieldTextarea
                     label='Commentaires'
-                    name='commentairesUn'
+                    name='commentsProductivity'
                     register={register}
                     placeholder='Commentaires sur la productivité du stagiaire'
                 />

@@ -2,6 +2,7 @@ import {regexEmail, regexName, regexPhone} from "../../../utility";
 import {FormGroup} from "../../SharedComponents/Form/FormGroup";
 import {FieldInput} from "../../SharedComponents/Form/FormFields";
 import {Column} from "../../SharedComponents/Column";
+import {checkEmail} from "../../../services/user-service";
 
 export default function StepOne({errors, register}) {
 
@@ -17,14 +18,15 @@ export default function StepOne({errors, register}) {
                             pattern: {
                                 value: regexEmail,
                                 message: 'Veuillez entrer une adresse email valide'
-                            }
+                            },
+                            validate: async(emailStudent) => !await checkEmail(emailStudent) || 'Aucun étudiant avec cette adresse email existe!'
                         }
                     }
-                    name='emailEtudiant'
+                    name='studentEmail'
                     register={register}
                     type='email'
                     placeholder="Email de l'élève"
-                    error={errors.emailEtudiant}
+                    error={errors.studentEmail}
                 />
             </Column>
             <Column col={{lg: 6}}>
@@ -39,11 +41,11 @@ export default function StepOne({errors, register}) {
                             }
                         }
                     }
-                    name='nomStagiaire'
+                    name='internName'
                     register={register}
                     type='text'
                     placeholder="Entrez le nom de l'élève"
-                    error={errors.nomStagiaire}
+                    error={errors.internName}
                 />
             </Column>
         </FormGroup>
@@ -52,33 +54,33 @@ export default function StepOne({errors, register}) {
                 <FieldInput
                     label="Programme d'études"
                     validation={{required: 'Ce champ est requis'}}
-                    name='programmeEtudes'
+                    name='programStudyField'
                     register={register}
                     type='text'
                     placeholder="Entrez le programme d'études de l'élève"
-                    error={errors.programmeEtudes}
+                    error={errors.programStudyField}
                 />
             </Column>
             <Column col={{md: 6, lg: 3}}>
                 <FieldInput
                     label="Nom de l'entreprise"
                     validation={{required: 'Ce champ est requis'}}
-                    name='entrepriseNom'
+                    name='companyName'
                     register={register}
                     type='text'
                     placeholder="Entrez le nom de l'entreprise"
-                    error={errors.entrepriseNom}
+                    error={errors.companyName}
                 />
             </Column>
             <Column col={{md: 6, lg: 3}}>
                 <FieldInput
                     label="Fonction"
                     validation={{required: 'Ce champ est requis'}}
-                    name='fonctionUn'
+                    name='firstFonction'
                     register={register}
                     type='text'
                     placeholder="Entrez la fonction"
-                    error={errors.fonctionUn}
+                    error={errors.firstFonction}
                 />
             </Column>
             <Column col={{md: 6, lg: 3}}>

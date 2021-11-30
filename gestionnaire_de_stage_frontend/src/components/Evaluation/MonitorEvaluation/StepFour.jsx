@@ -12,7 +12,7 @@ export default function StepFour({register, choices}) {
         <FormGroup>
             <Column col={{md: 4}}>
                 <FieldRadio
-                    name={'questionOnze'}
+                    name={'questionStudentIsSocial'}
                     register={register}
                     list={Object.values(choices)}
                     label='Établir facilement des contacts avec les gens'
@@ -20,7 +20,7 @@ export default function StepFour({register, choices}) {
             </Column>
             <Column col={{md: 4}}>
                 <FieldRadio
-                    name='questionDouze'
+                    name='questionStudentWorksWellInGroup'
                     register={register}
                     list={Object.values(choices)}
                     label='Contribuer activement au travail d’équipe'
@@ -28,7 +28,7 @@ export default function StepFour({register, choices}) {
             </Column>
             <Column col={{md: 4}}>
                 <FieldRadio
-                    name='questionTreize'
+                    name='questionStudentAdaptsToEasilyToWorkCulture'
                     register={register}
                     list={Object.values(choices)}
                     label="S’adapter facilement à la culture de l’entreprise"
@@ -36,7 +36,7 @@ export default function StepFour({register, choices}) {
             </Column>
             <Column col={{md: 4}}>
                 <FieldRadio
-                    name='questionQuatorze'
+                    name='questionStudentAcceptConstructiveCriticism'
                     register={register}
                     list={Object.values(choices)}
                     label='Accepter les critiques constructives'
@@ -44,7 +44,7 @@ export default function StepFour({register, choices}) {
             </Column>
             <Column col={{md: 4}}>
                 <FieldRadio
-                    name='questionQuinze'
+                    name='questionStudentIsRespectful'
                     register={register}
                     list={Object.values(choices)}
                     label='Être respectueux envers les gens'
@@ -52,7 +52,7 @@ export default function StepFour({register, choices}) {
             </Column>
             <Column col={{md: 4}}>
                 <FieldRadio
-                    name='questionSeize'
+                    name='questionStudentUnderstandOtherPeoplePov'
                     register={register}
                     list={Object.values(choices)}
                     label='Faire preuve d’écoute active en essayant de
@@ -64,7 +64,7 @@ export default function StepFour({register, choices}) {
             <Column>
                 <FieldTextarea
                     label='Commentaires'
-                    name='commentairesTrois'
+                    name='commentsStudentSocialRelationsQuality'
                     register={register}
                     placeholder='Commentaires sur les qualités des relations interpersonnelles du stagiaire'/>
             </Column>

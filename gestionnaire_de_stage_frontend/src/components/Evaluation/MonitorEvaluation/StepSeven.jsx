@@ -7,7 +7,7 @@ export default function StepSeven({register, errors, choices}) {
         <FormGroup>
             <Column>
                 <FieldRadio
-                    name='entrepriseApprecieEtudiant'
+                    name='companyAppreciateStudent'
                     register={register}
                     list={Object.values(choices)}
                     label="L’entreprise aimerait accueillir cet élève pour son prochain stage"
@@ -19,7 +19,7 @@ export default function StepSeven({register, errors, choices}) {
                 <FieldTextarea
                     label='La formation technique du stagiaire était-elle suffisante pour accomplir le mandat de
                 stage?'
-                    name='formationSuffisanteCommentaire'
+                    name='commentsStudentTraining'
                     register={register}
                     placeholder='Est-ce que la formation était suffisante'
                     error={errors.formationSuffisanteCommentaire}
@@ -32,10 +32,10 @@ export default function StepSeven({register, errors, choices}) {
                 <FieldInput
                     label='Nom'
                     validation={{required: 'Ce champ est requis'}}
-                    name='nom'
+                    name='name'
                     register={register}
                     type='text'
-                    error={errors.nom}
+                    error={errors.name}
                     placeholder={'Nom'}
                 />
             </Column>
@@ -43,10 +43,10 @@ export default function StepSeven({register, errors, choices}) {
                 <FieldInput
                     label='Fonction'
                     validation={{required: 'Ce champ est requis'}}
-                    name='fonctionDeux'
+                    name='secondFunction'
                     register={register}
                     type='text'
-                    error={errors.fonctionDeux}
+                    error={errors.secondFunction}
                     placeholder={'Ex: Directeur de la formation'}
                 />
             </Column>

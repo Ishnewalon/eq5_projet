@@ -39,7 +39,7 @@ export default function StepSix({errors, register, choixAppreciation, yesAndNoAn
                 />
                 <FieldTextarea
                     label='Précisez votre appréciation'
-                    name='commentairesCinq'
+                    name='commentsInternProductivity'
                     register={register}
                     placeholder='Commentaires sur la productivité du stagiaire'
                 />
