@@ -35,21 +35,18 @@ import static org.mockito.Mockito.when;
 @WebMvcTest(ContractController.class)
 public class ContractControllerTest {
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private ContractService contractService;
-
     @MockBean
     private StageService stageService;
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
-
     @Test
     public void testManagerStartContract() throws Exception {
-        when(contractService.gsStartContract( any(), any())).thenReturn(getDummyContract());
-        when(contractService.updateContract( any())).thenReturn(getDummyContract());
+        when(contractService.gsStartContract(any(), any())).thenReturn(getDummyContract());
+        when(contractService.updateContract(any())).thenReturn(getDummyContract());
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -78,7 +75,7 @@ public class ContractControllerTest {
 
     @Test
     public void testManagerStartContract_whenIdOfferApplicationNull() throws Exception {
-        when(contractService.gsStartContract( any(), any())).thenThrow(new IllegalArgumentException("L'identifiant de l'application ne peut pas être vide"));
+        when(contractService.gsStartContract(any(), any())).thenThrow(new IllegalArgumentException("L'identifiant de l'application ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
@@ -93,7 +90,7 @@ public class ContractControllerTest {
 
     @Test
     public void testManagerStartContract_whenStudentAlreadyHaveAContract() throws Exception {
-        when(contractService.gsStartContract( any(), any())).thenThrow(new StudentAlreadyHaveAContractException("Un contrat existe déjà pour l'étudiant"));
+        when(contractService.gsStartContract(any(), any())).thenThrow(new StudentAlreadyHaveAContractException("Un contrat existe déjà pour l'étudiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
@@ -108,7 +105,7 @@ public class ContractControllerTest {
 
     @Test
     public void testManagerStartContract_whenIdOfferApplicationInvalid() throws Exception {
-        when(contractService.gsStartContract( any(), any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'offre associé à cet identifiant"));
+        when(contractService.gsStartContract(any(), any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'offre associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
@@ -123,12 +120,12 @@ public class ContractControllerTest {
 
     @Test
     public void testManagerStartContract_whenStudentIsntAssigned() throws Exception {
-        when(contractService.gsStartContract( any(), any())).thenThrow(new StudentIsNotAssignedException("L'étudiant doit être affecté à un superviseur avant de créer un contrat"));
+        when(contractService.gsStartContract(any(), any())).thenThrow(new StudentIsNotAssignedException("L'étudiant doit être affecté à un superviseur avant de créer un contrat"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/contracts/start")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(new ContractStarterDto(1L, 1L))))
+                        MockMvcRequestBuilders.post("/contracts/start")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(new ContractStarterDto(1L, 1L))))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -433,12 +430,13 @@ public class ContractControllerTest {
         when(contractService.getAllSignedContractsByManager(any())).thenReturn(dummyContracts);
 
         MvcResult mvcResult = mockMvc.perform(
-            MockMvcRequestBuilders.get("/contracts/manager/signed/" + 100L)
-                .contentType(MediaType.APPLICATION_JSON))
-        .andReturn();
+                        MockMvcRequestBuilders.get("/contracts/manager/signed/" + 100L)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(returnedContracts)
                 .isNotEmpty()
@@ -446,17 +444,18 @@ public class ContractControllerTest {
     }
 
     @Test
-    public void testGetAllSignedContractsByManager_withNonExistentId() throws Exception{
+    public void testGetAllSignedContractsByManager_withNonExistentId() throws Exception {
         long nonExistentId = 1000L;
         when(contractService.getAllSignedContractsByManager(any())).thenReturn(Collections.emptyList());
 
         MvcResult mvcResult = mockMvc.perform(
-            MockMvcRequestBuilders.get("/contracts/manager/signed/" + nonExistentId)
-                .contentType(MediaType.APPLICATION_JSON))
-        .andReturn();
+                        MockMvcRequestBuilders.get("/contracts/manager/signed/" + nonExistentId)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(returnedContracts).isEmpty();
     }
@@ -472,7 +471,8 @@ public class ContractControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(returnedContracts)
@@ -481,7 +481,7 @@ public class ContractControllerTest {
     }
 
     @Test
-    public void testGetAllSignedContractsByMonitor_withNonExistentId() throws Exception{
+    public void testGetAllSignedContractsByMonitor_withNonExistentId() throws Exception {
         long nonExistentId = 1000L;
         when(contractService.getAllSignedContractsByManager(any())).thenReturn(Collections.emptyList());
 
@@ -491,7 +491,8 @@ public class ContractControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(returnedContracts).isEmpty();
     }
@@ -516,7 +517,7 @@ public class ContractControllerTest {
     }
 
     @Test
-    public void testGetSignedContractByStudent_withNonExistentId() throws Exception{
+    public void testGetSignedContractByStudent_withNonExistentId() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
         when(contractService.getSignedContractByStudentId(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 

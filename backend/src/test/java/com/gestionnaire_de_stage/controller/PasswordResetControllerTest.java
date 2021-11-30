@@ -27,13 +27,11 @@ import static org.mockito.Mockito.when;
 @WebMvcTest(PasswordResetController.class)
 public class PasswordResetControllerTest {
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private PasswordResetService passwordResetService;
-
-    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void testForgotPassword_monitor() throws Exception {

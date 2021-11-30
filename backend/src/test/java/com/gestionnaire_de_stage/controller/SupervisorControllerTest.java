@@ -3,12 +3,14 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.AssignDto;
-import com.gestionnaire_de_stage.dto.ValidationCurriculum;
 import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
-import com.gestionnaire_de_stage.model.*;
+import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.model.OfferApplication;
+import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import com.gestionnaire_de_stage.service.StudentService;
 import com.gestionnaire_de_stage.service.SupervisorService;
@@ -27,18 +29,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
 @WebMvcTest(SupervisorController.class)
 public class SupervisorControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @MockBean
     SupervisorService supervisorService;
 
@@ -47,9 +46,8 @@ public class SupervisorControllerTest {
 
     @MockBean
     SupervisorRepository supervisorRepository;
-
-
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    @Autowired
+    private MockMvc mockMvc;
 
     @Test
     public void testSupervisorSignUp_withValidEntries() throws Exception {
@@ -220,11 +218,12 @@ public class SupervisorControllerTest {
         List<OfferApplication> dummyOfferAppList = getDummyOfferAppList();
         when(supervisorService.getStudentsStatus(any())).thenReturn(dummyOfferAppList);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId() )
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<OfferApplication> actualOfferAppList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<OfferApplication> actualOfferAppList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualOfferAppList.size()).isEqualTo(dummyOfferAppList.size());
     }
@@ -234,7 +233,7 @@ public class SupervisorControllerTest {
         Supervisor dummySupervisor = getDummySupervisor();
         when(supervisorService.getStudentsStatus(any())).thenThrow(new IllegalArgumentException("L'identifiant ne peut pas être vide"));
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId() )
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();

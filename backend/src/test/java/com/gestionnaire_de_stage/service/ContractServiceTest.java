@@ -234,7 +234,7 @@ public class ContractServiceTest {
     public void testGetContractByStudentId_withValidEntries() throws Exception {
         Contract dummyContract = getDummyContract();
         when(studentService.isIDNotValid(any())).thenReturn(false);
-        when(contractRepository.getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNullAndSession_YearGreaterThanEqual(any(),any())).thenReturn(dummyContract);
+        when(contractRepository.getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNullAndSession_YearGreaterThanEqual(any(), any())).thenReturn(dummyContract);
 
         Student dummyStudent = dummyContract.getStudent();
         Contract actualContract = contractService.getContractByStudentId(dummyStudent.getId());

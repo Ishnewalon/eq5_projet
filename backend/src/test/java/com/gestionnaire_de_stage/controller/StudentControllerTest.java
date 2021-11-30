@@ -33,19 +33,15 @@ import static org.mockito.Mockito.when;
 @WebMvcTest(StudentController.class)
 public class StudentControllerTest {
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private StudentService studentService;
-
     @MockBean
     private ContractService contractService;
-
     @MockBean
     private StageService stageService;
-
-    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void testStudentSignUp_withValidEntries() throws Exception {

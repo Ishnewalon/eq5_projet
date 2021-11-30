@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
-import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.MonitorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +23,11 @@ import static org.mockito.Mockito.when;
 @WebMvcTest(MonitorController.class)
 public class MonitorControllerTest {
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private MonitorService monitorService;
-
-    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void monitorSignupTest_withValidEntries() throws Exception {

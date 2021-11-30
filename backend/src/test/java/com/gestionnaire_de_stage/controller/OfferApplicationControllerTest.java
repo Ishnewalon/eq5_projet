@@ -11,7 +11,6 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
 import com.gestionnaire_de_stage.model.*;
-import com.gestionnaire_de_stage.service.CurriculumService;
 import com.gestionnaire_de_stage.service.OfferApplicationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +35,11 @@ import static org.springframework.http.HttpStatus.*;
 @WebMvcTest(OfferApplicationController.class)
 class OfferApplicationControllerTest {
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private OfferApplicationService offerApplicationService;
-
-    @MockBean
-    private CurriculumService curriculumService;
-
-    private ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void testStudentApplyToOffer() throws Exception {
@@ -170,7 +164,7 @@ class OfferApplicationControllerTest {
         List<Student> actualList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
         });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualList).hasSizeGreaterThan(0);
+        assertThat(actualList).isNotEmpty();
     }
 
     @Test
@@ -416,6 +410,7 @@ class OfferApplicationControllerTest {
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
     }
+
     @Test
     public void testGetOffersApplicationStageTrouverIdManager() throws Exception {
         List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
