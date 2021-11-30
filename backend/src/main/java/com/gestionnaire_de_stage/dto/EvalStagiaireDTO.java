@@ -13,49 +13,49 @@ public class EvalStagiaireDTO {
 
     String programStudyField;
 
-    String questionUn;
+    String questionStudentCanOrganizeWork;
 
-    String questionDeux;
+    String questionUnderstandDirectives;
 
-    String questionTrois;
+    String questionStudentMaintainRythmForWork;
 
-    String questionQuatre;
+    String questionStudentHasTheRightPriorities;
 
-    String questionCinq;
+    String questionStudentRespectSchedule;
 
-    String questionSix;
+    String questionStudentRespectTaskGiven;
 
-    String questionSept;
+    String questionStudentPaysAttentionToDetails;
 
-    String questionHuit;
+    String questionStudentValidateHisWork;
 
-    String questionNeuf;
+    String questionStudentTakeInitiativeToPerfectHimself;
 
-    String questionDix;
+    String questionStudentAnalyzeProblemsGiven;
 
-    String questionOnze;
+    String questionStudentIsSocial;
 
-    String questionDouze;
+    String questionStudentWorksWellInGroup;
 
-    String questionTreize;
+    String questionStudentAdaptsToEasilyToWorkCulture;
 
-    String questionQuatorze;
+    String questionStudentAcceptConstructiveCriticism;
 
-    String questionQuinze;
+    String questionStudentIsRespectful;
 
-    String questionSeize;
+    String questionStudentUnderstandOtherPeoplePov;
 
-    String questionDixSept;
+    String questionStudentMotivatedToWork;
 
-    String questionDixHuit;
+    String questionStudentTellIdeasClearly;
 
-    String questionDixNeuf;
+    String questionStudentHasInitiative;
 
-    String questionVingt;
+    String questionStudentWorkSecurely;
 
-    String questionVingtUn;
+    String questionStudentHasGoodSenseOfResponsability;
 
-    String questionVingtDeux;
+    String questionStudentPonctual;
 
     String programmeEtudes;
 
@@ -63,25 +63,25 @@ public class EvalStagiaireDTO {
 
     boolean evaluationDiscuteAvecEtudiant;
 
-    String commentairesUn;
+    String commentsProductivity;
 
-    String commentairesDeux;
+    String commentsQualityOfWorkIntern;
 
-    String commentairesTrois;
+    String commentsStudentSocialRelationsQuality;
 
-    String commentairesQuatre;
+    String commentsStudentPersonalAptitudes;
 
-    String commentairesCinq;
+    String commentsInternProductivity;
 
-    boolean entrepriseApprecieEtudiant;
+    boolean companyAppreciateStudent;
 
     int nbHeuresReelTravailEtudiant;
 
     String firstFonction;
 
-    String fonctionDeux;
+    String secondFunction;
 
-    String formationSuffisanteCommentaire;
+    String commentsStudentTraining;
 
     String name;
 
