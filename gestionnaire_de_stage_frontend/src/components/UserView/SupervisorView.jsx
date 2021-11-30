@@ -1,10 +1,11 @@
 import React from "react";
 import {Route, useRouteMatch} from "react-router-dom";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import SupervisorVisitForm from "../Evaluation/SupervisorVisitForm";
 import StudentStatusView from "../Admin/StudentManagement/StudentStatusView";
 import {Title} from "../SharedComponents/Title/Title";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import Profile from "../SharedComponents/Profile/Profile";
 
 export default function SupervisorView() {
     const {path} = useRouteMatch();
@@ -16,11 +17,12 @@ export default function SupervisorView() {
             </ContainerBox>
         </Route>
         <Route exact path={`${path}/students/status`}>
-            <Title>Status des étudiants qui vous sont attribués</Title>
+            <Title>Statut des étudiants qui vous sont attribués</Title>
             <StudentStatusView/>
         </Route>
         <Route exact path={`${path}`}>
             <h1 className="text-center">Bonjour {auth.user.firstName}!</h1>
+            <Profile/>
         </Route>
     </>);
 }

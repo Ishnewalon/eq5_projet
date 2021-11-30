@@ -223,6 +223,25 @@ public class MonitorServiceTest {
         assertThat(idInvalid).isTrue();
     }
 
+    @Test
+    public void testChangePassword() throws IdDoesNotExistException {
+        Monitor dummyMonitor = getDummyMonitor();
+        when(monitorRepository.existsById(any())).thenReturn(true);
+        when(monitorRepository.getById(any())).thenReturn(dummyMonitor);
+        when(monitorRepository.save(any())).thenReturn(dummyMonitor);
+
+        Monitor actual = monitorService.changePassword(dummyMonitor.getId(), "newPassword");
+
+        assertThat(actual.getPassword()).isEqualTo("newPassword");
+        assertThat(actual.getId()).isEqualTo(dummyMonitor.getId());
+    }
+
+    @Test
+    public void testChangePassword_withInvalidId() {
+        assertThrows(IdDoesNotExistException.class,
+                () -> monitorService.changePassword(1L, "newPassword"));
+    }
+
     private Monitor getDummyMonitor() {
         Monitor dummyMonitor = new Monitor();
         dummyMonitor.setId(1L);

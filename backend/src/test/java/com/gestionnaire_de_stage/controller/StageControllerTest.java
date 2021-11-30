@@ -3,7 +3,10 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.EvalMilieuStageDTO;
 import com.gestionnaire_de_stage.dto.EvalStagiaireDTO;
-import com.gestionnaire_de_stage.exception.*;
+import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
+import com.gestionnaire_de_stage.exception.EvaluationAlreadyFilledException;
+import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
+import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
 import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.model.Student;
@@ -27,23 +30,20 @@ import static org.mockito.Mockito.when;
 @WebMvcTest(StageController.class)
 public class StageControllerTest {
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private StageService stageService;
-
     @MockBean
     private ContractService contractService;
-
-    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void testFillEvalMilieuStagePDF_withValidEntries() throws Exception {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
         Stage dummyStage = getDummyStage();
         when(stageService.create(any(), any())).thenReturn(dummyStage);
-        when(stageService.addEvalMilieuStage( any(), any())).thenReturn(dummyStage);
+        when(stageService.addEvalMilieuStage(any(), any())).thenReturn(dummyStage);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
@@ -63,9 +63,9 @@ public class StageControllerTest {
         when(contractService.getContractByStudentMatricule(any())).thenThrow(new MatriculeDoesNotExistException("Il n'y a pas d'étudiant ayant la matricule"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(dummyEvalMilieuStageDTO)))
+                        MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyEvalMilieuStageDTO)))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -79,9 +79,9 @@ public class StageControllerTest {
         when(contractService.getContractByStudentMatricule(any())).thenThrow(new ContractDoesNotExistException("Il n'y a pas de contrat qui existe pour la matricule"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(dummyEvalMilieuStageDTO)))
+                        MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyEvalMilieuStageDTO)))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -92,12 +92,12 @@ public class StageControllerTest {
     @Test
     public void testFillEvalMilieuStagePDF_withNullStage() throws Exception {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
-        when(stageService.addEvalMilieuStage(any(),any())).thenThrow(new IllegalArgumentException("Le stage ne peut pas être vide"));
+        when(stageService.addEvalMilieuStage(any(), any())).thenThrow(new IllegalArgumentException("Le stage ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(dummyEvalMilieuStageDTO)))
+                        MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyEvalMilieuStageDTO)))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -108,12 +108,12 @@ public class StageControllerTest {
     @Test
     public void testFillEvalMilieuStagePDF_withInvalidStage() throws Exception {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
-        when(stageService.addEvalMilieuStage(any(),any())).thenThrow(new StageDoesNotExistException("Il n'y a pas de stage pour cette étudiant"));
+        when(stageService.addEvalMilieuStage(any(), any())).thenThrow(new StageDoesNotExistException("Il n'y a pas de stage pour cette étudiant"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(dummyEvalMilieuStageDTO)))
+                        MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyEvalMilieuStageDTO)))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -124,12 +124,12 @@ public class StageControllerTest {
     @Test
     public void testFillEvalMilieuStagePDF_withExistingStage() throws Exception {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = getDummyEvalMilieuStageDTO();
-        when(stageService.create(any(),any())).thenThrow(new EvaluationAlreadyFilledException("L'évalutation de cet étudiant a déjà été remplie"));
+        when(stageService.create(any(), any())).thenThrow(new EvaluationAlreadyFilledException("L'évalutation de cet étudiant a déjà été remplie"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(dummyEvalMilieuStageDTO)))
+                        MockMvcRequestBuilders.post("/stages/supervisor/fill_form")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyEvalMilieuStageDTO)))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -145,9 +145,9 @@ public class StageControllerTest {
         when(stageService.addEvalStagiaire(any(), any())).thenReturn(dummyStage);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/stages/monitor/fill_form")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
+                        MockMvcRequestBuilders.post("/stages/monitor/fill_form")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -161,9 +161,9 @@ public class StageControllerTest {
         when(stageService.getStageByStudentEmail(any())).thenThrow(new IllegalArgumentException("Le courriel de l'étudiant est vide"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/stages/monitor/fill_form")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
+                        MockMvcRequestBuilders.post("/stages/monitor/fill_form")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -177,9 +177,9 @@ public class StageControllerTest {
         when(stageService.getStageByStudentEmail(any())).thenThrow(new StageDoesNotExistException("Il n'y a pas de stage pour cette étudiant"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/stages/monitor/fill_form")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
+                        MockMvcRequestBuilders.post("/stages/monitor/fill_form")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -195,9 +195,9 @@ public class StageControllerTest {
         when(stageService.addEvalStagiaire(any(), any())).thenThrow(new IllegalArgumentException("Le stage ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/stages/monitor/fill_form")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
+                        MockMvcRequestBuilders.post("/stages/monitor/fill_form")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -213,9 +213,9 @@ public class StageControllerTest {
         when(stageService.addEvalStagiaire(any(), any())).thenThrow(new StageDoesNotExistException("Il n'y a pas de stage pour cette étudiant"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/stages/monitor/fill_form")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
+                        MockMvcRequestBuilders.post("/stages/monitor/fill_form")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -229,9 +229,9 @@ public class StageControllerTest {
         when(stageService.getStageByStudentEmail(any())).thenThrow(new EvaluationAlreadyFilledException("L'évalutation de ce stagiaire a déjà été remplie"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.post("/stages/monitor/fill_form")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
+                        MockMvcRequestBuilders.post("/stages/monitor/fill_form")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(dummyEvalStagiaireDTO)))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();

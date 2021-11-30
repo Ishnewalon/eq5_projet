@@ -6,18 +6,39 @@
     --color-light: #ffffff;
     --color-rgb-primary: 79, 101, 125;
     --font-family-primary: 'Montserrat', sans-serif;
-    --color-bg: #d4d6de
+    --color-bg: #d4d6de;
+    --nav-height: 41px;
+}
+
+#root {
+    padding-top: 40px !important;
+    display: block;
 }
 
 #root, html, body {
-    width: 100%;
-    height: 100%;
+    display: block;
+    height: 100vh;
     margin: 0;
+    padding: 0;
     font-family: var(--font-family-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--color-bg);
     color: var(--color-text) !important;
+}
+
+.navbar {
+    z-index: 10000 !important;
+    position: absolute !important;
+    top: 0 !important;
+    width: 100% !important;
+    padding: 0 20px !important;
+}
+
+main {
+    padding-top: 15px;
+    height: 100%;
+    overflow-y: auto;
 }
 
 code {
@@ -37,9 +58,23 @@ input, button, select, textarea {
     box-shadow: none !important;
 }
 
+input:not[type = "radio"], select, textarea {
+    border-radius: 1px !important;
+    border: 1px solid var(--color-primary) !important;
+}
+
+input:-webkit-autofill {
+    border: 1px solid var(--color-primary) !important;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-family-primary);
     text-decoration-color: var(--color-text) !important;
+}
+
+::selection {
+    color: white !important;
+    background-color: var(--color-primary) !important;
 }
 
 /*************
@@ -56,7 +91,7 @@ Custom classes
 .link-button {
     background-color: transparent;
     border: none;
-    cursor: pointer;
+    cursor: pointer !important;
     display: inline;
 }
 
@@ -81,13 +116,13 @@ Custom BS
     color: var(--color-primary-hover) !important;
 }
 
-.btn-primary {
+.btn-primary, .btn-primary:focus {
     background: var(--color-primary) !important;
     border: var(--color-primary) !important;
     color: var(--color-light) !important;
 }
 
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+.btn-primary:hover, .btn-primary:active {
     background: var(--color-primary-hover) !important;
     border-color: rgba(var(--color-rgb-primary), 0.8) !important;
     box-shadow: 0 1px 1px rgba(var(--color-rgb-primary), 0.075) inset, 0 0 8px rgba(var(--color-rgb-primary), 0.6) !important;
@@ -101,13 +136,35 @@ Custom BS
     color: var(--color-primary-hover) !important;
 }
 
-.btn-check:checked + .btn-outline-primary,
-.btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active {
+.btn-check:checked + .btn-outline-primary:hover,
+.btn-outline-primary:hover,
+.btn-outline-primary:active {
     background: var(--color-primary-hover) !important;
     border-color: rgba(var(--color-rgb-primary), 0.8) !important;
     color: white !important;
 }
 
+.btn-check:checked + .btn-outline-primary,
+.btn-outline-primary:focus {
+    background: var(--color-primary) !important;
+    color: white !important;
+}
+
+.form-check-input:checked {
+    background-color: var(--color-primary-hover) !important;
+    border-color: var(--color-primary-hover) !important;
+}
+
+.form-control:focus {
+    border-color: var(--color-primary-hover) !important;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: rgba(var(--color-rgb-primary), 0.8);
+}
 
 .dropzone {
     text-align: center;
@@ -118,11 +175,6 @@ Custom BS
     margin-bottom: 20px;
 }
 
-.form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 /***
 Card
@@ -136,65 +188,6 @@ Card
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
-.card-holder {
-    max-width: 100%;
-}
-
-.card-company-name {
-    margin-right: 0.5rem;
-}
-
-.card-company-location {
-    margin-bottom: -0.125rem;
-    margin-right: 1rem;
-}
-
-.card-role-type {
-    margin-bottom: -0.125rem;
-    margin-right: 0.75rem;
-}
-
-.card-listing-date {
-    margin-bottom: -0.125rem;
-    margin-right: 0.75rem;
-}
-
-.card-salary-range {
-    margin-right: 0.75rem;
-    margin-bottom: -0.125rem;
-}
-
-.card-job-duration {
-    margin-right: 0.75rem;
-    margin-bottom: -0.125rem;
-}
-
-.card-company-glassdoor {
-    display: flex;
-    margin-top: -0.5rem;
-    margin-bottom: -0.5rem;
-}
-
-.card-job-details {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
-.card-company-fit {
-    display: flex;
-}
-
-.job-title {
-    font-size: 2rem !important;
-    line-height: 1;
-}
-
-.card-job-summary {
-    display: flex;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
 
 .mega {
     font-size: 50px;
@@ -215,17 +208,82 @@ Card
     color: var(--color-primary-hover);
 }
 
-.text-left {
-    text-align: left;
+.accordion-button.collapsed {
+    /*background: blue*/
 }
 
-.messageEmpty {
-    user-select: none;
-    -webkit-user-drag: none;
-    position: relative;
-    max-width: 100%;
+.accordion-button {
+    background: var(--color-light) !important;
+    color: var(--color-primary-hover) !important;
+    /*background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");*/
 }
 
-.image2 {
-    height: 400px;
+/***********
+PROGRESS BAR
+************/
+.ps-indexedStep {
+    color: var(--color-primary-hover) !important;
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    background-color: rgba(211, 211, 211, 0.8) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 4 !important;
+    transition: all 0.5s ease-in-out;
 }
+
+.ps-progressBar {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 20px !important;
+    border-radius: 100px !important;
+    display: inline-flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    z-index: 3 !important;
+    background-color: #e0e0ec;
+}
+
+.ps-step {
+    z-index: 10 !important;
+    transform: translateX(0) scale(1) !important;
+    transition: all 0.5s ease-in-out;
+}
+
+.ps-indexedStep.accomplished {
+    color: var(--color-light) !important;
+    background-color: var(--color-primary-hover) !important;
+}
+
+.ps-progression {
+    background-color: var(--color-primary) !important;
+    height: 4px;
+    z-index: 1;
+    position: absolute !important;
+    clip: rect(0, auto, auto, 0);
+    transition: all 0.5s ease-in-out;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

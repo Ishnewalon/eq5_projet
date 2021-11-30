@@ -245,6 +245,26 @@ public class SupervisorServiceTest {
                 "L'email n'existe pas");
     }
 
+    @Test
+    public void testChangePassword() throws IdDoesNotExistException {
+        Supervisor dummySupervisor = getDummySupervisor();
+        when(supervisorRepository.existsById(any())).thenReturn(true);
+        when(supervisorRepository.getById(any())).thenReturn(dummySupervisor);
+        when(supervisorRepository.save(any())).thenReturn(dummySupervisor);
+
+        Supervisor actualSupervisor = supervisorService.changePassword(dummySupervisor.getId(), "newPassword");
+
+        assertThat(actualSupervisor.getPassword()).isEqualTo("newPassword");
+        assertThat(actualSupervisor.getId()).isEqualTo(dummySupervisor.getId());
+    }
+
+    @Test
+    public void testChangePassword_withInvalidId() {
+        assertThrows(IdDoesNotExistException.class,
+                () -> supervisorService.changePassword(1L, "newPassword"));
+    }
+
+
     private Supervisor getDummySupervisor() {
         Supervisor dummySupervisor = new Supervisor();
         dummySupervisor.setId(1L);

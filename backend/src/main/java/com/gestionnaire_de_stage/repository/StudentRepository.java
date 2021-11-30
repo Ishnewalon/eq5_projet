@@ -13,13 +13,11 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     boolean existsByMatricule(String matricule);
 
+    boolean existsByIdAndSupervisorNull(Long id);
+
     Student findStudentByEmailAndPassword(String email, String password);
 
     List<Student> getAllByPrincipalCurriculum_IsValidAndSupervisorNull(Boolean isValid);
-
-    List<Student> findAllByPrincipalCurriculumIsNull();
-
-    List<Student> findAllByPrincipalCurriculumIsNullOrPrincipalCurriculum_IsValid(Boolean isValid);
 
     Student getByEmail(String email);
 }

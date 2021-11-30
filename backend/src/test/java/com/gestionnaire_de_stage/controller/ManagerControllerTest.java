@@ -23,13 +23,11 @@ import static org.mockito.Mockito.when;
 @SuppressWarnings("ConstantConditions")
 public class ManagerControllerTest {
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private ManagerService managerService;
-
-    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void testManagerLogin_withValidEntries() throws Exception {
@@ -54,7 +52,7 @@ public class ManagerControllerTest {
     public void testManagerLogin_withNullEntries() throws Exception {
         String email = null;
         String password = null;
-        when(managerService.getOneByEmailAndPassword(any(),any())).thenThrow(new IllegalArgumentException("Courriel et mot de passe ne peuvent pas être vide"));
+        when(managerService.getOneByEmailAndPassword(any(), any())).thenThrow(new IllegalArgumentException("Courriel et mot de passe ne peuvent pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/manager/" + email + "/" + password)
@@ -70,7 +68,7 @@ public class ManagerControllerTest {
     public void testSupervisorLogin_withInvalidEntries() throws Exception {
         String email = "qerw@qwetq.com";
         String password = "qwreqwer";
-        when(managerService.getOneByEmailAndPassword(any(),any())).thenThrow(new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid"));
+        when(managerService.getOneByEmailAndPassword(any(), any())).thenThrow(new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/manager/" + email + "/" + password)
@@ -82,8 +80,22 @@ public class ManagerControllerTest {
         assertThat(response.getContentAsString()).contains("Courriel ou mot de passe invalid");
     }
 
+    @Test
+    public void testCheckEmailValidty() throws Exception {
+        when(managerService.isEmailInvalid(any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/manager/email/{email}", "potato@gmail.com")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("false");
+    }
+
     private Manager getDummyManager() {
         Manager dummyManager = new Manager();
+        dummyManager.setId(1L);
         dummyManager.setPassword("Test1234");
         dummyManager.setEmail("oussamakablsy@gmail.com");
         dummyManager.setFirstName("Oussama");

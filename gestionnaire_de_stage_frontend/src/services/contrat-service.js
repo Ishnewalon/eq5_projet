@@ -22,14 +22,10 @@ async function signContract(userType, signature, contractId) {
         response => {
             return response.json().then(
                 body => {
-                    if (response.ok) {
+                    if (response.status === 200)
                         Swal.fire({text: body.message, icon: 'success'});
-                    }
-
-                    if (response.status === 400) {
+                    else if (response.status === 400)
                         swalErr.fire({text: body.message})
-                    }
-
                     return response.ok;
                 })
         }, err => console.error(err)
@@ -41,45 +37,43 @@ export async function getAllContractsToBeStarted() {
 }
 
 export async function getAllContractsToBeSignedForMonitor(monitorId) {
-    return await fetch(`${url}/monitor/${monitorId}`, requestInit(methods.GET)).then(response => {
-            return response.json().then(
+    return await fetch(`${url}/monitor/${monitorId}`, requestInit(methods.GET)).then(
+        response =>
+            response.json().then(
                 body => {
-                    if (response.ok) {
+                    if (response.status === 200)
                         return body;
-                    } else {
+                    else if (response.status === 400)
                         swalErr.fire({text: body.message})
-                        return Promise.any([]);
-                    }
-                })
-        }, err => console.error(err)
+                    return [];
+                }), err => console.error(err)
     );
 }
 
 export async function getContractForStudent(userId) {
-    return await fetch(`${url}/student/${userId}`, requestInit(methods.GET)).then(response => {
-        return response.json().then(
-            body => {
-                if (response.ok) {
-                    return body;
-                } else {
-                    swalErr.fire({text: body.message})
-                    return Promise.any([]);
-                }
-            })
-    }, err => console.error(err));
+    return await fetch(`${url}/student/${userId}`, requestInit(methods.GET)).then(
+        response =>
+            response.json().then(
+                body => {
+                    if (response.status === 200)
+                        return body;
+                    else if (response.status === 400)
+                        swalErr.fire({text: body.message})
+                    return null;
+                }), err => console.error(err))
+        .catch(err => console.error(err));
 }
 
-export async function getAllOfferAppReadyToSign(idOfferApplication) {
-    return await fetch(`${urlBackend}/applications/applicants/manager/${idOfferApplication}`, requestInit(methods.GET)).then(
-        response => {
-            return response.json().then((body) => {
+export async function getAllOfferAppReadyToSign(idManager) {
+    return await fetch(`${urlBackend}/applications/applicants/manager/${idManager}`, requestInit(methods.GET)).then(
+        response =>
+            response.json().then((body) => {
                 if (response.status === 200)
                     return body;
-                if (response.status === 400)
+                else if (response.status === 400)
                     toastErr.fire({title: body.message})
-                return Promise.any([]);
-            })
-        }, err => console.error(err)
+                return [];
+            }), err => console.error(err)
     );
 }
 
@@ -88,17 +82,14 @@ export async function startSignerFetch(idOfferApplication, idManager) {
         idOfferApplication: idOfferApplication,
         idManager: idManager
     })).then(
-        response => {
-            return response.json().then((body) => {
-                if (response.status === 200) {
+        response =>
+            response.json().then((body) => {
+                if (response.status === 200)
                     toast.fire({title: body.message})
-                    return true;
-                }
-                if (response.status === 400)
+                else if (response.status === 400)
                     toastErr.fire({title: body.message})
-                return false;
-            })
-        }, err => console.error(err)
+                return response.ok;
+            }), err => console.error(err)
     );
 }
 
@@ -112,15 +103,14 @@ export async function getAllSignedContractsForMonitor(idMonitor) {
 
 export async function getSignedContractForStudent(idStudent) {
     return await getOneOrMoreContracts(idStudent, UserType.STUDENT[0]).then(
-        response => {
-            return response.json().then((body) => {
+        response =>
+            response.json().then((body) => {
                 if (response.ok)
                     return body;
-                else
+                else if (response.status === 400)
                     swalErr.fire({text: body.message})
-                return Promise.any(null);
-            })
-        }, err => console.error(err)
+                return null;
+            }), err => console.error(err)
     );
 }
 

@@ -13,10 +13,8 @@ export async function createOffer(offer) {
                     if (response.status === 201) {
                         toast.fire({title: "Offre créé!"}).then()
                         return body
-                    }
-                    if (response.status === 400) {
+                    } else if (response.status === 400)
                         swalErr.fire({text: body.message})
-                    }
                     return null
                 }
             );
@@ -28,9 +26,8 @@ export async function getAllOffersNotYetApplied(studentId) {
         response => {
             return response.json().then(
                 body => {
-                    if (response.status === 200) {
-                        return body
-                    }
+                    if (response.status === 200)
+                        return body;
                     console.error(response)
                     return []
                 })
@@ -43,9 +40,8 @@ export async function getAllOffersInvalid() {
         response => {
             return response.json().then(
                 body => {
-                    if (response.status === 200) {
+                    if (response.status === 200)
                         return body
-                    }
                     console.error(response)
                     return []
                 })
@@ -58,9 +54,8 @@ export async function getAllOffersValid() {
         response => {
             return response.json().then(
                 body => {
-                    if (response.status === 200) {
+                    if (response.status === 200)
                         return body
-                    }
                     console.error(response)
                     return []
                 })
@@ -79,8 +74,7 @@ export async function validateOffer(offerId, isValid) {
                     if (response.status === 200) {
                         let title = isValid ? 'Offre validée!' : 'Offre invalidée!'
                         toast.fire({title: title}).then()
-                    }
-                    if (response.status === 400)
+                    } else if (response.status === 400)
                         swalErr.fire({text: body.message})
                 }
             )

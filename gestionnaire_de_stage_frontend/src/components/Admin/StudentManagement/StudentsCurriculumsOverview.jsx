@@ -1,9 +1,10 @@
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import React, {useEffect, useState} from "react";
-import {useAuth} from "../../../services/use-auth";
+import {useAuth} from "../../../hooks/use-auth";
 import {getAllStudents} from "../../../services/user-service";
 import {getAllCurriculumsByStudent} from "../../../services/curriculum-service";
 import {useHistory, useRouteMatch} from "react-router-dom";
+import {CgDetailsMore} from "react-icons/all";
 
 export default function StudentsCurriculumsOverview() {
     const [students, setStudents] = useState([]);
@@ -51,10 +52,10 @@ export default function StudentsCurriculumsOverview() {
                 <th>Validé</th>
                 <th>Invalide</th>
                 <th>À valider</th>
-                <th>Voir</th>
+                <th><CgDetailsMore size={26} color={"black"} title={"Voir les détails"}/></th>
             </TableHeader>
             {students.map((student, index) => {
-                let cur = curriculums.find(curriculums => curriculums.length > 0 && curriculums[0].student.id === student.id)
+                    let cur = curriculums.find(curriculums => curriculums.length > 0 && curriculums[0].student.id === student.id)
                     return <TableRow key={index}>
                         <th>{student.id}</th>
                         <td>{student.firstName} {student.lastName}</td>
@@ -64,7 +65,7 @@ export default function StudentsCurriculumsOverview() {
                         <td>{getNbOfCurriculumsWithState(cur, false)}</td>
                         <td>{getNbOfCurriculumsWithState(cur, null)}</td>
                         <td>
-                            <button className="btn btn-primary" onClick={() => history.push({
+                            <button className="btn btn-outline-primary" onClick={() => history.push({
                                 pathname: `${path}/student`,
                                 state: {student: student}
                             })}>Voir

@@ -3,23 +3,24 @@ import StepPassword from "./SharedSteps/StepPassword";
 import StepInformationGeneral from "./SharedSteps/StepInformationGeneral";
 import {Student, Supervisor} from "../../../models/User";
 import {useHistory} from "react-router-dom";
-import {useAuth} from "../../../services/use-auth";
-import {FormGroup} from "../../SharedComponents/FormGroup/FormGroup";
+import {useAuth} from "../../../hooks/use-auth";
 import {BtnBack} from "../../SharedComponents/BtnBack";
 import {Title} from "../../SharedComponents/Title/Title";
 import {useForm} from "react-hook-form";
 import {regexMatricule} from "../../../utility";
 import {FormInput} from "../../SharedComponents/FormInput/FormInput";
-
+import {checkMatricule} from "../../../services/user-service";
+import {Column, FormGroupV2} from "../../SharedComponents/FormGroup/FormGroupV2";
+import {ProgressBar} from "../../SharedComponents/ProgressBar";
 
 export default function RegisterCegep() {
     const {register, handleSubmit, watch, formState: {errors}} = useForm({
         mode: "onSubmit",
-        reValidateMode: "onChange"
+        reValidateMode: "onSubmit",
     });
     let history = useHistory();
     let auth = useAuth();
-    const [curentStep, setCurentStep] = useState(0)
+    const [currentStep, setCurrentStep] = useState(0)
     const [typeUserText, setTypeUserText] = useState("");
     let show;
     const endThis = (matricule, email, password, lastName, firstName, phone) => {
@@ -49,32 +50,43 @@ export default function RegisterCegep() {
         } = data;
         const submitter = e.nativeEvent.submitter.value
         if (submitter === 'Suivant') {
-            if (curentStep === 0) {
+            if (currentStep === 0) {
                 setTypeUserText(matricule.toString().length === 5 ? 'Superviseur' : 'Étudiant')
-                setCurentStep(curentStep + 1)
-            } else if (curentStep === 1)
-                setCurentStep(curentStep + 1)
-            else if (curentStep === 2 && password === confirmation)
+                setCurrentStep(currentStep + 1)
+            } else if (currentStep === 1)
+                setCurrentStep(currentStep + 1)
+            else if (currentStep === 2 && password === confirmation)
                 endThis(matricule, email, password, lastName, firstName, phone)
         } else if (submitter === 'Précédent')
-            setCurentStep(curentStep - 1)
+            setCurrentStep(currentStep - 1)
     };
 
 
-    if (curentStep === 0)
+    if (currentStep === 0)
         show = <StepCegep register={register} errors={errors}/>
-    else if (curentStep === 1) {
+    else if (currentStep === 1) {
         show = (<>
-            <Title header="h2">{`Informations générales (${typeUserText})`}</Title>
-            <StepInformationGeneral register={register} errors={errors} prev={() => setCurentStep(curentStep - 1)}/>
+            <StepInformationGeneral register={register} errors={errors} prev={() => setCurrentStep(currentStep - 1)}/>
         </>)
-    } else if (curentStep === 2)
+    } else if (currentStep === 2)
         show =
-            <StepPassword register={register} errors={errors} watch={watch} prev={() => setCurentStep(curentStep - 1)}/>
+            <StepPassword register={register} errors={errors} watch={watch}
+                          prev={() => setCurrentStep(currentStep - 1)}/>
 
+
+    function getTitle() {
+        if (currentStep === 0)
+            return <Title header="h5">Matricule</Title>
+        else if (currentStep === 1)
+            return <Title header="h5">{`Informations générales (${typeUserText})`}</Title>
+        else if (currentStep === 2)
+            return <Title header="h5">Mot de passe</Title>
+    }
 
     return <>
         <form className="form-container" onSubmit={handleSubmit(submit)} noValidate>
+            <ProgressBar totalSteps={3} currentStep={currentStep}/>
+            {getTitle()}
             <fieldset>
                 {show}
             </fieldset>
@@ -83,29 +95,35 @@ export default function RegisterCegep() {
 }
 
 function StepCegep({register, errors}) {
-    return (<>
-            <FormGroup repartition={[12, 12]}>
+    return (
+        <FormGroupV2>
+            <Column>
                 <FormInput label="Matricule"
                            validation={{
                                required: "Vous devez entrez votre matricule pour continuer",
                                pattern: {
                                    value: regexMatricule,
                                    message: "Votre matricule doit être de 5 ou 7 chiffres"
-                               }
+                               },
+                               validate: async (matricule) =>
+                                   await checkMatricule(matricule) || "Ce matricule est déjà utilisé"
                            }}
                            error={errors.matricule}
                            name="matricule"
                            register={register}
-                           type="number"
-                           placeholder="0000000 (Étudiant) ou 00000 (Superviseur)"/>
+                           type="text"
+                           placeholder="0000000 (Étudiant) ou 00000 (Superviseur)"
+                           autoComplete="on"/>
+            </Column>
+            <Column>
                 <div className="form-group text-center">
                     <div className="btn-group mt-3">
                         <BtnBack/>
                         <input className="btn btn-primary" type="submit" name="next" value="Suivant"/>
                     </div>
                 </div>
-            </FormGroup>
-        </>
+            </Column>
+        </FormGroupV2>
     )
 
 }

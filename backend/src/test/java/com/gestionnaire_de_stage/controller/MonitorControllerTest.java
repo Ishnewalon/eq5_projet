@@ -23,13 +23,11 @@ import static org.mockito.Mockito.when;
 @WebMvcTest(MonitorController.class)
 public class MonitorControllerTest {
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private MonitorService monitorService;
-
-    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void monitorSignupTest_withValidEntries() throws Exception {
@@ -129,8 +127,55 @@ public class MonitorControllerTest {
         assertThat(response.getContentAsString()).contains("Courriel ou mot de passe invalid");
     }
 
+    @Test
+    public void testCheckEmailValidty() throws Exception {
+        when(monitorService.isEmailInvalid(any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/monitor/email/{email}", "potato@mail.com")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("false");
+    }
+
+    @Test
+    public void testChangePassword() throws Exception {
+        Monitor dummyMonitor = getDummyMonitor();
+        String newPassword = "newPassword";
+        when(monitorService.changePassword(any(), any())).thenReturn(dummyMonitor);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .put("/monitor/change_password/{id}", dummyMonitor.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newPassword))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Mot de passe changé avec succès");
+    }
+
+    @Test
+    public void testChangePassword_withInvalidId() throws Exception {
+        String newPassword = "newPassword";
+        when(monitorService.changePassword(any(), any())).thenThrow(new IllegalArgumentException("Id invalide"));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .put("/monitor/change_password/{id}", 123412L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newPassword))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Id invalide");
+    }
+
     private Monitor getDummyMonitor() {
         Monitor dummyMonitor = new Monitor();
+        dummyMonitor.setId(1L);
         dummyMonitor.setEmail("potato@mail.com");
         dummyMonitor.setPassword("secretPasswordShhhh");
         dummyMonitor.setFirstName("toto");
