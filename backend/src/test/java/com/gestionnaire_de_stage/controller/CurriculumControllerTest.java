@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @WebMvcTest(CurriculumController.class)
@@ -99,7 +98,7 @@ public class CurriculumControllerTest {
     public void uploadCurriculumTest_studentIdThrowsIdDoesNotExistException() throws Exception {
         Long studentId = 1L;
         MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
-        when(curriculumService.create(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
+        when(curriculumService.convertMultipartFileToCurriculum(any(), any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.multipart("/curriculum/upload")
