@@ -285,8 +285,8 @@ public class StageControllerTest {
 
     private EvalStagiaireDTO getDummyEvalStagiaireDTO() {
         EvalStagiaireDTO dummyEvalStagiaireDTO = new EvalStagiaireDTO();
-        dummyEvalStagiaireDTO.setEntrepriseNom("Entreprise A");
-        dummyEvalStagiaireDTO.setNomStagiaire("Tom Thorough");
+        dummyEvalStagiaireDTO.setCompanyName("Entreprise A");
+        dummyEvalStagiaireDTO.setInternName("Tom Thorough");
         dummyEvalStagiaireDTO.setPhone("4327659465");
         dummyEvalStagiaireDTO.setDateSignature("8-11-2021");
         dummyEvalStagiaireDTO.setStudentEmail("myemail@email.com");

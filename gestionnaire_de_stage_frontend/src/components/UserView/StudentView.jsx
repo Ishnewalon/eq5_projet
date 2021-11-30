@@ -51,7 +51,6 @@ export default function StudentView() {
             <Route exact path={`${path}`}>
                 <Title>Bonjour {auth.user.firstName}!</Title>
                 <Profile/>
-                <EvaluationIntern/>
             </Route>
         </>
     )
