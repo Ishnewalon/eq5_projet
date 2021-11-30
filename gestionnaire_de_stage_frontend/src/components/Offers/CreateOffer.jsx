@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {getCurrentAndFutureSession} from "../../services/session-service";
+import {getCurrentAndFutureSession} from "../../../../vue_frontend/src/services/session-service";
 import {DepartmentEnum} from "../../enums/Departement";
 import {useAuth} from "../../hooks/use-auth";
 import {createOffer} from "../../services/offer-service";

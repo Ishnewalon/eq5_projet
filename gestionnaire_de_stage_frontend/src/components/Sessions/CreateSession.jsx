@@ -1,4 +1,4 @@
-import {createSession} from "../../services/session-service";
+import {createSession} from "../../../../vue_frontend/src/services/session-service";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {FormSelect} from "../SharedComponents/FormInput/FormSelect";
 import {useForm} from "react-hook-form";

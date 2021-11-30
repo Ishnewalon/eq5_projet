@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {getAllOffersInvalid} from '../../services/offer-service'
 import OfferView from './OfferView';
-import {getCurrentAndFutureSession} from "../../services/session-service";
+import {getCurrentAndFutureSession} from "../../../../vue_frontend/src/services/session-service";
 import {BtnBack} from "../SharedComponents/BtnBack";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";

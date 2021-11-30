@@ -1,7 +1,7 @@
 import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../SharedComponents/FormField/FormField";
 import {useState} from "react";
-import {supervisorCreateForm} from "../../services/stage-service";
+import {supervisorCreateForm} from "../../../../vue_frontend/src/services/stage-service";
 import {regexMatriculeEtudiant, swalErr} from "../../../../vue_frontend/src/services/utility";
 
 

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {getAllOffersNotYetApplied} from '../../services/offer-service';
 import {useAuth} from "../../hooks/use-auth";
-import {getCurrentAndFutureSession} from "../../services/session-service";
+import {getCurrentAndFutureSession} from "../../../../vue_frontend/src/services/session-service";
 import {applyToOffer} from "../../services/offerAppService";
 import OfferApp from "../../models/OfferApp";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";

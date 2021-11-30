@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {getAllOffersInvalid, validateOffer} from '../../services/offer-service';
 import OfferView from "./OfferView";
-import {getCurrentAndFutureSession} from "../../services/session-service";
+import {getCurrentAndFutureSession} from "../../../../vue_frontend/src/services/session-service";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
 
