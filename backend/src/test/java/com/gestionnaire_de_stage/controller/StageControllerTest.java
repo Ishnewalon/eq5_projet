@@ -241,17 +241,17 @@ public class StageControllerTest {
 
     private EvalMilieuStageDTO getDummyEvalMilieuStageDTO() {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = new EvalMilieuStageDTO();
-        dummyEvalMilieuStageDTO.setEntrepriseNom("La place");
-        dummyEvalMilieuStageDTO.setPersonneContact("Robert California");
+        dummyEvalMilieuStageDTO.setCompanyName("La place");
+        dummyEvalMilieuStageDTO.setContactPerson("Robert California");
         dummyEvalMilieuStageDTO.setPhone("1234567890");
-        dummyEvalMilieuStageDTO.setTelecopieur("faxTime");
+        dummyEvalMilieuStageDTO.setFax("faxTime");
         dummyEvalMilieuStageDTO.setAdresse("8394 NoName Street");
         dummyEvalMilieuStageDTO.setZip("J3N L5D");
-        dummyEvalMilieuStageDTO.setVille("Huron");
-        dummyEvalMilieuStageDTO.setNomStagiaire("Gordon HeavyArm");
+        dummyEvalMilieuStageDTO.setCity("Huron");
+        dummyEvalMilieuStageDTO.setInternName("Gordon HeavyArm");
         dummyEvalMilieuStageDTO.setDateStage("12-25-2022");
-        dummyEvalMilieuStageDTO.setStageCourant(2);
-        dummyEvalMilieuStageDTO.setMatriculeEtudiant("123463");
+        dummyEvalMilieuStageDTO.setCurrentInternship(2);
+        dummyEvalMilieuStageDTO.setStudentMatricule("123463");
         dummyEvalMilieuStageDTO.setSignatureSuperviseur("Rasputin Jkral");
 
         return dummyEvalMilieuStageDTO;
@@ -289,7 +289,7 @@ public class StageControllerTest {
         dummyEvalStagiaireDTO.setNomStagiaire("Tom Thorough");
         dummyEvalStagiaireDTO.setPhone("4327659465");
         dummyEvalStagiaireDTO.setDateSignature("8-11-2021");
-        dummyEvalStagiaireDTO.setEmailEtudiant("myemail@email.com");
+        dummyEvalStagiaireDTO.setStudentEmail("myemail@email.com");
 
         return dummyEvalStagiaireDTO;
     }

@@ -47,8 +47,8 @@ public class StageController {
         Stage stage = new Stage();
         evalMilieuStageDTO.setSignatureDate(LocalDate.now());
         try {
-            stage.setContract(contractService.getContractByStudentMatricule(evalMilieuStageDTO.getMatriculeEtudiant()));
-            stage = stageService.create(stage, evalMilieuStageDTO.getMatriculeEtudiant());
+            stage.setContract(contractService.getContractByStudentMatricule(evalMilieuStageDTO.getStudentMatricule()));
+            stage = stageService.create(stage, evalMilieuStageDTO.getStudentMatricule());
             WebContext context = new WebContext(request, response, servletContext);
             context.setVariable("formInfo", evalMilieuStageDTO);
             String evalMilieuStageHtml = templateEngine.process("evalMilieuStage", context);
@@ -70,7 +70,7 @@ public class StageController {
     public ResponseEntity<?> fillEvalStagiairePDF(@RequestBody EvalStagiaireDTO evalStagiaireDTO, HttpServletRequest request, HttpServletResponse response) {
         Stage stage;
         try {
-            stage = stageService.getStageByStudentEmail(evalStagiaireDTO.getEmailEtudiant());
+            stage = stageService.getStageByStudentEmail(evalStagiaireDTO.getStudentEmail());
             WebContext context = new WebContext(request, response, servletContext);
             context.setVariable("formInfo", evalStagiaireDTO);
             String contractHtml = templateEngine.process("evalStagiaire", context);

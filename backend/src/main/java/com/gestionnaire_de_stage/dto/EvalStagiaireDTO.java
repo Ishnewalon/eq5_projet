@@ -5,11 +5,13 @@ import lombok.Data;
 @Data
 public class EvalStagiaireDTO {
 
-    String entrepriseNom;
+    String companyName;
 
     String phone;
 
-    String nomStagiaire;
+    String internName;
+
+    String programStudyField;
 
     String questionUn;
 
@@ -75,17 +77,17 @@ public class EvalStagiaireDTO {
 
     int nbHeuresReelTravailEtudiant;
 
-    String fonctionUn;
+    String firstFonction;
 
     String fonctionDeux;
 
     String formationSuffisanteCommentaire;
 
-    String nom;
+    String name;
 
     String dateSignature;
 
     String monitorSignature;
 
-    String emailEtudiant;
+    String studentEmail;
 }

@@ -86,7 +86,7 @@ export default function SupervisorStepThree({register, choixAccords, errors}) {
         <FormGroup>
             <Column col={{md: 4}}>
                 <FieldRadio
-                    name='questionHyegiene'
+                    name='questionHygiene'
                     register={register}
                     list={Object.values(choixAccords)}
                     label="L'environnement de travail respecte les normes d’hygiène et de sécurité au

@@ -7,95 +7,95 @@ import java.time.LocalDate;
 @Data
 public class EvalMilieuStageDTO {
 
-    String entrepriseNom;
+    String companyName;
 
-    String personneContact;
+    String contactPerson;
 
     String phone;
 
-    String telecopieur;
+    String fax;
 
     String adresse;
 
     String zip;
 
-    String ville;
+    String city;
 
-    String nomStagiaire;
+    String internName;
 
     String dateStage;
 
-    int stageCourant;
+    int currentInternship;
 
-    String questionUn;
+    String questionTaskGivenWereInContract;
 
-    String questionDeux;
+    String questionInternshipEasyToIntegrateInterns;
 
-    String questionTrois;
+    String questionWasEnoughTimeToTrainIntern;
 
-    int nbHeuresMoisUn;
+    int nbHoursMonthOne;
 
-    int nbHeuresMoisDeux;
+    int nbHoursMonthTwo;
 
-    int nbHeuresMoisTrois;
+    int nbHoursMonthThree;
 
-    String questionQuatre;
+    String questionHygiene;
 
-    String questionCinq;
+    String questionWorkEnvironmentNice;
 
-    String questionSix;
+    String questionWorkAccesibleByMetro;
 
-    String questionSept;
+    String questionSalaryInterestingForIntern;
 
-    float salaireStagiaire;
+    float salaryIntern;
 
-    String questionHuit;
+    String questionSupervisorFacilitateInternship;
 
-    String questionNeuf;
+    String questionTaskGivenWereAdequate;
 
-    String questionDix;
+    String questionWorkAcceptable;
 
-    String commentaires;
+    String comments;
 
-    String questionOnze;
+    String questionPreferForInternship;
 
-    String questionDouze;
+    String questionWelcomeMoreThanTwoIntern;
 
-    String questionTreize;
+    String questionWelcomeSameIntern;
 
-    String questionQuatorzeHeuresUnA;
+    String mondayShiftStart;
 
-    String questionQuatorzeHeuresUnB;
+    String mondayShiftEnd;
 
-    String questionQuatorzeHeuresUnC;
+    String tuesdayShiftStart;
 
-    String questionQuatorzeHeuresUnD;
+    String tuesdayShiftEnd;
 
-    String questionQuatorzeHeuresUnE;
+    String wednesdayShiftStart;
 
-    String questionQuatorzeHeuresUnF;
+    String wednesdayShiftEnd;
 
-    String questionQuatorzeHeuresUnG;
+    String thursdayShiftStart;
 
-    String questionQuatorzeHeuresUnH;
+    String thursdayShiftEnd;
 
-    String questionQuatorzeHeuresUnI;
+    String fridayShiftStart;
 
-    String questionQuatorzeHeuresUnJ;
+    String fridayShiftEnd;
 
-    String questionQuatorzeHeuresUnK;
+    String saturdayShiftStart;
 
-    String questionQuatorzeHeuresUnL;
+    String saturdayShiftEnd;
 
-    String questionQuatorzeHeuresUnM;
+    String sundayShiftStart;
 
-    String questionQuatorzeHeuresUnN;
+    String sundayShiftEnd;
 
-    String questionQuinze;
+    String questionShiftsFlexible;
 
     String signatureSuperviseur;
 
-    String matriculeEtudiant;
+    String studentMatricule;
 
     LocalDate signatureDate;
 }
