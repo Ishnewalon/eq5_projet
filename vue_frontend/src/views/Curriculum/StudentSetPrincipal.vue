@@ -1,25 +1,30 @@
 <template>
-  <table>
-    <thead>
+  <div v-if="this.dto.curriculumList.length > 0">
+    <table>
+      <thead>
       <th>Principal</th>
       <th>Nom</th>
       <th>Supprimer</th>
-    </thead>
+      </thead>
 
-    <tr v-for="(cv, index) in this.dto.curriculumList" :key="index">
-      <td v-html="getIcon(cv)"></td>
-      <td v-bind:class="{'text-danger' : !cv.isValid,  '':''}">
-      <button class="link-button" @click.prevent="downloadCurriculum(cv.data, cv.name)">
-      {{cv.name}}
-      </button>
-      </td>
-      <td>
-        <button class="link-button" v-on:click="deleteCv(cv)">
-          Delete
-        </button>
-      </td>
-    </tr>)}
-  </table>
+      <tr v-for="(cv, index) in this.dto.curriculumList" :key="index">
+        <td v-html="getIcon(cv)"></td>
+        <td v-bind:class="{'text-danger' : !cv.isValid,  '':''}">
+          <button class="link-button" @click.prevent="downloadCurriculum(cv.data, cv.name)">
+            {{cv.name}}
+          </button>
+        </td>
+        <td>
+          <button class="link-button" v-on:click="deleteCv(cv)">
+            Delete
+          </button>
+        </td>
+      </tr>)}
+    </table>
+  </div>
+  <div v-else class="container">
+    <div class="alert alert-info text-center">Aucun curriculum n'a été ajouté</div>
+  </div>
 </template>
 
 <script>

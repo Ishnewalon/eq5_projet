@@ -20,7 +20,7 @@
 <script>
 import Swal from "sweetalert2";
 
-import {uploadFile} from "../services/curriculum-service";
+import {uploadFile} from "@/services/curriculum-service";
 import authService from "../services/auth-service";
 
 export default {
@@ -38,6 +38,7 @@ export default {
       this.cv = event.target.files[0];
     },
     uploadCv: function () {
+      console.log(this.cv);
       if (this.cv) {
         uploadFile(this.cv, authService.getUserId()).then(() => {
           Swal.fire({

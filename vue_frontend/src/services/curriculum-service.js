@@ -3,7 +3,7 @@ import {swalErr, toast, toastErr} from "@/services/utility";
 
 export async function uploadFile(file, id) {
     let formData = new FormData();
-    formData.append("file", file[0]);
+    formData.append("file", file);
 
     await fetch(`${urlBackend}/curriculum/upload?id=${id}`, {
         mode: 'cors',
@@ -11,10 +11,10 @@ export async function uploadFile(file, id) {
         body: formData
     }).then(response => {
         if (response.status === 201) {
-            toast.fire({title: `${file[0].name} a été téléversé avec succès!`}).then();
+            toast.fire({title: `${file.name} a été téléversé avec succès!`}).then();
             return
         } else if (response.status === 400) {
-            toastErr.fire({title: `${file[0].name} n'a pas pu être téléversé...`}).then();
+            toastErr.fire({title: `${file.name} n'a pas pu être téléversé...`}).then();
         }
         response.json().then(data =>
             console.error(data.message));
