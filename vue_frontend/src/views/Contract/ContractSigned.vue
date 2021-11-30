@@ -29,7 +29,7 @@ export default {
     }
   },
   created() {
-    this.pdf_file = toPdfBlob(contract.contractPDF);
+    this.pdf_file = toPdfBlob(this.contract.contractPDF);
     this.url = window.URL.createObjectURL(this.pdf_file);
     window.URL.revokeObjectURL(this.url);
   },

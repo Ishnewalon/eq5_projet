@@ -1,10 +1,17 @@
 <template>
-  <ul>
-    <li v-for="(child, index) in contracts" :key="index">
-      <ContractSignature :contract="child" :userType="userType"
-                         v-on:remove="removeContract(index)"/>
-    </li>
-  </ul>
+  <div v-if="contracts.length > 0">
+    <ul>
+      <li v-for="(child, index) in contracts" :key="index">
+        <ContractSignature :contract="child" :userType="userType"
+                           v-on:remove="removeContract(index)"/>
+      </li>
+    </ul>
+  </div>
+  <div v-else class="container">
+    <div class="alert alert-info text-center">
+      <h3>Aucun contrat à signer!</h3>
+    </div>
+  </div>
 </template>
 <script>
 import {UserType} from "@/models/RegisterVars";

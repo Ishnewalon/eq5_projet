@@ -1,10 +1,15 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="offers.length > 0">
     <ul class="list-inline">
       <li v-for="(offer, index) in offers" :key="index" class="mb-4">
         <ValidateOffer :offer="offer"/>
       </li>
     </ul>
+  </div>
+  <div v-else class="container">
+    <div class="alert alert-info text-center">
+      <h3>Aucune offre à valider...</h3>
+    </div>
   </div>
 </template>
 <script>
