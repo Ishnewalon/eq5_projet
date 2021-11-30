@@ -9,6 +9,7 @@ import StepFive from "./StepFive";
 import StepSix from "./StepSix";
 import StepSeven from "./StepSeven";
 import Swal from "sweetalert2";
+import {swalErr} from "../../../utility";
 
 export default function EvaluationIntern() {
 
@@ -59,9 +60,9 @@ export default function EvaluationIntern() {
             }
         }).then(() => {
             if (status === 200)
-                Swal.fire({title: body.message});
+                Swal.fire({icon: 'success',title: body.message});
             if (status === 400)
-                Swal.fire({title: body.message});
+                swalErr.fire({title: body.message});
         })
     };
 
