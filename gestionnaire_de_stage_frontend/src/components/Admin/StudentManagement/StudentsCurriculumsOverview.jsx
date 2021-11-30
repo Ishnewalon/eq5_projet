@@ -2,7 +2,7 @@ import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import React, {useEffect, useState} from "react";
 import {useAuth} from "../../../hooks/use-auth";
 import {getAllStudents} from "../../../services/user-service";
-import {getAllCurriculumsByStudent} from "../../../services/curriculum-service";
+import {getAllCurriculumsByStudent} from "../../../../../vue_frontend/src/services/curriculum-service";
 import {useHistory, useRouteMatch} from "react-router-dom";
 import {CgDetailsMore} from "react-icons/all";
 

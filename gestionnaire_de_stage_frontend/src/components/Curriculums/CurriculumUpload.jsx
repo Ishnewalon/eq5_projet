@@ -1,6 +1,6 @@
 import React from "react";
 import Dropzone from "react-dropzone";
-import {uploadFile} from "../../services/curriculum-service";
+import {uploadFile} from "../../../../vue_frontend/src/services/curriculum-service";
 import {useAuth} from "../../hooks/use-auth";
 
 export default function CurriculumUpload() {

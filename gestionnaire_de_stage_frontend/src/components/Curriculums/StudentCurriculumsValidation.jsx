@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {getAllCurriculumsByStudent, validateCurriculum} from "../../services/curriculum-service";
+import {getAllCurriculumsByStudent, validateCurriculum} from "../../../../vue_frontend/src/services/curriculum-service";
 import {downloadFile, toPdfBlob} from "../../utility";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";

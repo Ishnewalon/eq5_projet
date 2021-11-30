@@ -3,7 +3,7 @@ import {
     deleteCurriculumById,
     getAllCurriculumsByStudentWithPrincipal,
     setPrincipalCurriculum
-} from "../../services/curriculum-service";
+} from "../../../../vue_frontend/src/services/curriculum-service";
 import {useAuth} from "../../hooks/use-auth";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import {AiOutlineCloseCircle, BsTrash, GoStar, MdOutlinePendingActions} from "react-icons/all";
@@ -57,12 +57,12 @@ export default function CurriculumsStudent() {
         } else {
             if (cv.isValid)
                 return <button className="link-button" onClick={setPrincipal(cv)}>
-                    <GoStar color="grey" title="En attente de validation" size="20"/>
+                    set principal
                 </button>
             else if (cv.isValid === null)
-                return <MdOutlinePendingActions color="#304c7b" title="En attente de validation" size="20"/>
+                return "En attente de validation"
             else
-                return <AiOutlineCloseCircle color="D00" title="Invalid" size="20"/>
+                return <span>Invalide</span>
         }
     };
 

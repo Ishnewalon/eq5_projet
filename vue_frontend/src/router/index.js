@@ -11,12 +11,13 @@ import MonitorCreateOffer from "../views/Offer/MonitorCreateOffer";
 import ManagerCreateOffer from "../views/Offer/ManagerCreateOffer";
 import ReviewOffers from "../views/Offer/ReviewOffers";
 import ViewOffers from "@/views/Offer/ViewOffers";
-import ManagerResumeValidation from "@/views/ManagerResumeValidation";
+import ManagerResumeValidation from "@/views/Curriculum/ManagerResumeValidation";
 import ViewAppliedStudents from "@/views/ViewAppliedStudents";
 import StartContracts from "@/views/Contract/StartContracts";
 import ContractToSignStudent from "@/views/Contract/ContractToSignStudent";
 import ContractsToSign from "@/views/Contract/ContractsToSign";
 import StudentGetContract from "@/views/Contract/StudentGetContract";
+import StudentSetPrincipal from "@/views/Curriculum/StudentSetPrincipal";
 
 
 function guardRoute(to, from, next) {
@@ -80,6 +81,12 @@ const routes = [
         path: '/student/get_contract',
         name: 'Voir contrat',
         component: StudentGetContract,
+        beforeEnter: guardRoute
+    },
+    {
+        path: '/student/set_principal',
+        name: 'Set principal curriculum',
+        component: StudentSetPrincipal,
         beforeEnter: guardRoute
     },
     {

@@ -4,15 +4,15 @@
       <div class="col-12 col-sm-6">
         <div class="d-flex justify-content-center align-items-center flex-column p-3 shadow h-100">
           <h4 class="p-2 rounded bg-secondary fw-bold text-white">{{
-              `${student.firstName}, ${student.lastName}`
+              `${this.student.curriculum.student.firstName}, ${this.student.curriculum.student.lastName}`
             }} </h4>
           <div class="d-flex justify-content-center align-items-center badge bg-primary text-wrap h2">
-            <a class="btn fw-bold ms-2 text-white" target="_blank" v-on:click="openFile">{{ student.fileName }}</a>
+            <a class="btn fw-bold ms-2 text-white" target="_blank" v-on:click="openFile">{{this.student.curriculum.name }}</a>
           </div>
         </div>
       </div>
       <div class="col-12 col-sm-6">
-        <PreviewOffer :offer="student.offerDTO"/>
+        <PreviewOffer :offer="student.offer"/>
       </div>
     </div>
   </div>
