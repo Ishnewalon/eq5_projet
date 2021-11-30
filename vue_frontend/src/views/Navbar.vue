@@ -50,6 +50,9 @@
       <a>
         <router-link to="/student/get_contract">Voir contrat</router-link>
       </a>
+      <a>
+        <router-link to="/student/set_principal">Mes curriculums</router-link>
+      </a>
     </div>
   </nav>
 </template>
