@@ -40,7 +40,6 @@ export default function EvaluationIntern() {
 
     const sendVisitForm = (data, e) => {
         e.preventDefault();
-        console.log(data);
         let status, body;
         Swal.fire({
             title: `Création de l'évaluation...`,
