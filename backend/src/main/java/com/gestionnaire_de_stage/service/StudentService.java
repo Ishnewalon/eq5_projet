@@ -2,6 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.StudentRepository;
@@ -47,8 +48,8 @@ public class StudentService {
 
     public Student update(Student student) throws IdDoesNotExistException {
         Assert.isTrue(student != null, "L'étudiant ne peut pas être vide");
-        if (isIDNotValid(student.getId())) 
-             throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
+        if (isIDNotValid(student.getId()))
+            throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
         return studentRepository.save(student);
     }
 
@@ -88,15 +89,10 @@ public class StudentService {
         return studentRepository.getAllByPrincipalCurriculum_IsValidAndSupervisorNull(true);
     }
 
-    public List<Student> getAllStudentWithoutCv() {
-        return studentRepository.findAllByPrincipalCurriculumIsNull();
-    }
-
-    public List<Student> getAllStudentWithInvalidCv() {
-        return studentRepository.findAllByPrincipalCurriculumIsNullOrPrincipalCurriculum_IsValid(false);
-    }
-
     public boolean assign(Student student, Supervisor supervisor) {
+        if (student.getSupervisor() != null) {
+            return false;
+        }
         student.setSupervisor(supervisor);
         studentRepository.save(student);
         return true;
@@ -121,9 +117,16 @@ public class StudentService {
         return studentRepository.getByEmail(email);
     }
 
+    public Student changePassword(Long id, String password) throws IdDoesNotExistException {
+        Student student = getOneByID(id);
+        student.setPassword(password);
+        return studentRepository.save(student);
+    }
+
     public boolean isEmailInvalid(String email) {
         return !studentRepository.existsByEmail(email);
     }
+
     public boolean isMatriculeValid(String matricule) {
         return studentRepository.existsByMatricule(matricule);
     }

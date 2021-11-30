@@ -1,13 +1,10 @@
 package com.gestionnaire_de_stage.service;
 
-import com.gestionnaire_de_stage.dto.CurriculumDTO;
-import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.CurriculumUsedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.Curriculum;
-import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import org.springframework.stereotype.Service;
@@ -16,7 +13,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,27 +62,6 @@ public class CurriculumService {
         if (!curriculumRepository.existsById(aLong))
             throw new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant");
         return curriculumRepository.getById(aLong);
-    }
-
-    public List<CurriculumDTO> mapToCurriculumDTOList(List<OfferApplication> offerApplicationList) {
-        List<CurriculumDTO> curriculumDTOList = new ArrayList<>();
-        Student student;
-        CurriculumDTO curriculumDTO = new CurriculumDTO();
-        Curriculum curriculum;
-        OfferDTO offerDto;
-        for (OfferApplication offerApp : offerApplicationList) {
-            curriculum = offerApp.getCurriculum();
-            student = curriculum.getStudent();
-            offerDto = offerService.mapToOfferDTO(offerApp.getOffer());
-
-            curriculumDTO.setFirstName(student.getFirstName());
-            curriculumDTO.setLastName(student.getLastName());
-            curriculumDTO.setFileName(curriculum.getName());
-            curriculumDTO.setFile(curriculum.getData());
-            curriculumDTO.setOfferDTO(offerDto);
-            curriculumDTOList.add(curriculumDTO);
-        }
-        return curriculumDTOList;
     }
 
     public List<Curriculum> findAllByStudent(Student student) throws IllegalArgumentException {

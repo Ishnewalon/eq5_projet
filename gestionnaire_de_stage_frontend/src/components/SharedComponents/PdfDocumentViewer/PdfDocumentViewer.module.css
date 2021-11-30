@@ -1,0 +1,12 @@
+.page {
+    overflow: hidden;
+}
+
+.page, .page > canvas {
+    height: auto !important;
+    max-width: 80vh !important;
+}
+
+.pageHide {
+    display: none !important;
+}

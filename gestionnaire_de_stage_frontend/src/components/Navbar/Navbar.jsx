@@ -1,6 +1,6 @@
 import {Link, useLocation} from "react-router-dom";
 import React from "react";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import PropTypes from "prop-types";
 import {BiLogIn, BiLogOut, GiHamburgerMenu} from "react-icons/all";
 import style from "./Navbar.module.css";
@@ -8,7 +8,7 @@ import style from "./Navbar.module.css";
 export default function Navbar() {
     let location = useLocation();
     return (
-        <nav className={`navbar navbar-expand-lg sticky-top bg-light navbar-light shadow-sm mb-4 ${style.bar}`}>
+        <nav className={`navbar navbar-expand-md bg-light navbar-light shadow ${style.bar}`}>
             <div className={"container-fluid"}>
                 <Link className={`navbar-brand font-monospace ${style.brand}`}
                       to={{pathname: "/", state: {from: location}}}>JI<span
@@ -17,7 +17,7 @@ export default function Navbar() {
                         aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <GiHamburgerMenu/>
                 </button>
-                <div className="collapse navbar-collapse justify-content-between" id="navbarText">
+                <div className="navbar-collapse collapse justify-content-between" id="navbarText">
                     <ul className="navbar-nav">
                         <GetNavItems/>
                     </ul>
@@ -74,7 +74,7 @@ function NavItemSpecificForUser() {
                 </Dropdown>
                 <Dropdown title="Contrats">
                     <Link to={{pathname: "/dashboard/voir/futures_stagiaires", state: {from: location}}}>Contrats à
-                        valider</Link>
+                        signer</Link>
                     <Link to={{pathname: "/dashboard/monitor/contracts/signed", state: {from: location}}}>Contrats
                         signés</Link>
                 </Dropdown>
@@ -94,7 +94,7 @@ function NavItemSpecificForUser() {
                 <Link to={{pathname: "/dashboard/curriculum/review", state: {from: location}}}>Valider Curriculum</Link>
             </Dropdown>
             <Dropdown title="Contrats">
-                <Link to={{pathname: "/dashboard/contrats/a_signer", state: {from: location}}}>Contrats à valider</Link>
+                <Link to={{pathname: "/dashboard/contrats/a_signer", state: {from: location}}}>Contrats à signer</Link>
                 <Link to={{pathname: "/dashboard/students/start", state: {from: location}}}>Commencer signature</Link>
                 <Link to={{pathname: "/dashboard/manager/contracts/signed", state: {from: location}}}>Contrats
                     signés</Link>
@@ -115,7 +115,7 @@ function NavItemSpecificForUser() {
                     d'entrevue</Link>
             </Dropdown>
             <Dropdown title="Contrat">
-                <Link to={{pathname: "/dashboard/voir_mon_contrat", state: {from: location}}}>Mon contrats</Link>
+                <Link to={{pathname: "/dashboard/voir_mon_contrat", state: {from: location}}}>Mon contrat</Link>
                 <Link to={{pathname: "/dashboard/student/contract/signed", state: {from: location}}}>Mon contrat
                     signé</Link>
             </Dropdown>

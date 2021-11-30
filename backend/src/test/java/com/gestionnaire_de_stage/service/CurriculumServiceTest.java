@@ -1,12 +1,13 @@
 package com.gestionnaire_de_stage.service;
 
-import com.gestionnaire_de_stage.dto.CurriculumDTO;
-import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.CurriculumUsedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.model.*;
+import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Monitor;
+import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -126,19 +126,6 @@ public class CurriculumServiceTest {
 
         assertThrows(IdDoesNotExistException.class,
                 () -> curriculumService.getOneByID(invalidID));
-    }
-
-
-    @Test
-    public void testMapToCurriculumDTOList_withValidEntries() {
-        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
-        List<CurriculumDTO> curriculumDTOList = getDummyCurriculumDTOList();
-        when(offerService.mapToOfferDTO(any())).thenReturn(getDummyOfferDto());
-
-        List<CurriculumDTO> actualCurriculumDTOList = curriculumService.mapToCurriculumDTOList(offerApplicationList);
-
-        assertThat(actualCurriculumDTOList.size()).isEqualTo(curriculumDTOList.size());
-        assertThat(actualCurriculumDTOList.get(1).getFirstName()).isEqualTo(curriculumDTOList.get(1).getFirstName());
     }
 
     @Test
@@ -303,7 +290,7 @@ public class CurriculumServiceTest {
     }
 
     @Test
-    void testDeleteOneById() throws Exception{
+    void testDeleteOneById() throws Exception {
         when(curriculumRepository.existsById(any())).thenReturn(true);
         when(curriculumRepository.getById(any())).thenReturn(getDummyCurriculum());
         when(offerApplicationService.isCurriculumInUse(any())).thenReturn(false);
@@ -402,60 +389,6 @@ public class CurriculumServiceTest {
         dummyMonitor.setEmail("toto@gmail.com");
         dummyMonitor.setPassword("testPassword");
         return dummyMonitor;
-    }
-
-    private List<OfferApplication> getDummyOfferAppList() {
-        List<OfferApplication> dummyOfferApplicationList = new ArrayList<>();
-        OfferApplication dummyOfferApplication = new OfferApplication();
-        dummyOfferApplication.setOffer(getDummyOffer());
-        dummyOfferApplication.setCurriculum(getDummyCurriculumOffer());
-        dummyOfferApplication.setId(1L);
-        dummyOfferApplicationList.add(dummyOfferApplication);
-
-        dummyOfferApplication.setId(2L);
-        dummyOfferApplicationList.add(dummyOfferApplication);
-
-        dummyOfferApplication.setId(3L);
-        dummyOfferApplicationList.add(dummyOfferApplication);
-
-        return dummyOfferApplicationList;
-    }
-
-    private List<CurriculumDTO> getDummyCurriculumDTOList() {
-        List<CurriculumDTO> curriculumDTOList = new ArrayList<>();
-        CurriculumDTO curriculumDTO1 = new CurriculumDTO();
-        curriculumDTO1.setFirstName("Summer");
-        curriculumDTO1.setLastName("Winter");
-        curriculumDTO1.setFileName("SW_CV");
-        curriculumDTO1.setFile(new byte[65 * 1024]);
-        curriculumDTOList.add(curriculumDTO1);
-
-        CurriculumDTO curriculumDTO2 = new CurriculumDTO();
-        curriculumDTO2.setFirstName("Summer");
-        curriculumDTO2.setLastName("Winter");
-        curriculumDTO2.setFileName("SW_CV");
-        curriculumDTO2.setFile(new byte[65 * 1024]);
-        curriculumDTOList.add(curriculumDTO2);
-
-        CurriculumDTO curriculumDTO3 = new CurriculumDTO();
-        curriculumDTO3.setFirstName("Summer");
-        curriculumDTO3.setLastName("Winter");
-        curriculumDTO3.setFileName("SW_CV");
-        curriculumDTO3.setFile(new byte[65 * 1024]);
-        curriculumDTOList.add(curriculumDTO3);
-
-        return curriculumDTOList;
-    }
-
-    private OfferDTO getDummyOfferDto() {
-        OfferDTO dummyOfferDTO = new OfferDTO();
-        dummyOfferDTO.setCreator_email("thisemail@email.com");
-        dummyOfferDTO.setSalary(18.0d);
-        dummyOfferDTO.setDescription("Une description");
-        dummyOfferDTO.setAddress("Addresse du cégep");
-        dummyOfferDTO.setTitle("Offer title");
-        dummyOfferDTO.setDepartment("Department name");
-        return dummyOfferDTO;
     }
 
     private List<Curriculum> getDummyCurriculumValidList() {

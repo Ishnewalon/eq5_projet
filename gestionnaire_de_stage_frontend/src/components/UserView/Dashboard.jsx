@@ -3,7 +3,7 @@ import MonitorView from "./MonitorView";
 import ManagerView from "./ManagerView";
 import StudentView from "./StudentView";
 import SupervisorView from "./SupervisorView";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 
 
 export default function Dashboard() {

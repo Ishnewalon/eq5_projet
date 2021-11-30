@@ -5,7 +5,7 @@ import React, {createElement} from "react";
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "./components/Navbar/Navbar";
-import {AuthProvider, RequireAuth, RequireNoAuth} from "./services/use-auth";
+import {AuthProvider, RequireAuth, RequireNoAuth} from "./hooks/use-auth";
 import Login from "./components/Unauthenticated/Login";
 import {Title} from "./components/SharedComponents/Title/Title";
 import Register from "./components/Unauthenticated/Register/Register";
@@ -21,37 +21,39 @@ function App() {
     return <AuthProvider>
         <Router>
             <Navbar/>
-            <main className="container">
-                <Switch>
-                    <RequiredRoute path="/dashboard" component={RequireAuth}>
-                        <Dashboard/>
-                    </RequiredRoute>
-                    <RequiredRoute exact path="/login" component={RequireNoAuth}>
-                        <Title>Se connecter</Title>
-                        <Login/>
-                    </RequiredRoute>
-                    <RequiredRoute path="/register" component={RequireNoAuth}>
-                        <Title>Inscription</Title>
-                        <ContainerBox className="w-50">
-                            <Route exact path="/register" component={Register}/>
-                            <Route exact path="/register/monitor" component={RegisterMonitor}/>
-                            <Route exact path="/register/cegep" component={RegisterCegep}/>
-                        </ContainerBox>
-                    </RequiredRoute>
-                    <RequiredRoute path="/reset_password/:token" component={RequireNoAuth}>
-                        <Title>Réinitialiser votre mot de passe</Title>
-                        <ResetPassword/>
-                    </RequiredRoute>
-                    <RequiredRoute exact path="/forgot_password" component={RequireNoAuth}>
-                        <Title>Mot de passe oublié</Title>
-                        <ForgotPassword/>
-                    </RequiredRoute>
-                    <Route exact path="/404" component={NotFound}/>
-                    <Route exact path="/">
-                        <Redirect to="/dashboard"/>
-                    </Route>
-                    <Redirect to="/404"/>
-                </Switch>
+            <main>
+                <div className="container">
+                    <Switch>
+                        <RequiredRoute path="/dashboard" component={RequireAuth}>
+                            <Dashboard/>
+                        </RequiredRoute>
+                        <RequiredRoute exact path="/login" component={RequireNoAuth}>
+                            <Title>Se connecter</Title>
+                            <Login/>
+                        </RequiredRoute>
+                        <RequiredRoute path="/register" component={RequireNoAuth}>
+                            <Title>Inscription</Title>
+                            <ContainerBox>
+                                <Route exact path="/register" component={Register}/>
+                                <Route exact path="/register/monitor" component={RegisterMonitor}/>
+                                <Route exact path="/register/cegep" component={RegisterCegep}/>
+                            </ContainerBox>
+                        </RequiredRoute>
+                        <RequiredRoute path="/reset_password/:token" component={RequireNoAuth}>
+                            <Title>Réinitialiser votre mot de passe</Title>
+                            <ResetPassword/>
+                        </RequiredRoute>
+                        <RequiredRoute exact path="/forgot_password" component={RequireNoAuth}>
+                            <Title>Mot de passe oublié</Title>
+                            <ForgotPassword/>
+                        </RequiredRoute>
+                        <Route exact path="/404" component={NotFound}/>
+                        <Route exact path="/">
+                            <Redirect to="/dashboard"/>
+                        </Route>
+                        <Redirect to="/404"/>
+                    </Switch>
+                </div>
             </main>
         </Router>
     </AuthProvider>

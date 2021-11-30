@@ -2,11 +2,10 @@ import React, {useEffect, useState} from "react";
 import {getAllOffersValid} from '../../services/offer-service'
 import OfferView from './OfferView';
 import {getCurrentAndFutureSession} from "../../services/session-service";
-import {FormField} from "../SharedComponents/FormField/FormField";
-import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 import {BtnBack} from "../SharedComponents/BtnBack";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
 
 export default function OffersListValid() {
 
@@ -48,23 +47,25 @@ export default function OffersListValid() {
 
     return (<>
             <ContainerBox>
-                <FormGroup>
-                    <FormField>
-                        <label/>
-                        <select onChange={(e) => setMyVisible(e.target.value)}>
-                            {sessions.map(session =>
-                                <option key={session.id}
-                                        value={session.id}>{session.typeSession + session.year}</option>)}
-                        </select>
-                    </FormField>
-                </FormGroup>
-                <ul>
+                <FormGroupV2>
+                    <Column>
+                        <div className="form-floating">
+                            <select id="session" className="form-select" onChange={e => setMyVisible(e.target.value)}>
+                                {sessions.map(session =>
+                                    <option key={session.id}
+                                            value={session.id}>{session.typeSession + session.year}</option>)}
+                            </select>
+                            <label htmlFor="session">Session</label>
+                        </div>
+                    </Column>
+                </FormGroupV2>
+                <div className="row">
                     {visibleOffers.map((offer, index) =>
-                        <li className={"mb-4"} key={index}>
+                        <Column col={{lg: 6}} key={index}>
                             <OfferView offer={offer}/>
-                        </li>
+                        </Column>
                     )}
-                </ul>
+                </div>
             </ContainerBox>
             <BtnBack/>
         </>

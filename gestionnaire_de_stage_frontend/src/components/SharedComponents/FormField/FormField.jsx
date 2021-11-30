@@ -12,7 +12,7 @@ export function FormField(props) {
     let label = childList.find(p => p.type === "label")
     let span = childList.find(p => p.type === "span")
     let inputProps = {
-        className: `${input.props.className ? input.props.className + " " : ""}form-control${span ? " mb-1" : ""}`,
+        className: `${input.props.className ? input.props.className + " " : ""}${input.type === 'select' ? "form-select" : "form-control"}${span ? " mb-1" : ""}`,
     }
     let labelProps;
     if (label) {
@@ -25,10 +25,10 @@ export function FormField(props) {
         }
     }
     return <>
-        {label ?
-            cloneElement(label, labelProps) : null}
-        <div className="input-group">
+        <div className="form-floating">
             {cloneElement(input, inputProps)}
+            {label ?
+                cloneElement(label, labelProps) : null}
         </div>
         {span ? cloneElement(span, {className: "text-danger mb-3"}) : null}
     </>
