@@ -1,5 +1,5 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
-import {toast, toastErr} from "../../../vue_frontend/src/services/utility";
+import {toast, toastErr} from "@/services/utility";
 
 export async function createSession(body) {
     return await fetch(`${urlBackend}/sessions`, requestInit(methods.POST, body)).then(

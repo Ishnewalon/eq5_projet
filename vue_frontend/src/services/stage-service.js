@@ -1,6 +1,6 @@
 import {methods, requestInit, urlBackend} from "./serviceUtils";
 import Swal from "sweetalert2";
-import {swalErr} from "../../../vue_frontend/src/services/utility";
+import {swalErr} from "@/services/utility";
 
 export async function supervisorCreateForm(stage) {
     return createForm('supervisor', stage);
