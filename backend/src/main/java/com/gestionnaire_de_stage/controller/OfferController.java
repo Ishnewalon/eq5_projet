@@ -3,10 +3,7 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.dto.ValidationOffer;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
-import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
 import com.gestionnaire_de_stage.model.Offer;
 import com.gestionnaire_de_stage.service.OfferService;
 import org.springframework.http.HttpStatus;
@@ -32,34 +29,22 @@ public class OfferController {
         Offer offer;
         try {
             offer = offerService.create(dto);
-        } catch (IllegalArgumentException ie) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage(ie.getMessage()));
-        } catch (OfferAlreadyExistsException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Offre existe déjà"));
-        } catch (EmailDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le courriel n'existe pas"));
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("L'id de la session n'existe pas"));
+                    .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(offer);
     }
 
-    @GetMapping({"/", "/{department}"}) //FIXME Handle exception
-    public ResponseEntity<?> getOffersByDepartment(@PathVariable(required = false) String department) {//TODO get the student ID instead of the department
+    @GetMapping({"/{studentId}"})
+    public ResponseEntity<?> getListOffersNotYetApplied(@PathVariable Long studentId) {
         List<Offer> offers;
         try {
-            offers = offerService.getOffersByDepartment(department);//TODO: get only offers non applied
-        } catch (IllegalArgumentException e) {
+            offers = offerService.getOffersNotYetApplied(studentId);
+        } catch (IdDoesNotExistException e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
@@ -73,18 +58,10 @@ public class OfferController {
         try {
             Offer offer = offerService.validation(validationOffer);
             return ResponseEntity.ok(offer);
-        } catch (IdDoesNotExistException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Offre non existante!"));
-        } catch (IllegalArgumentException ie) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(ie.getMessage());
-        } catch (OfferAlreadyTreatedException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Offre déjà traité!"));
+                    .body(new ResponseMessage(e.getMessage()));
         }
     }
 

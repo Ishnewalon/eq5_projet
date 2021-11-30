@@ -9,7 +9,7 @@ export default function ContractSigned({contract}) {
 
     const studentFullName = student => `${student.firstName} ${student.lastName}`;
 
-    return <div className='d-flex align-items-center text-white justify-content-center flex-column'>
+    return <div className='d-flex align-items-center justify-content-center flex-column'>
         <h2>Contrat de {studentFullName(contract.student)}</h2>
 
         <PdfDocumentViewer showContract={true} file={pdf}

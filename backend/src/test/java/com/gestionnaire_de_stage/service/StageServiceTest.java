@@ -13,14 +13,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class StageServiceTest {
@@ -185,10 +183,10 @@ public class StageServiceTest {
         Stage stage1 = getDummyStage();
         Stage stage2 = getDummyStage();
         stage2.setId(2L);
-        
+
         Stage stage3 = getDummyStage();
         stage3.setId(3L);
-        
+
         return List.of(stage1, stage2, stage3);
     }
 

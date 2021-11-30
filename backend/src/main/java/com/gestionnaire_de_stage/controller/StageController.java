@@ -3,10 +3,6 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.EvalMilieuStageDTO;
 import com.gestionnaire_de_stage.dto.EvalStagiaireDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
-import com.gestionnaire_de_stage.exception.EvaluationAlreadyFilledException;
-import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
 import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.service.ContractService;
 import com.gestionnaire_de_stage.service.StageService;
@@ -60,23 +56,7 @@ public class StageController {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             HtmlConverter.convertToPdf(evalMilieuStageHtml, baos);
             stageService.addEvalMilieuStage(stage, baos);
-        } catch (MatriculeDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("La matricule de l'étudiant n'existe pas"));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        } catch (StageDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le stage n'existe pas"));
-        } catch (ContractDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Cet étudiant n'a pas de stage"));
-        } catch (EvaluationAlreadyFilledException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
@@ -99,15 +79,7 @@ public class StageController {
             HtmlConverter.convertToPdf(contractHtml, baos);
 
             stageService.addEvalStagiaire(stage, baos);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        } catch (StageDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le stage n'existe pas pour cette étudiant"));
-        } catch (EvaluationAlreadyFilledException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));

@@ -3,6 +3,7 @@ import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {FormField} from "../SharedComponents/FormField/FormField";
 import {regexEmail, swalErr} from "../../../../vue_frontend/src/services/utility";
 import {monitorCreateForm} from "../../services/stage-service";
+import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 
 export default function EvaluationIntern() {
 
@@ -191,8 +192,7 @@ export default function EvaluationIntern() {
         }
     };
 
-    return <div className={'text-white'}>
-        <h1 className='text-center text-decoration-underline'>Fiche d'évaluation du stagiaire</h1>
+    return <ContainerBox className={'text-white'}>
         <div className='px-3 pb-3 pt-1'>
             <FormGroup>
                 <FormField>
@@ -663,5 +663,5 @@ export default function EvaluationIntern() {
                 de stage
             </button>
         </div>
-    </div>
+    </ContainerBox>
 }

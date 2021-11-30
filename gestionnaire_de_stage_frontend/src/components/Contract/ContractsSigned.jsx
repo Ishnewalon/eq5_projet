@@ -1,5 +1,5 @@
 import ContractSigned from "./ContractSigned";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import {useEffect, useState} from "react";
 import {getAllSignedContractsForManager, getAllSignedContractsForMonitor} from "../../services/contrat-service";
 import {UserType} from "../../enums/UserTypes";
@@ -19,7 +19,8 @@ export default function ContractsSigned({userType}) {
     if (contractList.length === 0)
         return <MessageNothingToShow message={"Aucun contrat à afficher pour le moment..."}/>;
 
-    return <>{contractList.map((contract, index) =>
-        <ContractSigned key={index} contract={contract}/>)}</>
+    return contractList.map((contract, index) =>
+        <ContractSigned key={index} contract={contract}/>)
+
 }
 

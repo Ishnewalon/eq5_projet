@@ -14,15 +14,13 @@ export async function monitorCreateForm(stage) {
 
 export async function createForm(userType, stage) {
     return await fetch(`${urlBackend}/stages/${userType}/fill_form`, requestInit(methods.POST, stage)).then(
-        response => {
-            return response.json().then(
+        response =>
+            response.json().then(
                 body => {
-                    if (response.ok)
+                    if (response.status === 200)
                         Swal.fire({text: body.message, icon: 'success'});
-
-                    if (response.status === 400)
+                    else if (response.status === 400)
                         swalErr.fire({text: body.message})
-                })
-        }, err => console.error(err)
+                }), err => console.error(err)
     );
 }

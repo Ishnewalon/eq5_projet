@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {getAllStudentsNotYetEvaluated} from "../../../services/user-service";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
+import {BtnBack} from "../../SharedComponents/BtnBack";
 
 export default function StudentsNotYetEvaluated() {
 
@@ -41,6 +42,7 @@ export default function StudentsNotYetEvaluated() {
                     </TableRow>
                 )}
             </Table>
+            <BtnBack/>
         </>
     )
 }

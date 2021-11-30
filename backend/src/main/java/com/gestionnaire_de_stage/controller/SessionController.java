@@ -27,7 +27,7 @@ public class SessionController {
                     .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity
-                .ok(new ResponseMessage("Session créée avec succès!"));
+                .ok(new ResponseMessage("Session créée avec succès"));
     }
 
     @GetMapping

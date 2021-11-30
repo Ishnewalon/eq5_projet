@@ -1,11 +1,13 @@
 package com.gestionnaire_de_stage.service;
 
-import com.gestionnaire_de_stage.dto.CurriculumDTO;
-import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
+import com.gestionnaire_de_stage.exception.CurriculumUsedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.model.*;
+import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Monitor;
+import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.repository.CurriculumRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,13 +17,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SuppressWarnings("ConstantConditions")
 @ExtendWith(MockitoExtension.class)
@@ -38,6 +40,9 @@ public class CurriculumServiceTest {
 
     @Mock
     private OfferService offerService;
+
+    @Mock
+    private OfferApplicationService offerApplicationService;
 
     @Test
     public void testConvertMultipartFileToCurriculum_WithValidData() throws IOException, IdDoesNotExistException {
@@ -79,7 +84,7 @@ public class CurriculumServiceTest {
     }
 
     @Test
-    public void testCreate_withValidCurriculum() throws IdDoesNotExistException {
+    public void testCreate_withValidCurriculum() {
         Curriculum dummyCurriculum = getDummyCurriculum();
         when(curriculumRepository.save(any())).thenReturn(dummyCurriculum);
 
@@ -122,66 +127,6 @@ public class CurriculumServiceTest {
     }
 
     @Test
-    public void testGetAll() {
-        when(curriculumRepository.findAll()).thenReturn(getDummyCurriculumList());
-
-        List<Curriculum> actualCurriculumList = curriculumService.getAll();
-
-        assertThat(actualCurriculumList.size()).isGreaterThan(0);
-    }
-
-    @Test
-    public void testMapToCurriculumDTOList_withValidEntries() {
-        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
-        List<CurriculumDTO> curriculumDTOList = getDummyCurriculumDTOList();
-        when(offerService.mapToOfferDTO(any())).thenReturn(getDummyOfferDto());
-
-        List<CurriculumDTO> actualCurriculumDTOList = curriculumService.mapToCurriculumDTOList(offerApplicationList);
-
-        assertThat(actualCurriculumDTOList.size()).isEqualTo(curriculumDTOList.size());
-        assertThat(actualCurriculumDTOList.get(1).getFirstName()).isEqualTo(curriculumDTOList.get(1).getFirstName());
-    }
-
-    @Test
-    public void testFindAllCurriculumWithInvalidCurriculum() {
-        List<Curriculum> dummyCurriculumList = getDummyCurriculumList();
-        when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(dummyCurriculumList);
-
-        List<Curriculum> curriculumList = curriculumService.findAllCurriculumNotValidatedYet();
-
-        assertThat(curriculumList).isEqualTo(dummyCurriculumList);
-    }
-
-    @Test
-    public void testFindAllCurriculumsWithInvalidCurriculum_withEmptyList() {
-        when(curriculumRepository.findAllByIsValidIsNull()).thenReturn(Collections.emptyList());
-
-        List<Curriculum> curriculumList = curriculumService.findAllCurriculumNotValidatedYet();
-
-        assertThat(curriculumList).isEmpty();
-    }
-
-    @Test
-    public void testFindAllCurriculumWithValidCurricculum() {
-        List<Curriculum> dummyCurriculumList = getDummyCurriculumValidList();
-        when(curriculumRepository.findAllByIsValidIsTrue()).thenReturn(dummyCurriculumList);
-
-        List<Curriculum> curriculumList = curriculumService.findAllCurriculumValidated();
-
-        assertThat(curriculumList).isEqualTo(dummyCurriculumList);
-    }
-
-
-    @Test
-    public void testFindAllCurriculumsWithValidCurriculum_withEmptyList() {
-        when(curriculumRepository.findAllByIsValidIsTrue()).thenReturn(Collections.emptyList());
-
-        List<Curriculum> curriculumList = curriculumService.findAllCurriculumValidated();
-
-        assertThat(curriculumList).isEmpty();
-    }
-
-    @Test
     public void testFindAllByStudent_withValidStudent() {
         List<Curriculum> curriculumList = getDummyCurriculumValidList();
         Student student = getDummyStudent();
@@ -189,7 +134,7 @@ public class CurriculumServiceTest {
 
         List<Curriculum> actualList = curriculumService.findAllByStudent(student);
 
-        assertThat(actualList).isEqualTo(curriculumList);;
+        assertThat(actualList).isEqualTo(curriculumList);
     }
 
     @Test
@@ -330,6 +275,55 @@ public class CurriculumServiceTest {
                 curriculumService.findOneById(34L));
     }
 
+    @Test
+    public void testFindAllByStudentId() throws Exception {
+        Student dummyStudent = getDummyStudent();
+        List<Curriculum> dummyCurriculumList = getDummyCurriculumList();
+        when(studentService.getOneByID(anyLong())).thenReturn(dummyStudent);
+        when(curriculumRepository.findAllByStudent(any())).thenReturn(dummyCurriculumList);
+
+        List<Curriculum> actualCurriculums = curriculumService.findAllByStudentId(dummyStudent.getId());
+
+        assertThat(actualCurriculums).isEqualTo(dummyCurriculumList);
+    }
+
+    @Test
+    void testDeleteOneById() throws Exception {
+        when(curriculumRepository.existsById(any())).thenReturn(true);
+        when(curriculumRepository.getById(any())).thenReturn(getDummyCurriculum());
+        when(offerApplicationService.isCurriculumInUse(any())).thenReturn(false);
+
+        curriculumService.deleteOneById(1L);
+
+        verify(curriculumRepository, times(1)).deleteById(any());
+    }
+
+    @Test
+    void testDeleteOneById_withNullParam() {
+        assertThrows(IllegalArgumentException.class, () ->
+                curriculumService.deleteOneById(null));
+    }
+
+    @Test
+    void testDeleteOneById_withPrincipalCurriculum() {
+        Curriculum curriculum = getDummyCurriculum();
+        curriculum.getStudent().setPrincipalCurriculum(curriculum);
+        when(curriculumRepository.existsById(any())).thenReturn(true);
+        when(curriculumRepository.getById(any())).thenReturn(curriculum);
+
+        assertThrows(CurriculumUsedException.class, () ->
+                curriculumService.deleteOneById(1L));
+    }
+
+    @Test
+    void testDeleteOneById_withCurriculumInUse() {
+        when(curriculumRepository.existsById(any())).thenReturn(true);
+        when(curriculumRepository.getById(any())).thenReturn(getDummyCurriculum());
+        when(offerApplicationService.isCurriculumInUse(any())).thenReturn(true);
+
+        assertThrows(CurriculumUsedException.class, () ->
+                curriculumService.deleteOneById(1L));
+    }
 
     private Curriculum getDummyCurriculum() {
         Student dummyStudent = new Student();
@@ -393,60 +387,6 @@ public class CurriculumServiceTest {
         dummyMonitor.setEmail("toto@gmail.com");
         dummyMonitor.setPassword("testPassword");
         return dummyMonitor;
-    }
-
-    private List<OfferApplication> getDummyOfferAppList() {
-        List<OfferApplication> dummyOfferApplicationList = new ArrayList<>();
-        OfferApplication dummyOfferApplication = new OfferApplication();
-        dummyOfferApplication.setOffer(getDummyOffer());
-        dummyOfferApplication.setCurriculum(getDummyCurriculumOffer());
-        dummyOfferApplication.setId(1L);
-        dummyOfferApplicationList.add(dummyOfferApplication);
-
-        dummyOfferApplication.setId(2L);
-        dummyOfferApplicationList.add(dummyOfferApplication);
-
-        dummyOfferApplication.setId(3L);
-        dummyOfferApplicationList.add(dummyOfferApplication);
-
-        return dummyOfferApplicationList;
-    }
-
-    private List<CurriculumDTO> getDummyCurriculumDTOList() {
-        List<CurriculumDTO> curriculumDTOList = new ArrayList<>();
-        CurriculumDTO curriculumDTO1 = new CurriculumDTO();
-        curriculumDTO1.setFirstName("Summer");
-        curriculumDTO1.setLastName("Winter");
-        curriculumDTO1.setFileName("SW_CV");
-        curriculumDTO1.setFile(new byte[65 * 1024]);
-        curriculumDTOList.add(curriculumDTO1);
-
-        CurriculumDTO curriculumDTO2 = new CurriculumDTO();
-        curriculumDTO2.setFirstName("Summer");
-        curriculumDTO2.setLastName("Winter");
-        curriculumDTO2.setFileName("SW_CV");
-        curriculumDTO2.setFile(new byte[65 * 1024]);
-        curriculumDTOList.add(curriculumDTO2);
-
-        CurriculumDTO curriculumDTO3 = new CurriculumDTO();
-        curriculumDTO3.setFirstName("Summer");
-        curriculumDTO3.setLastName("Winter");
-        curriculumDTO3.setFileName("SW_CV");
-        curriculumDTO3.setFile(new byte[65 * 1024]);
-        curriculumDTOList.add(curriculumDTO3);
-
-        return curriculumDTOList;
-    }
-
-    private OfferDTO getDummyOfferDto() {
-        OfferDTO dummyOfferDTO = new OfferDTO();
-        dummyOfferDTO.setCreator_email("thisemail@email.com");
-        dummyOfferDTO.setSalary(18.0d);
-        dummyOfferDTO.setDescription("Une description");
-        dummyOfferDTO.setAddress("Addresse du cégep");
-        dummyOfferDTO.setTitle("Offer title");
-        dummyOfferDTO.setDepartment("Department name");
-        return dummyOfferDTO;
     }
 
     private List<Curriculum> getDummyCurriculumValidList() {

@@ -3,26 +3,25 @@ import {toast, toastErr} from "../../../vue_frontend/src/services/utility";
 
 export async function createSession(body) {
     return await fetch(`${urlBackend}/sessions`, requestInit(methods.POST, body)).then(
-        response => {
-            return response.json().then((body) => {
-                if (response.status === 200)
-                    toast.fire({title: "Session créée!"})
-                if (response.status === 400)
-                    toastErr.fire({title: body.message})
-            })
-        }, err => console.error(err)
+        response =>
+            response.json().then(
+                body => {
+                    if (response.status === 200)
+                        toast.fire({title: "Session créée!"})
+                    else if (response.status === 400)
+                        toastErr.fire({title: body.message})
+                }), err => console.error(err)
     );
 }
 
 export async function getCurrentAndFutureSession() {
     return await fetch(`${urlBackend}/sessions`, requestInit(methods.GET)).then(
-        response => {
-            return response.json().then((body) => {
+        response =>
+            response.json().then(body => {
                 if (response.status === 200)
                     return body
-                if (response.status === 400)
+                else if (response.status === 400)
                     toastErr.fire({title: body.message})
-            })
-        }, err => console.error(err)
+            }), err => console.error(err)
     );
 }

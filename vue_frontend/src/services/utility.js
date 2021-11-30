@@ -5,7 +5,9 @@ export const regexName = /^[a-zA-Z\-\s]+$/
 export const regexEmail = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 export const regexPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 export const regexCodePostal = /^([A-Za-z]\s?[0-9]){3}$/;
+export const regexMatricule = /^\d{5}$|^\d{7}$/i;
 export const regexMatriculeEtudiant = /^\d{7}$/;
+export const regexPassword = /^[0-9a-zA-Z]{8,64}/;
 
 export const swalErr = Swal.mixin({
     icon: 'error',
@@ -39,6 +41,10 @@ export const toPdfBlob = (pdfFile) => {
     return new Blob([new Uint8Array(numBytes), {type: 'application/pdf'}]);
 }
 
+/**
+ * @param {Blob} blob
+ * @param {string} fileName
+ */
 export const downloadFile = (blob, fileName) => {
     let myUrl = URL.createObjectURL(blob);
 
@@ -48,5 +54,16 @@ export const downloadFile = (blob, fileName) => {
     a.click();
 
     URL.revokeObjectURL(myUrl);
-    toast.fire({title: 'Téléchargement en cours'}).then()
+    toast.fire({title: 'Téléchargé!'}).then()
 }
+/**
+ * @param {*[]} list
+ * @param {function(*): *} key
+ */
+export const uniqBy = (list, key) => {
+    let seen = {};
+    return list.filter(function (item) {
+        let k = key(item);
+        return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+    })
+};

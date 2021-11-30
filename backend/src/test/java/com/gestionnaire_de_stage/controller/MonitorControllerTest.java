@@ -23,13 +23,11 @@ import static org.mockito.Mockito.when;
 @WebMvcTest(MonitorController.class)
 public class MonitorControllerTest {
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private MonitorService monitorService;
-
-    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void monitorSignupTest_withValidEntries() throws Exception {
@@ -51,7 +49,7 @@ public class MonitorControllerTest {
     @Test
     public void monitorSignupTest_withNullEntries() throws Exception {
         Monitor dummyMonitor = getDummyMonitor();
-        when(monitorService.create(any())).thenThrow(IllegalArgumentException.class);
+        when(monitorService.create(any())).thenThrow(new IllegalArgumentException("Le courriel ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/monitor/signup")
@@ -61,13 +59,13 @@ public class MonitorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("Le courriel ne peut pas être vide");
     }
 
     @Test
     public void monitorSignupTest_withInvalidEntries() throws Exception {
         Monitor dummyMonitor = getDummyMonitor();
-        when(monitorService.create(any())).thenThrow(MonitorAlreadyExistsException.class);
+        when(monitorService.create(any())).thenThrow(new MonitorAlreadyExistsException("Un compte existe déjà pour ce moniteur"));
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.post("/monitor/signup")
@@ -76,7 +74,7 @@ public class MonitorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Ce courriel existe déjà!");
+        assertThat(response.getContentAsString()).contains("Un compte existe déjà pour ce moniteur");
     }
 
     @Test
@@ -101,7 +99,7 @@ public class MonitorControllerTest {
     public void monitorLoginTest_withNullEntries() throws Exception {
         String email = "potato@mail.com";
         String password = "secretPasswordShhhh";
-        when(monitorService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
+        when(monitorService.getOneByEmailAndPassword(any(), any())).thenThrow(new IllegalArgumentException("Courriel et mot de passe ne peuvent pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
@@ -110,26 +108,74 @@ public class MonitorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
+        assertThat(response.getContentAsString()).contains("Courriel et mot de passe ne peuvent pas être vide");
     }
 
     @Test
     public void testSupervisorLogin_withInvalidEntries() throws Exception {
         String email = "sinl@gmail.com";
         String password = "weightofworld";
-        when(monitorService.getOneByEmailAndPassword(any(), any())).thenThrow(EmailAndPasswordDoesNotExistException.class);
+        when(monitorService.getOneByEmailAndPassword(any(), any())).thenThrow(new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/monitor/" + email + "/" + password)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
+
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
+        assertThat(response.getContentAsString()).contains("Courriel ou mot de passe invalid");
+    }
+
+    @Test
+    public void testCheckEmailValidty() throws Exception {
+        when(monitorService.isEmailInvalid(any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/monitor/email/{email}", "potato@mail.com")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("false");
+    }
+
+    @Test
+    public void testChangePassword() throws Exception {
+        Monitor dummyMonitor = getDummyMonitor();
+        String newPassword = "newPassword";
+        when(monitorService.changePassword(any(), any())).thenReturn(dummyMonitor);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .put("/monitor/change_password/{id}", dummyMonitor.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newPassword))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Mot de passe changé avec succès");
+    }
+
+    @Test
+    public void testChangePassword_withInvalidId() throws Exception {
+        String newPassword = "newPassword";
+        when(monitorService.changePassword(any(), any())).thenThrow(new IllegalArgumentException("Id invalide"));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .put("/monitor/change_password/{id}", 123412L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newPassword))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Id invalide");
     }
 
     private Monitor getDummyMonitor() {
         Monitor dummyMonitor = new Monitor();
+        dummyMonitor.setId(1L);
         dummyMonitor.setEmail("potato@mail.com");
         dummyMonitor.setPassword("secretPasswordShhhh");
         dummyMonitor.setFirstName("toto");

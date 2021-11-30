@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react";
 import ContractSignature from "./ContratSignature";
 import {getAllContractsToBeSignedForMonitor, getAllContractsToBeStarted} from "../../services/contrat-service";
 import {UserType} from "../../enums/UserTypes";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
 
 export default function ContractsToSign({userType}) {
     const [contracts, setContracts] = useState([]);
@@ -24,7 +25,8 @@ export default function ContractsToSign({userType}) {
         return <MessageNothingToShow message="Aucun contrat à signer pour le moment..."/>
 
 
-    return contracts.map((contract, index) =>
+    return <ContainerBox>{contracts.map((contract, index) =>
         <ContractSignature key={index} removeContract={removeContract} userType={userType}
-                           contract={contract}/>)
+                           contract={contract}/>)}
+    </ContainerBox>
 }

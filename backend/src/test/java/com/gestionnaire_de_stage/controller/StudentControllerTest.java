@@ -33,19 +33,15 @@ import static org.mockito.Mockito.when;
 @WebMvcTest(StudentController.class)
 public class StudentControllerTest {
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private StudentService studentService;
-
     @MockBean
     private ContractService contractService;
-
     @MockBean
     private StageService stageService;
-
-    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void testStudentSignUp_withValidEntries() throws Exception {
@@ -68,7 +64,7 @@ public class StudentControllerTest {
     @Test
     public void testStudentSignUp_withNullStudent() throws Exception {
         Student dummyStudent = getDummyStudent();
-        when(studentService.create(any())).thenThrow(IllegalArgumentException.class);
+        when(studentService.create(any())).thenThrow(new IllegalArgumentException("L'étudiant ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/student/signup")
@@ -78,13 +74,13 @@ public class StudentControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("L'étudiant ne peut pas être vide");
     }
 
     @Test
     public void testStudentSignUp_withInvalidStudent() throws Exception {
         Student dummyStudent = getDummyStudent();
-        when(studentService.create(any())).thenThrow(StudentAlreadyExistsException.class);
+        when(studentService.create(any())).thenThrow(new StudentAlreadyExistsException("Un compte existe déjà pour cet étudiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/student/signup")
@@ -94,7 +90,7 @@ public class StudentControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Ce courriel existe déjà!");
+        assertThat(response.getContentAsString()).contains("Un compte existe déjà pour cet étudiant");
     }
 
     @Test
@@ -119,7 +115,7 @@ public class StudentControllerTest {
     public void testStudentLogin_withNullEntries() throws Exception {
         String email = "clip@gmail.com";
         String password = "thiswilldo";
-        when(studentService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
+        when(studentService.getOneByEmailAndPassword(any(), any())).thenThrow(new IllegalArgumentException("Courriel et mot de passe ne peuvent pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/student/" + email + "/" + password)
@@ -128,14 +124,14 @@ public class StudentControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
+        assertThat(response.getContentAsString()).contains("Courriel et mot de passe ne peuvent pas être vide");
     }
 
     @Test
     public void testStudentLogin_withInvalidEntries() throws Exception {
         String email = "clip@gmail.com";
         String password = "thiswilldo";
-        when(studentService.getOneByEmailAndPassword(any(), any())).thenThrow(EmailAndPasswordDoesNotExistException.class);
+        when(studentService.getOneByEmailAndPassword(any(), any())).thenThrow(new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/student/" + email + "/" + password)
@@ -144,7 +140,7 @@ public class StudentControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
+        assertThat(response.getContentAsString()).contains("Courriel ou mot de passe invalide");
     }
 
     @Test
@@ -156,8 +152,8 @@ public class StudentControllerTest {
         when(studentService.setPrincipalCurriculum(any(), any())).thenReturn(student);
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -170,16 +166,16 @@ public class StudentControllerTest {
         Student student = getDummyStudent();
         Curriculum curriculum = getDummyCurriculum();
         when(studentService.getOneByID(any()))
-                .thenThrow(new IllegalArgumentException("ID est null"));
+                .thenThrow(new IllegalArgumentException("L'identifiant de l'étudiant ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("null");
+        assertThat(response.getContentAsString()).contains("L'identifiant de l'étudiant ne peut pas être vide");
     }
 
     @Test
@@ -187,16 +183,16 @@ public class StudentControllerTest {
         Student student = getDummyStudent();
         Curriculum curriculum = getDummyCurriculum();
         when(studentService.getOneByID(any()))
-                .thenThrow(new IdDoesNotExistException("Aucun étudiant trouvé pour cet ID"));
+                .thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Aucun étudiant trouvé pour cet ID");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
     }
 
     @Test
@@ -208,8 +204,8 @@ public class StudentControllerTest {
                 .thenThrow(new CurriculumNotValidException("Le curriculum doit être valide"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/student/set_principal/" + student.getId() + "/" + curriculum.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -241,35 +237,8 @@ public class StudentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Student> actualStudentList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualStudentList).isEqualTo(list);
-    }
-
-    @Test
-    public void testGetAllStudentWithoutCv() throws Exception {
-        List<Student> list = Arrays.asList(new Student(), new Student());
-        when(studentService.getAllStudentWithoutCv()).thenReturn(Arrays.asList(new Student(), new Student()));
-
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/no_cv")
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Student> actualStudentList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualStudentList).isEqualTo(list);
-    }
-
-    @Test
-    public void testGetAllStudentWithInvalidCv() throws Exception {
-        List<Student> list = Arrays.asList(new Student(), new Student());
-        when(studentService.getAllStudentWithInvalidCv()).thenReturn(Arrays.asList(new Student(), new Student()));
-
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/cv_invalid")
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Student> actualStudentList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<Student> actualStudentList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualStudentList).isEqualTo(list);
     }
@@ -285,7 +254,8 @@ public class StudentControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         final List<StudentMonitorOfferDTO> actual =
-                MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+                MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+                });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actual.size()).isEqualTo(studentMonitorOfferDTOList.size());
     }
@@ -294,14 +264,15 @@ public class StudentControllerTest {
     public void testGetAllStudentsNotYetEvaluatedAsStudentMonitorOfferDTOThrowsIllegalArg() throws Exception {
         when(stageService.getAllWithNoEvalStagiaire()).thenReturn(getDummyStageList());
         when(contractService.stageListToStudentMonitorOfferDtoList(any()))
-                .thenThrow(new IllegalArgumentException("La liste de stage ne peut pas être null"));
+
+                .thenThrow(new IllegalArgumentException("La liste de stage ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/not_evaluated")
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("La liste de stage ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("La liste de stage ne peut pas être vide");
     }
 
     @Test
@@ -315,7 +286,8 @@ public class StudentControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         final List<StudentMonitorOfferDTO> actual =
-                MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+                MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+                });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actual.size()).isEqualTo(studentMonitorOfferDTOList.size());
     }
@@ -324,15 +296,75 @@ public class StudentControllerTest {
     public void testGetAllStudentsWithCompanyNotYetEvaluatedAsStudentMonitorOfferDTOThrowsIllegalArg() throws Exception {
         when(stageService.getAllWithNoEvalMilieu()).thenReturn(getDummyStageList());
         when(contractService.stageListToStudentMonitorOfferDtoList(any()))
-                .thenThrow(new IllegalArgumentException("La liste de stage ne peut pas être null"));
+                .thenThrow(new IllegalArgumentException("La liste de stage ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/student/company_not_evaluated")
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("La liste de stage ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("La liste de stage ne peut pas être vide");
     }
+
+    @Test
+    public void testCheckMatricule() throws Exception {
+        when(studentService.isMatriculeValid(any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/student/matricule/{matricule}", "1234567")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("true");
+    }
+
+    @Test
+    public void testCheckEmailValidty() throws Exception {
+        when(studentService.isEmailInvalid(any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/student/email/{email}", "potato@mail.com")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("false");
+    }
+
+    @Test
+    public void testChangePassword() throws Exception {
+        Student dummyStudent = getDummyStudent();
+        String newPassword = "newPassword";
+        when(studentService.changePassword(any(), any())).thenReturn(dummyStudent);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .put("/student/change_password/{id}", dummyStudent.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newPassword))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Mot de passe changé avec succès");
+    }
+
+    @Test
+    public void testChangePassword_withInvalidId() throws Exception {
+        String newPassword = "newPassword";
+        when(studentService.changePassword(any(), any())).thenThrow(new IllegalArgumentException("Id invalide"));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .put("/student/change_password/{id}", 123412L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newPassword))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Id invalide");
+    }
+
 
     private StudentMonitorOfferDTO getDummyStudentMonitorOfferDTO() {
         return new StudentMonitorOfferDTO(
@@ -370,18 +402,6 @@ public class StudentControllerTest {
         dummyMonitor.setDepartment("Informatique");
         dummyMonitor.setPassword("testPassword");
         return dummyMonitor;
-    }
-
-    private List<Student> getDummyStudentList() {
-        List<Student> dummyStudentList = new ArrayList<>();
-        Long idIterator = 1L;
-        for (int i = 0; i < 3; i++) {
-            Student dummyStudent = getDummyStudent();
-            dummyStudent.setId(idIterator);
-            dummyStudentList.add(dummyStudent);
-            idIterator++;
-        }
-        return dummyStudentList;
     }
 
     private Student getDummyStudent() {
@@ -429,7 +449,7 @@ public class StudentControllerTest {
         Stage stage1 = getDummyStage();
         Stage stage2 = getDummyStage();
         stage2.setId(2L);
-        
+
         Stage stage3 = getDummyStage();
         stage3.setId(3L);
         return List.of(stage1, stage2, stage3);

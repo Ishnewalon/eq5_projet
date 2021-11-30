@@ -2,9 +2,6 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.AssignDto;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.model.Supervisor;
@@ -34,16 +31,22 @@ public class SupervisorController {
         Supervisor createdSupervisor;
         try {
             createdSupervisor = supervisorService.create(supervisor);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas être null"));
-        } catch (SupervisorAlreadyExistsException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Erreur: Ce courriel existe déjà!"));
+                    .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSupervisor);
+    }
+
+    @GetMapping("/matricule/{matricule}")
+    public ResponseEntity<?> checkValidMatricule(@PathVariable String matricule) {
+        return ResponseEntity.ok(!supervisorService.isMatriculeValid(matricule));
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> checkValidEmail(@PathVariable String email) {
+        return ResponseEntity.ok(supervisorService.isEmailInvalid(email));
     }
 
     @GetMapping("/{email}/{password}")
@@ -51,22 +54,17 @@ public class SupervisorController {
         Supervisor supervisor;
         try {
             supervisor = supervisorService.getOneByEmailAndPassword(email, password);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));
-        } catch (EmailAndPasswordDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));
+                    .body(new ResponseMessage(e.getMessage()));
         }
         return ResponseEntity.ok(supervisor);
     }
 
     @GetMapping
     public ResponseEntity<?> getAllSupervisor() {
-        List<Supervisor> supervisorList = supervisorService.getAll();
-        return ResponseEntity.ok(supervisorList);
+        return ResponseEntity.ok(supervisorService.getAll());
     }
 
     @PostMapping("/assign/student")
@@ -76,15 +74,18 @@ public class SupervisorController {
         try {
             student = studentService.getOneByID(assignDto.getIdStudent());
             supervisor = supervisorService.getOneByID(assignDto.getIdSupervisor());
-        } catch (IdDoesNotExistException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Inexistant"));
+                    .body(new ResponseMessage(e.getMessage()));
         }
         boolean assign = studentService.assign(student, supervisor);
-
-        String response = assign ? "Assignement fait!" : "Assignement rejeté, l'étudiant est déjà assigné!";
-        return ResponseEntity.ok(new ResponseMessage(response));
+        if (assign) {
+            return ResponseEntity.ok(new ResponseMessage("Affectation faite!"));
+        }
+        return ResponseEntity
+                .badRequest()
+                .body(new ResponseMessage("Affectation rejetée, l'étudiant est déjà assigné!"));
     }
 
     @GetMapping("/students_status/{supervisor_id}")
@@ -92,16 +93,24 @@ public class SupervisorController {
         List<OfferApplication> offerApplicationList;
         try {
             offerApplicationList = supervisorService.getStudentsStatus(supervisor_id);
-        } catch (IdDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body("Ce superviseur n'existe pas");
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(e.getMessage());
         }
         return ResponseEntity
                 .ok(offerApplicationList);
+    }
+
+    @PutMapping("/change_password/{id}")
+    public ResponseEntity<?> updatePassword(@PathVariable Long id, @RequestBody String password) {
+        try {
+            supervisorService.changePassword(id, password);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+        return ResponseEntity.ok(new ResponseMessage("Mot de passe changé avec succès"));
     }
 }

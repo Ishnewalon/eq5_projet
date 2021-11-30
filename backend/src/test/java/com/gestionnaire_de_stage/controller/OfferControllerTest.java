@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ValidationOffer;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
+import com.gestionnaire_de_stage.exception.DoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
@@ -61,7 +61,7 @@ public class OfferControllerTest {
 
     @Test
     public void testOfferCreate_withNullEntry() throws Exception {
-        when(offerService.create(any())).thenThrow(new IllegalArgumentException("Offre est null"));
+        when(offerService.create(any())).thenThrow(new IllegalArgumentException("L'offre ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/add")
@@ -71,7 +71,7 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Offre est null");
+        assertThat(response.getContentAsString()).contains("L'offre ne peut pas être vide");
     }
 
     @Test
@@ -79,7 +79,7 @@ public class OfferControllerTest {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
-        when(offerService.create(any())).thenThrow(new IllegalArgumentException("Le courriel de l'utilisateur ne peut être null"));
+        when(offerService.create(any())).thenThrow(new IllegalArgumentException("Le courriel ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/add")
@@ -89,14 +89,14 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).containsIgnoringCase("Le courriel de l'utilisateur ne peut être null");
+        assertThat(response.getContentAsString()).containsIgnoringCase("Le courriel ne peut pas être vide");
     }
 
     @Test
     public void testOfferCreate_withInvalidId() throws Exception {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOfferDTO.setIdSession(null);
-        when(offerService.create(any())).thenThrow(IdDoesNotExistException.class);
+        when(offerService.create(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas de session associée à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/add")
@@ -106,7 +106,7 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).containsIgnoringCase("L'id de la session n'existe pas");
+        assertThat(response.getContentAsString()).containsIgnoringCase("Il n'y a pas de session associée à cet identifiant");
     }
 
     @Test
@@ -114,7 +114,7 @@ public class OfferControllerTest {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
-        when(offerService.create(any())).thenThrow(new OfferAlreadyExistsException());
+        when(offerService.create(any())).thenThrow(new OfferAlreadyExistsException("Cette offre a déjà été créée"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/add")
@@ -124,7 +124,7 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Offre existe déjà");
+        assertThat(response.getContentAsString()).contains("Cette offre a déjà été créée");
     }
 
     @Test
@@ -132,7 +132,7 @@ public class OfferControllerTest {
         OfferDTO dummyOfferDTO = getDummyOfferDTO();
         dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
-        when(offerService.create(any())).thenThrow(EmailDoesNotExistException.class);
+        when(offerService.create(any())).thenThrow(new DoesNotExistException("L'email n'existe pas"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/add")
@@ -142,14 +142,14 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Le courriel n'existe pas");
+        assertThat(response.getContentAsString()).contains("L'email n'existe pas");
     }
 
     @Test
     public void testUpdateOffer_withNullId() throws Exception {
         dummyOffer = getDummyOffer();
         dummyOffer.setId(null);
-        when(offerService.validation(any())).thenThrow(new IllegalArgumentException("L'id est null"));
+        when(offerService.validation(any())).thenThrow(new IllegalArgumentException("L'identifiant de l'offre ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/validate")
@@ -159,13 +159,13 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).isEqualTo("L'id est null");
+        assertThat(response.getContentAsString()).contains("L'identifiant de l'offre ne peut pas être vide");
     }
 
     @Test
     public void testUpdateOffer_withOfferAlreadyTreated() throws Exception {
         dummyOffer = new Offer();
-        when(offerService.validation(any())).thenThrow(new OfferAlreadyTreatedException());
+        when(offerService.validation(any())).thenThrow(new OfferAlreadyTreatedException("Cet offre a déjà été traitée"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/validate")
@@ -175,7 +175,7 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Offre déjà traité!");
+        assertThat(response.getContentAsString()).contains("Cet offre a déjà été traitée");
     }
 
     @Test
@@ -198,7 +198,7 @@ public class OfferControllerTest {
     @Test
     public void testUpdateOffer_withInvalidId() throws Exception {
         dummyOffer = getDummyOffer();
-        when(offerService.validation(any())).thenThrow(new IdDoesNotExistException());
+        when(offerService.validation(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'offre associée à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/offers/validate")
@@ -208,18 +208,17 @@ public class OfferControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Offre non existante!");
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'offre associée à cet identifiant");
     }
 
 
     @Test
-    public void testGetOffersByDepartment() throws Exception {
-        String department = "myDepartment";
+    public void testGetOffersNotYetApplied() throws Exception {
         List<Offer> dummyArrayOffer = getDummyArrayOffer();
-        when(offerService.getOffersByDepartment(any())).thenReturn(dummyArrayOffer);
+        when(offerService.getOffersNotYetApplied(any())).thenReturn(dummyArrayOffer);
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get(String.format("/offers/%s", department))
+                        MockMvcRequestBuilders.get("/offers/{0}", 1L)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
@@ -231,33 +230,53 @@ public class OfferControllerTest {
     }
 
     @Test
-    public void testGetOffersByDepartment_withNoOffer() throws Exception {
-        String department = "myDepartmentWithNoOffer";
+    public void testGetOffersNotYetApplied_withInvalidStudent() throws Exception {
+        when(offerService.getOffersNotYetApplied(any()))
+                .thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/offers/{0}", department)
+                        MockMvcRequestBuilders.get("/offers/{0}", 123412L)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
+    }
+
+
+    @Test
+    void testGetValidOffers() throws Exception {
+        List<Offer> dummyArrayOffer = getDummyArrayOffer();
+        when(offerService.getValidOffers()).thenReturn(dummyArrayOffer);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/offers/valid")
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         List<Offer> returnedOffers = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
         });
-        assertThat(returnedOffers).isEmpty();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
     }
 
     @Test
-    public void testGetOffersByDepartment_withNoDepartment() throws Exception {
-        when(offerService.getOffersByDepartment(any())).thenThrow(new IllegalArgumentException("Le département n'est pas précisé"));
+    void testGetNotValidatedOffers() throws Exception {
+        List<Offer> dummyArrayOffer = getDummyArrayOffer();
+        when(offerService.getNotValidatedOffers()).thenReturn(dummyArrayOffer);
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/offers/")
+                        MockMvcRequestBuilders.get("/offers/not_validated")
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(response.getContentAsString()).contains("Le département n'est pas précisé");
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        List<Offer> returnedOffers = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
     }
 
     private List<Offer> getDummyArrayOffer() {
@@ -291,39 +310,5 @@ public class OfferControllerTest {
         offerDTO.setTitle("Offer title");
         offerDTO.setDepartment("Department name");
         return offerDTO;
-    }
-
-    @Test
-    void getValidOffers() throws Exception {
-        List<Offer> dummyArrayOffer = getDummyArrayOffer();
-        when(offerService.getValidOffers()).thenReturn(dummyArrayOffer);
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/offers/valid")
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Offer> returnedOffers = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
-        });
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
-    }
-
-    @Test
-    void getNotValidatedOffers() throws Exception {
-        List<Offer> dummyArrayOffer = getDummyArrayOffer();
-        when(offerService.getNotValidatedOffers()).thenReturn(dummyArrayOffer);
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/offers/not_validated")
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Offer> returnedOffers = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
-        });
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(returnedOffers).isEqualTo(dummyArrayOffer);
     }
 }
