@@ -2,10 +2,7 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.dto.StudentMonitorOfferDTO;
-import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.ContractRepository;
 import com.gestionnaire_de_stage.repository.StudentRepository;
@@ -126,10 +123,9 @@ public class ContractService {
         return !contractRepository.existsByIdAndSession_YearGreaterThanEqual(contract_id, Year.now());
     }
 
-    public Contract gsStartContract(Contract contract, ContractStarterDto contractStarterDto) throws IdDoesNotExistException, IllegalArgumentException, StudentAlreadyHaveAContractException {
+    public Contract gsStartContract(Contract contract, ContractStarterDto contractStarterDto) throws IdDoesNotExistException, IllegalArgumentException, StudentAlreadyHaveAContractException, StudentIsNotAssignedException {
         Manager manager = managerService.getOneByID(contractStarterDto.getIdManager());
         contract.setManager(manager);
-
 
         OfferApplication offerApplication = offerApplicationService.getOneById(contractStarterDto.getIdOfferApplication());
         Offer offer = offerApplication.getOffer();
@@ -138,7 +134,9 @@ public class ContractService {
         Student student = curriculum.getStudent();
         if (doesStudentAlreadyHaveAContract(student.getId(), contract.getSession()))
             throw new StudentAlreadyHaveAContractException("Un contrat existe déjà pour l'étudiant ayant la matricule " + student.getMatricule());
-
+        if (studentRepository.existsByIdAndSupervisorNull(student.getId())) {
+            throw new StudentIsNotAssignedException("L'étudiant doit être affecté à un superviseur avant de créer un contrat");
+        }
         contract.setStudent(student);
         contract.setMonitor(monitor);
         contract.setOffer(offer);

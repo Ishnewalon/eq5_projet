@@ -133,7 +133,7 @@ class OfferApplicationServiceTest {
         List<Student> actualOfferStudent = offerApplicationService
                 .getOffersApplicationsStageTrouver();
 
-        assertThat(actualOfferStudent).hasSizeGreaterThan(0);
+        assertThat(actualOfferStudent).isNotEmpty();
     }
 
 

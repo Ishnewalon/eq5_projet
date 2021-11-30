@@ -21,7 +21,7 @@ export default function StudentStatusView() {
             })
     }, [auth.user.id])
 
-    const setStatus = (offerApp) => {
+    const getViewFromStatus = (offerApp) => {
         switch (offerApp.status) {
             case "CV_ENVOYE":
                 return <RiFolderReceivedFill color={"gold"} title={"L'étudiant a envoyé son cv"} size={27}/>
@@ -57,7 +57,7 @@ export default function StudentStatusView() {
                         <td>{offerApp.curriculum.student.firstName} {offerApp.curriculum.student.lastName}</td>
                         <td>{offerApp.curriculum.student.matricule}</td>
                         <td>{offerApp.offer.title}</td>
-                        <td>{setStatus(offerApp)}</td>
+                        <td>{getViewFromStatus(offerApp)}</td>
                     </TableRow>
                 )}
             </Table>

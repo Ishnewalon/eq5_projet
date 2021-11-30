@@ -41,7 +41,7 @@ export async function getAllContractsToBeSignedForMonitor(monitorId) {
         response =>
             response.json().then(
                 body => {
-                    if (response.status === 400)
+                    if (response.status === 200)
                         return body;
                     else if (response.status === 400)
                         swalErr.fire({text: body.message})
