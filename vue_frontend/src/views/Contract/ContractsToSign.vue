@@ -10,7 +10,7 @@
 import {UserType} from "@/models/RegisterVars";
 import {getAllContractsToBeSignedForMonitor, getAllContractsToBeStarted} from "@/services/contrat-service";
 import authService from "@/services/auth-service";
-import ContractSignature from "@/views/ContractSignature";
+import ContractSignature from "@/views/Contract/ContractSignature";
 
 export default {
   name: "ContractsToSign",

@@ -49,8 +49,8 @@
 </template>
 
 <script>
-import OfferDTO from "../models/OfferDTO";
-import offerService from "../services/offer-service";
+import OfferDTO from "../../models/OfferDTO";
+import offerService from "../../services/offer-service";
 import Swal from "sweetalert2";
 
 export default {

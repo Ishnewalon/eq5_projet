@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Offer from "../models/Offer";
+import Offer from "../../models/Offer";
 
 export default {
   name: "PreviewOffer",

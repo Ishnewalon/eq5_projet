@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import Offer from '../models/Offer';
-import offerService from "../services/offer-service";
+import Offer from '../../models/Offer';
+import offerService from "../../services/offer-service";
 import Swal from "sweetalert2";
 import PreviewOffer from './PreviewOffer';
 

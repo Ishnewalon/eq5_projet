@@ -20,7 +20,7 @@
 
 <script>
 import CurriculumDto from "../models/CurriculumDto";
-import PreviewOffer from "../views/PreviewOffer";
+import PreviewOffer from "./Offer/PreviewOffer";
 
 export default {
   name: "PreviewStudent",

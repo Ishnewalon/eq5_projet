@@ -2,6 +2,7 @@ import {methods, requestInit, urlBackend} from "./serviceUtils";
 import Swal from "sweetalert2";
 import toastErr from "sweetalert2";
 import {UserType} from "@/models/RegisterVars";
+import {swalErr, toast} from "./utility";
 
 const url = `${urlBackend}/contracts`;
 
@@ -22,7 +23,7 @@ async function signContract(userType, signature, contractId) {
         response => {
             return response.json().then(
                 body => {
-                    if (response.ok) {
+                    if (response.ok)
                         Swal.fire({text: body.message, icon: 'success'});
                     else if (response.status === 400)
                         swalErr.fire({text: body.message})

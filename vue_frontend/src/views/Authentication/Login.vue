@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import AuthService from '../services/auth-service';
+import AuthService from '../../services/auth-service';
 import Swal from "sweetalert2";
 
 export default {

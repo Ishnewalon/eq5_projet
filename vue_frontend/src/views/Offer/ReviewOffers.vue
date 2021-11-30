@@ -9,9 +9,9 @@
 </template>
 <script>
 
-import offerService from "../services/offer-service";
+import offerService from "../../services/offer-service";
 import Swal from "sweetalert2";
-import ValidateOffer from "../views/ValidateOffer";
+import ValidateOffer from "./ValidateOffer";
 
 export default {
   name: "ReviewOffers",

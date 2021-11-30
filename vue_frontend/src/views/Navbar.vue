@@ -47,6 +47,9 @@
       <a>
         <router-link to="/student/sign_contract">Signer contrat</router-link>
       </a>
+      <a>
+        <router-link to="/student/get_contract">Voir contrat</router-link>
+      </a>
     </div>
   </nav>
 </template>

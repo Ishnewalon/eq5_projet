@@ -1,21 +1,22 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import Register from "../views/Register";
-import Login from "../views/Login";
-import LoggedIn from "../views/LoggedIn";
-import RegisterStudent from "../views/RegisterStudent";
-import RegisterSupervisor from "../views/RegisterSupervisor";
-import RegisterMonitor from "../views/RegisterMonitor";
+import Register from "../views/Authentication/Register";
+import Login from "../views/Authentication/Login";
+import LoggedIn from "../views/Authentication/LoggedIn";
+import RegisterStudent from "../views/Authentication/RegisterStudent";
+import RegisterSupervisor from "../views/Authentication/RegisterSupervisor";
+import RegisterMonitor from "../views/Authentication/RegisterMonitor";
 import TeleverserCv from "../views/TeleverserCv";
 import authService from "../services/auth-service";
-import MonitorCreateOffer from "../views/MonitorCreateOffer";
-import ManagerCreateOffer from "../views/ManagerCreateOffer";
-import ReviewOffers from "../views/ReviewOffers";
-import ViewOffers from "@/views/ViewOffers";
+import MonitorCreateOffer from "../views/Offer/MonitorCreateOffer";
+import ManagerCreateOffer from "../views/Offer/ManagerCreateOffer";
+import ReviewOffers from "../views/Offer/ReviewOffers";
+import ViewOffers from "@/views/Offer/ViewOffers";
 import ManagerResumeValidation from "@/views/ManagerResumeValidation";
 import ViewAppliedStudents from "@/views/ViewAppliedStudents";
-import StartContracts from "@/views/StartContracts";
-import ContractToSignStudent from "@/views/ContractToSignStudent";
-import ContractsToSign from "@/views/ContractsToSign";
+import StartContracts from "@/views/Contract/StartContracts";
+import ContractToSignStudent from "@/views/Contract/ContractToSignStudent";
+import ContractsToSign from "@/views/Contract/ContractsToSign";
+import StudentGetContract from "@/views/Contract/StudentGetContract";
 
 
 function guardRoute(to, from, next) {
@@ -73,6 +74,12 @@ const routes = [
         path: '/student/sign_contract',
         name: 'Signature du contrat',
         component: ContractToSignStudent,
+        beforeEnter: guardRoute
+    },
+    {
+        path: '/student/get_contract',
+        name: 'Voir contrat',
+        component: StudentGetContract,
         beforeEnter: guardRoute
     },
     {
