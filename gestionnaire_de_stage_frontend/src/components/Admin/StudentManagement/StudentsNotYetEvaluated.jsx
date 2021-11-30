@@ -11,7 +11,6 @@ export default function StudentsNotYetEvaluated() {
     useEffect(() => {
         getAllStudentsNotYetEvaluated()
             .then(dtoList => {
-                console.log(dtoList)
                 setStudentMonitorOfferDtoList(dtoList)
             })
             .catch(e => {
