@@ -1,7 +1,6 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.service.ManagerService;
 import org.springframework.http.ResponseEntity;
@@ -28,5 +27,10 @@ public class ManagerController {
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
         }
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> checkValidEmail(@PathVariable String email) {
+        return ResponseEntity.ok(managerService.isEmailInvalid(email));
     }
 }

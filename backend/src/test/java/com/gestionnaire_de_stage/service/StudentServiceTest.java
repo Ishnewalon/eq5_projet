@@ -17,7 +17,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -258,7 +257,6 @@ public class StudentServiceTest {
 
         assertThrows(IdDoesNotExistException.class,
                 () -> studentService.setPrincipalCurriculum(student, curriculum.getId()));
-
     }
 
     @Test
@@ -272,7 +270,6 @@ public class StudentServiceTest {
 
         assertThrows(CurriculumNotValidException.class,
                 () -> studentService.setPrincipalCurriculum(student, curriculum.getId()));
-
     }
 
     @Test
@@ -286,27 +283,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testGetAllStudentWithoutCv() {
-        List<Student> dummyStudentList = getDummyStudentList();
-        when(studentRepository.findAllByPrincipalCurriculumIsNull()).thenReturn(dummyStudentList);
-
-        List<Student> actualStudentList = studentService.getAllStudentWithoutCv();
-
-        assertThat(actualStudentList.size()).isEqualTo(dummyStudentList.size());
-    }
-
-    @Test
-    public void testGetAllStudentWithInvalidCv() {
-        List<Student> dummyStudentList = getDummyStudentList();
-        when(studentRepository.findAllByPrincipalCurriculumIsNullOrPrincipalCurriculum_IsValid(any())).thenReturn(dummyStudentList);
-
-        List<Student> actualStudentList = studentService.getAllStudentWithInvalidCv();
-
-        assertThat(actualStudentList.size()).isEqualTo(dummyStudentList.size());
-    }
-
-    @Test
-    void testAssign() {
+    void testAssign_withUnassignedStudent() {
         Student dummyStudent = getDummyStudent();
         Supervisor dummySupervisor = getDummySupervisor();
         when(studentRepository.save(any())).thenReturn(dummyStudent);
@@ -314,6 +291,17 @@ public class StudentServiceTest {
         boolean isAssigned = studentService.assign(dummyStudent, dummySupervisor);
 
         assertThat(isAssigned).isTrue();
+    }
+
+    @Test
+    void testAssign_withAssignedStudent() {
+        Student dummyStudent = getDummyStudent();
+        Supervisor dummySupervisor = getDummySupervisor();
+        dummyStudent.setSupervisor(dummySupervisor);
+
+        boolean isAssigned = studentService.assign(dummyStudent, dummySupervisor);
+
+        assertThat(isAssigned).isFalse();
     }
 
     @Test
@@ -340,6 +328,27 @@ public class StudentServiceTest {
                 () -> studentService.getOneByEmail(email),
                 "L'email n'existe pas");
     }
+
+    @Test
+    public void testChangePassword() throws IdDoesNotExistException {
+        Student dummyStudent = getDummyStudent();
+        when(studentRepository.existsById(any())).thenReturn(true);
+        when(studentRepository.getById(any())).thenReturn(dummyStudent);
+        when(studentRepository.save(any())).thenReturn(dummyStudent);
+
+        Student actual = studentService.changePassword(dummyStudent.getId(), "newPassword");
+
+        assertThat(actual.getPassword()).isEqualTo("newPassword");
+        assertThat(actual.getId()).isEqualTo(dummyStudent.getId());
+    }
+
+
+    @Test
+    public void testChangePassword_withInvalidId() {
+        assertThrows(IdDoesNotExistException.class,
+                () -> studentService.changePassword(1L, "newPassword"));
+    }
+
 
     private Student getDummyStudent() {
         Student dummyStudent = new Student();

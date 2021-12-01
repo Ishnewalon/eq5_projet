@@ -2,8 +2,6 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
 import com.gestionnaire_de_stage.dto.StudentMonitorOfferDTO;
-import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.ContractService;
@@ -45,6 +43,16 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdStudent);
     }
 
+    @GetMapping("/matricule/{matricule}")
+    public ResponseEntity<?> checkValidMatricule(@PathVariable String matricule) {
+        return ResponseEntity.ok(!studentService.isMatriculeValid(matricule));
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> checkValidEmail(@PathVariable String email) {
+        return ResponseEntity.ok(studentService.isEmailInvalid(email));
+    }
+
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
         Student student;
@@ -74,16 +82,6 @@ public class StudentController {
     @GetMapping
     public List<Student> getAllStudents() {
         return studentService.getAll();
-    }
-
-    @GetMapping("/no_cv")
-    public List<Student> getAllStudentsWithoutCv() {
-        return studentService.getAllStudentWithoutCv();
-    }
-
-    @GetMapping("/cv_invalid")
-    public List<Student> getAllStudentsWithInvalidCv() {
-        return studentService.getAllStudentWithInvalidCv();
     }
 
     @GetMapping("/needAssignement")
@@ -123,4 +121,17 @@ public class StudentController {
                     .body(new ResponseMessage(e.getMessage()));
         }
     }
+
+    @PutMapping("/change_password/{id}")
+    public ResponseEntity<?> updatePassword(@PathVariable Long id, @RequestBody String password) {
+        try {
+            studentService.changePassword(id, password);
+            return ResponseEntity.ok(new ResponseMessage("Mot de passe changé avec succès"));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+    }
+
 }

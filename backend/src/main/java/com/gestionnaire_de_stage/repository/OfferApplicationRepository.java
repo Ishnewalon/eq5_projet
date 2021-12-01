@@ -21,9 +21,11 @@ public interface OfferApplicationRepository extends JpaRepository<OfferApplicati
 
     List<OfferApplication> getAllByCurriculum_StudentId(Long id);
 
-    List<OfferApplication> getAllByStatusAndSession_YearGreaterThanEqual(Status status, Year session_year);
+    List<OfferApplication> getAllByStatusAndSession_YearGreaterThanEqualAndCurriculum_Student_SupervisorIsNull(Status status, Year session_year);
 
     List<OfferApplication> getAllByStatusAndCurriculum_StudentIdAndSession_YearGreaterThanEqual(Status status, Long curriculum_student_id, Year session_year);
+
+    List<OfferApplication> getAllByStatusAndSession_YearGreaterThanEqual(Status status, Year session_year);
 
     List<OfferApplication> findAllByCurriculum_Student_Supervisor_IdAndSession_YearGreaterThanEqual(Long curriculum_student_supervisor_id, Year session_year);
 

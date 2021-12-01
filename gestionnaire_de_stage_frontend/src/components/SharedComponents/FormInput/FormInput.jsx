@@ -1,14 +1,14 @@
-import {FormField} from "../FormField/FormField";
 import PropTypes from "prop-types";
 
 export function FormInput(props) {
-    const {register, error, label, name, placeholder, type, validation} = props;
-    return <FormField htmlFor={name}>
-        <label>{label}</label>
-        <input name={name} placeholder={placeholder} className={error ? "border-danger" : ""}
-               type={type} {...register(name, validation)} defaultValue={(type === "number" ? 0 : "")}/>
-        {error && <span>{error.message}</span>}
-    </FormField>;
+    const {register, error, label, name, placeholder, type, validation, autoComplete} = props;
+    return <div className="form-floating mb-2">
+        <input id={name} name={name} placeholder={placeholder} className={"form-control" + (error ? " is-invalid" : "")}
+               type={type} {...register(name, validation)} defaultValue={(type === "number" ? 0 : "")}
+               autoComplete={autoComplete}/>
+        <label htmlFor={name}>{label}</label>
+        {error && <span className="text-danger">{error.message}</span>}
+    </div>
 }
 
 FormInput.propTypes = {
@@ -19,7 +19,8 @@ FormInput.propTypes = {
     placeholder: PropTypes.string,
     type: PropTypes.oneOf(['text', 'number', 'tel', 'email', 'password', 'date']).isRequired,
     errorMessage: PropTypes.string,
-    validation: PropTypes.object.isRequired
+    validation: PropTypes.object.isRequired,
+    autoComplete: PropTypes.string
 };
 FormInput.defaultProps = {
     placeholder: "",

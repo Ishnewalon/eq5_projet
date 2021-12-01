@@ -4,7 +4,7 @@ import {
     getAllCurriculumsByStudentWithPrincipal,
     setPrincipalCurriculum
 } from "../../services/curriculum-service";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import {AiOutlineCloseCircle, BsTrash, GoStar, MdOutlinePendingActions} from "react-icons/all";
 import {downloadFile, toPdfBlob} from "../../utility";
@@ -67,7 +67,7 @@ export default function CurriculumsStudent() {
     };
 
     if (!curriculumsWithPrincipal.curriculumList || curriculumsWithPrincipal.curriculumList.length === 0)
-        return <MessageNothingToShow message="Aucun C.V. à afficher"/>
+        return <MessageNothingToShow message="Aucun C.V. à afficher, pensez à téléversez le votre"/>
 
     const deleteCurriculum = cv => e => {
         e.preventDefault();

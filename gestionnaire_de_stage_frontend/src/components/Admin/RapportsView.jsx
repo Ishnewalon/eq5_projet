@@ -51,20 +51,20 @@ function Menu() {
         <CardsView>
             <RapportCard title="Rapport des offres validées"
                          description="Liste de toutes les offres enregistrées et que vous avez validées"
-                         to={{pathname:"/dashboard/rapports/1", state:{from:location}}}/>
+                         to={{pathname: "/dashboard/rapports/1", state: {from: location}}}/>
             <RapportCard title="Rapport des offres non validées"
                          description="Liste de toutes les offres enregistrées et pas encore validées"
-                         to={{pathname:"/dashboard/rapports/2", state:{from:location}}}/>
+                         to={{pathname: "/dashboard/rapports/2", state: {from: location}}}/>
             <RapportCard title="Rapport des étudiants avec leur status"
                          description="Liste des étudiants qui ont appliqué au moins 1 fois"
-                         to={{pathname:"/dashboard/rapports/3", state:{from:location}}}/>
+                         to={{pathname: "/dashboard/rapports/3", state: {from: location}}}/>
             <RapportCard title="Rapport des étudiants pas évalués par le moniteur"
                          description="Liste des étudiants qui ne sont pas encore évalués par le
                              moniteur suite à leur stage"
-                         to={{pathname:"/dashboard/rapports/4", state:{from:location}}}/>
+                         to={{pathname: "/dashboard/rapports/4", state: {from: location}}}/>
             <RapportCard title="Rapport des étudiants dont la compagnie n'est pas évalués"
                          description="Liste des étudiants dont la compagnie n'a pas encore été évaluées par le superviseur"
-                         to={{pathname:"/dashboard/rapports/5", state:{from:location}}}/>
+                         to={{pathname: "/dashboard/rapports/5", state: {from: location}}}/>
         </CardsView>
     </>;
 }
@@ -77,7 +77,7 @@ function CardsView(props) {
         lastChild = myChildren.pop();
     for (let i = 0; i < myChildren.length; i++)
         myColumn.push(
-            <div className="col-sm-6" key={i}>
+            <div className="col-sm-6 pb-5" key={i}>
                 {myChildren[i]}
             </div>)
 
@@ -96,11 +96,15 @@ function CardsView(props) {
 
 function RapportCard({title, description, to}) {
     return (
-        <div className="card mb-3 bg-white shadow-lg">
-            <div className="card-body">
-                <h5 className="card-title">{title}</h5>
-                <p className="card-text">{description}</p>
-                <Link className={"btn btn-primary btn-block float-end"} to={to}>Ouvrir</Link>
+        <div className="card bg-white shadow-lg h-100">
+            <div className="card-body d-flex flex-column justify-content-between ">
+                <div className="">
+                    <h5 className="card-title">{title}</h5>
+                    <p className="card-text">{description}</p>
+                </div>
+                <div className="d-flex justify-content-end">
+                    <Link className={"btn btn-primary"} to={to}>Ouvrir</Link>
+                </div>
             </div>
         </div>
     )

@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {getAllStudents} from "../../../services/user-service";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
-import {useAuth} from "../../../services/use-auth";
+import {useAuth} from "../../../hooks/use-auth";
 import {getStudentApplicationsOffer} from "../../../services/offerAppService";
 import {useHistory} from "react-router-dom";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {BtnBack} from "../../SharedComponents/BtnBack";
+import {CgDetailsMore} from "react-icons/all";
 
 export default function StudentsStatus() {
 
@@ -45,7 +46,7 @@ export default function StudentsStatus() {
                     <th>#</th>
                     <th>Étudiant</th>
                     <th>Nombre d'application</th>
-                    <th>Voir les applications</th>
+                    <th><CgDetailsMore title={"Détails"} size={27} color={"black"}/></th>
                 </TableHeader>
                 {studentList.map((student, index) => {
                         if (!offerList[index] || offerList[index].length === 0) return null;

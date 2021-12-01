@@ -2,10 +2,11 @@ package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
 import com.gestionnaire_de_stage.model.Contract;
+import com.gestionnaire_de_stage.model.Stage;
+import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.ContractService;
+import com.gestionnaire_de_stage.service.StageService;
 import com.itextpdf.html2pdf.HtmlConverter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +31,13 @@ public class ContractController {
 
     private final TemplateEngine templateEngine;
 
-    public ContractController(ContractService contractService, TemplateEngine templateEngine, ServletContext servletContext) {
+    private final StageService stageService;
+
+    public ContractController(ContractService contractService, TemplateEngine templateEngine, ServletContext servletContext, StageService stageService) {
         this.servletContext = servletContext;
         this.contractService = contractService;
         this.templateEngine = templateEngine;
+        this.stageService = stageService;
     }
 
     @GetMapping("/ready_to_sign")//SESSION : get only contract of current or future session
@@ -61,7 +65,7 @@ public class ContractController {
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseMessage("Signature fait"));
+                .body(new ResponseMessage("Contrat signé"));
     }
 
     @PostMapping("/start")//SESSION : can start only contract of current or future session
@@ -83,7 +87,7 @@ public class ContractController {
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
         }
-        return ResponseEntity.ok(new ResponseMessage("Création du contrat avec fait succès"));
+        return ResponseEntity.ok(new ResponseMessage("Création du contrat faite avec succès"));
     }
 
     @GetMapping("/monitor/{monitor_id}")//SESSION : get only contract of current or futur session
@@ -119,7 +123,7 @@ public class ContractController {
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseMessage("Signature fait"));
+                .body(new ResponseMessage("Contrat signé"));
     }
 
     @GetMapping("/student/{student_id}")//SESSION : get only contract of current or futur session
@@ -138,6 +142,7 @@ public class ContractController {
     @PutMapping("/studentSign/{studentSignature}/{contract_id}")
 //SESSION : sign only contract of current or futur session
     public ResponseEntity<?> studentSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String studentSignature, @PathVariable Long contract_id) {
+        Stage stage = new Stage();
         try {
             Contract contract = contractService.addStudentSignature(studentSignature, contract_id);
             WebContext context = new WebContext(request, response, servletContext);
@@ -146,7 +151,10 @@ public class ContractController {
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             HtmlConverter.convertToPdf(contractHtml, baos);
-            contractService.fillPDF(contract, baos);
+            contract = contractService.fillPDF(contract, baos);
+            Student student = contract.getStudent();
+            stage.setContract(contract);
+            stageService.create(stage, student.getMatricule());
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
@@ -154,7 +162,7 @@ public class ContractController {
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseMessage("Signature fait"));
+                .body(new ResponseMessage("Contrat signé"));
     }
 
     @GetMapping("/manager/signed/{managerId}")

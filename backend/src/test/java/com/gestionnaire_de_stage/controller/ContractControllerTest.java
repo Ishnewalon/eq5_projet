@@ -4,10 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
+import com.gestionnaire_de_stage.enums.TypeSession;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
+import com.gestionnaire_de_stage.exception.StudentIsNotAssignedException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.service.ContractService;
+import com.gestionnaire_de_stage.service.StageService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,6 +23,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,18 +35,18 @@ import static org.mockito.Mockito.when;
 @WebMvcTest(ContractController.class)
 public class ContractControllerTest {
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private ContractService contractService;
-
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    @MockBean
+    private StageService stageService;
 
     @Test
     public void testManagerStartContract() throws Exception {
-        when(contractService.gsStartContract( any(), any())).thenReturn(getDummyContract());
-        when(contractService.updateContract( any())).thenReturn(getDummyContract());
+        when(contractService.gsStartContract(any(), any())).thenReturn(getDummyContract());
+        when(contractService.updateContract(any())).thenReturn(getDummyContract());
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -51,7 +55,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Création du contrat avec fait succès");
+        assertThat(response.getContentAsString()).contains("Création du contrat faite avec succès");
     }
 
     @Test
@@ -71,7 +75,7 @@ public class ContractControllerTest {
 
     @Test
     public void testManagerStartContract_whenIdOfferApplicationNull() throws Exception {
-        when(contractService.gsStartContract( any(), any())).thenThrow(new IllegalArgumentException("L'identifiant de l'application ne peut pas être vide"));
+        when(contractService.gsStartContract(any(), any())).thenThrow(new IllegalArgumentException("L'identifiant de l'application ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
@@ -86,7 +90,7 @@ public class ContractControllerTest {
 
     @Test
     public void testManagerStartContract_whenStudentAlreadyHaveAContract() throws Exception {
-        when(contractService.gsStartContract( any(), any())).thenThrow(new StudentAlreadyHaveAContractException("Un contrat existe déjà pour l'étudiant"));
+        when(contractService.gsStartContract(any(), any())).thenThrow(new StudentAlreadyHaveAContractException("Un contrat existe déjà pour l'étudiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
@@ -101,7 +105,7 @@ public class ContractControllerTest {
 
     @Test
     public void testManagerStartContract_whenIdOfferApplicationInvalid() throws Exception {
-        when(contractService.gsStartContract( any(), any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'offre associé à cet identifiant"));
+        when(contractService.gsStartContract(any(), any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'offre associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/contracts/start")
@@ -112,6 +116,21 @@ public class ContractControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Il n'y a pas d'offre associé à cet identifiant");
+    }
+
+    @Test
+    public void testManagerStartContract_whenStudentIsntAssigned() throws Exception {
+        when(contractService.gsStartContract(any(), any())).thenThrow(new StudentIsNotAssignedException("L'étudiant doit être affecté à un superviseur avant de créer un contrat"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/contracts/start")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(new ContractStarterDto(1L, 1L))))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'étudiant doit être affecté à un superviseur avant de créer un contrat");
     }
 
     @Test
@@ -148,7 +167,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Signature fait");
+        assertThat(response.getContentAsString()).contains("Contrat signé");
     }
 
     @Test
@@ -256,7 +275,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Signature fait");
+        assertThat(response.getContentAsString()).contains("Contrat signé");
     }
 
     @Test
@@ -364,7 +383,7 @@ public class ContractControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Signature fait");
+        assertThat(response.getContentAsString()).contains("Contrat signé");
     }
 
     @Test
@@ -411,12 +430,13 @@ public class ContractControllerTest {
         when(contractService.getAllSignedContractsByManager(any())).thenReturn(dummyContracts);
 
         MvcResult mvcResult = mockMvc.perform(
-            MockMvcRequestBuilders.get("/contracts/manager/signed/" + 100L)
-                .contentType(MediaType.APPLICATION_JSON))
-        .andReturn();
+                        MockMvcRequestBuilders.get("/contracts/manager/signed/" + 100L)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(returnedContracts)
                 .isNotEmpty()
@@ -424,17 +444,18 @@ public class ContractControllerTest {
     }
 
     @Test
-    public void testGetAllSignedContractsByManager_withNonExistentId() throws Exception{
+    public void testGetAllSignedContractsByManager_withNonExistentId() throws Exception {
         long nonExistentId = 1000L;
         when(contractService.getAllSignedContractsByManager(any())).thenReturn(Collections.emptyList());
 
         MvcResult mvcResult = mockMvc.perform(
-            MockMvcRequestBuilders.get("/contracts/manager/signed/" + nonExistentId)
-                .contentType(MediaType.APPLICATION_JSON))
-        .andReturn();
+                        MockMvcRequestBuilders.get("/contracts/manager/signed/" + nonExistentId)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(returnedContracts).isEmpty();
     }
@@ -450,7 +471,8 @@ public class ContractControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(returnedContracts)
@@ -459,7 +481,7 @@ public class ContractControllerTest {
     }
 
     @Test
-    public void testGetAllSignedContractsByMonitor_withNonExistentId() throws Exception{
+    public void testGetAllSignedContractsByMonitor_withNonExistentId() throws Exception {
         long nonExistentId = 1000L;
         when(contractService.getAllSignedContractsByManager(any())).thenReturn(Collections.emptyList());
 
@@ -469,7 +491,8 @@ public class ContractControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<Contract> returnedContracts = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(returnedContracts).isEmpty();
     }
@@ -494,7 +517,7 @@ public class ContractControllerTest {
     }
 
     @Test
-    public void testGetSignedContractByStudent_withNonExistentId() throws Exception{
+    public void testGetSignedContractByStudent_withNonExistentId() throws Exception {
         MAPPER.registerModule(new JavaTimeModule());
         when(contractService.getSignedContractByStudentId(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
@@ -512,12 +535,42 @@ public class ContractControllerTest {
     private Contract getDummyContract() {
         Contract dummyContract = new Contract();
         dummyContract.setId(1L);
-        dummyContract.setStudent(new Student());
+        dummyContract.setStudent(getDummyStudent());
         dummyContract.setOffer(getDummyOffer());
         dummyContract.setManager(getDummyManager());
         dummyContract.setManagerSignature("Joe Janson");
         dummyContract.setManagerSignDate(LocalDate.now());
+
+        Session dummySession = new Session();
+        dummySession.setTypeSession(TypeSession.HIVER);
+        dummySession.setYear(Year.now());
+        dummyContract.setSession(dummySession);
         return dummyContract;
+    }
+
+    private Student getDummyStudent() {
+        Student dummyStudent = new Student();
+        dummyStudent.setId(1L);
+        dummyStudent.setLastName("Candle");
+        dummyStudent.setFirstName("Tea");
+        dummyStudent.setEmail("cant@outlook.com");
+        dummyStudent.setPassword("cantPass");
+        dummyStudent.setDepartment("info");
+        dummyStudent.setMatricule("4673943");
+        dummyStudent.setSupervisor(getDummySupervisor());
+        return dummyStudent;
+    }
+
+    private Supervisor getDummySupervisor() {
+        Supervisor dummySupervisor = new Supervisor();
+        dummySupervisor.setId(1L);
+        dummySupervisor.setLastName("Keys");
+        dummySupervisor.setFirstName("Harold");
+        dummySupervisor.setEmail("keyh@gmail.com");
+        dummySupervisor.setPassword("galaxy29");
+        dummySupervisor.setDepartment("Comptabilité");
+        dummySupervisor.setMatricule("04736");
+        return dummySupervisor;
     }
 
     private List<Contract> getDummyContractList() {

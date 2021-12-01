@@ -3,7 +3,6 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.gestionnaire_de_stage.dto.CurriculumDTO;
 import com.gestionnaire_de_stage.dto.OfferAppDTO;
 import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
 import com.gestionnaire_de_stage.enums.Status;
@@ -12,7 +11,6 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.StudentAlreadyAppliedToOfferException;
 import com.gestionnaire_de_stage.exception.StudentHasNoCurriculumException;
 import com.gestionnaire_de_stage.model.*;
-import com.gestionnaire_de_stage.service.CurriculumService;
 import com.gestionnaire_de_stage.service.OfferApplicationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,16 +35,11 @@ import static org.springframework.http.HttpStatus.*;
 @WebMvcTest(OfferApplicationController.class)
 class OfferApplicationControllerTest {
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private OfferApplicationService offerApplicationService;
-
-    @MockBean
-    private CurriculumService curriculumService;
-
-    private ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void testStudentApplyToOffer() throws Exception {
@@ -159,63 +152,27 @@ class OfferApplicationControllerTest {
 
     @Test
     public void testGetOffersApplicationStageTrouver() throws Exception {
-        List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
-        Manager dummyManager = getDummyManager();
-        when(offerApplicationService.getOffersApplicationsStageTrouver(any())).thenReturn(offerApplicationsList);
+        List<Student> studentList = getDummyStudentList();
+        when(offerApplicationService.getOffersApplicationsStageTrouver()).thenReturn(studentList);
 
         MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/applications/applicants/manager/" + dummyManager.getId())
+                        MockMvcRequestBuilders.get("/applications/applicants/supervisor")
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<OfferApplication> actualList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        List<Student> actualList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
         });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualList.size()).isEqualTo(offerApplicationsList.size());
-    }
-
-    @Test
-    public void testGetOffersApplicationStageTrouver_withIdNull() throws Exception {
-        Manager dummyManager = getDummyManager();
-        when(offerApplicationService.getOffersApplicationsStageTrouver(any()))
-                .thenThrow(new IllegalArgumentException("L'identifiant du gestionnaire ne peut pas être vide"));
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/applications/applicants/manager/" + dummyManager.getId())
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("L'identifiant du gestionnaire ne peut pas être vide");
-    }
-
-    @Test
-    public void testGetOffersApplicationStageTrouver_withInvalidId() throws Exception {
-        Manager dummyManager = getDummyManager();
-        when(offerApplicationService.getOffersApplicationsStageTrouver(any()))
-                .thenThrow(new IdDoesNotExistException("Il n'y a pas de gestionnaire associé à cet identifiant"));
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/applications/applicants/manager/" + dummyManager.getId())
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Il n'y a pas de gestionnaire associé à cet identifiant");
+        assertThat(actualList).isNotEmpty();
     }
 
     @Test
     public void testViewStudentsAppliedOffer_withValidEntries() throws Exception {
         List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
-        List<CurriculumDTO> curriculumDTOList = getDummyCurriculumDTOList();
         String email = "rolling@email.com";
         when(offerApplicationService.getAllByOfferCreatorEmail(any()))
                 .thenReturn(offerApplicationsList);
-        when(curriculumService.mapToCurriculumDTOList(any()))
-                .thenReturn(curriculumDTOList);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/applications/applicants/{}", email)
@@ -223,15 +180,15 @@ class OfferApplicationControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<CurriculumDTO> actualCurriculumDTOs = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        List<OfferApplication> actualList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
         });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(actualCurriculumDTOs.size()).isEqualTo(3);
+        assertThat(actualList.size()).isEqualTo(3);
     }
 
     @Test
     public void testViewStudentsAppliedOffer_withNullEmail() throws Exception {
-        String email = "rolling@email.com";
+        String email = "";
         when(offerApplicationService.getAllByOfferCreatorEmail(any()))
                 .thenThrow(new IllegalArgumentException("Le courriel ne peut pas être vide"));
 
@@ -243,25 +200,6 @@ class OfferApplicationControllerTest {
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
         assertThat(response.getContentAsString()).contains("Le courriel ne peut pas être vide");
-    }
-
-    @Test
-    public void testViewStudentsAppliedOffer_withEmptyList() throws Exception {
-        List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
-        String email = "rolling@email.com";
-        when(offerApplicationService.getAllByOfferCreatorEmail(any()))
-                .thenReturn(offerApplicationsList);
-        when(curriculumService.mapToCurriculumDTOList(any()))
-                .thenThrow(new IllegalArgumentException("La liste d'offre ne peut pas être vide"));
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/applications/applicants/{}", email)
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("La liste d'offre ne peut pas être vide");
     }
 
     @Test
@@ -473,6 +411,56 @@ class OfferApplicationControllerTest {
         assertThat(response.getContentAsString()).contains("Il n'y a pas d'étudiant associé à cet identifiant");
     }
 
+    @Test
+    public void testGetOffersApplicationStageTrouverIdManager() throws Exception {
+        List<OfferApplication> offerApplicationsList = getDummyOfferAppList();
+        Manager dummyManager = getDummyManager();
+        when(offerApplicationService.getOffersApplicationsStageTrouverManagerId(any())).thenReturn(offerApplicationsList);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/applications/applicants/manager/" + dummyManager.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        List<OfferApplication> actualList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(actualList.size()).isEqualTo(offerApplicationsList.size());
+    }
+
+    @Test
+    public void testGetOffersApplicationStageTrouver_withIdNull() throws Exception {
+        Manager dummyManager = getDummyManager();
+        when(offerApplicationService.getOffersApplicationsStageTrouverManagerId(any()))
+                .thenThrow(new IllegalArgumentException("L'identifiant du gestionnaire ne peut pas être vide"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/applications/applicants/manager/" + dummyManager.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("L'identifiant du gestionnaire ne peut pas être vide");
+    }
+
+    @Test
+    public void testGetOffersApplicationStageTrouver_withInvalidId() throws Exception {
+        Manager dummyManager = getDummyManager();
+        when(offerApplicationService.getOffersApplicationsStageTrouverManagerId(any()))
+                .thenThrow(new IdDoesNotExistException("Il n'y a pas de gestionnaire associé à cet identifiant"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/applications/applicants/manager/" + dummyManager.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de gestionnaire associé à cet identifiant");
+    }
+
     private OfferAppDTO getDummyOfferAppDto() {
         OfferAppDTO offerAppDTO = new OfferAppDTO();
         offerAppDTO.setIdStudent(1L);
@@ -490,18 +478,17 @@ class OfferApplicationControllerTest {
         return dummyOfferApplicationDTO;
     }
 
-    private Offer getDummyOffer() {
-        Offer dummyOffer = new Offer();
-        dummyOffer.setDepartment("Un departement");
-        dummyOffer.setAddress("ajsaodas");
-        dummyOffer.setId(1L);
-        dummyOffer.setDescription("oeinoiendw");
-        dummyOffer.setSalary(10);
-        dummyOffer.setTitle("oeinoiendw");
-        return dummyOffer;
+    private Manager getDummyManager() {
+        Manager dummyManager = new Manager();
+        dummyManager.setId(1L);
+        dummyManager.setLastName("Candle");
+        dummyManager.setFirstName("Tea");
+        dummyManager.setEmail("admin@admin.com");
+        dummyManager.setPassword("admin");
+        return dummyManager;
     }
 
-    private Offer getDummyOfferWithCreator() {
+    private Offer getDummyOffer() {
         Offer dummyOffer = new Offer();
         dummyOffer.setDepartment("Un departement");
         dummyOffer.setAddress("ajsaodas");
@@ -534,15 +521,15 @@ class OfferApplicationControllerTest {
         return dummyStudent;
     }
 
-    private Manager getDummyManager() {
-        Manager dummyManager = new Manager();
-        dummyManager.setId(1L);
-        dummyManager.setLastName("Candle");
-        dummyManager.setFirstName("Tea");
-        dummyManager.setEmail("admin@admin.com");
-        dummyManager.setPassword("admin");
-        return dummyManager;
+    private List<Student> getDummyStudentList() {
+        List<Student> dummyStudentList = new ArrayList<>();
+        dummyStudentList.add(getDummyStudent());
+        dummyStudentList.add(getDummyStudent());
+        dummyStudentList.add(getDummyStudent());
+        return dummyStudentList;
+
     }
+
 
     private List<OfferApplication> getDummyOfferAppList() {
         List<OfferApplication> offerApplicationList = new ArrayList<>();
@@ -562,29 +549,4 @@ class OfferApplicationControllerTest {
         return offerApplicationList;
     }
 
-    private List<CurriculumDTO> getDummyCurriculumDTOList() {
-        List<CurriculumDTO> curriculumDTOList = new ArrayList<>();
-        CurriculumDTO curriculumDTO1 = new CurriculumDTO();
-        curriculumDTO1.setFirstName("Adam");
-        curriculumDTO1.setLastName("Mold");
-        curriculumDTO1.setFileName("AM_CV");
-        curriculumDTO1.setFile(new byte[32 * 1024]);
-        curriculumDTOList.add(curriculumDTO1);
-
-        CurriculumDTO curriculumDTO2 = new CurriculumDTO();
-        curriculumDTO2.setFirstName("Summer");
-        curriculumDTO2.setLastName("Winter");
-        curriculumDTO2.setFileName("SW_CV");
-        curriculumDTO2.setFile(new byte[65 * 1024]);
-        curriculumDTOList.add(curriculumDTO2);
-
-        CurriculumDTO curriculumDTO3 = new CurriculumDTO();
-        curriculumDTO3.setFirstName("John");
-        curriculumDTO3.setLastName("Belushi");
-        curriculumDTO3.setFileName("JB_CV");
-        curriculumDTO3.setFile(new byte[53 * 1024]);
-        curriculumDTOList.add(curriculumDTO3);
-
-        return curriculumDTOList;
-    }
 }

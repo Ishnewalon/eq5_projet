@@ -24,27 +24,22 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @WebMvcTest(CurriculumController.class)
 public class CurriculumControllerTest {
 
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private CurriculumService curriculumService;
-
     @MockBean
     private StudentService studentService;
-
-    private final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     public void uploadCurriculumTest_withValidEntries() throws Exception {
@@ -103,7 +98,7 @@ public class CurriculumControllerTest {
     public void uploadCurriculumTest_studentIdThrowsIdDoesNotExistException() throws Exception {
         Long studentId = 1L;
         MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
-        when(curriculumService.create(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
+        when(curriculumService.convertMultipartFileToCurriculum(any(), any())).thenThrow(new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.multipart("/curriculum/upload")
@@ -366,8 +361,8 @@ public class CurriculumControllerTest {
         doNothing().when(curriculumService).deleteOneById(any());
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.delete("/curriculum/delete/{curriculumId}", curriculum.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.delete("/curriculum/delete/{curriculumId}", curriculum.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -383,8 +378,8 @@ public class CurriculumControllerTest {
                 .deleteOneById(any());
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.delete("/curriculum/delete/{curriculumId}", curriculum.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.delete("/curriculum/delete/{curriculumId}", curriculum.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -400,8 +395,8 @@ public class CurriculumControllerTest {
                 .deleteOneById(any());
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.delete("/curriculum/delete/{curriculumId}", curriculum.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.delete("/curriculum/delete/{curriculumId}", curriculum.getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();

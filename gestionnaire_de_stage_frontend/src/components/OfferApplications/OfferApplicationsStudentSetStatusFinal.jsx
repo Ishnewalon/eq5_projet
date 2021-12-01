@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import {getStudentApplicationsOffer, setApplicationsFinalStatus} from "../../services/offerAppService";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
@@ -84,9 +84,8 @@ export default function OfferApplicationsStudentSetStatusFinal() {
             <span className={"fw-bold"}>{` ${hours}:${minutes}:${seconds}`}</span></>
     };
 
-
     if (offerApplications.length === 0)
-        return <MessageNothingToShow message="Vous n'avez pas d'offre de stage en attente de réponse"/>
+        return <MessageNothingToShow message="Vous n'avez pas appliqué encore..."/>
 
     return (<>
         <Table>

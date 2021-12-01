@@ -1,7 +1,7 @@
 import React from "react";
 import Dropzone from "react-dropzone";
 import {uploadFile} from "../../services/curriculum-service";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 
 export default function CurriculumUpload() {
     let auth = useAuth();
