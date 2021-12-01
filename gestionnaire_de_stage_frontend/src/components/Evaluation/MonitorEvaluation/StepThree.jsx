@@ -60,7 +60,6 @@ export default function StepThree({register, choices}) {
                     label='Commentaires'
                     name='commentsQualityOfWorkIntern'
                     register={register}
-                    placeholder='Commentaires sur la qualité du travail du stagiaire'
                 />
             </Column>
         </FormGroup>

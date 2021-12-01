@@ -14,7 +14,6 @@ export default function SupervisorStepTwo({register, errors, oneOrTwo}) {
                     name='internName'
                     register={register}
                     type='text'
-                    placeholder="Entrez le nom du stagiare"
                     error={errors.internName}
                 />
             </Column>
@@ -26,7 +25,6 @@ export default function SupervisorStepTwo({register, errors, oneOrTwo}) {
                     register={register}
                     type='date'
                     error={errors.dateStage}
-                    placeholder='Date du stage'
                 />
             </Column>
             <Column col={{md: 6, lg: 4}}>

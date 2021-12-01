@@ -1,6 +1,7 @@
 import {FormGroup} from "../../SharedComponents/Form/FormGroup";
 import {FieldInput, FieldRadio} from "../../SharedComponents/Form/FormFields";
 import {Column} from "../../SharedComponents/Column";
+import {regexName} from "../../../utility";
 
 export default function SupervisorStepFour({
                                                watch,
@@ -91,7 +92,6 @@ export default function SupervisorStepFour({
                         name='mondayShiftStart'
                         register={register}
                         type='time'
-                        placeholder='Début du quart'
                         error={errors.mondayShiftStart}
                     />
                 </Column>
@@ -102,7 +102,6 @@ export default function SupervisorStepFour({
                         name='mondayShiftEnd'
                         register={register}
                         type='time'
-                        placeholder='Fin du quart'
                         error={errors.mondayShiftEnd}
                     />
                 </Column>
@@ -119,7 +118,6 @@ export default function SupervisorStepFour({
                         name='tuesdayShiftStart'
                         register={register}
                         type='time'
-                        placeholder='Début du quart'
                         error={errors.tuesdayShiftStart}
                     />
                 </Column>
@@ -130,7 +128,6 @@ export default function SupervisorStepFour({
                         name='tuesdayShiftEnd'
                         register={register}
                         type='time'
-                        placeholder='Fin du quart'
                         error={errors.tuesdayShiftEnd}
                     />
                 </Column>
@@ -147,7 +144,6 @@ export default function SupervisorStepFour({
                         name='wednesdayShiftStart'
                         register={register}
                         type='time'
-                        placeholder='Début du quart'
                         error={errors.wednesdayShiftStart}
                     />
                 </Column>
@@ -158,7 +154,6 @@ export default function SupervisorStepFour({
                         name='wednesdayShiftEnd'
                         register={register}
                         type='time'
-                        placeholder='Fin du quart'
                         error={errors.wednesdayShiftEnd}
                     />
                 </Column>
@@ -175,7 +170,6 @@ export default function SupervisorStepFour({
                         name='thursdayShiftStart'
                         register={register}
                         type='time'
-                        placeholder='Début du quart'
                         error={errors.thursdayShiftStart}
                     />
                 </Column>
@@ -186,7 +180,6 @@ export default function SupervisorStepFour({
                         name='thursdayShiftEnd'
                         register={register}
                         type='time'
-                        placeholder='Fin du quart'
                         error={errors.thursdayShiftEnd}
                     />
                 </Column>
@@ -203,7 +196,6 @@ export default function SupervisorStepFour({
                         name='fridayShiftStart'
                         register={register}
                         type='time'
-                        placeholder='Début du quart'
                         error={errors.fridayShiftStart}
                     />
                 </Column>
@@ -214,7 +206,6 @@ export default function SupervisorStepFour({
                         name='fridayShiftEnd'
                         register={register}
                         type='time'
-                        placeholder='Fin du quart'
                         error={errors.fridayShiftEnd}
                     />
                 </Column>
@@ -231,7 +222,6 @@ export default function SupervisorStepFour({
                         name='saturdayShiftStart'
                         register={register}
                         type='time'
-                        placeholder='Début du quart'
                         error={errors.saturdayShiftStart}
                     />
                 </Column>
@@ -242,7 +232,6 @@ export default function SupervisorStepFour({
                         name='saturdayShiftEnd'
                         register={register}
                         type='time'
-                        placeholder='Fin du quart'
                         error={errors.saturdayShiftEnd}
                     />
                 </Column>
@@ -259,7 +248,6 @@ export default function SupervisorStepFour({
                         name='sundayShiftStart'
                         register={register}
                         type='time'
-                        placeholder='Début du quart'
                         error={errors.sundayShiftStart}
                     />
                 </Column>
@@ -270,8 +258,25 @@ export default function SupervisorStepFour({
                         name='sundayShiftEnd'
                         register={register}
                         type='time'
-                        placeholder='Fin du quart'
                         error={errors.sundayShiftEnd}
+                    />
+                </Column>
+            </FormGroup>
+            <FormGroup>
+                <Column>
+                    <FieldInput
+                        label='Signature'
+                        validation={{
+                            required: 'Ce champ est requis',
+                            pattern: {
+                                value: regexName,
+                                message: "La signature doit contenir seulement des lettres!"
+                            }}
+                        }
+                        name='supervisorSignature'
+                        register={register}
+                        type='text'
+                        error={errors.supervisorSignature}
                     />
                 </Column>
             </FormGroup>

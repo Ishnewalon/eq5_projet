@@ -25,7 +25,6 @@ export default function StepOne({errors, register}) {
                     name='studentEmail'
                     register={register}
                     type='email'
-                    placeholder="Email de l'élève"
                     error={errors.studentEmail}
                 />
             </Column>
@@ -44,7 +43,6 @@ export default function StepOne({errors, register}) {
                     name='internName'
                     register={register}
                     type='text'
-                    placeholder="Entrez le nom de l'élève"
                     error={errors.internName}
                 />
             </Column>
@@ -57,7 +55,6 @@ export default function StepOne({errors, register}) {
                     name='programStudyField'
                     register={register}
                     type='text'
-                    placeholder="Entrez le programme d'études de l'élève"
                     error={errors.programStudyField}
                 />
             </Column>
@@ -68,7 +65,6 @@ export default function StepOne({errors, register}) {
                     name='companyName'
                     register={register}
                     type='text'
-                    placeholder="Entrez le nom de l'entreprise"
                     error={errors.companyName}
                 />
             </Column>
@@ -79,7 +75,6 @@ export default function StepOne({errors, register}) {
                     name='firstFonction'
                     register={register}
                     type='text'
-                    placeholder="Entrez la fonction"
                     error={errors.firstFonction}
                 />
             </Column>
@@ -98,7 +93,6 @@ export default function StepOne({errors, register}) {
                     name='phone'
                     register={register}
                     type='tel'
-                    placeholder="Entrez votre numéro de téléphone"
                     error={errors.phone}
                 />
             </Column>

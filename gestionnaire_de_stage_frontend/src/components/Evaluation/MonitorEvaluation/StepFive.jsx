@@ -68,7 +68,6 @@ export default function StepFive({register, choices}) {
                     label='Commentaires'
                     name='commentsStudentPersonalAptitudes'
                     register={register}
-                    placeholder='Commentaires sur les habiletés personnelles du stagiaire'
                 />
             </Column>
         </FormGroup>

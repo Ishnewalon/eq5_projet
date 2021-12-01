@@ -47,7 +47,6 @@ export default function SupervisorStepThree({register, choixAccords, errors}) {
                     register={register}
                     type='number'
                     error={errors.nbHoursMonthOne}
-                    placeholder="1er mois"
                 />
             </Column>
             <Column col={{lg: 4}}>
@@ -62,7 +61,6 @@ export default function SupervisorStepThree({register, choixAccords, errors}) {
                     name='nbHoursMonthTwo'
                     register={register}
                     type='number'
-                    placeholder='2ième mois'
                     error={errors.nbHoursMonthTwo}
                 />
             </Column>
@@ -79,7 +77,6 @@ export default function SupervisorStepThree({register, choixAccords, errors}) {
                     register={register}
                     type='number'
                     error={errors.nbHoursMonthThree}
-                    placeholder="3ième mois"
                 />
             </Column>
         </FormGroup>
@@ -131,7 +128,6 @@ export default function SupervisorStepThree({register, choixAccords, errors}) {
                     type='number'
                     name='salaryIntern'
                     error={errors.salaryIntern}
-                    placeholder='Salaire par heure'
                     label='Préciser le salaire par heure'
                 />
             </Column>

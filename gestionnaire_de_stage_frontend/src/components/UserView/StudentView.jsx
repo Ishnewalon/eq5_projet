@@ -11,7 +11,6 @@ import {useAuth} from "../../hooks/use-auth";
 import ContractSignedStudent from "../Contract/ContractSignedStudent";
 import CurriculumsStudent from "../Curriculums/CurriculumsStudent";
 import {Title} from "../SharedComponents/Title";
-import EvaluationIntern from "../Evaluation/MonitorEvaluation/EvaluationIntern";
 import Profile from "../SharedComponents/Profile/Profile";
 
 export default function StudentView() {

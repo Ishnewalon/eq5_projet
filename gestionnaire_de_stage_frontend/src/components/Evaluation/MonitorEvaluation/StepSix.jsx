@@ -11,6 +11,7 @@ export default function StepSix({errors, register, choixAppreciation, yesAndNoAn
             <Column col={{sm: 6}}>
                 <FieldRadio
                     name="appreciationGlobale"
+                    validation={{required: 'Ce champ est requis'}}
                     register={register}
                     list={Object.values(choixAppreciation)}
                     label='Les habiletés démontrées'
@@ -30,23 +31,25 @@ export default function StepSix({errors, register, choixAppreciation, yesAndNoAn
                 <FieldInput
                     label='Veuillez indiquer le nombre d’heures réel par semaine d’encadrement accordé au
                 stagiaire'
-                    validation={{required: 'Ce champ est requis'}}
+                    validation={{
+                        required: 'Ce champ est requis',
+                        min: {
+                            value: 0,
+                            message: 'Les heures doivent être supérieur ou égale à 0'
+                        }
+                    }}
                     name='nbHeuresReelTravailEtudiant'
                     register={register}
                     type='number'
                     error={errors.nbHeuresReelTravailEtudiant}
-                    placeholder='Nombre heures réel par semaine'
                 />
                 <FieldTextarea
                     label='Précisez votre appréciation'
                     name='commentsInternProductivity'
                     register={register}
-                    placeholder='Commentaires sur la productivité du stagiaire'
+                    validation={{required: 'Ce champ est requis'}}
+                    error={errors.commentsInternProductivity}
                 />
-            </Column>
-        </FormGroup>
-        <FormGroup>
-            <Column>
             </Column>
         </FormGroup>
     </div>

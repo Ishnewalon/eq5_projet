@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gestionnaire_de_stage.dto.EvalMilieuStageDTO;
 import com.gestionnaire_de_stage.dto.EvalStagiaireDTO;
 import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
@@ -22,6 +23,8 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -139,6 +142,7 @@ public class StageControllerTest {
 
     @Test
     public void testFillEvalStagiairePDF_withValidEntries() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
         EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
         Stage dummyStage = getDummyStage();
         when(stageService.getStageByStudentEmail(any())).thenReturn(dummyStage);
@@ -157,6 +161,7 @@ public class StageControllerTest {
 
     @Test
     public void testFillEvalStagiairePDF_withNullStudentEmail() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
         EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
         when(stageService.getStageByStudentEmail(any())).thenThrow(new IllegalArgumentException("Le courriel de l'étudiant est vide"));
 
@@ -173,6 +178,7 @@ public class StageControllerTest {
 
     @Test
     public void testFillEvalStagiairePDF_withInvalidStudentEmail() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
         EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
         when(stageService.getStageByStudentEmail(any())).thenThrow(new StageDoesNotExistException("Il n'y a pas de stage pour cette étudiant"));
 
@@ -189,6 +195,7 @@ public class StageControllerTest {
 
     @Test
     public void testFillEvalStagiairePDF_withNullStage() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
         EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
         Stage dummystage = getDummyStage();
         when(stageService.getStageByStudentEmail(any())).thenReturn(dummystage);
@@ -207,6 +214,7 @@ public class StageControllerTest {
 
     @Test
     public void testFillEvalStagiairePDF_withInvalidStage() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
         EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
         Stage dummystage = getDummyStage();
         when(stageService.getStageByStudentEmail(any())).thenReturn(dummystage);
@@ -225,6 +233,7 @@ public class StageControllerTest {
 
     @Test
     public void testFillEvalStagiairePDF_withEvaluationAlreadyFilled() throws Exception {
+        MAPPER.registerModule(new JavaTimeModule());
         EvalStagiaireDTO dummyEvalStagiaireDTO = getDummyEvalStagiaireDTO();
         when(stageService.getStageByStudentEmail(any())).thenThrow(new EvaluationAlreadyFilledException("L'évalutation de ce stagiaire a déjà été remplie"));
 
@@ -252,7 +261,7 @@ public class StageControllerTest {
         dummyEvalMilieuStageDTO.setDateStage("12-25-2022");
         dummyEvalMilieuStageDTO.setCurrentInternship(2);
         dummyEvalMilieuStageDTO.setStudentMatricule("123463");
-        dummyEvalMilieuStageDTO.setSignatureSuperviseur("Rasputin Jkral");
+        dummyEvalMilieuStageDTO.setSupervisorSignature("Rasputin Jkral");
 
         return dummyEvalMilieuStageDTO;
     }
@@ -288,7 +297,7 @@ public class StageControllerTest {
         dummyEvalStagiaireDTO.setCompanyName("Entreprise A");
         dummyEvalStagiaireDTO.setInternName("Tom Thorough");
         dummyEvalStagiaireDTO.setPhone("4327659465");
-        dummyEvalStagiaireDTO.setDateSignature("8-11-2021");
+        dummyEvalStagiaireDTO.setDateSignature(LocalDate.now());
         dummyEvalStagiaireDTO.setStudentEmail("myemail@email.com");
 
         return dummyEvalStagiaireDTO;

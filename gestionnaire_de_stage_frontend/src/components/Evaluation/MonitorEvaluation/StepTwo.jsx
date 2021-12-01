@@ -58,7 +58,6 @@ export default function StepTwo({register, choices}) {
                     label='Commentaires'
                     name='commentsProductivity'
                     register={register}
-                    placeholder='Commentaires sur la productivité du stagiaire'
                 />
             </Column>
         </FormGroup>

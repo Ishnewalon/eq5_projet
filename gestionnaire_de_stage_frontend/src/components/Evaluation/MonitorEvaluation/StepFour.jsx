@@ -65,8 +65,7 @@ export default function StepFour({register, choices}) {
                 <FieldTextarea
                     label='Commentaires'
                     name='commentsStudentSocialRelationsQuality'
-                    register={register}
-                    placeholder='Commentaires sur les qualités des relations interpersonnelles du stagiaire'/>
+                    register={register}/>
             </Column>
         </FormGroup>
     </div>

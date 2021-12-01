@@ -4,6 +4,8 @@ import SupervisorStepOne from "./SupervisorStepOne";
 import SupervisorStepTwo from "./SupervisorStepTwo";
 import SupervisorStepThree from "./SupervisorStepThree";
 import SupervisorStepFour from "./SupervisorStepFour";
+import Swal from "sweetalert2";
+import {swalErr} from "../../../utility";
 
 
 export default function SupervisorVisitForm() {
@@ -45,7 +47,27 @@ export default function SupervisorVisitForm() {
 
     const sendEvaluation = (data, e) => {
         e.preventDefault();
-        supervisorCreateForm(data).then();
+        let status, body;
+        Swal.fire({
+            title: `Création du formulaire de visite...`,
+            timer: 120000,
+            didOpen: () => {
+                Swal.showLoading()
+                supervisorCreateForm(data).then(
+                    response =>
+                        response.json().then(b => {
+                            status = response.status
+                            body = b
+                            Swal.close()
+                        })
+                );
+            }
+        }).then(() => {
+            if (status === 200)
+                Swal.fire({icon: 'success',title: body.message});
+            if (status === 400)
+                swalErr.fire({title: body.message});
+        })
     };
 
 

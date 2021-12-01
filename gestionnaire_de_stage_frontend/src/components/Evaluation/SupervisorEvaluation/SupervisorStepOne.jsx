@@ -22,7 +22,6 @@ export default function SupervisorStepOne({register, errors}) {
                     name='studentMatricule'
                     register={register}
                     type='number'
-                    placeholder="La matricule de l'étudiant (7 chiffres)"
                     error={errors.studentMatricule}
                 />
             </Column>
@@ -36,7 +35,6 @@ export default function SupervisorStepOne({register, errors}) {
                     register={register}
                     type='text'
                     error={errors.companyName}
-                    placeholder="Nom de l'entreprise"
                 />
             </Column>
             <Column col={{lg: 6}}>
@@ -46,7 +44,6 @@ export default function SupervisorStepOne({register, errors}) {
                     name='contactPerson'
                     register={register}
                     type='text'
-                    placeholder='Persone contact'
                     error={errors.contactPerson}
                 />
             </Column>
@@ -65,7 +62,6 @@ export default function SupervisorStepOne({register, errors}) {
                     name='phone'
                     register={register}
                     type='tel'
-                    placeholder='Téléphone'
                     error={errors.phone}
                 />
             </Column>
@@ -76,7 +72,6 @@ export default function SupervisorStepOne({register, errors}) {
                     name='fax'
                     register={register}
                     type='text'
-                    placeholder='Télécopieur'
                     error={errors.fax}
                 />
             </Column>
@@ -89,7 +84,6 @@ export default function SupervisorStepOne({register, errors}) {
                     name='adresse'
                     register={register}
                     type='text'
-                    placeholder='Adresse'
                     error={errors.adresse}
                 />
             </Column>
@@ -106,7 +100,6 @@ export default function SupervisorStepOne({register, errors}) {
                     name='zip'
                     register={register}
                     type='text'
-                    placeholder='Code postal'
                     error={errors.zip}
                 />
             </Column>
@@ -118,7 +111,6 @@ export default function SupervisorStepOne({register, errors}) {
                     register={register}
                     type='text'
                     error={errors.city}
-                    placeholder='Ville'
                 />
             </Column>
         </FormGroup>

@@ -1,4 +1,3 @@
-import {monitorCreateForm} from "../../../services/stage-service";
 import {ContainerBox} from "../../SharedComponents/ContainerBox";
 import StepOne from "./StepOne";
 import {useForm} from "react-hook-form";
@@ -10,6 +9,7 @@ import StepSix from "./StepSix";
 import StepSeven from "./StepSeven";
 import Swal from "sweetalert2";
 import {swalErr} from "../../../utility";
+import {monitorCreateForm} from "../../../services/stage-service";
 
 export default function EvaluationIntern() {
 
@@ -41,28 +41,26 @@ export default function EvaluationIntern() {
 
     const sendVisitForm = (data, e) => {
         e.preventDefault();
-        console.log('monitor_evaluation', data);
-        let status, body;
+        let status, message;
         Swal.fire({
             title: `Création de l'évaluation...`,
             timer: 120000,
             didOpen: () => {
                 Swal.showLoading()
                 monitorCreateForm(data).then(
-                    response => {
+                    response =>
                         response.json().then(b => {
                             status = response.status
-                            body = b
+                            message = b.message
                             Swal.close()
                         })
-                    }
                 );
             }
         }).then(() => {
             if (status === 200)
-                Swal.fire({icon: 'success',title: body.message});
+                Swal.fire({icon: 'success',title: message});
             if (status === 400)
-                swalErr.fire({title: body.message});
+                swalErr.fire({title: message});
         })
     };
 

@@ -93,7 +93,7 @@ public class EvalMilieuStageDTO {
 
     String questionShiftsFlexible;
 
-    String signatureSuperviseur;
+    String supervisorSignature;
 
     String studentMatricule;
 
