@@ -1,6 +1,6 @@
 <template>
-  <div v-if="this.dto.curriculumList.length > 0">
-    <table>
+  <div class="container">
+    <table class="table-light table bg-dark px-3 py-2">
       <thead>
       <th>Principal</th>
       <th>Nom</th>
@@ -10,20 +10,17 @@
       <tr v-for="(cv, index) in this.dto.curriculumList" :key="index">
         <td v-html="getIcon(cv)"></td>
         <td v-bind:class="{'text-danger' : !cv.isValid,  '':''}">
-          <button class="link-button" @click.prevent="downloadCurriculum(cv.data, cv.name)">
+          <button class="link-button btn btn-primary " @click.prevent="downloadCurriculum(cv.data, cv.name)">
             {{cv.name}}
           </button>
         </td>
         <td>
-          <button class="link-button" v-on:click="deleteCv(cv)">
+          <button class="btn btn-danger" v-on:click="deleteCv(cv)">
             Delete
           </button>
         </td>
-      </tr>)}
+      </tr>
     </table>
-  </div>
-  <div v-else class="container">
-    <div class="alert alert-info text-center">Aucun curriculum n'a été ajouté</div>
   </div>
 </template>
 
@@ -40,8 +37,11 @@ export default {
   name: "StudentSetPrincipal",
   data(){
     return {
-      curriculumsWithPrincipal: null,
-    };
+      dto: {
+        principal: null,
+        curriculumList: []
+      }
+    }
   },
   created() {
     getAllCurriculumsByStudentWithPrincipal(authService.getUserId())
@@ -73,9 +73,9 @@ export default {
             set principal
           </button>
         else if (cv.isValid === null)
-          return <span class="bg-info fw-bold px-2">En attente de validation</span>
+          return "En attente de validation"
         else
-          return <span class="bg-danger px-2">Invalide</span>
+          return "Invalide"
       }
     },
     setPrincipal: function(cv) {

@@ -45,7 +45,6 @@ export default {
       getAllContractsToBeStarted().then(contracts => (this.contracts = contracts));
     if (this.userType === UserType.MONITOR[0])
       getAllContractsToBeSignedForMonitor(this.id).then(contracts => (this.contracts = contracts));
-    console.log(this.contracts);
   }
 }
 </script>
