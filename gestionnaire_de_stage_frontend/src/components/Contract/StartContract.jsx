@@ -32,9 +32,8 @@ export default function StartContract() {
 
     if (offerApplications.length === 0)
         return (
-            <ContainerBox>
                 <MessageNothingToShow message="Aucun contrat à lancer pour le moment..."/>
-            </ContainerBox>)
+        )
     return (
         <Table>
             <TableHeader>
