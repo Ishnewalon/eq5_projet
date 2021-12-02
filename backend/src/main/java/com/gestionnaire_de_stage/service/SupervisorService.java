@@ -67,7 +67,7 @@ public class SupervisorService {
         Assert.isTrue(email != null, "Le courriel ne peut pas être vide");
         Assert.isTrue(password != null, "Le mot de passe ne peut pas être vide");
         if (!isEmailAndPasswordValid(email, password))
-            throw new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalid");
+            throw new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalide");
         return supervisorRepository.findSupervisorByEmailAndPassword(email, password);
     }
 
