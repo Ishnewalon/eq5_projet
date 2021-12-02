@@ -1,7 +1,7 @@
 import {useLocation} from "react-router-dom";
 import React from "react";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
-import {Title} from "../SharedComponents/Title/Title";
+import {Title} from "../SharedComponents/Title";
 import {BtnBack} from "../SharedComponents/BtnBack";
 import {AiOutlineCheckCircle, BiTimeFive, FaRegTimesCircle, MdDateRange, RiFolderReceivedFill} from "react-icons/all";
 import {timeFormatMessage} from "../Admin/StudentManagement/StudentStatusView";

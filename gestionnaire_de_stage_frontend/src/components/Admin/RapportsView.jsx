@@ -1,6 +1,6 @@
 import {Link, Route, useLocation, useRouteMatch} from "react-router-dom";
 import React from "react";
-import {Title} from "../SharedComponents/Title/Title";
+import {Title} from "../SharedComponents/Title";
 import OfferApplicationsList from "../OfferApplications/OfferApplicationsList";
 import OffersListValid from "../Offers/OffersListValid";
 import OffersListNotValid from "../Offers/OffersListNotValid";

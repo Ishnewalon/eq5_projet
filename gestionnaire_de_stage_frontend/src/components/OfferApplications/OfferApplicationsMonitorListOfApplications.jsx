@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {getAllApplicants} from '../../services/offerAppService';
 import {useAuth} from "../../hooks/use-auth";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
 import {downloadFile, toPdfBlob, uniqBy} from "../../utility";
 import {
     AiOutlineCheckCircle,

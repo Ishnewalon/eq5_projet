@@ -1,19 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export function FormGroupV2(props) {
-    const {children, className} = props;
-    return <div className={`form-group row mb-1 mx-auto ${className}`}>{children}</div>
-}
-
-FormGroupV2.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string
-}
-FormGroupV2.defaultProps = {
-    className: ''
-}
-
 Column.propTypes = {
     children: PropTypes.node,
     col: PropTypes.shape({

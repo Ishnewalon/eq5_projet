@@ -6,9 +6,9 @@ import {Route, useRouteMatch} from "react-router-dom";
 import ContractsToSign from "../Contract/ContractsToSign";
 import {UserType} from "../../enums/UserTypes";
 import {useAuth} from "../../hooks/use-auth";
-import EvaluationIntern from "../Evaluation/EvaluationIntern";
+import EvaluationIntern from "../Evaluation/MonitorEvaluation/EvaluationIntern";
 import ContractsSigned from "../Contract/ContractsSigned";
-import {Title} from "../SharedComponents/Title/Title";
+import {Title} from "../SharedComponents/Title";
 import Profile from "../SharedComponents/Profile/Profile";
 
 export default function MonitorView() {

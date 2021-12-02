@@ -2,10 +2,11 @@ import React, {useEffect, useState} from "react";
 import {getAllOffersValid} from '../../services/offer-service'
 import OfferView from './OfferView';
 import {getCurrentAndFutureSession} from "../../services/session-service";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
 import {BtnBack} from "../SharedComponents/BtnBack";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
+import {FormGroup} from "../SharedComponents/Form/FormGroup";
+import {Column} from "../SharedComponents/Column";
 
 export default function OffersListValid() {
 
@@ -47,7 +48,7 @@ export default function OffersListValid() {
 
     return (<>
             <ContainerBox>
-                <FormGroupV2>
+                <FormGroup>
                     <Column>
                         <div className="form-floating">
                             <select id="session" className="form-select" onChange={e => setMyVisible(e.target.value)}>
@@ -58,7 +59,7 @@ export default function OffersListValid() {
                             <label htmlFor="session">Session</label>
                         </div>
                     </Column>
-                </FormGroupV2>
+                </FormGroup>
                 <div className="row">
                     {visibleOffers.map((offer, index) =>
                         <Column col={{lg: 6}} key={index}>
