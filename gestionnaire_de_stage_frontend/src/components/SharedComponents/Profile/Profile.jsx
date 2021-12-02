@@ -6,6 +6,7 @@ import {Column} from "../FormGroup/FormGroupV2";
 import styles from "./Profile.module.css";
 import {UserType} from "../../../enums/UserTypes";
 import {changePassword} from "../../../services/user-service";
+import Notifications from "../Notifications/Notifications";
 
 export default function Profile() {
     let auth = useAuth();
@@ -115,6 +116,15 @@ export default function Profile() {
                                     </Column>
                                 </div>
                                 {getAddress(user)}
+                            </div>
+                        </Column>
+
+                    </div>
+                    <div className="row">
+                        <Column col={{sm: 12}}>
+                            <div className={styles.cardBlock}>
+                                <h5 className={styles.informations}>Notifications</h5>
+                                <Notifications/>
                             </div>
                         </Column>
                     </div>
