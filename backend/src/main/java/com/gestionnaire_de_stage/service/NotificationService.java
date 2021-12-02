@@ -77,7 +77,7 @@ public class NotificationService {
         Offer offer = offerApplication.getOffer();
         notificationRepository.save(new Notification(
                 offer.getCreator(),
-                "Votre offre de stage à recu un nouvel appliquant."
+                "Votre offre de stage à reçue un nouvel appliquant."
         ));
     }
 
@@ -128,13 +128,13 @@ public class NotificationService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void notifyOfOfferValidation(Offer offer) throws IllegalArgumentException {
-        Assert.notNull(offer, "Le offer ne peut pas être vide");
+        Assert.notNull(offer, "Le offre ne peut pas être vide");
         Optional<Offer> previous = offerService.findOfferById(offer.getId());
 
         if (previous.isPresent() && offer.getValid() != previous.get().getValid()) {
             notificationRepository.save(new Notification(
                     offer.getCreator(),
-                    "Votre offre de stage à été vérifié."
+                    "Votre offre de stage a été vérifiée."
             ));
 
             if (offer.getValid()) {
@@ -142,7 +142,7 @@ public class NotificationService {
                 students.forEach(student ->
                         notificationRepository.save(new Notification(
                                 student,
-                                "Une nouvelle offre de stage est à été publiée."
+                                "Une nouvelle offre de stage a été publiée."
                         )));
             }
         }
@@ -166,7 +166,7 @@ public class NotificationService {
             Offer offer = contract.getOffer();
             notificationRepository.save(new Notification(
                     contract.getStudent(),
-                    "Votre contrat pour le post de " + offer.getTitle() +
+                    "Votre contrat pour le poste de " + offer.getTitle() +
                             " est prêt à être signé."
             ));
         }
