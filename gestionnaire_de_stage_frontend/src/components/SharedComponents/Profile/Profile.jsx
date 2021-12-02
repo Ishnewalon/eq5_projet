@@ -5,6 +5,7 @@ import {FaPen} from "react-icons/all";
 import styles from "./Profile.module.css";
 import {UserType} from "../../../enums/UserTypes";
 import {changePassword} from "../../../services/user-service";
+import Notifications from "../Notifications/Notifications";
 import {Column} from "../Column";
 
 export default function Profile() {
@@ -108,8 +109,14 @@ export default function Profile() {
                                         <h6 className={styles.titleCol}>Téléphone</h6>
                                         <p className="text-muted">{formatPhoneNumber(user.phone)}</p>
                                     </Column>
+                                    {getAddress(user)}
+                                    <div className="row">
+                                        <Column col={{sm: 12}}>
+                                            <h5 className={"mt-2 " + styles.borderTitle}>Notifications</h5>
+                                            <Notifications/>
+                                        </Column>
+                                    </div>
                                 </div>
-                                {getAddress(user)}
                             </div>
                         </Column>
                     </div>

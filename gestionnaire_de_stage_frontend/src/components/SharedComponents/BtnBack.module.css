@@ -1,0 +1,12 @@
+.btnBack {
+    composes: link-button from '../../index.css';
+    position: fixed;
+    top: 80px;
+    left: 20px;
+    z-index: 300000;
+    color: var(--color-primary) !important;
+}
+
+.btnBack:hover {
+    color: var(--color-primary-hover) !important;
+}
