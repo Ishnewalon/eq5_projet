@@ -367,7 +367,7 @@ public class CurriculumControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Curriculum éffacé");
+        assertThat(response.getContentAsString()).contains("Curriculum effacé");
     }
 
     @Test
