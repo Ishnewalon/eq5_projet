@@ -4,7 +4,6 @@ import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.NotificationRepository;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +12,6 @@ import org.springframework.util.Assert;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class NotificationService {
@@ -45,16 +43,18 @@ public class NotificationService {
     public List<Notification> getAllByUserId(Long userId) throws IllegalArgumentException {
         Assert.notNull(userId, "Le userId ne peut pas être vide");
 
-        List<Notification> notifications = notificationRepository.findAllByTargetedUser_IdOrderByCreatedDateDesc(userId);
-        updateSeen(notifications);
-        return notifications;
+        return notificationRepository.findAllByTargetedUser_IdOrderByCreatedDateDesc(userId);
     }
 
-    private void updateSeen(List<Notification> notifications) {
-        List<Notification> updatedList = notifications.stream().peek(
-                notification -> notification.setSeen(true))
-                .collect(Collectors.toList());
-        notificationRepository.saveAll(updatedList);
+    public Notification updateSeen(Long notificationId) throws IdDoesNotExistException {
+        Assert.notNull(notificationId, "Le notificationId ne peut pas être vide");
+
+        if (!notificationRepository.existsById(notificationId))
+            throw new IdDoesNotExistException("Aucune notification trouvée avec cet ID");
+
+        Notification notification = notificationRepository.getById(notificationId);
+        notification.setSeen(true);
+        return notificationRepository.save(notification);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)

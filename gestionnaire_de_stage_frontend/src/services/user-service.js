@@ -6,6 +6,18 @@ export async function getNotificationsByUser(userId) {
     return await response.json();
 }
 
+export async function updateSeen(notificationId) {
+    return await fetch(`${urlBackend}/notification/set_seen/${notificationId}`, requestInit(methods.GET)).then(response => {
+        return response.json().then(body => {
+            if (response.status === 200)
+                toast.fire({title: "Seen!"});
+            else if (response.status === 400)
+                toastErr.fire({title: body.message,});
+            return response.ok
+        })
+    })
+}
+
 export async function getSupervisors() {
     const response = await fetch(`${urlBackend}/supervisor`, requestInit(methods.GET));
     return await response.json();

@@ -31,4 +31,17 @@ public class NotificationController {
                     .body(new ResponseMessage(e.getMessage()));
         }
     }
+
+    @GetMapping("/set_seen/{notificationId}")
+    public ResponseEntity<?> updateSeen(@PathVariable long notificationId) {
+        try {
+            Notification notification = notificationService.updateSeen(notificationId);
+            return ResponseEntity
+                    .ok(notification);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+    }
 }

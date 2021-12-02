@@ -1,5 +1,8 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.model.Notification;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.NotificationService;
@@ -49,6 +52,34 @@ public class NotificationControllerTest {
 
         MvcResult mvcResult = mockMvc.perform(
                 MockMvcRequestBuilders.get("/notification/all/{userId}", getDummyStudent().getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("test");
+    }
+
+    @Test
+    public void testUpdateSeen() throws Exception {
+        when(notificationService.updateSeen(any())).thenReturn(getDummyNotification());
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/notification/set_seen/{notificationId}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).hasSizeGreaterThan(0);
+    }
+
+    @Test
+    public void testUpdateSeen_throwsIllegalArg() throws Exception {
+        when(notificationService.updateSeen(any())).thenThrow(new IllegalArgumentException("test"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/notification/set_seen/{notificationId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 

@@ -66,6 +66,36 @@ public class NotificationServiceTest {
     }
 
     @Test
+    void testUpdateSeen() throws IdDoesNotExistException {
+        Notification notification = getDummyNotification();
+        notification.setId(1L);
+        notification.setSeen(true);
+        when(notificationRepository.existsById(any())).thenReturn(true);
+        when(notificationRepository.getById(any())).thenReturn(getDummyNotification());
+        when(notificationRepository.save(any())).thenReturn(notification);
+
+        Notification actual = notificationService.updateSeen(notification.getId());
+
+        assertThat(actual).isEqualTo(notification);
+    }
+
+    @Test
+    void testUpdateSeen_throwsIllegalArg() {
+        assertThrows(IllegalArgumentException.class, () ->
+                notificationService.updateSeen(null));
+    }
+
+    @Test
+    void testUpdateSeen_throwsIdDoesNotExist() {
+        Notification notification = getDummyNotification();
+        notification.setId(1L);
+        when(notificationRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class, () ->
+                notificationService.updateSeen(notification.getId()));
+    }
+
+    @Test
     void testNotifyOfCurriculumValidation() throws IdDoesNotExistException {
         Curriculum curriculum = getDummyCurriculum();
         curriculum.setIsValid(true);
