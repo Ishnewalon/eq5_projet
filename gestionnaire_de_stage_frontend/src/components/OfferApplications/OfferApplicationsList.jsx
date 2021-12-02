@@ -14,6 +14,7 @@ export default function OfferApplicationsList() {
     useEffect(() => {
         getStudentApplicationsOffer(student.id).then(
             data => {
+                console.log(student.id);
                 setOfferApplications(data)
             })
     }, [student.id])

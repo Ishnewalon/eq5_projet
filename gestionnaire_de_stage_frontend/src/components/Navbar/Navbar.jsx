@@ -106,7 +106,7 @@ function NavItemSpecificForUser() {
         return <NavItemList>
             <Dropdown title="Curriculum">
                 <Link to={{pathname: "/dashboard/televerser", state: {from: location}}}>Téléverser un curriculum</Link>
-                <Link to={{pathname: "/dashboard/mes_cv", state: {from: location}}}>Mes curriculum</Link>
+                <Link to={{pathname: "/dashboard/mes_cv", state: {from: location}}}>Mes curriculums</Link>
             </Dropdown>
             <Link to={{pathname: "/dashboard/offres", state: {from: location}}}>Offres</Link>
             <Dropdown title="Applications">

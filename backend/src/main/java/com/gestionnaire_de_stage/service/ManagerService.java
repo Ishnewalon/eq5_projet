@@ -19,7 +19,7 @@ public class ManagerService {
         this.managerRepository = managerRepository;
     }
 
-    public Manager create(Manager manager) throws ManagerAlreadyExistsException { //FIXME Never Used other than tests
+    public Manager create(Manager manager) throws ManagerAlreadyExistsException {
         Assert.isTrue(manager != null, "Le gestionnaire ne peut pas être vide");
         if (isNotValid(manager)) {
             throw new ManagerAlreadyExistsException("Un compte existe déjà pour ce gestionnaire");
@@ -37,9 +37,9 @@ public class ManagerService {
 
     public List<Manager> getAll() {
         return managerRepository.findAll();
-    }   //FIXME Never Used other than tests
+    }
 
-    public Manager update(Manager manager, Long aLong) throws IdDoesNotExistException { //FIXME Never Used other than tests
+    public Manager update(Manager manager, Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         Assert.isTrue(manager != null, "Le gestionnaire est null");
         if (isIDNotValid(aLong)) {
@@ -49,7 +49,7 @@ public class ManagerService {
         return managerRepository.save(manager);
     }
 
-    public void deleteByID(Long aLong) throws IdDoesNotExistException { //FIXME Never Used other than tests
+    public void deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (isIDNotValid(aLong))
             throw new IdDoesNotExistException("Il n'y a pas de gestionnaire associé à cet identifiant");

@@ -24,7 +24,7 @@ public class PasswordResetToken {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = false)
     private Date created = new Date();
-    private boolean unusable;//TODO maybe un puller?
+    private boolean unusable;
 
     public PasswordResetToken(User user) {
         this.user = user;

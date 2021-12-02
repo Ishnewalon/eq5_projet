@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-public class Contract {//TODO: add fields session
+public class Contract {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
