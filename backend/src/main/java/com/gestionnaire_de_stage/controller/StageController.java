@@ -94,4 +94,9 @@ public class StageController {
     public List<Stage> getAllEvaluationsForSupervisor(@PathVariable Long idSupervisor){
         return stageService.getAllEvaluationsForSupervisor(idSupervisor);
     }
+
+    @GetMapping("/monitor/{idMonitor}")
+    public List<Stage> getAllEvaluationsForMonitor(@PathVariable Long idMonitor){
+        return stageService.getAllEvaluationsForMonitor(idMonitor);
+    }
 }

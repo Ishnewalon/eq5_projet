@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -291,6 +292,47 @@ public class StageControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(stages).isEmpty();
     }
+
+    @Test
+    public void testGetAllEvaluationStagiare_withMonitorExistentId() throws Exception {
+        long idMonitor = 2L;
+        List<Stage> dummyStageList = getDummyListStage();
+        when(stageService.getAllEvaluationsForMonitor(any())).thenReturn(dummyStageList);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/stages/monitor/{idMonitor}", idMonitor)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getContentAsString()).isNotBlank();
+
+        final List<Stage> stages = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(stages).isEmpty();
+    }
+
+    @Test
+    public void testGetAllEvaluationStagiare_withMonitorNonExistentId() throws Exception {
+        long idMonitor = 2L;
+        when(stageService.getAllEvaluationsForMonitor(any())).thenReturn(Collections.emptyList());
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/stages/monitor/{idMonitor}", idMonitor)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getContentAsString()).isNotBlank();
+
+        final List<Stage> stages = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(stages).isEmpty();
+    }
+
+
 
     private EvalMilieuStageDTO getDummyEvalMilieuStageDTO() {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = new EvalMilieuStageDTO();

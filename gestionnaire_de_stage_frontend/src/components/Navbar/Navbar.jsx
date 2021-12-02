@@ -78,8 +78,10 @@ function NavItemSpecificForUser() {
                     <Link to={{pathname: "/dashboard/monitor/contracts/signed", state: {from: location}}}>Contrats
                         signés</Link>
                 </Dropdown>
-                <Link to={{pathname: "/dashboard/monitor_eval_stagiaire", state: {from: location}}}>Formulaire
-                    d'évaluation de stagiaire</Link>
+                <Dropdown title='Évaluation stagiaire'>
+                    <Link to={{pathname: "/dashboard/monitor/eval/create", state: {from: location}}}>Créer une évaluation de stagiaire</Link>
+                    <Link to={{pathname: "/dashboard/monitor/eval/view", state: {from: location}}}>Voir mes évaluations de stagiaires</Link>
+                </Dropdown>
             </NavItemList>
         )
     if (auth.isManager())

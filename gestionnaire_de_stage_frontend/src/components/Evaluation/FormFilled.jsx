@@ -3,7 +3,7 @@ import PdfDocumentViewer from "../SharedComponents/PdfDocumentViewer/PdfDocument
 import {useEffect, useState} from "react";
 
 
-export default function FormFilled({form, student, responsible}){
+export default function FormFilled({form, student, responsible, message}){
     const [pdf, setPdf] = useState(null);
 
     useEffect(() => setPdf(toPdfBlob(form)), [form]);
@@ -11,7 +11,6 @@ export default function FormFilled({form, student, responsible}){
     const userFullName = user => `${user.firstName} ${user.lastName}`;
 
     return <div className='d-flex align-items-center justify-content-center flex-column'>
-        <h2>Visite pour {userFullName(student)}</h2>
-        <PdfDocumentViewer file={pdf} fileName={`evaluation_${userFullName(responsible)}.pdf`}/>
+        <PdfDocumentViewer message={`${message} ${userFullName(student)}`} file={pdf} fileName={`evaluation_${userFullName(responsible)}.pdf`}/>
     </div>
 }
