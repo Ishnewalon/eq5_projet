@@ -21,17 +21,14 @@ public class CurriculumService {
 
     private final CurriculumRepository curriculumRepository;
     private final StudentService studentService;
-    private final OfferService offerService;
     private final OfferApplicationService offerApplicationService;
 
     public CurriculumService(
             CurriculumRepository curriculumRepository,
             StudentService studentService,
-            OfferService offerService,
             OfferApplicationService offerApplicationService) {
         this.curriculumRepository = curriculumRepository;
         this.studentService = studentService;
-        this.offerService = offerService;
         this.offerApplicationService = offerApplicationService;
     }
 
@@ -52,7 +49,7 @@ public class CurriculumService {
         );
     }
 
-    public Curriculum create(Curriculum curriculum) throws IllegalArgumentException, IdDoesNotExistException {
+    public Curriculum create(Curriculum curriculum) throws IllegalArgumentException {
         Assert.isTrue(curriculum != null, "Le curriculum ne peut pas être vide");
         return curriculumRepository.save(curriculum);
     }
@@ -81,6 +78,7 @@ public class CurriculumService {
         return new StudentCurriculumsDTO(principal, curriculumListByStudent);
     }
 
+    @SuppressWarnings("SameReturnValue")
     public boolean validate(Long idCurriculum, boolean valid) throws
             IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
         Assert.isTrue(idCurriculum != null, "L'identifiant du curriculum ne peut pas être vide");
@@ -117,10 +115,10 @@ public class CurriculumService {
         Curriculum curriculum = getOneByID(idCurriculum);
 
         if (isPrincipal(curriculum))
-            throw new CurriculumUsedException("Impossible de supprimer. Cela est votre curriculum par défaut");
+            throw new CurriculumUsedException("Impossible de supprimer. C'est votre curriculum par défaut");
 
         if (offerApplicationService.isCurriculumInUse(curriculum))
-            throw new CurriculumUsedException("Impossible de supprimer. Vous avez postuler avec ce curriculum");
+            throw new CurriculumUsedException("Impossible de supprimer. Vous avez postulé avec ce curriculum");
 
         curriculumRepository.deleteById(idCurriculum);
     }

@@ -5,6 +5,7 @@ import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {useLocation} from "react-router-dom";
 import {AiOutlineCloseCircle, BiCheck, FiDownload} from "react-icons/all";
+import {Title} from "../SharedComponents/Title/Title";
 
 
 export default function StudentCurriculumValidation() {
@@ -48,7 +49,8 @@ export default function StudentCurriculumValidation() {
         </div>
     }
 
-    return (
+    return (<>
+            <Title>Validation des curriculums du l'étudiant(e) {student.firstName} {student.lastName}</Title>
         <Table>
             <TableHeader>
                 <th>#</th>
@@ -72,5 +74,6 @@ export default function StudentCurriculumValidation() {
                     </td>
                 </TableRow>)}
         </Table>
+        </>
     )
 }
