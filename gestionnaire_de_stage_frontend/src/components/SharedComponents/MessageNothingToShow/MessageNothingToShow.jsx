@@ -5,8 +5,6 @@ import style from "./MessageNothingToShow.module.css";
 export default function MessageNothingToShow(props) {
     const {message} = props;
     return <>
-        {/*Bonne<span className="color-emphasis-1"> nouvelle!</span><br/>*/}
-        {/*Aucune offre <span className="color-emphasis-1">à valider.</span>*/}
         <div className={`d-flex align-items-center justify-content-center ${style.nothingToShow}`}>
             <h3 className={style.title}>
                 {message}
