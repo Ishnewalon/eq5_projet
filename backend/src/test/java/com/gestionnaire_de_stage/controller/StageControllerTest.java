@@ -297,7 +297,8 @@ public class StageControllerTest {
     public void testGetAllEvaluationStagiare_withMonitorExistentId() throws Exception {
         long idMonitor = 2L;
         List<Stage> dummyStageList = getDummyListStage();
-        when(stageService.getAllEvaluationsForMonitor(any())).thenReturn(dummyStageList);
+        when(stageService.getAllEvaluationsForMonitor(any()))
+                .thenReturn(dummyStageList);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/stages/monitor/{idMonitor}", idMonitor)
@@ -310,7 +311,9 @@ public class StageControllerTest {
         final List<Stage> stages = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(stages).isEmpty();
+        assertThat(stages)
+                .isNotEmpty()
+                .hasSize(dummyStageList.size());
     }
 
     @Test
