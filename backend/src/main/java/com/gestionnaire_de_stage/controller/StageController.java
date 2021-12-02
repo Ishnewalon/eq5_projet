@@ -90,11 +90,6 @@ public class StageController {
                 .body(new ResponseMessage("Évaluation remplie!"));
     }
 
-    @GetMapping("/monitor/{idMonitor}")
-    public List<Stage> getAllEvaluationsForMonitor(@PathVariable Long idMonitor){
-        return stageService.getAllEvaluationsForMonitor(idMonitor);
-    }
-
     @GetMapping("/supervisor/{idSupervisor}")
     public List<Stage> getAllEvaluationsForSupervisor(@PathVariable Long idSupervisor){
         return stageService.getAllEvaluationsForSupervisor(idSupervisor);
