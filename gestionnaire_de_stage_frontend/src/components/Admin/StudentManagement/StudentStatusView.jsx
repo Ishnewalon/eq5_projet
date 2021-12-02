@@ -24,7 +24,7 @@ export default function StudentStatusView() {
     const getViewFromStatus = (offerApp) => {
         switch (offerApp.status) {
             case "CV_ENVOYE":
-                return <RiFolderReceivedFill color={"gold"} title={"L'étudiant a envoyé son cv"} size={27}/>
+                return <RiFolderReceivedFill color={"orange"} title={"L'étudiant a envoyé son cv"} size={27}/>
             case "STAGE_REFUSE":
                 return <FaRegTimesCircle color={"red"} title={"L'étudiant a été refusé"} size={27}/>
             case "STAGE_TROUVE":
@@ -39,7 +39,9 @@ export default function StudentStatusView() {
     }
 
     if (offerAppList.length === 0) {
-        return <MessageNothingToShow message="Aucune candidature..."/>
+        return <>
+            <MessageNothingToShow message="Aucune candidature..."/>
+        </>
     }
     return (
         <div>
@@ -49,7 +51,7 @@ export default function StudentStatusView() {
                     <th>Étudiant</th>
                     <th>Matricule</th>
                     <th>Offre</th>
-                    <th>Status</th>
+                    <th>Statut</th>
                 </TableHeader>
                 {offerAppList.map((offerApp, index) =>
                     <TableRow key={index}>

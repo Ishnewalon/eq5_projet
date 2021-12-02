@@ -5,6 +5,7 @@ import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {useLocation} from "react-router-dom";
 import {AiOutlineCloseCircle, BiCheck, FiDownload} from "react-icons/all";
+import {Title} from "../SharedComponents/Title";
 
 
 export default function StudentCurriculumValidation() {
@@ -48,29 +49,31 @@ export default function StudentCurriculumValidation() {
         </div>
     }
 
-    return (
-        <Table>
-            <TableHeader>
-                <th>#</th>
-                <th>Nom du fichier</th>
-                <th>Télécharger CV</th>
-                <th>Validation</th>
-            </TableHeader>
+    return (<>
+            <Title>Validation des curriculums du l'étudiant(e) {student.firstName} {student.lastName}</Title>
+            <Table>
+                <TableHeader>
+                    <th>#</th>
+                    <th>Nom du fichier</th>
+                    <th>Télécharger CV</th>
+                    <th>Validation</th>
+                </TableHeader>
 
-            {curriculums.map((cv, index) =>
-                <TableRow key={index}>
-                    <th>{cv.id}</th>
-                    <td>{cv.name}</td>
-                    <td>
-                        <div
-                            onClick={() => downloadFile(toPdfBlob(cv.data), `${cv.student.firstName}_${cv.student.lastName}_${cv.id}.pdf`)}>
-                            <FiDownload color={"black"} title={"Téléchargez le cv"} size={27}/>
-                        </div>
-                    </td>
-                    <td>
-                        {getOptions(cv)}
-                    </td>
-                </TableRow>)}
-        </Table>
+                {curriculums.map((cv, index) =>
+                    <TableRow key={index}>
+                        <th>{cv.id}</th>
+                        <td>{cv.name}</td>
+                        <td>
+                            <div
+                                onClick={() => downloadFile(toPdfBlob(cv.data), `${cv.student.firstName}_${cv.student.lastName}_${cv.id}.pdf`)}>
+                                <FiDownload color={"black"} title={"Téléchargez le cv"} size={27}/>
+                            </div>
+                        </td>
+                        <td>
+                            {getOptions(cv)}
+                        </td>
+                    </TableRow>)}
+            </Table>
+        </>
     )
 }

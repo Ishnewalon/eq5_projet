@@ -2,12 +2,13 @@ import React from "react";
 import {Link, useHistory, useLocation} from "react-router-dom";
 import {UserType} from "../../enums/UserTypes";
 import {useAuth} from "../../hooks/use-auth";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
 import {useForm} from "react-hook-form";
-import {FormInput} from "../SharedComponents/FormInput/FormInput";
 import {regexEmail} from "../../utility";
 import PropTypes from "prop-types";
-import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
+import {FormGroup} from "../SharedComponents/Form/FormGroup";
+import {FieldInput} from "../SharedComponents/Form/FormFields";
+import {Column} from "../SharedComponents/Column";
 
 export default function Login() {
     const {register, handleSubmit, formState: {errors}} = useForm({
@@ -29,43 +30,43 @@ export default function Login() {
     return (
         <ContainerBox className="w-50">
             <form onSubmit={handleSubmit(connect)} noValidate>
-                <FormGroupV2 className={"mb-3"}>
+                <FormGroup className={"mb-3"}>
                     <Column>
                         <LoginRadio name="userType" register={register} list={Object.values(UserType)}
                                     validation={{}} error={errors.userType}/>
                     </Column>
-                </FormGroupV2>
-                <FormGroupV2>
+                </FormGroup>
+                <FormGroup>
                     <Column>
-                        <FormInput label="Votre Email"
-                                   name="email"
-                                   type="email"
-                                   placeholder="Votre Email"
-                                   register={register}
-                                   error={errors.email}
-                                   validation={{
-                                       required: "Ce champ est requis",
-                                       pattern: {
-                                           value: regexEmail,
-                                           message: "Veuillez entrer un email valide"
-                                       }
-                                   }}
-                                   autoComplete="email"/>
+                        <FieldInput label="Votre Email"
+                                    name="email"
+                                    type="email"
+                                    placeholder="Votre Email"
+                                    register={register}
+                                    error={errors.email}
+                                    validation={{
+                                        required: "Ce champ est requis",
+                                        pattern: {
+                                            value: regexEmail,
+                                            message: "Veuillez entrer un email valide"
+                                        }
+                                    }}
+                                    autoComplete="email"/>
                     </Column>
                     <Column>
-                        <FormInput label="Mot de passe"
-                                   name="password"
-                                   type="password"
-                                   placeholder="Votre mot de passe"
-                                   register={register}
-                                   error={errors.password}
-                                   validation={{
-                                       required: "Ce champ est requis",
-                                   }}
-                                   autoComplete="current-password"
+                        <FieldInput label="Mot de passe"
+                                    name="password"
+                                    type="password"
+                                    placeholder="Votre mot de passe"
+                                    register={register}
+                                    error={errors.password}
+                                    validation={{
+                                        required: "Ce champ est requis",
+                                    }}
+                                    autoComplete="current-password"
                         />
                     </Column>
-                </FormGroupV2>
+                </FormGroup>
                 <div className="form-group text-center">
                     <label/>
                     <input className="btn btn-primary btn-login" type="submit" value="Connexion"/>

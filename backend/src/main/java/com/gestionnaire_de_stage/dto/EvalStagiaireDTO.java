@@ -2,58 +2,62 @@ package com.gestionnaire_de_stage.dto;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class EvalStagiaireDTO {
 
-    String entrepriseNom;
+    String companyName;
 
     String phone;
 
-    String nomStagiaire;
+    String internName;
 
-    String questionUn;
+    String programStudyField;
 
-    String questionDeux;
+    String questionStudentCanOrganizeWork;
 
-    String questionTrois;
+    String questionUnderstandDirectives;
 
-    String questionQuatre;
+    String questionStudentMaintainRythmForWork;
 
-    String questionCinq;
+    String questionStudentHasTheRightPriorities;
 
-    String questionSix;
+    String questionStudentRespectSchedule;
 
-    String questionSept;
+    String questionStudentRespectTaskGiven;
 
-    String questionHuit;
+    String questionStudentPaysAttentionToDetails;
 
-    String questionNeuf;
+    String questionStudentValidateHisWork;
 
-    String questionDix;
+    String questionStudentTakeInitiativeToPerfectHimself;
 
-    String questionOnze;
+    String questionStudentAnalyzeProblemsGiven;
 
-    String questionDouze;
+    String questionStudentIsSocial;
 
-    String questionTreize;
+    String questionStudentWorksWellInGroup;
 
-    String questionQuatorze;
+    String questionStudentAdaptsToEasilyToWorkCulture;
 
-    String questionQuinze;
+    String questionStudentAcceptConstructiveCriticism;
 
-    String questionSeize;
+    String questionStudentIsRespectful;
 
-    String questionDixSept;
+    String questionStudentUnderstandOtherPeoplePov;
 
-    String questionDixHuit;
+    String questionStudentMotivatedToWork;
 
-    String questionDixNeuf;
+    String questionStudentTellIdeasClearly;
 
-    String questionVingt;
+    String questionStudentHasInitiative;
 
-    String questionVingtUn;
+    String questionStudentWorkSecurely;
 
-    String questionVingtDeux;
+    String questionStudentHasGoodSenseOfResponsability;
+
+    String questionStudentPonctual;
 
     String programmeEtudes;
 
@@ -61,31 +65,31 @@ public class EvalStagiaireDTO {
 
     boolean evaluationDiscuteAvecEtudiant;
 
-    String commentairesUn;
+    String commentsProductivity;
 
-    String commentairesDeux;
+    String commentsQualityOfWorkIntern;
 
-    String commentairesTrois;
+    String commentsStudentSocialRelationsQuality;
 
-    String commentairesQuatre;
+    String commentsStudentPersonalAptitudes;
 
-    String commentairesCinq;
+    String commentsInternProductivity;
 
-    boolean entrepriseApprecieEtudiant;
+    boolean companyAppreciateStudent;
 
     int nbHeuresReelTravailEtudiant;
 
-    String fonctionUn;
+    String firstFonction;
 
-    String fonctionDeux;
+    String secondFunction;
 
-    String formationSuffisanteCommentaire;
+    String commentsStudentTraining;
 
-    String nom;
+    String name;
 
-    String dateSignature;
+    LocalDate dateSignature = LocalDate.now();
 
     String monitorSignature;
 
-    String emailEtudiant;
+    String studentEmail;
 }

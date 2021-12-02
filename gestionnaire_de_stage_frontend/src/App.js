@@ -1,4 +1,3 @@
-import './App.css';
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import Dashboard from "./components/UserView/Dashboard";
 import React, {createElement} from "react";
@@ -7,14 +6,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "./components/Navbar/Navbar";
 import {AuthProvider, RequireAuth, RequireNoAuth} from "./hooks/use-auth";
 import Login from "./components/Unauthenticated/Login";
-import {Title} from "./components/SharedComponents/Title/Title";
+import {Title} from "./components/SharedComponents/Title";
 import Register from "./components/Unauthenticated/Register/Register";
 import PropTypes from "prop-types";
 import ForgotPassword from "./components/Unauthenticated/ForgotPassword";
 import ResetPassword from "./components/Unauthenticated/ResetPassword";
 import RegisterMonitor from "./components/Unauthenticated/Register/RegisterMonitor";
 import RegisterCegep from "./components/Unauthenticated/Register/RegisterCegep";
-import {ContainerBox} from "./components/SharedComponents/ContainerBox/ContainerBox";
+import {ContainerBox} from "./components/SharedComponents/ContainerBox";
 import ErrorNotFound from "./components/SharedComponents/ErrorNotFound/ErrorNotFound";
 import Notifications from "./components/SharedComponents/Notifications/Notifications";
 

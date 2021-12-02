@@ -115,10 +115,10 @@ public class CurriculumService {
         Curriculum curriculum = getOneByID(idCurriculum);
 
         if (isPrincipal(curriculum))
-            throw new CurriculumUsedException("Impossible de supprimer. Cela est votre curriculum par défaut");
+            throw new CurriculumUsedException("Impossible de supprimer. C'est votre curriculum par défaut");
 
         if (offerApplicationService.isCurriculumInUse(curriculum))
-            throw new CurriculumUsedException("Impossible de supprimer. Vous avez postuler avec ce curriculum");
+            throw new CurriculumUsedException("Impossible de supprimer. Vous avez postulé avec ce curriculum");
 
         curriculumRepository.deleteById(idCurriculum);
     }

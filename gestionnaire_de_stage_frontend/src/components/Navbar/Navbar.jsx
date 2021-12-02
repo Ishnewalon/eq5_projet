@@ -8,7 +8,7 @@ import style from "./Navbar.module.css";
 export default function Navbar() {
     let location = useLocation();
     return (
-        <nav className={`navbar navbar-expand-md bg-light navbar-light shadow ${style.bar}`}>
+        <nav className={`navbar navbar-expand-lg bg-light navbar-light shadow ${style.bar}`}>
             <div className={"container-fluid"}>
                 <Link className={`navbar-brand font-monospace ${style.brand}`}
                       to={{pathname: "/", state: {from: location}}}>JI<span
@@ -106,7 +106,7 @@ function NavItemSpecificForUser() {
         return <NavItemList>
             <Dropdown title="Curriculum">
                 <Link to={{pathname: "/dashboard/televerser", state: {from: location}}}>Téléverser un curriculum</Link>
-                <Link to={{pathname: "/dashboard/mes_cv", state: {from: location}}}>Mes curriculum</Link>
+                <Link to={{pathname: "/dashboard/mes_cv", state: {from: location}}}>Mes curriculums</Link>
             </Dropdown>
             <Link to={{pathname: "/dashboard/offres", state: {from: location}}}>Offres</Link>
             <Dropdown title="Applications">

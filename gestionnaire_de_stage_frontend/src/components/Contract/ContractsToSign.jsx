@@ -4,7 +4,7 @@ import {getAllContractsToBeSignedForMonitor, getAllContractsToBeStarted} from ".
 import {UserType} from "../../enums/UserTypes";
 import {useAuth} from "../../hooks/use-auth";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
 
 export default function ContractsToSign({userType}) {
     const [contracts, setContracts] = useState([]);

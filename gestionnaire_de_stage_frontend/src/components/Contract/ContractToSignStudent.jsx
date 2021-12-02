@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {getContractForStudent} from '../../services/contrat-service';
 import {UserType} from "../../enums/UserTypes";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
 
 export function ContractToSignStudent() {
     const auth = useAuth();

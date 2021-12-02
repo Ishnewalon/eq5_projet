@@ -25,8 +25,8 @@ export default function StudentsSignedIn() {
             <MessageNothingToShow message="Aucun étudiant inscrit"/>
             <BtnBack/>
         </>
-
     }
+
     return (
         <>
             <Table className={"w-75 mx-auto"}>
@@ -49,6 +49,5 @@ export default function StudentsSignedIn() {
             </Table>
             <BtnBack/>
         </>
-
     )
 }

@@ -26,9 +26,9 @@ public class OfferApplicationController {
     }
 
     @PostMapping("/apply")
-    public ResponseEntity<?> studentApplyToOffer(@RequestBody OfferAppDTO offerAppDTO) {//TODO : Check if student has valid curriculum
+    public ResponseEntity<?> studentApplyToOffer(@RequestBody OfferAppDTO offerAppDTO) {
         try {
-            offerApplicationService.create(offerAppDTO.getIdOffer(), offerAppDTO.getIdStudent());//FIXME: Change to offerAppDTO
+            offerApplicationService.create(offerAppDTO.getIdOffer(), offerAppDTO.getIdStudent());
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()

@@ -1,5 +1,5 @@
 import {useHistory, useRouteMatch} from "react-router-dom";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
 import {resetPassword} from "../../services/user-service";
 import StepPassword from "./Register/SharedSteps/StepPassword";
 import {useForm} from "react-hook-form";

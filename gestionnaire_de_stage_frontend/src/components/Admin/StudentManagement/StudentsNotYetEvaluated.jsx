@@ -20,7 +20,10 @@ export default function StudentsNotYetEvaluated() {
     }, []);
 
     if (studentMonitorOfferDtoList.length === 0)
-        return <MessageNothingToShow message="Tous les étudiants ont été évalués"/>
+        return <>
+            <MessageNothingToShow message="Tous les étudiants ont été évalués"/>
+            <BtnBack/>
+        </>
 
     return (
         <>

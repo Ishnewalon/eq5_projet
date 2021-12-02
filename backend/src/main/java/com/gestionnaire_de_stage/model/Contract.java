@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 @Entity
 @EntityListeners(ContractListener.class)
-public class Contract {//TODO: add fields session
+public class Contract {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

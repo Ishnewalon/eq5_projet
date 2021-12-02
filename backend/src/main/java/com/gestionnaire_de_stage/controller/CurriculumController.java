@@ -79,7 +79,7 @@ public class CurriculumController {
     @PostMapping("/validate")
     public ResponseEntity<?> validate(@RequestBody ValidationCurriculum validationCurriculum) {
         try {
-            curriculumService.validate(validationCurriculum.getId(), validationCurriculum.isValid());//FIXME: Change pour objet
+            curriculumService.validate(validationCurriculum.getId(), validationCurriculum.isValid());
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
@@ -98,6 +98,6 @@ public class CurriculumController {
                     .status(HttpStatus.BAD_REQUEST)
                     .body(new ResponseMessage(e.getMessage()));
         }
-        return ResponseEntity.ok(new ResponseMessage("Curriculum éffacé avec succès"));
+        return ResponseEntity.ok(new ResponseMessage("Curriculum effacé avec succès"));
     }
 }

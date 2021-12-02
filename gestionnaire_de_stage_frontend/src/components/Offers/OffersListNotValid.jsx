@@ -3,9 +3,10 @@ import {getAllOffersInvalid} from '../../services/offer-service'
 import OfferView from './OfferView';
 import {getCurrentAndFutureSession} from "../../services/session-service";
 import {BtnBack} from "../SharedComponents/BtnBack";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {Column, FormGroupV2} from "../SharedComponents/FormGroup/FormGroupV2";
+import {FormGroup} from "../SharedComponents/Form/FormGroup";
+import {Column} from "../SharedComponents/Column";
 
 export default function OffersListNotValid() {
 
@@ -47,7 +48,7 @@ export default function OffersListNotValid() {
 
     return (<>
             <ContainerBox>
-                <FormGroupV2>
+                <FormGroup>
                     <Column>
                         <div className="form-floating">
                             <select id="session" className="form-select" onChange={e => setMyVisible(e.target.value)}>
@@ -58,7 +59,7 @@ export default function OffersListNotValid() {
                             <label htmlFor="session">Session</label>
                         </div>
                     </Column>
-                </FormGroupV2>
+                </FormGroup>
                 <div className="row">
                     {visibleOffers.map((offer, index) =>
                         <Column col={{lg: 6}} key={index}>
