@@ -6,7 +6,6 @@ import LinkSupervisorToStudent from "../Admin/StudentManagement/LinkSupervisorTo
 import {Route, useRouteMatch} from "react-router-dom";
 import {UserType} from "../../enums/UserTypes";
 import StartContract from "../Contract/StartContract";
-import {ContainerBox} from "../SharedComponents/ContainerBox";
 import {useAuth} from "../../hooks/use-auth";
 import RapportsView from "../Admin/RapportsView";
 import CreateSession from "../Sessions/CreateSession";
@@ -29,7 +28,7 @@ export default function ManagerView() {
             </Route>
             <Route exact path={`${path}/manager/contracts/signed`}>
                 <Title>Contrats signés</Title>
-                    <ContractsSigned userType={UserType.MANAGER[0]}/>
+                <ContractsSigned userType={UserType.MANAGER[0]}/>
             </Route>
             <Route path={`${path}/offres`}>
                 <Route exact path={`${path}/offres/ajouter`}>
@@ -38,7 +37,7 @@ export default function ManagerView() {
                 </Route>
                 <Route exact path={`${path}/offres/review`}>
                     <Title>Validation des offres</Title>
-                        <OffersManagerValidation/>
+                    <OffersManagerValidation/>
                 </Route>
             </Route>
             <Route path={`${path}/curriculum/review`}>
@@ -61,7 +60,7 @@ export default function ManagerView() {
             </Route>
             <Route exact path={`${path}/contrats/a_signer`}>
                 <Title>Contrats à signer</Title>
-                    <ContractsToSign userType={UserType.MANAGER[0]}/>
+                <ContractsToSign userType={UserType.MANAGER[0]}/>
             </Route>
             <Route exact path={`${path}/session`}>
                 <Title>Ajouter une session</Title>

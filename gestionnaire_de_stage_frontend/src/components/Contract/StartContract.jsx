@@ -3,7 +3,6 @@ import {useAuth} from "../../hooks/use-auth";
 import {getAllOfferAppReadyToSign, startSignerFetch} from "../../services/contrat-service";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {ContainerBox} from "../SharedComponents/ContainerBox";
 import {BsFillPenFill} from "react-icons/all";
 
 export default function StartContract() {
@@ -32,7 +31,7 @@ export default function StartContract() {
 
     if (offerApplications.length === 0)
         return (
-                <MessageNothingToShow message="Aucun contrat à lancer pour le moment..."/>
+            <MessageNothingToShow message="Aucun contrat à lancer pour le moment..."/>
         )
     return (
         <Table>

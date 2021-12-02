@@ -38,11 +38,11 @@ export default function StudentStatusView() {
         }
     }
 
-    if (offerAppList.length === 0) {
+    if (offerAppList.length === 0)
         return <>
             <MessageNothingToShow message="Aucune candidature..."/>
         </>
-    }
+
     return (
         <div>
             <Table className={"w-75 mx-auto"}>
