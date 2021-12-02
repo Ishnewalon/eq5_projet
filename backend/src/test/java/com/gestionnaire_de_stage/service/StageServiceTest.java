@@ -199,12 +199,11 @@ public class StageServiceTest {
 
     @Test
     public void testGetAllStageForMonitor_withNonExistentId(){
-        List<Stage> stageList = getDummyStageList();
         when(stageRepository.getAllByEvalStagiaireNotNullAndContract_Monitor_Id(any())).thenReturn(Collections.emptyList());
 
         List<Stage> actualStageList = stageService.getAllEvaluationsForMonitor(1L);
 
-        assertThat(actualStageList).isEqualTo(stageList);
+        assertThat(actualStageList).isEmpty();
     }
 
     private List<Stage> getDummyStageList() {
