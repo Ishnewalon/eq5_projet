@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -19,17 +20,17 @@ public class Notification {
 
     private String message;
 
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 
     public Notification() {
         this.seen = false;
-        this.createdDate = LocalDate.now();
+        this.createdDate = LocalDateTime.now();
     }
 
     public Notification(User targetedUser, String message) {
         this.targetedUser = targetedUser;
         this.message = message;
         this.seen = false;
-        this.createdDate = LocalDate.now();
+        this.createdDate = LocalDateTime.now();
     }
 }

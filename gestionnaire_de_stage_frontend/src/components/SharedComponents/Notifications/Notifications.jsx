@@ -13,7 +13,7 @@ const Notifications = () => {
     useEffect(() => {
         getNotificationsByUser(userId).then(
             notifications => {
-                setNotifications(notifications);
+                setNotifications(notifications.sort((a, b) => b.createdDate - a.createdDate));
             })
     }, [userId]);
 
@@ -25,11 +25,22 @@ const Notifications = () => {
             })));
     }
 
-    const getTimeFromNow = date => {
-        let parsedDate = date.split("-");
-        date = new Date(parsedDate[0], parsedDate[1] - 1, parsedDate[2])
-        return Math.floor((new Date().getTime() - date.getTime()) / (1000 * 3600 * 24))
-    }
+    const timeFormatMessage = (date) => {
+        let timeNow = new Date();
+        let dateTimeFormat = new Date(date);
+
+        let dateAfficher = timeNow - dateTimeFormat;
+        let dateAfficherMinutes = dateAfficher / (1000 * 60);
+        let dateAfficherHours = dateAfficher / (1000 * 60 * 60);
+
+        if (dateAfficherMinutes < 60) {
+            return ` Il y a ${Math.floor(dateAfficherMinutes)} minutes`;
+        } else if (dateAfficherHours < 24) {
+            return ` Il y a ${Math.floor(dateAfficherHours)} heures`;
+        } else {
+            return ` Il y a ${Math.floor(dateAfficherHours / 24)} jours`;
+        }
+    };
 
     if (notifications?.length === 0)
         return <p className={"text-muted"}> Aucune notifications</p>
@@ -46,13 +57,13 @@ const Notifications = () => {
                         }
                     </button>
                 </Column>
-                <Column col={{md: 9}}>
+                <Column col={{md: 8}}>
                     <p>{notification.message}</p>
                 </Column>
-                <Column col={{md: 2}}>
+                <Column col={{md: 3}}>
                     <p className="text-muted">
                         <BsClockHistory className={"me-1"}/>
-                        {getTimeFromNow(notification.createdDate) === 0 ? "Aujourd'hui" : "Il y a " + getTimeFromNow(notification.createdDate) + " jour(s)"}
+                        {timeFormatMessage(notification.createdDate)}
                     </p>
                 </Column>
             </div>
