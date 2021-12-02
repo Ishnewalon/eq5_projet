@@ -11,7 +11,7 @@ import {CgDetailsMore} from "react-icons/all";
 export default function StudentsStatus() {
 
     const [studentList, setStudentList] = useState([])
-    const [studentApplications, setStudentApplications] = useState([])
+    const [studentApplications, setStudentApplications] = useState({})
     const auth = useAuth()
     const history = useHistory()
 
@@ -26,6 +26,16 @@ export default function StudentsStatus() {
             })
     }, [auth.user.id]);
 
+
+    const getNbStudentApplications = () => {
+        let nbStudentApplications = 0
+        Object.keys(studentApplications).forEach(k => {
+            nbStudentApplications += studentApplications[k].length;
+        });
+        console.log(nbStudentApplications);
+        return nbStudentApplications;
+    }
+
     useEffect(() => {
         studentList.forEach(student => {
             getStudentApplicationsOffer(student.id)
@@ -38,17 +48,18 @@ export default function StudentsStatus() {
                     })
                 })
                 .catch(e => {
-                    setStudentApplications([])
+                    setStudentApplications({})
                     console.error(e);
                 })
         })
     }, [studentList])
 
-    if (studentList.length === 0 || studentApplications?.length === 0)
+    if (getNbStudentApplications() === 0 || studentList.length === 0 || studentApplications === {})
         return <>
             <MessageNothingToShow message="Aucun étudiant n'a appliqué"/>
             <BtnBack/>
         </>
+
     return (
         <>
             <Table className={"w-75 mx-auto"}>

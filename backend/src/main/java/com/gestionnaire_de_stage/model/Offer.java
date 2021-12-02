@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.gestionnaire_de_stage.listener.OfferListener;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
+@EntityListeners(OfferListener.class)
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Offer {

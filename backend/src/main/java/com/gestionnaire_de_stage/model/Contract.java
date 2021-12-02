@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.model;
 
+import com.gestionnaire_de_stage.listener.ContractListener;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import java.time.LocalDate;
 
 @Data
 @Entity
+@EntityListeners(ContractListener.class)
 public class Contract {
 
     @Id
