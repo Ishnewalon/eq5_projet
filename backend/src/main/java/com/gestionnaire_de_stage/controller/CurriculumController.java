@@ -79,7 +79,7 @@ public class CurriculumController {
     @PostMapping("/validate")
     public ResponseEntity<?> validate(@RequestBody ValidationCurriculum validationCurriculum) {
         try {
-            curriculumService.validate(validationCurriculum.getId(), validationCurriculum.isValid());
+            curriculumService.validate(validationCurriculum);
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()

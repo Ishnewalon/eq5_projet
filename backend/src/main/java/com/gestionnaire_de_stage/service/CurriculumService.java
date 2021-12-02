@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
+import com.gestionnaire_de_stage.dto.ValidationCurriculum;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.CurriculumUsedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
@@ -79,19 +80,17 @@ public class CurriculumService {
     }
 
     @SuppressWarnings("SameReturnValue")
-    public boolean validate(Long idCurriculum, boolean valid) throws
+    public boolean validate(ValidationCurriculum validationCurriculum) throws
             IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
-        Assert.isTrue(idCurriculum != null, "L'identifiant du curriculum ne peut pas être vide");
+        Assert.isTrue(validationCurriculum.getId() != null, "L'identifiant du curriculum ne peut pas être vide");
 
-        Optional<Curriculum> curriculumOptional = curriculumRepository.findById(idCurriculum);
+        Curriculum curriculum = curriculumRepository.findById(validationCurriculum.getId())
+                .orElseThrow(() -> new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant"));
 
-        if (curriculumOptional.isEmpty())
-            throw new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant");
-        if (curriculumOptional.get().getIsValid() != null)
+        if (curriculum.getIsValid() != null)
             throw new CurriculumAlreadyTreatedException("Ce curriculum a déjà été traité");
 
-        Curriculum curriculum = curriculumOptional.get();
-        curriculum.setIsValid(valid);
+        curriculum.setIsValid(validationCurriculum.isValid());
         curriculumRepository.save(curriculum);
         return true;
     }

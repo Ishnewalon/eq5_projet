@@ -81,15 +81,6 @@ public class MonitorServiceTest {
     }
 
     @Test
-    public void testGetAll() {
-        when(monitorRepository.findAll()).thenReturn(getDummyMonitorList());
-
-        List<Monitor> actualMonitorList = monitorService.getAll();
-
-        assertThat(actualMonitorList.size()).isEqualTo(getDummyMonitorList().size());
-    }
-
-    @Test
     public void testUpdate_withValidEntries() throws Exception {
         Monitor dummyMonitor = getDummyMonitor();
         when(monitorRepository.existsById(any())).thenReturn(true);

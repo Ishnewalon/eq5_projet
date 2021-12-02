@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.StudentCurriculumsDTO;
+import com.gestionnaire_de_stage.dto.ValidationCurriculum;
 import com.gestionnaire_de_stage.exception.CurriculumAlreadyTreatedException;
 import com.gestionnaire_de_stage.exception.CurriculumUsedException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
@@ -178,21 +179,27 @@ public class CurriculumServiceTest {
     public void testValidate() throws Exception {
         Curriculum curriculum = getDummyCurriculum();
         curriculum.setId(1L);
+        ValidationCurriculum validationCurriculumDTO = new ValidationCurriculum();
+        validationCurriculumDTO.setId(curriculum.getId());
+        validationCurriculumDTO.setValid(true);
 
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(curriculum));
 
-        assertThat(curriculumService.validate(curriculum.getId(), true)).isTrue();
+        assertThat(curriculumService.validate(validationCurriculumDTO)).isTrue();
     }
 
     @Test
     void testValidate_whenCvNonExistent() {
         Curriculum curriculum = getDummyCurriculum();
         curriculum.setId(1L);
+        ValidationCurriculum validationCurriculumDTO = new ValidationCurriculum();
+        validationCurriculumDTO.setId(curriculum.getId());
+        validationCurriculumDTO.setValid(true);
 
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(IdDoesNotExistException.class,
-                () -> curriculumService.validate(curriculum.getId(), true));
+                () -> curriculumService.validate(validationCurriculumDTO));
     }
 
     @Test
@@ -200,37 +207,52 @@ public class CurriculumServiceTest {
         Curriculum curriculum = getDummyCurriculum();
         curriculum.setId(1L);
         curriculum.setIsValid(true);
+
+        ValidationCurriculum validationCurriculumDTO = new ValidationCurriculum();
+        validationCurriculumDTO.setId(curriculum.getId());
+        validationCurriculumDTO.setValid(true);
+
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(curriculum));
         assertThrows(CurriculumAlreadyTreatedException.class, () ->
-                curriculumService.validate(curriculum.getId(), true));
+                curriculumService.validate(validationCurriculumDTO));
 
     }
 
     @Test
     void testValidate_withIdCurriculumNull() {
+        ValidationCurriculum validationCurriculumDTO = new ValidationCurriculum();
+        validationCurriculumDTO.setId(null);
+        validationCurriculumDTO.setValid(true);
+
         assertThrows(IllegalArgumentException.class, () ->
-                curriculumService.validate(null, true));
+                curriculumService.validate(validationCurriculumDTO));
     }
 
     @Test
     void testReject() throws Exception {
         Curriculum dummyCurriculum = getDummyCurriculum();
         dummyCurriculum.setId(1L);
+        ValidationCurriculum validationCurriculumDTO = new ValidationCurriculum();
+        validationCurriculumDTO.setId(dummyCurriculum.getId());
+        validationCurriculumDTO.setValid(false);
 
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(dummyCurriculum));
 
-        assertThat(curriculumService.validate(dummyCurriculum.getId(), false)).isTrue();
+        assertThat(curriculumService.validate(validationCurriculumDTO)).isTrue();
     }
 
     @Test
     void testReject_whenCvNonExistent() {
         Curriculum dummyCurriculum = getDummyCurriculum();
         dummyCurriculum.setId(1L);
+        ValidationCurriculum validationCurriculumDTO = new ValidationCurriculum();
+        validationCurriculumDTO.setId(dummyCurriculum.getId());
+        validationCurriculumDTO.setValid(false);
 
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(IdDoesNotExistException.class, () ->
-                curriculumService.validate(dummyCurriculum.getId(), false));
+                curriculumService.validate(validationCurriculumDTO));
     }
 
     @Test
@@ -238,16 +260,24 @@ public class CurriculumServiceTest {
         Curriculum dummyCurriculum = getDummyCurriculum();
         dummyCurriculum.setId(1L);
         dummyCurriculum.setIsValid(true);
+        ValidationCurriculum validationCurriculumDTO = new ValidationCurriculum();
+        validationCurriculumDTO.setId(dummyCurriculum.getId());
+        validationCurriculumDTO.setValid(false);
+
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(dummyCurriculum));
 
         assertThrows(CurriculumAlreadyTreatedException.class, () ->
-                curriculumService.validate(dummyCurriculum.getId(), false));
+                curriculumService.validate(validationCurriculumDTO));
     }
 
     @Test
     void testReject_withIdCurriculumNull() {
+        ValidationCurriculum validationCurriculumDTO = new ValidationCurriculum();
+        validationCurriculumDTO.setId(null);
+        validationCurriculumDTO.setValid(false);
+
         assertThrows(IllegalArgumentException.class, () ->
-                curriculumService.validate(null, false));
+                curriculumService.validate(validationCurriculumDTO));
     }
 
     @Test

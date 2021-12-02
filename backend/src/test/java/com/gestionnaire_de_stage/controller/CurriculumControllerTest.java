@@ -182,7 +182,7 @@ public class CurriculumControllerTest {
     @Test
     public void testValidate() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, true);
-        when(curriculumService.validate(anyLong(), anyBoolean())).thenReturn(true);
+        when(curriculumService.validate(any())).thenReturn(true);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/curriculum/validate")
@@ -197,7 +197,7 @@ public class CurriculumControllerTest {
     @Test
     public void testValidate_whenCvNonExistent() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, true);
-        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant"));
+        when(curriculumService.validate(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/curriculum/validate")
@@ -212,7 +212,7 @@ public class CurriculumControllerTest {
     @Test
     public void testValidate_whenCurriculumAlreadyTreated() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, true);
-        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(new CurriculumAlreadyTreatedException("Ce curriculum a déjà été traité"));
+        when(curriculumService.validate(any())).thenThrow(new CurriculumAlreadyTreatedException("Ce curriculum a déjà été traité"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/curriculum/validate")
@@ -227,7 +227,7 @@ public class CurriculumControllerTest {
     @Test
     public void testValidate_withIdCurriculumNull() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(null, true);
-        when(curriculumService.validate(any(), anyBoolean()))
+        when(curriculumService.validate(any()))
                 .thenThrow(new IllegalArgumentException("L'identifiant du curriculum ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
@@ -243,7 +243,7 @@ public class CurriculumControllerTest {
     @Test
     public void testReject() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, false);
-        when(curriculumService.validate(anyLong(), anyBoolean())).thenReturn(true);
+        when(curriculumService.validate(any())).thenReturn(true);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/curriculum/validate")
@@ -258,7 +258,7 @@ public class CurriculumControllerTest {
     @Test
     public void testReject_whenCvNonExistent() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, false);
-        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant"));
+        when(curriculumService.validate(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/curriculum/validate")
@@ -273,7 +273,7 @@ public class CurriculumControllerTest {
     @Test
     public void testReject_whenCurriculumAlreadyTreated() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(1L, false);
-        when(curriculumService.validate(anyLong(), anyBoolean())).thenThrow(new CurriculumAlreadyTreatedException("Ce curriculum a déjà été traité"));
+        when(curriculumService.validate(any())).thenThrow(new CurriculumAlreadyTreatedException("Ce curriculum a déjà été traité"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/curriculum/validate")
@@ -288,7 +288,7 @@ public class CurriculumControllerTest {
     @Test
     public void testReject_withIdCurriculumNull() throws Exception {
         ValidationCurriculum validationCurriculum = new ValidationCurriculum(null, false);
-        when(curriculumService.validate(any(), anyBoolean()))
+        when(curriculumService.validate(any()))
                 .thenThrow(new IllegalArgumentException("L'identifiant du curriculum ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
