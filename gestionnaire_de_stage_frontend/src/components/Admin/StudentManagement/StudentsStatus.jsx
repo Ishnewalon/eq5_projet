@@ -45,8 +45,10 @@ export default function StudentsStatus() {
     }, [studentList])
 
     if (studentList.length === 0 || studentApplications?.length === 0)
-        return <MessageNothingToShow message="Aucun étudiant n'a appliqué"/>
-
+        return <>
+            <MessageNothingToShow message="Aucun étudiant n'a appliqué"/>
+            <BtnBack/>
+        </>
     return (
         <>
             <Table className={"w-75 mx-auto"}>
@@ -67,8 +69,10 @@ export default function StudentsStatus() {
                                 <button className="btn btn-primary"
                                         onClick={() => history.push({
                                             pathname: "offer",
-                                            state: {offerApp: studentApplications[student.id],
-                                                student: student}
+                                            state: {
+                                                offerApp: studentApplications[student.id],
+                                                student: student
+                                            }
                                         })}>
                                     Voir
                                 </button>

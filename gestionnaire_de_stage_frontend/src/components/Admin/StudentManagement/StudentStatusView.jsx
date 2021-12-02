@@ -49,7 +49,7 @@ export default function StudentStatusView() {
                     <th>Étudiant</th>
                     <th>Matricule</th>
                     <th>Offre</th>
-                    <th>Status</th>
+                    <th>Statut</th>
                 </TableHeader>
                 {offerAppList.map((offerApp, index) =>
                     <TableRow key={index}>
