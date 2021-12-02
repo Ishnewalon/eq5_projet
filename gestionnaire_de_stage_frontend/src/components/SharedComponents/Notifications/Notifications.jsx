@@ -51,9 +51,10 @@ const Notifications = () => {
                 <Column col={{md: 1}}>
                     <button className={"link-button"}>
                         {notification.seen ?
-                            <MdOutlineNotificationsNone size={20} color={"grey"}/>
-                            : <MdOutlineNotificationsActive size={20} color={"orange"}
-                                                            onClick={() => setSeen(notification)}/>
+                            <MdOutlineNotificationsNone size={20} color={"grey"} title={"Notification vue"}/>
+                            :
+                            <MdOutlineNotificationsActive size={20} color={"orange"} title={"Cliquez pour mettre à vue"}
+                                                          onClick={() => setSeen(notification)}/>
                         }
                     </button>
                 </Column>
