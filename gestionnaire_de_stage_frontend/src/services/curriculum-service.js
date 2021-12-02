@@ -14,7 +14,7 @@ export async function uploadFile(file, id) {
             toast.fire({title: `${file[0].name} a été téléversé avec succès!`}).then();
             return
         } else if (response.status === 400) {
-            toastErr.fire({title: `${file[0].name} n'a pas pu être téléversé...`}).then();
+            toastErr.fire({title: `Ce fichier n'a pas pu être téléversé...`}).then();
         }
         response.json().then(data =>
             console.error(data.message));

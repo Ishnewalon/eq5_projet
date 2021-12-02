@@ -49,6 +49,13 @@ public class ContractService {
         return contractRepository.getAllByManagerSignatureNull();
     }
 
+    public Contract getOneById(Long idContract) throws IdDoesNotExistException {
+        Assert.notNull(idContract, "L'identifiant du contrat ne peut pas être vide");
+        if (!contractRepository.existsById(idContract))
+            throw new IdDoesNotExistException("Aucun contrat ne correspond à cet identifiant");
+        return contractRepository.getById(idContract);
+    }
+
     public Contract addManagerSignature(String managerSignature, Long contract_id) throws IllegalArgumentException, IdDoesNotExistException {
         Assert.isTrue(managerSignature != null, "Il faut une signature");
         Assert.isTrue(contract_id != null, "L'identifiant du contrat ne peut pas être vide");

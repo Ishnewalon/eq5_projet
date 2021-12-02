@@ -97,7 +97,7 @@ public class OfferApplicationService {
                 !date.isBefore(LocalDateTime.now().plusMonths(2));
     }
 
-    public List<OfferApplication> getOffersApplicationsStageTrouverManagerId(Long id) throws IdDoesNotExistException {//TODO combine with getAllOffersStudentApplied
+    public List<OfferApplication> getOffersApplicationsStageTrouverManagerId(Long id) throws IdDoesNotExistException {
         Assert.isTrue(id != null, "L'identifiant du gestionnaire ne peut pas être vide");
         if (managerService.isIDNotValid(id))
             throw new IdDoesNotExistException("Il n'y a pas de gestionnaire associé à cet identifiant");

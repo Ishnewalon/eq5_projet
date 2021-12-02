@@ -5,6 +5,7 @@ import {FaPen} from "react-icons/all";
 import styles from "./Profile.module.css";
 import {UserType} from "../../../enums/UserTypes";
 import {changePassword} from "../../../services/user-service";
+import Notifications from "../Notifications/Notifications";
 import {Column} from "../Column";
 
 export default function Profile() {
@@ -86,7 +87,7 @@ export default function Profile() {
                                     <img src="https://img.icons8.com/bubbles/100/000000/user.png"
                                          className={styles.imgRadius} alt="Profile"/>
                                 </div>
-                                <h5 className={styles.fontWeight600}>{user.firstName + " " + user.lastName}</h5>
+                                <h5 className={styles.fullName}>{user.firstName + " " + user.lastName}</h5>
                             </div>
                         </Column>
                         <Column col={{sm: 8}}>
@@ -106,10 +107,16 @@ export default function Profile() {
                                     </Column>
                                     <Column col={{md: 6}}>
                                         <h6 className={styles.titleCol}>Téléphone</h6>
-                                        <p className="text-muted">{user.phone}</p>
+                                        <p className="text-muted">{formatPhoneNumber(user.phone)}</p>
                                     </Column>
+                                    {getAddress(user)}
+                                    <div className="row">
+                                        <Column col={{sm: 12}}>
+                                            <h5 className={"mt-2 " + styles.borderTitle}>Notifications</h5>
+                                            <Notifications/>
+                                        </Column>
+                                    </div>
                                 </div>
-                                {getAddress(user)}
                             </div>
                         </Column>
                     </div>
@@ -117,4 +124,13 @@ export default function Profile() {
             </Column>
         </div>
     )
+}
+
+function formatPhoneNumber(phoneNumberString) {
+    let cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+    let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+        return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+    }
+    return null;
 }
