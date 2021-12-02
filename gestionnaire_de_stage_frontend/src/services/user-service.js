@@ -10,7 +10,7 @@ export async function updateSeen(notificationId) {
     return await fetch(`${urlBackend}/notification/set_seen/${notificationId}`, requestInit(methods.GET)).then(response => {
         return response.json().then(body => {
             if (response.status === 200)
-                toast.fire({title: "Seen!"});
+                toast.fire({title: "Vue!"});
             else if (response.status === 400)
                 toastErr.fire({title: body.message,});
             return response.ok

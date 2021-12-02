@@ -15,7 +15,6 @@ import RegisterMonitor from "./components/Unauthenticated/Register/RegisterMonit
 import RegisterCegep from "./components/Unauthenticated/Register/RegisterCegep";
 import {ContainerBox} from "./components/SharedComponents/ContainerBox";
 import ErrorNotFound from "./components/SharedComponents/ErrorNotFound/ErrorNotFound";
-import Notifications from "./components/SharedComponents/Notifications/Notifications";
 
 function App() {
     return <AuthProvider>

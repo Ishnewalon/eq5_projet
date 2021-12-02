@@ -109,17 +109,14 @@ export default function Profile() {
                                         <h6 className={styles.titleCol}>Téléphone</h6>
                                         <p className="text-muted">{user.phone}</p>
                                     </Column>
+                                    {getAddress(user)}
+                                    <div className="row">
+                                        <Column col={{sm: 12}}>
+                                            <h5 className={"mt-2 " + styles.borderTitle}>Notifications</h5>
+                                            <Notifications/>
+                                        </Column>
+                                    </div>
                                 </div>
-                                {getAddress(user)}
-                            </div>
-                        </Column>
-
-                    </div>
-                    <div className="row">
-                        <Column col={{sm: 12}}>
-                            <div className={styles.cardBlock}>
-                                <h5 className={styles.informations}>Notifications</h5>
-                                <Notifications/>
                             </div>
                         </Column>
                     </div>
