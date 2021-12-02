@@ -41,7 +41,7 @@ export default function SupervisorStepFour({
     }
 
     return <div className='px-3 pb-3 pt-1 rounded'>
-        <h4 className='fw-bold p-2 rounded mt-4 mb-0 text-decoration-underline'>Observations générales</h4>
+        <h4 className='fw-bold p-2 rounded mt-4 text-decoration-underline'>Observations générales</h4>
         <FormGroup>
             <Column col={{md: 4}}>
                 <FieldRadio
@@ -271,7 +271,8 @@ export default function SupervisorStepFour({
                             pattern: {
                                 value: regexName,
                                 message: "La signature doit contenir seulement des lettres!"
-                            }}
+                            }
+                        }
                         }
                         name='supervisorSignature'
                         register={register}

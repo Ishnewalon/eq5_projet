@@ -64,7 +64,7 @@ export default function SupervisorVisitForm() {
             }
         }).then(() => {
             if (status === 200)
-                Swal.fire({icon: 'success',title: body.message});
+                Swal.fire({icon: 'success', title: body.message});
             if (status === 400)
                 swalErr.fire({title: body.message});
         })

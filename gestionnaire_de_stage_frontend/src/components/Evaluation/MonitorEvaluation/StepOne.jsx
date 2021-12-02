@@ -19,7 +19,7 @@ export default function StepOne({errors, register}) {
                                 value: regexEmail,
                                 message: 'Veuillez entrer une adresse email valide'
                             },
-                            validate: async(emailStudent) => !await checkEmail(emailStudent) || 'Aucun étudiant avec cette adresse email existe!'
+                            validate: async (emailStudent) => !await checkEmail(emailStudent) || 'Aucun étudiant avec cette adresse email existe!'
                         }
                     }
                     name='studentEmail'
