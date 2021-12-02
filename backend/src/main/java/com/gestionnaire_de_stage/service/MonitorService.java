@@ -27,16 +27,12 @@ public class MonitorService {
         return monitorRepository.save(monitor);
     }
 
-    public Monitor getOneByID(Long aLong) throws IdDoesNotExistException { //FIXME Never Used other than tests
+    public Monitor getOneByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (!monitorRepository.existsById(aLong))
             throw new IdDoesNotExistException("Il n'y a pas de moniteur associé à cet identifiant");
         return monitorRepository.getById(aLong);
     }
-
-    public List<Monitor> getAll() {
-        return monitorRepository.findAll();
-    } //FIXME Never Used other than tests
 
     public Monitor update(Monitor monitor) throws IdDoesNotExistException {
         Assert.isTrue(monitor != null, "Monitor est null");
@@ -53,7 +49,7 @@ public class MonitorService {
         return monitorRepository.findMonitorByEmailAndPassword(email, password);
     }
 
-    public void deleteByID(Long aLong) throws IdDoesNotExistException { //FIXME Never Used other than tests
+    public void deleteByID(Long aLong) throws IdDoesNotExistException {
         Assert.isTrue(aLong != null, "ID est null");
         if (!monitorRepository.existsById(aLong))
             throw new IdDoesNotExistException("Il n'y a pas de moniteur associé à cet identifiant");
