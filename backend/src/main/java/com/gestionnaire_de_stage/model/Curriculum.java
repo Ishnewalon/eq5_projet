@@ -2,7 +2,6 @@ package com.gestionnaire_de_stage.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gestionnaire_de_stage.listener.CurriculumListener;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

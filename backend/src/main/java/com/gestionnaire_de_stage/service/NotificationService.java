@@ -30,7 +30,7 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
 
-    public NotificationService(CurriculumService curriculumService, OfferService offerService, NotificationRepository notificationRepository, ManagerService managerService, StudentService studentService, OfferApplicationService offerApplicationService, ContractService contractService){
+    public NotificationService(CurriculumService curriculumService, OfferService offerService, NotificationRepository notificationRepository, ManagerService managerService, StudentService studentService, OfferApplicationService offerApplicationService, ContractService contractService) {
         this.curriculumService = curriculumService;
         this.offerService = offerService;
         this.notificationRepository = notificationRepository;
@@ -121,9 +121,9 @@ public class NotificationService {
         List<Manager> managers = managerService.getAll();
         managers.forEach(manager ->
                 notificationRepository.save(new Notification(
-                    manager,
-                    "Une nouvelle offre est en attente de validation."
-        )));
+                        manager,
+                        "Une nouvelle offre est en attente de validation."
+                )));
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -153,7 +153,7 @@ public class NotificationService {
         Assert.notNull(contract, "Le contrat ne peut pas être vide");
         Contract previous = contractService.getOneById(contract.getId());
 
-        if (!Objects.equals(contract.getManagerSignature(), previous.getManagerSignature())){
+        if (!Objects.equals(contract.getManagerSignature(), previous.getManagerSignature())) {
             Student student = contract.getStudent();
             notificationRepository.save(new Notification(
                     contract.getMonitor(),
@@ -162,7 +162,7 @@ public class NotificationService {
             ));
         }
 
-        if (!Objects.equals(contract.getMonitorSignature(), previous.getMonitorSignature())){
+        if (!Objects.equals(contract.getMonitorSignature(), previous.getMonitorSignature())) {
             Offer offer = contract.getOffer();
             notificationRepository.save(new Notification(
                     contract.getStudent(),

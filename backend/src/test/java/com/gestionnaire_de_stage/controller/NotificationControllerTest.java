@@ -1,8 +1,5 @@
 package com.gestionnaire_de_stage.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gestionnaire_de_stage.model.Contract;
 import com.gestionnaire_de_stage.model.Notification;
 import com.gestionnaire_de_stage.model.Student;
 import com.gestionnaire_de_stage.service.NotificationService;
@@ -37,8 +34,8 @@ public class NotificationControllerTest {
         when(notificationService.getAllByUserId(any())).thenReturn(getDummyNotificationList());
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/notification/all/{userId}", getDummyStudent().getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/notification/all/{userId}", getDummyStudent().getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -51,8 +48,8 @@ public class NotificationControllerTest {
         when(notificationService.getAllByUserId(any())).thenThrow(new IllegalArgumentException("test"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/notification/all/{userId}", getDummyStudent().getId())
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/notification/all/{userId}", getDummyStudent().getId())
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -65,8 +62,8 @@ public class NotificationControllerTest {
         when(notificationService.updateSeen(any())).thenReturn(getDummyNotification());
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/notification/set_seen/{notificationId}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/notification/set_seen/{notificationId}", 1L)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
@@ -79,8 +76,8 @@ public class NotificationControllerTest {
         when(notificationService.updateSeen(any())).thenThrow(new IllegalArgumentException("test"));
 
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/notification/set_seen/{notificationId}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        MockMvcRequestBuilders.get("/notification/set_seen/{notificationId}", 1L)
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
