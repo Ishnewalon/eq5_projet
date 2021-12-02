@@ -24,8 +24,13 @@ export default function ShowAllEvaluations({userType}) {
             return evaluation.evalMilieuStage;
     }
 
+    const getMessage = (userType) => {
+        if (userType === UserType.SUPERVISOR[0])
+            return "Aucun formulaire de visite à afficher...";
+    }
+
     if(evaluations?.length === 0)
-        return <MessageNothingToShow message="Aucun formulaire de visite à afficher..."/>
+        return <MessageNothingToShow message={getMessage(userType)}/>
 
     return <>{
         evaluations.map((evaluation, index) => <div key={index}>
