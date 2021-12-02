@@ -29,9 +29,7 @@ export default function ManagerView() {
             </Route>
             <Route exact path={`${path}/manager/contracts/signed`}>
                 <Title>Contrats signés</Title>
-                <ContainerBox>
                     <ContractsSigned userType={UserType.MANAGER[0]}/>
-                </ContainerBox>
             </Route>
             <Route path={`${path}/offres`}>
                 <Route exact path={`${path}/offres/ajouter`}>
@@ -40,9 +38,7 @@ export default function ManagerView() {
                 </Route>
                 <Route exact path={`${path}/offres/review`}>
                     <Title>Validation des offres</Title>
-                    <ContainerBox>
                         <OffersManagerValidation/>
-                    </ContainerBox>
                 </Route>
             </Route>
             <Route path={`${path}/curriculum/review`}>
@@ -65,9 +61,7 @@ export default function ManagerView() {
             </Route>
             <Route exact path={`${path}/contrats/a_signer`}>
                 <Title>Contrats à signer</Title>
-                <ContainerBox>
                     <ContractsToSign userType={UserType.MANAGER[0]}/>
-                </ContainerBox>
             </Route>
             <Route exact path={`${path}/session`}>
                 <Title>Ajouter une session</Title>

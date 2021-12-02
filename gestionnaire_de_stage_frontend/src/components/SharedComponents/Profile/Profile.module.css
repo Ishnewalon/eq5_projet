@@ -43,3 +43,8 @@
 .imgRadius {
     border-radius: 5px
 }
+
+.fullName {
+    composes: fontWeight600;
+    text-transform: capitalize;
+}

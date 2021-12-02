@@ -35,11 +35,10 @@ FieldRadio.propTypes = {
 export function FieldRadio(props) {
     const {list, register, name, label, classNameLabel} = props;
 
-    function Radio({id, value, text, defaultChecked}) {
+    function Radio({id, value, text}) {
         return <div className={'form-check ' + classNameLabel}>
             <input id={id} className="form-check-input" name={name} value={value}
-                   type="radio" {...register(name, {required: "Ce champs est obligatoire"})}
-                   defaultChecked={defaultChecked}/>
+                   type="radio" {...register(name, {required: "Ce champs est obligatoire"})}/>
             <label className="form-check-label" htmlFor={id}>{text}</label>
         </div>
     }
@@ -50,7 +49,7 @@ export function FieldRadio(props) {
             list.map((item, index) => {
                 return <Radio key={index} classNameLabel={classNameLabel} value={item[0]} name={name}
                               register={register} text={item[1]}
-                              id={name + index} defaultChecked={index === 0}/>;
+                              id={name + index}/>;
 
             })
         }
