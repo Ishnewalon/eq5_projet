@@ -335,8 +335,6 @@ public class StageControllerTest {
         assertThat(stages).isEmpty();
     }
 
-
-
     private EvalMilieuStageDTO getDummyEvalMilieuStageDTO() {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = new EvalMilieuStageDTO();
         dummyEvalMilieuStageDTO.setCompanyName("La place");
