@@ -267,10 +267,13 @@
 					</tr>
 					<tr>
 						<td style='border:1pt solid;text-align:center;height:20pt;'>
-							<input type="radio" name="memeStagiaire" th:checked="${formInfo.questionWelcomeSameIntern == 'Oui'}">
+							<input type="radio" name="memeStagiaire" th:checked="${formInfo.questionWelcomeSameIntern == 'true'}">
 						</td>
 						<td style='border:1pt solid;text-align:center;height:20pt;'>
-							<input type="radio" name="memeStagiaire" th:checked="${formInfo.questionWelcomeSameIntern == 'Non'}">
+							<input type="radio" name="memeStagiaire" th:checked="${formInfo.questionWelcomeSameIntern == 'false'}">
+						</td>
+						<td>
+							<span th:text="${formInfo.questionWelcomeSameIntern}"></span>
 						</td>
 					</tr>
 					<tr>
@@ -307,10 +310,13 @@
 							</p>
 						</td>
 						<td style='border:1pt solid;text-align:center;'>
-							<input type="radio" id="oui" name="quartTravail" th:checked="${formInfo.questionShiftsFlexible == 'Oui'}">
+							<input type="radio" id="oui" name="quartTravail" th:checked="${formInfo.questionShiftsFlexible == 'true'}">
 						</td>
 						<td style='border:1pt solid;text-align:center;'>
-							<input type="radio" id="non" name="quartTravail" th:checked="${formInfo.questionShiftsFlexible == 'Non'}">
+							<input type="radio" id="non" name="quartTravail" th:checked="${formInfo.questionShiftsFlexible == 'false'}">
+						</td>
+						<td>
+							<span th:text="${formInfo.questionShiftsFlexible}"></span>
 						</td>
 					</tr>
 				</tbody>
