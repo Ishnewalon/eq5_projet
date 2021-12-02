@@ -16,7 +16,15 @@ Column.propTypes = {
 }
 Column.defaultProps = {
     defaultValue: 12,
-    className: undefined
+    className: undefined,
+    col: {
+        xs: undefined,
+        sm: undefined,
+        md: undefined,
+        lg: undefined,
+        xl: undefined,
+        xxl: undefined
+    }
 }
 
 export function Column(props) {
