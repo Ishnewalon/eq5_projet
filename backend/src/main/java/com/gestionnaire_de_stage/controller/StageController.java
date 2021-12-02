@@ -91,7 +91,14 @@ public class StageController {
     }
 
     @GetMapping("/supervisor/{idSupervisor}")
-    public List<Stage> getAllEvaluationsForSupervisor(@PathVariable Long idSupervisor){
-        return stageService.getAllEvaluationsForSupervisor(idSupervisor);
+    public ResponseEntity<?> getAllEvaluationsForSupervisor(@PathVariable Long idSupervisor){
+        try {
+            List<Stage> stages = stageService.getAllEvaluationsForSupervisor(idSupervisor);
+            return ResponseEntity.ok(stages);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
     }
 }

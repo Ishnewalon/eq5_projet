@@ -256,7 +256,6 @@ public class StageControllerTest {
     public void testGetAllFormulaireDeVisite_supervisorIdExistent() throws Exception {
         List<Stage> dummyStageList = getDummyListStage();
         long idSupervisor = 2L;
-
         when(stageService.getAllEvaluationsForSupervisor(any())).thenReturn(dummyStageList);
 
         MvcResult mvcResult = mockMvc.perform(
@@ -265,10 +264,7 @@ public class StageControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(response.getContentAsString()).isNotBlank();
-
         final List<Stage> stages = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
-
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(stages).hasSize(10);
     }
@@ -284,12 +280,24 @@ public class StageControllerTest {
                 .andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(response.getContentAsString()).isNotBlank();
-
         final List<Stage> stages = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
-
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(stages).isEmpty();
+    }
+
+    @Test
+    public void testGetAllFormulaireDeVisite_throwsIllegalArg() throws Exception {
+        Long idSupervisor = 2L;
+        when(stageService.getAllEvaluationsForSupervisor(any())).thenThrow(new IllegalArgumentException("test"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/stages/supervisor/{idSupervisor}", idSupervisor)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("test");
     }
 
     private EvalMilieuStageDTO getDummyEvalMilieuStageDTO() {
