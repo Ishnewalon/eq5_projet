@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -175,6 +176,33 @@ public class StageServiceTest {
         when(stageRepository.getAllByEvalStagiaireIsNull()).thenReturn(stageList);
 
         List<Stage> actualStageList = stageService.getAllWithNoEvalStagiaire();
+
+        assertThat(actualStageList).isEqualTo(stageList);
+    }
+
+    @Test
+    public void testGetAllStageForMonitor_withNullId(){
+        assertThrows(IllegalArgumentException.class,
+            () -> stageService.getAllEvaluationsForMonitor(null)
+        );
+    }
+
+    @Test
+    public void testGetAllStageForMonitor_withExistentId(){
+        List<Stage> stageList = getDummyStageList();
+        when(stageRepository.getAllByEvalStagiaireNotNullAndContract_Monitor_Id(any())).thenReturn(stageList);
+
+        List<Stage> actualStageList = stageService.getAllEvaluationsForMonitor(1L);
+
+        assertThat(actualStageList).isEqualTo(stageList);
+    }
+
+    @Test
+    public void testGetAllStageForMonitor_withNonExistentId(){
+        List<Stage> stageList = getDummyStageList();
+        when(stageRepository.getAllByEvalStagiaireNotNullAndContract_Monitor_Id(any())).thenReturn(Collections.emptyList());
+
+        List<Stage> actualStageList = stageService.getAllEvaluationsForMonitor(1L);
 
         assertThat(actualStageList).isEqualTo(stageList);
     }
