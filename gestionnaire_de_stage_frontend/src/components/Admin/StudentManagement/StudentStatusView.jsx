@@ -4,6 +4,7 @@ import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
 import {useAuth} from "../../../hooks/use-auth";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {AiOutlineCheckCircle, BiTimeFive, FaRegTimesCircle, MdDateRange, RiFolderReceivedFill} from "react-icons/all";
+import {BtnBack} from "../../SharedComponents/BtnBack";
 
 export default function StudentStatusView() {
 
@@ -39,7 +40,10 @@ export default function StudentStatusView() {
     }
 
     if (offerAppList.length === 0) {
-        return <MessageNothingToShow message="Aucune candidature..."/>
+        return <>
+            <MessageNothingToShow message="Aucune candidature..."/>
+            <BtnBack/>
+        </>
     }
     return (
         <div>
