@@ -2,7 +2,6 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.ManagerAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.repository.ManagerRepository;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ManagerServiceTest {
@@ -26,30 +26,6 @@ public class ManagerServiceTest {
 
     @Mock
     private ManagerRepository managerRepository;
-
-    @Test
-    public void testCreate_withValidManager() throws ManagerAlreadyExistsException {
-        Manager dummyManager = getDummyManager();
-        when(managerRepository.save(any())).thenReturn(dummyManager);
-
-        Manager actualManager = managerService.create(dummyManager);
-
-        assertThat(actualManager.getEmail()).isEqualTo(dummyManager.getEmail());
-    }
-
-    @Test
-    public void testCreate_withNullManager() {
-        assertThrows(IllegalArgumentException.class,
-                () -> managerService.create(null));
-    }
-
-    @Test
-    public void testCreate_alreadyExistsManager() {
-        when(managerRepository.existsByEmail(any())).thenReturn(true);
-
-        assertThrows(ManagerAlreadyExistsException.class,
-                () -> managerService.create(getDummyManager()));
-    }
 
     @Test
     public void testGetByID_withValidID() throws IdDoesNotExistException {
@@ -85,70 +61,8 @@ public class ManagerServiceTest {
 
         final List<Manager> actualManagerList = managerService.getAll();
 
-        assertThat(actualManagerList.size()).isEqualTo(3);
+        assertThat(actualManagerList).hasSize(3);
         assertThat(actualManagerList.get(0).getFirstName()).isEqualTo("Oussama");
-    }
-
-    @Test
-    public void testUpdate_withValidEntries() throws IdDoesNotExistException {
-        Manager dummyManager = getDummyManager();
-        dummyManager.setId(2L);
-        when(managerRepository.existsById(any())).thenReturn(true);
-        when(managerRepository.save(any())).thenReturn(dummyManager);
-
-        Manager actualManager = managerService.update(dummyManager, dummyManager.getId());
-
-        assertThat(actualManager.getEmail()).isEqualTo(dummyManager.getEmail());
-    }
-
-    @Test
-    public void testUpdate_withNullID() {
-        Manager dummyManager = getDummyManager();
-
-        assertThrows(IllegalArgumentException.class,
-                () -> managerService.update(dummyManager, null));
-    }
-
-    @Test
-    public void testUpdate_withNullStudent() {
-        assertThrows(IllegalArgumentException.class,
-                () -> managerService.update(null, 1L));
-    }
-
-    @Test
-    public void testUpdate_doesntExistID() {
-        Manager dummyManager = getDummyManager();
-        dummyManager.setId(1L);
-        when(managerRepository.existsById(any())).thenReturn(false);
-
-        assertThrows(IdDoesNotExistException.class,
-                () -> managerService.update(dummyManager, dummyManager.getId()));
-    }
-
-    @Test
-    public void testDelete_withValidID() throws IdDoesNotExistException {
-        Long validID = 1L;
-        when(managerRepository.existsById(any())).thenReturn(true);
-        doNothing().when(managerRepository).deleteById(any());
-
-        managerService.deleteByID(validID);
-
-        verify(managerRepository, times(1)).deleteById(any());
-    }
-
-    @Test
-    public void testDelete_withNullID() {
-        assertThrows(IllegalArgumentException.class,
-                () -> managerService.deleteByID(null));
-    }
-
-    @Test
-    public void testDelete_doesntExistID() {
-        Long id = 1L;
-        when(managerRepository.existsById(any())).thenReturn(false);
-
-        assertThrows(IdDoesNotExistException.class,
-                () -> managerService.deleteByID(id));
     }
 
     @Test

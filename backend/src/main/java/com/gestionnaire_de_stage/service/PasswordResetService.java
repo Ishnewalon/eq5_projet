@@ -7,6 +7,7 @@ import com.gestionnaire_de_stage.exception.UnusableTokenException;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.PasswordResetTokenRepository;
 import io.jsonwebtoken.lang.Assert;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ public class PasswordResetService {
     private final SupervisorService supervisorService;
     private final StudentService studentService;
     private final JavaMailSender mailSender;
+    @Value("${spring.mail.username}")
+    private String fromMail;
 
     public PasswordResetService(PasswordResetTokenRepository passwordResetTokenRepository, MonitorService monitorService, SupervisorService supervisorService, StudentService studentService, JavaMailSender mailSender) {
         this.passwordResetTokenRepository = passwordResetTokenRepository;
@@ -31,8 +34,7 @@ public class PasswordResetService {
     private PasswordResetToken forgotPassword(User user) {
         Assert.notNull(user, "Un utilisateur est nécessaire afin de créer un jeton de récupération de mot de passe");
         PasswordResetToken passwordResetToken = new PasswordResetToken(user);
-        String message = "Veuillez cliquer sur le lien suivant pour réinitialiser votre mot de passe : http://localhost:3000/reset_password/" + passwordResetToken.getToken();
-        sendEmail(user.getEmail(), "Mot de passe oublié", message);
+        sendEmail(user.getEmail(), passwordResetToken.getToken());
         return passwordResetTokenRepository.save(passwordResetToken);
     }
 
@@ -99,13 +101,12 @@ public class PasswordResetService {
         return !passwordResetTokenRepository.existsByToken(token);
     }
 
-    private void sendEmail(String mailTo, String subject, String body) {
+    private void sendEmail(String mailTo,  String token) {
         SimpleMailMessage mail = new SimpleMailMessage();
-        mail.setFrom("jisos.eq5@gmail.com");
-        mail.setSubject(subject);
-        mail.setText(body);
+        mail.setFrom(this.fromMail);
+        mail.setSubject("Mot de passe oublié");
+        mail.setText("Veuillez cliquer sur le lien suivant pour réinitialiser votre mot de passe : http://localhost:3000/reset_password/" + token);
         mail.setTo(mailTo);
-
 
         this.mailSender.send(mail);
     }

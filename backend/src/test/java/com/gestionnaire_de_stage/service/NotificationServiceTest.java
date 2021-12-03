@@ -98,7 +98,7 @@ public class NotificationServiceTest {
     void testNotifyOfCurriculumValidation() throws IdDoesNotExistException {
         Curriculum curriculum = getDummyCurriculum();
         curriculum.setIsValid(true);
-        when(curriculumService.getOneByID(any())).thenReturn(getDummyCurriculum());
+        when(curriculumService.getOneById(any())).thenReturn(getDummyCurriculum());
 
         notificationService.notifyOfCurriculumValidation(curriculum);
 
@@ -109,7 +109,7 @@ public class NotificationServiceTest {
     void testNotifyOfCurriculumValidation_throwsIdDoesNotExist() throws IdDoesNotExistException {
         Curriculum curriculum = getDummyCurriculum();
         curriculum.setIsValid(true);
-        when(curriculumService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
+        when(curriculumService.getOneById(any())).thenThrow(IdDoesNotExistException.class);
 
         assertThrows(IdDoesNotExistException.class, () ->
                 notificationService.notifyOfCurriculumValidation(curriculum));
@@ -119,7 +119,7 @@ public class NotificationServiceTest {
     void testNotifyOfCurriculumValidation_throwsIllegalArg() throws IdDoesNotExistException {
         Curriculum curriculum = getDummyCurriculum();
         curriculum.setIsValid(true);
-        when(curriculumService.getOneByID(any())).thenThrow(IllegalArgumentException.class);
+        when(curriculumService.getOneById(any())).thenThrow(IllegalArgumentException.class);
 
         assertThrows(IllegalArgumentException.class, () ->
                 notificationService.notifyOfCurriculumValidation(curriculum));
@@ -134,7 +134,7 @@ public class NotificationServiceTest {
     @Test
     void testNotifyOfCurriculumValidation_doesNothingWhenValidNoChange() throws IdDoesNotExistException {
         Curriculum curriculum = getDummyCurriculum();
-        when(curriculumService.getOneByID(any())).thenReturn(curriculum);
+        when(curriculumService.getOneById(any())).thenReturn(curriculum);
 
         notificationService.notifyOfCurriculumValidation(curriculum);
 

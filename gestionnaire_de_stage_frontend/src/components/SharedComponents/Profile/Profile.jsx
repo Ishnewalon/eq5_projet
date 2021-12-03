@@ -61,7 +61,7 @@ export default function Profile() {
         })
     }
 
-    function getRole(){
+    function getRole() {
         if (auth.isMonitor())
             return "Moniteur"
         else if (auth.isStudent())

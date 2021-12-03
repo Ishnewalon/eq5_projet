@@ -118,9 +118,9 @@ public class OfferApplicationService {
     }
 
     public OfferApplication getOneById(Long idOfferApplication) throws IdDoesNotExistException {
-        Assert.isTrue(idOfferApplication != null, "L'identifiant de l'application ne peut pas être vide");
+        Assert.notNull(idOfferApplication, "L'identifiant de l'application ne peut pas être vide");
         if (!offerApplicationRepository.existsById(idOfferApplication))
-            throw new IdDoesNotExistException("L'identifiant de l'application ne peut pas être vide");
+            throw new IdDoesNotExistException("L'application n'existe pas!");
         return offerApplicationRepository.getById(idOfferApplication);
     }
 
@@ -138,16 +138,23 @@ public class OfferApplicationService {
         return offerApplicationRepository.getAllByCurriculum_StudentId(idStudent);
     }
 
-    public String updateStatus(UpdateStatusDTO updateStatusDTO) {
+    public String updateStatus(UpdateStatusDTO updateStatusDTO) throws IdDoesNotExistException {
         Assert.isTrue(updateStatusDTO.getIdOfferApplied() != null, "L'identifiant de l'offre ne peut pas être vide");
-        OfferApplication offerApplication = offerApplicationRepository.getById(updateStatusDTO.getIdOfferApplied());
-        if (updateStatusDTO.isAccepted()) {
-            offerApplication.setStatus(Status.STAGE_TROUVE);
-        } else {
-            offerApplication.setStatus(Status.STAGE_REFUSE);
-        }
+         OfferApplication offerApplication = getOneById(updateStatusDTO.getIdOfferApplied());
+        offerApplication.setStatus(updateStatusDTO.getStatus());
+
         offerApplicationRepository.save(offerApplication);
-        return updateStatusDTO.isAccepted() ? "Statut changé, attendez la signature du contrat" : "Statut changé, stage refusé";
+
+        switch (updateStatusDTO.getStatus()) {
+            case EN_SIGNATURE:
+                return "Démarrage du contrat lancé";
+            case STAGE_TROUVE:
+                return "Statut changé, attendez la signature du contrat";
+            case STAGE_REFUSE:
+                return "Statut changé, stage refusé";
+            default:
+                throw new IllegalArgumentException("Le statut n'existe pas");
+        }
     }
 
     public int updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(Status status, Status newStatus) throws IllegalArgumentException {

@@ -12,15 +12,12 @@ import java.time.LocalDate;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OfferDTO {
     @NotBlank(message = "Le departement est vide.")
-    @Size(min = 2, message = "Le departement doit avoir au minimum 2 lettres.")
     private String department;
 
     @NotBlank(message = "Le titre est vide.")
-    @Size(min = 2, message = "Le titre doit avoir au minimum 2 lettres.")
     private String title;
 
     @NotBlank(message = "La description est vide.")
-    @Size(min = 2, message = "La description doit avoir au minimum 2 lettres.")
     private String description;
 
     @Size(min = 2, message = "L'addresse doit avoir au minimum 2 lettres.")

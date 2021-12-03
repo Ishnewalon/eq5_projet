@@ -25,7 +25,6 @@ public class Session {
     @Enumerated(EnumType.STRING)
     private TypeSession typeSession;
 
-
     private Year year;
 
     @Override

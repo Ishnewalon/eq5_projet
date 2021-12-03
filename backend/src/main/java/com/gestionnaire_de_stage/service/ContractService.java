@@ -2,6 +2,8 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.dto.StudentMonitorOfferDTO;
+import com.gestionnaire_de_stage.dto.UpdateStatusDTO;
+import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.ContractRepository;
@@ -135,10 +137,14 @@ public class ContractService {
         contract.setManager(manager);
 
         OfferApplication offerApplication = offerApplicationService.getOneById(contractStarterDto.getIdOfferApplication());
+
+        offerApplicationService.updateStatus(new UpdateStatusDTO(offerApplication.getId(), Status.EN_SIGNATURE));
+
         Offer offer = offerApplication.getOffer();
         Monitor monitor = offer.getCreator();
         Curriculum curriculum = offerApplication.getCurriculum();
         Student student = curriculum.getStudent();
+
         if (doesStudentAlreadyHaveAContract(student.getId(), contract.getSession()))
             throw new StudentAlreadyHaveAContractException("Un contrat existe déjà pour l'étudiant ayant la matricule " + student.getMatricule());
         if (studentRepository.existsByIdAndSupervisorNull(student.getId())) {

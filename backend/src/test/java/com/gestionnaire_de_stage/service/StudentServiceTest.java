@@ -212,7 +212,7 @@ public class StudentServiceTest {
         Curriculum curriculum = getDummyCurriculum();
         when(studentRepository.getById(any())).thenReturn(student);
         when(studentRepository.existsById(any())).thenReturn(true);
-        when(curriculumService.getOneByID(any())).thenReturn(curriculum);
+        when(curriculumService.getOneById(any())).thenReturn(curriculum);
         student.setPrincipalCurriculum(curriculum);
         when(studentRepository.save(any())).thenReturn(student);
 
@@ -243,7 +243,7 @@ public class StudentServiceTest {
         Student student = getDummyStudent();
         Curriculum curriculum = getDummyCurriculum();
         when(studentRepository.existsById(any())).thenReturn(true);
-        when(curriculumService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
+        when(curriculumService.getOneById(any())).thenThrow(IdDoesNotExistException.class);
 
         assertThrows(IdDoesNotExistException.class,
                 () -> studentService.setPrincipalCurriculum(student, curriculum.getId()));
@@ -266,7 +266,7 @@ public class StudentServiceTest {
         curriculum.setIsValid(null);
         when(studentRepository.existsById(any())).thenReturn(true);
         when(studentRepository.getById(any())).thenReturn(student);
-        when(curriculumService.getOneByID(any())).thenReturn(curriculum);
+        when(curriculumService.getOneById(any())).thenReturn(curriculum);
 
         assertThrows(CurriculumNotValidException.class,
                 () -> studentService.setPrincipalCurriculum(student, curriculum.getId()));

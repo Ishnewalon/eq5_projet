@@ -8,6 +8,5 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class PasswordResetTokenDto {
-    private String token;
-    private String password;
+    private String token, password;
 }

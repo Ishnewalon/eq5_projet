@@ -206,9 +206,10 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    public void testUpdateStatus_withTrue() {
+    public void testUpdateStatus_withTrue() throws IdDoesNotExistException {
         OfferApplication dummyOfferApplication = getDummyOfferApp();
-        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), true);
+        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), Status.STAGE_TROUVE);
+        when(offerApplicationRepository.existsById(any())).thenReturn(true);
         when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
         when(offerApplicationRepository.save(any())).thenReturn(dummyOfferApplication);
 
@@ -218,9 +219,10 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    public void testUpdateStatus_withFalse() {
+    public void testUpdateStatus_withFalse() throws IdDoesNotExistException {
         OfferApplication dummyOfferApplication = getDummyOfferApp();
-        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), false);
+        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), Status.STAGE_REFUSE);
+        when(offerApplicationRepository.existsById(any())).thenReturn(true);
         when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
         when(offerApplicationRepository.save(any())).thenReturn(dummyOfferApplication);
 

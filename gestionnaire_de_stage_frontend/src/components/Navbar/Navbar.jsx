@@ -79,8 +79,10 @@ function NavItemSpecificForUser() {
                         signés</Link>
                 </Dropdown>
                 <Dropdown title='Évaluation stagiaire'>
-                    <Link to={{pathname: "/dashboard/monitor/eval/create", state: {from: location}}}>Créer une évaluation</Link>
-                    <Link to={{pathname: "/dashboard/monitor/eval/view", state: {from: location}}}>Voir mes évaluations</Link>
+                    <Link to={{pathname: "/dashboard/monitor/eval/create", state: {from: location}}}>Créer une
+                        évaluation</Link>
+                    <Link to={{pathname: "/dashboard/monitor/eval/view", state: {from: location}}}>Voir mes
+                        évaluations</Link>
                 </Dropdown>
             </NavItemList>
         )
@@ -125,8 +127,10 @@ function NavItemSpecificForUser() {
     if (auth.isSupervisor())
         return <NavItemList>
             <Dropdown title='Formulaire de visite'>
-                <Link to={{pathname: "/dashboard/forms/supervisor/create", state: {from: location}}}>Créer un formulaire</Link>
-                <Link to={{pathname: "/dashboard/forms/supervisor/view", state: {from: location}}}>Voir mes formulaires</Link>
+                <Link to={{pathname: "/dashboard/forms/supervisor/create", state: {from: location}}}>Créer un
+                    formulaire</Link>
+                <Link to={{pathname: "/dashboard/forms/supervisor/view", state: {from: location}}}>Voir mes
+                    formulaires</Link>
             </Dropdown>
             <Link to={{pathname: "/dashboard/students/status", state: {from: location}}}>Status des étudiants</Link>
         </NavItemList>

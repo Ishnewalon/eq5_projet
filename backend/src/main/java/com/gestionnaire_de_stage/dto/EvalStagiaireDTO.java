@@ -7,89 +7,89 @@ import java.time.LocalDate;
 @Data
 public class EvalStagiaireDTO {
 
-    String companyName;
+    private String companyName;
 
-    String phone;
+    private String phone;
 
-    String internName;
+    private String internName;
 
-    String programStudyField;
+    private String programStudyField;
 
-    String questionStudentCanOrganizeWork;
+    private String questionStudentCanOrganizeWork;
 
-    String questionUnderstandDirectives;
+    private String questionUnderstandDirectives;
 
-    String questionStudentMaintainRythmForWork;
+    private String questionStudentMaintainRythmForWork;
 
-    String questionStudentHasTheRightPriorities;
+    private String questionStudentHasTheRightPriorities;
 
-    String questionStudentRespectSchedule;
+    private String questionStudentRespectSchedule;
 
-    String questionStudentRespectTaskGiven;
+    private String questionStudentRespectTaskGiven;
 
-    String questionStudentPaysAttentionToDetails;
+    private String questionStudentPaysAttentionToDetails;
 
-    String questionStudentValidateHisWork;
+    private String questionStudentValidateHisWork;
 
-    String questionStudentTakeInitiativeToPerfectHimself;
+    private String questionStudentTakeInitiativeToPerfectHimself;
 
-    String questionStudentAnalyzeProblemsGiven;
+    private String questionStudentAnalyzeProblemsGiven;
 
-    String questionStudentIsSocial;
+    private String questionStudentIsSocial;
 
-    String questionStudentWorksWellInGroup;
+    private String questionStudentWorksWellInGroup;
 
-    String questionStudentAdaptsToEasilyToWorkCulture;
+    private String questionStudentAdaptsToEasilyToWorkCulture;
 
-    String questionStudentAcceptConstructiveCriticism;
+    private String questionStudentAcceptConstructiveCriticism;
 
-    String questionStudentIsRespectful;
+    private String questionStudentIsRespectful;
 
-    String questionStudentUnderstandOtherPeoplePov;
+    private String questionStudentUnderstandOtherPeoplePov;
 
-    String questionStudentMotivatedToWork;
+    private String questionStudentMotivatedToWork;
 
-    String questionStudentTellIdeasClearly;
+    private String questionStudentTellIdeasClearly;
 
-    String questionStudentHasInitiative;
+    private String questionStudentHasInitiative;
 
-    String questionStudentWorkSecurely;
+    private String questionStudentWorkSecurely;
 
-    String questionStudentHasGoodSenseOfResponsability;
+    private String questionStudentHasGoodSenseOfResponsability;
 
-    String questionStudentPonctual;
+    private String questionStudentPonctual;
 
-    String programmeEtudes;
+    private String programmeEtudes;
 
-    String appreciationGlobale;
+    private String appreciationGlobale;
 
-    boolean evaluationDiscuteAvecEtudiant;
+    private boolean evaluationDiscuteAvecEtudiant;
 
-    String commentsProductivity;
+    private String commentsProductivity;
 
-    String commentsQualityOfWorkIntern;
+    private String commentsQualityOfWorkIntern;
 
-    String commentsStudentSocialRelationsQuality;
+    private String commentsStudentSocialRelationsQuality;
 
-    String commentsStudentPersonalAptitudes;
+    private String commentsStudentPersonalAptitudes;
 
-    String commentsInternProductivity;
+    private String commentsInternProductivity;
 
-    boolean companyAppreciateStudent;
+    private boolean companyAppreciateStudent;
 
-    int nbHeuresReelTravailEtudiant;
+    private int nbHeuresReelTravailEtudiant;
 
-    String firstFonction;
+    private String firstFonction;
 
-    String secondFunction;
+    private String secondFunction;
 
-    String commentsStudentTraining;
+    private String commentsStudentTraining;
 
-    String name;
+    private String name;
 
-    LocalDate dateSignature = LocalDate.now();
+    private LocalDate dateSignature = LocalDate.now();
 
-    String monitorSignature;
+    private String monitorSignature;
 
-    String studentEmail;
+    private String studentEmail;
 }

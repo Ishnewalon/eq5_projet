@@ -10,13 +10,16 @@ import javax.persistence.*;
 @Entity
 public class Stage {
 
-    @OneToOne
-    Contract contract;
-    @Lob
-    byte[] evalMilieuStage;
-    @Lob
-    byte[] evalStagiaire;
-    @GeneratedValue
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne
+    private Contract contract;
+
+    @Lob
+    private byte[] evalMilieuStage;
+
+    @Lob
+    private byte[] evalStagiaire;
 }

@@ -42,7 +42,7 @@ export default function PdfDocumentViewer({file, fileName, showContract = false,
             </div>
             {
                 show ?
-                    <div className='p-3' >
+                    <div className='p-3'>
                         <div className="text-center">
                             <div className="d-flex">
                                 <button disabled={pageNumber === 1} className="link-button disabled"

@@ -40,9 +40,6 @@ public class CurriculumServiceTest {
     private StudentService studentService;
 
     @Mock
-    private OfferService offerService;
-
-    @Mock
     private OfferApplicationService offerApplicationService;
 
     @Test
@@ -102,12 +99,11 @@ public class CurriculumServiceTest {
 
     @Test
     public void testGetByID_withValidID() throws Exception {
-        Long validID = 1L;
+        long validID = 1L;
         Curriculum dummyCurriculum = getDummyCurriculum();
-        when(curriculumRepository.existsById(any())).thenReturn(true);
-        when(curriculumRepository.getById(any())).thenReturn(dummyCurriculum);
+        when(curriculumRepository.findById(any())).thenReturn(Optional.of(dummyCurriculum));
 
-        Curriculum actualCurriculum = curriculumService.getOneByID(validID);
+        Curriculum actualCurriculum = curriculumService.getOneById(validID);
 
         assertThat(actualCurriculum).isEqualTo(dummyCurriculum);
     }
@@ -115,16 +111,16 @@ public class CurriculumServiceTest {
     @Test
     public void testGetByID_withNullID() {
         assertThrows(IllegalArgumentException.class,
-                () -> curriculumService.getOneByID(null));
+                () -> curriculumService.getOneById(null));
     }
 
     @Test
     public void testGetByID_doesntExistID() {
         Long invalidID = 5L;
-        when(curriculumRepository.existsById(any())).thenReturn(false);
+        when(curriculumRepository.findById(any())).thenReturn(Optional.empty());
 
         assertThrows(IdDoesNotExistException.class,
-                () -> curriculumService.getOneByID(invalidID));
+                () -> curriculumService.getOneById(invalidID));
     }
 
     @Test
@@ -189,7 +185,7 @@ public class CurriculumServiceTest {
     }
 
     @Test
-    void testValidate_whenCvNonExistent() {
+    public void testValidate_whenCvNonExistent() {
         Curriculum curriculum = getDummyCurriculum();
         curriculum.setId(1L);
         ValidationCurriculum validationCurriculumDTO = new ValidationCurriculum();
@@ -203,7 +199,7 @@ public class CurriculumServiceTest {
     }
 
     @Test
-    void testValidate_whenCurriculumAlreadyTreated() {
+    public void testValidate_whenCurriculumAlreadyTreated() {
         Curriculum curriculum = getDummyCurriculum();
         curriculum.setId(1L);
         curriculum.setIsValid(true);
@@ -215,11 +211,10 @@ public class CurriculumServiceTest {
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(curriculum));
         assertThrows(CurriculumAlreadyTreatedException.class, () ->
                 curriculumService.validate(validationCurriculumDTO));
-
     }
 
     @Test
-    void testValidate_withIdCurriculumNull() {
+    public void testValidate_withIdCurriculumNull() {
         ValidationCurriculum validationCurriculumDTO = new ValidationCurriculum();
         validationCurriculumDTO.setId(null);
         validationCurriculumDTO.setValid(true);
@@ -286,23 +281,23 @@ public class CurriculumServiceTest {
         dummyCurriculum.setId(1L);
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.of(dummyCurriculum));
 
-        Curriculum actualCurriculum = curriculumService.findOneById(dummyCurriculum.getId());
+        Curriculum actualCurriculum = curriculumService.getOneById(dummyCurriculum.getId());
 
         assertThat(actualCurriculum).isEqualTo(dummyCurriculum);
     }
 
     @Test
-    void testFindOneById_withIdNull() {
+    public void testFindOneById_withIdNull() {
         assertThrows(IllegalArgumentException.class, () ->
-                curriculumService.findOneById(null));
+                curriculumService.getOneById(null));
     }
 
     @Test
-    void testFindOneById_withCurriculumNonExistent() {
+    public void testFindOneById_withCurriculumNonExistent() {
         when(curriculumRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(IdDoesNotExistException.class, () ->
-                curriculumService.findOneById(34L));
+                curriculumService.getOneById(34L));
     }
 
     @Test
@@ -318,9 +313,8 @@ public class CurriculumServiceTest {
     }
 
     @Test
-    void testDeleteOneById() throws Exception {
-        when(curriculumRepository.existsById(any())).thenReturn(true);
-        when(curriculumRepository.getById(any())).thenReturn(getDummyCurriculum());
+    public void testDeleteOneById() throws Exception {
+        when(curriculumRepository.findById(any())).thenReturn(Optional.of(getDummyCurriculum()));
         when(offerApplicationService.isCurriculumInUse(any())).thenReturn(false);
 
         curriculumService.deleteOneById(1L);
@@ -329,26 +323,24 @@ public class CurriculumServiceTest {
     }
 
     @Test
-    void testDeleteOneById_withNullParam() {
+    public void testDeleteOneById_withNullParam() {
         assertThrows(IllegalArgumentException.class, () ->
                 curriculumService.deleteOneById(null));
     }
 
     @Test
-    void testDeleteOneById_withPrincipalCurriculum() {
+    public void testDeleteOneById_withPrincipalCurriculum() {
         Curriculum curriculum = getDummyCurriculum();
         curriculum.getStudent().setPrincipalCurriculum(curriculum);
-        when(curriculumRepository.existsById(any())).thenReturn(true);
-        when(curriculumRepository.getById(any())).thenReturn(curriculum);
+        when(curriculumRepository.findById(any())).thenReturn(Optional.of(curriculum));
 
         assertThrows(CurriculumUsedException.class, () ->
                 curriculumService.deleteOneById(1L));
     }
 
     @Test
-    void testDeleteOneById_withCurriculumInUse() {
-        when(curriculumRepository.existsById(any())).thenReturn(true);
-        when(curriculumRepository.getById(any())).thenReturn(getDummyCurriculum());
+    public void testDeleteOneById_withCurriculumInUse() {
+        when(curriculumRepository.findById(any())).thenReturn(Optional.of(getDummyCurriculum())) ;
         when(offerApplicationService.isCurriculumInUse(any())).thenReturn(true);
 
         assertThrows(CurriculumUsedException.class, () ->

@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CurriculumService {
@@ -51,15 +50,10 @@ public class CurriculumService {
     }
 
     public Curriculum create(Curriculum curriculum) throws IllegalArgumentException {
-        Assert.isTrue(curriculum != null, "Le curriculum ne peut pas être vide");
-        return curriculumRepository.save(curriculum);
-    }
+        Assert.notNull(curriculum, "Le curriculum ne peut pas être vide");
 
-    public Curriculum getOneByID(Long aLong) throws IdDoesNotExistException {
-        Assert.isTrue(aLong != null, "L'identifiant du curriculum ne peut pas être vide");
-        if (!curriculumRepository.existsById(aLong))
-            throw new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant");
-        return curriculumRepository.getById(aLong);
+
+        return curriculumRepository.save(curriculum);
     }
 
     public List<Curriculum> findAllByStudent(Student student) throws IllegalArgumentException {
@@ -82,10 +76,9 @@ public class CurriculumService {
     @SuppressWarnings("SameReturnValue")
     public boolean validate(ValidationCurriculum validationCurriculum) throws
             IdDoesNotExistException, CurriculumAlreadyTreatedException, IllegalArgumentException {
-        Assert.isTrue(validationCurriculum.getId() != null, "L'identifiant du curriculum ne peut pas être vide");
+        Assert.notNull(validationCurriculum.getId(), "L'identifiant du curriculum ne peut pas être vide");
 
-        Curriculum curriculum = curriculumRepository.findById(validationCurriculum.getId())
-                .orElseThrow(() -> new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant"));
+        Curriculum curriculum = getOneById(validationCurriculum.getId());
 
         if (curriculum.getIsValid() != null)
             throw new CurriculumAlreadyTreatedException("Ce curriculum a déjà été traité");
@@ -95,13 +88,10 @@ public class CurriculumService {
         return true;
     }
 
-    public Curriculum findOneById(Long idCurriculum) throws IllegalArgumentException, IdDoesNotExistException {
-        Assert.isTrue(idCurriculum != null, "L'identifiant du curriculum ne peut pas être vide");
-        Optional<Curriculum> byId = curriculumRepository.findById(idCurriculum);
-        if (byId.isEmpty())
-            throw new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant");
-
-        return byId.get();
+    public Curriculum getOneById(Long idCurriculum) throws IllegalArgumentException, IdDoesNotExistException {
+        Assert.notNull(idCurriculum, "L'identifiant du curriculum ne peut pas être vide");
+        return curriculumRepository.findById(idCurriculum)
+                .orElseThrow(() -> new IdDoesNotExistException("Il n'y a pas de curriculum associé à cet identifiant"));
     }
 
     public List<Curriculum> findAllByStudentId(Long id) throws IdDoesNotExistException {
@@ -111,7 +101,7 @@ public class CurriculumService {
 
     public void deleteOneById(Long idCurriculum) throws IllegalArgumentException, IdDoesNotExistException, CurriculumUsedException {
         Assert.notNull(idCurriculum, "L'identifiant du curriculum ne peut pas être null");
-        Curriculum curriculum = getOneByID(idCurriculum);
+        Curriculum curriculum = getOneById(idCurriculum);
 
         if (isPrincipal(curriculum))
             throw new CurriculumUsedException("Impossible de supprimer. C'est votre curriculum par défaut");

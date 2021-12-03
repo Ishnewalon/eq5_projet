@@ -10,9 +10,9 @@ import java.util.List;
 @NoArgsConstructor
 public class StudentCurriculumsDTO {
 
-    Curriculum principal;
+    private Curriculum principal;
 
-    List<Curriculum> curriculumList;
+    private List<Curriculum> curriculumList;
 
     public StudentCurriculumsDTO(Curriculum principal, List<Curriculum> curriculumDTOS) {
         this.principal = principal;

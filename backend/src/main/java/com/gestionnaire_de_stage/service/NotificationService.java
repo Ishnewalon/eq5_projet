@@ -61,7 +61,7 @@ public class NotificationService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void notifyOfCurriculumValidation(Curriculum curriculum) throws IdDoesNotExistException, IllegalArgumentException {
         Assert.notNull(curriculum, "Le curriculum ne peut pas être vide");
-        Curriculum previous = curriculumService.getOneByID(curriculum.getId());
+        Curriculum previous = curriculumService.getOneById(curriculum.getId());
 
         if (curriculum.getIsValid() != previous.getIsValid()) {
             notificationRepository.save(new Notification(

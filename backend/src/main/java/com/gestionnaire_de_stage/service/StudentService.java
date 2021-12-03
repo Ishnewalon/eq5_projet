@@ -74,7 +74,7 @@ public class StudentService {
         Assert.isTrue(idCurriculum != null, "Le id curriculum ne peut pas être vide");
 
         Student student = getOneByID(receivedStudent.getId());
-        Curriculum curriculum = curriculumService.getOneByID(idCurriculum);
+        Curriculum curriculum = curriculumService.getOneById(idCurriculum);
 
         if (curriculum.getIsValid() == null
                 || !curriculum.getIsValid())
