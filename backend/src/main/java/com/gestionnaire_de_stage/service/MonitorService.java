@@ -9,8 +9,6 @@ import com.gestionnaire_de_stage.repository.MonitorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.List;
-
 @Service
 public class MonitorService {
 

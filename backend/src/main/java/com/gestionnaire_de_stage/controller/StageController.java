@@ -91,7 +91,7 @@ public class StageController {
     }
 
     @GetMapping("/supervisor/{idSupervisor}")
-    public ResponseEntity<?> getAllEvaluationsForSupervisor(@PathVariable Long idSupervisor){
+    public ResponseEntity<?> getAllEvaluationsForSupervisor(@PathVariable Long idSupervisor) {
         try {
             List<Stage> stages = stageService.getAllEvaluationsForSupervisor(idSupervisor);
             return ResponseEntity.ok(stages);
@@ -103,7 +103,7 @@ public class StageController {
     }
 
     @GetMapping("/monitor/{idMonitor}")
-    public List<Stage> getAllEvaluationsForMonitor(@PathVariable Long idMonitor){
+    public List<Stage> getAllEvaluationsForMonitor(@PathVariable Long idMonitor) {
         return stageService.getAllEvaluationsForMonitor(idMonitor);
     }
 }
