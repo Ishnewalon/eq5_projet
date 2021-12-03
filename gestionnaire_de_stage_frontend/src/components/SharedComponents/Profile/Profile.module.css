@@ -24,12 +24,8 @@
     padding: 20px 0;
 }
 
-.fontWeight600 {
-    font-weight: 600
-}
-
 .borderTitle {
-    composes: fontWeight600;
+    font-weight: 600;
     border-bottom: 1px solid #e0e0e0;
 }
 
@@ -45,6 +41,6 @@
 }
 
 .fullName {
-    composes: fontWeight600;
+    font-weight: 600;
     text-transform: capitalize;
 }

@@ -58,9 +58,9 @@ export default function EvaluationIntern() {
             }
         }).then(() => {
             if (status === 200)
-                Swal.fire({icon: 'success', title: message});
+                Swal.fire({icon: 'success', title: message}).then();
             if (status === 400)
-                swalErr.fire({title: message});
+                swalErr.fire({title: message}).then();
         })
     };
 

@@ -32,7 +32,6 @@ export default function RegisterMonitor() {
 
     const submit = (data, e) => {
         e.preventDefault();
-        // noinspection JSUnresolvedVariable
         let submitter = e.nativeEvent.submitter.value
         const {
             firstName,

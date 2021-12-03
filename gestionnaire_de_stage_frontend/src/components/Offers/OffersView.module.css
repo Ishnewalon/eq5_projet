@@ -25,13 +25,6 @@
     margin-right: 0.75rem;
     margin-bottom: -0.125rem;
 }
-
-.cardCompanyGlassdoor {
-    display: flex;
-    margin-top: -0.5rem;
-    margin-bottom: -0.5rem;
-}
-
 .cardJobDetails {
     display: flex;
     flex-direction: row;

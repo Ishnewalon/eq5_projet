@@ -1,4 +1,4 @@
-import {regexCodePostal, regexMatriculeEtudiant, regexPhone} from "../../../utility";
+import {regexCodePostal, regexMatriculeStudent, regexPhone} from "../../../utility";
 import {FormGroup} from "../../SharedComponents/Form/FormGroup";
 import {checkMatricule} from "../../../services/user-service";
 import {FieldInput} from "../../SharedComponents/Form/FormFields";
@@ -14,7 +14,7 @@ export default function SupervisorStepOne({register, errors}) {
                     validation={{
                         required: 'Ce champ est requis',
                         pattern: {
-                            value: regexMatriculeEtudiant,
+                            value: regexMatriculeStudent,
                             message: "La matricule de l'étudiant n'est pas valide!"
                         },
                         validate: async (matricule) => !await checkMatricule(matricule) || "Ce matricule étudiant n'existe pas!"

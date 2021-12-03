@@ -40,14 +40,13 @@ public class ContractController {
         this.stageService = stageService;
     }
 
-    @GetMapping("/ready_to_sign")//SESSION : get only contract of current or future session
+    @GetMapping("/ready_to_sign")
     public ResponseEntity<?> contractsNeedSignature() {
         List<Contract> contractList = contractService.getAllUnsignedContracts();
         return ResponseEntity.ok(contractList);
     }
 
     @PutMapping("/managerSign/{managerSignature}/{contract_id}")
-//SESSION : sign only contract of current or future session
     public ResponseEntity<?> managerSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String managerSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addManagerSignature(managerSignature, contract_id);
@@ -68,7 +67,7 @@ public class ContractController {
                 .body(new ResponseMessage("Contrat signé"));
     }
 
-    @PostMapping("/start")//SESSION : can start only contract of current or future session
+    @PostMapping("/start")
     public ResponseEntity<?> createContract(HttpServletRequest request, HttpServletResponse response, @RequestBody ContractStarterDto contractStarterDto) {
         try {
             Contract contract = new Contract();
@@ -90,7 +89,7 @@ public class ContractController {
         return ResponseEntity.ok(new ResponseMessage("Création du contrat faite avec succès"));
     }
 
-    @GetMapping("/monitor/{monitor_id}")//SESSION : get only contract of current or futur session
+    @GetMapping("/monitor/{monitor_id}")
     public ResponseEntity<?> ContractNeedsMonitorSignature(@PathVariable Long monitor_id) {
         List<Contract> contractList;
         try {
@@ -105,7 +104,6 @@ public class ContractController {
     }
 
     @PutMapping("/monitorSign/{monitorSignature}/{contract_id}")
-//SESSION : sign only contract of current or futur session
     public ResponseEntity<?> monitorSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String monitorSignature, @PathVariable Long contract_id) {
         try {
             Contract contract = contractService.addMonitorSignature(monitorSignature, contract_id);
@@ -126,7 +124,7 @@ public class ContractController {
                 .body(new ResponseMessage("Contrat signé"));
     }
 
-    @GetMapping("/student/{student_id}")//SESSION : get only contract of current or futur session
+    @GetMapping("/student/{student_id}")
     public ResponseEntity<?> ContractNeedsStudentSignature(@PathVariable Long student_id) {
         Contract contract;
         try {
@@ -140,7 +138,6 @@ public class ContractController {
     }
 
     @PutMapping("/studentSign/{studentSignature}/{contract_id}")
-//SESSION : sign only contract of current or futur session
     public ResponseEntity<?> studentSignContract(HttpServletRequest request, HttpServletResponse response, @PathVariable String studentSignature, @PathVariable Long contract_id) {
         Stage stage = new Stage();
         try {

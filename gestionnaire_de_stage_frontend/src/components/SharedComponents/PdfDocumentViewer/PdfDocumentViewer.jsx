@@ -11,8 +11,7 @@ export default function PdfDocumentViewer({file, fileName, showContract = false,
     const [show, setShow] = useState(showContract);
 
     useEffect(() => {
-        // noinspection JSUnresolvedVariable
-        pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+        pdfjs["GlobalWorkerOptions"].workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
     }, []);
 
     const onDocumentLoad = ({numPages}) =>

@@ -63,28 +63,11 @@ export default function CreateOffer() {
 
         if (dateEnd[0] !== dateStart[0]) {
             return false;
-        }
-        else if (dateEnd[0] === dateStart[0]) {
+        } else if (dateEnd[0] === dateStart[0]) {
             let diff = dateEnd[1] - dateStart[1];
-            if (diff >= 3) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            return diff >= 3;
         }
-
-
-        // let nextTime = val.split(":").map(n => parseInt(n));
-        // let previousTime = previous.split(":").map(n => parseInt(n));
-        //
-        // if (nextTime[0] > previousTime[0])
-        //     return true;
-        // else if (nextTime[0] === previousTime[0])
-        //     if (nextTime[1] > previousTime[1])
-        //         return true;
     }
-
 
 
     const monitorEmail = (

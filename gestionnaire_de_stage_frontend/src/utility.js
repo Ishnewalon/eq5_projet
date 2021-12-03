@@ -1,12 +1,11 @@
 import Swal from "sweetalert2";
 
 export const regexName = /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/
-// eslint-disable-next-line
 export const regexEmail = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 export const regexPhone = /^\(?([0-9]{3})\)?[- ]?([0-9]{3})[- ]?([0-9]{4})$/;
 export const regexCodePostal = /^([A-Za-z]\s?[0-9]){3}$/;
 export const regexMatricule = /^\d{5}$|^\d{7}$/i;
-export const regexMatriculeEtudiant = /^\d{7}$/;
+export const regexMatriculeStudent = /^\d{7}$/;
 export const regexPassword = /^[0-9a-zA-Z]{8,64}/;
 
 export const swalErr = Swal.mixin({

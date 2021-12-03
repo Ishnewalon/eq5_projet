@@ -33,6 +33,7 @@ public class CurriculumService {
         this.offerApplicationService = offerApplicationService;
     }
 
+    @SuppressWarnings("ConstantConditions")
     public Curriculum convertMultipartFileToCurriculum(MultipartFile file, Long studentId)
             throws IOException, IdDoesNotExistException, IllegalArgumentException {
         Assert.isTrue(file != null, "Fichier ne peut pas être vide");
@@ -40,7 +41,6 @@ public class CurriculumService {
 
         Student student = studentService.getOneByID(studentId);
 
-        //noinspection ConstantConditions
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         return new Curriculum(
                 fileName,
