@@ -206,6 +206,32 @@ public class StageServiceTest {
         assertThat(actualStageList).isEmpty();
     }
 
+    @Test
+    public void testGetAllStageForSupervisor_withNullId(){
+        assertThrows(IllegalArgumentException.class,
+                () -> stageService.getAllEvaluationsForSupervisor(null)
+        );
+    }
+
+    @Test
+    public void testGetAllStageForSupervisor_withExistentId(){
+        List<Stage> stageList = getDummyStageList();
+        when(stageRepository.getAllByEvalMilieuStageNotNullAndContract_Student_Supervisor_Id(any())).thenReturn(stageList);
+
+        List<Stage> actualStageList = stageService.getAllEvaluationsForSupervisor(1L);
+
+        assertThat(actualStageList).isEqualTo(stageList);
+    }
+
+    @Test
+    public void testGetAllStageForSupervisor_withNonExistentId(){
+        when(stageRepository.getAllByEvalMilieuStageNotNullAndContract_Student_Supervisor_Id(any())).thenReturn(Collections.emptyList());
+
+        List<Stage> actualStageList = stageService.getAllEvaluationsForSupervisor(1L);
+
+        assertThat(actualStageList).isEmpty();
+    }
+
     private List<Stage> getDummyStageList() {
         Stage stage1 = getDummyStage();
         Stage stage2 = getDummyStage();

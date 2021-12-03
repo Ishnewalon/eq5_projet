@@ -47,7 +47,7 @@ export default function ShowAllEvaluations({userType}) {
     if(evaluations?.length === 0)
         return <MessageNothingToShow message={getMessage(userType)}/>
 
-    return <>
+    return <div className='d-flex align-items-center flex-column justify-content-center'>
         {
         evaluations.map((evaluation, index) => <div key={index}>
             <FormFilled message={getMessageForPdf(userType)} form={getForm(evaluation)}
@@ -56,5 +56,5 @@ export default function ShowAllEvaluations({userType}) {
             />
             {evaluations.length > 1 && <hr className='my-3'/>}
         </div>)}
-    </>
+    </div>
 }

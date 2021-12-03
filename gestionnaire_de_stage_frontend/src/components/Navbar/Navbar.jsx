@@ -79,8 +79,8 @@ function NavItemSpecificForUser() {
                         signés</Link>
                 </Dropdown>
                 <Dropdown title='Évaluation stagiaire'>
-                    <Link to={{pathname: "/dashboard/monitor/eval/create", state: {from: location}}}>Créer une évaluation de stagiaire</Link>
-                    <Link to={{pathname: "/dashboard/monitor/eval/view", state: {from: location}}}>Voir mes évaluations de stagiaires</Link>
+                    <Link to={{pathname: "/dashboard/monitor/eval/create", state: {from: location}}}>Créer une évaluation</Link>
+                    <Link to={{pathname: "/dashboard/monitor/eval/view", state: {from: location}}}>Voir mes évaluations</Link>
                 </Dropdown>
             </NavItemList>
         )
