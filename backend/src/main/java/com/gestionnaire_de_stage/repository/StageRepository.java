@@ -13,6 +13,8 @@ public interface StageRepository extends JpaRepository<Stage, Long> {
 
     boolean existsByContract_StudentMatriculeAndEvalMilieuStageNull(String matricule);
 
+    List<Stage> getAllByEvalStagiaireNotNullAndContract_Monitor_Id(Long idMonitor);
+
     Stage getByContract_StudentEmail(String email);
 
     boolean existsByContract_StudentEmail(String email);
@@ -22,4 +24,6 @@ public interface StageRepository extends JpaRepository<Stage, Long> {
     List<Stage> getAllByEvalStagiaireIsNull();
 
     boolean existsByContract_StudentEmailAndEvalStagiaireNotNull(String email);
+
+    List<Stage> getAllByEvalMilieuStageNotNullAndContract_Student_Supervisor_Id(Long idSupervisor);
 }

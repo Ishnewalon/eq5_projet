@@ -78,8 +78,10 @@ function NavItemSpecificForUser() {
                     <Link to={{pathname: "/dashboard/monitor/contracts/signed", state: {from: location}}}>Contrats
                         signés</Link>
                 </Dropdown>
-                <Link to={{pathname: "/dashboard/monitor_eval_stagiaire", state: {from: location}}}>Formulaire
-                    d'évaluation de stagiaire</Link>
+                <Dropdown title='Évaluation stagiaire'>
+                    <Link to={{pathname: "/dashboard/monitor/eval/create", state: {from: location}}}>Créer une évaluation</Link>
+                    <Link to={{pathname: "/dashboard/monitor/eval/view", state: {from: location}}}>Voir mes évaluations</Link>
+                </Dropdown>
             </NavItemList>
         )
     if (auth.isManager())
@@ -122,8 +124,10 @@ function NavItemSpecificForUser() {
         </NavItemList>
     if (auth.isSupervisor())
         return <NavItemList>
-            <Link to={{pathname: "/dashboard/supervisor_form_visit_company", state: {from: location}}}>Formulaire de
-                visite d'entreprise</Link>
+            <Dropdown title='Formulaire de visite'>
+                <Link to={{pathname: "/dashboard/forms/supervisor/view", state: {from: location}}}>Voir mes formulaires</Link>
+                <Link to={{pathname: "/dashboard/forms/supervisor/create", state: {from: location}}}>Créer un formulaire</Link>
+            </Dropdown>
             <Link to={{pathname: "/dashboard/students/status", state: {from: location}}}>Status des étudiants</Link>
         </NavItemList>
     return <></>
@@ -146,7 +150,6 @@ function NavItemList(props) {
 NavItemList.propTypes = {
     children: PropTypes.node
 };
-
 
 function Dropdown(props) {
     const {children, title} = props;

@@ -5,7 +5,7 @@ import {downloadFile} from "../../../utility";
 import {BiLeftArrowAlt, BiRightArrowAlt, FiDownload} from "react-icons/all";
 import style from "./PdfDocumentViewer.module.css";
 
-export default function PdfDocumentViewer({file, fileName, showContract = false}) {
+export default function PdfDocumentViewer({file, fileName, showContract = false, message = 'Visionnement de pdf'}) {
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [show, setShow] = useState(showContract);
@@ -31,16 +31,19 @@ export default function PdfDocumentViewer({file, fileName, showContract = false}
     }
 
     return (
-        <div className={"d-flex justify-content-center align-items-center flex-column"}>
-            <div className="btn-group my-3">
-                <button className={"btn btn-outline-primary"}
-                        onClick={() => setShow(!show)}>{(show ? 'Cacher' : 'Montrer') + ' pdf'}</button>
-                <button className='btn btn-outline-primary'
-                        onClick={() => downloadFile(file, fileName)}><FiDownload/></button>
+        <div className={"card d-flex justify-content-center align-items-center flex-column"}>
+            <div className='card-header w-100 text-center'>
+                <h3 className='card-title'>{message}</h3>
+                <div className="btn-group my-3">
+                    <button className={"btn btn-primary"}
+                            onClick={() => setShow(!show)}>{(show ? 'Cacher' : 'Montrer') + ' pdf'}</button>
+                    <button className='btn btn-primary'
+                            onClick={() => downloadFile(file, fileName)}><FiDownload/></button>
+                </div>
             </div>
             {
                 show ?
-                    <div>
+                    <div className='p-3' >
                         <div className="text-center">
                             <div className="d-flex">
                                 <button disabled={pageNumber === 1} className="link-button disabled"
@@ -67,7 +70,7 @@ export default function PdfDocumentViewer({file, fileName, showContract = false}
                                     <BiRightArrowAlt size={40} title="Suivant"/>
                                 </button>
                             </div>
-                            <span className={'mt-2 p-2'}>
+                            <span className={'mt-2 p-2 bold'}>
                                 {numPages > 0 ? `Page ${pageNumber} de ${numPages}` : 'Aucune pages'}
                             </span>
                         </div>

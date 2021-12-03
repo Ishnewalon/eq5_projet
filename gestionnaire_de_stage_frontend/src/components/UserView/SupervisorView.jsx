@@ -6,13 +6,21 @@ import StudentStatusView from "../Admin/StudentManagement/StudentStatusView";
 import {Title} from "../SharedComponents/Title";
 import {ContainerBox} from "../SharedComponents/ContainerBox";
 import Profile from "../SharedComponents/Profile/Profile";
+import ShowAllEvaluations from "../Evaluation/ShowAllEvaluations";
 
 export default function SupervisorView() {
     const {path} = useRouteMatch();
     let auth = useAuth();
     return (<>
-        <Route exact path={`${path}/supervisor_form_visit_company`}>
+        <Route exact path={`${path}/forms/supervisor/view`}>
             <ContainerBox>
+                <Title>Mes formulaires de visites</Title>
+                <ShowAllEvaluations userType='supervisor'/>
+            </ContainerBox>
+        </Route>
+        <Route exact path={`${path}/forms/supervisor/create`}>
+            <ContainerBox>
+                <Title>Créer un formulaire de visite</Title>
                 <SupervisorVisitForm/>
             </ContainerBox>
         </Route>

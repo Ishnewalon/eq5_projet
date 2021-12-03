@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/stages")
@@ -87,5 +88,22 @@ public class StageController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseMessage("Évaluation remplie!"));
+    }
+
+    @GetMapping("/supervisor/{idSupervisor}")
+    public ResponseEntity<?> getAllEvaluationsForSupervisor(@PathVariable Long idSupervisor){
+        try {
+            List<Stage> stages = stageService.getAllEvaluationsForSupervisor(idSupervisor);
+            return ResponseEntity.ok(stages);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+    }
+
+    @GetMapping("/monitor/{idMonitor}")
+    public List<Stage> getAllEvaluationsForMonitor(@PathVariable Long idMonitor){
+        return stageService.getAllEvaluationsForMonitor(idMonitor);
     }
 }

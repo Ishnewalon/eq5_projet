@@ -10,6 +10,7 @@ import EvaluationIntern from "../Evaluation/MonitorEvaluation/EvaluationIntern";
 import ContractsSigned from "../Contract/ContractsSigned";
 import {Title} from "../SharedComponents/Title";
 import Profile from "../SharedComponents/Profile/Profile";
+import ShowAllEvaluations from "../Evaluation/ShowAllEvaluations";
 
 export default function MonitorView() {
     let {path} = useRouteMatch();
@@ -31,9 +32,13 @@ export default function MonitorView() {
             <Title>Contrats de futures stagiaires à valider</Title>
             <ContractsToSign userType={UserType.MONITOR[0]}/>
         </Route>
-        <Route exact path={`${path}/monitor_eval_stagiaire`}>
-            <Title>Fiche d'évaluation du stagiaire</Title>
+        <Route exact path={`${path}/monitor/eval/create`}>
+            <Title>Évaluer un stagiaire</Title>
             <EvaluationIntern/>
+        </Route>
+        <Route exact path={`${path}/monitor/eval/view`}>
+            <Title>Évaluations de stagiaires</Title>
+            <ShowAllEvaluations userType={UserType.MONITOR[0]}/>
         </Route>
         <Route exact path={`${path}`}>
             <Title>Bonjour {auth.user.firstName}!</Title>

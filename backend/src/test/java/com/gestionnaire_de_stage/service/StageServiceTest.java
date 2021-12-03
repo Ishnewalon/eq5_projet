@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -177,6 +178,58 @@ public class StageServiceTest {
         List<Stage> actualStageList = stageService.getAllWithNoEvalStagiaire();
 
         assertThat(actualStageList).isEqualTo(stageList);
+    }
+
+    @Test
+    public void testGetAllStageForMonitor_withNullId(){
+        assertThrows(IllegalArgumentException.class,
+            () -> stageService.getAllEvaluationsForMonitor(null)
+        );
+    }
+
+    @Test
+    public void testGetAllStageForMonitor_withExistentId(){
+        List<Stage> stageList = getDummyStageList();
+        when(stageRepository.getAllByEvalStagiaireNotNullAndContract_Monitor_Id(any())).thenReturn(stageList);
+
+        List<Stage> actualStageList = stageService.getAllEvaluationsForMonitor(1L);
+
+        assertThat(actualStageList).isEqualTo(stageList);
+    }
+
+    @Test
+    public void testGetAllStageForMonitor_withNonExistentId(){
+        when(stageRepository.getAllByEvalStagiaireNotNullAndContract_Monitor_Id(any())).thenReturn(Collections.emptyList());
+
+        List<Stage> actualStageList = stageService.getAllEvaluationsForMonitor(1L);
+
+        assertThat(actualStageList).isEmpty();
+    }
+
+    @Test
+    public void testGetAllStageForSupervisor_withNullId(){
+        assertThrows(IllegalArgumentException.class,
+                () -> stageService.getAllEvaluationsForSupervisor(null)
+        );
+    }
+
+    @Test
+    public void testGetAllStageForSupervisor_withExistentId(){
+        List<Stage> stageList = getDummyStageList();
+        when(stageRepository.getAllByEvalMilieuStageNotNullAndContract_Student_Supervisor_Id(any())).thenReturn(stageList);
+
+        List<Stage> actualStageList = stageService.getAllEvaluationsForSupervisor(1L);
+
+        assertThat(actualStageList).isEqualTo(stageList);
+    }
+
+    @Test
+    public void testGetAllStageForSupervisor_withNonExistentId(){
+        when(stageRepository.getAllByEvalMilieuStageNotNullAndContract_Student_Supervisor_Id(any())).thenReturn(Collections.emptyList());
+
+        List<Stage> actualStageList = stageService.getAllEvaluationsForSupervisor(1L);
+
+        assertThat(actualStageList).isEmpty();
     }
 
     private List<Stage> getDummyStageList() {
