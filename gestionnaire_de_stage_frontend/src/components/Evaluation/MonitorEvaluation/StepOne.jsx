@@ -2,7 +2,7 @@ import {regexEmail, regexName, regexPhone} from "../../../utility";
 import {FormGroup} from "../../SharedComponents/Form/FormGroup";
 import {FieldInput} from "../../SharedComponents/Form/FormFields";
 import {Column} from "../../SharedComponents/Column";
-import {checkEmail} from "../../../services/user-service";
+import {checkEmailExistStudent} from "../../../services/user-service";
 
 export default function StepOne({errors, register}) {
 
@@ -19,7 +19,7 @@ export default function StepOne({errors, register}) {
                                 value: regexEmail,
                                 message: 'Veuillez entrer une adresse email valide'
                             },
-                            validate: async (emailStudent) => !await checkEmail(emailStudent) || 'Aucun étudiant avec cette adresse email existe!'
+                            validate: async (emailStudent) => !await checkEmailExistStudent(emailStudent) || 'Aucun étudiant avec cette adresse email existe!'
                         }
                     }
                     name='studentEmail'

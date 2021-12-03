@@ -77,7 +77,7 @@ export async function checkEmail(email) {
     return await checkEmailExistMonitor(email);
 }
 
-async function checkEmailExistStudent(email) {
+export async function checkEmailExistStudent(email) {
     return await fetch(`${urlBackend}/student/email/${email}`, requestInit(methods.GET)).then(
         response => response.json().then(body => body)
     );
@@ -95,7 +95,7 @@ async function checkEmailExistManager(email) {
     );
 }
 
-async function checkEmailExistMonitor(email) {
+export async function checkEmailExistMonitor(email) {
     return await fetch(`${urlBackend}/monitor/email/${email}`, requestInit(methods.GET)).then(
         response => response.json().then(body => body)
     );

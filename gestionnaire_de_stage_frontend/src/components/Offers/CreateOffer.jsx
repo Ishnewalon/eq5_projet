@@ -10,6 +10,7 @@ import {regexEmail} from "../../utility";
 import {FormGroup} from "../SharedComponents/Form/FormGroup";
 import {FieldInput, FieldSelect, FieldTextarea} from "../SharedComponents/Form/FormFields";
 import {Column} from "../SharedComponents/Column";
+import {checkEmailExistMonitor} from "../../services/user-service";
 
 
 export default function CreateOffer() {
@@ -82,7 +83,8 @@ export default function CreateOffer() {
                             pattern: {
                                 value: regexEmail,
                                 message: "L'email n'est pas valide!"
-                            }
+                            },
+                            validate : async(email) => !await checkEmailExistMonitor(email)|| "Aucun moniteur avec cet email!"
                         }}/>
         </Column>
     )

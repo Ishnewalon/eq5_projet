@@ -89,7 +89,7 @@ function NavItemSpecificForUser() {
     if (auth.isManager())
         return <NavItemList>
             <Dropdown title="Offres">
-                <Link to={{pathname: "/dashboard/offres/ajouter", state: {from: location}}}>Ajouter des offres</Link>
+                <Link to={{pathname: "/dashboard/offres/add", state: {from: location}}}>Ajouter des offres</Link>
                 <Link to={{pathname: "/dashboard/offres/review", state: {from: location}}}>Valider offres</Link>
             </Dropdown>
             <Dropdown title="Étudiants">
@@ -98,7 +98,7 @@ function NavItemSpecificForUser() {
                 <Link to={{pathname: "/dashboard/curriculum/review", state: {from: location}}}>Valider Curriculum</Link>
             </Dropdown>
             <Dropdown title="Contrats">
-                <Link to={{pathname: "/dashboard/contrats/a_signer", state: {from: location}}}>Contrats à signer</Link>
+                <Link to={{pathname: "/dashboard/contrats/to_sign", state: {from: location}}}>Contrats à signer</Link>
                 <Link to={{pathname: "/dashboard/students/start", state: {from: location}}}>Commencer signature</Link>
                 <Link to={{pathname: "/dashboard/manager/contracts/signed", state: {from: location}}}>Contrats
                     signés</Link>

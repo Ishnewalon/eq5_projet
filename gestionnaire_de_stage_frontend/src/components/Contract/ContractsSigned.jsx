@@ -20,10 +20,10 @@ export default function ContractsSigned({userType}) {
         return <MessageNothingToShow message={"Aucun contrat à afficher pour le moment..."}/>;
 
     return contractList.map((contract, index) =>
-        <div className='d-flex align-items-center flex-column justify-content-center'>
-            <ContractSigned key={index} contract={contract}/>
+        <div className='d-flex align-items-center flex-column justify-content-center' key={index}>
+            <ContractSigned contract={contract}/>
             {
-                contractList?.length > 0 && <hr className='text my-3'/>
+                contractList?.length > 0 && <hr className='my-3'/>
             }
         </div>
     )
