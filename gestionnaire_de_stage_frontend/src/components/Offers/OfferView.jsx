@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import styles from "./OffersView.module.css";
-import {BsClock, BsClockHistory, FaUserTie, MdAttachMoney, MdLocationPin} from "react-icons/all";
+import {BsClock, BsClockHistory, BsTelephone, FaUserTie, MdAttachMoney, MdEmail, MdLocationPin} from "react-icons/all";
 
 export default function OfferView(props) {
     const {offer, footers} = props;
@@ -10,9 +10,15 @@ export default function OfferView(props) {
             <div className="card">
                 <div className="card-body">
                     <h5 className={`card-title ${styles.jobTitle}`}>{offer.title}</h5>
-                    <div className="card-company-glassdoor">
-                        <p className="card-company-name">
+                    <div className="d-flex justify-content-around">
+                        <p>
                             <FaUserTie/> {offer.creator.firstName} {offer.creator.lastName}
+                        </p>
+                        <p>
+                            <BsTelephone/> {offer.creator.phone}
+                        </p>
+                        <p>
+                            <MdEmail/> {offer.creator.email}
                         </p>
                     </div>
                     <div className={styles.cardJobDetails}>
