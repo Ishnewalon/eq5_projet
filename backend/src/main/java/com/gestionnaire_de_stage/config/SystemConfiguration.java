@@ -27,7 +27,7 @@ public class SystemConfiguration {
         return Clock.systemDefaultZone();
     }
 
-    @Scheduled(fixedRate = 1000 * 60 * 10)
+    @Scheduled(fixedRate = 1000 * 60 * 3)
     void updateRegurlarlyOfferApplicationsStatus() {
         log.debug("Time before updating offerApplications {}", new Date());
         int numRecordsModified = offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(Status.EN_ATTENTE_ENTREVUE, Status.EN_ATTENTE_REPONSE);

@@ -53,16 +53,16 @@ export default function CurriculumsStudent() {
 
     const getIcon = cv => {
         if (isPrincipal(cv)) {
-            return <GoStar color="orange" title="C.V. par défaut" size="20"/>
+            return <GoStar color="orange" title="C.V. par défaut" size="25"/>
         } else {
             if (cv.isValid)
                 return <button className="link-button" onClick={setPrincipal(cv)}>
-                    <GoStar color="grey" title="En attente de validation" size="20"/>
+                    <GoStar color="grey" title="En attente de validation" size="25"/>
                 </button>
             else if (cv.isValid === null)
-                return <MdOutlinePendingActions color="#304c7b" title="En attente de validation" size="20"/>
+                return <MdOutlinePendingActions color="#304c7b" title="En attente de validation" size="25"/>
             else
-                return <AiOutlineCloseCircle color="D00" title="Invalid" size="20"/>
+                return <AiOutlineCloseCircle color="D00" title="Invalide" size="25"/>
         }
     };
 
