@@ -68,7 +68,7 @@ function NavItemSpecificForUser() {
         return (
             <NavItemList>
                 <Dropdown title="Offres">
-                    <Link to={{pathname: "/dashboard/offres/ajouter", state: {from: location}}}>Ajouter des
+                    <Link to={{pathname: "/dashboard/offres/add", state: {from: location}}}>Ajouter des
                         offres</Link>
                     <Link to={{pathname: "/dashboard/applications", state: {from: location}}}>Applications</Link>
                 </Dropdown>
@@ -79,9 +79,9 @@ function NavItemSpecificForUser() {
                         signés</Link>
                 </Dropdown>
                 <Dropdown title='Évaluation stagiaire'>
-                    <Link to={{pathname: "/dashboard/monitor/eval/create", state: {from: location}}}>Créer une
+                    <Link to={{pathname: "/dashboard/monitor/evals/create", state: {from: location}}}>Créer une
                         évaluation</Link>
-                    <Link to={{pathname: "/dashboard/monitor/eval/view", state: {from: location}}}>Voir mes
+                    <Link to={{pathname: "/dashboard/monitor/evals/view", state: {from: location}}}>Voir mes
                         évaluations</Link>
                 </Dropdown>
             </NavItemList>

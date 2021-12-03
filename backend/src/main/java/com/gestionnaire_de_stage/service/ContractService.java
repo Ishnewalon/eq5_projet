@@ -137,7 +137,6 @@ public class ContractService {
         contract.setManager(manager);
 
         OfferApplication offerApplication = offerApplicationService.getOneById(contractStarterDto.getIdOfferApplication());
-
         offerApplicationService.updateStatus(new UpdateStatusDTO(offerApplication.getId(), Status.EN_SIGNATURE));
 
         Offer offer = offerApplication.getOffer();

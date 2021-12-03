@@ -12,7 +12,6 @@ export function AuthProvider({children}) {
     return <authContext.Provider value={auth}>{children}</authContext.Provider>;
 }
 
-
 export const useAuth = () => {
     return useContext(authContext);
 }
@@ -32,7 +31,6 @@ export function RequireNoAuth({children}) {
 
     return children;
 }
-
 
 function useProvideAuth() {
     const [user, setUser] = useState(() => {

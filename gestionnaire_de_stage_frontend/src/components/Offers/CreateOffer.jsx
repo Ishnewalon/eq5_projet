@@ -76,7 +76,6 @@ export default function CreateOffer() {
                         name="creator_email"
                         error={errors.creator_email}
                         type="email"
-                        placeholder="Entrez l'email du moniteur"
                         register={register}
                         validation={{
                             required: "Ce champ est obligatoire!",
@@ -95,7 +94,6 @@ export default function CreateOffer() {
                                 name="title"
                                 error={errors.title}
                                 type="text"
-                                placeholder="Titre"
                                 register={register}
                                 validation={{
                                     required: "Ce champ est obligatoire!",
@@ -105,7 +103,6 @@ export default function CreateOffer() {
                 <Column>
                     <FieldTextarea label="Description"
                                    name="description"
-                                   placeholder="Description"
                                    error={errors.description}
                                    register={register}
                                    validation={{
@@ -143,11 +140,10 @@ export default function CreateOffer() {
             </FormGroup>
             <FormGroup>
                 <Column col={{md: 6}}>
-                    <FieldInput label="Adresse ou le stage se situe"
+                    <FieldInput label="Adresse où le stage se situe"
                                 name="address"
                                 error={errors.address}
                                 type="text"
-                                placeholder="Rue, boulevard, avenue.."
                                 register={register}
                                 validation={{
                                     required: "Ce champ est obligatoire!"
@@ -170,7 +166,6 @@ export default function CreateOffer() {
                                 name="dateDebut"
                                 error={errors.dateDebut}
                                 type="date"
-                                placeholder="Date de début"
                                 register={register}
                                 validation={{
                                     required: "Ce champ est obligatoire!"
@@ -181,7 +176,6 @@ export default function CreateOffer() {
                                 name="dateFin"
                                 error={errors.dateFin}
                                 type="date"
-                                placeholder="Date de fin"
                                 register={register}
                                 validation={{
                                     required: "Ce champ est obligatoire!",
@@ -194,7 +188,6 @@ export default function CreateOffer() {
                                 name="horaireTravail"
                                 error={errors.horaireTravail}
                                 type="text"
-                                placeholder="Horaire de travail"
                                 register={register}
                                 validation={{
                                     required: "Ce champ est obligatoire!"
@@ -205,18 +198,16 @@ export default function CreateOffer() {
                                 name="nbSemaine"
                                 error={errors.nbSemaine}
                                 type="text"
-                                placeholder="Nombre de semaines"
                                 register={register}
                                 validation={{
                                     required: "Ce champ est obligatoire!"
                                 }}/>
                 </Column>
                 <Column col={{lg: 6}}>
-                    <FieldInput label="Nombre de heures par semaine"
+                    <FieldInput label="Nombre d'heures par semaine"
                                 name="nbHeureSemaine"
                                 error={errors.nbHeureSemaine}
                                 type="text"
-                                placeholder="Nombre de heures par semaine"
                                 register={register}
                                 validation={{
                                     required: "Ce champ est obligatoire!"

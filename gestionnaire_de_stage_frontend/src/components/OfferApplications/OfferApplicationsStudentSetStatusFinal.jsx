@@ -55,6 +55,8 @@ export default function OfferApplicationsStudentSetStatusFinal() {
                 return timeFormatMessage(offerApp.interviewDate)
             case "EN_ATTENTE_REPONSE":
                 return changeStatus(offerApp)
+            case "EN_SIGNATURE":
+                return "Présentement en signature";
             default:
                 return "Vous n'avez pas encore de réponse"
         }
@@ -63,10 +65,10 @@ export default function OfferApplicationsStudentSetStatusFinal() {
     const changeStatus = (offerApp) => {
         return (<div className="btn-group">
             <button className="btn btn-outline-success"
-                    onClick={() => updateStatus(offerApp.id, true)}>Trouvé
+                    onClick={() => updateStatus(offerApp.id, 'STAGE_TROUVE')}>Trouvé
             </button>
             <button className="btn btn-outline-danger"
-                    onClick={() => updateStatus(offerApp.id, false)}>Refusé
+                    onClick={() => updateStatus(offerApp.id, 'STAGE_REFUSE')}>Refusé
             </button>
         </div>)
     };

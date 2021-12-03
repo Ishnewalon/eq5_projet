@@ -30,7 +30,7 @@ export default function PdfDocumentViewer({file, fileName, showContract = false,
     }
 
     return (
-        <div className={"card d-flex justify-content-center align-items-center flex-column"}>
+        <div className={"card d-flex justify-content-center align-items-center flex-column shadow-sm"}>
             <div className='card-header w-100 text-center'>
                 <h3 className='card-title'>{message}</h3>
                 <div className="btn-group my-3">
@@ -55,7 +55,7 @@ export default function PdfDocumentViewer({file, fileName, showContract = false,
                                     onLoadError={alert}
                                     loading={<div className="text-center">Chargement...</div>}
                                     noData={<div className="text-center">Aucun document</div>}
-                                    className={"shadow-lg"}>
+                                    className={"shadow"}>
                                     {
                                         Array.from(new Array(numPages), (el, index) => (
                                             <div key={`page_${index + 1}`}

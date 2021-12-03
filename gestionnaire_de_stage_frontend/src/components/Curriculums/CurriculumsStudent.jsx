@@ -50,7 +50,6 @@ export default function CurriculumsStudent() {
             cv.id === curriculumsWithPrincipal.principal.id;
     }
 
-
     const getIcon = cv => {
         if (isPrincipal(cv)) {
             return <GoStar color="orange" title="C.V. par défaut" size="25"/>

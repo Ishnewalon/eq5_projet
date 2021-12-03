@@ -7,7 +7,6 @@ import {useLocation} from "react-router-dom";
 import {AiOutlineCloseCircle, BiCheck, FiDownload} from "react-icons/all";
 import {Title} from "../SharedComponents/Title";
 
-
 export default function StudentCurriculumValidation() {
     const location = useLocation();
     let student = location.state.student;
@@ -18,7 +17,6 @@ export default function StudentCurriculumValidation() {
             setCurriculums(curriculums.reverse(curriculum => curriculum.id));
         });
     }, [student]);
-
 
     const validateCv = (id, valid) => {
         validateCurriculum(id, valid).then(
@@ -32,7 +30,6 @@ export default function StudentCurriculumValidation() {
 
     if (curriculums.length === 0)
         return <MessageNothingToShow message="Aucun curriculum à valider pour le moment..."/>
-
 
     function getOptions(cv) {
         if (cv.isValid)

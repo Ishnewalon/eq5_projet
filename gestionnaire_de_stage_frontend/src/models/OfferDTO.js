@@ -13,21 +13,6 @@ export default class OfferDTO {
     idSession
 
 
-    /**
-     *
-     * @param $title titre de l'offre
-     * @param $department departement de l'offre
-     * @param $description description de l'offre
-     * @param $address adresse de l'offre
-     * @param $salary salaire de l'offre
-     * @param $creator_email email de l'offre
-     * @param $nbSemaine nombre de semaine de l'offre
-     * @param $dateDebut date de debut de l'offre
-     * @param $dateFin date de fin de l'offre
-     * @param $horaireTravail horaire de travail de l'offre
-     * @param $nbHeureSemaine nombre d'heure de travail de l'offre
-     * @param $idSession id de la session de l'offre
-     */
     constructor($title,
                 $department,
                 $description,

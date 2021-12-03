@@ -16,7 +16,7 @@ export default function MonitorView() {
     let {path} = useRouteMatch();
     let auth = useAuth();
     return <>
-        <Route exact path={`${path}/offres/ajouter`}>
+        <Route exact path={`${path}/offres/add`}>
             <Title>Ajouter une offre</Title>
             <CreateOffer/>
         </Route>
@@ -32,11 +32,11 @@ export default function MonitorView() {
             <Title>Contrats de futures stagiaires à valider</Title>
             <ContractsToSign userType={UserType.MONITOR[0]}/>
         </Route>
-        <Route exact path={`${path}/monitor/eval/create`}>
+        <Route exact path={`${path}/monitor/evals/create`}>
             <Title>Évaluer un stagiaire</Title>
             <EvaluationIntern/>
         </Route>
-        <Route exact path={`${path}/monitor/eval/view`}>
+        <Route exact path={`${path}/monitor/evals/view`}>
             <Title>Évaluations de stagiaires</Title>
             <ShowAllEvaluations userType={UserType.MONITOR[0]}/>
         </Route>

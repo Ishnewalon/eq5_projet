@@ -327,7 +327,7 @@ class OfferApplicationControllerTest {
     @Test
     public void testUpdateStatusIsAccepted() throws Exception {
         OfferApplication offerApplication = getDummyOfferApp();
-        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(offerApplication.getId(), true);
+        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(offerApplication.getId(), Status.STAGE_TROUVE);
         when(offerApplicationService.updateStatus(any())).thenReturn("Statut changé, attendez la signature du contrat");
 
         MvcResult mvcResult = mockMvc.perform(
@@ -345,7 +345,7 @@ class OfferApplicationControllerTest {
 
     @Test
     public void testUpdateStatusIsAccepted_withIdNull() throws Exception {
-        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(null, true);
+        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(null, Status.STAGE_TROUVE);
         when(offerApplicationService.updateStatus(any()))
                 .thenThrow(new IllegalArgumentException("L'identifiant de l'offre ne peut pas être vide"));
 

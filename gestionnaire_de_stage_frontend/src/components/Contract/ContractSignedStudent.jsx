@@ -15,5 +15,5 @@ export default function ContractSignedStudent() {
     if (!contract) {
         return <MessageNothingToShow message="Aucun contrat n'a été signé pour l'instant..."/>
     }
-    return <ContractSigned contract={contract}/>
+    return <ContractSigned contract={contract} showContract={true}/>
 }

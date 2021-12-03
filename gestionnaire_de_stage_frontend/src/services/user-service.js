@@ -141,9 +141,3 @@ export async function getStudentsStatus(idSupervisor) {
     const response = await fetch(`${urlBackend}/supervisor/students_status/${idSupervisor}`, requestInit(methods.GET));
     return await response.json();
 }
-
-export async function getAllStudentsStatus() {
-    const response = await fetch(`${urlBackend}/applications`, requestInit(methods.GET));
-    return await response.json();
-}
-

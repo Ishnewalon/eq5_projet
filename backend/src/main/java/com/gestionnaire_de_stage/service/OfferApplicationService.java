@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -138,7 +139,7 @@ public class OfferApplicationService {
         return offerApplicationRepository.getAllByCurriculum_StudentId(idStudent);
     }
 
-    public String updateStatus(UpdateStatusDTO updateStatusDTO) throws IdDoesNotExistException {
+    public String updateStatus(UpdateStatusDTO updateStatusDTO) throws IdDoesNotExistException, IllegalArgumentException {
         Assert.isTrue(updateStatusDTO.getIdOfferApplied() != null, "L'identifiant de l'offre ne peut pas être vide");
          OfferApplication offerApplication = getOneById(updateStatusDTO.getIdOfferApplied());
         offerApplication.setStatus(updateStatusDTO.getStatus());

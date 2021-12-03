@@ -51,7 +51,7 @@ export default function ContratSignature({userType, contract, removeContract}) {
     return <div>
 
         <div className="d-flex justify-content-between flex-column">
-            <PdfDocumentViewer file={pdf} fileName={`contrat_${studentFullName(contract.student)}.pdf`}/>
+            <PdfDocumentViewer message={`Contrat de ${studentFullName(contract.student)}`} file={pdf} fileName={`contrat_${studentFullName(contract.student)}.pdf`}/>
             <form onSubmit={handleSubmit(startContract)}>
                 <label className="label h5" htmlFor="signature">
                     Signature <span className="text-muted small">En appuyant sur envoyer, vous confirmez avoir lu le

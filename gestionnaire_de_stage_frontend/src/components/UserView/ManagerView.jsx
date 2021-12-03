@@ -31,7 +31,7 @@ export default function ManagerView() {
                 <ContractsSigned userType={UserType.MANAGER[0]}/>
             </Route>
             <Route path={`${path}/offres`}>
-                <Route exact path={`${path}/offres/ajouter`}>
+                <Route exact path={`${path}/offres/add`}>
                     <Title>Ajouter une offre de stage</Title>
                     <CreateOffer/>
                 </Route>
@@ -58,7 +58,7 @@ export default function ManagerView() {
                 <Title>Liste des applications prêtes à être signer</Title>
                 <StartContract/>
             </Route>
-            <Route exact path={`${path}/contrats/a_signer`}>
+            <Route exact path={`${path}/contrats/to_sign`}>
                 <Title>Contrats à signer</Title>
                 <ContractsToSign userType={UserType.MANAGER[0]}/>
             </Route>

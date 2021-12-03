@@ -47,10 +47,10 @@ export async function getStudentApplicationsOffer(id) {
     );
 }
 
-export async function setApplicationsFinalStatus(idOfferApp, isAccepted) {
+export async function setApplicationsFinalStatus(idOfferApp, status) {
     return await fetch(`${urlBackend}/applications/student/update_status`, requestInit(methods.POST, {
         idOfferApplied: idOfferApp,
-        isAccepted: isAccepted
+        status: status
     })).then(
         response =>
             response.json().then((body) => {
