@@ -86,4 +86,14 @@ public class StageService {
     private boolean isEvalStagiaireFilled(String email) {
         return stageRepository.existsByContract_StudentEmailAndEvalStagiaireNotNull(email);
     }
+
+    public List<Stage> getAllEvaluationsForSupervisor(Long idSupervisor) {
+        Assert.notNull(idSupervisor, "L'id du superviseur ne peut pas être vide");
+        return stageRepository.getAllByEvalMilieuStageNotNullAndContract_Student_Supervisor_Id(idSupervisor);
+    }
+
+    public List<Stage> getAllEvaluationsForMonitor(Long idMonitor) throws IllegalArgumentException {
+        Assert.notNull(idMonitor, "L'id du moniteur ne peut pas être vide");
+        return stageRepository.getAllByEvalStagiaireNotNullAndContract_Monitor_Id(idMonitor);
+    }
 }

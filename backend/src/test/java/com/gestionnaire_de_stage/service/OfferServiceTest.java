@@ -177,7 +177,6 @@ public class OfferServiceTest {
                 .isEqualTo(dummyOffer);
     }
 
-
     @Test
     public void testMapArrayToOfferDto() {
         List<Offer> dummyOfferList = getDummyOfferList();
@@ -210,40 +209,6 @@ public class OfferServiceTest {
         List<Offer> actualOfferDtoList = offerService.getOffersNotYetApplied(studentId);
 
         assertThat(actualOfferDtoList).isEmpty();
-    }
-
-    @Test
-    public void testGetOffersNotAppliedYet() throws IdDoesNotExistException {
-        List<Offer> dummyOfferList = getDummyOfferList();
-        List<OfferApplication> dummyOfferApplicationList = getDummyOfferAppList();
-        Long studentId = 1L;
-        fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
-        doReturn(fixedClock.instant()).when(clock).instant();
-        doReturn(fixedClock.getZone()).when(clock).getZone();
-        when(offerRepository.findAllByValidIsTrueAndSession_YearGreaterThanEqual(any())).thenReturn(dummyOfferList);
-        when(offerApplicationRepository.getAllByCurriculum_StudentId(any())).thenReturn(dummyOfferApplicationList);
-        when(studentRepository.existsById(any())).thenReturn(true);
-
-        List<Offer> actualOfferList = offerService.getOffersNotYetApplied(studentId);
-
-        assertThat(actualOfferList.size()).isEqualTo(2);
-    }
-
-    @Test
-    public void testGetOffersNotAppliedYet_Summer() throws IdDoesNotExistException {
-        List<Offer> dummyOfferList = getDummyOfferList();
-        List<OfferApplication> dummyOfferApplicationList = getDummyOfferAppList();
-        Long studentId = 1L;
-        fixedClock = Clock.fixed(LocalDate.of(Year.now().getValue(), 6, 1).atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
-        doReturn(fixedClock.instant()).when(clock).instant();
-        doReturn(fixedClock.getZone()).when(clock).getZone();
-        when(offerRepository.findAllByValidIsTrueAndSession_YearGreaterThanEqual(any())).thenReturn(dummyOfferList);
-        when(offerApplicationRepository.getAllByCurriculum_StudentId(any())).thenReturn(dummyOfferApplicationList);
-        when(studentRepository.existsById(any())).thenReturn(true);
-
-        List<Offer> actualOfferList = offerService.getOffersNotYetApplied(studentId);
-
-        assertThat(actualOfferList.size()).isEqualTo(2);
     }
 
     @Test

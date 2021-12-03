@@ -14,7 +14,7 @@ import {Column} from "../SharedComponents/Column";
 
 export default function CreateOffer() {
     let auth = useAuth();
-    const {register, handleSubmit, formState: {errors}, reset} = useForm({
+    const {register, handleSubmit, formState: {errors}, reset, watch} = useForm({
         mode: "onSubmit",
         reValidateMode: "onChange"
     });
@@ -51,6 +51,41 @@ export default function CreateOffer() {
             reset()
         })
     }
+
+    const stageStart = watch("dateDebut", "");
+
+    const checkIfLowerThan = (val, previous) => {
+        if (!val || !previous)
+            return true;
+
+        let dateEnd = val.split("-").map(n => parseInt(n));
+        let dateStart = previous.split("-").map(n => parseInt(n));
+
+        if (dateEnd[0] !== dateStart[0]) {
+            return false;
+        }
+        else if (dateEnd[0] === dateStart[0]) {
+            let diff = dateEnd[1] - dateStart[1];
+            if (diff >= 3) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+
+        // let nextTime = val.split(":").map(n => parseInt(n));
+        // let previousTime = previous.split(":").map(n => parseInt(n));
+        //
+        // if (nextTime[0] > previousTime[0])
+        //     return true;
+        // else if (nextTime[0] === previousTime[0])
+        //     if (nextTime[1] > previousTime[1])
+        //         return true;
+    }
+
+
 
     const monitorEmail = (
         <Column col={{sm: 12, md: 6}}>
@@ -166,7 +201,9 @@ export default function CreateOffer() {
                                 placeholder="Date de fin"
                                 register={register}
                                 validation={{
-                                    required: "Ce champ est obligatoire!"
+                                    required: "Ce champ est obligatoire!",
+                                    validate: val => checkIfLowerThan(val, stageStart) || 'La date de fin de stage doit être au minimum 3 mois après la date de début de stage ' +
+                                        'et être dans la même année'
                                 }}/>
                 </Column>
                 <Column col={{lg: 6}}>

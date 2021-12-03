@@ -1,5 +1,6 @@
 package com.gestionnaire_de_stage.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gestionnaire_de_stage.dto.EvalMilieuStageDTO;
@@ -25,6 +26,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -248,6 +252,99 @@ public class StageControllerTest {
         assertThat(response.getContentAsString()).contains("L'évalutation de ce stagiaire a déjà été remplie");
     }
 
+    @Test
+    public void testGetAllFormulaireDeVisite_supervisorIdExistent() throws Exception {
+        List<Stage> dummyStageList = getDummyListStage();
+        long idSupervisor = 2L;
+        when(stageService.getAllEvaluationsForSupervisor(any())).thenReturn(dummyStageList);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/stages/supervisor/{idSupervisor}", idSupervisor)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        final List<Stage> stages = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(stages).hasSize(10);
+    }
+
+
+
+
+    @Test
+    public void testGetAllFormulaireDeVisite_supervisorIdNonExistent() throws Exception {
+        long idSupervisor = 2L;
+        when(stageService.getAllEvaluationsForSupervisor(any())).thenReturn(Collections.emptyList());
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/stages/supervisor/{idSupervisor}", idSupervisor)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getContentAsString()).isNotBlank();
+
+        final List<Stage> stages = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(stages).isEmpty();
+    }
+
+    @Test
+    public void testGetAllEvaluationStagiare_withMonitorExistentId() throws Exception {
+        long idMonitor = 2L;
+        List<Stage> dummyStageList = getDummyListStage();
+        when(stageService.getAllEvaluationsForMonitor(any()))
+                .thenReturn(dummyStageList);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/stages/monitor/{idMonitor}", idMonitor)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getContentAsString()).isNotBlank();
+
+        final List<Stage> stages = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(stages)
+                .isNotEmpty()
+                .hasSize(dummyStageList.size());
+    }
+
+    @Test
+    public void testGetAllEvaluationStagiare_withMonitorNonExistentId() throws Exception {
+        long idMonitor = 2L;
+        when(stageService.getAllEvaluationsForMonitor(any())).thenReturn(Collections.emptyList());
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/stages/monitor/{idMonitor}", idMonitor)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        final List<Stage> stages = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(stages).isEmpty();
+    }
+
+    @Test
+    public void testGetAllFormulaireDeVisite_throwsIllegalArg() throws Exception {
+        Long idSupervisor = 2L;
+        when(stageService.getAllEvaluationsForSupervisor(any())).thenThrow(new IllegalArgumentException("test"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/stages/supervisor/{idSupervisor}", idSupervisor)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("test");
+    }
+
     private EvalMilieuStageDTO getDummyEvalMilieuStageDTO() {
         EvalMilieuStageDTO dummyEvalMilieuStageDTO = new EvalMilieuStageDTO();
         dummyEvalMilieuStageDTO.setCompanyName("La place");
@@ -278,6 +375,17 @@ public class StageControllerTest {
         dummyContract.setId(1L);
         dummyContract.setStudent(getDummyStudent());
         return dummyContract;
+    }
+
+    private List<Stage> getDummyListStage(){
+        List<Stage> stages = new ArrayList<>();
+
+        for(long i =0; i< 10; i++){
+            Stage stage = getDummyStage();
+            stage.setId(i);
+            stages.add(stage);
+        }
+        return stages;
     }
 
     private Student getDummyStudent() {
