@@ -13,10 +13,8 @@ export default function SupervisorView() {
     let auth = useAuth();
     return (<>
         <Route exact path={`${path}/forms/supervisor/view`}>
-            <ContainerBox>
-                <Title>Mes formulaires de visites</Title>
-                <ShowAllEvaluations userType='supervisor'/>
-            </ContainerBox>
+            <Title>Mes formulaires de visites</Title>
+            <ShowAllEvaluations userType='supervisor'/>
         </Route>
         <Route exact path={`${path}/forms/supervisor/create`}>
             <ContainerBox>
