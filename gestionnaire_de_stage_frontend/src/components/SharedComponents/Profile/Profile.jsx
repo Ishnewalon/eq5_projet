@@ -61,6 +61,17 @@ export default function Profile() {
         })
     }
 
+    function getRole(){
+        if (auth.isMonitor())
+            return "Moniteur"
+        else if (auth.isStudent())
+            return "Étudiant"
+        else if (auth.isSupervisor())
+            return "Superviseur"
+        else if (auth.isManager())
+            return "Administrateur"
+    }
+
     function getAddress(user) {
         if (auth.isMonitor())
             return (<>
@@ -87,7 +98,8 @@ export default function Profile() {
                                     <img src="https://img.icons8.com/bubbles/100/000000/user.png"
                                          className={styles.imgRadius} alt="Profile"/>
                                 </div>
-                                <h5 className={styles.fullName}>{user.firstName + " " + user.lastName}</h5>
+                                <h4 className={styles.fullName}>{user.firstName + " " + user.lastName}</h4>
+                                <h6 className={styles.role}>{getRole()}</h6>
                             </div>
                         </Column>
                         <Column col={{sm: 8}}>
