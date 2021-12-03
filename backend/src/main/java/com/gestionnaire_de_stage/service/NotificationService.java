@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -109,7 +110,7 @@ public class NotificationService {
                     offer.getCreator(),
                     "N'oubliez pas votre entrevue avec " + student.getLastName() +
                             ", " + student.getFirstName() + " le " +
-                            offerApplication.getInterviewDate()
+                            offerApplication.getInterviewDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss")) + "."
             ));
         }
     }
