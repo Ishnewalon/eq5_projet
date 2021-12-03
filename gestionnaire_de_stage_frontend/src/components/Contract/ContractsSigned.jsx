@@ -21,12 +21,11 @@ export default function ContractsSigned({userType}) {
 
     return contractList.map((contract, index) =>
         <div className='d-flex align-items-center flex-column justify-content-center' key={index}>
-            <ContractSigned contract={contract}/>
             {
-                contractList?.length > 0 && <hr className='my-3'/>
+                index > 0 && <hr className='w-100'/>
             }
+            <ContractSigned contract={contract}/>
         </div>
     )
-
 }
 

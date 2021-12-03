@@ -35,7 +35,7 @@ export default function PdfDocumentViewer({file, fileName, showContract = false,
                 <h3 className='card-title'>{message}</h3>
                 <div className="btn-group my-3">
                     <button className={"btn btn-primary"}
-                            onClick={() => setShow(!show)}>{(show ? 'Cacher' : 'Montrer') + ' pdf'}</button>
+                            onClick={() => setShow(!show)}>{(show ? 'Cacher' : 'Montrer')}</button>
                     <button className='btn btn-primary'
                             onClick={() => downloadFile(file, fileName)}><FiDownload/></button>
                 </div>
