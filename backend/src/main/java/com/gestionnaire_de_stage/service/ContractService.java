@@ -137,7 +137,6 @@ public class ContractService {
         contract.setManager(manager);
 
         OfferApplication offerApplication = offerApplicationService.getOneById(contractStarterDto.getIdOfferApplication());
-        offerApplicationService.updateStatus(new UpdateStatusDTO(offerApplication.getId(), Status.EN_SIGNATURE));
 
         Offer offer = offerApplication.getOffer();
         Monitor monitor = offer.getCreator();
@@ -149,6 +148,9 @@ public class ContractService {
         if (studentRepository.existsByIdAndSupervisorNull(student.getId())) {
             throw new StudentIsNotAssignedException("L'étudiant doit être affecté à un superviseur avant de créer un contrat");
         }
+
+        offerApplicationService.updateStatus(new UpdateStatusDTO(offerApplication.getId(), Status.EN_SIGNATURE));
+
         contract.setStudent(student);
         contract.setMonitor(monitor);
         contract.setOffer(offer);
