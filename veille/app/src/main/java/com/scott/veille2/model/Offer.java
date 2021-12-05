@@ -1,13 +1,10 @@
 package com.scott.veille2.model;
 
-import java.time.LocalDate;
-
 public class Offer {
     private long id;
     private String department;
     private String title;
     private String description;
-    private LocalDate dateDebut;
     private double salary;
 
     public Offer(long id, String department, String title, String description, double salary) {
@@ -15,7 +12,6 @@ public class Offer {
         this.department = department;
         this.title = title;
         this.description = description;
-        this.dateDebut = dateDebut;
         this.salary = salary;
     }
 
@@ -33,10 +29,6 @@ public class Offer {
 
     public String getDescription() {
         return description;
-    }
-
-    public LocalDate getDateDebut() {
-        return dateDebut;
     }
 
     public double getSalary() {

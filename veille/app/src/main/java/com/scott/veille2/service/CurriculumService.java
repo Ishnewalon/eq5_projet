@@ -7,7 +7,9 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.scott.veille2.RequestSingleton;
 import com.scott.veille2.model.Curriculum;
 import com.scott.veille2.model.Offer;
@@ -41,15 +43,15 @@ public class CurriculumService implements IServiceUtil {
         this.context = context;
     }
 
-    public void getAllCvs(IRequestListener<List<StudentCurriculumDTO>> listener, long studentId) {
+    public void getAllCvs(IRequestListener<StudentCurriculumDTO> listener, long studentId) {
         String url = API_URL + "/curriculum/all_student/" + studentId;
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
                 null,
                 response -> {
-                    listener.processFinished(true, buildListFromJson(response));
+                    listener.processFinished(true, buildDto(response));
                 },
                 error -> {
                     Toast.makeText(context, "Imposible de chercher la liste des offres!",  Toast.LENGTH_SHORT).show();
@@ -58,7 +60,48 @@ public class CurriculumService implements IServiceUtil {
 
         RequestSingleton
                 .getInstance(context.getApplicationContext())
-                .addToRequestQueue(jsonArrayRequest);
+                .addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void setPrincipal(IRequestListener<String> listener, long studentId, long cvId) {
+        String url = API_URL + "/student/set_principal/" + studentId + "/" + cvId;
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                response -> {
+                    listener.processFinished(true, response.toString());
+                },
+                error -> {
+                    listener.processFinished(false, error.getMessage());
+                });
+
+        RequestSingleton
+                .getInstance(context.getApplicationContext())
+                .addToRequestQueue(jsonObjectRequest);
+    }
+
+    private StudentCurriculumDTO buildDto(JSONObject response) {
+        try {
+            JSONObject principalObject = null;
+            Curriculum principal = null;
+
+            if (!response.isNull("principal")) {
+                principalObject = response.getJSONObject("principal");
+                principal = buildCurriculumFromJson(principalObject);
+            }
+
+            JSONArray curriculumJson = response.getJSONArray("curriculumList");
+            List<Curriculum> curriculumList = new ArrayList<>();
+            for (int j = 0; j< curriculumJson.length(); j++){
+                curriculumList.add(buildCurriculumFromJson(curriculumJson.getJSONObject(j)));
+            }
+
+            return new StudentCurriculumDTO(principal, curriculumList);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     public void uploadFile(Uri fileUri, long studentID) {
@@ -111,32 +154,13 @@ public class CurriculumService implements IServiceUtil {
         return null;
     }
 
-    private List<StudentCurriculumDTO> buildListFromJson(JSONArray jsonArray) {
-        List<StudentCurriculumDTO> studentCurriculumDTOS = new ArrayList<>();
-        try {
-            for(int i = 0; i< jsonArray.length(); i++){
-                JSONObject principalJson = jsonArray.getJSONObject(i).getJSONObject("principal");
-                JSONArray curriculumJson = jsonArray.getJSONObject(i).getJSONArray("curriculumList");
-                Curriculum principal = buildCurriculumFromJson(principalJson);
-                List<Curriculum> curriculumList = new ArrayList<>();
-                for (int j = 0; j< curriculumJson.length(); j++){
-                    curriculumList.add(buildCurriculumFromJson(curriculumJson.getJSONObject(j)));
-                }
-                studentCurriculumDTOS.add(new StudentCurriculumDTO(principal, curriculumList));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return studentCurriculumDTOS;
-    }
-
     private Curriculum buildCurriculumFromJson(JSONObject jsonObject) {
         try {
             return new Curriculum(
                     jsonObject.getLong("id"),
                     jsonObject.getString("name"),
                     jsonObject.getString("type"),
-                    jsonObject.getBoolean("isValid")
+                    jsonObject.isNull("isValid") ? null : jsonObject.getBoolean("isValid")
             );
         } catch (JSONException e) {
             return null;

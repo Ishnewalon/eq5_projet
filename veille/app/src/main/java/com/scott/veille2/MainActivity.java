@@ -1,29 +1,28 @@
 package com.scott.veille2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 
-import com.scott.veille2.model.User;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.tabs.TabLayout;
 import com.scott.veille2.service.IRequestListener;
 import com.scott.veille2.service.LoginService;
-
-import static android.widget.AdapterView.*;
 
 public class MainActivity extends AppCompatActivity {
 
     private LoginService loginService;
     private EditText username;
     private EditText password;
-    private Spinner userType;
+    private TabLayout tabLayout;
 
-    private String userSelection;
+    private final String[] userTypes = {
+            "student",
+            "monitor",
+            "manager"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,52 +33,36 @@ public class MainActivity extends AppCompatActivity {
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
-        userType = findViewById(R.id.user_type);
-
-        userSelection = "student";
-        setupSpinner();
+        tabLayout = findViewById(R.id.tabLayout);
     }
 
     private IRequestListener<String> setupLoginListener() {
         return (isSuccessful, message) -> {
             if (isSuccessful){
-                switch (userSelection){
+                switch (getUserType()){
                     case "student" :
                         startActivity(new Intent(MainActivity.this, StudentDashboard.class));
                         break;
-                    case "manager" :
-                        startActivity(new Intent(MainActivity.this, ManagerDashboard.class));
-                        break;
                     case "monitor" :
                         startActivity(new Intent(MainActivity.this, MonitorDashboard.class));
+                        break;
+                    case "manager" :
+                        startActivity(new Intent(MainActivity.this, ManagerDashboard.class));
                         break;
                 }
             }
         };
     }
 
-    private void setupSpinner() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.user_array , android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        userType.setAdapter(adapter);
-        userType.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                userSelection = parent.getItemAtPosition(position).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+    private String getUserType() {
+        return userTypes[tabLayout.getSelectedTabPosition()];
     }
 
     public void login(View view) {
         loginService.login(
                 username.getText().toString(),
                 password.getText().toString(),
-                userSelection
+                getUserType()
         );
     }
 }

@@ -1,12 +1,16 @@
 package com.scott.veille2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.scott.veille2.adapter.OfferAdapter;
 import com.scott.veille2.model.Offer;
 import com.scott.veille2.model.User;
 import com.scott.veille2.service.OfferService;
@@ -15,11 +19,11 @@ import java.util.List;
 
 public class OfferList extends AppCompatActivity {
 
-    ListView offerList;
+    private ListView offerList;
 
-    OfferService offerService;
-    List<Offer> offers;
-    User user;
+    private OfferService offerService;
+    private List<Offer> offers;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +34,25 @@ public class OfferList extends AppCompatActivity {
         if (user == null)
             finish();
 
+        offerList = findViewById(R.id.offer_list);
+
         offerService = new OfferService(this);
         getOffers();
+    }
 
-        offerList = findViewById(R.id.offer_list);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.activity_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.back) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getOffers() {
@@ -48,11 +67,13 @@ public class OfferList extends AppCompatActivity {
     }
 
     private void setOfferList() {
-        ArrayAdapter<Offer> arrayAdapter = new ArrayAdapter<Offer>(this, android.R.layout.simple_list_item_1, offers);
-        offerList.setAdapter(arrayAdapter);
+        OfferAdapter offerAdapter = new OfferAdapter(this.getApplicationContext(), offers);
+        offerList.setAdapter(offerAdapter);
+
         offerList.setOnItemLongClickListener((parent, view, position, id) -> {
             Offer offer = offers.get(position);
             offerService.applyOnOffer(((isSuccessful, response) -> {
+                System.out.println(response);
                 if (isSuccessful){
                     Toast.makeText(this.getApplicationContext(), "Vous avez appliquer sur l'offre!",  Toast.LENGTH_SHORT).show();
                 }else{

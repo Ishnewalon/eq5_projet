@@ -31,10 +31,10 @@
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="15dp"
+        android:layout_height="5dp"
         android:layout_marginTop="8dp"
         android:background="?android:attr/listDivider"
-        android:backgroundTint="#000000"
+        android:backgroundTint="#304C7B"
         android:backgroundTintMode="add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -61,20 +61,20 @@
             android:text="Les offres de stage" />
 
         <Button
+            android:id="@+id/btn_mescv"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:backgroundTint="#2196F3"
+            android:onClick="viewCurriculums"
+            android:text="C.V." />
+
+        <Button
             android:id="@+id/btn_cv"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:backgroundTint="#2196F3"
             android:onClick="openFile"
             android:text="C.V." />
-
-        <Button
-            android:id="@+id/btn_logout"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:backgroundTint="#F44336"
-            android:onClick="logout"
-            android:text="se deconnecter" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

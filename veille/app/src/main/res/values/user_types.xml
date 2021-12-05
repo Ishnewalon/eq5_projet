@@ -2,7 +2,7 @@
 <resources>
     <string-array name="user_array">
         <item>student</item>
-        <item>manager</item>
         <item>monitor</item>
+        <item>manager</item>
     </string-array>
 </resources>

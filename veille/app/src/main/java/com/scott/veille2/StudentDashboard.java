@@ -1,18 +1,18 @@
 package com.scott.veille2;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.scott.veille2.model.User;
 import com.scott.veille2.service.CurriculumService;
@@ -44,6 +44,22 @@ public class StudentDashboard extends AppCompatActivity {
         createActivityLauncher();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.dashboard_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.logout) {
+            RequestSingleton.getInstance(this.getApplicationContext()).clearUser();
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void createActivityLauncher() {
         this.arl = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK) {
@@ -67,8 +83,7 @@ public class StudentDashboard extends AppCompatActivity {
         startActivity(new Intent(StudentDashboard.this, OfferList.class));
     }
 
-    public void logout(View view) {
-        RequestSingleton.getInstance(this.getApplicationContext()).clearUser();
-        finish();
+    public void viewCurriculums(View view) {
+        startActivity(new Intent(StudentDashboard.this, MesCurriculum.class));
     }
 }

@@ -3,10 +3,12 @@
 INSERT INTO SESSIONS VALUES(3,'HIVER',2022);
 INSERT INTO MANAGER VALUES(1, 'admin@email.com', 'richard', 'gautier', 'UnMotDePasse1234', '5145145514');
 INSERT INTO MONITOR VALUES(2, 'monitor@email.com', 'Verron', 'Lambert', 'UnMotDePasse1234', '5141234567', '1000, avenue Bouchard', 'Lasalle', 'Informatique', 'H0H0H0');
-INSERT INTO OFFER VALUES(1, '1000, avenue Bouchard', now(), now(), now(), 'Informatique', 'Programmeur Java', 'Lundi au Vendredi', '35h', '15 semaines', 28, 'Programmeur', NULL, 2, 3);
--- INSERT INTO OFFER VALUES(14, '1000, avenue Bouchard', now(), now(), now(), 'Informatique', 'Dev React', 'Lundi au Vendredi', '35h', '15 semaines', 28, 'Dev', NULL, 2, 3);
+INSERT INTO OFFER VALUES(1, '1000, avenue Bouchard', now(), now(), now(), 'Concevoir des solutions pour répondre aux besoins d''affaires', 'Concevoir des solutions pour répondre aux besoins d''affaires', 'Lundi au Vendredi', '35h', '15 semaines', 19, 'Programmeur Java', true, 2, 3);
+INSERT INTO OFFER VALUES(14, '1000, avenue Bouchard', now(), now(), now(), 'Informatique', 'Travailler sur des projets porteurs en mode agile', 'Lundi au Vendredi', '35h', '15 semaines', 21, 'Programmeur Java', true, 2, 3);
+INSERT INTO OFFER VALUES(15, '1000, avenue Bouchard', now(), now(), now(), 'Informatique', 'Contribuer au développement de systèmes, programmes et applications informatiques', 'Lundi au Vendredi', '35h', '15 semaines', 19, 'Programmeur React', true, 2, 3);
+INSERT INTO OFFER VALUES(16, '1000, avenue Bouchard', now(), now(), now(), 'Informatique', 'Configurez, administrez, maintenez et faites évoluer les réseaux informatiques', 'Lundi au Vendredi', '35h', '15 semaines', 20, 'Technicien Informatique', true, 2, 3);
 INSERT INTO SUPERVISOR VALUES(4, 'supervisor@email.com', 'Sup', 'ervisor', 'UnMotDePasse1234','5141234567', 'Informatique', '12345');
-INSERT INTO STUDENT VALUES(3, 'student@email.com', 'Imem', 'Belcadi', 'UnMotDePasse1234', '5141234567', '1100, avenue Bouchard', 'Lachine', 'Informatique', '1234567', 'H0H0H0', NULL, NULL);
+INSERT INTO STUDENT VALUES(3, 'student@email.com', 'Imem', 'Belcadi', 'admin', '5141234567', '1100, avenue Bouchard', 'Lachine', 'Informatique', '1234567', 'H0H0H0', NULL, NULL);
 INSERT INTO STUDENT VALUES(5, 'student1@email.com', 'John', 'Kalouy', 'UnMotDePasse1234', '5141234567', '1100, avenue Bouchard', 'Lachine', 'Informatique', '7654321', 'H0H0H0', NULL, 4);
 
 INSERT INTO CURRICULUM VALUES(13, FILE_READ('src/main/resources/contratTemplate.pdf'), true, 'test.pdf', 'application/pdf', 5)
