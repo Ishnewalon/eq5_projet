@@ -1,0 +1,44 @@
+.cardHolder {
+    max-width: 100%;
+}
+
+.cardCompanyName {
+    margin-right: 0.5rem;
+}
+
+.cardCompanyLocation {
+    margin-bottom: -0.125rem;
+    margin-right: 1rem;
+}
+
+.cardListingDate {
+    margin-bottom: -0.125rem;
+    margin-right: 0.75rem;
+}
+
+.cardSalaryRange {
+    margin-right: 0.75rem;
+    margin-bottom: -0.125rem;
+}
+
+.cardJobDuration {
+    margin-right: 0.75rem;
+    margin-bottom: -0.125rem;
+}
+
+.cardJobDetails {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.jobTitle {
+    font-size: 2rem !important;
+    line-height: 1;
+}
+
+.cardJobSummary {
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}

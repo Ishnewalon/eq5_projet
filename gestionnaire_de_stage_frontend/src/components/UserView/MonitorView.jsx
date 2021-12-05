@@ -5,27 +5,24 @@ import OfferApplicationsMonitorListOfApplications
 import {Route, useRouteMatch} from "react-router-dom";
 import ContractsToSign from "../Contract/ContractsToSign";
 import {UserType} from "../../enums/UserTypes";
-import {ContainerBox} from "../SharedComponents/ContainerBox/ContainerBox";
-import {useAuth} from "../../services/use-auth";
-import EvaluationIntern from "../Evaluation/EvaluationIntern";
+import {useAuth} from "../../hooks/use-auth";
+import EvaluationIntern from "../Evaluation/MonitorEvaluation/EvaluationIntern";
 import ContractsSigned from "../Contract/ContractsSigned";
-import {Title} from "../SharedComponents/Title/Title";
+import {Title} from "../SharedComponents/Title";
+import Profile from "../SharedComponents/Profile/Profile";
+import ShowAllEvaluations from "../Evaluation/ShowAllEvaluations";
 
 export default function MonitorView() {
     let {path} = useRouteMatch();
     let auth = useAuth();
     return <>
-        <Route exact path={`${path}/offres/ajouter`}>
+        <Route exact path={`${path}/offres/add`}>
             <Title>Ajouter une offre</Title>
-            <ContainerBox>
-                <CreateOffer/>
-            </ContainerBox>
+            <CreateOffer/>
         </Route>
         <Route exact path={`${path}/monitor/contracts/signed`}>
             <Title>Contrats signés</Title>
-            <ContainerBox>
-                <ContractsSigned userType={UserType.MONITOR[0]}/>
-            </ContainerBox>
+            <ContractsSigned userType={UserType.MONITOR[0]}/>
         </Route>
         <Route exact path={`${path}/applications`}>
             <Title>Appliquants</Title>
@@ -33,17 +30,19 @@ export default function MonitorView() {
         </Route>
         <Route exact path={`${path}/voir/futures_stagiaires`}>
             <Title>Contrats de futures stagiaires à valider</Title>
-            <ContainerBox>
-                <ContractsToSign userType={UserType.MONITOR[0]}/>
-            </ContainerBox>
+            <ContractsToSign userType={UserType.MONITOR[0]}/>
         </Route>
-        <Route exact path={`${path}/monitor_eval_stagiaire`}>
-            <ContainerBox>
-                <EvaluationIntern/>
-            </ContainerBox>
+        <Route exact path={`${path}/monitor/evals/create`}>
+            <Title>Évaluer un stagiaire</Title>
+            <EvaluationIntern/>
+        </Route>
+        <Route exact path={`${path}/monitor/evals/view`}>
+            <Title>Évaluations de stagiaires</Title>
+            <ShowAllEvaluations userType={UserType.MONITOR[0]}/>
         </Route>
         <Route exact path={`${path}`}>
-            <h1 className="text-center">Bonjour {auth.user.firstName}!</h1>
+            <Title>Bonjour {auth.user.firstName}!</Title>
+            <Profile/>
         </Route>
     </>;
 }

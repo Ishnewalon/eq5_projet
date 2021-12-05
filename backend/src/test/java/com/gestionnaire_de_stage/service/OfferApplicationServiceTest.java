@@ -28,16 +28,22 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class OfferApplicationServiceTest {
+
     @InjectMocks
     private OfferApplicationService offerApplicationService;
+
     @Mock
     private OfferService offerService;
+
     @Mock
     private StudentService studentService;
+
     @Mock
     private ManagerService managerService;
+
     @Mock
     private OfferApplicationRepository offerApplicationRepository;
+
     @Mock
     private SupervisorRepository supervisorRepository;
 
@@ -119,34 +125,15 @@ class OfferApplicationServiceTest {
     }
 
     @Test
-    void testGetOffersApplicationStageTrouver() throws IdDoesNotExistException {
+    void testGetOffersApplicationStageTrouver() {
         List<OfferApplication> offerApplicationList = getDummyOfferAppList();
-        Manager dummyManager = getDummyManager();
-        when(managerService.isIDNotValid(any())).thenReturn(false);
-        when(offerApplicationRepository.getAllByStatusAndSession_YearGreaterThanEqual(Status.STAGE_TROUVE, Year.now()))
+        when(offerApplicationRepository.getAllByStatusAndSession_YearGreaterThanEqualAndCurriculum_Student_SupervisorIsNull(Status.STAGE_TROUVE, Year.now()))
                 .thenReturn(offerApplicationList);
 
-        List<OfferApplication> actualOfferAppList = offerApplicationService
-                .getOffersApplicationsStageTrouver(dummyManager.getId());
+        List<Student> actualOfferStudent = offerApplicationService
+                .getOffersApplicationsStageTrouver();
 
-        assertThat(actualOfferAppList.size()).isEqualTo(offerApplicationList.size());
-        assertThat(actualOfferAppList).isEqualTo(offerApplicationList);
-    }
-
-    @Test
-    void testGetOffersApplicationStageTrouver_withIdNull() {
-
-        assertThrows(IllegalArgumentException.class,
-                () -> offerApplicationService.getOffersApplicationsStageTrouver(null));
-    }
-
-    @Test
-    void testGetOffersApplicationStageTrouver_withIdInvalid() {
-        Manager dummyManager = getDummyManager();
-        when(managerService.isIDNotValid(any())).thenReturn(true);
-
-        assertThrows(IdDoesNotExistException.class,
-                () -> offerApplicationService.getOffersApplicationsStageTrouver(dummyManager.getId()));
+        assertThat(actualOfferStudent).isNotEmpty();
     }
 
 
@@ -221,25 +208,27 @@ class OfferApplicationServiceTest {
     @Test
     public void testUpdateStatus_withTrue() throws IdDoesNotExistException {
         OfferApplication dummyOfferApplication = getDummyOfferApp();
-        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), true);
+        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), Status.STAGE_TROUVE);
+        when(offerApplicationRepository.existsById(any())).thenReturn(true);
         when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
         when(offerApplicationRepository.save(any())).thenReturn(dummyOfferApplication);
 
         String message = offerApplicationService.updateStatus(updateStatusDTO);
 
-        assertThat(message).contains("Status changé, attendez la signature du contrat");
+        assertThat(message).contains("Statut changé, attendez la signature du contrat");
     }
 
     @Test
     public void testUpdateStatus_withFalse() throws IdDoesNotExistException {
         OfferApplication dummyOfferApplication = getDummyOfferApp();
-        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), false);
+        UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(dummyOfferApplication.getId(), Status.STAGE_REFUSE);
+        when(offerApplicationRepository.existsById(any())).thenReturn(true);
         when(offerApplicationRepository.getById(any())).thenReturn(dummyOfferApplication);
         when(offerApplicationRepository.save(any())).thenReturn(dummyOfferApplication);
 
         String isAccepted = offerApplicationService.updateStatus(updateStatusDTO);
 
-        assertThat(isAccepted).contains("Status changé, stage refusé");
+        assertThat(isAccepted).contains("Statut changé, stage refusé");
     }
 
     @Test
@@ -362,6 +351,92 @@ class OfferApplicationServiceTest {
                 () -> offerApplicationService.getAllBySupervisorId(supervisorId));
     }
 
+    @Test
+    void testUpdateAllOffersStatus_withValidEntries() {
+        when(offerApplicationRepository.updateAllOfferApplicationThatWereInAInterviewStatusToStatus(any(), any(), any())).thenReturn(3);
+
+        final int updatedOfferApplications = offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(Status.EN_ATTENTE_ENTREVUE, Status.EN_ATTENTE_REPONSE);
+
+        assertThat(updatedOfferApplications).isEqualTo(3);
+    }
+
+    @Test
+    void testUpdateAllOffersStatus_withAllNullEntries() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(null, null),
+                "Les deux status ne peuvent pas être vide");
+    }
+
+    @Test
+    void testUpdateAllOfferStatus_withNullOldStatus() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(null, Status.EN_ATTENTE_REPONSE),
+                "Le deux status ne peut pas être vide");
+    }
+
+    @Test
+    void testUpdateAllOfferStatus_withNullNewStatus() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(Status.EN_ATTENTE_ENTREVUE, null),
+                "Le deux status ne peut pas être vide"
+        );
+    }
+
+    @Test
+    void testUpdateAllOfferStatus_withSameStatus() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.updateAllOfferApplicationThatWereInAInterviewStatusFromStatusToOther(Status.EN_ATTENTE_ENTREVUE, Status.EN_ATTENTE_ENTREVUE),
+                "Les deux status ne peuvent pas être identique"
+        );
+    }
+
+    @Test
+    void testIsCurriculumInUse() {
+        when(offerApplicationRepository.existsByCurriculum(any())).thenReturn(true);
+
+        boolean actual = offerApplicationService.isCurriculumInUse(getDummyCurriculum());
+
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    void testIsCurriculumInUse_throwsIllegalArg() {
+        when(offerApplicationRepository.existsByCurriculum(any())).thenThrow(IllegalArgumentException.class);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.isCurriculumInUse(getDummyCurriculum()));
+    }
+
+    @Test
+    void testGetOffersApplicationStageTrouverIdManager() throws IdDoesNotExistException {
+        List<OfferApplication> offerApplicationList = getDummyOfferAppList();
+        Manager dummyManager = getDummyManager();
+        when(managerService.isIDNotValid(any())).thenReturn(false);
+        when(offerApplicationRepository.getAllByStatusAndSession_YearGreaterThanEqual(Status.STAGE_TROUVE, Year.now()))
+                .thenReturn(offerApplicationList);
+
+        List<OfferApplication> actualOfferAppList = offerApplicationService
+                .getOffersApplicationsStageTrouverManagerId(dummyManager.getId());
+
+        assertThat(actualOfferAppList.size()).isEqualTo(offerApplicationList.size());
+        assertThat(actualOfferAppList).isEqualTo(offerApplicationList);
+    }
+
+    @Test
+    void testGetOffersApplicationStageTrouver_withIdNull() {
+        assertThrows(IllegalArgumentException.class,
+                () -> offerApplicationService.getOffersApplicationsStageTrouverManagerId(null));
+    }
+
+    @Test
+    void testGetOffersApplicationStageTrouver_withIdInvalid() {
+        Manager dummyManager = getDummyManager();
+        when(managerService.isIDNotValid(any())).thenReturn(true);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> offerApplicationService.getOffersApplicationsStageTrouverManagerId(dummyManager.getId()));
+    }
+
     private OfferApplication getDummyOfferApp() {
         OfferApplication offerApplicationDTO = new OfferApplication();
         offerApplicationDTO.setOffer(getDummyOffer());
@@ -370,6 +445,16 @@ class OfferApplicationServiceTest {
         offerApplicationDTO.setStatus(Status.CV_ENVOYE);
 
         return offerApplicationDTO;
+    }
+
+    private Manager getDummyManager() {
+        Manager dummyManager = new Manager();
+        dummyManager.setId(1L);
+        dummyManager.setLastName("Candle");
+        dummyManager.setFirstName("Tea");
+        dummyManager.setEmail("admin@admin.com");
+        dummyManager.setPassword("admin");
+        return dummyManager;
     }
 
     private Offer getDummyOffer() {
@@ -394,20 +479,6 @@ class OfferApplicationServiceTest {
         dummyStudent.setMatricule("4673943");
         dummyStudent.setPrincipalCurriculum(new Curriculum());
         return dummyStudent;
-    }
-
-    private Manager getDummyManager() {
-        Manager dummyManager = new Manager();
-        dummyManager.setId(1L);
-        dummyManager.setLastName("Candle");
-        dummyManager.setFirstName("Tea");
-        dummyManager.setEmail("admin@admin.com");
-        dummyManager.setPassword("admin");
-        return dummyManager;
-    }
-
-    private UpdateStatusDTO getDummuyUpdateStatusDTO() {
-        return new UpdateStatusDTO(1L, true);
     }
 
     private Curriculum getDummyCurriculum() {

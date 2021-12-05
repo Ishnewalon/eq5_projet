@@ -1,7 +1,6 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.service.ManagerService;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +22,15 @@ public class ManagerController {
         try {
             Manager manager = managerService.getOneByEmailAndPassword(email, password);
             return ResponseEntity.ok(manager);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));//FIXME: Change message
-        } catch (EmailAndPasswordDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));//FIXME: Change message
+                    .body(new ResponseMessage(e.getMessage()));
         }
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> checkValidEmail(@PathVariable String email) {
+        return ResponseEntity.ok(managerService.isEmailInvalid(email));
     }
 }

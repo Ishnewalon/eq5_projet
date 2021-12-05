@@ -3,12 +3,14 @@ package com.gestionnaire_de_stage.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gestionnaire_de_stage.dto.AssignDto;
-import com.gestionnaire_de_stage.dto.ValidationCurriculum;
 import com.gestionnaire_de_stage.enums.Status;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SupervisorAlreadyExistsException;
-import com.gestionnaire_de_stage.model.*;
+import com.gestionnaire_de_stage.model.Curriculum;
+import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.model.OfferApplication;
+import com.gestionnaire_de_stage.model.Supervisor;
 import com.gestionnaire_de_stage.repository.SupervisorRepository;
 import com.gestionnaire_de_stage.service.StudentService;
 import com.gestionnaire_de_stage.service.SupervisorService;
@@ -27,18 +29,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
 @WebMvcTest(SupervisorController.class)
 public class SupervisorControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
+    private final ObjectMapper MAPPER = new ObjectMapper();
     @MockBean
     SupervisorService supervisorService;
 
@@ -47,9 +46,8 @@ public class SupervisorControllerTest {
 
     @MockBean
     SupervisorRepository supervisorRepository;
-
-
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    @Autowired
+    private MockMvc mockMvc;
 
     @Test
     public void testSupervisorSignUp_withValidEntries() throws Exception {
@@ -71,7 +69,7 @@ public class SupervisorControllerTest {
     @Test
     public void testSupervisorSignUp_withNullEntries() throws Exception {
         Supervisor dummySupervisor = getDummySupervisor();
-        when(supervisorService.create(any())).thenThrow(IllegalArgumentException.class);
+        when(supervisorService.create(any())).thenThrow(new IllegalArgumentException("Le courriel ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/supervisor/signup")
@@ -81,13 +79,13 @@ public class SupervisorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le courriel ne peut pas être null");
+        assertThat(response.getContentAsString()).contains("Le courriel ne peut pas être vide");
     }
 
     @Test
     public void testSupervisorSignUp_withInvalidSupervisor() throws Exception {
         Supervisor dummySupervisor = getDummySupervisor();
-        when(supervisorService.create(any())).thenThrow(SupervisorAlreadyExistsException.class);
+        when(supervisorService.create(any())).thenThrow(new SupervisorAlreadyExistsException("Un compte existe déjà pour ce superviseur"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/supervisor/signup")
@@ -97,7 +95,7 @@ public class SupervisorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Ce courriel existe déjà!");
+        assertThat(response.getContentAsString()).contains("Un compte existe déjà pour ce superviseur");
     }
 
     @Test
@@ -122,7 +120,7 @@ public class SupervisorControllerTest {
     public void testSupervisorLogin_withNullEntries() throws Exception {
         String email = "sinl@gmail.com";
         String password = "weightofworld";
-        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenThrow(IllegalArgumentException.class);
+        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenThrow(new IllegalArgumentException("Courriel et mot de passe ne peuvent pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
@@ -131,11 +129,11 @@ public class SupervisorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Le courriel et le mot de passe ne peuvent pas être null");
+        assertThat(response.getContentAsString()).contains("Courriel et mot de passe ne peuvent pas être vide");
     }
 
     @Test
-    public void testAssign() throws Exception {
+    public void testAssign_withAssignedStudent() throws Exception {
         AssignDto assignDto = new AssignDto(1L, 2L);
         when(studentService.assign(any(), any())).thenReturn(true);
 
@@ -147,13 +145,13 @@ public class SupervisorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("Assignement fait!");
+        assertThat(response.getContentAsString()).contains("Affectation faite!");
     }
 
     @Test
-    public void testAssign_withInvalidSupervisorAndStudent() throws Exception {
+    public void testAssign_withUnasignedStudent() throws Exception {
         AssignDto assignDto = new AssignDto(1L, 2L);
-        when(supervisorService.getOneByID(any())).thenThrow(IdDoesNotExistException.class);
+        when(studentService.assign(any(), any())).thenReturn(false);
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.post("/supervisor/assign/student")
@@ -163,14 +161,31 @@ public class SupervisorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Inexistant");
+        assertThat(response.getContentAsString()).contains("Affectation rejetée, l'étudiant est déjà assigné!");
+    }
+
+
+    @Test
+    public void testAssign_withInvalidSupervisorAndStudent() throws Exception {
+        AssignDto assignDto = new AssignDto(1L, 2L);
+        when(supervisorService.getOneByID(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas de superviseur associé à cet identifiant"));
+
+        MvcResult mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders.post("/supervisor/assign/student")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(MAPPER.writeValueAsString(assignDto)))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de superviseur associé à cet identifiant");
     }
 
     @Test
     public void testSupervisorLogin_withInvalidEntries() throws Exception {
         String email = "sinl@gmail.com";
         String password = "weightofworld";
-        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenThrow(EmailAndPasswordDoesNotExistException.class);
+        when(supervisorService.getOneByEmailAndPassword(any(), any())).thenThrow(new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalide"));
 
         MvcResult mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders.get("/supervisor/" + email + "/" + password)
@@ -179,7 +194,7 @@ public class SupervisorControllerTest {
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Erreur: Courriel ou Mot de Passe Invalide");
+        assertThat(response.getContentAsString()).contains("Courriel ou mot de passe invalide");
     }
 
     @Test
@@ -203,11 +218,12 @@ public class SupervisorControllerTest {
         List<OfferApplication> dummyOfferAppList = getDummyOfferAppList();
         when(supervisorService.getStudentsStatus(any())).thenReturn(dummyOfferAppList);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId() )
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
-        List<OfferApplication> actualOfferAppList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {});
+        List<OfferApplication> actualOfferAppList = MAPPER.readValue(response.getContentAsString(), new TypeReference<>() {
+        });
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(actualOfferAppList.size()).isEqualTo(dummyOfferAppList.size());
     }
@@ -215,27 +231,86 @@ public class SupervisorControllerTest {
     @Test
     public void testGetAllStudentsStatus_withNullSupervisorId() throws Exception {
         Supervisor dummySupervisor = getDummySupervisor();
-        when(supervisorService.getStudentsStatus(any())).thenThrow(new IllegalArgumentException("ID est null"));
-
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId() )
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-
-        final MockHttpServletResponse response = mvcResult.getResponse();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("ID est null");
-    }
-
-    @Test
-    public void testGetAllStudentsStatus_withInvalidSupervisorId() throws Exception {
-        Supervisor dummySupervisor = getDummySupervisor();
-        when(supervisorService.getStudentsStatus(any())).thenThrow(IdDoesNotExistException.class);
+        when(supervisorService.getStudentsStatus(any())).thenThrow(new IllegalArgumentException("L'identifiant ne peut pas être vide"));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId())
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         final MockHttpServletResponse response = mvcResult.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.getContentAsString()).contains("Ce superviseur n'existe pas");
+        assertThat(response.getContentAsString()).contains("L'identifiant ne peut pas être vide");
+    }
+
+    @Test
+    public void testGetAllStudentsStatus_withInvalidSupervisorId() throws Exception {
+        Supervisor dummySupervisor = getDummySupervisor();
+        when(supervisorService.getStudentsStatus(any())).thenThrow(new IdDoesNotExistException("Il n'y a pas de superviseur associé à cet identifiant"));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/supervisor/students_status/" + dummySupervisor.getId())
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Il n'y a pas de superviseur associé à cet identifiant");
+    }
+
+    @Test
+    public void testCheckMatriculeValidty() throws Exception {
+        when(studentService.isMatriculeValid(any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/supervisor/matricule/{matricule}", "12345")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("true");
+    }
+
+    @Test
+    public void testCheckEmailValidty() throws Exception {
+        when(supervisorService.isEmailInvalid(any())).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get("/supervisor/email/{email}", "sinl@gmail.com")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("false");
+    }
+
+    @Test
+    public void testChangePassword() throws Exception {
+        Supervisor dummySupervisor = getDummySupervisor();
+        String newPassword = "newPassword";
+        when(supervisorService.changePassword(any(), any())).thenReturn(dummySupervisor);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .put("/supervisor/change_password/{id}", dummySupervisor.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newPassword))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).contains("Mot de passe changé avec succès");
+    }
+
+    @Test
+    public void testChangePassword_withInvalidId() throws Exception {
+        String newPassword = "newPassword";
+        when(supervisorService.changePassword(any(), any())).thenThrow(new IllegalArgumentException("Id invalide"));
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .put("/supervisor/change_password/{id}", 123412L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newPassword))
+                .andReturn();
+
+        final MockHttpServletResponse response = mvcResult.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("Id invalide");
     }
 
     private Supervisor getDummySupervisor() {

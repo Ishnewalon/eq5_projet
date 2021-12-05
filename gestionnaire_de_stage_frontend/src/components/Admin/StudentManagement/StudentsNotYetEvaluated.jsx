@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {getAllStudentsNotYetEvaluated} from "../../../services/user-service";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
+import {BtnBack} from "../../SharedComponents/BtnBack";
 
 export default function StudentsNotYetEvaluated() {
 
@@ -19,7 +20,10 @@ export default function StudentsNotYetEvaluated() {
     }, []);
 
     if (studentMonitorOfferDtoList.length === 0)
-        return <MessageNothingToShow message="Tous les étudiants ont été évalués"/>
+        return <>
+            <MessageNothingToShow message="Tous les étudiants ont été évalués"/>
+            <BtnBack/>
+        </>
 
     return (
         <>
@@ -41,6 +45,7 @@ export default function StudentsNotYetEvaluated() {
                     </TableRow>
                 )}
             </Table>
+            <BtnBack/>
         </>
     )
 }

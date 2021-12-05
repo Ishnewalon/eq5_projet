@@ -1,8 +1,6 @@
 package com.gestionnaire_de_stage.controller;
 
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.service.MonitorService;
 import org.springframework.http.HttpStatus;
@@ -29,17 +27,17 @@ public class MonitorController {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(createdMonitor);
-        } catch (MonitorAlreadyExistsException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Ce courriel existe déjà!"));//FIXME: Change message
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel ne peut pas être null"));//FIXME: Change message
+                    .body(new ResponseMessage(e.getMessage()));
         }
     }
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> checkValidEmail(@PathVariable String email) {
+        return ResponseEntity.ok(monitorService.isEmailInvalid(email));
+    }
 
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
@@ -47,14 +45,22 @@ public class MonitorController {
         try {
             Monitor monitor = monitorService.getOneByEmailAndPassword(email, password);
             return ResponseEntity.ok(monitor);
-        } catch (EmailAndPasswordDoesNotExistException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseMessage("Erreur: Courriel ou Mot de Passe Invalide"));//FIXME: Change message
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Erreur: Le courriel et le mot de passe ne peuvent pas être null"));//FIXME: Change message
+                    .body(new ResponseMessage(e.getMessage()));
         }
+    }
+
+    @PutMapping("/change_password/{id}")
+    public ResponseEntity<?> updatePassword(@PathVariable Long id, @RequestBody String password) {
+        try {
+            monitorService.changePassword(id, password);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+        return ResponseEntity.ok(new ResponseMessage("Mot de passe changé avec succès"));
     }
 }

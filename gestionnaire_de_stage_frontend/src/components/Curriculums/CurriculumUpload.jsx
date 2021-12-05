@@ -1,16 +1,21 @@
 import React from "react";
 import Dropzone from "react-dropzone";
 import {uploadFile} from "../../services/curriculum-service";
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
+import {toastErr} from "../../utility";
 
 export default function CurriculumUpload() {
     let auth = useAuth();
     const handleDrop = acceptedFiles => {
+        if (acceptedFiles.length === 0) {
+            toastErr.fire({title: `Ce fichier n'a pas pu être téléversé...`}).then();
+            return;
+        }
         uploadFile(acceptedFiles, auth.user.id).then()
     }
 
     return (
-        <div className="text-white">
+        <div>
             <Dropzone
                 onDrop={handleDrop}
                 accept="application/pdf"

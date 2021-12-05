@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {getAllStudentsWithCompanyNotYetEvaluated} from "../../../services/user-service";
 import MessageNothingToShow from "../../SharedComponents/MessageNothingToShow/MessageNothingToShow";
 import {Table, TableHeader, TableRow} from "../../SharedComponents/Table/Table";
+import {BtnBack} from "../../SharedComponents/BtnBack";
 
 export default function StudentsWithCompanyNotYetEvaluated() {
 
@@ -20,7 +21,10 @@ export default function StudentsWithCompanyNotYetEvaluated() {
     }, [])
 
     if (studentMonitorOfferDtoList.length === 0) {
-        return <MessageNothingToShow message="Tous les compagnies ont été évaluées"/>
+        return <>
+            <MessageNothingToShow message="Tous les compagnies ont été évaluées"/>
+            <BtnBack/>
+        </>
     }
 
     return (
@@ -43,6 +47,7 @@ export default function StudentsWithCompanyNotYetEvaluated() {
                     </TableRow>
                 )}
             </Table>
+            <BtnBack/>
         </>
     )
 }

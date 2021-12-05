@@ -5,6 +5,7 @@ import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.SessionAlreadyExistException;
 import com.gestionnaire_de_stage.model.Session;
 import com.gestionnaire_de_stage.repository.SessionRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -21,7 +22,7 @@ public class SessionService {
     private final SessionRepository sessionRepository;
     private final Clock clock;
 
-    public SessionService(SessionRepository sessionRepository, Clock clock) {
+    public SessionService(SessionRepository sessionRepository, @Lazy Clock clock) {
         this.sessionRepository = sessionRepository;
         this.clock = clock;
     }
@@ -30,7 +31,7 @@ public class SessionService {
         Assert.isTrue(session.getTypeSession() != null, "Le type de session est obligatoire");
         Assert.isTrue(session.getYear() != null, "L'année est obligatoire");
         if (sessionRepository.existsByTypeSessionAndYear(session.getTypeSession(), session.getYear()))
-            throw new SessionAlreadyExistException("Une Session existe déjà!");
+            throw new SessionAlreadyExistException("Cette session existe déjà");
 
         session.setId(null);
 
@@ -55,9 +56,9 @@ public class SessionService {
     }
 
     public Session getOneBySessionId(Long idSession) throws IdDoesNotExistException {
-        Assert.isTrue(idSession != null, "L'id de la session est obligatoire");
+        Assert.isTrue(idSession != null, "L'identifiant de la session est obligatoire");
         if (!sessionRepository.existsById(idSession))
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de session associée à cet identifiant");
         return sessionRepository.getById(idSession);
     }
 }

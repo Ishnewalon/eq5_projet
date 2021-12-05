@@ -2,9 +2,10 @@ export const urlBackend = 'http://localhost:8181'
 export const methods = {
     POST: 'POST',
     GET: 'GET',
-    PUT: 'PUT'
+    PUT: 'PUT',
+    DELETE: 'DELETE'
 }
-export const requestInit = (method, body) => {
+export const requestInit = (method, body, isString) => {
     let value = {
         method: method,
         mode: 'cors', // no-cors, *cors, same-origin
@@ -16,8 +17,12 @@ export const requestInit = (method, body) => {
         }
     }
 
-    if (body && (method === methods.POST || method === methods.PUT))
-        value['body'] = JSON.stringify(body)
+    if (body && (method === methods.POST || method === methods.PUT)) {
+        if (isString)
+            value['body'] = body
+        else
+            value['body'] = JSON.stringify(body)
+    }
     return value
 }
 

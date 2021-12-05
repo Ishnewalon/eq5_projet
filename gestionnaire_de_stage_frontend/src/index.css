@@ -1,29 +1,51 @@
 :root {
-    --color-dark: #192024;
-
     --color-bg-dark: #343C49;
     --color-text: #253650;
     --color-primary-hover: #304c7b;
     --color-primary: #4f657d;
-    --color-light: #eee4db;
-    --color-text-secondary: #322E2C;
-
+    --color-light: #ffffff;
     --color-rgb-primary: 79, 101, 125;
-    --color-rgb-secondary: 224, 137, 44;
-    --color-primary-bg-dark: #e0892c;
-    --color-primary-bg-dark-hover: #dc7718;
-
-    --color-primary-bg: var(--color-light);
     --font-family-primary: 'Montserrat', sans-serif;
+    --color-bg: #d4d6de;
+    --nav-height: 41px;
 }
 
-body {
+#root {
+    padding-top: 40px !important;
+    display: block;
+}
+
+#root {
+    padding-top: 58px !important;
+}
+
+#root, html, body {
+    display: block;
+    height: 100vh;
     margin: 0;
+    padding: 0;
     font-family: var(--font-family-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: var(--color-light);
+    background-color: var(--color-bg);
     color: var(--color-text) !important;
+}
+
+.navbar {
+    z-index: 10000 !important;
+    position: absolute !important;
+    top: 0 !important;
+    width: 100% !important;
+}
+
+* {
+    font-family: 'Roboto', 'Times New Roman', sans-serif;
+}
+
+main {
+    padding-top: 15px;
+    height: 100%;
+    overflow-y: auto;
 }
 
 code {
@@ -37,6 +59,47 @@ li {
 
 ul {
     padding: 0;
+}
+
+input, button, select, textarea {
+    box-shadow: none !important;
+}
+
+input:not[type = "radio"], select, textarea {
+    border-radius: 1px !important;
+    border: 1px solid var(--color-primary) !important;
+}
+
+input:-webkit-autofill {
+    border: 1px solid var(--color-primary) !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-primary);
+    text-decoration-color: var(--color-text) !important;
+}
+
+::selection {
+    color: white !important;
+    background-color: var(--color-primary) !important;
+}
+
+/*************
+Custom classes
+**************/
+.no-select {
+    user-select: none;
+    -webkit-user-drag: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.link-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer !important;
+    display: inline;
 }
 
 /********
@@ -60,88 +123,69 @@ Custom BS
     color: var(--color-primary-hover) !important;
 }
 
-.btn-primary {
+.btn-primary, .btn-primary:focus {
     background: var(--color-primary) !important;
     border: var(--color-primary) !important;
-    background-color: #dc7718ff;
-}
-
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
-    background: var(--color-primary-hover) !important;
-    background-color: #b05f13;
-    border-color: rgba(var(--color-rgb-primary), 0.8) !important;
-    box-shadow: 0 1px 1px rgba(var(--color-rgb-primary), 0.075) inset, 0 0 8px rgba(var(--color-rgb-primary), 0.6) !important;
-    outline: 0 none !important;
-}
-
-/*********************
-Adapt color to bg-dark
-**********************/
-.bg-dark {
-    background-color: var(--color-bg-dark) !important;
-}
-
-.bg-dark > h1, .bg-dark > h2, .bg-dark > h3, .bg-dark > h4, .bg-dark > h5, .bg-dark > h6 {
     color: var(--color-light) !important;
 }
 
-.bg-dark > .link, .bg-dark > .btn-link, .bg-dark * > .link, .bg-dark * > .btn-link {
-    font-weight: bold;
-    color: var(--color-primary-bg-dark) !important;
-}
-
-.bg-dark > .link:hover, .bg-dark > .btn-link:hover, .bg-dark * > .link:hover, .bg-dark * > .btn-link:hover {
-    color: var(--color-primary-bg-dark-hover) !important;
-}
-
-.bg-dark > .btn-primary, .bg-dark * > .btn-primary {
-    color: var(--color-text-secondary);
-    background: var(--color-primary-bg-dark) !important;
-    border: var(--color-primary-bg-dark) !important;
-}
-
-.bg-dark > .btn-primary:hover, .bg-dark > .btn-primary:focus, .bg-dark > .btn-primary:active, .bg-dark * > .btn-primary:hover, .bg-dark * > .btn-primary:focus, .bg-dark * > .btn-primary:active {
-    background: var(--color-primary-bg-dark-hover) !important;
-    /*box-shadow: var(--color-primary)!important;*/
+.btn-primary:hover, .btn-primary:active {
+    background: var(--color-primary-hover) !important;
     border-color: rgba(var(--color-rgb-primary), 0.8) !important;
-    box-shadow: 0 1px 1px rgba(var(--color-rgb-secondary), 0.075) inset, 0 0 8px rgba(var(--color-rgb-secondary), 0.6) !important;
-    outline: 0 none !important;
+    box-shadow: 0 1px 1px rgba(var(--color-rgb-primary), 0.075) inset, 0 0 8px rgba(var(--color-rgb-primary), 0.6) !important;
+    color: var(--color-light) !important;
 }
 
-.bg-light {
-    background-color: var(--color-light) !important;
+.btn-outline-primary {
+    box-shadow: none !important;
+    background: none !important;
+    border: 1px solid var(--color-primary-hover) !important;
+    color: var(--color-primary-hover) !important;
 }
 
-.text-white {
-    color: var(--color-light);
+.btn-check:checked + .btn-outline-primary:hover,
+.btn-outline-primary:hover,
+.btn-outline-primary:active {
+    background: var(--color-primary-hover) !important;
+    border-color: rgba(var(--color-rgb-primary), 0.8) !important;
+    color: white !important;
 }
 
-.text-primary {
-    color: var(--color-primary) !important;
+.btn-check:checked + .btn-outline-primary,
+.btn-outline-primary:focus {
+    background: var(--color-primary) !important;
+    color: white !important;
+}
+
+.form-check-input:checked {
+    background-color: var(--color-primary-hover) !important;
+    border-color: var(--color-primary-hover) !important;
+}
+
+.form-control:focus {
+    border-color: var(--color-primary-hover) !important;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: rgba(var(--color-rgb-primary), 0.8);
 }
 
 .dropzone {
     text-align: center;
     padding: 20px;
-    border: 3px dashed white;
-    background-color: #e0dbd7;
+    border: 3px dashed darkgray;
+    background-color: #bcbcd2;
     color: black;
     margin-bottom: 20px;
 }
 
-.form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
-.link-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    display: inline;
-}
-
+/***
+Card
+***/
 .card {
     margin: 8px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
@@ -151,134 +195,77 @@ Adapt color to bg-dark
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
-.card-holder {
-    max-width: 100%;
+
+.mega {
+    font-size: 50px;
+    margin-bottom: auto;
+    margin-top: auto;
+    color: #192024;
 }
 
-.card-company-name {
-    margin-right: 0.5rem;
+.montserrat {
+    font-family: "Montserrat", serif;
 }
 
-.card-company-location {
-    margin-bottom: -0.125rem;
-    margin-right: 1rem;
+.bold {
+    font-weight: 700;
 }
 
-.card-role-type {
-    margin-bottom: -0.125rem;
-
-    margin-right: 0.75rem;
+.color-emphasis-1 {
+    color: var(--color-primary-hover);
 }
 
-.card-listing-date {
-    margin-bottom: -0.125rem;
-
-    margin-right: 0.75rem;
+.accordion-button {
+    background: var(--color-light) !important;
+    color: var(--color-primary-hover) !important;
 }
 
-.skills-container {
-    margin-bottom: 1rem;
+/***********
+PROGRESS BAR
+************/
+.ps-indexedStep {
+    color: var(--color-primary-hover) !important;
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    background-color: rgba(211, 211, 211, 0.8) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 4 !important;
+    transition: all 0.5s ease-in-out;
 }
 
-.card-favorite-icon {
-    /* Center the content */
-    align-items: center;
-    display: flex;
-    justify-content: center;
-
-    /* Colors */
-    background-color: rgba(0, 0, 0, 0.3);
-    color: #fff;
-
-    /* Rounded border */
-    border-radius: 9999px;
-    height: 32px;
-    width: 32px;
-
-    margin: 4px;
+.ps-progressBar {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 20px !important;
+    border-radius: 100px !important;
+    display: inline-flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    z-index: 3 !important;
+    background-color: #e0e0ec;
 }
 
-.card-vote-on-job {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    margin-left: auto;
+.ps-step {
+    z-index: 10 !important;
+    transform: translateX(0) scale(1) !important;
+    transition: all 0.5s ease-in-out;
 }
 
-.card-hide-icon {
-    /* Center the content */
-    align-items: center;
-    display: flex;
-    justify-content: center;
-
-    /* Colors */
-    background-color: rgba(0, 0, 0, 0.3);
-    color: #fff;
-
-    /* Rounded border */
-    border-radius: 9999px;
-    height: 32px;
-    width: 32px;
-
-    margin: 4px;
+.ps-indexedStep.accomplished {
+    color: var(--color-light) !important;
+    background-color: var(--color-primary-hover) !important;
 }
 
-.card-hide-icon:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.card-favorite-icon:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.card-report-job {
-}
-
-.card-salary-range {
-    margin-right: 0.75rem;
-    margin-bottom: -0.125rem;
-}
-
-.card-job-duration {
-    margin-right: 0.75rem;
-    margin-bottom: -0.125rem;
-}
-
-.glassdoor-rating {
-    /* Reset styles for button */
-    background-color: transparent;
-    border: transparent;
-    margin: 0 2px;
-    padding: 0;
-    color: #0caa41;
-
-    /* Used to position the hover state */
-    position: relative;
-}
-
-.card-company-glassdoor {
-    display: flex;
-    margin-top: -0.5rem;
-    margin-bottom: -0.5rem;
-}
-
-.card-job-details {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
-.card-company-fit {
-    display: flex;
-}
-
-.job-title {
-    font-size: 2rem !important;
-    line-height: 1;
-}
-
-.card-job-summary {
-    display: flex;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+.ps-progression {
+    background-color: var(--color-primary) !important;
+    height: 4px;
+    z-index: 1;
+    position: absolute !important;
+    clip: rect(0, auto, auto, 0);
+    transition: all 0.5s ease-in-out;
 }

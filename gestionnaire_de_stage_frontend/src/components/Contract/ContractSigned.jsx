@@ -2,17 +2,15 @@ import PdfDocumentViewer from "../SharedComponents/PdfDocumentViewer/PdfDocument
 import {useEffect, useState} from "react";
 import {toPdfBlob} from "../../utility";
 
-export default function ContractSigned({contract}) {
+export default function ContractSigned({contract, showContract = false}) {
     const [pdf, setPdf] = useState(null);
 
     useEffect(() => setPdf(toPdfBlob(contract.contractPDF)), [contract.contractPDF]);
 
     const studentFullName = student => `${student.firstName} ${student.lastName}`;
 
-    return <div className='d-flex align-items-center text-white justify-content-center flex-column'>
-        <h2>Contrat de {studentFullName(contract.student)}</h2>
-
-        <PdfDocumentViewer showContract={true} file={pdf}
+    return <div className='d-flex align-items-center flex-column justify-content-center'>
+        <PdfDocumentViewer message={`Contrat de ${studentFullName(contract.student)}`} showContract={showContract} file={pdf}
                            fileName={`contrat_${studentFullName(contract.student)}.pdf`}/>
     </div>
 }

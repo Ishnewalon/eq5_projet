@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {getAllOffersByDepartment} from '../../services/offer-service';
-import {useAuth} from "../../services/use-auth";
+import {getAllOffersNotYetApplied} from '../../services/offer-service';
+import {useAuth} from "../../hooks/use-auth";
 import {getCurrentAndFutureSession} from "../../services/session-service";
-import {FormField} from "../SharedComponents/FormField/FormField";
-import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {applyToOffer} from "../../services/offerAppService";
 import OfferApp from "../../models/OfferApp";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
-import {BsClock, BsClockHistory, MdAttachMoney, MdLocationPin} from "react-icons/all";
+import {FormGroup} from "../SharedComponents/Form/FormGroup";
+import OfferView from "./OfferView";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
+import {Column} from "../SharedComponents/Column";
 
 export default function OffersStudentApply() {
     let auth = useAuth();
@@ -18,12 +19,8 @@ export default function OffersStudentApply() {
     const setMyVisible = (idSession) =>
         setVisibleOffers(offers.filter(offer => offer.session.id === parseInt(idSession)))
 
-    const removeFromList = (id) => {
-        setOffers(prev => prev.filter(items => items.id !== id))
-    }
-
     useEffect(() => {
-        getAllOffersByDepartment(auth.user.department)
+        getAllOffersNotYetApplied(auth.user.id)
             .then(offers => {
                 setOffers(offers)
             })
@@ -31,7 +28,8 @@ export default function OffersStudentApply() {
                 setOffers([])
                 console.error(e);
             });
-    }, [auth.user.department]);
+    }, [auth.user.id]);
+
 
     useEffect(() => {
         getCurrentAndFutureSession()
@@ -50,71 +48,46 @@ export default function OffersStudentApply() {
     }
 
     return (
-        <>
+        <ContainerBox>
             <FormGroup>
-                <FormField>
-                    <label/>
-                    <select onChange={(e) => setMyVisible(e.target.value)}>
-                        {sessions.map(session =>
-                            <option key={session.id}
-                                    value={session.id}>{session.typeSession + session.year}</option>)}
-                    </select>
-                </FormField>
+                <Column>
+                    <div className="form-floating">
+                        <select id="session" className="form-select" onChange={e => setMyVisible(e.target.value)}>
+                            {sessions.map(session =>
+                                <option key={session.id}
+                                        value={session.id}>{session.typeSession + session.year}</option>)}
+                        </select>
+                        <label htmlFor="session">Session</label>
+                    </div>
+                </Column>
             </FormGroup>
             <div className="row">
-
                 {visibleOffers.map((offer, index) =>
-                    <div className="col-md-6 col-12">
-                        <OfferApplication key={index} offer={offer} removeFromList={removeFromList}/>
-                    </div>
+                    <Column col={{lg: 6}} key={index}>
+                        <OfferApplication offer={offer}/>
+                    </Column>
                 )}
             </div>
-        </>
+        </ContainerBox>
     );
 }
 
-function OfferApplication({offer, removeFromList}) {
+function OfferApplication({offer}) {
     let auth = useAuth();
     const apply = offerId => e => {
         e.preventDefault();
-        applyToOffer(new OfferApp(offerId, auth.user.id)).then(
-            valid => {
-                if (valid) removeFromList(offerId)
-            });
+        applyToOffer(new OfferApp(offerId, auth.user.id)).then()
     }
 
-    return (
-        <div className="card-holder">
-            <div className="card">
-                <div className="card-body">
-                    <h5 className="card-title job-title">{offer.title}</h5>
-                    <div className="card-company-glassdoor">
-                        <p className="card-company-name">{offer.creator.companyName}</p>
-                    </div>
-                    <div className="card-job-details">
-                        <p className="card-company-location d-flex align-items-center">
-                            <MdLocationPin/> {offer.address}
-                        </p>
-                        <p className="card-job-duration d-flex align-items-center">
-                            <BsClock title="Durée du stage" className={"me-1"}/> {offer.nbSemaine}
-                        </p>
-                        <p className="card-listing-date d-flex align-items-center">
-                            <BsClockHistory className={"me-1"}/> Il y
-                            a {Math.ceil((new Date().getTime() - new Date(offer.created).getTime()) / (1000 * 3600 * 24))} jour
-                        </p>
-                        <p className="card-salary-range d-flex align-items-center">
-                            <MdAttachMoney/> {offer.salary}$/h
-                        </p>
-                    </div>
-                    <div className="card-job-summary">
-                        <p className="card-text">{offer.description}</p>
-                    </div>
-                    <button className="btn btn btn-outline-success" onClick={apply(offer.id)}>
-                        Postuler
-                    </button>
-                </div>
-            </div>
+    const button = (
+        <div className={"card-footer d-flex justify-content-around align-content-center my-1"}>
+            <button className="btn btn-outline-success fw-bold w-50 border-success" onClick={apply(offer.id)}>
+                Postuler
+            </button>
         </div>
+    )
+    return (<>
+            <OfferView offer={offer} footers={button}/>
+        </>
     );
-
 }

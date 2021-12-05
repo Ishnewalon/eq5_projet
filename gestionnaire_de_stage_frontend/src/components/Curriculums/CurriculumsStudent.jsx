@@ -1,10 +1,15 @@
 import React, {useEffect, useState} from "react";
-import {getAllCurriculumsByStudentWithPrincipal, setPrincipalCurriculum} from "../../services/curriculum-service";
-import {useAuth} from "../../services/use-auth";
+import {
+    deleteCurriculumById,
+    getAllCurriculumsByStudentWithPrincipal,
+    setPrincipalCurriculum
+} from "../../services/curriculum-service";
+import {useAuth} from "../../hooks/use-auth";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
-import {AiOutlineCloseCircle, GoStar, MdOutlinePendingActions} from "react-icons/all";
+import {AiOutlineCloseCircle, BsTrash, GoStar, MdOutlinePendingActions} from "react-icons/all";
 import {downloadFile, toPdfBlob} from "../../utility";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import Swal from "sweetalert2";
 
 export default function CurriculumsStudent() {
     let auth = useAuth();
@@ -45,24 +50,48 @@ export default function CurriculumsStudent() {
             cv.id === curriculumsWithPrincipal.principal.id;
     }
 
-
     const getIcon = cv => {
         if (isPrincipal(cv)) {
-            return <GoStar color="orange" title="C.V. par défaut" size="20"/>
+            return <GoStar color="orange" title="C.V. par défaut" size="25"/>
         } else {
             if (cv.isValid)
                 return <button className="link-button" onClick={setPrincipal(cv)}>
-                    <GoStar color="grey" title="En attente de validation" size="20"/>
+                    <GoStar color="grey" title="En attente de validation" size="25"/>
                 </button>
             else if (cv.isValid === null)
-                return <MdOutlinePendingActions color="#304c7b" title="En attente de validation" size="20"/>
+                return <MdOutlinePendingActions color="#304c7b" title="En attente de validation" size="25"/>
             else
-                return <AiOutlineCloseCircle color="D00" title="Invalid" size="20"/>
+                return <AiOutlineCloseCircle color="D00" title="Invalide" size="25"/>
         }
     };
 
     if (!curriculumsWithPrincipal.curriculumList || curriculumsWithPrincipal.curriculumList.length === 0)
-        return <MessageNothingToShow message="Aucun C.V. à afficher"/>
+        return <MessageNothingToShow message="Aucun C.V. à afficher, pensez à téléversez le votre"/>
+
+    const deleteCurriculum = cv => e => {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Êtes-vous sûr?',
+            text: "Vous ne pourrez pas revenir en arrière!",
+            icon: 'warning',
+            iconColor: '#ffc107',
+            showDenyButton: true,
+            confirmButtonColor: '#4f657d',
+            confirmButtonText: 'Oui, supprimer!',
+            denyButtonText: 'Annuler'
+        }).then((result) => {
+            if (result.value) {
+                deleteCurriculumById(cv.id)
+                    .then((succes) => {
+                        if (succes)
+                            setCurriculumsWithPrincipal(prev => ({
+                                ...prev,
+                                "curriculumList": prev.curriculumList.filter(c => c.id !== cv.id)
+                            }))
+                    })
+            }
+        })
+    };
 
     return (
         <>
@@ -70,6 +99,7 @@ export default function CurriculumsStudent() {
                 <TableHeader>
                     <th>Principal</th>
                     <th>Nom</th>
+                    <th>Supprimer</th>
                 </TableHeader>
 
                 {curriculumsWithPrincipal.curriculumList.map((cv, index) =>
@@ -78,6 +108,11 @@ export default function CurriculumsStudent() {
                         <td className={cv.isValid === false ? "text-danger" : ""}>
                             <button className="link-button" onClick={() => downloadFile(toPdfBlob(cv.data), cv.name)}>
                                 {cv.name}
+                            </button>
+                        </td>
+                        <td>
+                            <button className="link-button" onClick={deleteCurriculum(cv)}>
+                                <BsTrash color="red" title="Supprimer ce curriculum" size="20"/>
                             </button>
                         </td>
                     </TableRow>)}

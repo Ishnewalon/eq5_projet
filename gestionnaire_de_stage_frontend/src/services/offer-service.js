@@ -2,23 +2,6 @@ import {methods, requestInit, urlBackend} from "./serviceUtils";
 import OfferDTO from "../models/OfferDTO";
 import {swalErr, toast} from "../utility";
 
-export async function getAllOffers() {
-    return await fetch(`${urlBackend}/offers`, requestInit(methods.GET)).then(
-        response => {
-            return response.json().then(
-                body => {
-                    if (response.status === 200) {
-                        return body
-                    }
-                    if (response.status === 400) {
-                        swalErr.fire({text: body.message})
-                    }
-                    return Promise.any([])
-                })
-        }, err => console.error(err)
-    );
-}
-
 
 export async function createOffer(offer) {
     if (!(offer instanceof OfferDTO) || !offer)
@@ -30,28 +13,23 @@ export async function createOffer(offer) {
                     if (response.status === 201) {
                         toast.fire({title: "Offre créé!"}).then()
                         return body
-                    }
-                    if (response.status === 400) {
+                    } else if (response.status === 400)
                         swalErr.fire({text: body.message})
-                    }
                     return null
                 }
             );
         }, err => console.error(err))
 }
 
-export async function getAllOffersByDepartment(department) {//TODO: send studentId to get only not applied offers
-    return await fetch(`${urlBackend}/offers/${department}`, requestInit(methods.GET)).then(
+export async function getAllOffersNotYetApplied(studentId) {
+    return await fetch(`${urlBackend}/offers/${studentId}`, requestInit(methods.GET)).then(
         response => {
             return response.json().then(
                 body => {
-                    if (response.ok) {
-                        return body
-                    }
-                    if (response.status === 400) {
-                        swalErr.fire({text: body.message})
-                    }
-                    return Promise.any([])
+                    if (response.status === 200)
+                        return body;
+                    console.error(response)
+                    return []
                 })
         }, err => console.error(err)
     );
@@ -62,17 +40,12 @@ export async function getAllOffersInvalid() {
         response => {
             return response.json().then(
                 body => {
-                    if (response.status === 200) {
+                    if (response.status === 200)
                         return body
-                    }
-                    if (response.status === 400) {
-                        swalErr.fire({text: body.message})
-                    }
-                    return Promise.any([])
-                }
-            )
-        },
-        err => console.error(err)
+                    console.error(response)
+                    return []
+                })
+        }, err => console.error(err)
     );
 }
 
@@ -81,17 +54,12 @@ export async function getAllOffersValid() {
         response => {
             return response.json().then(
                 body => {
-                    if (response.status === 200) {
+                    if (response.status === 200)
                         return body
-                    }
-                    if (response.status === 400) {
-                        swalErr.fire({text: body.message})
-                    }
-                    return Promise.any([])
-                }
-            )
-        },
-        err => console.error(err)
+                    console.error(response)
+                    return []
+                })
+        }, err => console.error(err)
     );
 }
 
@@ -106,8 +74,7 @@ export async function validateOffer(offerId, isValid) {
                     if (response.status === 200) {
                         let title = isValid ? 'Offre validée!' : 'Offre invalidée!'
                         toast.fire({title: title}).then()
-                    }
-                    if (response.status === 400)
+                    } else if (response.status === 400)
                         swalErr.fire({text: body.message})
                 }
             )

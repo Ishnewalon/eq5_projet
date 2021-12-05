@@ -5,8 +5,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @EqualsAndHashCode(callSuper = true)
@@ -16,10 +17,11 @@ import javax.validation.constraints.Size;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Supervisor extends User {
 
-    @NotNull
+    @NotBlank
     @Size(min = 5, max = 5, message = "La matricule doit être de 5 chiffres")
+    @Column(unique = true)
     private String matricule;
 
-    @NotNull
+    @NotBlank
     private String department;
 }

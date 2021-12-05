@@ -2,90 +2,94 @@ package com.gestionnaire_de_stage.dto;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class EvalStagiaireDTO {
 
-    String entrepriseNom;
+    private String companyName;
 
-    String phone;
+    private String phone;
 
-    String nomStagiaire;
+    private String internName;
 
-    String questionUn;
+    private String programStudyField;
 
-    String questionDeux;
+    private String questionStudentCanOrganizeWork;
 
-    String questionTrois;
+    private String questionUnderstandDirectives;
 
-    String questionQuatre;
+    private String questionStudentMaintainRythmForWork;
 
-    String questionCinq;
+    private String questionStudentHasTheRightPriorities;
 
-    String questionSix;
+    private String questionStudentRespectSchedule;
 
-    String questionSept;
+    private String questionStudentRespectTaskGiven;
 
-    String questionHuit;
+    private String questionStudentPaysAttentionToDetails;
 
-    String questionNeuf;
+    private String questionStudentValidateHisWork;
 
-    String questionDix;
+    private String questionStudentTakeInitiativeToPerfectHimself;
 
-    String questionOnze;
+    private String questionStudentAnalyzeProblemsGiven;
 
-    String questionDouze;
+    private String questionStudentIsSocial;
 
-    String questionTreize;
+    private String questionStudentWorksWellInGroup;
 
-    String questionQuatorze;
+    private String questionStudentAdaptsToEasilyToWorkCulture;
 
-    String questionQuinze;
+    private String questionStudentAcceptConstructiveCriticism;
 
-    String questionSeize;
+    private String questionStudentIsRespectful;
 
-    String questionDixSept;
+    private String questionStudentUnderstandOtherPeoplePov;
 
-    String questionDixHuit;
+    private String questionStudentMotivatedToWork;
 
-    String questionDixNeuf;
+    private String questionStudentTellIdeasClearly;
 
-    String questionVingt;
+    private String questionStudentHasInitiative;
 
-    String questionVingtUn;
+    private String questionStudentWorkSecurely;
 
-    String questionVingtDeux;
+    private String questionStudentHasGoodSenseOfResponsability;
 
-    String programmeEtudes;
+    private String questionStudentPonctual;
 
-    String appreciationGlobale;
+    private String programmeEtudes;
 
-    boolean evaluationDiscuteAvecEtudiant;
+    private String appreciationGlobale;
 
-    String commentairesUn;
+    private boolean evaluationDiscuteAvecEtudiant;
 
-    String commentairesDeux;
+    private String commentsProductivity;
 
-    String commentairesTrois;
+    private String commentsQualityOfWorkIntern;
 
-    String commentairesQuatre;
+    private String commentsStudentSocialRelationsQuality;
 
-    String commentairesCinq;
+    private String commentsStudentPersonalAptitudes;
 
-    boolean entrepriseApprecieEtudiant;
+    private String commentsInternProductivity;
 
-    int nbHeuresReelTravailEtudiant;
+    private boolean companyAppreciateStudent;
 
-    String fonctionUn;
+    private int nbHeuresReelTravailEtudiant;
 
-    String fonctionDeux;
+    private String firstFonction;
 
-    String formationSuffisanteCommentaire;
+    private String secondFunction;
 
-    String nom;
+    private String commentsStudentTraining;
 
-    String dateSignature;
+    private String name;
 
-    String monitorSignature;
+    private LocalDate dateSignature = LocalDate.now();
 
-    String emailEtudiant;
+    private String monitorSignature;
+
+    private String studentEmail;
 }

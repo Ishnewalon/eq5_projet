@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {getAllOffersByStudentAppliedOn, setInterview} from "../../services/offerAppService";
-import {useAuth} from "../../services/use-auth";
+import {getAllOffersByStudentCvSent, setInterview} from "../../services/offerAppService";
+import {useAuth} from "../../hooks/use-auth";
 import {swalErr} from "../../utility";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
@@ -10,7 +10,7 @@ export default function OfferApplicationsStudentSetStatusEnAttenteEntrevue() {
     const [offers, setOffers] = useState([])
 
     useEffect(() => {
-        getAllOffersByStudentAppliedOn(auth.user.id)
+        getAllOffersByStudentCvSent(auth.user.id)
             .then(offers => {
                 setOffers(offers);
             })
@@ -65,6 +65,7 @@ function OfferApplicationSetInterviewDate({offerApp, removeOffer}) {
             <td>{offerApp.offer.title}</td>
             <td>
                 <input
+                    className="form-control"
                     onChange={(e) => setDate(e.target.value)}
                     id="date"
                     min={min.toISOString().slice(0, -8)}
@@ -72,7 +73,7 @@ function OfferApplicationSetInterviewDate({offerApp, removeOffer}) {
                     type="datetime-local"/>
             </td>
             <td>
-                <button className="btn btn-primary" onClick={setInterviewDate(offerApp.id)}>
+                <button className="btn btn-outline-primary" onClick={setInterviewDate(offerApp.id)}>
                     Confirmez votre date d'entrevue
                 </button>
             </td>

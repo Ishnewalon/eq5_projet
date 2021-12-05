@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {useAuth} from "../../services/use-auth";
+import {useAuth} from "../../hooks/use-auth";
 import {getAllOfferAppReadyToSign, startSignerFetch} from "../../services/contrat-service";
 import {Table, TableHeader, TableRow} from "../SharedComponents/Table/Table";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import {BsFillPenFill} from "react-icons/all";
 
 export default function StartContract() {
     const [offerApplications, setOfferApplications] = useState([])
@@ -29,20 +30,26 @@ export default function StartContract() {
     };
 
     if (offerApplications.length === 0)
-        return <MessageNothingToShow message="Aucun contrat à lancer pour le moment..."/>
+        return (
+            <MessageNothingToShow message="Aucun contrat à lancer pour le moment..."/>
+        )
     return (
         <Table>
             <TableHeader>
                 <th>#</th>
+                <th>Nom de l'étudiant</th>
                 <th>Offre</th>
-                <th>Commencer le processus de signature</th>
+                <th>Date début de stage</th>
+                <th><BsFillPenFill color={"blue"} size={25} title={"Commencer le processus de signature"}/></th>
             </TableHeader>
             {offerApplications.map(offerApplication => <TableRow key={offerApplication.id}>
-                <th>{offerApplication.id}</th>
+                <td>{offerApplication.curriculum.student.id}</td>
+                <td>{offerApplication.curriculum.student.firstName} {offerApplication.curriculum.student.lastName}</td>
                 <td>{offerApplication.offer.title}</td>
+                <td>{offerApplication.offer.dateDebut}</td>
                 <td>
                     <div className="btn-group">
-                        <button className="btn btn-outline-success"
+                        <button className="btn btn-outline-primary"
                                 onClick={() => startSigner(offerApplication.id, auth.user.id)}>Lancer
                         </button>
                     </div>

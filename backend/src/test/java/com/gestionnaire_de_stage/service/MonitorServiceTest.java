@@ -1,7 +1,7 @@
 package com.gestionnaire_de_stage.service;
 
+import com.gestionnaire_de_stage.exception.DoesNotExistException;
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.MonitorAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Monitor;
@@ -32,6 +32,7 @@ public class MonitorServiceTest {
     public void testCreate_withValidMonitor() throws Exception {
         Monitor dummyMonitor = getDummyMonitor();
         when(monitorRepository.save(any())).thenReturn(dummyMonitor);
+        when(monitorRepository.existsByEmail(any())).thenReturn(false);
 
         Monitor actualMonitor = monitorService.create(dummyMonitor);
 
@@ -80,35 +81,22 @@ public class MonitorServiceTest {
     }
 
     @Test
-    public void testGetAll() {
-        when(monitorRepository.findAll()).thenReturn(getDummyMonitorList());
-
-        List<Monitor> actualMonitorList = monitorService.getAll();
-
-        assertThat(actualMonitorList.size()).isEqualTo(getDummyMonitorList().size());
-    }
-
-    @Test
     public void testUpdate_withValidEntries() throws Exception {
         Monitor dummyMonitor = getDummyMonitor();
         when(monitorRepository.existsById(any())).thenReturn(true);
         when(monitorRepository.save(any())).thenReturn(dummyMonitor);
 
-        Monitor actualMonitor = monitorService.update(dummyMonitor, dummyMonitor.getId());
+        Monitor actualMonitor = monitorService.update(dummyMonitor);
 
         assertThat(actualMonitor).isEqualTo(dummyMonitor);
     }
 
-    @Test
-    public void testUpdate_withNullID() {
-        assertThrows(IllegalArgumentException.class,
-                () -> monitorService.update(getDummyMonitor(), null));
-    }
 
     @Test
+    @SuppressWarnings("ConstantConditions")
     public void testUpdate_withNullMonitor() {
         assertThrows(IllegalArgumentException.class,
-                () -> monitorService.update(null, 1L));
+                () -> monitorService.update(null));
     }
 
     @Test
@@ -117,7 +105,7 @@ public class MonitorServiceTest {
         when(monitorRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IdDoesNotExistException.class,
-                () -> monitorService.update(dummyMonitor, dummyMonitor.getId()));
+                () -> monitorService.update(dummyMonitor));
     }
 
     @Test
@@ -183,7 +171,7 @@ public class MonitorServiceTest {
     }
 
     @Test
-    public void testGetOneByEmail_withValidEmail() throws EmailDoesNotExistException {
+    public void testGetOneByEmail_withValidEmail() throws DoesNotExistException {
         Monitor monitor = getDummyMonitor();
         String email = "stepotato@gmail.com";
         when(monitorRepository.existsByEmail(any())).thenReturn(true);
@@ -203,25 +191,46 @@ public class MonitorServiceTest {
     @Test
     public void testGetOneByEmail_withInvalidEmail() {
         String email = "civfan@email.com";
-        assertThrows(EmailDoesNotExistException.class,
-                () -> monitorService.getOneByEmail(email));
+        assertThrows(DoesNotExistException.class,
+                () -> monitorService.getOneByEmail(email),
+                "L'email n'existe pas");
     }
 
     @Test
-    public void testIsIdInvalid_whenFalse(){
+    public void testIsIdInvalid_whenFalse() {
         when(monitorRepository.existsById(any())).thenReturn(true);
 
         boolean idInvalid = monitorService.isIdInvalid(1L);
 
         assertThat(idInvalid).isFalse();
     }
+
     @Test
-    public void testIsIdInvalid_whenTrue(){
+    public void testIsIdInvalid_whenTrue() {
         when(monitorRepository.existsById(any())).thenReturn(false);
 
         boolean idInvalid = monitorService.isIdInvalid(1L);
 
         assertThat(idInvalid).isTrue();
+    }
+
+    @Test
+    public void testChangePassword() throws IdDoesNotExistException {
+        Monitor dummyMonitor = getDummyMonitor();
+        when(monitorRepository.existsById(any())).thenReturn(true);
+        when(monitorRepository.getById(any())).thenReturn(dummyMonitor);
+        when(monitorRepository.save(any())).thenReturn(dummyMonitor);
+
+        Monitor actual = monitorService.changePassword(dummyMonitor.getId(), "newPassword");
+
+        assertThat(actual.getPassword()).isEqualTo("newPassword");
+        assertThat(actual.getId()).isEqualTo(dummyMonitor.getId());
+    }
+
+    @Test
+    public void testChangePassword_withInvalidId() {
+        assertThrows(IdDoesNotExistException.class,
+                () -> monitorService.changePassword(1L, "newPassword"));
     }
 
     private Monitor getDummyMonitor() {

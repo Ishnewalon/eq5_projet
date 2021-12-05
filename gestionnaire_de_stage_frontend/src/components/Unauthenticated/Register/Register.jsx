@@ -1,128 +1,19 @@
-import React, {useState} from "react";
-import StepPassword from "./Steps/StepPassword";
-import StepInformationGeneral from "./Steps/StepInformationGeneral";
-import StepMonitor from "./Steps/StepMonitor";
-import Choice from "./Steps/StepChoices";
-import StepCegep from "./Steps/StepCegep";
-import {MonitorModel, Student, Supervisor} from "../../../models/User";
-import {Step} from "../../../enums/Steps";
-import {useHistory} from "react-router-dom";
-import {useAuth} from "../../../services/use-auth";
-import {UserType} from "../../../enums/UserTypes";
+import React from "react";
+import {Link, useLocation, useRouteMatch} from "react-router-dom";
 
 
 export default function Register() {
-    let history = useHistory();
-    let auth = useAuth();
-    const [step, setStep] = useState(Step.CHOICE)
-    const [previousStep, setPrevStep] = useState([])
-    const [userType, setUserType] = useState(null)
-    const [userInfo, setUserInfo] = useState({
-        matricule: '',
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        phone: '',
-        address: '',
-        city: '',
-        postalCode: '',
-        companyName: '',
-    })
-    const {
-        matricule,
-        firstName,
-        lastName,
-        email,
-        password,
-        phone,
-        address,
-        city,
-        postalCode,
-        companyName
-    } = userInfo;
+    let {path} = useRouteMatch();
+    let location = useLocation();
 
-    const prevStep = () => {
-        setStep(previousStep[previousStep.length - 1]);
-        setPrevStep(previousStep.filter(item => item !== previousStep[previousStep.length - 1]))
-    }
-
-    const nextStep = (val) => {
-        previousStep.push(step)
-        setPrevStep(previousStep);
-        setStep(val);
-    }
-
-    const updateUserType = (type) => {
-        setUserType(type)
-    }
-
-    const handleChange = (event) => {
-        let value = event.target.value;
-        let name = event.target.name;
-
-        setUserInfo((prev) => {
-            return {
-                ...prev,
-                [name]: value
-            }
-        })
-    }
-
-    const endThis = (e) => {
-        e.preventDefault();
-        let user = null
-        if (userType === UserType.STUDENT) {
-            user = new Student(email, password, lastName, firstName, phone, matricule);
-            auth.signupStudent(user).then(() => history.push("/login"));
-        }
-        if (userType === UserType.SUPERVISOR) {
-            user = new Supervisor(email, password, lastName, firstName, phone, matricule);
-            auth.signupSupervisor(user).then(() => history.push("/login"))
-        }
-        if (userType === UserType.MONITOR) {
-            user = new MonitorModel(email, password, lastName, firstName, phone, companyName, address, city, postalCode);
-            auth.signupMonitor(user).then(() => history.push("/login"))
-        }
-
-    }
-
-
-    let show = null;
-
-    switch (step) {
-        case Step.CHOICE:
-            show = <Choice prevStep={prevStep} nextStep={nextStep}/>
-            break;
-        case Step.CEGEP:
-            show = <StepCegep prevStep={prevStep} nextStep={nextStep} updateUserType={updateUserType}
-                              handleChange={handleChange}
-                              matricule={matricule}/>
-            break;
-        case Step.MONITOR:
-            show =
-                <StepMonitor prevStep={prevStep} nextStep={nextStep} updateUserType={updateUserType}
-                             handleChange={handleChange}
-                             address={address} postalCode={postalCode} city={city} companyName={companyName}/>
-            break;
-        case Step.GENERAL:
-            show = <StepInformationGeneral prevStep={prevStep} nextStep={nextStep}
-                                           handleChange={handleChange}
-                                           email={email} firstName={firstName} lastName={lastName} phone={phone}/>
-            break;
-        case Step.PASSWORD:
-            show = <StepPassword prevStep={prevStep} handleChange={handleChange}
-                                 password={password}/>
-
-            break;
-        default:
-            break;
-    }
     return (<>
-        <form className="form-container" onSubmit={endThis}>
-            <fieldset>
-                {show}
-            </fieldset>
-        </form>
+        <div className="text-center">
+            <div className="">
+                <Link className="btn btn-primary" to={{pathname: `${path}/cegep`, state: {from: location}}}
+                      from={"Register"}>Membre du cégep</Link>
+                <Link className="btn btn-primary"
+                      to={{pathname: `${path}/monitor`, state: {from: location}}}>Compagnie</Link>
+            </div>
+        </div>
     </>);
 }

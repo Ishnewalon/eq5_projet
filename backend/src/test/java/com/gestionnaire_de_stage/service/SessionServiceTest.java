@@ -36,7 +36,6 @@ public class SessionServiceTest {
 
     private Clock fixedClock;
 
-
     @Test
     public void testCreateSession() throws Exception {
         Session session = new Session(1L, TypeSession.HIVER, Year.now());

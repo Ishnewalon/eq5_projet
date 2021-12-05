@@ -7,79 +7,95 @@ import java.time.LocalDate;
 @Data
 public class EvalMilieuStageDTO {
 
-    String entrepriseNom;
+    private String companyName;
 
-    String personneContact;
+    private String contactPerson;
 
-    String phone;
+    private String phone;
 
-    String telecopieur;
+    private String fax;
 
-    String adresse;
+    private String adresse;
 
-    String zip;
+    private String zip;
 
-    String ville;
+    private String city;
 
-    String nomStagiaire;
+    private String internName;
 
-    String dateStage;
+    private String dateStage;
 
-    int stageCourant;
+    private int currentInternship;
 
-    String questionUn;
+    private String questionTaskGivenWereInContract;
 
-    String questionDeux;
+    private String questionInternshipEasyToIntegrateInterns;
 
-    String questionTrois;
+    private String questionWasEnoughTimeToTrainIntern;
 
-    int nbHeuresMoisUn;
+    private int nbHoursMonthOne;
 
-    int nbHeuresMoisDeux;
+    private int nbHoursMonthTwo;
 
-    int nbHeuresMoisTrois;
+    private int nbHoursMonthThree;
 
-    String questionQuatre;
+    private String questionHygiene;
 
-    String questionCinq;
+    private String questionWorkEnvironmentNice;
 
-    String questionSix;
+    private String questionWorkAccesibleByMetro;
 
-    String questionSept;
+    private String questionSalaryInterestingForIntern;
 
-    float salaireStagiaire;
+    private float salaryIntern;
 
-    String questionHuit;
+    private String questionSupervisorFacilitateInternship;
 
-    String questionNeuf;
+    private String questionTaskGivenWereAdequate;
 
-    String questionDix;
+    private String questionWorkAcceptable;
 
-    String commentaires;
+    private String comments;
 
-    String questionOnze;
+    private String questionPreferForInternship;
 
-    String questionDouze;
+    private String questionWelcomeMoreThanTwoIntern;
 
-    String questionTreize;
+    private String questionWelcomeSameIntern;
 
-    String questionQuatorzeHeuresUnA;
+    private String mondayShiftStart;
 
-    String questionQuatorzeHeuresUnB;
+    private String mondayShiftEnd;
 
-    String questionQuatorzeHeuresUnC;
+    private String tuesdayShiftStart;
 
-    String questionQuatorzeHeuresUnD;
+    private String tuesdayShiftEnd;
 
-    String questionQuatorzeHeuresUnE;
+    private String wednesdayShiftStart;
 
-    String questionQuatorzeHeuresUnF;
+    private String wednesdayShiftEnd;
 
-    String questionQuinze;
+    private String thursdayShiftStart;
 
-    String signatureSuperviseur;
+    private String thursdayShiftEnd;
 
-    String matriculeEtudiant;
+    private String fridayShiftStart;
 
-    LocalDate signatureDate;
+    private String fridayShiftEnd;
+
+    private String saturdayShiftStart;
+
+    private String saturdayShiftEnd;
+
+    private String sundayShiftStart;
+
+    private String sundayShiftEnd;
+
+    private String questionShiftsFlexible;
+
+    private String supervisorSignature;
+
+    private String studentMatricule;
+
+    private LocalDate signatureDate;
 }

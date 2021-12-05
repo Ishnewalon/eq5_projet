@@ -3,10 +3,7 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.dto.ContractStarterDto;
 import com.gestionnaire_de_stage.dto.StudentMonitorOfferDTO;
 import com.gestionnaire_de_stage.enums.Status;
-import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
-import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StudentAlreadyHaveAContractException;
+import com.gestionnaire_de_stage.exception.*;
 import com.gestionnaire_de_stage.model.*;
 import com.gestionnaire_de_stage.repository.ContractRepository;
 import com.gestionnaire_de_stage.repository.StudentRepository;
@@ -106,6 +103,7 @@ public class ContractServiceTest {
         when(offerApplicationService.getOneById(any())).thenReturn(dummyOfferApplication);
         when(contractRepository.save(any())).thenReturn(dummyFilledContract);
         when(contractService.doesStudentAlreadyHaveAContract(any(), any())).thenReturn(false);
+        when(studentRepository.existsByIdAndSupervisorNull(any())).thenReturn(false);
 
         Contract contract = contractService.gsStartContract(getDummyContract(), new ContractStarterDto(dummyManager.getId(), dummyOfferApplication.getId()));
 
@@ -121,6 +119,19 @@ public class ContractServiceTest {
         when(contractService.doesStudentAlreadyHaveAContract(any(), any())).thenReturn(true);
 
         assertThrows(StudentAlreadyHaveAContractException.class,
+                () -> contractService.gsStartContract(getDummyContract(), new ContractStarterDto(dummyManager.getId(), dummyOfferApplication.getId())));
+    }
+
+    @Test
+    public void testGsStartContract_whenStudentNotAssigneSupervisor() throws Exception {
+        Manager dummyManager = getDummyManager();
+        OfferApplication dummyOfferApplication = getDummyOfferApplication();
+        when(managerService.getOneByID(any())).thenReturn(dummyManager);
+        when(offerApplicationService.getOneById(any())).thenReturn(dummyOfferApplication);
+        when(contractService.doesStudentAlreadyHaveAContract(any(), any())).thenReturn(false);
+        when(studentRepository.existsByIdAndSupervisorNull(any())).thenReturn(true);
+
+        assertThrows(StudentIsNotAssignedException.class,
                 () -> contractService.gsStartContract(getDummyContract(), new ContractStarterDto(dummyManager.getId(), dummyOfferApplication.getId())));
     }
 
@@ -223,7 +234,7 @@ public class ContractServiceTest {
     public void testGetContractByStudentId_withValidEntries() throws Exception {
         Contract dummyContract = getDummyContract();
         when(studentService.isIDNotValid(any())).thenReturn(false);
-        when(contractRepository.getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNullAndSession_YearGreaterThanEqual(any(),any())).thenReturn(dummyContract);
+        when(contractRepository.getByStudent_IdAndManagerSignatureNotNullAndMonitorSignatureNotNullAndStudentSignatureNullAndSession_YearGreaterThanEqual(any(), any())).thenReturn(dummyContract);
 
         Student dummyStudent = dummyContract.getStudent();
         Contract actualContract = contractService.getContractByStudentId(dummyStudent.getId());
@@ -450,6 +461,33 @@ public class ContractServiceTest {
         assertThrows(IllegalArgumentException.class,
                 () -> contractService.stageListToStudentMonitorOfferDtoList(null),
                 "La liste de stage ne peut pas être null");
+    }
+
+    @Test
+    public void testGetOneByID_withValidID() throws Exception {
+        Long validID = 1L;
+        Contract contract = getDummyContract();
+        when(contractRepository.existsById(any())).thenReturn(true);
+        when(contractRepository.getById(any())).thenReturn(contract);
+
+        Contract actual = contractService.getOneById(validID);
+
+        assertThat(actual).isEqualTo(contract);
+    }
+
+    @Test
+    public void testGetOneByID_withNullID() {
+        assertThrows(IllegalArgumentException.class,
+                () -> contractService.getOneById(null));
+    }
+
+    @Test
+    public void testGetOneByID_doesntExistID() {
+        Long invalidID = 5L;
+        when(contractRepository.existsById(any())).thenReturn(false);
+
+        assertThrows(IdDoesNotExistException.class,
+                () -> contractService.getOneById(invalidID));
     }
 
     private List<StudentMonitorOfferDTO> getDummyStudentMonitorOfferDTOList() {

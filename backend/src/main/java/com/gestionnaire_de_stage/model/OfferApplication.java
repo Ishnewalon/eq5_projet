@@ -1,6 +1,7 @@
 package com.gestionnaire_de_stage.model;
 
 import com.gestionnaire_de_stage.enums.Status;
+import com.gestionnaire_de_stage.listener.OfferApplicationListener;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,9 +9,10 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@EntityListeners(OfferApplicationListener.class)
 @Getter
 @Setter
-public class OfferApplication {//TODO : session
+public class OfferApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -28,5 +30,6 @@ public class OfferApplication {//TODO : session
 
     @OneToOne
     private Session session;
+
 }
 

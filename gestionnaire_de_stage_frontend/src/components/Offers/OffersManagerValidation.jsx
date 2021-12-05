@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {getAllOffersInvalid, validateOffer} from '../../services/offer-service';
 import OfferView from "./OfferView";
-import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
-import {FormField} from "../SharedComponents/FormField/FormField";
 import {getCurrentAndFutureSession} from "../../services/session-service";
 import MessageNothingToShow from "../SharedComponents/MessageNothingToShow/MessageNothingToShow";
+import {FormGroup} from "../SharedComponents/Form/FormGroup";
+import {Column} from "../SharedComponents/Column";
 
 export default function OffersManagerValidation() {
 
@@ -45,44 +45,46 @@ export default function OffersManagerValidation() {
         return <MessageNothingToShow message="Aucune offres à valider pour le moment..."/>
     return (
         <>
-            <div className='container'>
-                <FormGroup>
-                    <FormField>
-                        <label/>
-                        <select className="mb-4" onChange={(e) => setMyVisible(e.target.value)}>
+            <FormGroup>
+                <Column>
+                    <div className="form-floating">
+                        <select id="session" className="form-select" onChange={e => setMyVisible(e.target.value)}>
                             {sessions.map(session =>
                                 <option key={session.id}
                                         value={session.id}>{session.typeSession + session.year}</option>)}
                         </select>
-                    </FormField>
-                </FormGroup>
-                <ul>
-                    {visibleOffers.map(offer =>
-                        <li key={offer.id}>
-                            <OfferValidation offer={offer} removeFromList={removeFromList}/>
-                        </li>
-                    )}
-                </ul>
+                        <label htmlFor="session">Session</label>
+                    </div>
+                </Column>
+            </FormGroup>
+            <div className="row">
+                {visibleOffers.map(offer =>
+                    <Column col={{lg: 6}} key={offer.id}>
+                        <OfferValidation offer={offer} removeFromList={removeFromList}/>
+                    </Column>
+                )}
             </div>
         </>
     );
 }
 
 function OfferValidation({offer, removeFromList}) {
+    const buttons = (
+        <div className={"card-footer d-flex justify-content-around align-content-center"}>
+            <button id="validateBtn" className="btn btn-outline-success fw-bold  border-success"
+                    onClick={() => validate(offer, true)}>Valide
+            </button>
+            <button id="invalidateBtn" className="btn btn-outline-danger fw-bold  border-danger"
+                    onClick={() => validate(offer, false)}>Invalide
+            </button>
+        </div>
+    )
     const validate = (offer, isValid) => {
         validateOffer(offer.id, isValid).then(
             () => removeFromList(offer.id))
     }
     return <>
-        <OfferView offer={offer}/>
-        <div className="d-flex justify-content-between align-items-center mb-4">
-            <button id="validateBtn" className="btn btn-success fw-bold text-white w-50 border-success"
-                    onClick={() => validate(offer, true)}>Valide
-            </button>
-            <button id="invalidateBtn" className="btn btn-danger fw-bold text-white w-50 border-danger"
-                    onClick={() => validate(offer, false)}>Invalide
-            </button>
-        </div>
+        <OfferView offer={offer} footers={buttons}/>
     </>
 }
 

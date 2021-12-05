@@ -4,14 +4,18 @@ package com.gestionnaire_de_stage.service;
 import com.gestionnaire_de_stage.dto.OfferDTO;
 import com.gestionnaire_de_stage.dto.ValidationOffer;
 import com.gestionnaire_de_stage.enums.TypeSession;
-import com.gestionnaire_de_stage.exception.EmailDoesNotExistException;
+import com.gestionnaire_de_stage.exception.DoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyExistsException;
 import com.gestionnaire_de_stage.exception.OfferAlreadyTreatedException;
 import com.gestionnaire_de_stage.model.Monitor;
 import com.gestionnaire_de_stage.model.Offer;
+import com.gestionnaire_de_stage.model.OfferApplication;
 import com.gestionnaire_de_stage.model.Session;
+import com.gestionnaire_de_stage.repository.OfferApplicationRepository;
 import com.gestionnaire_de_stage.repository.OfferRepository;
+import com.gestionnaire_de_stage.repository.StudentRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -30,12 +34,16 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final MonitorService monitorService;
     private final SessionService sessionService;
+    private final StudentRepository studentRepository;
+    private final OfferApplicationRepository offerApplicationRepository;
     private final Clock clock;
 
-    public OfferService(OfferRepository offerRepository, MonitorService monitorService, SessionService sessionService, Clock clock) {
+    public OfferService(OfferRepository offerRepository, MonitorService monitorService, SessionService sessionService, StudentRepository studentRepository, OfferApplicationRepository offerApplicationRepository, @Lazy Clock clock) {
         this.offerRepository = offerRepository;
         this.monitorService = monitorService;
         this.sessionService = sessionService;
+        this.studentRepository = studentRepository;
+        this.offerApplicationRepository = offerApplicationRepository;
         this.clock = clock;
     }
 
@@ -61,7 +69,7 @@ public class OfferService {
         if (offer == null)
             return null;
 
-        Assert.isTrue(offer.creatorEmail() != null, "Le courriel de l'utilisateur ne peut être null");
+        Assert.isTrue(offer.creatorEmail() != null, "Le courriel du moniteur ne peut être vide");
 
         OfferDTO dto = new OfferDTO();
         dto.setAddress(offer.getAddress());
@@ -77,11 +85,11 @@ public class OfferService {
         return offers.stream().map(this::mapToOfferDTO).collect(Collectors.toList());
     }
 
-    public Offer create(OfferDTO offerDto) throws IllegalArgumentException, OfferAlreadyExistsException, EmailDoesNotExistException, IdDoesNotExistException {
-        Assert.isTrue(offerDto != null, "Offre est null");
+    public Offer create(OfferDTO offerDto) throws IllegalArgumentException, OfferAlreadyExistsException, IdDoesNotExistException, DoesNotExistException {
+        Assert.isTrue(offerDto != null, "L'offre ne peut pas être vide");
         Offer offer = mapToOffer(offerDto);
         if (offerRepository.findOne(Example.of(offer)).isPresent())
-            throw new OfferAlreadyExistsException();
+            throw new OfferAlreadyExistsException("Cette offre a déjà été créée");
 
         Monitor monitor = monitorService.getOneByEmail(offerDto.getCreator_email());
         offer.setCreator(monitor);
@@ -90,21 +98,6 @@ public class OfferService {
         offer.setSession(session);
 
         return offerRepository.save(offer);
-    }
-
-    public List<Offer> getOffersByDepartment(String department) throws IllegalArgumentException {
-        Assert.isTrue(department != null, "Le département est null ou vide");
-        int monthValue = LocalDate.now(clock).getMonthValue();
-
-        if (monthValue >= Month.SEPTEMBER.getValue())
-            return offerRepository.findAllByDepartmentIgnoreCaseAndValidIsTrueAndSession_YearGreaterThanEqual(department, Year.now().plusYears(1));
-
-        List<Offer> offers = offerRepository.findAllByDepartmentIgnoreCaseAndValidIsTrueAndSession_YearGreaterThanEqual(department, Year.now());
-
-        if (monthValue >= Month.MAY.getValue())
-            removeOffersOfWinter(offers);
-
-        return offers;
     }
 
     private void removeOffersOfWinter(List<Offer> offers) {
@@ -138,15 +131,40 @@ public class OfferService {
     }
 
     public Offer validation(ValidationOffer validationOffer) throws IdDoesNotExistException, OfferAlreadyTreatedException {
-        Assert.isTrue(validationOffer.getId() != null, "L'id est null");
-        if (!offerRepository.existsById(validationOffer.getId())) throw new IdDoesNotExistException();
-        if (offerRepository.existsByIdAndValidNotNull(validationOffer.getId()))
-            throw new OfferAlreadyTreatedException();
-
+        Assert.isTrue(validationOffer.getId() != null, "L'identifiant de l'offre ne peut pas être vide");
+        if (!offerRepository.existsById(validationOffer.getId())) {
+            throw new IdDoesNotExistException("Il n'y a pas d'offre associée à cet identifiant");
+        }
+        if (offerRepository.existsByIdAndValidNotNull(validationOffer.getId())) {
+            throw new OfferAlreadyTreatedException("Cete offre a déjà été traitée");
+        }
         Offer offer = offerRepository.getById(validationOffer.getId());
         offer.setValid(validationOffer.isValid());
 
         return offerRepository.save(offer);
     }
 
+    public List<Offer> getOffersNotYetApplied(Long studentId) throws IdDoesNotExistException {
+        Assert.isTrue(studentId != null, "L'identifiant de l'étudiant ne peut pas être vide");
+        if (!studentRepository.existsById(studentId)) {
+            throw new IdDoesNotExistException("Il n'y a pas d'étudiant associé à cet identifiant");
+        }
+        List<OfferApplication> listOffersApplied = offerApplicationRepository.getAllByCurriculum_StudentId(studentId);
+        int monthValue = LocalDate.now(clock).getMonthValue();
+        List<Offer> collect = listOffersApplied.stream().map(OfferApplication::getOffer).collect(Collectors.toList());
+
+        if (monthValue >= Month.SEPTEMBER.getValue()) {
+            List<Offer> listOffers = offerRepository.findAllByValidIsTrueAndSession_YearGreaterThanEqual(Year.now().plusYears(1));
+            listOffers.removeAll(collect);
+            return listOffers;
+        }
+
+        List<Offer> listOffers = offerRepository.findAllByValidIsTrueAndSession_YearGreaterThanEqual(Year.now());
+
+        if (monthValue >= Month.MAY.getValue())
+            removeOffersOfWinter(listOffers);
+
+        listOffers.removeAll(collect);
+        return listOffers;
+    }
 }

@@ -2,7 +2,6 @@ package com.gestionnaire_de_stage.service;
 
 import com.gestionnaire_de_stage.exception.EmailAndPasswordDoesNotExistException;
 import com.gestionnaire_de_stage.exception.IdDoesNotExistException;
-import com.gestionnaire_de_stage.exception.ManagerAlreadyExistsException;
 import com.gestionnaire_de_stage.model.Manager;
 import com.gestionnaire_de_stage.repository.ManagerRepository;
 import org.springframework.stereotype.Service;
@@ -15,22 +14,14 @@ public class ManagerService {
 
     private final ManagerRepository managerRepository;
 
-    public ManagerService(ManagerRepository managerRepository, StudentService studentService) {
+    public ManagerService(ManagerRepository managerRepository) {
         this.managerRepository = managerRepository;
     }
 
-    public Manager create(Manager manager) throws ManagerAlreadyExistsException {
-        Assert.isTrue(manager != null, "Le gestionnaire est null");
-        if (isNotValid(manager)) {
-            throw new ManagerAlreadyExistsException();
-        }
-        return managerRepository.save(manager);
-    }
-
     public Manager getOneByID(Long aLong) throws IdDoesNotExistException {
-        Assert.isTrue(aLong != null, "L'id du gestionnaire ne peut pas être null!");
+        Assert.notNull(aLong, "L'identifiant du gestionnaire ne peut pas être vide");
         if (isIDNotValid(aLong)) {
-            throw new IdDoesNotExistException();
+            throw new IdDoesNotExistException("Il n'y a pas de gestionnaire associé à cet identifiant");
         }
         return managerRepository.getById(aLong);
     }
@@ -39,33 +30,16 @@ public class ManagerService {
         return managerRepository.findAll();
     }
 
-    public Manager update(Manager manager, Long aLong) throws IdDoesNotExistException {
-        Assert.isTrue(aLong != null, "ID est null");
-        Assert.isTrue(manager != null, "Le gestionnaire est null");
-        if (isIDNotValid(aLong)) {
-            throw new IdDoesNotExistException();
-        }
-        manager.setId(aLong);
-        return managerRepository.save(manager);
-    }
-
-    public void deleteByID(Long aLong) throws IdDoesNotExistException {
-        Assert.isTrue(aLong != null, "ID est null");
-        if (isIDNotValid(aLong))
-            throw new IdDoesNotExistException();
-        managerRepository.deleteById(aLong);
-    }
-
     public Manager getOneByEmailAndPassword(String email, String password) throws EmailAndPasswordDoesNotExistException {
-        Assert.isTrue(email != null, "Le courriel est null");
-        Assert.isTrue(password != null, "Le mot de passe est null");
+        Assert.notNull(email, "Le courriel ne peut pas être vide");
+        Assert.notNull(password, "Le mot de passe ne peut pas être vide");
         if (!isEmailAndPasswordValid(email, password))
-            throw new EmailAndPasswordDoesNotExistException();
+            throw new EmailAndPasswordDoesNotExistException("Courriel ou mot de passe invalide");
         return managerRepository.findManagerByEmailAndPassword(email, password);
     }
 
-    private boolean isNotValid(Manager manager) {
-        return manager.getEmail() != null && managerRepository.existsByEmail(manager.getEmail());
+    public boolean isEmailInvalid(String email) {
+        return !managerRepository.existsByEmail(email);
     }
 
     public boolean isIDNotValid(Long id) {
@@ -75,6 +49,5 @@ public class ManagerService {
     private boolean isEmailAndPasswordValid(String email, String password) {
         return managerRepository.existsByEmailAndPassword(email, password);
     }
-
 
 }

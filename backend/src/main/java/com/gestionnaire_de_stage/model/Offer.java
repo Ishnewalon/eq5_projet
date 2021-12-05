@@ -1,17 +1,20 @@
 package com.gestionnaire_de_stage.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.gestionnaire_de_stage.listener.OfferListener;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
+@EntityListeners(OfferListener.class)
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Offer {
@@ -24,20 +27,14 @@ public class Offer {
     private Monitor creator;
 
     @NotBlank(message = "Le département ne peut pas être vide.")
-    @Size(min = 2, message = "Le departement doit avoir au minimum 2 caractères.")
-    @NotNull(message = "Le département est nécessaire.")
     @Column(nullable = false)
     private String department;
 
     @NotBlank(message = "Le titre ne peut pas être vide.")
-    @Size(min = 2, message = "Le titre doit avoir au minimum 2 caractères.")
-    @NotNull(message = "Le titre est nécessaire.")
     @Column(nullable = false)
     private String title;
 
     @NotBlank(message = "La description ne peut pas être vide.")
-    @Size(min = 2, message = "La description doit avoir au minimum 2 caractères.")
-    @NotNull(message = "La description est nécessaire.")
     @Column(nullable = false)
     private String description;
 
@@ -45,9 +42,7 @@ public class Offer {
     @Column(nullable = false, updatable = false)
     private Date created = new Date();
 
-    @Size(min = 2, message = "L'adresse doit avoir au minimum 2 caractères.")
     @NotBlank(message = "L'adresse ne peut pas être vide.")
-    @NotNull(message = "L'adresse est nécessaire.")
     @Column(nullable = false)
     private String address;
 

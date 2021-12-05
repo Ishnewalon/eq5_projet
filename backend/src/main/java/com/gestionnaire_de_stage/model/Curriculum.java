@@ -1,17 +1,21 @@
 package com.gestionnaire_de_stage.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.gestionnaire_de_stage.listener.CurriculumListener;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @Setter
 @Entity
+@EntityListeners(CurriculumListener.class)
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Curriculum implements Serializable {
@@ -38,5 +42,18 @@ public class Curriculum implements Serializable {
         this.data = data;
         this.student = student;
         this.isValid = null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Curriculum that = (Curriculum) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
     }
 }

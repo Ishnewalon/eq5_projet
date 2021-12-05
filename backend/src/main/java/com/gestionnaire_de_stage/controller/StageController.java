@@ -3,10 +3,6 @@ package com.gestionnaire_de_stage.controller;
 import com.gestionnaire_de_stage.dto.EvalMilieuStageDTO;
 import com.gestionnaire_de_stage.dto.EvalStagiaireDTO;
 import com.gestionnaire_de_stage.dto.ResponseMessage;
-import com.gestionnaire_de_stage.exception.ContractDoesNotExistException;
-import com.gestionnaire_de_stage.exception.EvaluationAlreadyFilledException;
-import com.gestionnaire_de_stage.exception.MatriculeDoesNotExistException;
-import com.gestionnaire_de_stage.exception.StageDoesNotExistException;
 import com.gestionnaire_de_stage.model.Stage;
 import com.gestionnaire_de_stage.service.ContractService;
 import com.gestionnaire_de_stage.service.StageService;
@@ -22,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/stages")
@@ -51,8 +48,8 @@ public class StageController {
         Stage stage = new Stage();
         evalMilieuStageDTO.setSignatureDate(LocalDate.now());
         try {
-            stage.setContract(contractService.getContractByStudentMatricule(evalMilieuStageDTO.getMatriculeEtudiant()));
-            stage = stageService.create(stage, evalMilieuStageDTO.getMatriculeEtudiant());
+            stage.setContract(contractService.getContractByStudentMatricule(evalMilieuStageDTO.getStudentMatricule()));
+            stage = stageService.create(stage, evalMilieuStageDTO.getStudentMatricule());
             WebContext context = new WebContext(request, response, servletContext);
             context.setVariable("formInfo", evalMilieuStageDTO);
             String evalMilieuStageHtml = templateEngine.process("evalMilieuStage", context);
@@ -60,23 +57,7 @@ public class StageController {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             HtmlConverter.convertToPdf(evalMilieuStageHtml, baos);
             stageService.addEvalMilieuStage(stage, baos);
-        } catch (MatriculeDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("La matricule de l'étudiant n'existe pas"));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        } catch (StageDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le stage n'existe pas"));
-        } catch (ContractDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Cet étudiant n'a pas de stage"));
-        } catch (EvaluationAlreadyFilledException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
@@ -90,7 +71,7 @@ public class StageController {
     public ResponseEntity<?> fillEvalStagiairePDF(@RequestBody EvalStagiaireDTO evalStagiaireDTO, HttpServletRequest request, HttpServletResponse response) {
         Stage stage;
         try {
-            stage = stageService.getStageByStudentEmail(evalStagiaireDTO.getEmailEtudiant());
+            stage = stageService.getStageByStudentEmail(evalStagiaireDTO.getStudentEmail());
             WebContext context = new WebContext(request, response, servletContext);
             context.setVariable("formInfo", evalStagiaireDTO);
             String contractHtml = templateEngine.process("evalStagiaire", context);
@@ -99,15 +80,7 @@ public class StageController {
             HtmlConverter.convertToPdf(contractHtml, baos);
 
             stageService.addEvalStagiaire(stage, baos);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage(e.getMessage()));
-        } catch (StageDoesNotExistException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseMessage("Le stage n'existe pas pour cette étudiant"));
-        } catch (EvaluationAlreadyFilledException e) {
+        } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseMessage(e.getMessage()));
@@ -115,5 +88,22 @@ public class StageController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseMessage("Évaluation remplie!"));
+    }
+
+    @GetMapping("/supervisor/{idSupervisor}")
+    public ResponseEntity<?> getAllEvaluationsForSupervisor(@PathVariable Long idSupervisor) {
+        try {
+            List<Stage> stages = stageService.getAllEvaluationsForSupervisor(idSupervisor);
+            return ResponseEntity.ok(stages);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(e.getMessage()));
+        }
+    }
+
+    @GetMapping("/monitor/{idMonitor}")
+    public List<Stage> getAllEvaluationsForMonitor(@PathVariable Long idMonitor) {
+        return stageService.getAllEvaluationsForMonitor(idMonitor);
     }
 }

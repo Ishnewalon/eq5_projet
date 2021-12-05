@@ -1,52 +1,50 @@
-import {FormGroup} from "../SharedComponents/FormGroup/FormGroup";
 import {createSession} from "../../services/session-service";
-import {useState} from "react";
-import {toastErr} from "../../utility";
-import {FormField} from "../SharedComponents/FormField/FormField";
+import {ContainerBox} from "../SharedComponents/ContainerBox";
+import {useForm} from "react-hook-form";
+import {FormGroup} from "../SharedComponents/Form/FormGroup";
+import {FieldSelect} from "../SharedComponents/Form/FormFields";
+import {Column} from "../SharedComponents/Column";
 
 export default function CreateSession() {
+    const {register, handleSubmit, formState: {errors}} = useForm({mode: "onSubmit",});
     let currentYear = new Date().getFullYear();
     let years = [];
-
-    const [year, setYear] = useState(currentYear);
-    const [typeSession, setTypeSession] = useState(null);
 
     for (let i = 0; i < 3; i++)
         years.push(currentYear + i);
 
-    const onclick = () => {
-        if (!typeSession) {
-            toastErr.fire({title: "La période de la session doit être choisi"}).then()
-            return
-        }
-        createSession({
-            typeSession: typeSession,
-            year: year
-        }).then();
-    };
+    const submit = (data) => createSession(data).then();
 
-    return <>
-        <FormGroup>
-            <FormField>
-                <label>Année</label>
-                <select onChange={(e) => setYear(e.target.value)}>
-                    {years.map((year) =>
-                        <option key={year} value={year}>{year}</option>
-                    )}
-                </select>
-            </FormField>
-            <FormField>
-                <label>Période de la session</label>
-                <select onChange={(e) => setTypeSession(e.target.value)} defaultValue="">
-                    <option disabled value="">Période de la session</option>
-                    <option value="HIVER">Session d'hiver</option>
-                    <option value="ETE">Session d'été</option>
-                </select>
-            </FormField>
-        </FormGroup>
-        <div className="text-center">
-            <button className="btn btn-primary mt-3" onClick={onclick}>Créez la session</button>
-
-        </div>
-    </>
+    return <ContainerBox className={"w-50"}>
+        <form onSubmit={handleSubmit(submit)}>
+            <FormGroup>
+                <Column col={{md: 6}}>
+                    <FieldSelect label="Année"
+                                 name={"year"}
+                                 options={years}
+                                 self
+                                 register={register}
+                                 error={errors.year}
+                                 defaultMessage="Choisissez une année"
+                                 validation={{}}/>
+                </Column>
+                <Column col={{md: 6}}>
+                    <FieldSelect label="Type de session"
+                                 name={"typeSession"}
+                                 options={[
+                                     {value: "HIVER", label: "Session d'hiver"},
+                                     {value: "ETE", label: "Session d'été"}]}
+                                 fieldValue={"value"}
+                                 displayed={["label"]}
+                                 register={register}
+                                 error={errors.typeSession}
+                                 defaultMessage="Choisissez une année"
+                                 validation={{}}/>
+                </Column>
+            </FormGroup>
+            <div className="text-center">
+                <input className="btn btn-primary mt-3" type="submit" value="Créez la session"/>
+            </div>
+        </form>
+    </ContainerBox>
 }
