@@ -43,14 +43,12 @@ test('loads and displays StepMonitor', () => {
 
 });
 test('click next', () => {
-    expect(mockFnNext).not.toHaveBeenCalled()
     userEvent.click(screen.getByText("Suivant"));
 
     expect(mockFnNext).toHaveBeenCalled()
     expect(mockFnUpdateType).toHaveBeenCalled()
 });
 test('click prev', () => {
-    expect(mockFnPrev).not.toHaveBeenCalled()
     userEvent.click(screen.getByText("Précédent"));
 
     expect(mockFnPrev).toHaveBeenCalled()
