@@ -64,9 +64,9 @@
             android:id="@+id/btn_mescv"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:backgroundTint="#2196F3"
+            android:backgroundTint="#9C27B0"
             android:onClick="viewCurriculums"
-            android:text="C.V." />
+            android:text="mes curriculums" />
 
         <Button
             android:id="@+id/btn_cv"
@@ -74,7 +74,7 @@
             android:layout_height="80dp"
             android:backgroundTint="#2196F3"
             android:onClick="openFile"
-            android:text="C.V." />
+            android:text="Téléverser un C.V." />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,13 @@
 package com.scott.veille2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,8 +34,23 @@ public class ManagerDashboard extends AppCompatActivity {
         managerName.setText(getString(R.string.student_name, user.getLastName(), user.getFirstName()));
     }
 
-    public void logout(View view) {
-        RequestSingleton.getInstance(this.getApplicationContext()).clearUser();
-        finish();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.dashboard_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.logout) {
+            RequestSingleton.getInstance(this.getApplicationContext()).clearUser();
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void viewAllStudents(View view) {
+        startActivity(new Intent(ManagerDashboard.this, StudentList.class));
     }
 }

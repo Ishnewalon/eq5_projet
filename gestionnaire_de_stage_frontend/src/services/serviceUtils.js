@@ -1,4 +1,4 @@
-export const urlBackend = 'http://localhost:8181'
+export const urlBackend = 'http://10.0.0.36:8181'
 export const methods = {
     POST: 'POST',
     GET: 'GET',

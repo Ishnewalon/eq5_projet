@@ -7,8 +7,10 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.scott.veille2.RequestSingleton;
+import com.scott.veille2.model.Curriculum;
 import com.scott.veille2.model.Offer;
 import com.scott.veille2.model.OfferAppDTO;
+import com.scott.veille2.model.OfferApplication;
 import com.scott.veille2.model.User;
 
 import org.json.JSONArray;
@@ -57,8 +59,6 @@ public class OfferService implements IServiceUtil {
         }catch (JSONException e){
             return;
         }
-
-
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 url,
@@ -73,6 +73,61 @@ public class OfferService implements IServiceUtil {
         RequestSingleton
                 .getInstance(context.getApplicationContext())
                 .addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void getApplicants(IRequestListener<List<OfferApplication>> listener, String email) {
+        String url = API_URL + "/applications/applicants/" + email;
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                response -> {
+                    listener.processFinished(true, buildOfferAppListFromJson(response));
+                },
+                error -> {
+                    Toast.makeText(context, "Impossible de chercher la liste des applicants!",  Toast.LENGTH_SHORT).show();
+                    listener.processFinished(false, null);
+                });
+
+        RequestSingleton
+                .getInstance(context.getApplicationContext())
+                .addToRequestQueue(jsonArrayRequest);
+    }
+
+    private String getStudentNameFromCurriculum(JSONObject jsonObject) {
+        String firstName = "";
+        String lastName = "";
+        try {
+            firstName = jsonObject.getJSONObject("student").getString("firstName");
+            lastName = jsonObject.getJSONObject("student").getString("lastName");
+        } catch (JSONException e) {
+            return null;
+        }
+        return lastName + ", " + firstName;
+    }
+
+    private List<OfferApplication> buildOfferAppListFromJson(JSONArray jsonArray) {
+        List<OfferApplication> offerAppDTOList = new ArrayList<>();
+        try {
+            for(int i = 0; i< jsonArray.length(); i++){
+                offerAppDTOList.add(buildOfferAppDtoFromJson(jsonArray.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return offerAppDTOList;
+    }
+
+    private OfferApplication buildOfferAppDtoFromJson(JSONObject jsonObject) {
+        try {
+            Offer offer = buildOfferFromJson(jsonObject.getJSONObject("offer"));
+            String studentName = getStudentNameFromCurriculum(jsonObject.getJSONObject("curriculum"));
+            String status = jsonObject.getString("status");
+            return new OfferApplication(offer, studentName, status);
+        } catch (JSONException e) {
+            return null;
+        }
     }
 
     private List<Offer> buildListFromJson(JSONArray jsonArray) {

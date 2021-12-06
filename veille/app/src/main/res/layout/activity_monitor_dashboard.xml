@@ -31,10 +31,10 @@
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="15dp"
+        android:layout_height="5dp"
         android:layout_marginTop="8dp"
         android:background="?android:attr/listDivider"
-        android:backgroundTint="#000000"
+        android:backgroundTint="#304C7B"
         android:backgroundTintMode="add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -54,12 +54,12 @@
 
 
         <Button
-            android:id="@+id/btn_logout"
+            android:id="@+id/btn_viewApplicants"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:backgroundTint="#F44336"
-            android:onClick="logout"
-            android:text="se deconnecter" />
+            android:backgroundTint="#009688"
+            android:onClick="viewApplicants"
+            android:text="Liste des Candidats" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

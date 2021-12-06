@@ -1,22 +1,17 @@
 package com.scott.veille2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.scott.veille2.adapter.CurriculumAdapter;
-import com.scott.veille2.adapter.OfferAdapter;
 import com.scott.veille2.model.Curriculum;
-import com.scott.veille2.model.Offer;
 import com.scott.veille2.model.StudentCurriculumDTO;
 import com.scott.veille2.model.User;
 import com.scott.veille2.service.CurriculumService;
-import com.scott.veille2.service.OfferService;
-
-import java.util.List;
 
 public class MesCurriculum extends AppCompatActivity {
 
@@ -69,6 +64,7 @@ public class MesCurriculum extends AppCompatActivity {
             curriculumService.setPrincipal(((isSuccessful, response) -> {
                 if (isSuccessful){
                     Toast.makeText(this.getApplicationContext(), "Vous avez choisi votre C.V. principal!",  Toast.LENGTH_SHORT).show();
+                    getCurriculums();
                 }else{
                     Toast.makeText(this.getApplicationContext(), "Impossible de choisir ce C.V.!",  Toast.LENGTH_SHORT).show();
                 }

@@ -6,15 +6,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.scott.veille2.RequestSingleton;
 import com.scott.veille2.model.Curriculum;
-import com.scott.veille2.model.Offer;
 import com.scott.veille2.model.StudentCurriculumDTO;
-import com.scott.veille2.model.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;

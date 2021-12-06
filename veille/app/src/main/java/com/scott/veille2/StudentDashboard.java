@@ -63,7 +63,6 @@ public class StudentDashboard extends AppCompatActivity {
     private void createActivityLauncher() {
         this.arl = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK) {
-                // There are no request codes
                 Intent data = result.getData();
 
                 curriculumService.uploadFile(data.getData(), user.getId());

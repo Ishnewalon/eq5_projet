@@ -56,6 +56,7 @@ public class StudentController {
     @GetMapping("/{email}/{password}")
     public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
         Student student;
+        System.out.println(email + " " + password);
         try {
             student = studentService.getOneByEmailAndPassword(email, password);
         } catch (Exception e) {
